@@ -1,0 +1,5 @@
+{
+	"ID": "list",
+	"query": "db.EMP.aggregate([{$project:{_id : 1, NAME : 1}}])",
+	"type": "read"
+}

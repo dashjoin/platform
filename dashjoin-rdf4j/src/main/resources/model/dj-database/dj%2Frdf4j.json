@@ -1,0 +1,7 @@
+{
+	"ID": "dj/rdf4j",
+	"name": "rdf4j",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.RDF4J",
+	"datasets": ["/data/mondial-meta.n3", "/data/mondial-europe.n3"]
+}

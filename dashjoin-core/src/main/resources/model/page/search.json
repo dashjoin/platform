@@ -1,0 +1,10 @@
+{
+  "ID" : "search",
+  "layout" : {
+    "widget" : "page",
+    "children" : [ {
+		"title" : "Search Results",
+          "widget" : "table"
+    } ]
+  }
+}

@@ -1,0 +1,195 @@
+### run provider
+POST http://localhost:8080/rest/function/source
+content-type: application/json
+Authorization: Basic admin:dj
+
+### initial data for editing
+POST http://localhost:8080/rest/mapping/gather/source
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "t": {
+      "pk" : "ID",
+	  "rowMapping": {
+          "ID": "ID",
+          "name": "\"prefix-\"&name"
+      } 
+    }
+}
+
+### removeTable
+POST http://localhost:8080/rest/mapping/removeTable/t
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### addTable
+POST http://localhost:8080/rest/mapping/addTable/t/new
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### extractTable
+POST http://localhost:8080/rest/mapping/extractTable/t/list
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "ID": "a",
+        "list": [1,2,3]
+      },
+      {
+        "ID": "b",
+        "list": [6,7]
+      }
+    ]
+  },
+  "mappings": {
+    "t": {
+      "pk": "ID"
+    }
+  }
+}
+
+### renameTable
+POST http://localhost:8080/rest/mapping/renameTable/t/new
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### renameColumn
+POST http://localhost:8080/rest/mapping/renameColumn/t/name/new
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### removeColumn
+POST http://localhost:8080/rest/mapping/removeColumn/t/name
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### addColumn
+POST http://localhost:8080/rest/mapping/addColumn/t/new
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      }
+    ]
+  }
+}
+
+### filter
+POST http://localhost:8080/rest/mapping/filter/t/ID="5"
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      },
+      {
+        "ID": "6"
+      }
+    ]
+  }
+}
+
+### column
+POST http://localhost:8080/rest/mapping/column/t/name/name&"-postfix"
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "name": "qwdss",
+        "ID": "5"
+      },
+      {
+        "ID": "6"
+      }
+    ]
+  }
+}
+
+### column flatten
+POST http://localhost:8080/rest/mapping/column/t/ID/result.ID
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+  "source": {
+    "t": [
+      {
+        "result": {         
+            "ID": "6"
+        }
+      }
+    ]
+  }
+}

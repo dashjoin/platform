@@ -1,0 +1,11 @@
+<div *ngIf="value; else elseEdit">
+    <lib-json-schema-form *ngIf="schema" [(value)]="value" [schema]="schema" (errorChange)="error=$event"
+        (schemaChange)="schemaChange(false)">
+    </lib-json-schema-form>
+    <br>
+    <button [disabled]="error || app.editLayout" mat-raised-button color="primary" (click)="update()">Update</button>
+    &nbsp;
+    <button [disabled]="app.editLayout" mat-raised-button color="primary"
+        (click)="delete(url)">Delete{{(layout.deleteConfirmation ? '...':'')}}</button>
+</div>
+<ng-template #elseEdit>Edit widget requires an underlying record</ng-template>

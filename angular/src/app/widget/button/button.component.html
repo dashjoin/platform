@@ -1,0 +1,7 @@
+<div *ngIf="layout?.widget === 'button'">
+    <lib-json-schema-form *ngIf="layout.properties" [(value)]="createValue" [schema]="createSchema"
+        (errorChange)="error=$event" (schemaChange)="schemaChange(true)">
+    </lib-json-schema-form>
+    <button [disabled]="error || app.editLayout" mat-raised-button color="primary"
+        (click)="call()">{{text("Run")}}</button>
+</div>

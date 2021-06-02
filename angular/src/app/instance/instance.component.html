@@ -1,0 +1,149 @@
+<div
+    [ngClass]="app.editLayout && (layout?.readOnly !== true || (value && value.ID === 'dj-toolbar')) ? 'main-edit' : 'main'">
+    <div *ngIf="layout && app.editLayout && (layout?.readOnly !== true || (value && value.ID === 'dj-toolbar'))">
+        <mat-icon *ngFor="let i of layoutWidget" [matMenuTriggerFor]="menu" style="cursor: pointer"
+            (menuOpened)="menuOpenedT(i)" [matTooltip]="menuTitleT(i)">menu</mat-icon>
+        <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer" (menuOpened)="menuOpened()"
+            [matTooltip]="menuTitleT({layoutMode:layoutMode, layoutName:layoutName, layoutPos:layoutPos})">menu
+        </mat-icon>
+        <mat-menu #menu="matMenu">
+            <button disabled mat-menu-item>{{menuTitle()}}</button>
+            <button [disabled]="layoutMode === 'defaulttable' || layoutMode === 'default'" mat-menu-item
+                (click)="edit()">
+                <mat-icon>edit</mat-icon>Edit
+            </button>
+            <button [disabled]="!canAdd()" mat-menu-item (click)="add()">
+                <mat-icon>add</mat-icon>Add
+            </button>
+            <button [disabled]="!canDelete()" mat-menu-item (click)="remove()">
+                <mat-icon>remove</mat-icon>Delete
+            </button>
+            <button [disabled]="!canDelete()" mat-menu-item (click)="cut()">
+                <mat-icon>content_cut</mat-icon>Cut
+            </button>
+            <button mat-menu-item (click)="copy()">
+                <mat-icon>content_copy</mat-icon>Copy
+            </button>
+            <button [disabled]="!canPaste()" mat-menu-item (click)="paste()">
+                <mat-icon>content_paste</mat-icon>Paste
+            </button>
+            <button [disabled]="!canUp()" mat-menu-item (click)="up(true)">
+                <mat-icon>arrow_upward</mat-icon>Top
+            </button>
+            <button [disabled]="!canUp()" mat-menu-item (click)="up(false)">
+                <mat-icon>keyboard_arrow_up</mat-icon>Up
+            </button>
+            <button [disabled]="!canDown()" mat-menu-item (click)="down(false)">
+                <mat-icon>keyboard_arrow_down</mat-icon>Down
+            </button>
+            <button [disabled]="!canDown()" mat-menu-item (click)="down(true)">
+                <mat-icon>arrow_downward</mat-icon>Bottom
+            </button>
+            <button *ngIf="root && (layoutMode === 'default' || layoutMode === 'defaulttable')" mat-menu-item
+                (click)="customize()">
+                <mat-icon>build</mat-icon>Customize
+            </button>
+            <button *ngIf="root && (layoutMode === 'instance' || layoutMode === 'page' || layoutMode === 'table')"
+                mat-menu-item (click)="restore()">
+                <mat-icon>restore</mat-icon>Delete {{layoutMode === 'page' ? 'page' : 'custom layout'}}
+            </button>
+        </mat-menu>
+        <mat-button-toggle-group #group="matButtonToggleGroup" *ngIf="layout?.widget === 'page'"
+            [value]="layout.pageLayout ? layout.pageLayout : 'horizontal'" class="layout-toggle">
+            <mat-button-toggle value="1 column" matTooltip="1 column" (click)="editLayout('1 column')">
+                <mat-icon>view_stream</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="2 column" matTooltip="2 columns" (click)=" editLayout('2 column')">
+                <mat-icon>view_list</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="3 column" matTooltip="3 columns" (click)="editLayout('3 column')">
+                <mat-icon>view_week</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="T 3 column" matTooltip="Full width plus 3 columns"
+                (click)="editLayout('T 3 column')">
+                <mat-icon>table_chart</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="horizontal" matTooltip="Wrap horizontal" (click)="editLayout('horizontal')">
+                <mat-icon>wrap_text</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="grid" matTooltip="Grid layout" (click)="editLayout('grid')">
+                <mat-icon>view_module</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
+    <div *ngIf=" layout?.widget === 'page'" fxLayout="column">
+        <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)"></app-instance>
+        <mat-sidenav-container>
+            <mat-sidenav [opened]="app.sidenavOpen" mode="side" style="width: 200px">
+                <app-instance [layout]="{widget: 'dj-sidenav'}" (eventChange)="onEvent($event)">
+                </app-instance>
+            </mat-sidenav>
+            <mat-sidenav-content style="padding-left: 7px;">
+                <gridster [options]="options" *ngIf="layout.pageLayout==='grid'">
+                    <gridster-item [item]="child" *ngFor="let child of layout.children; let i=index">
+                        <mat-card style="height: 100%;" *ngIf="isInRole(child)">
+                            <mat-card-header>
+                                <mat-card-title>{{id(child.title)}}</mat-card-title>
+                            </mat-card-header>
+                            <app-instance #children [value]="value" [layout]="child" [layoutMode]="layoutMode"
+                                [layoutName]="layoutName" [layoutPos]="layoutPos + ',' + i"
+                                (eventChange)="onEvent($event)">
+                            </app-instance>
+                        </mat-card>
+                    </gridster-item>
+                </gridster>
+                <div *ngIf="rowKids" fxLayout="row wrap" fxLayoutGap="7px">
+                    <div *ngFor="let child of rowKids" [ngStyle]="layout.style" [ngClass]="layout.class"
+                        style="padding-top: 7px;">
+                        <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child)"
+                            style="height: calc(100% - 32px);">
+                            <mat-card-header>
+                                <mat-card-title>{{id(child.widget.title)}}</mat-card-title>
+                            </mat-card-header>
+                            <app-instance #children [value]="value" [layout]="child.widget" [layoutMode]="layoutMode"
+                                [layoutName]="layoutName" [layoutPos]="layoutPos + ',' + child.pos"
+                                (eventChange)="onEvent($event)">
+                            </app-instance>
+                        </mat-card>
+                    </div>
+                </div>
+                <div *ngIf="colKids" fxLayout="row" fxLayout.xs="row wrap" fxLayoutGap="7px" style="padding-top: 7px;">
+                    <div *ngFor="let col of colKids" fxLayout="column" fxLayoutGap="7px">
+                        <div *ngFor="let child of col" [ngStyle]="layout.style" [ngClass]="layout.class">
+                            <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child)">
+                                <mat-card-header>
+                                    <mat-card-title>{{id(child.widget.title)}}</mat-card-title>
+                                </mat-card-header>
+                                <app-instance #children [value]="value" [layout]="child.widget"
+                                    [layoutMode]="layoutMode" [layoutName]="layoutName"
+                                    [layoutPos]="layoutPos + ',' + child.pos" (eventChange)="onEvent($event)">
+                                </app-instance>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
+    <ng-template appCompHost></ng-template>
+</div>
+
+<div *ngIf="root && app.debug()">
+    <br>
+    <br>
+    <hr>
+    ID
+    <pre>
+{{database}}
+{{table}}
+{{pkArr()}}
+{{url}}
+    </pre>
+    VALUE
+    <pre>{{stringify(value)}}</pre>
+    LAYOUT
+    <pre>{{stringify(layout)}}</pre>
+    SCHEMA
+    <pre>{{stringify(app.getSchema(database, table) | async)}}</pre>
+</div>

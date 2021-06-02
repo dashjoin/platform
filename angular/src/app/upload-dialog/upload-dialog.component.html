@@ -1,0 +1,49 @@
+<mat-dialog-content>
+    <div>
+        <input type="file" multiple (change)="handleFileInput($event.target.files)">
+    </div>
+
+    <div *ngIf="tables">
+        <mat-tab-group>
+            <mat-tab *ngFor="let table of tables | keyvalue" [label]="table.key">
+                <table class="mat-table">
+                    <mat-radio-group [value]="radioValue(table.value)" (change)="radio($event.value, table.value)">
+                        <tr class="mat-header-row">
+                            <th *ngFor="let col of table.value" class="mat-header-cell">{{col.name}}</th>
+                        </tr>
+                        <tr class="mat-row">
+                            <td *ngFor="let col of table.value" class="mat-cell">
+                                <mat-radio-button [disabled]="!(createMode === true)" [value]="col.name">
+                                </mat-radio-button> primary key
+                            </td>
+                        </tr>
+                        <tr class="mat-row">
+                            <td *ngFor="let col of table.value" class="mat-cell">
+                                <mat-form-field>
+                                    <mat-select [disabled]="!(createMode === true)" [(value)]="col.type">
+                                        <mat-option value="number">number</mat-option>
+                                        <mat-option value="integer">integer</mat-option>
+                                        <mat-option value="boolean">boolean</mat-option>
+                                        <mat-option value="string">string</mat-option>
+                                        <mat-option value="date">date</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr class="mat-row" *ngFor="let number of [0,1,2,3,4,5,6,7,8,9]">
+                            <td *ngFor="let col of table.value" class="mat-cell">{{col.sample[number]}}
+                            </td>
+                        </tr>
+                    </mat-radio-group>
+                </table>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="dialogRef.close()" cdkFocusInitial>Cancel</button>
+    <button [disabled]="!(createMode === true)" mat-raised-button color="primary" (click)="create()">Create</button>
+    <button [disabled]="!(createMode === false)" mat-raised-button color="primary"
+        (click)="replace()">Replace...</button>
+    <button [disabled]="!(createMode === false)" mat-raised-button color="primary" (click)="append()">Append</button>
+</mat-dialog-actions>

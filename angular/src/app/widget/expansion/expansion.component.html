@@ -1,0 +1,28 @@
+<div *ngIf="layout?.widget === 'expansion' && ifDisplay && !foreachResult && isInRole(layout)">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{text()}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [fxLayout]="layout.layout === 'vertical' ? 'column' : 'row wrap'">
+            <div *ngFor="let child of layout.children; let i = index" [ngStyle]="layout.style" [ngClass]="layout.class">
+                <app-instance #children [value]="value" [layout]="child" [layoutMode]="layoutMode"
+                    [layoutName]="layoutName" [layoutPos]="layoutPos + ',' + i" (eventChange)="onEvent($event)">
+                </app-instance>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</div>
+<div *ngIf="layout?.widget === 'expansion' && ifDisplay && foreachResult && isInRole(layout)">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{text()}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [fxLayout]="layout.layout === 'vertical' ? 'column' : 'row wrap'">
+            <div *ngFor="let v of foreachResult" [ngStyle]="layout.style" [ngClass]="layout.class">
+                <app-instance #children [value]="v" [layout]="layout.children[0]" [layoutMode]="layoutMode"
+                    [layoutName]="layoutName" [layoutPos]="layoutPos + ',0'" (eventChange)="onEvent($event)">
+                </app-instance>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</div>

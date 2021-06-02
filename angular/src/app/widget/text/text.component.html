@@ -1,0 +1,17 @@
+<mat-list *ngIf="layout.icon">
+    <mat-list-item>
+        <mat-icon mat-list-icon color="accent">{{layout.icon}}</mat-icon>
+        <div mat-line>
+            <div *ngIf="!layout.href" class="mat-typography">{{text()}}</div>
+            <a *ngIf="layout.href && layout.href.startsWith('http')" href="{{id(layout.href)}}">{{text()}}</a>
+            <a *ngIf="layout.href && !layout.href.startsWith('http')"
+                [routerLink]="linkArray(id(layout.href))">{{text()}}</a>
+        </div>
+    </mat-list-item>
+</mat-list>
+<span *ngIf="!layout.icon" class="mat-typography">
+    <div *ngIf="!layout.href">{{text()}}</div>
+    <a *ngIf="layout.href && layout.href.startsWith('http')" href="{{id(layout.href)}}">{{text()}}</a>
+    <a *ngIf="layout.href && !layout.href.startsWith('http')" [routerLink]="linkArray(id(layout.href))"
+        [queryParams]="queryParams(id(layout.href))">{{text()}}</a>
+</span>

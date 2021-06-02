@@ -1,0 +1,7 @@
+{
+	"ID": "dj/ksqldb",
+	"name": "ksqldb",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.KsqlDB",
+	"url": "http://localhost:8088/"
+}

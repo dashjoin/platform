@@ -1,0 +1,9 @@
+<mat-dialog-content>
+    <mat-form-field class="sql">
+        <textarea class="sql" matInput [value]="data" (change)="data=$event.target.value"></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

@@ -1,0 +1,9 @@
+{
+  "ID" : "dj-sidenav",
+  "layout" : {
+    "widget" : "tree",
+    "query" : "dj-navigation",
+    "database" : "config",
+	    "readOnly": true
+  }
+}

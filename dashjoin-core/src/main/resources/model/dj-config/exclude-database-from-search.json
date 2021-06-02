@@ -1,0 +1,5 @@
+{
+	"ID": "exclude-database-from-search",
+	"description": "Databases in this list are not searched",
+	"type": "list"
+}

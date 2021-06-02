@@ -1,0 +1,7 @@
+{
+	"ID": "Test",
+	"url": "/page/Test",
+	"layout": {
+		"widget": "card"
+	}
+}

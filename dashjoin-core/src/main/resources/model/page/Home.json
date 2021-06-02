@@ -1,0 +1,29 @@
+{
+  "ID" : "Home",
+  "layout" : {
+    "widget" : "page",
+    "children" : [ {
+      "widget" : "markdown",
+      "markdown" : "### [Universal DB Frontend](/#/table/config/dj-database)\n\nConnect to any SQL or NoSQL database, browse, search, and edit its contents. Extend the schema on the fly."
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Query Catalog & Editor](/#/table/config/dj-query-catalog)\n\nAutomatically collect schema information that powers an intuitive graphical query editor!"
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Layout Designer](/#/table/config/page)\n\nGraphically customize the layout for different types found in the database. Leverage the query editor to include meaningful charts.\n\n [<img src=\"https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg\">](https://www.youtube.com/watch?v=RuM-im9wd58)"
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Functions and Processes](/#/table/config/dj-function)\n\nSeamlessly start and integrate REST services from the application and monitor progress. \n\n [<img src=\"https://img.youtube.com/vi/XuymQh6aMIk/mqdefault.jpg\">](https://www.youtube.com/watch?v=XuymQh6aMIk)"
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### Data Integration and Federation\n\nVisually map external data sources to your model. Load the data into a warehouse or federate the source into a virtual linked-data graph."
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Cloud Deployment](https://my.dashjoin.com/)\n\nDeploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks."
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Rich Support Matrix](/#/page/Info)\n\nDashjoin supports a wide variety of SQL and NoSQL databases. You can construct queries in a uniform way and you can even define relationships between record from different databases and database types in order to enable a seamless browsing experience."
+    } ],
+    "pageLayout" : "3 column"
+  }
+}

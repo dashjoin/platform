@@ -1,0 +1,49 @@
+<div *ngIf="value; else elseEditRelated">
+    <div *ngIf="all && all.length > 0">
+        <table mat-table [dataSource]="all">
+            <ng-container matColumnDef="__dj_select">
+                <th mat-header-cell *matHeaderCellDef>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-radio-button [value]="element" (change)="selected = $event.value">
+                    </mat-radio-button>
+                </td>
+            </ng-container>
+            <ng-container [matColumnDef]="column" *ngFor="let column of columns">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <td mat-cell *matCellDef="let element">
+                    <a *ngIf="externalLink(queryMeta, column, element)"
+                        [href]="link(queryMeta, column, element)[0]">{{element[column]}}
+                    </a>
+                    <a *ngIf="internalLink(queryMeta, column, element)"
+                        [routerLink]="link(queryMeta, column, element)">{{labelId(link(queryMeta, column,
+                        element))|async}}
+                    </a>
+                    <span *ngIf="noLink(queryMeta, column, element)" [matTooltip]="matTooltip(element[column])"
+                        (click)="jsonDialog(element[column])">
+                        <a [routerLink]="toRouterLink(element[column])"
+                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
+                        <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
+                    </span>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="selectColumns"></tr>
+            <tr style="height: 2em !important" mat-row *matRowDef="let row; columns: selectColumns;"></tr>
+        </table>
+        <br>
+        <button [disabled]="!selected" mat-raised-button color="primary" (click)="editRelated()">Edit</button>
+        &nbsp;
+        <button [disabled]="!selected" mat-raised-button color="primary"
+            (click)="delete(relatedUrl())">{{layout.deleteConfirmation ?
+            'Delete...':'Delete'}}</button>
+        <br>
+        <br>
+    </div>
+    <lib-json-schema-form [(value)]="createValue" [schema]="createSchema" (errorChange)="error=$event"
+        (schemaChange)="schemaChange(true)">
+    </lib-json-schema-form>
+    <button [disabled]="error" mat-raised-button color="primary"
+        (click)="create(this.layout.prop)">{{text("Create")}}</button>
+</div>
+<ng-template #elseEditRelated>Edit related widget requires an underlying record</ng-template>

@@ -1,0 +1,15 @@
+<mat-card>
+    <!--
+    <lib-queryeditor [(query)]="query" [(database)]="database"></lib-queryeditor>
+    -->
+</mat-card>
+
+<br>
+
+<mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{database}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <textarea [value]="query" (change)="query=$event.target.value" placeholder="Paste your query here..."
+        rows="20"></textarea>
+</mat-expansion-panel>

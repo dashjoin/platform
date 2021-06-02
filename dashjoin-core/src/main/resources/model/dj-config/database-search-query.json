@@ -1,0 +1,5 @@
+{
+	"ID": "database-search-query",
+	"description": "Allows specifying a specialized query for each database when a search is performed. The key is the database name and the value is the query name",
+	"type": "map"
+}

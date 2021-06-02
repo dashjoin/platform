@@ -1,0 +1,6 @@
+{
+	"ID": "dj/ddl",
+	"name": "ddl",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.TestDatabase"
+}

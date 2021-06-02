@@ -1,0 +1,4 @@
+{
+	"ID": "authenticated",
+	"description": "Authenticated user with minimal privileges"
+}

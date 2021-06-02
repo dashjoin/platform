@@ -1,0 +1,239 @@
+### roles
+GET http://localhost:8080/rest/manage/roles HTTP/1.1
+Authorization: Basic user:dj
+
+### version
+GET http://localhost:8080/rest/manage/version HTTP/1.1
+Authorization: Basic admin:dj
+
+### getDrivers
+GET http://localhost:8080/rest/manage/getDrivers HTTP/1.1
+Authorization: Basic admin:dj
+
+### getFunctions
+GET http://localhost:8080/rest/manage/getFunctions HTTP/1.1
+Authorization: Basic admin:dj
+
+### getDatabases
+GET http://localhost:8080/rest/manage/getDatabases HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+### list
+POST http://localhost:8080/rest/database/query/northwind/list HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "limit": 10, "offset": 0 }
+
+### list metadata
+POST http://localhost:8080/rest/database/queryMeta/northwind/list HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "limit": 10, "offset": 0 }
+
+### submit
+POST http://localhost:8080/rest/database/query/northwind/submit HTTP/1.1
+content-type: application/json
+Authorization: Basic author:author
+
+{ "category_id": 12, "description": "test desc", "USERNAME": "admin" }
+
+### group
+POST http://localhost:8080/rest/database/query/northwind/group HTTP/1.1
+content-type: application/json
+
+### query metadata
+GET http://localhost:8080/rest/database/crud/config/dj-query-catalog/group
+Authorization: Basic admin:dj
+
+### query metadata
+POST http://localhost:8080/rest/database/list/config/dj-query-catalog
+content-type: application/json
+Authorization: Basic admin:dj
+
+["group", "list"]
+
+### list tables / types
+GET http://localhost:8080/rest/database/tables
+Authorization: Basic admin:dj
+
+### table metadata
+POST http://localhost:8080/rest/database/list/config/Table
+content-type: application/json
+Authorization: Basic admin:dj
+
+["dj%2Fnorthwind%2FPRODUCTS", "dj%2Fnorthwind%2FCATEGORIES"]
+
+### table metadata
+GET http://localhost:8080/rest/database/crud/config/Table/dj%2Fnorthwind%2FPRODUCTS
+
+### create
+PUT http://localhost:8080/rest/database/crud/northwind/CATEGORIES
+content-type: application/json
+
+{ "CATEGORY_ID": 78, "CATEGORY_NAME": "crud" }
+
+### traverse
+GET http://localhost:8080/rest/database/traverse/northwind/PRODUCTS/1?fk=CATEGORY_ID
+Authorization: Basic admin:dj
+
+### traverse
+GET http://localhost:8080/rest/database/traverse/northwind/CATEGORIES/1?fk=dj/northwind/PRODUCTS/CATEGORY_ID
+Authorization: Basic admin:dj
+
+### read
+GET http://localhost:8080/rest/database/crud/northwind/CATEGORIES/78
+
+### delete
+DELETE http://localhost:8080/rest/database/crud/northwind/CATEGORIES/78
+
+### update
+POST http://localhost:8080/rest/database/crud/northwind/CATEGORIES/78
+content-type: application/json
+
+{ "CATEGORY_ID": 78, "CATEGORY_NAME": "change" }
+
+### all
+POST http://localhost:8080/rest/database/all/northwind/ORDERS
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "SHIP_COUNTRY": "Brazil", "CUSTOMER_ID": "QUEDE" }
+
+### keys
+GET http://localhost:8080/rest/database/keys/northwind/CUSTOMERS?prefix=A
+content-type: application/json
+Authorization: Basic admin:dj
+
+### search
+GET http://localhost:8080/rest/database/search/cr?limit=3
+content-type: application/json
+Authorization: Basic admin:dj
+
+### queryeditor/noop
+POST http://localhost:8080/rest/queryeditor/noop HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "query": "select FREIGHT as F from ORDERS limit 1", "database": "dj/northwind" }
+
+### queryeditor/noop
+POST http://localhost:8080/rest/queryeditor/noop HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "query": "select ?EMP where { ?EMP a <:EMP> }", "database": "dj/rdf4j" }
+
+### queryeditor/getInitialQuery
+POST http://localhost:8080/rest/queryeditor/getInitialQuery HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:dj
+
+{ "table": "dj/northwind/EMPLOYEES", "limit": 1 }
+
+### table metadata incoming
+GET http://localhost:8080/rest/database/incoming/config/Table/dj%2Fnorthwind%2FPRODUCTS
+
+### table metadata incoming
+GET http://localhost:8080/rest/database/incoming/config/Property/dj%2Fnorthwind%2FEMPLOYEES%2FEMPLOYEE_ID
+
+### table metadata incoming
+GET http://localhost:8080/rest/database/incoming/northwind/EMPLOYEES/2
+
+### call function
+POST http://localhost:8080/rest/function/echo
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "res": "Return this!",
+    "log": "Log that!"
+}
+
+### call load test function
+POST http://localhost:8080/rest/function/load
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "sqlite",
+    "table": "TEST",
+    "count": 1000
+}
+
+### eval context lookup
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "x",
+    "data": { "x": 42 }
+}
+
+### eval call(echo, {json})
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$call(\"echo\", {\"res\": \"return this\", \"log\":\"log that\"})"
+}
+
+### eval call(dj-version)
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$call(\"dj-version\")"
+}
+
+### eval query(northwind, list, {limit:2})
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$query(\"northwind\", \"list\", {\"limit\": 2})"
+}
+
+### eval read(northwind, EMP, 2)
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$read(\"northwind\", \"EMPLOYEES\", 2)"
+}
+
+### eval incoming(northwind, EMP, 2)
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$incoming(\"northwind\", \"EMPLOYEES\", 2)"
+}
+
+### eval function on context
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$call(\"echo\", $)",
+    "data": {"res": 42, "log": "$ is the context"}
+}
+
+### eval map
+POST http://localhost:8080/rest/expression
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "expression": "$query(\"northwind\", \"list\", {\"limit\": $}).$call(\"echo\", {\"res\": $.\"CATEGORIES.DESCRIPTION\", \"log\": $.\"CATEGORIES.CATEGORY_NAME\"})",
+    "data": 3
+}

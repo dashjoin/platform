@@ -1,0 +1,120 @@
+{
+	"ID": "dj-toolbar",
+	"layout": {
+		"widget": "container",
+		"layout": "vertical",
+		"readOnly": true,
+		"children": [
+			{
+				"readOnly": true,
+				"widget": "activity-status"
+			},
+			{
+				"widget": "toolbar",
+				"readOnly": true,
+				"children": [
+					{
+						"widget": "sidenav-switch",
+						"readOnly": true
+					},
+					{
+						"widget": "icon",
+						"tooltip": "Home",
+						"icon": "home",
+						"readOnly": true,
+						"href": "/"
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "Configure databases",
+						"icon": "settings",
+						"readOnly": true,
+						"href": "/table/config/dj-database",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "Query Catalog",
+						"icon": "query_builder",
+						"readOnly": true,
+						"href": "/table/config/dj-query-catalog",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "Dashboard Pages",
+						"icon": "wysiwyg",
+						"readOnly": true,
+						"href": "/table/config/page",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "Functions",
+						"icon": "build_circle",
+						"readOnly": true,
+						"href": "/table/config/dj-function",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "General Information",
+						"icon": "info",
+						"readOnly": true,
+						"href": "/page/Info",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"readOnly": true,
+						"widget": "spacer"
+					},
+					{
+						"readOnly": true,
+						"widget": "search"
+					},
+					{
+						"readOnly": true,
+						"fxHide": "lt-md",
+						"widget": "layout-edit-switch",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
+						"tooltip": "Open help pages",
+						"icon": "help_outline",
+						"readOnly": true,
+						"href": "https://github.com/dashjoin/platform",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"tooltip": "My Account",
+						"icon": "account_circle",
+						"readOnly": true,
+						"href": "/page/Account"
+					}
+				]
+			}
+		]
+	}
+}

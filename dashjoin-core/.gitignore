@@ -1,0 +1,9 @@
+/.settings/
+/.classpath
+/.project
+/target
+/bin
+/doc
+/model/.secrets.id
+/.flattened-pom.xml
+/local-maven-repo

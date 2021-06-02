@@ -1,0 +1,23 @@
+tr.mat-row {
+    height: 1.5em !important;
+}
+
+th.mat-header-cell, td.mat-cell {
+    padding-left: 24px !important;
+}
+
+.table-container {
+    /* min-height: 5vh;
+    width: 10vw; */
+    display: flex;
+    flex-wrap: wrap;
+    /*justify-content: center;
+    align-items: center;*/
+} 
+
+td { 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow:ellipsis; 
+    max-width: 300px;
+}

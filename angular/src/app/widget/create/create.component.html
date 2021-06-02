@@ -1,0 +1,9 @@
+<div *ngIf="createSchema; else elseCreate">
+    <lib-json-schema-form [(value)]="createValue" [schema]="createSchema" (errorChange)="error=$event"
+        (schemaChange)="schemaChange(true)">
+    </lib-json-schema-form>
+    <br>
+    <button [disabled]="error || app.editLayout" mat-raised-button color="primary"
+        (click)="onCreate()">{{text("Create")}}</button>
+</div>
+<ng-template #elseCreate>Create widget requires an underlying record</ng-template>

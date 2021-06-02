@@ -1,0 +1,58 @@
+/* clickable icon (used for "widget": "layout-edit-switch") */
+.example-icon {
+    padding: 0px 14px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+/* key-value list: restrict width of very long individual keys */
+.list-value {
+    max-width: 70vw;
+}
+
+/* handle super wide tables by wrapping them in horizontal scrollbars - maxwidth is screen minus card padding minus vert scrollbar */
+.table-container {
+    max-width: calc(100vw - 32px - 24px);
+    overflow-x: auto;
+}
+
+/* gridster light grey background and full screen port view height */
+gridster{
+    background-color: #fafafa;
+    height: calc(100vh - 4rem);
+}
+
+/* tables do not wrap cells and show ... for long entries. also add some padding before the next col */
+th, td { 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow:ellipsis;
+    padding-right: 10px !important;
+    max-width: 30vw; /* make sure one column does not dominate the entire table */
+}
+
+/* reduce line spacing */
+tr.mat-row {
+    height: 1.5em !important;
+}
+
+/* normal mode applied to JSON layout elements */
+.main {
+    margin: 0.0em;
+}
+
+/* in edit mode, increase margin and show a border to indicate hierarchy */
+.main-edit {
+    margin: 0.3em;
+    border: 1px groove lightgray;
+}
+
+/* layout button toggle group */
+.layout-toggle {
+    margin: 4px;
+    margin-left: 20px;
+}
+
+::ng-deep .mat-sidenav-container{
+    height: calc(100vh - 52px)
+}

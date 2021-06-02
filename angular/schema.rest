@@ -1,0 +1,84 @@
+### create table
+POST http://localhost:8080/rest/function/alter-table
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "create",
+    "table": "API"
+}
+
+### drop table
+POST http://localhost:8080/rest/function/alter-table
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "delete",
+    "table": "API"
+}
+
+### rename table
+POST http://localhost:8080/rest/function/alter-table
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "rename",
+    "table": "API",
+    "newName": "API2"
+}
+
+### create col
+POST http://localhost:8080/rest/function/alter-column
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "create",
+    "table": "API",
+    "column": "age",
+    "newType": "date"
+}
+
+### drop column
+POST http://localhost:8080/rest/function/alter-column
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "delete",
+    "table": "API",
+    "column": "age"
+}
+
+### rename col
+POST http://localhost:8080/rest/function/alter-column
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "rename",
+    "table": "API",
+    "column": "age",
+    "newName": "age2"
+}
+
+### change col datatype
+POST http://localhost:8080/rest/function/alter-column
+content-type: application/json
+Authorization: Basic admin:dj
+
+{
+    "database": "dj/h2",
+    "command": "alter",
+    "table": "API",
+    "column": "age2",
+    "newType": "string"
+}

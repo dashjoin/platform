@@ -1,0 +1,20 @@
+{
+	"ID": "submit",
+	"database": "dj/northwind",
+	"query": "insert into CATEGORIES (category_id, category_name, description) values(${category_id}, ${USERNAME}, ${description})",
+	"type": "write",
+	"arguments": {
+		"category_id": {
+			"type": "number",
+			"sample": "3"
+		},
+		"description": {
+			"type": "string",
+			"sample": "Crab and fish"
+		},
+		"USERNAME": {
+			"type": "string",
+			"sample": "admin"
+		}
+	}
+}

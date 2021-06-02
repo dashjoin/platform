@@ -1,0 +1,33 @@
+{
+	"ID": "dj/northwind",
+	"name": "northwind",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.SQLDatabase",
+	"readRoles": [
+		"authenticated"
+	],
+	"url": "jdbc:h2:mem:northwind",
+	"initScripts": ["/sql/northwind_ddl.sql", "/sql/northwind_data.sql"],
+  "tables" : {
+    "EMPLOYEES" : {
+      "instanceLayout" : {
+        "widget" : "page",
+        "children" : [ {
+          "widget" : "edit",
+          "title" : "Edit Record",
+          "deleteConfirmation" : "Are you sure you want to delete this record?"
+        }, {
+          "widget" : "links",
+          "title" : "Related Records"
+        }, {
+          "widget" : "tree",
+          "text" : "custom instance layout",
+          "query" : "orgchart",
+          "database" : "northwind",
+          "title" : "Org Chart"
+        } ]
+      },
+      "dj-label" : "${LAST_NAME}"
+    }
+  }
+}

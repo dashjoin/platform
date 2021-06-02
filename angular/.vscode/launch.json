@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome dashjoin/queryeditor",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/projects/dashjoin/queryeditor",
+            "preLaunchTask": "ngServeWatch",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///./src/*": "${workspaceFolder}/src/*",
+                //"webpack:///./projects/dashjoin/queryeditor/src/*": "${workspaceFolder}/projects/dashjoin/queryeditor/src/*",
+                //"webpack:///ng://@dashjoin/queryeditor/lib/*": "${workspaceFolder}/projects/dashjoin/queryeditor/src/lib/*"
+            }
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+<urn:1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:EMP> .
+<urn:1> <urn:NAME> "mike" .
+<urn:1> <urn:WORKSON> <urn:1000> .
+<urn:2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:EMP> .
+<urn:2> <urn:NAME> "joe" .
+<urn:2> <urn:WORKSON> <urn:1000> .
+<urn:1000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:PRJ> .
+<urn:1000> <urn:NAME> "dev-project" .
+
+<urn:T> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<urn:U> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<urn:EMP> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<urn:PRJ> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<urn:NOKEY> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .

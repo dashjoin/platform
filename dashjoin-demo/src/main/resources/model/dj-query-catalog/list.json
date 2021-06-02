@@ -1,0 +1,19 @@
+{
+  "ID": "list",
+  "database": "dj/northwind",
+  "query": "select * from CATEGORIES limit ${limit} offset ${offset}",
+  "roles": [
+    "authenticated"
+  ],
+  "type": "read",
+  "arguments": {
+    "limit": {
+      "type": "number",
+      "sample": "5"
+    },
+    "offset": {
+      "type": "number",
+      "sample": "0"
+    }
+  }
+}

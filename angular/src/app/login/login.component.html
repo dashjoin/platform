@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">Please login</mat-toolbar>
+<div class="center">
+    <form>
+        <mat-form-field>
+            <mat-label>User name</mat-label>
+            <input matInput [value]="user" (input)="user = $event.target.value" #input>
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input matInput type="password" [value]="password" (input)="password = $event.target.value">
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" (click)="login()">Login</button>
+    </form>
+</div>

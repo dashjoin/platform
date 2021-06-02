@@ -1,0 +1,30 @@
+<div *ngIf="displayType() === 'link'">
+    <a [routerLink]="['/resource', displayData.database, displayData.table, displayData.pk1]"
+        [queryParams]="displayData.page?{page: displayData.page} : null">{{displayData.pk1}}</a>
+</div>
+<div *ngIf="displayType() === 'string'">
+    {{displayData}}
+</div>
+<div *ngIf="displayType() === 'string[]'">
+    {{displayData.join(', ')}}
+</div>
+<div *ngIf="displayType() === 'object'">
+    <mat-list>
+        <mat-list-item *ngFor="let e of displayData | keyvalue">
+            <mat-icon mat-list-icon color="accent">{{iconKey(e.key)}}</mat-icon>
+            <div mat-line>{{camelCase2display(e.key)}}</div>
+            <div mat-line class="list-value"> {{e.value}} </div>
+        </mat-list-item>
+    </mat-list>
+</div>
+<div *ngIf="displayType() === 'object[]'" [ngClass]="app.sidenavOpen ? 'table-container-sidebar' : 'table-container'">
+    <table class="mat-table">
+        <tr class="mat-header-row">
+            <th *ngFor="let e of displayData[0] | keyvalue" class="mat-header-cell">{{camelCase2display(e.key)}}
+            </th>
+        </tr>
+        <tr *ngFor="let r of displayData" class="mat-row">
+            <td *ngFor="let e of r | keyvalue" class="mat-cell">{{e.value}}</td>
+        </tr>
+    </table>
+</div>

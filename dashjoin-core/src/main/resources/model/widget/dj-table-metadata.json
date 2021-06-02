@@ -1,0 +1,73 @@
+{
+  "ID": "dj-table-metadata",
+  "layout": {
+    "widget": "container",
+    "layout" : "vertical",
+    "if": "$not($contains(pk1, \"/config/\"))",
+    "children": [
+      {
+        "widget": "expansion",
+        "text": "Column Metadata",
+        "roles": [
+          "admin"
+        ],
+        "children": [
+          {
+            "widget": "editRelated",
+            "text": "Create Column",
+            "prop": "dj/config/Property/parent",
+            "deleteConfirmation": "You are deleting a column and all its data. This operation cannot be reverted!",
+            "columns": [
+              "name",
+              "dbType",
+              "type",
+              "pkpos",
+              "ref"
+            ],
+            "createSchema": {
+              "type": "object",
+              "required": [
+                "name",
+                "type"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name of the column to create"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "boolean",
+                    "integer",
+                    "number",
+                    "string",
+                    "date"
+                  ],
+                  "title": "Datatype"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "widget": "expansion",
+        "text": "Table Metadata",
+        "roles": [
+          "admin"
+        ],
+        "children": [
+          {
+            "widget": "display",
+            "display": "{\"database\": \"config\", \"table\": \"dj-database\", \"pk1\": $.value.parent}"
+          },
+          {
+            "widget": "edit",
+            "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!"
+          }
+        ]
+      }
+    ]
+  }
+}

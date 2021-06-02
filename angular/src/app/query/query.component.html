@@ -1,0 +1,26 @@
+<div [matTooltip]="schema.description">
+    <span [fxLayout]="schema.layout === 'vertical' ? 'column' : 'row wrap'" [ngStyle]="schema.style"
+        [ngClass]="schema.class">
+        <div *ngFor="let op of orderedProperties" [fxLayout]="schema.layout !== 'vertical' ? 'column' : 'row wrap'">
+            <div *ngFor=" let x of op | keyvalue" style="display: flex; margin: 2px">
+                <div *ngIf="x.value && (x.value.type || x.value.$ref)">
+                    <lib-json-schema-form #children [name]="x.key" [label]="x.value.title ? x.value.title : x.key"
+                        [value]="value[x.key]" (valueChange)="formChange(x.key, $event)"
+                        [switch]="value ? value[schema.switch] : undefined" [rootSchema]="rootSchema" [schema]="x.value"
+                        [parentSchema]="schema" [required]="schema.required ? schema.required.includes(x.key) : false"
+                        [hideUndefined]="schema.hideUndefined">
+                    </lib-json-schema-form>
+                </div>
+            </div>
+        </div>
+    </span>
+</div>
+
+<mat-form-field class="sql">
+    <textarea class="sql" matInput [value]="value.query ? value.query : ''"
+        (change)="change($event.target.value)"></textarea>
+</mat-form-field>
+<br>
+<br>
+<button mat-raised-button color="primary" (click)="editor()">Editor</button>
+<br>

@@ -1,0 +1,25 @@
+{
+  "ID" : "Chart",
+  "layout" : {
+    "widget" : "page",
+    "children" : [ {
+      "widget" : "chart",
+      "database" : "northwind",
+      "chart" : "bar",
+      "query" : "group",
+      "x" : 1,
+      "y" : 0,
+      "rows" : 1,
+      "cols" : 1
+    }, {
+      "widget" : "table",
+      "database" : "northwind",
+      "query" : "group",
+      "x" : 1,
+      "y" : 0,
+      "rows" : 1,
+      "cols" : 1
+    } ],
+    "pageLayout" : "grid"
+  }
+}

@@ -1,0 +1,18 @@
+<div *ngIf="layout?.widget === 'grid' && ifDisplay && !foreachResult && isInRole(layout)">
+    <gridster [options]="options">
+        <gridster-item [item]="child" *ngFor="let child of layout.children; let i=index">
+            <app-instance #children [value]="value" [layout]="child" [layoutMode]="layoutMode" [layoutName]="layoutName"
+                [layoutPos]="layoutPos + ',' + i" (eventChange)="onEvent($event)">
+            </app-instance>
+        </gridster-item>
+    </gridster>
+</div>
+<div *ngIf="layout?.widget === 'grid' && ifDisplay && foreachResult && isInRole(layout)">
+    <gridster [options]="options">
+        <gridster-item [item]="layout.children[0]" *ngFor="let v of foreachResult">
+            <app-instance #children [value]="value" [layout]="layout.children[0]" [layoutMode]="layoutMode"
+                [layoutName]="layoutName" [layoutPos]="layoutPos + ',0'" (eventChange)="onEvent($event)">
+            </app-instance>
+        </gridster-item>
+    </gridster>
+</div>

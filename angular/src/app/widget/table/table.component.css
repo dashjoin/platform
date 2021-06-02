@@ -1,0 +1,26 @@
+
+/* handle super wide tables by wrapping them in horizontal scrollbars - maxwidth is screen minus card padding minus vert scrollbar */
+.table-container {
+    max-width: calc(100vw - 32px - 24px);
+    overflow-x: auto;
+}
+
+/* same as above with sidebar */
+.table-container-sidebar {
+    max-width: calc(100vw - 32px - 24px - 200px);
+    overflow-x: auto;
+}
+
+/* tables do not wrap cells and show ... for long entries. also add some padding before the next col */
+th, td { 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow:ellipsis;
+    padding-right: 10px !important;
+    max-width: 30vw; /* make sure one column does not dominate the entire table */
+}
+
+/* reduce line spacing */
+tr.mat-row {
+    height: 1.5em !important;
+}

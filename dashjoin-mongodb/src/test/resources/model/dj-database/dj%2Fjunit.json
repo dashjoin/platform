@@ -1,0 +1,42 @@
+{
+	"ID": "dj/junit",
+	"name": "junit",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.MongoDB",
+	"hostname": "localhost",
+	"database": "db",
+	"port": 27018,
+	"datasets": ["/data/EMP.json", "/data/PRJ.json", "/data/NOKEY.json", "/data/T.json", "/data/U.json"],
+	"tables": {
+		"PRJ": {
+			"ID": "dj/junit/PRJ",
+			"parent": "dj/junit",
+			"name": "PRJ",
+			"type": "object",
+			"properties": {
+				"_id": {
+					"ID": "dj/junit/PRJ/_id",
+					"parent": "dj/junit/PRJ",
+					"name": "_id",
+					"type": "number",
+					"pkpos": 0
+				}
+			}
+		},
+		"EMP": {
+			"ID": "dj/junit/EMP",
+			"parent": "dj/junit",
+			"name": "EMP",
+			"type": "object",
+			"properties": {
+				"WORKSON": {
+					"ID": "dj/junit/EMP/WORKSON",
+					"parent": "dj/junit/EMP",
+					"name": "WORKSON",
+					"type": "number",
+					"ref": "dj/junit/PRJ/_id"
+				}
+			}
+		}
+	}
+}

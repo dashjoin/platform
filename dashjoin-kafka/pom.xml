@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+  <parent>
+	<groupId>org.dashjoin</groupId>
+	<artifactId>dashjoin-base</artifactId>
+	<!--  we feed the actual revision from the CI server -->
+	<version>${revision}</version>
+  </parent>
+	<artifactId>dashjoin-kafka</artifactId>
+  
+	<description>Enables kafka / ksql databases for the dashjoin platform</description>
+	<url>https://github.com/dashjoin/query-editor</url>
+
+	<packaging>jar</packaging>
+
+	<properties>
+		<!-- Default for local builds (no revision property passed from the commandline) -->
+        <revision>0.0.1-SNAPSHOT</revision>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>		
+	</properties>
+
+	<dependencies>
+	
+	  	<dependency>
+	  		<groupId>org.dashjoin</groupId>
+	  		<artifactId>dashjoin-core</artifactId>
+			<version>${revision}</version>
+	  	</dependency>
+	
+		<dependency>
+			<groupId>org.dashjoin</groupId>
+			<artifactId>dashjoin-core</artifactId>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+			<version>${revision}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

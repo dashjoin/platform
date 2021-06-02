@@ -1,0 +1,30 @@
+<div [ngClass]="app.sidenavOpen ? 'table-container-sidebar' : 'table-container'">
+    <table mat-table [dataSource]="all" matSort (matSortChange)="sortData($event)">
+        <ng-container [matColumnDef]="column" *ngFor="let column of columns">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+            <td mat-cell *matCellDef="let element">
+                <a *ngIf="externalLink(queryMeta, column, element)"
+                    [href]="link(queryMeta, column, element)[0]">{{element[column]}}
+                </a>
+                <a *ngIf="internalLink(queryMeta, column, element)"
+                    [routerLink]="link(queryMeta, column, element)">{{labelId(link(queryMeta, column,
+                    element))|async}}
+                </a>
+                <span *ngIf="noLink(queryMeta, column, element)" [matTooltip]="matTooltip(element[column])"
+                    (click)="jsonDialog(element[column])">
+                    <a [routerLink]="toRouterLink(element[column])"
+                        *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
+                    <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
+                </span>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+    </table>
+
+    <mat-paginator *ngIf="pagination" [length]="allLength" [pageSize]="rows" [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="page($event)">
+    </mat-paginator>
+
+</div>

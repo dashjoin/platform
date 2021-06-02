@@ -1,0 +1,6 @@
+/* width is screen minus card padding minus vert scrollbar */
+.sql {
+    width: calc(100vw - 32px - 24px - 200px);
+    height: 300px;
+    font-family: 'Courier New', Courier, monospace;
+}

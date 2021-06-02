@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.display}}</h1>
+<mat-dialog-content>
+    <mat-form-field style="width: 400px" *ngIf="data.confirm">
+        <mat-label>Confirm by entering "{{data.confirm}}"</mat-label>
+        <input type="text" matInput [(ngModel)]="input" [placeholder]="data.confirm" autocomplete="off">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="input" cdkFocusInitial
+        [disabled]="input !== data.confirm">Delete</button>
+</mat-dialog-actions>

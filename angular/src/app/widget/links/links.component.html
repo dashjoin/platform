@@ -1,0 +1,41 @@
+<div *ngIf="value; else elseLinks">
+    <mat-list>
+        <mat-list-item>
+            <mat-icon mat-list-icon color="accent">table_view</mat-icon>
+            <div mat-line>Table</div>
+            <div mat-line><a [routerLink]="['/table', database, table]">{{table}}</a></div>
+        </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="schema && schema.properties">
+        <span *ngFor="let e of value | keyvalue">
+            <mat-list-item *ngIf="externalLink(schema, e.key, value)">
+                <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
+                <div mat-line>{{e.key}}</div>
+                <div mat-line><a [href]="link(schema, e.key, value)">{{e.value}}</a></div>
+            </mat-list-item>
+            <mat-list-item *ngIf="internalFkLink(schema, e.key, value)">
+                <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
+                <div mat-line>{{e.key}}</div>
+                <div mat-line><a [routerLink]="link(schema, e.key, value)">{{labelId(link(schema, e.key,
+                        value))|async}}</a></div>
+            </mat-list-item>
+        </span>
+    </mat-list>
+    <mat-list>
+        <mat-list-item *ngFor="let e of incoming | keyvalue">
+            <mat-icon mat-list-icon color="accent">arrow_back</mat-icon>
+            <div mat-line>{{e.key}}</div>
+            <div mat-line *ngFor="let subArray of splitArray(e.value, 3)">
+                <span *ngFor="let e of subArray">
+                    <a
+                        [routerLink]="linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1))">{{labelId(linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1)))|async}}</a>
+                    &nbsp;
+                </span>
+            </div>
+        </mat-list-item>
+        <mat-paginator *ngIf="allLength" [length]="allLength" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+            (page)="pageIncoming($event)">
+        </mat-paginator>
+    </mat-list>
+</div>
+<ng-template #elseLinks>Links widget requires an underlying record</ng-template>

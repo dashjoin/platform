@@ -1,0 +1,7 @@
+<mat-form-field class="search-box">
+    <input matInput type="text" [(ngModel)]="search" autocomplete="off"
+        (keyup.enter)="router.navigate(['/search', search])">
+    <button mat-button matSuffix mat-icon-button aria-label="Search" [routerLink]="['/search', search]">
+        <mat-icon>search</mat-icon>
+    </button>
+</mat-form-field>

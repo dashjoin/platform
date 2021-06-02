@@ -1,0 +1,7 @@
+<mat-dialog-content style="padding-top: 10px;" *ngIf="schema">
+    <lib-json-schema-form [(value)]="value" [schema]="schema" [label]="schema.title"></lib-json-schema-form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="value" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

@@ -1,0 +1,47 @@
+{
+	"ID": "dj/junit",
+	"name": "junit",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.SQLDatabase",
+	"url": "jdbc:h2:mem:test",
+	"initScripts": ["/sql/junit.sql"],
+	"tables": {
+		"T": {
+			"ID": "dj/junit/T",
+			"parent": "dj/junit",
+			"name": "T",
+			"type": "object",
+			"properties": {
+				"ID": {
+					"ID": "dj/junit/T/ID",
+					"parent": "dj/junit/T",
+					"name": "ID",
+					"type": "string",
+					"pkpos": 0
+				},
+				"FK": {
+					"ID": "dj/junit/T/FK",
+					"parent": "dj/junit/T",
+					"name": "FK",
+					"type": "string",
+					"ref": "dj/junit/U/ID"
+				}
+			}
+		},
+		"U": {
+			"ID": "dj/junit/U",
+			"parent": "dj/junit",
+			"name": "U",
+			"type": "object",
+			"properties": {
+				"ID": {
+					"ID": "dj/junit/U/ID",
+					"parent": "dj/junit/U",
+					"name": "ID",
+					"type": "string",
+					"pkpos": 0
+				}
+			}
+		}
+	}
+}

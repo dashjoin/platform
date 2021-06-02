@@ -1,0 +1,138 @@
+/**
+ * collection of helper classes
+ */
+export class Util {
+
+    /**
+     * Column IDs in the config database look like dj/northwind/EMP/LAST_NAME
+     * replaces id.split('/') since the table name might have / in it
+     */
+    static parseColumnID(id: string) {
+        if (id.split('/').length === 4) {
+            return id.split('/');
+        }
+        throw new Error('illegal column id: ' + id);
+    }
+
+    /**
+     * Table IDs in the config database look like dj/northwind/EMP
+     * replaces id.split('/') since the table name might have / in it
+     */
+    static parseTableID(id: string): string[] {
+        if (id.split('/').length === 3) {
+            return id.split('/');
+        }
+        if (id.split('/')[2] === 'http:') {
+            const first = id.indexOf('/');
+            const second = id.indexOf('/', first + 1);
+            return [id.substring(0, first), id.substring(first + 1, second), id.substring(second + 1)];
+        }
+        throw new Error('illegal table id: ' + id);
+    }
+
+    /**
+     * Database IDs in the config database look like dj/northwind
+     * replaces id.split('/') since the table name might have / in it.
+     * In the quey editor, the database ID might be initialized as only 'dj' which is legal
+     */
+    static parseDatabaseID(id: string): string[] {
+        if (id.split('/').length === 2 || id.split('/').length === 1) {
+            return id.split('/');
+        }
+        throw new Error('illegal database id: ' + id);
+    }
+
+    /**
+     * there might be cases where a par can be one or the other
+     */
+    static parseTableOrColumnID(id: string): string[] {
+        try {
+            return this.parseTableID(id);
+        } catch (e) {
+            return this.parseColumnID(id);
+        }
+    }
+
+    /**
+     * format / limit text for snack bar
+     */
+    static limitTextForSnackBar(s: string): string {
+        const maxCharsPerLine = 40;
+        let res = '';
+        for (const line of s.split(/\s+/)) {
+            for (let i = 0; i < Math.ceil(line.length / maxCharsPerLine); i++) {
+                res = res + line.substr(i * maxCharsPerLine, maxCharsPerLine) + ' ';
+            }
+        }
+        return res.substr(0, 400);
+    }
+
+    /**
+     * log error, filter out the right message and return it
+     */
+    static errorMsg(error: any) {
+        console.error(error);
+        let msg = error;
+        if (typeof error.error === 'string') {
+            msg = error.error;
+        } else if (error.error instanceof ProgressEvent) {
+            msg = 'Server timeout';
+        } else if (error.status === 404) {
+            msg = 'Not Found';
+        } else if (error.statusText) {
+            msg = error.statusText;
+        } else if (error.details) {
+            msg = error.details;
+        }
+        return Util.limitTextForSnackBar(msg);
+    }
+
+    /**
+     * we use json schema for both table metadata and form layout. This method
+     * strips any table metadata fields before the schema is saved in custom
+     * form information for edit / create widgets
+     */
+    static cleanJsonSchema(schema: any): any {
+        delete schema.name;
+        delete schema.ID;
+        delete schema.parent;
+        delete schema.tableLayout;
+        delete schema.instanceLayout;
+        if (schema.properties) {
+            for (const prop of Object.values(schema.properties)) {
+                const p: any = prop;
+
+                // delete some unused table / column metadata
+                // ref / parent is important for foreign key autocomplete lookup
+                // createOnly gets "translated" to readOnly
+                delete p.name;
+                delete p.ID;
+                delete p.dbType;
+                delete p.pkpos;
+                delete p.parent;
+                if (p.createOnly) {
+                    delete p.createOnly;
+                    p.readOnly = true;
+                }
+            }
+        }
+        return schema;
+    }
+
+    /**
+     * routing always encodes parameters. This method allows to convert a URL like /resource/a/b%2fc
+     * to be passed to router.navigate like this router.navigate(url2array(url)).
+     * The url is converted to ['/resource', 'a', 'b/c']
+     */
+    static url2array(url: string) {
+        const absolute = url.startsWith('/');
+        if (absolute) {
+            url = url.substring(1);
+        }
+        const parts = url.split('/');
+        if (absolute) {
+            parts[0] = '/' + parts[0];
+        }
+        return parts.map(s => decodeURIComponent(s));
+    }
+}

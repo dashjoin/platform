@@ -1,0 +1,220 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.dashjoin</groupId>
+	<organization>
+		<name>Dashjoin</name>
+	</organization>
+	<artifactId>dashjoin-base</artifactId>
+
+	<properties>
+		<!-- Default for local builds (no revision property passed from the commandline) -->
+		<revision>0.0.1-SNAPSHOT</revision>
+
+		<compiler-plugin.version>3.8.1</compiler-plugin.version>
+	    <maven.compiler.parameters>true</maven.compiler.parameters>
+	    <maven.compiler.source>11</maven.compiler.source>
+	    <maven.compiler.target>11</maven.compiler.target>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	    <quarkus-plugin.version>1.13.2.Final</quarkus-plugin.version>
+	    <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
+	    <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
+	    <quarkus.platform.version>1.13.2.Final</quarkus.platform.version>
+	    <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+    
+	</properties>
+
+ <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      </dependencies>
+      </dependencyManagement>
+      
+	<!-- we feed the actual revision from the CI server -->
+	<version>${revision}</version>
+
+	<packaging>pom</packaging>
+	<modules>
+		<module>dashjoin-core</module>
+		<module>dashjoin-demo</module>
+		<module>dashjoin-mongodb</module>
+		<module>dashjoin-kafka</module>
+		<!-- 
+		<module>dashjoin-rdf4j</module>
+		<module>dashjoin-redis</module>
+		 -->
+	</modules>
+	
+	<dependencies>
+	
+	    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-jwt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-arc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    
+    
+    <dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.16</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	
+	    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <scope>test</scope>
+    </dependency>
+    
+    
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<executions>
+					<execution>
+						<id>enforce</id>
+						<configuration>
+							<rules>
+								<dependencyConvergence />
+							</rules>
+						</configuration>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!--
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>4.1.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+
+			<!-- This will produce the file git.properties, which is included in the 
+				WAR file -->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.0.0</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+					</includeOnlyProperties>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+				</configuration>
+			</plugin>
+
+			<!-- In order to make this POM consumable when installed or published,
+			we need to make sure all variables like ${revision} are set to their actual values.
+			Note that Eclipse does not know how to handle this plugin, therefore there is
+			an exclusion in "lifecycle-mapping" (otherwise it shows an error in Eclipse) -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<updatePomFile>true</updatePomFile>
+					<flattenMode>resolveCiFriendliesOnly</flattenMode>
+				</configuration>
+				<executions>
+					<!-- enable flattening -->
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+					</execution>
+					<!-- ensure proper cleanup -->
+					<execution>
+						<id>flatten.clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Plugin to run JUnit 5 tests -->			
+			<plugin>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>${surefire-plugin.version}</version>
+			    <configuration>
+			       <systemPropertyVariables>
+			          <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+			          <maven.home>${maven.home}</maven.home>
+			       </systemPropertyVariables>
+			        <!-- 
+			        <reuseForks>false</reuseForks>
+			        <forkCount>1</forkCount>
+			         -->
+			    </configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+</project>

@@ -1,0 +1,782 @@
+{
+  "ID": "dj/config",
+  "name": "config",
+  "parent": "dj",
+  "djClassName": "org.dashjoin.service.PojoDatabase",
+  "readRoles": [
+    "authenticated"
+  ],
+  "tables": {
+    "Property": {
+      "ID": "dj/config/Property",
+      "name": "Property",
+      "parent": "dj/config",
+      "type": "object",
+      "before-create": "$alterColumnTrigger()",
+      "before-update": "$alterColumnTrigger()",
+      "before-delete": "$alterColumnTrigger()",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/Property/ID",
+          "name": "ID",
+          "parent": "dj/config/Property",
+          "pkpos": 0,
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "ID": "dj/config/Property/name",
+          "name": "name",
+          "parent": "dj/config/Property",
+          "type": "string"
+        },
+        "type": {
+          "ID": "dj/config/Property/type",
+          "name": "type",
+          "parent": "dj/config/Property",
+          "type": "string",
+          "enum": [
+            "boolean",
+            "integer",
+            "number",
+            "string",
+            "date"
+          ],
+          "title": "Datatype"
+        },
+        "ref": {
+          "ID": "dj/config/Property/ref",
+          "name": "ref",
+          "parent": "dj/config/Property",
+          "ref": "dj/config/Property/ID",
+          "displayWith": "fk",
+          "type": "string",
+          "style": {
+            "width": "600px"
+          },
+          "title": "Foreign Key Reference"
+        },
+        "pkpos": {
+          "ID": "dj/config/Property/pkpos",
+          "name": "pkpos",
+          "parent": "dj/config/Property",
+          "type": "integer",
+          "widget": "select",
+          "choices": [
+            null,
+            0
+          ],
+          "displayWithChoices": [
+            "---",
+            "Primary Key"
+          ],
+          "title": "Key"
+        }
+      }
+    },
+    "Table": {
+      "ID": "dj/config/Table",
+      "name": "Table",
+      "parent": "dj/config",
+      "type": "object",
+      "before-create": "$alterTableTrigger()",
+      "before-update": "$alterTableTrigger()",
+      "before-delete": "$alterTableTrigger()",
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "title": "Table Data",
+            "widget": "table"
+          },
+          {
+            "title": "New Record",
+            "widget": "create"
+          },
+          {
+            "widget": "dj-table-metadata"
+          }
+        ]
+      },
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/Table/ID",
+          "name": "ID",
+          "parent": "dj/config/Table",
+          "pkpos": 0,
+          "type": "string",
+          "readOnly": true
+        },
+        "name": {
+          "ID": "dj/config/Table/name",
+          "name": "name",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "dj-label": {
+          "ID": "dj/config/Table/dj-label",
+          "name": "dj-label",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "before-create": {
+          "ID": "dj/config/Table/before-create",
+          "name": "before-create",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call before a new record is created",
+          "widget": "custom",
+          "widgetType": "expression"
+        },
+        "after-create": {
+          "ID": "dj/config/Table/after-create",
+          "name": "after-create",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call after a new record is created",
+          "widget": "custom",
+          "widgetType": "expression"
+        },
+        "before-update": {
+          "ID": "dj/config/Table/before-update",
+          "name": "before-update",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call before a new record is updated",
+          "widget": "custom",
+          "widgetType": "expression"
+        },
+        "after-update": {
+          "ID": "dj/config/Table/after-update",
+          "name": "after-update",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call after a new record is updated",
+          "widget": "custom",
+          "widgetType": "expression"
+        },
+        "before-delete": {
+          "ID": "dj/config/Table/before-delete",
+          "name": "before-delete",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call before a new record is deleted",
+          "widget": "custom",
+          "widgetType": "expression"
+        },
+        "after-delete": {
+          "ID": "dj/config/Table/after-delete",
+          "name": "after-delete",
+          "parent": "dj/config/Table",
+          "type": "string",
+          "title": "Trigger to call after a new record is deleted",
+          "widget": "custom",
+          "widgetType": "expression"
+        }
+      }
+    },
+    "dj-database": {
+      "ID": "dj/config/dj-database",
+      "name": "dj-database",
+      "parent": "dj/config",
+      "type": "object",
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-databases-no-config",
+            "title": "Available Databases"
+          },
+          {
+            "widget": "create",
+            "text": "Connect",
+            "title": "Connect a New Database"
+          },
+          {
+            "widget": "container",
+            "layout": "vertical",
+            "title": "System Configuration",
+            "children": [
+              {
+                "widget": "text",
+                "href": "/table/config/dj-config",
+                "icon": "build",
+                "text": "System Configuration"
+              },
+              {
+                "widget": "text",
+                "href": "/resource/config/dj-database/dj%2Fconfig",
+                "icon": "build_circle",
+                "text": "Configuration Database"
+              },
+              {
+                "widget": "text",
+                "href": "/table/config/dj-query-performance",
+                "icon": "speed",
+                "text": "Query Performance"
+              }
+            ]
+          }
+        ]
+      },
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Connection Information",
+            "deleteConfirmation": "Are you sure you want to delete this database connection?"
+          },
+          {
+            "widget": "links",
+            "title": "Database Tables"
+          },
+          {
+            "widget": "display",
+            "title": "Database Information",
+            "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}"
+          },
+          {
+            "widget": "expansion",
+            "text": "Database Management",
+            "roles": [
+              "admin"
+            ],
+            "children": [
+              {
+                "widget": "upload"
+              },
+              {
+                "widget": "editRelated",
+                "text": "Create Table",
+                "prop": "dj/config/Table/parent",
+                "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!",
+                "columns": [
+                  "ID",
+                  "dj-label"
+                ],
+                "createSchema": {
+                  "type": "object",
+                  "required": [
+                    "name"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name of the table to create"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-database/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-database",
+          "pkpos": 0,
+          "type": "string"
+        },
+        "name": {
+          "ID": "dj/config/dj-database/name",
+          "name": "name",
+          "parent": "dj/config/dj-database",
+          "type": "string"
+        },
+        "parent": {
+          "ID": "dj/config/dj-database/parent",
+          "name": "parent",
+          "parent": "dj/config/dj-database",
+          "ref": "dj/config/Dashjoin/ID",
+          "type": "string"
+        },
+        "tables": {
+          "ID": "dj/config/dj-database/tables",
+          "layout": "tab",
+          "readOnly": true,
+          "name": "tables",
+          "parent": "dj/config/dj-database",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "type": "object",
+                "layout": "vertical",
+                "readOnly": true,
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "pkpos": {
+                      "type": "integer"
+                    },
+                    "ref": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Dashjoin": {
+      "ID": "dj/config/Dashjoin",
+      "name": "Dashjoin",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/Dashjoin/ID",
+          "name": "ID",
+          "parent": "dj/config/Dashjoin",
+          "pkpos": 0,
+          "type": "string"
+        },
+        "url": {
+          "ID": "dj/config/Dashjoin/url",
+          "name": "url",
+          "parent": "dj/config/Dashjoin",
+          "type": "string"
+        }
+      }
+    },
+    "tenantusers": {
+      "ID": "dj/config/tenantusers",
+      "name": "tenantusers",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/tenantusers/ID",
+          "name": "ID",
+          "parent": "dj/config/tenantusers",
+          "pkpos": 0,
+          "createOnly": true,
+          "type": "string"
+        },
+        "name": {
+          "ID": "dj/config/tenantusers/name",
+          "name": "name",
+          "parent": "dj/config/tenantusers",
+          "type": "string"
+        },
+        "comment": {
+          "ID": "dj/config/tenantusers/comment",
+          "name": "comment",
+          "parent": "dj/config/tenantusers",
+          "type": "string"
+        },
+        "active": {
+          "ID": "dj/config/tenantusers/active",
+          "name": "active",
+          "parent": "dj/config/tenantusers",
+          "type": "boolean"
+        },
+        "roles": {
+          "ID": "dj/config/tenantusers/roles",
+          "name": "roles",
+          "parent": "dj/config/tenantusers",
+          "layout": "select",
+          "type": "array",
+          "choicesUrl": "/rest/database/all/config/dj-role",
+          "jsonata": "ID",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dj-config": {
+      "ID": "dj/config/dj-config",
+      "name": "dj-config",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-config-values",
+            "title": "Configuration Settings"
+          }
+        ]
+      },
+      "switch": "type",
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-config/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-config",
+          "pkpos": 0,
+          "type": "string",
+          "readOnly": true
+        },
+        "boolean": {
+          "ID": "dj/config/dj-config/boolean",
+          "name": "boolean",
+          "parent": "dj/config/dj-config",
+          "type": "boolean",
+          "case": [
+            "boolean"
+          ]
+        },
+        "integer": {
+          "ID": "dj/config/dj-config/integer",
+          "name": "integer",
+          "parent": "dj/config/dj-config",
+          "type": "integer",
+          "case": [
+            "integer"
+          ]
+        },
+        "string": {
+          "ID": "dj/config/dj-config/string",
+          "name": "string",
+          "parent": "dj/config/dj-config",
+          "type": "string",
+          "case": [
+            "string"
+          ]
+        },
+        "map": {
+          "ID": "dj/config/dj-config/map",
+          "name": "map",
+          "parent": "dj/config/dj-config",
+          "type": "object",
+          "layout": "vertical",
+          "case": [
+            "map"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "style": {
+              "width": "400px"
+            }
+          }
+        },
+        "list": {
+          "ID": "dj/config/dj-config/list",
+          "name": "list",
+          "parent": "dj/config/dj-config",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "layout": "vertical",
+          "case": [
+            "list"
+          ]
+        }
+      }
+    },
+    "dj-query-catalog": {
+      "ID": "dj/config/dj-query-catalog",
+      "name": "dj-query-catalog",
+      "parent": "dj/config",
+      "type": "object",
+      "widget": "custom",
+      "widgetType": "query",
+      "required": [
+        "ID"
+      ],
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-queries",
+            "title": "Available Queries"
+          },
+          {
+            "widget": "create",
+            "title": "New Query"
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-query-catalog/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-query-catalog",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "type": {
+          "ID": "dj/config/dj-query-catalog/type",
+          "name": "type",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "string",
+          "enum": [
+            "read",
+            "write"
+          ]
+        },
+        "database": {
+          "ID": "dj/config/dj-query-catalog/database",
+          "name": "database",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "string",
+          "readOnly": true
+        },
+        "query": {
+          "ID": "dj/config/dj-query-catalog/query",
+          "name": "query",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "string"
+        },
+        "roles": {
+          "ID": "dj/config/dj-query-catalog/roles",
+          "name": "roles",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "array",
+          "choicesUrl": "/rest/database/all/config/dj-role",
+          "jsonata": "ID",
+          "layout": "select",
+          "items": {
+            "type": "string"
+          }
+        },
+        "arguments": {
+          "ID": "dj/config/dj-query-catalog/arguments",
+          "name": "arguments",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "object",
+          "layout": "vertical",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "boolean",
+                  "integer",
+                  "number",
+                  "string",
+                  "date"
+                ]
+              },
+              "sample": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "widget": {
+      "ID": "dj/config/widget",
+      "name": "widget",
+      "parent": "dj/config",
+      "type": "object",
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "title": "Edit Record",
+            "widget": "edit",
+            "deleteConfirmation": "Are you sure you want to delete this record?"
+          },
+          {
+            "title": "Related Records",
+            "widget": "links"
+          },
+          {
+            "title": "Widget Preview",
+            "widget": "${pk1}"
+          }
+        ]
+      },
+      "required": [
+        "ID"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/widget/ID",
+          "name": "ID",
+          "parent": "dj/config/widget",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "layout": {
+          "ID": "dj/config/widget/layout",
+          "name": "layout",
+          "parent": "dj/config/widget"
+        }
+      }
+    },
+    "page": {
+      "ID": "dj/config/page",
+      "name": "page",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-page-urls",
+            "title": "Available Pages"
+          },
+          {
+            "widget": "create",
+            "title": "Create a New Page"
+          },
+          {
+            "widget": "text",
+            "text": "Widgets",
+            "href": "/table/config/widget",
+            "icon": "widgets",
+            "title": "Custom Widgets"
+          },
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-layouts",
+            "title": "Layouts"
+          }
+        ]
+      },
+      "properties": {
+        "ID": {
+          "ID": "dj/config/page/ID",
+          "name": "ID",
+          "parent": "dj/config/page",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "layout": {
+          "ID": "dj/config/page/layout",
+          "name": "layout",
+          "parent": "dj/config/page"
+        }
+      }
+    },
+    "dj-function": {
+      "ID": "dj/config/dj-function",
+      "name": "dj-function",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-function/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-function",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        }
+      },
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "table",
+            "database": "config",
+            "query": "dj-functions",
+            "title": "Available Functions"
+          },
+          {
+            "widget": "create",
+            "title": "New Function"
+          }
+        ]
+      },
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Edit Record",
+            "deleteConfirmation": "Are you sure you want to delete this record?"
+          },
+          {
+            "widget": "links",
+            "title": "Related Records"
+          },
+          {
+            "widget": "container",
+            "title": "Run Function",
+            "children": [
+              {
+                "widget": "button",
+                "print": "$call(pk1)"
+              },
+              {
+                "widget": "display",
+                "display": "{\"start\": value.start, \"end\": value.end, \"status\": value.status}"
+              }
+            ],
+            "layout": "vertical"
+          }
+        ]
+      }
+    },
+    "dj-role": {
+      "ID": "dj/config/dj-role",
+      "name": "dj-role",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-role/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-role",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "homepage": {
+          "ID": "dj/config/dj-role/homepage",
+          "name": "homepage",
+          "parent": "dj/config/dj-role",
+          "type": "string"
+        }
+      }
+    },
+    "dj-query-performance": {
+      "ID": "dj/config/dj-query-performance",
+      "name": "dj-query-performance",
+      "parent": "dj/config",
+      "type": "object",
+      "properties": {}
+    }
+  }
+}

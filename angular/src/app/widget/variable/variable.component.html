@@ -1,0 +1,8 @@
+<div *ngIf="layout?.widget === 'variable'">
+    <lib-json-schema-form *ngIf="schema" [(value)]="createValue" [schema]="createSchema" (errorChange)="error=$event"
+        (schemaChange)="schemaChange(true)">
+    </lib-json-schema-form>
+    <br>
+    <button [disabled]="error || app.editLayout" mat-raised-button color="primary"
+        (click)="setVariable()">Apply</button>
+</div>

@@ -1,0 +1,5 @@
+/* gridster light grey background and full screen port view height */
+gridster{
+    background-color: #fafafa;
+    height: calc(100vh - 4rem);
+}

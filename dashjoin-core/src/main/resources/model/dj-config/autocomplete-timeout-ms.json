@@ -1,0 +1,6 @@
+{
+	"ID": "autocomplete-timeout-ms",
+	"description": "Query timeout in milliseconds for queries issued when computing autocomplete suggestions. To disable the timeout, set to 0.",
+	"type": "integer",
+	"integer": 2000
+}

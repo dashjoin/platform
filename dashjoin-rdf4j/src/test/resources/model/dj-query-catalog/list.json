@@ -1,0 +1,5 @@
+{
+	"ID": "list",
+	"query": "select ?ID ?NAME where { ?ID a <urn:EMP> . ?ID <urn:NAME> ?NAME }",
+	"type": "read"
+}

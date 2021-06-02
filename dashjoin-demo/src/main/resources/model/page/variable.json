@@ -1,0 +1,24 @@
+{
+  "ID" : "variable",
+  "layout" : {
+    "widget" : "page",
+    "pageLayout" : "horizontal",
+    "children" : [ {
+      "widget" : "variable",
+      "title" : "Set the variable to an Employee ID (use 2 or 5)",
+      "properties" : {
+        "node" : "integer"
+      }
+    }, {
+      "widget" : "text",
+      "text" : "Node: ${variable.node}",
+      "title" : "Display the variable in another widget"
+    }, {
+      "widget" : "table",
+      "query" : "orgchart",
+      "database" : "northwind",
+      "title" : "Use the variable as query parameters (employees reporting to a manager)",
+      "arguments" : "{\"node\": variable.node}"
+    } ]
+  }
+}
