@@ -11,8 +11,8 @@
     </mapAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="dashjoin"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${projects:dashjoin}"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/Users/uli/NoBackup/dashjoin/dashjoin-aas/query-editor/dashjoin/mvnw"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/Users/uli/NoBackup/dashjoin/dashjoin-aas/platform/dashjoin/mvnw"/>
     <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="compile quarkus:dev"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="/Users/uli/NoBackup/dashjoin/dashjoin-aas/query-editor/dashjoin"/>
+    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="/Users/uli/NoBackup/dashjoin/dashjoin-aas/platform/dashjoin"/>
     <stringAttribute key="process_factory_id" value="org.jboss.tools.quarkus.core.processFactory"/>
 </launchConfiguration>
