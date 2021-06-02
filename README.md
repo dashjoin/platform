@@ -1,11 +1,11 @@
 # Dashjoin Open Source & Cloud Native Low Code Development Platform
 
-[![Dashjoin Angular and Java build](https://github.com/dashjoin/query-editor/workflows/Dashjoin%20Angular%20and%20Java%20build/badge.svg)](https://github.com/dashjoin/query-editor/actions)
-[![junit-coverage](https://img.shields.io/badge/junit_coverage-84%25-brightgreen)](https://github.com/dashjoin/query-editor/tree/master/query-editor-core/src/test/java/org/dashjoin/service)
+[![Dashjoin Angular and Java build](https://github.com/dashjoin/platform/workflows/Dashjoin%20CI%20build/badge.svg)](https://github.com/dashjoin/platform/actions)
+[![junit-coverage](https://img.shields.io/badge/junit_coverage-84%25-brightgreen)](https://github.com/dashjoin/platform/tree/master/dashjoin-core/src/test/java/org/dashjoin/service)
 
 For anyone who is planning a development project, faces a tight schedule, needs to present results quickly, or has limited development resources available. Dashjoin taps into and integrates your existing data sources and allows you to intuitively browse, search, edit, and visualize your integrated information. Add business logic to enable users and automation to act on the information. Unlike other Low Code Development Platforms, Dashjoin offers a free open source version with a commercial PaaS and bases on a unique, linked-data inspired approach to scalable data integration.
 
-Live demo: <https://demo.dashjoin.org/> (username: admin, password: dj)
+Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your registered user)
 
 Video tutorial:
 
@@ -36,7 +36,7 @@ Features
 
 ## Getting Started: 15 Minute Tour
 
-This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/query-editor/tree/master/query-editor-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
+This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/platform/tree/master/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
 
 We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.
 
@@ -1161,17 +1161,17 @@ Prerequisites:
 * [Java](https://openjdk.java.net/) (11 or later)
 * [Node](https://nodejs.org/) (12 or later)
 * [Maven](https://maven.apache.org/) (3.6 or later)
-* [Angular CLI](https://angular.io/cli) (9 or later)
-* For Windows users: you need to create the symbolic link in "query-editor\dashjoin\src\main\resources\META-INF": `mklink /D resources ..\..\..\..\..\angular\dist\angular`
+* [Angular CLI](https://angular.io/cli) (11 or later)
+* For Windows users: you need to create the symbolic link in "platform\dashjoin\src\main\resources\META-INF": `mklink /D resources ..\..\..\..\..\angular\dist\angular`
 
 Dashjoin uses Quarkus as runtime framework (<https://quarkus.io>).
 You can run your application in dev mode using:
 
 ```shell script
-query-editor/angular$ npm install [--legacy-peer-deps # required if nvm -version > 7.0!)
-query-editor/angular$ ng build
-query-editor$ mvn install
-query-editor/dashjoin$ mvn compile quarkus:dev
+platform/angular$ npm install [--legacy-peer-deps # required if nvm -version > 7.0!)
+platform/angular$ ng build
+platform$ mvn install
+platform/dashjoin$ mvn compile quarkus:dev
 ```
 
 Point your browser to <http://localhost:8080>.
@@ -1184,7 +1184,7 @@ Launching with "Debug as" will also enable live coding mode.
 
 The application can be packaged and installed locally using:
 ```shell script
-query-editor/dashjoin$ mvn package install
+platform/dashjoin$ mvn package install
 ```
 
 It produces the `dashjoin-0.0.1-SNAPSHOT-runner.jar` file in the `/target` directory.
@@ -1193,7 +1193,7 @@ Be aware that it’s not an _uber-jar_ as the dependencies are copied into the `
 If you want to build an _uber-jar_, execute the following command:
 
 ```shell script
-query-editor/dashjoin$ mvn package -Dquarkus.package.type=uber-jar
+platform/dashjoin$ mvn package -Dquarkus.package.type=uber-jar
 ```
 
 The application is now runnable using `java -jar target/dashjoin-0.0.1-SNAPSHOT-runner.jar`.
@@ -1206,12 +1206,12 @@ First install the [Eclipse Quarkus tools](https://marketplace.eclipse.org/conten
 After cloning the Github repository, you need to import at least the following Maven projects into the Eclipse workspace:
 
 * dashjoin
-* query-editor-core
+* dashjoin-core
 
 Optional additional modules:
-* query-editor-demo
-* query-editor-kafka
-* query-editor-mongodb
+* dashjoin-demo
+* dashjoin-kafka
+* dashjoin-mongodb
 
 The Maven dependencies need to be initialized with (right click dashjoin project folder) -> Maven -> Update Project.
 The Angular UI must be built using the CLI, please refer to the previous section.
@@ -1368,5 +1368,5 @@ You'll get to know an open-minded and motivated team working together to build t
 
 * [Join our Slack](https://join.slack.com/t/dashjoin/shared_invite/zt-qwz1zzdf-3YN3ryDws3Nmt3PzfgLheQ) and say hello
 * [Follow us](https://twitter.com/dashjoin) on Twitter
-* [Submit](https://github.com/dashjoin/query-editor/issues) your ideas by opening an issue with the enhancement label
-* [Help out](https://github.com/dashjoin/query-editor/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) by fixing "a good first issue"
+* [Submit](https://github.com/dashjoin/platform/issues) your ideas by opening an issue with the enhancement label
+* [Help out](https://github.com/dashjoin/platform/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) by fixing "a good first issue"
