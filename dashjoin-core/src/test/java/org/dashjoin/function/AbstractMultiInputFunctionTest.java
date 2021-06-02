@@ -23,6 +23,11 @@ public class AbstractMultiInputFunctionTest {
   }
 
   @Test
+  public void mapList() throws Exception {
+    check(MapUtil.of("in", Arrays.asList(1, 2)), "[{in=1, out=1}, {in=2, out=2}]");
+  }
+
+  @Test
   public void mapNull() throws Exception {
     check(MapUtil.of("in", null), "{in=null}");
   }

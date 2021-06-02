@@ -3,6 +3,7 @@ package org.dashjoin.function;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.dashjoin.util.MapUtil;
 
 /**
  * base class for all functions that accept single values, objects and lists thereof
@@ -23,6 +24,15 @@ public abstract class AbstractMultiInputFunction extends AbstractFunction<Object
       if (arg instanceof Map<?, ?>) {
         Map<String, Object> map = (Map<String, Object>) arg;
         Object input = map.get(inputField());
+
+        if (input instanceof List<?>) {
+          List<Object> list = new ArrayList<Object>((List<Object>) input);
+          for (int i = 0; i < list.size(); i++) {
+            list.set(i, run(MapUtil.of(inputField(), list.get(i))));
+          }
+          return list;
+        }
+
         Object result = single(input);
         if (outputField() != null && result != null)
           if (outputField().equals("."))
