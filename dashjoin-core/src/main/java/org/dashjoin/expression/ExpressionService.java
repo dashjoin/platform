@@ -34,6 +34,7 @@ import com.api.jsonata4java.expressions.functions.Function;
 import com.api.jsonata4java.expressions.generated.MappingExpressionParser.Function_callContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -45,7 +46,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Consumes({MediaType.APPLICATION_JSON})
 public class ExpressionService {
 
-  private static final ObjectMapper om = new ObjectMapper();
+  private static final ObjectMapper om =
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
   @Inject
   Services services;

@@ -16,6 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * REST API for function calls
@@ -25,7 +26,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Consumes({MediaType.APPLICATION_JSON})
 public class FunctionService {
 
-  private static ObjectMapper om = new ObjectMapper();
+  private static ObjectMapper om =
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
   @Inject
   Services services;
