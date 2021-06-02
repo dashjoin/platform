@@ -8,11 +8,11 @@ import org.dashjoin.util.FileSystem;
 import lombok.extern.java.Log;
 
 @Log
-public class Download extends Load {
+public class Download extends AbstractMultiInputFunction {
 
   @Override
-  protected Object string(String arg) throws Exception {
-    URL url = new URL(arg);
+  public Object single(Object arg) throws Exception {
+    URL url = new URL((String) arg);
     FileSystem.checkFileAccess(url);
     log.info("downloading: " + url);
     try (InputStream in = url.openStream()) {
@@ -35,5 +35,15 @@ public class Download extends Load {
   @Override
   public String getType() {
     return "write";
+  }
+
+  @Override
+  public String inputField() {
+    return "url";
+  }
+
+  @Override
+  public String outputField() {
+    return null;
   }
 }

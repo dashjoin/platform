@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -31,44 +30,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * given a URL, parses the contents from JSON, XML, CSV to a json object
  */
-public class Doc2data extends Load {
+public class Doc2data extends AbstractMultiInputFunction {
 
   private static final ObjectMapper om = new ObjectMapper();
 
-  String urlField;
-
   @Override
-  public Object run(Object arg) throws Exception {
-    if (arg instanceof Map<?, ?>) {
-      urlField = (String) ((Map<?, ?>) arg).get("urlField");
-      return super.run(((Map<?, ?>) arg).get("url"));
-    } else
-      return super.run(arg);
-  }
-
-  @Override
-  protected Object string(String arg) throws Exception {
+  public Object single(Object arg) throws Exception {
     try {
-      URL url = new URL(arg);
+      URL url = new URL((String) arg);
       FileSystem.checkFileAccess(url);
       try (InputStream in = url.openStream()) {
         String s = IOUtils.toString(in, Charset.defaultCharset());
-        return includeURL(parse(s), arg);
+        return parse(s);
       }
     } catch (MalformedURLException textNotUrl) {
-      return parse(arg);
+      return parse((String) arg);
     }
-  }
-
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  Object includeURL(Object res, String url) {
-    if (urlField != null) {
-      List list = res instanceof List ? (List) res : Arrays.asList(res);
-      for (Object item : list)
-        if (item instanceof Map)
-          ((Map) item).put(urlField, url);
-    }
-    return res;
   }
 
   Object parse(String s) throws Exception {
@@ -126,5 +103,20 @@ public class Doc2data extends Load {
   @Override
   public String getID() {
     return "doc2data";
+  }
+
+  @Override
+  public String getType() {
+    return "read";
+  }
+
+  @Override
+  public String inputField() {
+    return "url";
+  }
+
+  @Override
+  public String outputField() {
+    return ".";
   }
 }
