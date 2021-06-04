@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
+import org.dashjoin.function.Index;
 import org.dashjoin.util.MapUtil;
 import com.api.jsonata4java.expressions.EvaluateException;
 import com.api.jsonata4java.expressions.Expressions;
@@ -156,20 +157,12 @@ public class Mapping {
         Expressions rowMapping = mapping.getValue().rowMapping() == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
 
-        String rownumber = null;
-        if (mapping.getValue().rowMapping != null)
-          for (Entry<String, String> i : mapping.getValue().rowMapping.entrySet())
-            if ("$index".equals(i.getValue()))
-              rownumber = i.getKey();
         int counter = 0;
-
         for (Map<String, Object> row : source) {
+          Index.counter.set(counter++);
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
-          if (mappedRow != null) {
-            if (rownumber != null)
-              mappedRow.put(rownumber, counter++);
+          if (mappedRow != null)
             mapped.add(mappedRow);
-          }
         }
         res.put(mapping.getKey(), mapped);
       }

@@ -11,6 +11,7 @@ import org.dashjoin.mapping.Mapping;
 import org.dashjoin.util.MapUtil;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import com.google.common.collect.ImmutableMap;
 import io.quarkus.test.junit.QuarkusTest;
@@ -119,14 +120,17 @@ public class MappingTest {
     Map<String, Mapping> mappings = new LinkedHashMap<>();
     mappings.put("t", newMapping());
     mappings.get("t").pk = "id";
-    mappings.get("t").rowMapping = ImmutableMap.of("a", "a", "rid", "$index");
+    mappings.get("t").rowMapping = ImmutableMap.of("a", "a", "rid", "$index()");
 
     Map<String, List<Map<String, Object>>> source = new LinkedHashMap<>();
     source.put("t", new ArrayList<>());
     source.get("t").add(ImmutableMap.of("a", 1));
     source.get("t").add(ImmutableMap.of("a", 2));
 
-    Assert.assertEquals("[{a=1, rid=0}, {a=2, rid=1}]", Mapping
-        .apply(s, Mockito.mock(SecurityContext.class), source, mappings).get("t").toString());
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+
+    Assert.assertEquals("[{a=1, rid=0}, {a=2, rid=1}]",
+        Mapping.apply(s, sc, source, mappings).get("t").toString());
   }
 }

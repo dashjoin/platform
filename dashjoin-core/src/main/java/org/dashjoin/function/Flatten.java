@@ -41,7 +41,7 @@ public class Flatten
   @SuppressWarnings({"unchecked"})
   @Override
   public Class<List<Map<String, Object>>> getArgumentClass() {
-    Object res = Class.class;
+    Object res = List.class;
     return (Class<List<Map<String, Object>>>) res;
   }
 
