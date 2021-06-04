@@ -155,10 +155,21 @@ public class Mapping {
             : expressionService.prepare(sc, mapping.getValue().rowFilter);
         Expressions rowMapping = mapping.getValue().rowMapping() == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
+
+        String rownumber = null;
+        if (mapping.getValue().rowMapping != null)
+          for (Entry<String, String> i : mapping.getValue().rowMapping.entrySet())
+            if ("$index".equals(i.getValue()))
+              rownumber = i.getKey();
+        int counter = 0;
+
         for (Map<String, Object> row : source) {
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
-          if (mappedRow != null)
+          if (mappedRow != null) {
+            if (rownumber != null)
+              mappedRow.put(rownumber, counter++);
             mapped.add(mappedRow);
+          }
         }
         res.put(mapping.getKey(), mapped);
       }

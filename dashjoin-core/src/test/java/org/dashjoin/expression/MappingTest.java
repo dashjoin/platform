@@ -113,4 +113,20 @@ public class MappingTest {
     Assert.assertEquals("[{parent_id=a, x=1}, {parent_id=a, y=2}, {parent_id=c, x=1}]",
         Mapping.apply(s, null, source, mappings).get("list").toString());
   }
+
+  @Test
+  public void testRowNumber() throws Exception {
+    Map<String, Mapping> mappings = new LinkedHashMap<>();
+    mappings.put("t", newMapping());
+    mappings.get("t").pk = "id";
+    mappings.get("t").rowMapping = ImmutableMap.of("a", "a", "rid", "$index");
+
+    Map<String, List<Map<String, Object>>> source = new LinkedHashMap<>();
+    source.put("t", new ArrayList<>());
+    source.get("t").add(ImmutableMap.of("a", 1));
+    source.get("t").add(ImmutableMap.of("a", 2));
+
+    Assert.assertEquals("[{a=1, rid=0}, {a=2, rid=1}]", Mapping
+        .apply(s, Mockito.mock(SecurityContext.class), source, mappings).get("t").toString());
+  }
 }
