@@ -317,9 +317,11 @@ public abstract class AbstractDatabase implements Database {
         if (p.pkpos != null)
           search.put(p.name, object.remove(p.name));
 
-      if (!update(t, search, object))
-        // update did not happen, so the assumption of a PK violation was false
-        throw new Exception("merge failed");
+      // make sure there is something to update
+      if (!object.isEmpty())
+        if (!update(t, search, object))
+          // update did not happen, so the assumption of a PK violation was false
+          throw new Exception("merge failed");
     }
   }
 
