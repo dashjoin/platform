@@ -1,8 +1,23 @@
 package org.dashjoin.function;
 
 import static com.google.common.collect.ImmutableMap.of;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class RestJsonTest {
+
+  @Test
+  public void rest() throws Exception {
+    RestJson r = new RestJson();
+    Map<String, Object> arg = new HashMap<>();
+    r.url = "file:rest";
+    r.username = "user";
+    Assertions.assertThrows(IllegalArgumentException.class, () -> {
+      r.run(arg);
+    });
+  }
 
   public static void main(String[] args) throws Exception {
 

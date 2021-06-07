@@ -131,7 +131,8 @@ public class PerformanceDatabase extends JSONDatabase {
     }
   }
 
-  protected static final ObjectMapper objectMapper = new ObjectMapper();
+  protected static final ObjectMapper objectMapper =
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
   /**
    * Concurrent cache. contains max 1000 entries. Queries with low total runtimes are evicted first.
@@ -140,14 +141,12 @@ public class PerformanceDatabase extends JSONDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     return objectMapper.convertValue(queries.get(search.get("ID")), JSONDatabase.tr);
   }
 
   @Override
   public Map<String, Map<String, Object>> queryMap(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
-    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     return objectMapper.convertValue(queries, JSONDatabase.trr);
   }
 

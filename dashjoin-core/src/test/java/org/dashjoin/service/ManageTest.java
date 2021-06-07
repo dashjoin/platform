@@ -28,6 +28,11 @@ public class ManageTest {
   Services services;
 
   @Test
+  public void logger() {
+    services.logConfigSettings();
+  }
+
+  @Test
   public void testGetFileName() {
     MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
     headers.put("Content-Disposition", Arrays.asList("filename=\"filename.jpg\""));
