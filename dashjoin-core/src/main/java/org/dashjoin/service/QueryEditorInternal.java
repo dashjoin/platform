@@ -44,6 +44,9 @@ public interface QueryEditorInternal {
 
   public QueryResponse getInitialQuery(InitialQueryRequest ac) throws Exception;
 
+  /**
+   * given the current result data, adds the missing table projections to the join options
+   */
   static void tableColumns(AbstractDatabase db, QueryResponse res, Table table, String collection)
       throws Exception {
     Map<String, Object> sample = res.data.size() > 0 && res.data.get(0).get("ID") != null
@@ -59,6 +62,9 @@ public interface QueryEditorInternal {
       }
   }
 
+  /**
+   * given the database schema, adds joinable columns from other tables
+   */
   static void joinColumns(AbstractDatabase db, QueryResponse res, String collection,
       List<String> from) {
     for (QueryColumn qc : res.metadata) {
