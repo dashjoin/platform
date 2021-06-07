@@ -20,6 +20,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Matchers;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -27,6 +28,21 @@ public class ManageTest {
 
   @Inject
   Services services;
+
+  @Inject
+  Manage manage;
+
+  @Test
+  public void testConfigFunctions() {
+    Assert.assertTrue(manage.getConfigurableFunctions().size() > 0);
+  }
+
+  @Test
+  public void testRoles() throws Exception {
+    SecurityContext sc = mock(SecurityContext.class);
+    when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Assert.assertTrue(manage.roles(sc).size() > 0);
+  }
 
   @Test
   public void logger() {
@@ -134,6 +150,60 @@ public class ManageTest {
     Assert.assertEquals(2, x.get(0).sample.get(1));
     Assert.assertEquals("name", x.get(1).name);
     Assert.assertEquals("test", x.get(1).sample.get(0));
+  }
+
+  @Test
+  public void testCreate() throws Exception {
+    for (String filename : new String[] {"import.xlsx", "import.csv", "import.sqlite"})
+      for (int i = 0; i < 3; i++) {
+        SecurityContext sc = mock(SecurityContext.class);
+        when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+
+        DetectResult res;
+        {
+          MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
+          headers.put("Content-Disposition", Arrays.asList("filename=\"" + filename + "\""));
+          InputPart token = mock(InputPart.class);
+          when(token.getHeaders()).thenReturn(headers);
+          when(token.getBody(InputStream.class, null))
+              .thenReturn(getClass().getResourceAsStream("/data/" + filename));
+
+          MultipartFormDataInput input = mock(MultipartFormDataInput.class);
+          Map<String, List<InputPart>> paramsMap = new HashMap<>();
+          paramsMap.put("file", Arrays.asList(token));
+          when(input.getFormDataMap()).thenReturn(paramsMap);
+
+          res = manage.detect(sc, "junit", input);
+        }
+
+        MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
+        headers.put("Content-Disposition", Arrays.asList("filename=\"" + filename + "\""));
+        InputPart token = mock(InputPart.class);
+        when(token.getHeaders()).thenReturn(headers);
+        when(token.getBody(InputStream.class, null))
+            .thenReturn(getClass().getResourceAsStream("/data/" + filename));
+
+        MultipartFormDataInput input = mock(MultipartFormDataInput.class);
+        Map<String, List<InputPart>> paramsMap = new HashMap<>();
+        paramsMap.put("file", Arrays.asList(token));
+        when(input.getFormDataMap()).thenReturn(paramsMap);
+
+        InputPart schema = mock(InputPart.class);
+        when(schema.getHeaders()).thenReturn(headers);
+        when(schema.getBody(InputStream.class, null)).thenReturn(
+            new ByteArrayInputStream(new ObjectMapper().writeValueAsString(res.schema).getBytes()));
+        paramsMap.put("__dj_schema", Arrays.asList(schema));
+
+        if (i == 0)
+          manage.create(sc, "ddl", input);
+        if (i == 1)
+          // table does not exist in ddl
+          Assertions.assertThrows(NullPointerException.class, () -> {
+            manage.append(sc, "junit", input);
+          });
+        if (i == 2)
+          manage.replace(sc, "ddl", input);
+      }
   }
 
   DetectResult detect(String filename, String csv) throws Exception {

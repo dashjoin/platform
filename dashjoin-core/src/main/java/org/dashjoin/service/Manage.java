@@ -324,8 +324,8 @@ public class Manage {
           while (records.hasNext()) {
             Map<String, Object> object = new HashMap<>();
             int col = 0;
-            for (Cell s : records.next()) {
-              object.put(cleanColumnName(headers.get(col)), s + "");
+            for (String s : new RowWrapper(evaluator, records.next())) {
+              object.put(cleanColumnName(headers.get(col)), s);
               col++;
             }
             db.cast(m, object);

@@ -47,6 +47,7 @@ public class DDLTest {
   @Test
   public void test() throws Exception {
 
+    TestDatabase.init();
     new File("model/dj-database/dj%2Fddl.json").delete();
 
     AbstractDatabase db;

@@ -19,6 +19,11 @@ import org.dashjoin.service.ddl.SchemaChange;
  */
 public class TestDatabase extends AbstractDatabase {
 
+  public static void init() {
+    data = new HashMap<>();
+    schema = new NoNullMap<>();
+  }
+
   static Map<String, List<Map<String, Object>>> data = new HashMap<>();
 
   static class Col {
