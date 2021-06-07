@@ -402,7 +402,7 @@ public class UnionDatabase extends AbstractDatabase {
             return descending ? -1 : 1;
           if (!(e2 instanceof Comparable<?>))
             return !descending ? -1 : 1;
-          return descending ? ((Comparable<Object>) e1).compareTo(e2)
+          return !descending ? ((Comparable<Object>) e1).compareTo(e2)
               : ((Comparable<Object>) e2).compareTo(e1);
         }
       });

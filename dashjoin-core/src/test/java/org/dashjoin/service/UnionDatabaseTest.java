@@ -5,9 +5,11 @@ import static java.util.Arrays.asList;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.MapUtil;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +17,22 @@ import org.junit.jupiter.api.Test;
  * tests some aspects of the union config DB
  */
 public class UnionDatabaseTest {
+
+  @Test
+  public void testAll() throws Exception {
+    UnionDatabase db = new UnionDatabase();
+    JSONDatabase cp = JSONDatabaseFactory.getReadOnlyInstance();
+    db._dbs = Arrays.asList();
+    db._user = cp;
+    List<Map<String, Object>> res =
+        db.all(Table.ofName("dj-database"), 0, 99, "ID", false, MapUtil.of("parent", "dj"));
+    // asc - smallest first
+    Assert.assertEquals("dj/config", res.get(0).get("ID"));
+
+    res = db.all(Table.ofName("dj-database"), 0, 99, "ID", true, MapUtil.of("parent", "dj"));
+    // desc - largest first
+    Assert.assertEquals("dj/junit", res.get(0).get("ID"));
+  }
 
   @Test
   public void mergeArray() {
