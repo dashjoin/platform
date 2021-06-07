@@ -1,0 +1,5 @@
+{
+  "ID" : "echo",
+  "djClassName" : "org.dashjoin.function.Invoke",
+  "expression" : "$echo(123)"
+}

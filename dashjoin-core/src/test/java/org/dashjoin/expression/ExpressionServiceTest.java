@@ -75,12 +75,20 @@ public class ExpressionServiceTest {
   }
 
   @Test
-  public void call() throws Exception {
+  public void echo() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
-    // TODO: there should not be extra " around the result
-    Assert.assertEquals("\"result\"", "" + s.jsonata(sc, "$echo(\"result\")", null, false));
+    Assert.assertEquals("result", s.jsonata(sc, "$echo(\"result\")", null, false).asText());
+  }
+
+  @Test
+  public void invoke() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+
+    // see echo.json
+    Assert.assertEquals(123, s.jsonata(sc, "$call(\"echo\")", null, false).asInt());
   }
 
   @Test
