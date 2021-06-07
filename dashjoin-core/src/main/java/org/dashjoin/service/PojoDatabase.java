@@ -551,6 +551,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
     return projected;
   }
 
+  /**
+   * get simple class name
+   */
   Object simple(Object name) {
     if (name instanceof String) {
       String[] parts = ((String) name).split("\\.");
@@ -562,6 +565,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
       return name;
   }
 
+  /**
+   * display roles list without [ ]
+   */
   Object roles(Object roles) {
     if (roles instanceof List<?>) {
       String res = "";

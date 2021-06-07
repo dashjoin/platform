@@ -148,6 +148,20 @@ public class PojoDatabaseTest {
     Assert.assertEquals("dj-page-urls", meta.query);
   }
 
+  @Test
+  public void testFunctions() throws Exception {
+    PojoDatabase config = services.pojoDatabase();
+    List<Map<String, Object>> f = config.queryFunctions(null, null);
+    Assert.assertEquals("echo", f.get(0).get("ID"));
+  }
+
+  @Test
+  public void testQueries() throws Exception {
+    PojoDatabase config = services.pojoDatabase();
+    List<Map<String, Object>> f = config.queryQueries(null, null);
+    Assert.assertEquals("list", f.get(0).get("ID"));
+  }
+
   @Inject
   Data data;
 

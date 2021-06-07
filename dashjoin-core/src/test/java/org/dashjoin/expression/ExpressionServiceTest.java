@@ -83,12 +83,21 @@ public class ExpressionServiceTest {
   }
 
   @Test
-  public void invoke() throws Exception {
+  public void call() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
     // see echo.json
     Assert.assertEquals(123, s.jsonata(sc, "$call(\"echo\")", null, false).asInt());
+  }
+
+  @Test
+  public void traverse() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+
+    Assert.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\"}",
+        s.jsonata(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
   }
 
   @Test
