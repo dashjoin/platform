@@ -113,7 +113,7 @@ Follow the link to the roles page. On there, you can define new roles and define
 In the system there are several places where you will be able to select the roles defined here.
 The role IDs you choose depend on the identity management system that is configured.
 In the Dashjoin PaaS, this is OpenID. If you are using the open source default installation,
-the roles are defined in the realm.properties file:
+the roles are defined in the djroles.properties file:
 
 ```bash
 admin: dj,admin
@@ -678,7 +678,7 @@ Widgets can be grouped into the following three categories.
 
 Container widgets can contain other widgets.
 
-##### [card](https://demo.dashjoin.org/#/page/card)
+##### [card](https://demo.my.dashjoin.com/#/page/card)
 
 Layout card with a title and nested widgets:
 
@@ -729,7 +729,7 @@ All non-container widgets are called regular widgets.
 
 Shows all instances of a table. This widget can only be used on table pages and has no other configuration options.
 
-##### [button](https://demo.dashjoin.org/#/page/button)
+##### [button](https://demo.my.dashjoin.com/#/page/button)
 
 Runs / evaluates an expression when clicked.
 
@@ -754,7 +754,7 @@ Creates new database records:
 * database: optional database to create the record in (defaults to the database of the table you are currently displaying)
 * table: optional table to create the record in (defaults to the table you are currently displaying)
 
-##### [display](https://demo.dashjoin.org/#/resource/northwind/EMPLOYEES/1?page=markdown)
+##### [display](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
 
 Displays the result of an expression:
 
@@ -795,7 +795,7 @@ Displays a hyperlink icon with tooltip
 
 Displays links to related records
 
-##### [markdown](https://demo.dashjoin.org/#/resource/northwind/EMPLOYEES/1?page=markdown)
+##### [markdown](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
 
 Displays markdown
 
@@ -826,7 +826,7 @@ Displays a tree based on a recursive query
 * query: query that projects a single column with the keys of the current node's children
 * arguments: expression that passes the current node's primary key as a query argument
 
-##### [variable](https://demo.dashjoin.org/#/page/variable)
+##### [variable](https://demo.my.dashjoin.com/#/page/variable)
 
 Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x".
 
@@ -1140,7 +1140,7 @@ The info page shows various system data. At the top of the page you find the use
 
 #### Roles Dashboard
 
-The roles dashboard allows the administrator to define system roles along with the homepage for users in this role. You cannot pick arbitrary role names here. Unless you are using the Dashjoin Cloud, the names depend on the roles defined in the identity management system (IDM) you are using. The default open source distribution uses a Jetty container with realms.properties identity management configured. The realms.properties file defines the roles admin and authenticated and these are the default roles you find on the roles dashboard. You can define additional roles here, however, it that role name is unknown to your IDM, your users will never be in this role.
+The roles dashboard allows the administrator to define system roles along with the homepage for users in this role. You cannot pick arbitrary role names here. Unless you are using the Dashjoin Cloud, the names depend on the roles defined in the identity management system (IDM) you are using.
 If you change your container configuration to use windows authentication, your role names will be "Users", "Power Users", "Guests", etc.
 If you are using the Dashjoin Cloud, you can choose arbitrary role names and assign users to these roles using the tenant user dashboard.
 
@@ -1153,6 +1153,41 @@ Dashjoin offers a fully managed Platform as a Service available at <https://my.d
 In the Dashjoin cloud, users can authenticate via OpenID. The tenant user dashboard allows you to control who has access to your Dashjoin tenant. Once a user requests access, his or her record shows up on this page. Once you set the active flag, they are allowed to login. Using this page, you can also assign which roles a user should be in. Specifically, it is possible to promote users to be co-administrators of the tenant.
 
 ## Installation
+
+### Creating a local Admin User
+
+After installing Dashjoin, no user is set up in the system.
+To set up the local development admin user, navigate to http://localhost:8080/#/setup.
+
+Choose a name, a username, and the password.
+Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'
+
+Note: this only works the very first time! After a development admin is created, no more local users can be created from the UI. To change or disable the local user, please edit or delete the files djroles.properties and djusers.properties in the application root directory.
+
+The Dashjoin authentication is configured to allow log in using social Google or Github accounts, or to allow registration of users by e-mail and password (authentication via e-mail uses the Google Firebase authentication).
+
+### Opening the Dashjoin application
+
+To access the application, navigate to http://localhost:8080
+
+### Installers
+
+Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.
+
+### Docker
+
+```shell script
+docker pull dashjoin/public
+docker run -p 8080:8080 dashjoin/public
+```
+
+Point your browser to <http://localhost:8080>.
+
+If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:
+
+```bash
+docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/public
+```
 
 ### Build Locally
 
@@ -1220,44 +1255,13 @@ When everything was build successfully, you can use the Dashjoin.launch configur
 The Quarkus launcher supports hot loading of resources, i.e. any changes made will be adjusted at runtime without having to restart the platform.
 (Note: you will have to adjust the absolute folder references in the launch file to you own workspace settings)
 
-### Docker (the docker image is not yet public - please contact us to get access)
-
-```shell script
-docker pull dashjoin/private
-docker run -p 8080:8080 dashjoin/private
-```
-
-Point your browser to <http://localhost:8080>.
-
-The image defines users "admin" and "user" in application.properties:
-
-```bash
-quarkus.security.users.embedded.users.admin=dj
-quarkus.security.users.embedded.roles.admin=admin
-
-quarkus.security.users.embedded.users.user=password
-quarkus.security.users.embedded.roles.user=authenticated
-```
-
-To change the passwords or roles of these users or to add new users, create your own application.properties file and mount it into the container as follows:
-
-```bash
-docker run -p 8080:8080 -v MY_APP_FILE:/deployments/config/application.properties dashjoin/private
-```
-
-If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:
-
-```bash
-docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/private
-```
-
 ## Administration
 
 This section describes administration and operating procedures for the Dashjoin platform.
 
 ### Configuration Changes
 
-Configuration data comprise custom dashboards and layout pages, user roles, and registered databases and functions.
+A system is defined by the following configurations: Dashboards, layout pages, user roles, registered databases, and functions.
 These settings are stored in the configuration database. For the open source version, this data is kept on the file system
 in the model folder which resides in the webserver's default directory.
 
@@ -1322,8 +1326,8 @@ We strongly advise to:
 * Consider using read-only database credentials when registering a database with data that is managed by another application
 * When adding a new database, make sure the access control settings are setup correctly
 * Restrict access to the system in case you store confidential data in any of the registered databases
-* Change the default password in realm.properties (and restart the service) if you are using the Dashjoin / Jetty bundle
-* All credentials that are entered into the system are encrypted using strong SHA-256 encryption. The master key resides in the file model/.secrets.id on the web server. Keep this file secured.
+* All credentials that are entered into the system are encrypted using strong SHA-256 encryption. The master key resides in the file model/.secrets.id on the web server. Keep this file secured
+* Add a OpenID provider in order to authenticate organization users
 
 In order to register new databases, the user must be in the "admin" role.
 
@@ -1350,16 +1354,23 @@ SAP HANA | com.sap.db.jdbc.Driver | 2.5.49 | beta
 ## API
 
 The Dashjoin architecture features an Angular Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
-The OpenAPI description is available at <https://demo.dashjoin.org/openapi>. Dashjoin also ships the Swagger GUI at <https://demo.dashjoin.org/swagger-ui>.
+The OpenAPI description is available at <https://demo.my.dashjoin.com/openapi>. Dashjoin also ships the Swagger GUI at <https://demo.my.dashjoin.com/swagger-ui>.
 Please note that the API is subject to change.
 
-The API requires any request to be authenticated with HTTP basic authentication:
+The API requires any request using a local admin user to be authenticated with HTTP basic authentication:
 
 ```bash
-curl -u admin:dj https://demo.dashjoin.org/rest/manage/version
+curl -u admin:pssword https://localhost:8080/rest/manage/version
 ```
 
-Note that the PaaS service uses OpenID.
+In order to login using an OpenID user, you need to specify a bearer token as follows:
+
+```bash
+curl -H "Authorization: Bearer ..." https://demo.my.dashjoin.com/rest/manage/version
+```
+
+The easiest way to obtain a bearer token is to login using a browser and copying the token via the browser development tools.
+Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.
 
 ## Contribute
 
