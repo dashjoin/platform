@@ -45,6 +45,9 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -150,9 +153,22 @@ public class Manage {
 
     List<String> record = new ArrayList<>();
 
-    RowWrapper(Row record) {
-      for (Cell c : record)
-        this.record.add("" + c);
+    RowWrapper(FormulaEvaluator evaluator, Row record) {
+      for (Cell c : record) {
+        CellValue cellValue = evaluator.evaluate(c);
+        if (cellValue.getCellType() == CellType.BOOLEAN)
+          this.record.add("" + cellValue.getBooleanValue());
+        else if (cellValue.getCellType() == CellType.NUMERIC)
+          this.record.add("" + cellValue.getNumberValue());
+        else if (cellValue.getCellType() == CellType.STRING)
+          this.record.add("" + cellValue.getStringValue());
+        else if (cellValue.getCellType() == CellType.ERROR)
+          this.record.add("");
+        else if (cellValue.getCellType() == CellType.BLANK)
+          this.record.add("");
+        else
+          throw new RuntimeException("Illegal cell type");
+      }
     }
 
     @Override
@@ -294,13 +310,14 @@ public class Manage {
         batch.complete();
       } else if (getFileExt(header).toLowerCase().equals("xlsx")) {
         Workbook wb = WorkbookFactory.create(inputPart.getBody(InputStream.class, null));
+        FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
         for (Sheet sheet : wb) {
           Table m = db.tables.get(sheet.getSheetName());
           if (clearTable)
             db.delete(m);
 
           Iterator<Row> records = sheet.iterator();
-          RowWrapper headers = new RowWrapper(records.next());
+          RowWrapper headers = new RowWrapper(evaluator, records.next());
 
           // for each row
           CreateBatch batch = db.openCreateBatch(m);
@@ -413,6 +430,7 @@ public class Manage {
             _second);
       } else if (getFileExt(header).toLowerCase().equals("xlsx")) {
         Workbook wb = WorkbookFactory.create(inputPart.getBody(InputStream.class, null));
+        FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
         for (Sheet sheet : wb) {
           Table m = ((AbstractDatabase) db).tables.get(sheet.getSheetName());
           createMode(res, database, getFileName(header), m);
@@ -421,9 +439,10 @@ public class Manage {
           Row first = iter.next();
           List<List<String>> _second = new ArrayList<>();
           for (int i = 0; i < 10; i++)
-            _second.add(iter.hasNext() ? new RowWrapper(iter.next()) : null);
+            _second.add(iter.hasNext() ? new RowWrapper(evaluator, iter.next()) : null);
 
-          handleStringTable(res, database, sheet.getSheetName(), m, new RowWrapper(first), _second);
+          handleStringTable(res, database, sheet.getSheetName(), m,
+              new RowWrapper(evaluator, first), _second);
         }
       } else if (getFileExt(header).toLowerCase().equals("sqlite")) {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));

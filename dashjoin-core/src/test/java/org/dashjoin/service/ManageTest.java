@@ -13,6 +13,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.service.Manage.DetectResult;
+import org.dashjoin.service.Manage.TypeSample;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.junit.Assert;
@@ -111,11 +112,40 @@ public class ManageTest {
     });
   }
 
+  @Test
+  public void testXlsx() throws Exception {
+    DetectResult res =
+        detect("import.xlsx", getClass().getResourceAsStream("/data/import.xlsx"), null, null);
+    List<TypeSample> x = res.schema.values().iterator().next();
+    Assert.assertEquals("ID", x.get(0).name);
+    Assert.assertEquals(1.0, x.get(0).sample.get(0));
+    Assert.assertEquals(2.0, x.get(0).sample.get(1));
+    Assert.assertEquals("name", x.get(1).name);
+    Assert.assertEquals("joe", x.get(1).sample.get(0));
+  }
+
+  @Test
+  public void testSQLite() throws Exception {
+    DetectResult res =
+        detect("import.sqlite", getClass().getResourceAsStream("/data/import.sqlite"), null, null);
+    List<TypeSample> x = res.schema.values().iterator().next();
+    Assert.assertEquals("ID", x.get(0).name);
+    Assert.assertEquals(1, x.get(0).sample.get(0));
+    Assert.assertEquals(2, x.get(0).sample.get(1));
+    Assert.assertEquals("name", x.get(1).name);
+    Assert.assertEquals("test", x.get(1).sample.get(0));
+  }
+
   DetectResult detect(String filename, String csv) throws Exception {
     return detect(filename, csv, null, null);
   }
 
   DetectResult detect(String filename, String csv, String filename2, String csv2) throws Exception {
+    return detect(filename, new ByteArrayInputStream(csv.getBytes()), filename2, csv2);
+  }
+
+  DetectResult detect(String filename, InputStream csv, String filename2, String csv2)
+      throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
     when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
@@ -123,8 +153,7 @@ public class ManageTest {
     headers.put("Content-Disposition", Arrays.asList("filename=\"" + filename + "\""));
     InputPart token = mock(InputPart.class);
     when(token.getHeaders()).thenReturn(headers);
-    when(token.getBody(InputStream.class, null))
-        .thenReturn(new ByteArrayInputStream(csv.getBytes()));
+    when(token.getBody(InputStream.class, null)).thenReturn(csv);
 
     MultivaluedMap<String, String> headers2 = new MultivaluedHashMap<>();
     headers2.put("Content-Disposition", Arrays.asList("filename=\"" + filename2 + "\""));
