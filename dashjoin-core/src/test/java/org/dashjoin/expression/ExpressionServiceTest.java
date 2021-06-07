@@ -98,6 +98,11 @@ public class ExpressionServiceTest {
 
     Assert.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\"}",
         s.jsonata(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
+
+    Assert.assertEquals(
+        "[{\"ID\":1,\"NAME\":\"mike\",\"WORKSON\":1000},{\"ID\":2,\"NAME\":\"joe\",\"WORKSON\":1000}]",
+        s.jsonata(sc, "$traverse(\"junit\", \"PRJ\", 1000, \"dj/junit/EMP/WORKSON\")", null, false)
+            .toString());
   }
 
   @Test

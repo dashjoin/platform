@@ -113,6 +113,8 @@ public class PojoDatabaseTest {
     res = config.query(qi, null);
     qi.query = "dj-layouts";
     res = config.query(qi, null);
+    qi.query = "dj-navigation";
+    res = config.query(qi, null);
     qi.query = "dj-databases-no-config";
     res = config.query(qi, null);
     Assert.assertEquals("dj/junit", res.get(0).get("ID"));
