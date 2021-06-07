@@ -93,6 +93,9 @@ public class SQLSchemaChange implements SchemaChange {
     }
   }
 
+  /**
+   * get the suitable column type
+   */
   String t(String t, String c, Object s) {
     if (db.url.startsWith("jdbc:postgres")) {
       if ("object".equals(s))

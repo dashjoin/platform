@@ -15,5 +15,6 @@ public class FileSystemTest {
     });
 
     FileSystem.checkFileAccess(new File("upload"));
+    FileSystem.checkFileAccess(new URL("file:upload"));
   }
 }
