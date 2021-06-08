@@ -1,6 +1,8 @@
 package org.dashjoin.service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+import org.dashjoin.util.Home;
 
 /**
  * This is currently only used for tests!
@@ -26,7 +28,9 @@ public class JSONDatabaseFactory {
       return jsonDb;
     }
 
-    return new JSONFileDatabase();
+    JSONFileDatabase db = new JSONFileDatabase();
+    db.home = new Home(Optional.empty());
+    return db;
   }
 
   public static JSONDatabase getReadOnlyInstance() {

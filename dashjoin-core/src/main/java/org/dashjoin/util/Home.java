@@ -18,7 +18,7 @@ public class Home {
   String fileHome;
 
   @Inject
-  Home(@ConfigProperty(name = "dashjoin.home", defaultValue = "") Optional<String> home) {
+  public Home(@ConfigProperty(name = "dashjoin.home", defaultValue = "") Optional<String> home) {
     this.home = home.orElse("");
     this.fileHome = this.home.isBlank() ? new File("").getAbsolutePath()
         : this.home.replace("$HOME", System.getProperty("user.home"));
