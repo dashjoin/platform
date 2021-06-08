@@ -81,9 +81,9 @@ public class MappingTest {
   public void testExtract() throws Exception {
     Map<String, Mapping> mappings = new LinkedHashMap<>();
     mappings.put("t", newMapping());
-    mappings.get("t").pk = "id";
     mappings.put("list", newMapping());
-    mappings.get("list").childTable = "list";
+    mappings.get("list").extractKey = "id";
+    mappings.get("list").extractColumn = "list";
     mappings.get("list").sourceTable = "t";
 
     Map<String, List<Map<String, Object>>> source = new LinkedHashMap<>();
@@ -99,9 +99,9 @@ public class MappingTest {
   public void testExtract2() throws Exception {
     Map<String, Mapping> mappings = new LinkedHashMap<>();
     mappings.put("t", newMapping());
-    mappings.get("t").pk = "id";
     mappings.put("list", newMapping());
-    mappings.get("list").childTable = "list";
+    mappings.get("list").extractKey = "id";
+    mappings.get("list").extractColumn = "list";
     mappings.get("list").sourceTable = "t";
 
     Map<String, List<Map<String, Object>>> source = new LinkedHashMap<>();

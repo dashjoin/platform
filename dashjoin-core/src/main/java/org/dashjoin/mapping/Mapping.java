@@ -25,7 +25,12 @@ public class Mapping {
   /**
    * column containing the array
    */
-  public String childTable;
+  public String extractColumn;
+
+  /**
+   * column containing the key to include in the extract array
+   */
+  public String extractKey;
 
   /**
    * the name of the PK column (we do not support composite keys here) only required if the create
@@ -117,26 +122,14 @@ public class Mapping {
         if (source == null)
           continue;
 
-        if (mapping.getValue().childTable != null) {
-          Mapping lookup = null;
-          for (Entry<String, Mapping> m : mappings.entrySet()) {
-            if (m.getValue() == mapping.getValue())
-              continue;
-            String sourceTableName = m.getKey();
-            if (m.getValue() != null && m.getValue().sourceTable != null)
-              sourceTableName = m.getValue().sourceTable;
-            if (sourceTableName.equals(mapping.getValue().sourceTable))
-              if (m.getValue() == null || m.getValue().childTable == null)
-                lookup = m.getValue();
-          }
-          if (lookup == null || lookup.pk == null)
-            throw new EvaluateException("The source table must have a primary key defined");
+        if (mapping.getValue().extractColumn != null) {
           List<Map<String, Object>> tmp = new ArrayList<>();
           for (Map<String, Object> row : source) {
-            Object list = row.get(mapping.getValue().childTable);
+            Object list = row.get(mapping.getValue().extractColumn);
             if (list instanceof List<?>) {
               for (Object item : (List<?>) list) {
-                Map<String, Object> i = MapUtil.of("parent_" + lookup.pk, row.get(lookup.pk));
+                Map<String, Object> i = MapUtil.of("parent_" + mapping.getValue().extractKey,
+                    row.get(mapping.getValue().extractKey));
                 if (item instanceof Map<?, ?>)
                   i.putAll((Map<String, Object>) item);
                 else
@@ -146,8 +139,8 @@ public class Mapping {
             }
           }
           if (tmp.isEmpty())
-            throw new EvaluateException(
-                "Column " + mapping.getValue().childTable + " does not contain arrays to extract");
+            throw new EvaluateException("Column " + mapping.getValue().extractColumn
+                + " does not contain arrays to extract");
           source = tmp;
         }
 
