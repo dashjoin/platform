@@ -9,9 +9,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.DJRuntime;
+import org.dashjoin.util.Home;
 import org.dashjoin.util.RuntimeDefinitions;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -23,13 +25,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Default
 public class JSONFileDatabase extends JSONDatabase {
 
+  @Inject
+  Home home;
+
   /**
    * internal get file method
    */
   File file(Table s, Map<String, Object> search) throws UnsupportedEncodingException {
     String path =
         "model/" + s.name + "/" + URLEncoder.encode("" + search.get("ID"), "UTF-8") + ".json";
-    return new File(path);
+    return home.getFile(path);
   }
 
   @Override
@@ -39,7 +44,7 @@ public class JSONFileDatabase extends JSONDatabase {
     String[] parts = info.query.split("/");
     if (parts.length == 1) {
       String path = "model/" + parts[0];
-      File[] files = new File(path).listFiles();
+      File[] files = home.getFile(path).listFiles();
       if (files != null)
         for (File f : files) {
           if (f.getName().endsWith(".deleted"))
@@ -73,14 +78,11 @@ public class JSONFileDatabase extends JSONDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    String path =
-        "model/" + s.name + "/" + URLEncoder.encode("" + search.get("ID"), "UTF-8") + ".json";
-
-    File file = new File(path);
+    File file = file(s, search);
     if (file.exists()) {
       Map<String, Object> res = objectMapper.readValue(file, tr);
       if (res.get("ID") == null)
-        throw new IllegalArgumentException("Object must contain ID field: " + path);
+        throw new IllegalArgumentException("Object must contain ID field: " + file);
       return res;
     }
     return null;
