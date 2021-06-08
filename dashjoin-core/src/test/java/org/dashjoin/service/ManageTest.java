@@ -154,7 +154,8 @@ public class ManageTest {
 
   @Test
   public void testCreate() throws Exception {
-    for (String filename : new String[] {"import.xlsx", "import.csv", "import.sqlite"})
+    for (String filename : new String[] {"import.xlsx", "import.json", "import.csv",
+        "import.sqlite"})
       for (int i = 0; i < 3; i++) {
         SecurityContext sc = mock(SecurityContext.class);
         when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);

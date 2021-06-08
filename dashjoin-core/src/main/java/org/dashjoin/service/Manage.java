@@ -34,6 +34,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -276,6 +277,7 @@ public class Manage {
     insert(db, inputParts, false);
   }
 
+  @SuppressWarnings("unchecked")
   void insert(AbstractDatabase db, List<InputPart> inputParts, boolean clearTable)
       throws Exception {
     // for each table
@@ -363,9 +365,26 @@ public class Manage {
           }
         }
         tmp.delete();
+      } else if (getFileExt(header).toLowerCase().equals("json")) {
+        InputStream inputStream = inputPart.getBody(InputStream.class, null);
+        Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
+        for (Entry<String, Object> p : parsed.entrySet()) {
+          Table m = db.tables.get(p.getKey());
+
+          if (clearTable)
+            db.delete(m);
+
+          // for each row
+          CreateBatch batch = db.openCreateBatch(m);
+          for (Map<String, Object> object : (List<Map<String, Object>>) p.getValue()) {
+            db.cast(m, object);
+            batch.create(object);
+          }
+          batch.complete();
+        }
       } else
-        throw new Exception(
-            "Unsupported file type: " + getFileExt(header) + ". Must be csv, xlsx or sqlite.");
+        throw new Exception("Unsupported file type: " + getFileExt(header)
+            + ". Must be json, csv, xlsx or sqlite.");
     }
   }
 
@@ -389,6 +408,7 @@ public class Manage {
     insert(db, inputParts, true);
   }
 
+  @SuppressWarnings("unchecked")
   @POST
   @Path("/detect")
   @Consumes("multipart/form-data")
@@ -479,9 +499,34 @@ public class Manage {
             }
           }
         }
+      } else if (getFileExt(header).toLowerCase().equals("json")) {
+        InputStream inputStream = inputPart.getBody(InputStream.class, null);
+        Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
+        for (Entry<String, Object> p : parsed.entrySet()) {
+          Table m = ((AbstractDatabase) db).tables.get(p.getKey());
+          createMode(res, database, getFileName(header), m);
+
+          List<String> headers = new ArrayList<>();
+          List<List<String>> data = new ArrayList<>();
+
+          for (Map<String, Object> x : ((List<Map<String, Object>>) p.getValue())) {
+            List<String> row = new ArrayList<>();
+            for (Entry<String, Object> cell : x.entrySet()) {
+              row.add("" + cell.getValue());
+              if (!headers.contains(cell.getKey()))
+                headers.add(cell.getKey());
+            }
+            data.add(row);
+          }
+
+          while (data.size() < 10)
+            data.add(null);
+
+          handleStringTable(res, database, p.getKey(), m, headers, data);
+        }
       } else
-        throw new Exception(
-            "Unsupported file type: " + getFileExt(header) + ". Must be csv, xlsx or sqlite.");
+        throw new Exception("Unsupported file type: " + getFileExt(header)
+            + ". Must be json, csv, xlsx or sqlite.");
     }
 
     return res;
@@ -548,7 +593,7 @@ public class Manage {
       for (Object cell : first)
         names.add(cleanColumnName(cell));
 
-      if (!names.equals(m.properties.keySet())) {
+      if (!database.equals("config") && !names.equals(m.properties.keySet())) {
         Set<String> old = new HashSet<>(m.properties.keySet());
         old.removeAll(names);
         names.removeAll(m.properties.keySet());
@@ -749,6 +794,39 @@ public class Manage {
         .all(Table.ofName("dj-role"), null, null, null, false, null))
       if (sc.isUserInRole((String) i.get("ID")))
         res.add((String) i.get("ID"));
+    return res;
+  }
+
+  /**
+   * exports the database
+   */
+  @GET
+  @Path("/export/{database}")
+  @Operation(summary = "exports the contents of the database")
+  @APIResponse(description = "map of db tables")
+  public Map<String, List<Map<String, Object>>> export(
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database)
+      throws Exception {
+
+    int limit = 10000;
+    int count = 0;
+
+    Map<String, List<Map<String, Object>>> res = new LinkedHashMap<>();
+    AbstractDatabase db =
+        services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+
+    Database data = db instanceof PojoDatabase ? ((PojoDatabase) db).user() : db;
+
+    for (Table table : db.tables.values()) {
+      List<Map<String, Object>> values = data.all(table, null, limit, null, false, null);
+      if (values.isEmpty())
+        continue;
+      res.put(table.name, values);
+      count = count + values.size();
+      if (count > limit)
+        throw new Exception("Export limit (" + limit + " records) exceeded");
+    }
     return res;
   }
 
