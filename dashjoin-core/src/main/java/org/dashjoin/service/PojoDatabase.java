@@ -853,7 +853,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
       metadataCollectionEx(db);
     } catch (Exception e) {
       // log but ignore
-      logger.log(Level.SEVERE, "ignoring metadata collection error", e);
+      logger.warning("Ignoring metadata collection error: " + e);
+      // Stacktrace only shown in fine log
+      logger.log(Level.FINE, "Ignoring metadata collection error", e);
     }
   }
 
