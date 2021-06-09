@@ -615,7 +615,7 @@ public class Manage {
           else
             try {
               ts.sample.add(second.get(col));
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
               ts.sample.add(null);
             }
         table.put(cleanColumnName(cell), ts);
