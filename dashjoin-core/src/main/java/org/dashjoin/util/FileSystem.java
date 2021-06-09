@@ -40,7 +40,6 @@ public class FileSystem {
     URL url = new URL(name);
     if (url.getProtocol().equals("file")) {
       url = new URL("file:" + Home.get().getFile(url.getPath()).getCanonicalPath());
-      System.err.println("upload url " + url);
       checkFileAccess(new File(url.getPath()));
     }
     return url;
