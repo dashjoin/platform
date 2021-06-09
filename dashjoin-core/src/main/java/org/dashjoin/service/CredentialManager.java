@@ -11,29 +11,41 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+import org.dashjoin.util.Home;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.jasypt.util.text.StrongTextEncryptor;
+import io.quarkus.arc.Unremovable;
 
 /**
  * Manages credentials (secrets, passwords, etc.) either in hashed or in encrypted format.
  * 
  * @author uli
  */
+@ApplicationScoped
+@Default
+@Unremovable
 public class CredentialManager {
 
   private final static Logger logger = Logger.getLogger(CredentialManager.class.getName());
 
-  private static CredentialManager instance = new CredentialManager();
+  private static CredentialManager instance = null;
 
   private final String SECRETS_ID_FILE;
 
-  public static CredentialManager getInstance() {
+  public synchronized static CredentialManager getInstance() {
+    if (instance == null) {
+      instance = javax.enterprise.inject.spi.CDI.current().select(CredentialManager.class).get();
+    }
     return instance;
   }
 
-  private CredentialManager() {
-    SECRETS_ID_FILE =
-        System.getenv("DJ_SID_FILE") != null ? System.getenv("DJ_SID_FILE") : "model/.secrets.id";
+  @Inject
+  CredentialManager(Home home) {
+    SECRETS_ID_FILE = System.getenv("DJ_SID_FILE") != null ? System.getenv("DJ_SID_FILE")
+        : home.getFile("model/.secrets.id").getAbsolutePath();
     logger.info("Using SID file: " + SECRETS_ID_FILE);
     generateSecretsId();
   }
