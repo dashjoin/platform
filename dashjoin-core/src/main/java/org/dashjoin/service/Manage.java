@@ -772,7 +772,11 @@ public class Manage {
   @Operation(summary = "returns the version of the Dashjoin platform")
   @APIResponse(description = "Version object describing the platform")
   public Version version() {
-    Version v = metaInf(getClass(), "dev", new Version());
+    return getVersion();
+  }
+
+  public static Version getVersion() {
+    Version v = metaInf(Manage.class, "dev", new Version());
     v.name = "Dashjoin Low Code Development and Integration Platform";
     v.buildTime = getGitBuildInfo().getProperty("git.build.time", "unknown");
     v.runtime = System.getProperty("java.version");
@@ -866,7 +870,7 @@ public class Manage {
     public String type;
   }
 
-  Version metaInf(Class<?> c, String def, Version v) {
+  public static Version metaInf(Class<?> c, String def, Version v) {
     v.version = c.getPackage().getImplementationVersion();
     v.title = c.getPackage().getImplementationTitle();
     v.vendor = c.getPackage().getImplementationVendor();
@@ -882,7 +886,7 @@ public class Manage {
     if (jar != null)
       try {
         Enumeration<URL> resources =
-            getClass().getClassLoader().getResources("META-INF/MANIFEST.MF");
+            Manage.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
         while (resources.hasMoreElements()) {
           URL next = resources.nextElement();
           if (next.toString().contains(jar)) {
@@ -912,11 +916,11 @@ public class Manage {
    * 
    * @return Git build properties
    */
-  Properties getGitBuildInfo() {
+  public static Properties getGitBuildInfo() {
     String name = "git.properties";
     Properties props = new Properties();
     try {
-      props.load(this.getClass().getClassLoader().getResourceAsStream(name));
+      props.load(Manage.class.getClassLoader().getResourceAsStream(name));
     } catch (IOException e) {
       // intentionally ignored
     }
