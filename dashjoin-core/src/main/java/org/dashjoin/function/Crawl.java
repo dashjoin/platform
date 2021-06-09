@@ -19,9 +19,7 @@ public class Crawl extends AbstractFunction<String, List<String>> {
   @Override
   public List<String> run(String arg) throws Exception {
     List<String> res = new ArrayList<>();
-    URL url = new URL(arg);
-
-    FileSystem.checkFileAccess(url);
+    URL url = FileSystem.getUploadURL(arg);
 
     try (InputStream in = url.openStream()) {
       String s = IOUtils.toString(in, Charset.defaultCharset());

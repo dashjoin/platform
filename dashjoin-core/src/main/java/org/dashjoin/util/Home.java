@@ -17,6 +17,15 @@ public class Home {
   String home;
   String fileHome;
 
+  static Home instance;
+
+  public synchronized static Home get() {
+    if (instance == null) {
+      instance = javax.enterprise.inject.spi.CDI.current().select(Home.class).get();
+    }
+    return instance;
+  }
+
   @Inject
   public Home(@ConfigProperty(name = "dashjoin.home", defaultValue = "") Optional<String> home) {
     this.home = home.orElse("");
@@ -26,6 +35,8 @@ public class Home {
     log.info("DASHJOIN_HOME = " + fileHome);
 
     ensureHomeExists();
+
+    Home.instance = this;
   }
 
   void ensureHomeExists() {

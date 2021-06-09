@@ -12,8 +12,7 @@ public class Download extends AbstractMultiInputFunction {
 
   @Override
   public Object single(Object arg) throws Exception {
-    URL url = new URL((String) arg);
-    FileSystem.checkFileAccess(url);
+    URL url = FileSystem.getUploadURL((String) arg);
     log.info("downloading: " + url);
     try (InputStream in = url.openStream()) {
       String filename = url.getPath().isEmpty() ? url.getHost() : new File(url.getPath()).getName();

@@ -23,8 +23,7 @@ public class Load extends AbstractMultiInputFunction {
 
   @Override
   public Object single(Object arg) throws Exception {
-    URL url = new URL((String) arg);
-    FileSystem.checkFileAccess(url);
+    URL url = FileSystem.getUploadURL((String) arg);
     try (InputStream in = url.openStream()) {
       return IOUtils.toString(in, Charset.defaultCharset());
     }

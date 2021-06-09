@@ -37,8 +37,7 @@ public class Doc2data extends AbstractMultiInputFunction {
   @Override
   public Object single(Object arg) throws Exception {
     try {
-      URL url = new URL((String) arg);
-      FileSystem.checkFileAccess(url);
+      URL url = FileSystem.getUploadURL((String) arg);
       try (InputStream in = url.openStream()) {
         String s = IOUtils.toString(in, Charset.defaultCharset());
         return parse(s);
