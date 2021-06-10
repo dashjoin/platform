@@ -219,23 +219,6 @@
 			<artifactId>JSONata4Java</artifactId>
 			<version>1.4.8</version>
 		</dependency>
-		
-		<!-- in Quarkus -->
-
-	     <dependency>
-	       <groupId>org.keycloak</groupId>
-	       <artifactId>keycloak-jetty94-adapter</artifactId>
-	       <version>12.0.4</version>
-	       <scope>provided</scope>
-	     </dependency>
-
-
-		<dependency>
-		  <groupId>com.stripe</groupId>
-		  <artifactId>stripe-java</artifactId>
-		  <version>20.19.0</version>
-		</dependency>
-
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
 		<dependency>
