@@ -536,12 +536,6 @@ public class PojoDatabase extends UnionDatabase implements Config {
     for (Map<String, Object> r : res) {
       if ("dj/config".equals(r.get("ID")))
         continue;
-      if ("firestore".equals(r.get("name"))) {
-        Object status = r.get("status");
-        if (status instanceof String)
-          if (((String) status).startsWith("Error: com."))
-            continue;
-      }
       Map<String, Object> tm = new LinkedHashMap<>();
       tm.put("ID", r.get("ID"));
       for (AbstractDatabase object : objects)
@@ -687,10 +681,6 @@ public class PojoDatabase extends UnionDatabase implements Config {
     projected.add(of("ID", of("display", "Dashboards", "children", dashboards)));
 
     for (AbstractDatabase r : objects) {
-      if ("firestore".equals(r.name))
-        if (r.status != null)
-          if (r.status.startsWith("Error: com."))
-            continue;
       if ("dj/config".equals(r.ID))
         continue;
       List<Map<String, Object>> tabs = new ArrayList<>();
