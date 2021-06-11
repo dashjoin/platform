@@ -6,7 +6,9 @@ import org.dashjoin.util.MapUtil;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import io.quarkus.test.junit.QuarkusTest;
 
+@QuarkusTest
 public class Doc2dataTest {
 
   @Test

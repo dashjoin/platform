@@ -3,7 +3,9 @@ package org.dashjoin.function;
 import java.io.FileNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import io.quarkus.test.junit.QuarkusTest;
 
+@QuarkusTest
 public class CrawlTest {
 
   @Test
