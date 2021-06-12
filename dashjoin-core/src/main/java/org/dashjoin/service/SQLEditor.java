@@ -775,14 +775,15 @@ public class SQLEditor implements QueryEditorInternal {
 
       Column left = (Column) o.getLeftExpression();
       res.put(
-          Col.col(SQLDatabase.s(left.getTable().getName()), SQLDatabase.s(left.getColumnName())),
+          colNoQuotes(SQLDatabase.s(left.getTable().getName()),
+              SQLDatabase.s(left.getColumnName())),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
     }
     if (expr instanceof LikeExpression) {
       LikeExpression o = (LikeExpression) expr;
       Column left = (Column) o.getLeftExpression();
-      res.put(Col.col(left.getTable().getName(), left.getColumnName()),
+      res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
     }
@@ -796,14 +797,14 @@ public class SQLEditor implements QueryEditorInternal {
           return;
 
       Column left = (Column) o.getLeftExpression();
-      res.put(Col.col(left.getTable().getName(), left.getColumnName()),
+      res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           "BETWEEN " + o.getBetweenExpressionStart() + " AND " + o.getBetweenExpressionEnd());
       return;
     }
     if (expr instanceof IsNullExpression) {
       IsNullExpression o = (IsNullExpression) expr;
       Column left = (Column) o.getLeftExpression();
-      res.put(Col.col(left.getTable().getName(), left.getColumnName()),
+      res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           "IS " + (o.isNot() ? "NOT " : "") + "NULL");
       return;
     }
@@ -812,6 +813,10 @@ public class SQLEditor implements QueryEditorInternal {
 
     if (!ignoreUnknown)
       throw new IllegalArgumentException("Unsupported expression: " + expr + " " + expr.getClass());
+  }
+
+  static Col colNoQuotes(String table, String column) {
+    return Col.col(table.replaceAll("\"", ""), column.replaceAll("\"", ""));
   }
 
   @Override
