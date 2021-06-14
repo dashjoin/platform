@@ -425,7 +425,7 @@ public class SQLDatabase extends AbstractDatabase {
 
     // if no limit is provided, protect against rogue queries that sometime cause
     // extreme CPU / memory load during stmt.execute() already
-    return query(info, arguments, 100000);
+    return query(info, arguments, 1000);
   }
 
   List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments, Integer limit)
