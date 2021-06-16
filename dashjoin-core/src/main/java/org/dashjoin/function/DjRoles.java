@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * expose getRoles as a function
  */
-public class DjRoles extends AbstractFunction<Void, List<String>> {
+public class DjRoles extends AbstractEveryoneFunction<Void, List<String>> {
 
   @Override
   public List<String> run(Void arg) throws Exception {
@@ -20,10 +20,5 @@ public class DjRoles extends AbstractFunction<Void, List<String>> {
   @Override
   public String getID() {
     return "djRoles";
-  }
-
-  @Override
-  public String getType() {
-    return "read";
   }
 }
