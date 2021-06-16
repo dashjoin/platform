@@ -767,7 +767,9 @@
           "ID": "dj/config/dj-role/homepage",
           "name": "homepage",
           "parent": "dj/config/dj-role",
-          "type": "string"
+          "type": "string",
+          "title": "Default page for users in this role",
+          "examples": ["/page/Home"]
         }
       }
     },
