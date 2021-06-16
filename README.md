@@ -29,6 +29,7 @@ Features
 * [Platform as a Service](#platform-as-a-service)
 * [Installation](#installation)
 * [Administration](#administration)
+* [Development / Production](#development--production)
 * [Security](#security)
 * [Supported Databases](#supported-databases)
 * [API](#api)
