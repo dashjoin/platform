@@ -996,9 +996,12 @@ The save step writes the output of the mapping step into the database. The follo
 
 #### Mapping Function Reference
 
-##### Inference
+##### ETL
 
-The inference mapping function uses a single query result as input into the mapping process.
+The ETL function uses an expression as input into the mapping process.
+The expression result can be a map of table names to an array of rows (JSON objects).
+If the expression result has a simpler structure (for instance only a single table),
+the ETL function wraps this in a default table called "table".
 
 ### Expressions
 
@@ -1263,7 +1266,8 @@ This section describes administration and operating procedures for the Dashjoin 
 
 A system is defined by the following configurations: Dashboards, layout pages, user roles, registered databases, and functions.
 These settings are stored in the configuration database. For the open source version, this data is kept on the file system
-in the model folder which resides in the webserver's default directory.
+in the model folder. In the docker container, this folder is located under /deployments/model. For locally installed
+systems, this folder can be found under USER_HOME/.dashjoin/model.
 
 ### Query Performance
 
@@ -1318,6 +1322,31 @@ The platform will run this query by replacing the search parameter with the cont
 
 Finally, the system configuration page allows setting some global contraints that prevent
 "rogue" queries to deteriorate the overall system and database performance.
+
+## Development / Production
+
+If you use a Dashjoin system in production, we do not recommend making configuration changes
+like defining new queries or registering new user roles using the editors on the production
+system. Instead, you can setup multiple development systems where these changes are
+developed and tested.
+
+You can put the model folder under version control by following these steps:
+
+* create a repository, for instance on GitHub
+* install Dashjoin locally
+* clone the repository into your Dashjoib user home directory:
+
+```bash
+USER_HOME> git clone https://github.com/ORG/PROJECT.git .dashjoin
+```
+
+* start Dashjoin and start developing
+* pull changes from others
+* review and commit changes:
+
+```bash
+USER_HOME/.dashjoin> git status
+```
 
 ## Security
 
