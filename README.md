@@ -1349,6 +1349,9 @@ USER_HOME> git clone https://github.com/ORG/PROJECT.git .dashjoin
 USER_HOME/.dashjoin> git status
 ```
 
+On the production system, you can pull the changes using the same setup.
+If you are using containers, you can mount the model folder under /deployments/model.
+
 ## Security
 
 We strongly advise to:
