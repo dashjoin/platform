@@ -1,5 +1,9 @@
 <mat-icon *ngIf="!app.editLayout" matTooltip="Edit layout" class="example-icon"
     (click)="app.editLayout=true;formService.editMode=true;eventChange.emit({type: 'layout', busy: true})">
     edit</mat-icon>
-<mat-icon *ngIf="app.editLayout" [matTooltip]="saveTooltip()" class="example-icon" (click)="save()">
+<mat-icon *ngIf="app.editLayout && isDirty()" [matTooltip]="saveTooltip()" class="example-icon" (click)="save()">
     save</mat-icon>
+<mat-icon *ngIf="app.editLayout && isDirty()" matTooltip="Leave edit mode" class="example-icon" (click)="reload()">
+    cancel</mat-icon>
+<mat-icon *ngIf="app.editLayout && !isDirty()" matTooltip="Leave edit mode" class="example-icon" (click)="save()">
+    cancel</mat-icon>

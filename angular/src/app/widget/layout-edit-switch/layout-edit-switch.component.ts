@@ -39,4 +39,18 @@ export class LayoutEditSwitchComponent extends DJBaseComponent implements OnInit
       return 'Save layout: ' + changes;
     }
   }
+
+  /**
+   * indicates whether the layout is dirty
+   */
+  isDirty(): boolean {
+    return this.saveTooltip() !== 'Leave edit mode';
+  }
+
+  /**
+   * reload page to leave edit mode
+   */
+  reload() {
+    window.location.reload();
+  }
 }
