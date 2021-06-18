@@ -1,5 +1,8 @@
 package org.dashjoin.function;
 
+/**
+ * function that allows to reference the row number in a table that is being mapped using JSONata
+ */
 public class Index extends AbstractFunction<Void, Integer> {
 
   public static ThreadLocal<Integer> counter = new ThreadLocal<>();

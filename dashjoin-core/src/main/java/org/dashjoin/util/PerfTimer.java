@@ -1,5 +1,8 @@
 package org.dashjoin.util;
 
+/**
+ * performance timer utility
+ */
 public class PerfTimer {
 
   long start;

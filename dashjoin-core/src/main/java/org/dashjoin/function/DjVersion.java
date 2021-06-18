@@ -2,6 +2,9 @@ package org.dashjoin.function;
 
 import org.dashjoin.service.Manage.Version;
 
+/**
+ * function to return the platform version information
+ */
 public class DjVersion extends AbstractEveryoneFunction<Void, Version> {
 
   @Override

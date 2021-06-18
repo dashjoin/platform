@@ -3,6 +3,9 @@ package org.dashjoin.function;
 import java.util.List;
 import org.dashjoin.service.Manage.Version;
 
+/**
+ * function to list the dashjoin database drivers
+ */
 public class DjGetDatabases extends AbstractEveryoneFunction<Void, List<Version>> {
 
   @Override

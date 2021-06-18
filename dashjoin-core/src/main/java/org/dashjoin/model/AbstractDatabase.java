@@ -375,6 +375,9 @@ public abstract class AbstractDatabase implements Database {
     }
   }
 
+  /**
+   * batch object for deletion
+   */
   public static class DeleteBatch extends CreateBatch {
     DeleteBatch(AbstractDatabase db, Table m) {
       super(db, m);
@@ -390,6 +393,9 @@ public abstract class AbstractDatabase implements Database {
     }
   }
 
+  /**
+   * batch object for merge
+   */
   public static class MergeBatch extends CreateBatch {
     MergeBatch(AbstractDatabase db, Table m) {
       super(db, m);

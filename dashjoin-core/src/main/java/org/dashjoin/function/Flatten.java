@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * function that flattens tables that contain one column with a nested table. The result is a
+ * denormalized table that appends the nested subtables and adds the main table's row attributes
+ */
 public class Flatten
     extends AbstractFunction<List<Map<String, Object>>, List<Map<String, Object>>> {
 

@@ -33,6 +33,9 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 
+/**
+ * enables query editor support for SPARQL
+ */
 public class RDF4JEditor implements QueryEditorInternal {
 
   RDF4J db;

@@ -13,6 +13,9 @@ import org.dashjoin.util.MapUtil;
 import com.mongodb.MongoNamespace;
 import com.mongodb.client.MongoCursor;
 
+/**
+ * provides support for creating / deleting mongoDB collections
+ */
 public class MongoDBSchemaSchange implements SchemaChange {
 
   MongoDB db;

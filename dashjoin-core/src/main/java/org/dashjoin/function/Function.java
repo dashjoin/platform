@@ -12,6 +12,10 @@ public interface Function<ARG, RET> extends java.util.function.Function<ARG, RET
    */
   public RET run(ARG arg) throws Exception;
 
+  /**
+   * runtime exception used to wrap exceptions. used in order to make the dashjoin function
+   * interface compatible with jdk functions
+   */
   public class FunctionException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

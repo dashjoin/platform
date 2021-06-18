@@ -3,6 +3,9 @@ package org.dashjoin.function;
 import java.util.List;
 import org.dashjoin.service.Manage.FunctionVersion;
 
+/**
+ * function to list the available jsonata functions
+ */
 public class DjGetFunctions extends AbstractEveryoneFunction<Void, List<FunctionVersion>> {
 
   @Override

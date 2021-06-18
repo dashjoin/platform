@@ -10,6 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
+/**
+ * annotation defining the dashjoin runtime environment
+ */
 @Qualifier
 @Target({TYPE, METHOD, PARAMETER, FIELD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -7,6 +7,9 @@ import org.apache.commons.io.FileUtils;
 import org.dashjoin.util.FileSystem;
 import lombok.extern.java.Log;
 
+/**
+ * function to download a url (or list of urls) to the local upload folder
+ */
 @Log
 public class Download extends AbstractMultiInputFunction {
 

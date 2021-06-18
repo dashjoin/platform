@@ -861,6 +861,9 @@ public class Manage {
     public String runtime;
   }
 
+  /**
+   * adds function name and type to version
+   */
   public static class FunctionVersion extends Version {
 
     @Schema(title = "Function name")

@@ -156,7 +156,6 @@ public class PerformanceDatabase extends JSONDatabase {
    * @param query the query that was run
    * @param runtime query runtime in millisecs
    * @param limit optional limit given to the connection
-   * @param args query parameters
    */
   synchronized public static void add(String query, long runtime, Integer limit,
       Integer queryTimeout, String error) {
