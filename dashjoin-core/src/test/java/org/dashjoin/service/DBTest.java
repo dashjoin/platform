@@ -99,7 +99,8 @@ public class DBTest {
         db.searchQuery(sc, services.getConfig().getDatabase("dj/junit"), "search", "mike");
     Assert.assertEquals(1, res.size());
     Assert.assertEquals("/resource/junit/EMP/1", res.get(0).get("url"));
-    Assert.assertEquals("EMP.NAME", res.get(0).get("column"));
+    Assert.assertTrue(
+        "EMP.NAME".equals(res.get(0).get("column")) || "NAME".equals(res.get(0).get("column")));
     Assert.assertEquals("mike", res.get(0).get("match"));
   }
 
