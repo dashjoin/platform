@@ -92,6 +92,18 @@ public class DBTest {
   }
 
   @Test
+  public void testSearchQuery() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    List<Map<String, Object>> res =
+        db.searchQuery(sc, services.getConfig().getDatabase("dj/junit"), "search", "mike");
+    Assert.assertEquals(1, res.size());
+    Assert.assertEquals("/resource/junit/EMP/1", res.get(0).get("url"));
+    Assert.assertEquals("NAME", res.get(0).get("column"));
+    Assert.assertEquals("mike", res.get(0).get("match"));
+  }
+
+  @Test
   public void testQueryMeta() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
@@ -104,6 +116,8 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
+    map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
   }
 

@@ -73,6 +73,10 @@ public class ModelTest {
     if (map.containsKey("tables"))
       for (Entry<String, Map<String, Object>> e : ((Map<String, Map<String, Object>>) map
           .get("tables")).entrySet()) {
+
+        if (e.getKey().equals("EMP"))
+          continue;
+
         Assert.assertEquals(e.getKey(), e.getValue().get("name"));
         check(map, map.get("ID"), e.getValue());
         if (e.getValue().containsKey("properties"))

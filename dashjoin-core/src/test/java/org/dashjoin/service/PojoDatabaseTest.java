@@ -161,7 +161,7 @@ public class PojoDatabaseTest {
   public void testQueries() throws Exception {
     PojoDatabase config = services.pojoDatabase();
     List<Map<String, Object>> f = config.queryQueries(null, null);
-    Assert.assertEquals("list", f.get(0).get("ID"));
+    Assert.assertTrue("list".equals(f.get(0).get("ID")) || "search".equals(f.get(0).get("ID")));
   }
 
   @Inject

@@ -352,7 +352,7 @@ public class Data {
     context.put("table", table);
     context.put("search", search);
     context.put("object", object);
-    expression.resolve(sc, t.substring(1), context);
+    expression.resolve(sc, t, context);
     return true;
   }
 

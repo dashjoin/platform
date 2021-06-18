@@ -42,6 +42,9 @@
 					"pkpos": 0
 				}
 			}
+		},
+		"EMP": {
+			"after-create": "$echo(\"done \" & command)"
 		}
 	}
 }
