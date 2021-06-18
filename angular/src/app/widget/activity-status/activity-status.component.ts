@@ -22,6 +22,11 @@ import { DashjoinWidget } from '../widget-registry';
 })
 export class ActivityStatusComponent extends DJBaseComponent implements OnInit {
 
+  /**
+   * add request counter service
+   * @param counter counter service
+   * @param router router service
+   */
   constructor(
     public counter: RequestCounterService,
     protected elRef: ElementRef, protected cdRef: ChangeDetectorRef, protected route: ActivatedRoute, public router: Router) {

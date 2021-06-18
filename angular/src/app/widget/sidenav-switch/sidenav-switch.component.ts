@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
 
+/**
+ * side navigation container
+ */
 @Component({
   selector: 'app-sidenav-switch',
   templateUrl: './sidenav-switch.component.html',

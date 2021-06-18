@@ -88,6 +88,12 @@ export class MappingComponent implements WidgetComponent {
   styleUrls: ['./mapping.component.css']
 })
 export class MappingDialogComponent {
+
+  /**
+   * component constructor
+   * @param dialog dislog service
+   * @param data string representation of the mapping
+   */
   constructor(
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any

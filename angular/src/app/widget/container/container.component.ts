@@ -47,6 +47,9 @@ export class ContainerComponent extends DJBaseComponent implements OnInit {
     }
   }
 
+  /**
+   * handle if and foreach expressions
+   */
   initWidget() {
     /* tslint:disable */
     if (this.layout['if']) {
