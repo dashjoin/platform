@@ -886,7 +886,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
         database.put("tables", meta);
       database.put("status", "OK");
     } catch (Exception e) {
-      database.put("status", "Error: " + e.getMessage());
+      database.put("status", "Error: " + ExMapper.getMessage(e));
       throw e;
     }
   }

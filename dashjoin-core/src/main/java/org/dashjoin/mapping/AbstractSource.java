@@ -18,6 +18,7 @@ import org.dashjoin.model.AbstractDatabase.MergeBatch;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.ExMapper;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.PerfTimer;
@@ -86,7 +87,7 @@ public abstract class AbstractSource extends AbstractConfigurableFunction<Void, 
       set(of("end", new Date(), "status", "success"));
       return res;
     } catch (Exception e) {
-      set(of("end", new Date(), "status", e.getMessage()));
+      set(of("end", new Date(), "status", "Error: " + ExMapper.getMessage(e)));
       throw e;
     }
   }
@@ -195,7 +196,7 @@ public abstract class AbstractSource extends AbstractConfigurableFunction<Void, 
         db.cast(t, row);
         mbatch.merge(row);
         if (counter++ % 1000 == 0)
-          info((counter-1) + " rows processed");
+          info((counter - 1) + " rows processed");
 
         // successful update: do not delete
         // move PKs to row to search
