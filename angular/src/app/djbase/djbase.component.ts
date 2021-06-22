@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientXsrfModule, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { InstanceComponent } from '../instance/instance.component';
 import { DJRuntimeService } from '../djruntime.service';
@@ -122,7 +122,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
   /**
    * called during the ngOnInit lifecycle
    */
-  initWidget(): void {
+  async initWidget() {
     // default is noop
   }
 
@@ -134,7 +134,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     // super.ngOnInit();
     this.init();
     this.dataSnapshot = this.getData();
-    this.initWidget();
+    this.initWidget().then();
   }
 
   /**
@@ -231,11 +231,22 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
   }
 
   /**
-   * Evaluates the given JSONata expression with the current context
+   * Evaluates the given JSONata expression with the current context.
+   * Optionally you can provide the cache category for this expression.
+   * By default it uses the current DB/table context.
    */
-  async evaluateExpression(expr: string) {
+  async evaluateExpression(expr: string, category?: string) {
+    const ctx = this.context();
+    let cat = category;
+    if (!cat) {
+      if (ctx.database && ctx.table)
+        cat = encodeURIComponent(ctx.database) + '/' + encodeURIComponent(ctx.table);
+      else
+        cat = 'expression';
+    }
     const res = await this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-      { expression: expr, data: this.context() }))).toPromise();
+      { expression: expr, data: ctx })),
+      { headers: new HttpHeaders({ 'x-dj-cache': cat }) }).toPromise();
     return res;
   }
 
