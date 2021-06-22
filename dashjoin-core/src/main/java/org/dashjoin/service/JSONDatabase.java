@@ -37,6 +37,12 @@ public abstract class JSONDatabase implements Database {
       new TypeReference<Map<String, Map<String, Object>>>() {};
 
   /**
+   * helper when converting JSON to list(object)
+   */
+  public static TypeReference<List<Map<String, Object>>> trTable =
+      new TypeReference<List<Map<String, Object>>>() {};
+
+  /**
    * singleton mapper
    */
   protected static final ObjectMapper objectMapper =

@@ -67,6 +67,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.sqlite.JDBC;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.db2.jcc.DB2Driver;
 
@@ -277,7 +278,6 @@ public class Manage {
     insert(db, inputParts, false);
   }
 
-  @SuppressWarnings("unchecked")
   void insert(AbstractDatabase db, List<InputPart> inputParts, boolean clearTable)
       throws Exception {
     // for each table
@@ -367,21 +367,20 @@ public class Manage {
         tmp.delete();
       } else if (getFileExt(header).toLowerCase().equals("json")) {
         InputStream inputStream = inputPart.getBody(InputStream.class, null);
-        Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
-        for (Entry<String, Object> p : parsed.entrySet()) {
-          Table m = db.tables.get(p.getKey());
+        List<Map<String, Object>> parsed =
+            objectMapper.readValue(inputStream, JSONDatabase.trTable);
+        Table m = db.tables.get(getFileName(header));
 
-          if (clearTable)
-            db.delete(m);
+        if (clearTable)
+          db.delete(m);
 
-          // for each row
-          CreateBatch batch = db.openCreateBatch(m);
-          for (Map<String, Object> object : (List<Map<String, Object>>) p.getValue()) {
-            db.cast(m, object);
-            batch.create(object);
-          }
-          batch.complete();
+        // for each row
+        CreateBatch batch = db.openCreateBatch(m);
+        for (Map<String, Object> object : parsed) {
+          db.cast(m, object);
+          batch.create(object);
         }
+        batch.complete();
       } else
         throw new Exception("Unsupported file type: " + getFileExt(header)
             + ". Must be json, csv, xlsx or sqlite.");
@@ -408,7 +407,6 @@ public class Manage {
     insert(db, inputParts, true);
   }
 
-  @SuppressWarnings("unchecked")
   @POST
   @Path("/detect")
   @Consumes("multipart/form-data")
@@ -501,15 +499,16 @@ public class Manage {
         }
       } else if (getFileExt(header).toLowerCase().equals("json")) {
         InputStream inputStream = inputPart.getBody(InputStream.class, null);
-        Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
-        for (Entry<String, Object> p : parsed.entrySet()) {
-          Table m = ((AbstractDatabase) db).tables.get(p.getKey());
+        try {
+          List<Map<String, Object>> parsed =
+              objectMapper.readValue(inputStream, JSONDatabase.trTable);
+          Table m = ((AbstractDatabase) db).tables.get(getFileName(header));
           createMode(res, database, getFileName(header), m);
 
           List<String> headers = new ArrayList<>();
           List<List<String>> data = new ArrayList<>();
 
-          for (Map<String, Object> x : ((List<Map<String, Object>>) p.getValue())) {
+          for (Map<String, Object> x : parsed) {
             List<String> row = new ArrayList<>();
             for (Entry<String, Object> cell : x.entrySet()) {
               row.add("" + cell.getValue());
@@ -522,7 +521,10 @@ public class Manage {
           while (data.size() < 10)
             data.add(null);
 
-          handleStringTable(res, database, p.getKey(), m, headers, data);
+          handleStringTable(res, database, getFileName(header), m, headers, data);
+        } catch (JsonMappingException m) {
+          throw new Exception(
+              "Please provide a json file that contains a table (array of objects)");
         }
       } else
         throw new Exception("Unsupported file type: " + getFileExt(header)
