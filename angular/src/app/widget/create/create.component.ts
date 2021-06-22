@@ -46,7 +46,7 @@ export class CreateComponent extends DJBaseComponent implements OnInit {
     if (this.layout?.createSchema) {
       this.createSchema = this.layout.createSchema;
     } else {
-      const schema = await (await this.getData().getMeta()).schema as Table;
+      const schema = (await this.getData().getMeta()).schema as Table;
       // copy the schema since it might be edited and we do not want to change a cached version
       this.createSchema = JSON.parse(JSON.stringify(schema));
       this.app.log('got schema', this.createSchema);
