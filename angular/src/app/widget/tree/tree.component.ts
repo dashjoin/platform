@@ -57,9 +57,10 @@ export class MyDataSource extends MatTreeNestedDataSource<TreeNode> {
     this.treeControl.expansionModel.changed.subscribe(change => {
       if (change.added?.length > 0 && !change.added[0].children) {
         change.added[0].children = [];
-        const url = '/rest/database/query/' + this.tree.layout.database + '/' + this.tree.layout.query;
-        this.tree.http.post<any>(url, { node: change.added[0].name }).subscribe(res => {
-          for (const row of res) {
+
+        const getOptions = { arguments: new Map<string, any>(['node', change.added[0].name]) };
+        this.tree.getData().get(getOptions).then(res => {
+          for (const row of res.data) {
             let vv = null;
             for (const v of Object.values(row)) {
               vv = v;
@@ -117,45 +118,37 @@ export class TreeComponent extends LinksComponent {
    * init data source with the current element and prepare the query metadata
    */
   async initWidget() {
+    const res = (await this.getData().getMeta()).schema as any;
+    this.queryMeta = { ID: null, name: null, parent: null, type: null, properties: res };
+    this.column = Object.keys(res)[0];
+    const root = [];
 
-    // const d = await this.getData().get();
-    // const m = await this.getData().getMeta();
+    const dres = (await this.getData().get()).data;
+    for (const row of dres) {
+      let vv = null;
+      for (const v of Object.values(row)) {
+        vv = v;
+      }
+      if (typeof vv === 'object') {
+        root.push(vv);
+      } else {
+        root.push({ name: vv });
+      }
+    }
+    const expand = this.checkHighlights(null, root);
+    this.dataSource.data = root;
+    if (expand) {
+      this.treeControl.expand(expand);
+    }
 
-    const url = '/rest/database/queryMeta/' + this.layout.database + '/' + this.layout.query;
-    this.http.post<any>(url, { node: this.pk1 }).subscribe(res => {
-      this.queryMeta = { ID: null, name: null, parent: null, type: null, properties: res };
-      this.column = Object.keys(res)[0];
-
-      const root = [];
-      const qurl = '/rest/database/query/' + this.layout.database + '/' + this.layout.query;
-      this.http.post<any>(qurl, { node: this.pk1 }).subscribe(res2 => {
-        for (const row of res2) {
-          let vv = null;
-          for (const v of Object.values(row)) {
-            vv = v;
-          }
-          if (typeof vv === 'object') {
-            root.push(vv);
-          } else {
-            root.push({ name: vv });
-          }
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.init();
+        const expand2 = this.checkHighlights(null, root);
+        if (expand2) {
+          this.treeControl.expand(expand2);
         }
-        const expand = this.checkHighlights(null, root);
-        this.dataSource.data = root;
-        if (expand) {
-          this.treeControl.expand(expand);
-        }
-
-        this.router.events.subscribe(e => {
-          if (e instanceof NavigationEnd) {
-            this.init();
-            const expand2 = this.checkHighlights(null, root);
-            if (expand2) {
-              this.treeControl.expand(expand2);
-            }
-          }
-        });
-      });
+      }
     });
   }
 
