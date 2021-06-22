@@ -46,6 +46,13 @@ export class UploadDialogComponent {
   formData: FormData;
 
   /**
+   * are we on the config DB (allows model folder upload)?
+   */
+  isConfig(): boolean {
+    return window.location.href.endsWith('/dj%2Fconfig');
+  }
+
+  /**
    * called when upload happens
    */
   handleFileInput(files: FileList) {
@@ -67,7 +74,9 @@ export class UploadDialogComponent {
 
     this.formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      this.formData.append('file', files.item(i), encodeURIComponent(files.item(i).name));
+      const path = (files.item(i) as any).webkitRelativePath ?
+        (files.item(i) as any).webkitRelativePath : files.item(i).name;
+      this.formData.append('file', files.item(i), encodeURIComponent(path));
     }
     this.http.post<any>('/rest/manage/detect?database=' + this.database, this.formData).subscribe(res => {
       this.tables = res.schema;

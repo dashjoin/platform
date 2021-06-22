@@ -1,6 +1,11 @@
 <mat-dialog-content>
     <div>
+        <label class="mat-typography">Select .csv, .xlsx, .sqlite or .json: </label>
         <input type="file" multiple (change)="handleFileInput($event.target.files)">
+        <span *ngIf="isConfig()">
+            <label class="mat-typography">Upload model folder: </label>
+            <input type="file" webkitdirectory (change)="handleFileInput($event.target.files)">
+        </span>
     </div>
 
     <div *ngIf="tables">

@@ -154,7 +154,8 @@ public class ManageTest {
 
   @Test
   public void testCreate() throws Exception {
-    for (String filename : new String[] {"import.xlsx", "json.json", "import.csv", "import.sqlite"})
+    for (String filename : new String[] {"U/card.json", "import.xlsx", "json.json", "import.csv",
+        "import.sqlite"})
       for (int i = 0; i < 3; i++) {
         SecurityContext sc = mock(SecurityContext.class);
         when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
@@ -197,10 +198,13 @@ public class ManageTest {
         if (i == 0)
           manage.create(sc, "ddl", input);
         if (i == 1)
-          // table does not exist in ddl
-          Assertions.assertThrows(NullPointerException.class, () -> {
+          if (filename.equals("U/card.json"))
             manage.append(sc, "junit", input);
-          });
+          else
+            // table does not exist in junit
+            Assertions.assertThrows(NullPointerException.class, () -> {
+              manage.append(sc, "junit", input);
+            });
         if (i == 2)
           manage.replace(sc, "ddl", input);
       }

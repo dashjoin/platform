@@ -284,6 +284,26 @@ public class Manage {
     for (InputPart inputPart : inputParts) {
       MultivaluedMap<String, String> header = inputPart.getHeaders();
 
+      if (getFileName(header).contains("/")) {
+        // special case: model folder upload
+        Map<String, List<Map<String, Object>>> tables = handleModel(inputParts);
+        for (Entry<String, List<Map<String, Object>>> t : tables.entrySet()) {
+          Table m = db.tables.get(t.getKey());
+
+          if (clearTable)
+            db.delete(m);
+
+          // for each row
+          CreateBatch batch = db.openCreateBatch(m);
+          for (Map<String, Object> object : t.getValue()) {
+            db.cast(m, object);
+            batch.create(object);
+          }
+          batch.complete();
+        }
+        return;
+      }
+
       if (getFileExt(header).toLowerCase().equals("csv")) {
         // parse CSV
         InputStream inputStream = inputPart.getBody(InputStream.class, null);
@@ -428,6 +448,16 @@ public class Manage {
     for (InputPart inputPart : inputParts) {
       MultivaluedMap<String, String> header = inputPart.getHeaders();
 
+      if (getFileName(header).contains("/")) {
+        // special case: model folder upload
+        res.createMode = false;
+        Map<String, List<Map<String, Object>>> tables = handleModel(inputParts);
+        for (Entry<String, List<Map<String, Object>>> t : tables.entrySet())
+          handleJson(res, database, database, ((AbstractDatabase) db).tables.get(t.getKey()),
+              t.getKey(), t.getValue());
+        return res;
+      }
+
       if (getFileExt(header).toLowerCase().equals("csv")) {
         Table m = ((AbstractDatabase) db).tables.get(getFileName(header));
         createMode(res, database, getFileName(header), m);
@@ -505,23 +535,7 @@ public class Manage {
           Table m = ((AbstractDatabase) db).tables.get(getFileName(header));
           createMode(res, database, getFileName(header), m);
 
-          List<String> headers = new ArrayList<>();
-          List<List<String>> data = new ArrayList<>();
-
-          for (Map<String, Object> x : parsed) {
-            List<String> row = new ArrayList<>();
-            for (Entry<String, Object> cell : x.entrySet()) {
-              row.add("" + cell.getValue());
-              if (!headers.contains(cell.getKey()))
-                headers.add(cell.getKey());
-            }
-            data.add(row);
-          }
-
-          while (data.size() < 10)
-            data.add(null);
-
-          handleStringTable(res, database, getFileName(header), m, headers, data);
+          handleJson(res, database, database, m, getFileName(header), parsed);
         } catch (JsonMappingException m) {
           throw new Exception(
               "Please provide a json file that contains a table (array of objects)");
@@ -534,6 +548,55 @@ public class Manage {
     return res;
   }
 
+  /**
+   * if the upload is done using the model folder, parses this into a map of tables
+   */
+  Map<String, List<Map<String, Object>>> handleModel(List<InputPart> inputParts) throws Exception {
+    Map<String, List<Map<String, Object>>> tables = new LinkedHashMap<>();
+    for (InputPart inputPartM : inputParts) {
+      MultivaluedMap<String, String> headerM = inputPartM.getHeaders();
+      InputStream inputStream = inputPartM.getBody(InputStream.class, null);
+      Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
+      String[] parts = getFileName(headerM).split("/");
+      String tableName = parts[parts.length - 2];
+      List<Map<String, Object>> table = tables.get(tableName);
+      if (table == null) {
+        table = new ArrayList<>();
+        tables.put(tableName, table);
+      }
+      table.add(parsed);
+    }
+    return tables;
+  }
+
+  /**
+   * like handleStringTable, but does pre-processing for JSON by extracting column names
+   */
+  void handleJson(DetectResult res, String database, String tablename, Table m, String fileName,
+      List<Map<String, Object>> parsed) throws Exception {
+    List<String> headers = new ArrayList<>();
+    List<List<String>> data = new ArrayList<>();
+
+    for (Map<String, Object> x : parsed) {
+      List<String> row = new ArrayList<>();
+      for (Entry<String, Object> cell : x.entrySet()) {
+        row.add("" + cell.getValue());
+        if (!headers.contains(cell.getKey()))
+          headers.add(cell.getKey());
+      }
+      data.add(row);
+    }
+
+    while (data.size() < 10)
+      data.add(null);
+
+    handleStringTable(res, database, fileName, m, headers, data);
+  }
+
+  /**
+   * translates a table of strings (e.g. from a CSV) into the detect result structure by guessing
+   * datatypes and the primary key
+   */
   void handleStringTable(DetectResult res, String database, String tablename, Table m,
       List<String> first, List<List<String>> _second) throws Exception {
     Map<String, TypeSample> table = new LinkedHashMap<>();

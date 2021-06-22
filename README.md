@@ -7,9 +7,9 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 
 Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your registered user)
 
-Video tutorial:
+Video tutorials:
 
-[![Video tutorial](https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg)](https://www.youtube.com/watch?v=RuM-im9wd58)
+[![Video tutorial](https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg)](https://www.youtube.com/channel/UCcXpJB1GzQN_opSGqegCgoA)
 
 Features
 
@@ -458,6 +458,8 @@ File|Extension|Table Name|Column Name|Suggested Data Type|Suggested Primary Key
 Comma separated UFT-8 format as defined by [RFC 4180](http://tools.ietf.org/html/rfc4180)|.csv|File name before extension|First row|Guess by inspecting the data|First unique column
 Microsoft Excel|.xlsx|Sheet name|First row|Guess by inspecting the data|First unique column
 SQLite database|.sqlite|From database|From database|From database|First unique column
+JSON table|.json|File name before extension|First row|Guess by inspecting the data|First unique column
+Model folder upload to config DB|-|-|-|-|-|
 
 The system allows you to choose multiple files and collects all tables and columns from them and displays a preview of all tables in tabs. The table above shows how the system determines table and column names as well as the primary key and column types. You cannot change the table and column names in this display. If you would like to change them, abort the process, change the source file, and repeat the upload process.
 
