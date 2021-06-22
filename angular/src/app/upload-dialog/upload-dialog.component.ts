@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
@@ -91,14 +91,16 @@ export class UploadDialogComponent {
    */
   create() {
     this.formData.append('__dj_schema', JSON.stringify(this.tables));
-    this.dialogRef.close(this.http.post<any>('/rest/manage/create?database=' + this.database, this.formData));
+    this.dialogRef.close(this.http.post<any>('/rest/manage/create?database=' + this.database, this.formData,
+      { headers: new HttpHeaders({ 'x-dj-cache-invalidate': '*' }) }));
   }
 
   /**
    * append existing tables
    */
   append() {
-    this.dialogRef.close(this.http.post<any>('/rest/manage/append?database=' + this.database, this.formData));
+    this.dialogRef.close(this.http.post<any>('/rest/manage/append?database=' + this.database, this.formData,
+      { headers: new HttpHeaders({ 'x-dj-cache-invalidate': '*' }) }));
   }
 
   /**
@@ -114,7 +116,8 @@ export class UploadDialogComponent {
         }
       }).afterClosed().subscribe(res => {
         if (res) {
-          this.dialogRef.close(this.http.post<any>('/rest/manage/replace?database=' + this.database, this.formData));
+          this.dialogRef.close(this.http.post<any>('/rest/manage/replace?database=' + this.database, this.formData,
+            { headers: new HttpHeaders({ 'x-dj-cache-invalidate': '*' }) }));
         }
       });
   }
