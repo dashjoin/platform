@@ -29,13 +29,9 @@ export class MarkdownComponent extends DJBaseComponent implements OnInit {
   /**
    * evaluate expression if provided
    */
-  initWidget() {
+  async initWidget() {
     if (this.layout.context) {
-      this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-        { expression: this.layout.context, data: this.context() }))
-      ).subscribe(res => {
-        this.additionalContext = res;
-      }, this.errorHandler);
+      this.additionalContext = await this.evaluateExpression(this.layout.context);
     }
   }
 

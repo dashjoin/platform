@@ -24,7 +24,7 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
   /**
    * generate create schema
    */
-  initWidget() {
+  async initWidget() {
     this.layoutProperties2createSchema();
   }
 
@@ -32,20 +32,18 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
    * button widget action (navigate or print)
    */
   call() {
-    this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-      { expression: (this.layout.print ? this.layout.print : this.layout.navigate), data: this.context() })),
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-    ).subscribe(res => {
-      if (this.layout.print) {
-        this.snackBar.open(res as string, 'Ok', { duration: 3000 });
-      } else {
-        if ((res as string).startsWith('http://') || (res as string).startsWith('https://')) {
-          window.location.href = (res as string);
+    this.evaluateExpression(this.layout.print ? this.layout.print : this.layout.navigate)
+      .then(res => {
+        if (this.layout.print) {
+          this.snackBar.open(res as string, 'Ok', { duration: 3000 });
         } else {
-          this.router.navigate(Util.url2array(res));
+          if ((res as string).startsWith('http://') || (res as string).startsWith('https://')) {
+            window.location.href = (res as string);
+          } else {
+            this.router.navigate(Util.url2array(res));
+          }
         }
-      }
-    }, this.errorHandler);
+      }, this.errorHandler);
 
     if (this.value.djClassName === 'org.dashjoin.mapping.ETL') {
       this.snackBar.open('ETL started. Reload the page to get the current status', 'Ok', { duration: 3000 });

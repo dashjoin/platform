@@ -29,12 +29,8 @@ export class DisplayComponent extends TextComponent implements OnInit {
   /**
    * compute expressions
    */
-  initWidget() {
-    this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-      { expression: this.layout.display, data: this.context() }))
-    ).subscribe(res => {
-      this.displayData = res;
-    }, this.errorHandler);
+  async initWidget() {
+    this.displayData = await this.evaluateExpression(this.layout.display);
   }
 
   /**

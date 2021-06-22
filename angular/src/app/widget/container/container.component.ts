@@ -50,26 +50,18 @@ export class ContainerComponent extends DJBaseComponent implements OnInit {
   /**
    * handle if and foreach expressions
    */
-  initWidget() {
-    /* tslint:disable */
-    if (this.layout['if']) {
-      this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-        { expression: this.layout['if'], data: this.context() }))).subscribe(res => {
-          this.ifDisplay = res;
-          this.hideParentPageCard();
-          this.cdRef.detectChanges();
-        }, this.errorHandler);
+  async initWidget() {
+    const layout = this.layout as any;
+    if (layout.if) {
+      this.ifDisplay = await this.evaluateExpression(layout.if);
+      this.hideParentPageCard();
+      this.cdRef.detectChanges();
     } else {
       this.ifDisplay = true;
     }
-    if (this.layout['foreach']) {
-      this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-        { expression: this.layout['foreach'], data: this.context() }))).subscribe(res => {
-          this.foreachResult = res;
-          console.log(res)
-          this.cdRef.detectChanges();
-        }, this.errorHandler);
+    if (layout.foreach) {
+      this.foreachResult = await this.evaluateExpression(layout.foreach);
+      this.cdRef.detectChanges();
     }
-    /* tslint:enable */
   }
 }
