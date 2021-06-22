@@ -470,6 +470,7 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
 export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
 
     http: HttpClient;
+    catDbTable: string;
 
     /**
      * Constructor
@@ -479,6 +480,10 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
     constructor(id: string, http: HttpClient) {
         super(id);
         this.http = http;
+        const parts = id.split('/');
+        // we're in the DB/* category:
+        // any change in any table might change the query result
+        this.catDbTable = encodeURIComponent(parts[2]) + '/*';
     }
 
     private getQueryUri(): string {
@@ -501,7 +506,12 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
         }
 
         const data = await this.http.post<any>(this.getQueryUri(), args,
-            { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).toPromise();
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'x-dj-cache': this.catDbTable
+                })
+            }).toPromise();
         return Promise.resolve({
             data
         });
@@ -514,7 +524,12 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
     async getMeta(): Promise<DJDataMeta> {
         if (!this.meta) {
             const props = await this.http.post<any>(this.getMetaUri(), null,
-                { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).toPromise();
+                {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'x-dj-cache': this.catDbTable
+                    })
+                }).toPromise();
 
             const schema = { properties: props, type: 'object' } as Schema;
 
