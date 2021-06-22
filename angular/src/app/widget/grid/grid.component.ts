@@ -26,8 +26,8 @@ export class GridComponent extends ContainerComponent implements OnInit {
   /**
    * init grid options
    */
-  initWidget() {
-    super.initWidget();
+  async initWidget() {
+    await super.initWidget();
     this.options = {
       draggable: {
         enabled: this.app.editLayout,

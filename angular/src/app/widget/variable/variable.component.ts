@@ -30,7 +30,7 @@ export class VariableComponent extends ButtonComponent implements OnInit {
   /**
    * copy create value to be displayed in form and generate create schema
    */
-  initWidget() {
+  async initWidget() {
     this.createValue = JSON.parse(sessionStorage.getItem('variable'));
     this.layoutProperties2createSchema();
   }

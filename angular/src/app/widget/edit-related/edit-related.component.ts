@@ -28,7 +28,7 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
   /**
    * get metadata
    */
-  initWidget() {
+  async initWidget() {
     if (this.layout.prop) {
       const parts = Util.parseColumnID(this.layout.prop);
       if (this.layout.schema) {

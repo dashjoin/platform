@@ -32,7 +32,7 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
   /**
    * get schema (for displaying links) and display initial pagination
    */
-  initWidget() {
+  async initWidget() {
     if (this.layout.schema) {
       this.schema = this.layout.schema;
     } else {

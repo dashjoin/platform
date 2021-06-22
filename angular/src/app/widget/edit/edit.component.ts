@@ -36,7 +36,7 @@ export class EditComponent extends DJBaseComponent implements OnInit {
   /**
    * get edit schema
    */
-  initWidget() {
+  async initWidget() {
     if (this.layout.schema) {
       this.schema = this.layout.schema;
     } else {

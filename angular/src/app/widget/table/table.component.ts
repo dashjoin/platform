@@ -47,7 +47,7 @@ export class TableComponent extends LinksComponent implements OnInit {
   /**
    * trigger initial display
    */
-  initWidget() {
+  async initWidget() {
     try {
       this.page({ pageIndex: 0, pageSize: this.rows, length: null });
     } catch (e) {
