@@ -142,7 +142,9 @@ public abstract class AbstractSource extends AbstractConfigurableFunction<Void, 
             db.tables.remove(table.getKey());
           }
 
-          if (!db.tables.containsKey(table.getKey())) {
+          if (!db.tables.containsKey(table.getKey())
+              || db.tables.get(table.getKey()).name == null) {
+            // table does not exist of only contains some bootstrapped metadata like dj-label
             dirty = true;
             ddl.createTable(table.getKey(), mapping.pk, type(mapping.pk, table.getValue()));
             for (String col : cols(table.getValue(), true))
