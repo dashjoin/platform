@@ -28,6 +28,7 @@ import { DJBaseComponent } from '../djbase/djbase.component';
 import { filter } from 'rxjs/operators';
 import { Util } from '../util';
 import { Table } from '../model';
+import { ConfirmationDialogComponent } from 'opensrc/app/confirmation-dialog/confirmation-dialog.component';
 
 /**
  * main component driving the page layout
@@ -1001,6 +1002,44 @@ export class InstanceComponent implements OnInit {
   /**
    * save edited layouts
    */
+  saveConfirm() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Save the changed layout?',
+        submessage: 'This will overwrite the layout for ' + this.app.getDirtyChanges(),
+        buttonText: {
+          ok: 'Save',
+          cancel: 'No'
+        }
+      }
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.save();
+        this.snackBar.open('Done', 'Ok', { duration: 3000 });
+      }
+    });
+  }
+
+  reloadConfirm() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Leave edit mode?',
+        submessage: 'This will discard all your changes for ' + this.app.getDirtyChanges(),
+        buttonText: {
+          ok: 'Leave and Discard',
+          cancel: 'Continue Editing'
+        }
+      }
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        window.location.reload();
+        this.snackBar.open('Done', 'Ok', { duration: 3000 });
+      }
+    });
+  }
+
   save() {
     const jobs = [];
     this.app.editLayout = false;
