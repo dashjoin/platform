@@ -23,16 +23,7 @@ export class LayoutEditSwitchComponent extends DJBaseComponent implements OnInit
    * tooltip preview of which pages were changed
    */
   saveTooltip(): string {
-    const changes = [];
-    for (const key of Object.keys(this.app.dirtyLayouts.page)) {
-      changes.push(key);
-    }
-    for (const key of Object.keys(this.app.dirtyLayouts.widget)) {
-      changes.push(key);
-    }
-    for (const key of Object.keys(this.app.dirtyLayouts.schema)) {
-      changes.push(key);
-    }
+    const changes = this.app.getDirtyChanges();
     if (changes.length === 0) {
       return 'Leave edit mode';
     } else {
@@ -44,7 +35,7 @@ export class LayoutEditSwitchComponent extends DJBaseComponent implements OnInit
    * indicates whether the layout is dirty
    */
   isDirty(): boolean {
-    return this.saveTooltip() !== 'Leave edit mode';
+    return this.app.getDirtyChanges().length !== 0;
   }
 
   /**
