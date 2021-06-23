@@ -28,7 +28,7 @@ import { DJBaseComponent } from '../djbase/djbase.component';
 import { filter } from 'rxjs/operators';
 import { Util } from '../util';
 import { Table } from '../model';
-import { ConfirmationDialogComponent } from 'opensrc/app/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 /**
  * main component driving the page layout
