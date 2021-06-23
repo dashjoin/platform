@@ -148,6 +148,8 @@ public class SQLDatabase extends AbstractDatabase {
         return Proxy.newProxyInstance(this.getClass().getClassLoader(),
             new Class[] {java.sql.Statement.class}, this);
       }
+      if (method.getName().equals("execute"))
+        query = (String) args[0];
       if (method.getName().equals("setMaxRows"))
         maxRows = (Integer) args[0];
       if (method.getName().equals("setQueryTimeout"))
