@@ -439,7 +439,6 @@ export class InstanceComponent implements OnInit {
    * init page context from route
    */
   init() {
-    this.app.initWidgets();
     if (!((this.formService.registry as any).query)) {
       this.formService.registerComponent('query', QueryComponent);
     }

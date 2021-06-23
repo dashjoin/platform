@@ -17,7 +17,9 @@ export class AppService implements CanActivate {
   /**
    * need routing and communication
    */
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+    this.initWidgets();
+  }
 
   /**
    * make which pages were edited
@@ -67,7 +69,7 @@ export class AppService implements CanActivate {
   /**
    * the first time we access widgets, make sure they are loaded from the backend
    */
-  initWidgets() {
+  private initWidgets() {
     if (this.widgetsLoaded) {
       return;
     }
