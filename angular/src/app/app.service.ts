@@ -238,6 +238,20 @@ export class AppService implements CanActivate {
     }
   }
 
+  getDirtyChanges() {
+    const changes = [];
+    for (const key of Object.keys(this.dirtyLayouts.page)) {
+      changes.push(key);
+    }
+    for (const key of Object.keys(this.dirtyLayouts.widget)) {
+      changes.push(key);
+    }
+    for (const key of Object.keys(this.dirtyLayouts.schema)) {
+      changes.push(key);
+    }
+    return changes;
+  }
+
   /**
    * get label observable for an entire object from cache or http.
    * if not present, compute it using the dj-label template from the schema
