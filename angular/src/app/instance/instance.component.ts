@@ -3,7 +3,7 @@ import {
   QueryList, ChangeDetectorRef, ElementRef, ViewChild, ComponentFactoryResolver, Type
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { JsonSchemaFormService } from '@dashjoin/json-schema-form';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QueryComponent } from '../query/query.component';
@@ -25,7 +25,7 @@ import { DepInjectorService } from '../dep-injector.service';
 import { CompDirective } from './comp.directive';
 import { WidgetRegistry } from '../widget/widget-registry';
 import { DJBaseComponent } from '../djbase/djbase.component';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Util } from '../util';
 import { Table } from '../model';
 
@@ -283,10 +283,7 @@ export class InstanceComponent implements OnInit {
   static itemChange(item, itemComponent) {
     // we pass a this reference to this.options which shows up here...
     // simulate menu open to load this.comp for editing
-    (this as any).ref.menuOpened();
-
-    // wait for observable
-    setTimeout(() => {
+    (this as any).ref.menuOpened().subscribe(() => {
       for (const i of (this as any).ref.comp.children) {
         if (InstanceComponent.eq(i, item)) {
           i.x = item.x;
@@ -296,7 +293,7 @@ export class InstanceComponent implements OnInit {
           (this as any).ref.dirty();
         }
       }
-    }, 100);
+    });
   }
 
   /**
@@ -845,12 +842,11 @@ export class InstanceComponent implements OnInit {
    * @param layout  chosen layout
    */
   editLayout(layout: string) {
-    this.menuOpened();
-    setTimeout(() => {
+    this.menuOpened().subscribe(() => {
       this.comp.pageLayout = layout;
       this.dirty();
       this.root ? this.onEvent({ type: 'redraw' }) : this.eventChange.emit({ type: 'redraw' });
-    }, 10);
+    });
   }
 
   /**
@@ -915,7 +911,7 @@ export class InstanceComponent implements OnInit {
    * menu on the current layout was opened
    */
   menuOpened() {
-    this.menuOpenedT({ layoutMode: this.layoutMode, layoutName: this.layoutName, layoutPos: this.layoutPos });
+    return this.menuOpenedT({ layoutMode: this.layoutMode, layoutName: this.layoutName, layoutPos: this.layoutPos });
   }
 
   /**
@@ -928,6 +924,7 @@ export class InstanceComponent implements OnInit {
     l.o.subscribe(res => {
       this.parentComp = null;
       this.comp = res[l.path];
+      this.app.log('menuOpened', l.path, t.layoutPos);
       for (const n of t.layoutPos.split(',')) {
         if (n) {
           this.parentComp = this.comp;
@@ -935,6 +932,7 @@ export class InstanceComponent implements OnInit {
         }
       }
     });
+    return l.o;
   }
 
   /**
@@ -1061,10 +1059,8 @@ export class InstanceComponent implements OnInit {
       return;
     }
 
-    this.menuOpened();
-
     // copy values to comp so they get saved
-    setTimeout(() => {
+    this.menuOpened().subscribe(() => {
       if (create) {
         this.createSchema = Util.cleanJsonSchema(JSON.parse(JSON.stringify(this.createSchema)));
         this.comp.createSchema = this.createSchema;
@@ -1074,7 +1070,7 @@ export class InstanceComponent implements OnInit {
       }
 
       this.dirty();
-    }, 100);
+    });
   }
 
   /**
