@@ -109,7 +109,9 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Widget',
               type: 'string',
-              enum: Object.keys(this.widgets).sort()
+              widget: 'custom',
+              widgetType: 'imagelist',
+              enum: Object.keys(this.widgets).sort(),
             },
             icon: {
               static: true,

@@ -29,6 +29,7 @@ import { filter } from 'rxjs/operators';
 import { Util } from '../util';
 import { Table } from '../model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { WidgetListComponent } from '../edit-widget-dialog/widgetlist.component';
 
 /**
  * main component driving the page layout
@@ -444,6 +445,8 @@ export class InstanceComponent implements OnInit {
     if (!((this.formService.registry as any).mapping)) {
       this.formService.registerComponent('mapping', MappingComponent);
     }
+    this.formService.registerComponent('imagelist', WidgetListComponent);
+
     this.formService.registerDisplayWith('fk', new ForeignKeyChoiceHandler(this.http, this.app));
     this.formService.registerDisplayWith('fkdb', new DatabaseNameChoiceHandler(this.http, this.app));
 

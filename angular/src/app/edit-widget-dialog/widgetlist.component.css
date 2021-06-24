@@ -1,0 +1,16 @@
+.select-panel.mat-select-panel {
+  width: 600px;
+  max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 400px;
+}
+
+.select-panel.mat-select-panel .mat-option {
+  min-width: 33%;
+}
+
+.v-align,
+.v-align mat-icon {
+  vertical-align: middle;
+}
