@@ -74,6 +74,7 @@ import { SidenavSwitchComponent } from './widget/sidenav-switch/sidenav-switch.c
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { WidgetListComponent } from './edit-widget-dialog/widgetlist.component';
 
 export const __DJ_TYPES = [
   DJBaseComponent,
@@ -122,6 +123,7 @@ export const __DJ_TYPES = [
     HoverClassDirective,
     MappingComponent,
     ConfirmationDialogComponent,
+    WidgetListComponent,
     ...__DJ_TYPES
   ],
   imports: [
