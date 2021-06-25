@@ -7,6 +7,8 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 
 Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your registered user)
 
+Webpage: <https://dashjoin.com/>
+
 Video tutorials:
 
 [![Video tutorial](https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg)](https://www.youtube.com/channel/UCcXpJB1GzQN_opSGqegCgoA)
@@ -19,7 +21,8 @@ Features
 4. Data Integration and Federation: Visually map external data sources to your model. Load the data into a warehouse or federate the source into a virtual linked-data graph.
 5. Processes: Seamlessly start and integrate REST services from the application and monitor progress.
 6. Cloud Deployment: Deploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks.
-7. 100% Open Source: Join the Dashjoin community and avoid vendor lock-in.
+7. Everything JSON: Dashjoin leverages popular JSON standards like JSON Schema and JSONata and for all aspects of the system
+8. Open Source: Join the Dashjoin community and avoid vendor lock-in.
 
 ## Table of Contents
 
@@ -1395,7 +1398,7 @@ Please note that the API is subject to change.
 The API requires any request using a local admin user to be authenticated with HTTP basic authentication:
 
 ```bash
-curl -u admin:pssword https://localhost:8080/rest/manage/version
+curl -u admin:djdjdj http://localhost:8080/rest/manage/version
 ```
 
 In order to login using an OpenID user, you need to specify a bearer token as follows:
