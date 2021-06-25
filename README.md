@@ -9,7 +9,7 @@ Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your regist
 
 Webpage: <https://dashjoin.com/>
 
-Blob: <https://medium.com/@dashjoin>
+Blog: <https://medium.com/@dashjoin>
 
 Video tutorials:
 
