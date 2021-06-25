@@ -9,6 +9,8 @@ Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your regist
 
 Webpage: <https://dashjoin.com/>
 
+Blob: <https://medium.com/@dashjoin>
+
 Video tutorials:
 
 [![Video tutorial](https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg)](https://www.youtube.com/channel/UCcXpJB1GzQN_opSGqegCgoA)
