@@ -1186,8 +1186,8 @@ Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.
 ### Docker
 
 ```shell script
-docker pull dashjoin/public
-docker run -p 8080:8080 dashjoin/public
+docker pull dashjoin/platform
+docker run -p 8080:8080 dashjoin/platform
 ```
 
 Point your browser to <http://localhost:8080>.
@@ -1195,7 +1195,7 @@ Point your browser to <http://localhost:8080>.
 If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:
 
 ```bash
-docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/public
+docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
 ```
 
 ### Build Locally
