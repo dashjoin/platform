@@ -3,27 +3,29 @@ package org.dashjoin.function;
 /**
  * function that allows to reference the row number in a table that is being mapped using JSONata
  */
-public class Index extends AbstractFunction<Void, Integer> {
+public class Index extends AbstractFunction<Void, Long> {
 
-  private static ThreadLocal<Integer> counter = new ThreadLocal<>();
+  private static ThreadLocal<Long> counter = new ThreadLocal<>();
 
-  public static void set(int value) {
+  public static void reset() {
+    set(0);
+  }
+
+  public static void set(long value) {
     counter.set(value);
   }
 
-  public static int get() {
-    return counter.get();
+  public static long get() {
+    Long val = counter.get();
+    return val != null ? val : 0L;
   }
 
   public synchronized static void increment() {
-    if (counter.get() == null)
-      counter.set(0);
-    else
-      counter.set(counter.get() + 1);
+    set(get() + 1);
   }
 
   @Override
-  public Integer run(Void arg) throws Exception {
+  public Long run(Void arg) throws Exception {
     return counter.get();
   }
 

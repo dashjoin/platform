@@ -151,10 +151,10 @@ public class Mapping {
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
 
         for (Map<String, Object> row : source) {
-          Index.increment();
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
           if (mappedRow != null)
             mapped.add(mappedRow);
+          Index.increment();
         }
         res.put(mapping.getKey(), mapped);
       }

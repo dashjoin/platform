@@ -132,7 +132,7 @@ public class MappingTest {
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
     // Reset index
-    Index.set(-1);
+    Index.reset();
     Assert.assertEquals("[{a=1, rid=0}, {a=2, rid=1}]",
         Mapping.apply(s, sc, source, mappings).get("t").toString());
   }
