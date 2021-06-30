@@ -18,7 +18,8 @@ public class Index extends AbstractFunction<Void, Integer> {
   public synchronized static void increment() {
     if (counter.get() == null)
       counter.set(0);
-    counter.set(counter.get() + 1);
+    else
+      counter.set(counter.get() + 1);
   }
 
   @Override
