@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import javax.ws.rs.core.SecurityContext;
-import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.DeleteBatch;
 import org.dashjoin.model.AbstractDatabase.MergeBatch;
@@ -30,13 +28,7 @@ import lombok.extern.java.Log;
 @Log
 @JsonSchema(required = {"database", "oldData"},
     order = {"database", "oldData", "createSchema", "mappings"})
-public abstract class AbstractSource extends AbstractConfigurableFunction<Void, Void> {
-
-  /**
-   * if true, this class creates the required tables / columns in the database
-   */
-  @JsonSchema(title = "Create Schema")
-  public Boolean createSchema;
+public abstract class AbstractSource extends AbstractMapping<Void> {
 
   /**
    * indicates how to deal with data from the previous run:
@@ -56,19 +48,6 @@ public abstract class AbstractSource extends AbstractConfigurableFunction<Void, 
   @JsonSchema(enums = {"Ignore", "Refresh", "Delete All"}, title = "Handle existing data",
       description = "Ignore: simply add the data. Refresh: data that was created by this function and is no longer present in this run is deleted. Delete All: all records from the target tables are deleted.")
   public String oldData;
-
-  /**
-   * the target ETL database
-   */
-  @JsonSchema(choicesUrl = "/rest/database/all/config/dj-database",
-      jsonata = "$filter($.name, function($x){$x != \"config\"})", title = "Target database")
-  public String database;
-
-  /**
-   * mappings to be applied after data is gathered
-   */
-  @JsonSchema(widget = "custom", widgetType = "mapping")
-  public Map<String, Mapping> mappings;
 
   public Date start;
 
@@ -281,8 +260,4 @@ public abstract class AbstractSource extends AbstractConfigurableFunction<Void, 
   public Class<Void> getArgumentClass() {
     return Void.class;
   }
-
-  // TODO: support paging by adding offset, limit parameters
-  public abstract Map<String, List<Map<String, Object>>> gather(SecurityContext sc)
-      throws Exception;
 }

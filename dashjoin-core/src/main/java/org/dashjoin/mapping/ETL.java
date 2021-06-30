@@ -21,7 +21,6 @@ public class ETL extends AbstractSource {
       description = "Expression computing the source data")
   public String expression;
 
-  @SuppressWarnings("unchecked")
   @Override
   public Map<String, List<Map<String, Object>>> gather(SecurityContext sc) throws Exception {
 
@@ -29,6 +28,11 @@ public class ETL extends AbstractSource {
       throw new Exception("Please provide an expression");
 
     Object res = expressionService.resolve(sc, expression, null, this.readOnly);
+    return convertToMapOfTables(res);
+  }
+
+  @SuppressWarnings("unchecked")
+  Map<String, List<Map<String, Object>>> convertToMapOfTables(Object res) {
     if (res instanceof List<?>)
       if (isTable((List<?>) res))
         return MapUtil.of("table", (List<Map<String, Object>>) res);
