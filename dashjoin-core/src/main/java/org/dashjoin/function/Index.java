@@ -5,7 +5,21 @@ package org.dashjoin.function;
  */
 public class Index extends AbstractFunction<Void, Integer> {
 
-  public static ThreadLocal<Integer> counter = new ThreadLocal<>();
+  private static ThreadLocal<Integer> counter = new ThreadLocal<>();
+
+  public static void set(int value) {
+    counter.set(value);
+  }
+
+  public static int get() {
+    return counter.get();
+  }
+
+  public synchronized static void increment() {
+    if (counter.get() == null)
+      counter.set(0);
+    counter.set(counter.get() + 1);
+  }
 
   @Override
   public Integer run(Void arg) throws Exception {

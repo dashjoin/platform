@@ -150,9 +150,8 @@ public class Mapping {
         Expressions rowMapping = mapping.getValue().rowMapping() == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
 
-        int counter = 0;
         for (Map<String, Object> row : source) {
-          Index.counter.set(counter++);
+          Index.increment();
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
           if (mappedRow != null)
             mapped.add(mappedRow);
