@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
+import org.dashjoin.function.Index;
 import org.dashjoin.mapping.Mapping;
 import org.dashjoin.util.MapUtil;
 import org.junit.Assert;
@@ -130,6 +131,8 @@ public class MappingTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
+    Index.set(-1);
+    
     Assert.assertEquals("[{a=1, rid=0}, {a=2, rid=1}]",
         Mapping.apply(s, sc, source, mappings).get("t").toString());
   }
