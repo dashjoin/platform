@@ -40,4 +40,13 @@ public class FileSystemTest {
     });
 
   }
+
+  @Test
+  public void testUploadUrlRanges() throws Exception {
+    // Check file range handling
+    URL url = FileSystem.getUploadURL("file:upload/test.txt?start=99&size=456");
+    System.err.println(url);
+    FileResource fr = FileResource.of(url.toString());
+    assert (fr.size == 456 && fr.start == 99);
+  }
 }

@@ -39,7 +39,8 @@ public class FileSystem {
   public static URL getUploadURL(String name) throws IOException {
     URL url = new URL(name);
     if (url.getProtocol().equals("file")) {
-      url = new URL("file:" + Home.get().getFile(url.getPath()).getCanonicalPath());
+      url = new URL("file:" + Home.get().getFile(url.getPath()).getCanonicalPath()
+          + (url.getQuery() != null ? "?" + url.getQuery() : ""));
       checkFileAccess(new File(url.getPath()));
     }
     return url;
