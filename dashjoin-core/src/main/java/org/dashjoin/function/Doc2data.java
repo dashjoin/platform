@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -17,6 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
+import org.dashjoin.util.FileResource;
 import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.MapUtil;
 import org.hsqldb.lib.StringInputStream;
@@ -25,7 +27,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.StreamReadFeature;
+import com.fasterxml.jackson.core.io.JsonEOFException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 /**
  * given a URL, parses the contents from JSON, XML, CSV to a json object
@@ -34,10 +43,23 @@ public class Doc2data extends AbstractMultiInputFunction {
 
   private static final ObjectMapper om = new ObjectMapper();
 
+  long MAX_SIZE = 100*1024*1024;
+  
   @Override
   public Object single(Object arg) throws Exception {
     try {
+      try {
+        Object res = parseJsonDoc((String) arg);
+        return res;
+      } catch (Throwable e) {
+        // ignore
+      }
+
       URL url = FileSystem.getUploadURL((String) arg);
+
+      if (new java.io.File(url.getPath()).length() > MAX_SIZE)
+        throw new RuntimeException("Data file too large: " + url);
+
       try (InputStream in = url.openStream()) {
         String s = IOUtils.toString(in, Charset.defaultCharset());
         return parse(s);
@@ -97,6 +119,53 @@ public class Doc2data extends AbstractMultiInputFunction {
       }
 
     return null;
+  }
+
+  Object parseJsonDoc(String file) throws Throwable {
+
+    FileResource fr = FileResource.of(file);
+    if (fr.size != null && fr.size > MAX_SIZE)
+      throw new Exception("Data file too large: " + fr);
+    else if (FileSystem.getUploadFile(fr.file).length() > MAX_SIZE)
+      throw new Exception("Data file too large: " + fr);
+
+    try (InputStream in = FileResource.of(file).getInputStream()) {
+      return parseJson(in, true);
+    }
+  }
+
+  Object parseJson(InputStream in, boolean flattenArrays)
+      throws IOException, JsonParseException, JsonMappingException {
+    JsonFactory jf =
+        JsonFactory.builder().configure(StreamReadFeature.AUTO_CLOSE_SOURCE, false).build();
+    ObjectMapper _om = new ObjectMapper(jf);
+
+    JsonParser jp = _om.getFactory().createParser(in);
+
+    try (jp) {
+      List<Object> res = new ArrayList<>();
+      Object obj;
+      try {
+        while ((obj = _om.readValue(jp, Object.class)) != null) {
+
+          if (flattenArrays && obj instanceof List)
+            res.addAll((List) obj);
+          else
+            res.add(obj);
+
+          if (readOnly)
+            break;
+        }
+      } catch (MismatchedInputException | JsonEOFException ex) {
+        // EOF
+      }
+      // System.err.println("JSON stream " + file + " : " + res.size());
+      if (res.isEmpty())
+        return null;
+      if (res.size() == 1)
+        return res.get(0);
+      return res;
+    }
   }
 
   @Override
