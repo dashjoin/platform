@@ -35,16 +35,18 @@ import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import lombok.extern.java.Log;
 
 /**
  * given a URL, parses the contents from JSON, XML, CSV to a json object
  */
+@Log
 public class Doc2data extends AbstractMultiInputFunction {
 
   private static final ObjectMapper om = new ObjectMapper();
 
-  long MAX_SIZE = 100*1024*1024;
-  
+  long MAX_SIZE = 100 * 1024 * 1024;
+
   @Override
   public Object single(Object arg) throws Exception {
     try {
@@ -53,6 +55,7 @@ public class Doc2data extends AbstractMultiInputFunction {
         return res;
       } catch (Throwable e) {
         // ignore
+        log.info("Error parsing JSON: " + e + " - fallback to regular parser");
       }
 
       URL url = FileSystem.getUploadURL((String) arg);
@@ -124,9 +127,10 @@ public class Doc2data extends AbstractMultiInputFunction {
   Object parseJsonDoc(String file) throws Throwable {
 
     FileResource fr = FileResource.of(file);
-    if (fr.size != null && fr.size > MAX_SIZE)
-      throw new Exception("Data file too large: " + fr);
-    else if (FileSystem.getUploadFile(fr.file).length() > MAX_SIZE)
+    if (fr.size != null) {
+      if (fr.size > MAX_SIZE)
+        throw new Exception("Data file too large: " + fr);
+    } else if (FileSystem.getUploadFile(fr.file).length() > MAX_SIZE)
       throw new Exception("Data file too large: " + fr);
 
     try (InputStream in = FileResource.of(file).getInputStream()) {
