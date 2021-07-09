@@ -58,7 +58,7 @@ export class MyDataSource extends MatTreeNestedDataSource<TreeNode> {
       if (change.added?.length > 0 && !change.added[0].children) {
         change.added[0].children = [];
 
-        const getOptions = { arguments: new Map<string, any>(['node', change.added[0].name]) };
+        const getOptions = { arguments: { node: change.added[0].name } };
         this.tree.getData().get(getOptions).then(res => {
           for (const row of res.data) {
             let vv = null;
@@ -118,12 +118,12 @@ export class TreeComponent extends LinksComponent {
    * init data source with the current element and prepare the query metadata
    */
   async initWidget() {
-    const res = (await this.getData().getMeta()).schema as any;
+    const res = (await this.getData().getMeta()).schema.properties as any;
     this.queryMeta = { ID: null, name: null, parent: null, type: null, properties: res };
     this.column = Object.keys(res)[0];
     const root = [];
 
-    const dres = (await this.getData().get()).data;
+    const dres = (await this.getData().get({ arguments: { node: this.pk1 } })).data;
     for (const row of dres) {
       let vv = null;
       for (const v of Object.values(row)) {

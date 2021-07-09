@@ -41,7 +41,7 @@ export interface DJDataGetOptions {
      * For a query these can be query parameters,
      * for a REST source this can be additional arguments.
      */
-    arguments?: Map<string, any>;
+    arguments?: any;
 }
 
 export type PrimitiveType = number | boolean | string;
