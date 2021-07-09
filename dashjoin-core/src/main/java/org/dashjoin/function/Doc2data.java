@@ -138,6 +138,7 @@ public class Doc2data extends AbstractMultiInputFunction {
     }
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   Object parseJson(InputStream in, boolean flattenArrays)
       throws IOException, JsonParseException, JsonMappingException {
     JsonFactory jf =

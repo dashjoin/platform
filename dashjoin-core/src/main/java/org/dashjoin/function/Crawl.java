@@ -14,10 +14,21 @@ import org.dashjoin.util.FileSystem;
  * given a URL, return a list of URLs "contained" in the URL by following all hyperlinks / files in
  * the file / ftp folder
  */
-public class Crawl extends AbstractFunction<String, List<String>> {
+public class Crawl extends AbstractFunction<Object, List<String>> {
 
+  @SuppressWarnings("unchecked")
   @Override
-  public List<String> run(String arg) throws Exception {
+  public List<String> run(Object _arg) throws Exception {
+
+    if (_arg instanceof List<?>) {
+      List<String> res = new ArrayList<>();
+      for (String s : (List<String>) _arg)
+        res.addAll(run(s));
+      return res;
+    }
+
+    String arg = (String) _arg;
+
     List<String> res = new ArrayList<>();
     URL url = FileSystem.getUploadURL(arg);
 
@@ -46,8 +57,8 @@ public class Crawl extends AbstractFunction<String, List<String>> {
   }
 
   @Override
-  public Class<String> getArgumentClass() {
-    return String.class;
+  public Class<Object> getArgumentClass() {
+    return Object.class;
   }
 
   @Override
