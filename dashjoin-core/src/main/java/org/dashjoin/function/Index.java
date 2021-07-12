@@ -26,7 +26,7 @@ public class Index extends AbstractFunction<Void, Long> {
 
   @Override
   public Long run(Void arg) throws Exception {
-    return counter.get();
+    return get();
   }
 
   @Override
