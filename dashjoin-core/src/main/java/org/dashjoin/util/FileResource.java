@@ -88,14 +88,15 @@ public class FileResource {
   public InputStream getInputStream() throws IOException {
     File f = FileSystem.getUploadFile(file);
     String path = f.getAbsolutePath();
-    int ix = path.indexOf(".zip") + 4;
+    int ix = path.indexOf(".zip");
     if (ix > 0) {
+      ix += 4;
       String ar = path.substring(0, ix);
       String entry = path.substring(ix + 1);
       return getZipInputStream(new FileInputStream(ar), entry);
     }
 
-    FileInputStream fin = new FileInputStream(file);
+    FileInputStream fin = new FileInputStream(f);
     if (start == null || size == null)
       return fin;
 
