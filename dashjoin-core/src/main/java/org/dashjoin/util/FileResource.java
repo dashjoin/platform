@@ -1,11 +1,15 @@
 package org.dashjoin.util;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.poi.util.BoundedInputStream;
@@ -13,8 +17,8 @@ import org.apache.poi.util.BoundedInputStream;
 /**
  * Represents a file resource.
  * 
- * Optionally has a range. File ranges are encoded with file:// URLs using query parameters start and
- * size:
+ * Optionally has a range. File ranges are encoded with file:// URLs using query parameters start
+ * and size:
  * 
  * file:///path/to/file?start=<start>&size=<size>
  */
@@ -70,8 +74,28 @@ public class FileResource {
     return res;
   }
 
+  protected InputStream getZipInputStream(InputStream archive, String name) throws IOException {
+    ZipInputStream zis = new ZipInputStream(archive);
+    ZipEntry e;
+    while ((e = zis.getNextEntry()) != null) {
+      if (!e.isDirectory() && e.getName().equals(name)) {
+        return zis;
+      }
+    }
+    throw new FileNotFoundException("Zip entry not found: " + name);
+  }
+
   public InputStream getInputStream() throws IOException {
-    FileInputStream fin = new FileInputStream(FileSystem.getUploadFile(file));
+    File f = FileSystem.getUploadFile(file);
+    String path = f.getAbsolutePath();
+    int ix = path.indexOf(".zip") + 4;
+    if (ix > 0) {
+      String ar = path.substring(0, ix);
+      String entry = path.substring(ix + 1);
+      return getZipInputStream(new FileInputStream(ar), entry);
+    }
+
+    FileInputStream fin = new FileInputStream(file);
     if (start == null || size == null)
       return fin;
 
