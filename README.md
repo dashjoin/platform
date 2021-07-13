@@ -42,7 +42,7 @@ Features
 
 ## Getting Started: 15 Minute Tour
 
-This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/platform/tree/master/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
+This section will guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/platform/tree/master/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
 
 We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.
 
