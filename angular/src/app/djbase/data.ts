@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Schema } from '@dashjoin/json-schema-form/public-api';
 import jsonata from 'jsonata';
 import { AppService } from '../app.service';
+import { Table } from '../model';
 import { Util } from '../util';
 
 export interface DJPagingCursor {
@@ -311,6 +312,11 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
     http: HttpClient;
     app: AppService;
 
+    /**
+     * remember data so we can use it to compute labels
+     */
+    data: any;
+
     constructor(id: string, http: HttpClient, app: AppService) {
         super(id);
         this.http = http;
@@ -349,6 +355,7 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
                 sizeEstimate: page.paging && page.paging.totalSize || null,
                 primaryKey: this.keyDefFromSchema(schema)
             };
+            this.computeLabels();
         }
         return Promise.resolve(this.meta);
     }
@@ -373,6 +380,8 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
 
         const data = await this.http.get<any>(uri).toPromise();
         this.app.log('data', data);
+        this.data = data;
+        this.computeLabels();
         return Promise.resolve({
             data,
             paging: {
@@ -382,6 +391,27 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
                 rangeTruncated: data.length < sz
             }
         });
+    }
+
+    /**
+     * called from getMeta() and getInternal()
+     * if both are available, make sure to populate the label cache
+     */
+    private computeLabels() {
+        if (this.meta && this.data) {
+            try {
+                const t = this.meta.schema as Table;
+                for (const i of this.data) {
+                    const pks = [];
+                    for (const pk of this.meta.primaryKey?.fields) {
+                        pks.push(i[pk]);
+                    }
+                    this.app.getObjectLabel(Util.parseTableID(t.ID)[1], t.name, pks, i);
+                }
+            } catch (e) {
+                this.app.log('error during label computation', e);
+            }
+        }
     }
 
     private getKeysUri() {
