@@ -144,6 +144,11 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
    * 3) data table from layout.table
    */
   getData(): DJData<any> {
+
+    if (this.dataSnapshot) {
+      return this.dataSnapshot;
+    }
+
     let data = this.data;
 
     if (!data && this.layout?.query) {
