@@ -49,6 +49,10 @@ public class Doc2data extends AbstractMultiInputFunction {
 
   @Override
   public Object single(Object arg) throws Exception {
+
+    if (arg == null || !(arg instanceof String))
+      return null;
+
     try {
       try {
         Object res = parseJsonDoc((String) arg);
