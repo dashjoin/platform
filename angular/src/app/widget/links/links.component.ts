@@ -137,7 +137,7 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
 
     const value = data[column];
 
-    if (!value) {
+    if (!value && value !== 0) {
       return null;
     }
 
