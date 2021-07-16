@@ -173,14 +173,23 @@ public class ModelTest {
           if (!(kid.getValue() instanceof ObjectNode)) {
             Assert.assertTrue(
                 expr.startsWith("{") || expr.startsWith("$") || expr.startsWith("value."));
-            Expression jsonata = Expression.jsonata(expr.substring(1));
+            Expression jsonata = Expression.jsonata(expr);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
               String s = e.getMessage();
               if (!s.equals("Unknown function: $call"))
                 if (!s.equals("Unknown function: $trigger"))
-                  throw e;
+                  if (!s.equals("Unknown function: $djRoles"))
+                    if (!s.equals("Unknown function: $djVersion"))
+                      if (!s.equals("Unknown function: $djGetDatabases"))
+                        if (!s.equals("Unknown function: $djGetDrivers"))
+                          if (!s.equals("Unknown function: $djGetFunctions"))
+                            if (!s.equals("Unknown function: $echo"))
+                              if (!s.equals("Unknown function: $alterColumnTrigger"))
+                                if (!s.equals("Unknown function: $alterTableTrigger"))
+                                  if (!s.equals("Unknown function: $traverse"))
+                                    throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");

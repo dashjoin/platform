@@ -217,7 +217,7 @@
 		<dependency>
 			<groupId>com.ibm.jsonata4java</groupId>
 			<artifactId>JSONata4Java</artifactId>
-			<version>1.4.8</version>
+			<version>1.5.8</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
