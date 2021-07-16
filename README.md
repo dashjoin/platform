@@ -5,6 +5,8 @@
 
 For anyone who is planning a development project, faces a tight schedule, needs to present results quickly, or has limited development resources available. Dashjoin taps into and integrates your existing data sources and allows you to intuitively browse, search, edit, and visualize your integrated information. Add business logic to enable users and automation to act on the information. Unlike other Low Code Development Platforms, Dashjoin offers a free open source version with a commercial PaaS and bases on a unique, linked-data inspired approach to scalable data integration.
 
+Download: <https://download.dashjoin.com/>
+
 Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your registered user)
 
 Webpage: <https://dashjoin.com/>
@@ -918,7 +920,7 @@ Calls an external REST service.
 
 Configuration
 
-* url: the URL of the REST service to call
+* url: the URL of the REST service to call (the URL may contain template variables ${var} which are replaced with the respective argument field)
 * username: optional HTTP basic authentication user name
 * password: optional HTTP basic authentication password
 

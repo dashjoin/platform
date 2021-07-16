@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.dashjoin.model.JsonSchema;
+import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -63,7 +64,8 @@ public class RestJson extends AbstractConfigurableFunction<Map, Object> {
   @Override
   public Object run(Map map) throws Exception {
     HttpClient client = HttpClient.newBuilder().build();
-    Builder request = HttpRequest.newBuilder().uri(new URI(url));
+    String sv = map == null ? url : (String) Template.replace(url, map);
+    Builder request = HttpRequest.newBuilder().uri(new URI(sv));
     if (username != null)
       request = request.header("Authorization",
           "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
