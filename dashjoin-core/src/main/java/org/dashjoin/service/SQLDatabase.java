@@ -354,7 +354,7 @@ public class SQLDatabase extends AbstractDatabase {
     Map<Table, List<String>> tables = new HashMap<>();
 
     // make sure all tables are added
-    for (Table c : this.tables.values()) {
+    for (Table c : services.getConfig().searchTables(this)) {
       List<String> l = new ArrayList<>();
       tables.put(c, l);
 

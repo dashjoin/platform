@@ -1,5 +1,6 @@
 package org.dashjoin.service;
 
+import java.util.Collection;
 import java.util.List;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.model.AbstractDatabase;
@@ -81,6 +82,8 @@ public interface Config {
   public Integer getAllTimeoutMs();
 
   public boolean excludeFromSearch(AbstractDatabase db) throws Exception;
+
+  public Collection<Table> searchTables(AbstractDatabase db) throws Exception;
 
   public String databaseSearchQuery(AbstractDatabase db) throws Exception;
 

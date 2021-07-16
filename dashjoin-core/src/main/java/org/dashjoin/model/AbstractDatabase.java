@@ -96,7 +96,7 @@ public abstract class AbstractDatabase implements Database {
   public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
     // TODO: only brute force search for now
     List<Map<String, Object>> ret = new ArrayList<>();
-    for (Table t : tables.values()) {
+    for (Table t : services.getConfig().searchTables(this)) {
 
       // do not search performance traces
       if ("dj-query-performance".equals(t.name))

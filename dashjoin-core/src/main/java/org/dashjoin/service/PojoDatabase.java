@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -951,6 +952,25 @@ public class PojoDatabase extends UnionDatabase implements Config {
     if (value == null)
       return false;
     return value.contains(db.name);
+  }
+
+  @Override
+  public Collection<Table> searchTables(AbstractDatabase db) throws Exception {
+    Map<String, Object> res =
+        read(Table.ofName("dj-config"), MapUtil.of("ID", "exclude-table-from-search"));
+
+    if (res == null)
+      return db.tables.values();
+    @SuppressWarnings("unchecked")
+    List<String> excludeTable = (List<String>) res.get("list");
+    if (excludeTable == null)
+      return db.tables.values();
+
+    List<Table> list = new ArrayList<>();
+    for (Table t : db.tables.values())
+      if (!excludeTable.contains(t.name))
+        list.add(t);
+    return list;
   }
 
   @Override

@@ -1,0 +1,5 @@
+{
+	"ID": "exclude-table-from-search",
+	"description": "Tables in this list are not searched",
+	"type": "list"
+}
