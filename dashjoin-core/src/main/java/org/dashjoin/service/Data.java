@@ -125,10 +125,39 @@ public class Data {
       } else {
         column = p.getKey();
       }
+
+    // Special support for a union-ized search table,
+    // where all search tables are union-ized in one big table.
+    //
+    // We expect the search query to return these columns:
+    //
+    // type -> the table of the result
+    // id -> the ID of the record in the table
+    // match -> the matching text
+    String tableKey = "type";
+    if (key == null) {
+      key = "id";
+      column = "match";
+      // Look if the columns are prefixed with table name
+      // i.e. "table.col" instead of col
+      for (Entry<String, Property> p : meta.entrySet())
+        if (p.getKey().endsWith(".id"))
+          key = p.getKey();
+        else if (p.getKey().endsWith(".type"))
+          tableKey = p.getKey();
+      // else if (p.getKey().endsWith(".match"))
+      // column = p.getKey();
+    }
+
     List<Map<String, Object>> res =
         this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
     List<Map<String, Object>> projected = new ArrayList<>();
     for (Map<String, Object> m : res) {
+
+      // For the union-ized search table: need to gather table from each record
+      if (table == null)
+        table = "" + m.get(tableKey);
+
       projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
           "table", table, "column", column, "match", m.get(column)));
     }
