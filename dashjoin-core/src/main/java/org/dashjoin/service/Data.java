@@ -40,6 +40,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import com.google.common.net.UrlEscapers;
+import lombok.extern.java.Log;
 
 /**
  * The core REST data and metadata interface that sits on top of all database implementations. It
@@ -57,6 +58,7 @@ import com.google.common.net.UrlEscapers;
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 @ApplicationScoped
+@Log
 public class Data {
 
   @Inject
@@ -113,6 +115,12 @@ public class Data {
 
   List<Map<String, Object>> searchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
       String search) throws Exception {
+
+    // Special support for a union-ized search table,
+    // where all search tables are union-ized in one index table.
+    if (searchQuery.startsWith("dj_search"))
+      return indexSearchQuery(sc, db, searchQuery, search);
+
     Map<String, Property> meta =
         this.queryMeta(sc, db.name, searchQuery, MapUtil.of("search", search));
     String table = null;
@@ -126,28 +134,53 @@ public class Data {
         column = p.getKey();
       }
 
-    // Special support for a union-ized search table,
-    // where all search tables are union-ized in one big table.
-    //
-    // We expect the search query to return these columns:
+    if (table == null || key == null || column == null)
+      log.warning(
+          "Search configuration issue: table=" + table + " key=" + key + " column=" + column);
+
+    List<Map<String, Object>> res =
+        this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
+    List<Map<String, Object>> projected = new ArrayList<>();
+    for (Map<String, Object> m : res) {
+      projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
+          "table", table, "column", column, "match", m.get(column)));
+    }
+    return projected;
+  }
+
+  /**
+   * Perform search on search index for multiple/all types
+   * 
+   * @param sc
+   * @param db
+   * @param searchQuery
+   * @param search
+   * @return
+   * @throws Exception
+   */
+  List<Map<String, Object>> indexSearchQuery(SecurityContext sc, AbstractDatabase db,
+      String searchQuery, String search) throws Exception {
+
+    Map<String, Property> meta =
+        this.queryMeta(sc, db.name, searchQuery, MapUtil.of("search", search));
+
+    // We expect the search index to return these columns:
     //
     // type -> the table of the result
     // id -> the ID of the record in the table
     // match -> the matching text
     String tableKey = "type";
-    if (key == null) {
-      key = "id";
-      column = "match";
-      // Look if the columns are prefixed with table name
-      // i.e. "table.col" instead of col
-      for (Entry<String, Property> p : meta.entrySet())
-        if (p.getKey().endsWith(".id"))
-          key = p.getKey();
-        else if (p.getKey().endsWith(".type"))
-          tableKey = p.getKey();
-      // else if (p.getKey().endsWith(".match"))
-      // column = p.getKey();
-    }
+    String key = "id";
+    String column = "match";
+    // Look if the columns are prefixed with table name
+    // i.e. "table.col" instead of col
+    for (Entry<String, Property> p : meta.entrySet())
+      if (p.getKey().endsWith(".id"))
+        key = p.getKey();
+      else if (p.getKey().endsWith(".type"))
+        tableKey = p.getKey();
+    // else if (p.getKey().endsWith(".match"))
+    // column = p.getKey();
 
     List<Map<String, Object>> res =
         this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
@@ -155,14 +188,16 @@ public class Data {
     for (Map<String, Object> m : res) {
 
       // For the union-ized search table: need to gather table from each record
-      if (table == null)
-        table = "" + m.get(tableKey);
-
-      projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
-          "table", table, "column", column, "match", m.get(column)));
+      Object table = m.get(tableKey);
+      if (table != null)
+        projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
+            "table", table, "column", column, "match", m.get(column)));
+      else
+        log.warning("Search result has no type, ignored: " + m);
     }
     return projected;
   }
+
 
   /**
    * looks up the query with the given ID in the catalog, finds the right database, inserts the
