@@ -28,7 +28,7 @@
             <div mat-line *ngFor="let subArray of splitArray(e.value, 3)">
                 <span *ngFor="let e of subArray">
                     <a
-                        [routerLink]="linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1))">{{labelId(linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1)))|async}}</a>
+                        [routerLink]="linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1))">{{linkedLabelId(linkArray('/resource/'+e.id.substring(e.id.indexOf('/')+1)))|async}}</a>
                     &nbsp;
                 </span>
             </div>

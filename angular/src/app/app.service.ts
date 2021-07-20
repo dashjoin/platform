@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, publishReplay, refCount, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Util } from './util';
+import { DJRuntimeService } from './djruntime.service';
+import { DepInjectorService } from './dep-injector.service';
+import { Schema } from '@dashjoin/json-schema-form';
 
 /**
  * caching services and authentication guard for all routes except login and logout
@@ -60,6 +63,7 @@ export class AppService implements CanActivate {
    * label cache
    */
   labels: { [key: string]: Observable<string> } = {};
+  labels2: { [key: string]: Observable<string> } = {};
 
   /**
    * the first time we access widgets, make sure they are loaded from the backend
@@ -258,6 +262,8 @@ export class AppService implements CanActivate {
    */
   getObjectLabel(database: string, table: string, ids: string[], object: any): Observable<string> {
 
+    return this.getObjectLabelNG(database, table, ids, object);
+
     // compute the cache pk
     const pk = encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + ids.map(id => encodeURIComponent(id)).join('/');
 
@@ -273,9 +279,12 @@ export class AppService implements CanActivate {
           let label: string = s['dj-label'];
 
           if (label) {
+            console.log('labelDef', label);
             label = label.replace(/\${([^{}]*)}/g, (x) => {
               x = x.substring(2);
               x = x.substring(0, x.length - 1);
+              if (x.startsWith('*'))
+                x = x.substring(1);
               return object[x];
             });
           } else {
@@ -290,11 +299,98 @@ export class AppService implements CanActivate {
     return this.labels[pk];
   }
 
+  getObjectLabelNG(database: string, table: string, ids: string[], object: any, ownType?: string): Observable<string> {
+
+    // compute the cache pk
+    const pk = (ownType ? ownType + '#' : '') +
+      encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + ids.map(id => encodeURIComponent(id)).join('/');
+    //console.log('labelKey', pk);
+    if (!object) {
+      // dashboard page like /page/Info
+      const parts = this.router.url.split('/');
+      return of(parts.pop());
+    }
+    if (!this.labels[pk]) {
+      this.labels[pk] = new Observable((observer) => {
+        const schema: Observable<Schema> = this.getSchema(database, table);
+        schema.subscribe(s => {
+          let label: string = s['dj-label'];
+
+          let relKey = [];
+
+          if (label) {
+            //console.log('labelDef', label);
+            label = label.replace(/\${([^{}]*)}/g, (x) => {
+              x = x.substring(2);
+              x = x.substring(0, x.length - 1);
+              if (!x.startsWith('*'))
+                return object[x];
+
+              // ${*malware}
+              x = x.substring(1);
+
+              const res = object[x];
+              const prop = s?.properties[x];
+              const related = prop['ref'];
+
+              if (related.startsWith(ownType))
+                return '';
+
+              //console.log('relatedprop ' + related, s);
+              if (related) {
+                let arr = related.split('/');
+                arr[3] = res;
+                relKey.push(arr);
+                return '__' + relKey.length + '__';
+                //                return this.getIdLabelNG(arr).subscribe(relatedLabel => { return relatedLabel });
+              }
+              return res;
+            });
+          } else {
+            label = this.defaultLabel(ids);
+          }
+
+
+          if (relKey.length > 0) {
+
+            //console.log('relKey', relKey, label);
+            if (relKey.length > 0) {
+              let key = relKey.shift();
+              this.getIdLabelNG(key).subscribe(relatedLabel => {
+                //console.log('relatedLabel', key, relatedLabel);
+                label = label.replace('__1__', relatedLabel);
+                if (relKey.length > 0) {
+                  key = relKey.shift();
+                  this.getIdLabelNG(key).subscribe(relatedLabel2 => {
+                    //console.log('relatedLabel2', key, relatedLabel2);
+                    label = label.replace('__2__', relatedLabel2);
+                    observer.next(label); observer.complete();
+                  });
+                }
+                else {
+                  observer.next(label); observer.complete();
+                }
+              });
+
+            }
+
+            //console.log('relKey', relKey);
+            //this.getIdLabelNG(relKey[0]).subscribe(relatedLabel => { observer.next(relatedLabel); observer.complete(); });
+          }
+          else {
+            observer.next(label);
+            observer.complete();
+          }
+        });
+      });
+    }
+    return this.labels[pk];
+  }
+
   /**
    * get the label for the ID (used in table display where the object is not entirely present)
    */
   getIdLabel(link: string[]): Observable<string> {
-
     // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
     if (link[0] === '') {
       link.shift();
@@ -320,6 +416,91 @@ export class AppService implements CanActivate {
       return this.labels[pk];
     }
     return of(this.defaultLabel(link));
+  }
+
+  runtime: DJRuntimeService;
+  setRuntime(runtime) { this.runtime = runtime; }
+
+  getIdLabelNG(link: string[], resolve = false, ownType?: string): Observable<string> {
+    // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
+    if (link[0] === '') {
+      link.shift();
+      link[0] = '/' + link[0];
+    }
+
+    let database = null;
+    let table = null;
+    if (link.shift() === '/table') {
+      // /table/dbname/tablename becomes /resource/config/Table/encode(dj/dbname/tablename)
+      link = ['dj/' + link.shift() + '/' + link.shift()];
+      database = 'config';
+      table = 'Table';
+    } else {
+      database = link.shift();
+      table = link.shift();
+    }
+
+    // compute the cache pk
+    const pk = (ownType ? ownType + '#' : '') +
+      encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + link.map(id => encodeURIComponent(id)).join('/');
+
+    if (this.labels2[pk]) {
+      return this.labels2[pk];
+    }
+    const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
+    const key = link.map(id => encodeURIComponent(id)).join('/');
+
+    // return
+    // from(
+    //   runtime.getData(data).read(key).then(val => {
+    //     console.log('newLabel ' + data + ' key=' + key + ' val=', val);
+    //     return this.getObjectLabel(database, table, link, val).toPromise();
+    //   })).pipe(publishReplay(1), refCount());
+
+
+    // this.labels2[pk] = new Observable((observer) => {
+    //   runtime.getData(data).read(key).then(val => {
+    //     console.log('newLabel ' + data + ' key=' + key + ' val=', val);
+    //     this.getObjectLabel(database, table, link, val).subscribe(val2 => {
+    //       observer.next(val2);
+    //       observer.complete();
+    //     })
+    //   });
+    // });
+
+    const d = this.runtime.getData(data);
+    if (resolve) {
+      // this.labels2[pk] =
+      //   from(d.getMeta().then(meta => {
+
+      //     return d.read(key).then(val => {
+
+      //       //if (resolve) console.log('newLabel ' + data + ' key=' + key + ' val=', val, 'meta=', meta);
+
+      //       return this.getObjectLabelNG(database, table, link, val, ownType).toPromise();
+
+      //     });
+
+      //   })).pipe(publishReplay(1), refCount());;
+
+      this.labels2[pk] =
+        from(d.read(key).then(val => {
+          return this.getObjectLabelNG(database, table, link, val, ownType).toPromise();
+        })).pipe(publishReplay(1), refCount());;
+
+      return this.labels2[pk];
+    }
+
+    this.labels2[pk] =
+      from(
+        d.read(key).then(val => {
+          return this.getObjectLabel(database, table, link, val).toPromise();
+        })).pipe(publishReplay(1), refCount());
+
+    return this.labels2[pk];
+    //if (pk === 'g4c/group_alias/1059.0')
+    //console.log('getIdLabel ' + pk);
+    //    return of(this.defaultLabel(link));
   }
 
   /**

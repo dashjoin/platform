@@ -398,6 +398,7 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
      * if both are available, make sure to populate the label cache
      */
     private computeLabels() {
+        if (true) return;
         if (this.meta && this.data) {
             try {
                 const t = this.meta.schema as Table;

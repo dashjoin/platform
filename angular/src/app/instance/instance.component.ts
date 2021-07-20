@@ -8,7 +8,7 @@ import { JsonSchemaFormService } from '@dashjoin/json-schema-form';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QueryComponent } from '../query/query.component';
 import { AppService } from '../app.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { DjEvent } from './dj-event';
@@ -30,6 +30,7 @@ import { Util } from '../util';
 import { Table } from '../model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { WidgetListComponent } from '../edit-widget-dialog/widgetlist.component';
+import { DJRuntimeService } from '../djruntime.service';
 
 /**
  * main component driving the page layout
@@ -80,6 +81,8 @@ export class InstanceComponent implements OnInit {
    * used for dynamic rendering
    */
   protected componentFactoryResolver: ComponentFactoryResolver;
+
+  protected runtime: DJRuntimeService;
 
   /**
    * inject services
@@ -317,6 +320,7 @@ export class InstanceComponent implements OnInit {
     this.formService = di.get(JsonSchemaFormService);
     this.dialog = di.get(MatDialog);
     this.componentFactoryResolver = di.get(ComponentFactoryResolver);
+    this.runtime = di.get(DJRuntimeService);
   }
 
   /**
@@ -619,7 +623,15 @@ export class InstanceComponent implements OnInit {
    * get the label for a referenced object
    */
   labelId(id: string[]): Observable<string> {
-    return this.app.getIdLabel(id);
+    this.app.setRuntime(this.runtime);
+    return this.app.getIdLabelNG(id);
+    //      return this.app.getIdLabel(id);
+  }
+
+  linkedLabelId(id: string[]): Observable<string> {
+    this.app.setRuntime(this.runtime);
+    return this.app.getIdLabelNG(id, true, this.schema.ID);
+    //      return this.app.getIdLabel(id);
   }
 
   /**
