@@ -65,6 +65,8 @@ export class AppService implements CanActivate {
   labels: { [key: string]: Observable<string> } = {};
   labels2: { [key: string]: Observable<string> } = {};
 
+  labelsProm: { [key: string]: Promise<string> } = {};
+
   /**
    * the first time we access widgets, make sure they are loaded from the backend
    */
@@ -299,7 +301,103 @@ export class AppService implements CanActivate {
     return this.labels[pk];
   }
 
+
+  async getObjectLabelAsync(database: string, table: string, ids: string[], object: any,
+    ownType?: string, loadObject = false): Promise<string> {
+
+    // console.log('objLabelAsync', database, table, ids);
+
+    // compute the cache pk
+    const pk = (ownType ? ownType + '#' : '') +
+      encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + ids.map(id => encodeURIComponent(id)).join('/');
+    // console.log('labelKey', pk);
+    if (!object && !loadObject) {
+      // dashboard page like /page/Info
+      const parts = this.router.url.split('/');
+      return parts.pop();
+    }
+
+    const rv = this.labelsProm[pk];
+    if (rv) return rv;
+
+    const relatedKeys = [];
+
+    const s = await this.getSchema(database, table).toPromise();
+    let label: string = s['dj-label'];
+    if (label) {
+
+      if (loadObject) {
+        const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
+        const key = ids.map(id => encodeURIComponent(id)).join('/');
+
+        const d = this.runtime.getData(data);
+        try {
+          object = await d.read(key);
+        } catch (ex) {
+          // ignore
+        }
+      }
+
+      // console.log('labelDef', label);
+      if (!object)
+        label = this.defaultLabel(ids);
+      else
+        label = label.replace(/\${([^{}]*)}/g, (x) => {
+          x = x.substring(2);
+          x = x.substring(0, x.length - 1);
+          if (!x.startsWith('*'))
+            return object[x];
+
+          // Resolve ${*property}
+          // Replace with __<num>__ which will later be replaced with the real value
+          x = x.substring(1);
+
+          const res = object[x];
+          const prop = s?.properties[x];
+          const related = prop.ref;
+
+          // If the related key is of our ownType,
+          // remove it from the label
+          if (related.startsWith(ownType))
+            return '';
+
+          // console.log('relatedprop ' + related, s);
+          if (related) {
+            const arr = related.split('/');
+            arr[3] = res;
+            relatedKeys.push(arr);
+            return '__' + relatedKeys.length + '__';
+          }
+          return res;
+        });
+    } else {
+      label = this.defaultLabel(ids);
+    }
+
+    let count = 1;
+    // Replace __<num>__ placeholders with related labels that we gather async
+    while (relatedKeys.length > 0) {
+      const key = relatedKeys.shift();
+      let relatedLabel: string;
+      try {
+        relatedLabel = await this.getIdLabelNG(key).toPromise();
+      } catch (ex) {
+        relatedLabel = key;
+      }
+      label = label.replace('__' + count + '__', relatedLabel);
+      count++;
+    }
+
+    this.labelsProm[pk] = Promise.resolve(label);
+    return this.labelsProm[pk];
+  }
+
+
   getObjectLabelNG(database: string, table: string, ids: string[], object: any, ownType?: string, resolve = false): Observable<string> {
+
+    if (true)
+      return from(this.getObjectLabelAsync(database, table, ids, object, ownType, resolve))
+        .pipe(publishReplay(1), refCount());
 
     console.log('objLabel', database, table, ids);
 
@@ -447,25 +545,29 @@ export class AppService implements CanActivate {
     if (this.labels2[pk]) {
       return this.labels2[pk];
     }
-    const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
-    const key = link.map(id => encodeURIComponent(id)).join('/');
+    // const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
+    // const key = link.map(id => encodeURIComponent(id)).join('/');
 
-    const d = this.runtime.getData(data);
-    if (resolve) {
-      this.labels2[pk] =
-        from(d.read(key).then(val => {
-          return this.getObjectLabelNG(database, table, link, val, ownType).toPromise();
-        },
-          error => { return key })).pipe(publishReplay(1), refCount());;
-    }
-    else {
-      this.labels2[pk] =
-        from(
-          d.read(key).then(val => {
-            return this.getObjectLabel(database, table, link, val).toPromise();
-          },
-            error => { return key })).pipe(publishReplay(1), refCount());
-    }
+    // const d = this.runtime.getData(data);
+
+    // if (resolve) {
+    //   this.labels2[pk] =
+    //     from(d.read(key).then(val => {
+    //       return this.getObjectLabelNG(database, table, link, val, ownType).toPromise();
+    //     },
+    //       error => { return key })).pipe(publishReplay(1), refCount());;
+    // }
+    // else {
+    //   this.labels2[pk] =
+    //     from(
+    //       d.read(key).then(val => {
+    //         return this.getObjectLabel(database, table, link, val).toPromise();
+    //       },
+    //         error => { return key })).pipe(publishReplay(1), refCount());
+    // }
+
+    this.labels2[pk] = this.getObjectLabelNG(database, table, link, undefined, ownType, true);
+
     return this.labels2[pk];
   }
 
