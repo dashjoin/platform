@@ -322,11 +322,18 @@ export class AppService implements CanActivate {
 
     const relatedKeys = [];
 
-    const s = await this.getSchema(database, table).toPromise();
-    let label: string = s['dj-label'];
+    let label: string;
+    let schema: any;
+    try {
+      schema = await this.getSchema(database, table).toPromise();
+      label = schema['dj-label'];
+    } catch (ex) {
+      // ignore
+    }
+
     if (label) {
 
-      if (loadObject) {
+      if (loadObject && !object) {
         const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
         const key = ids.map(id => encodeURIComponent(id)).join('/');
 
@@ -353,7 +360,7 @@ export class AppService implements CanActivate {
           x = x.substring(1);
 
           const res = object[x];
-          const prop = s?.properties[x];
+          const prop = schema?.properties[x];
           const related = prop.ref;
 
           // If the related key is of our ownType,
