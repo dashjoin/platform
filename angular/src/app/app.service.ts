@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, publishReplay, refCount, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Util } from './util';
+import { DJRuntimeService } from './djruntime.service';
+import { DepInjectorService } from './dep-injector.service';
+import { Schema } from '@dashjoin/json-schema-form';
 
 /**
  * caching services and authentication guard for all routes except login and logout
@@ -60,6 +63,9 @@ export class AppService implements CanActivate {
    * label cache
    */
   labels: { [key: string]: Observable<string> } = {};
+  labels2: { [key: string]: Observable<string> } = {};
+
+  labelsProm: { [key: string]: Promise<string> } = {};
 
   /**
    * the first time we access widgets, make sure they are loaded from the backend
@@ -258,6 +264,8 @@ export class AppService implements CanActivate {
    */
   getObjectLabel(database: string, table: string, ids: string[], object: any): Observable<string> {
 
+    if (true) return this.getObjectLabelNG(database, table, ids, object);
+
     // compute the cache pk
     const pk = encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + ids.map(id => encodeURIComponent(id)).join('/');
 
@@ -273,9 +281,12 @@ export class AppService implements CanActivate {
           let label: string = s['dj-label'];
 
           if (label) {
+            console.log('labelDef', label);
             label = label.replace(/\${([^{}]*)}/g, (x) => {
               x = x.substring(2);
               x = x.substring(0, x.length - 1);
+              if (x.startsWith('*'))
+                x = x.substring(1);
               return object[x];
             });
           } else {
@@ -290,11 +301,115 @@ export class AppService implements CanActivate {
     return this.labels[pk];
   }
 
+
+  async getObjectLabelAsync(database: string, table: string, ids: string[], object: any,
+    ownType?: string, loadObject = false): Promise<string> {
+
+    // console.log('objLabelAsync', database, table, ids);
+
+    // compute the cache pk
+    const pk = (ownType ? ownType + '#' : '') +
+      encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + ids.map(id => encodeURIComponent(id)).join('/');
+    // console.log('labelKey', pk);
+    if (!object && !loadObject) {
+      // dashboard page like /page/Info
+      const parts = this.router.url.split('/');
+      return parts.pop();
+    }
+
+    const rv = this.labelsProm[pk];
+    if (rv) return rv;
+
+    const relatedKeys = [];
+
+    let label: string;
+    let schema: any;
+    try {
+      schema = await this.getSchema(database, table).toPromise();
+      label = schema['dj-label'];
+    } catch (ex) {
+      // ignore
+    }
+
+    if (label) {
+
+      if (loadObject && !object) {
+        const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
+        const key = ids.map(id => encodeURIComponent(id)).join('/');
+
+        const d = this.runtime.getData(data);
+        try {
+          object = await d.read(key);
+        } catch (ex) {
+          // ignore
+        }
+      }
+
+      // console.log('labelDef', label);
+      if (!object)
+        label = this.defaultLabel(ids);
+      else
+        label = label.replace(/\${([^{}]*)}/g, (x) => {
+          x = x.substring(2);
+          x = x.substring(0, x.length - 1);
+          if (!x.startsWith('*'))
+            return object[x];
+
+          // Resolve ${*property}
+          // Replace with __<num>__ which will later be replaced with the real value
+          x = x.substring(1);
+
+          const res = object[x];
+          const prop = schema?.properties[x];
+          const related = prop.ref;
+
+          // If the related key is of our ownType,
+          // remove it from the label
+          if (related.startsWith(ownType))
+            return '';
+
+          // console.log('relatedprop ' + related, s);
+          if (related) {
+            const arr = related.split('/');
+            arr[3] = res;
+            relatedKeys.push(arr);
+            return '__' + relatedKeys.length + '__';
+          }
+          return res;
+        });
+    } else {
+      label = this.defaultLabel(ids);
+    }
+
+    let count = 1;
+    // Replace __<num>__ placeholders with related labels that we gather async
+    while (relatedKeys.length > 0) {
+      const key = relatedKeys.shift();
+      let relatedLabel: string;
+      try {
+        relatedLabel = await this.getIdLabelNG(key).toPromise();
+      } catch (ex) {
+        relatedLabel = key;
+      }
+      label = label.replace('__' + count + '__', relatedLabel);
+      count++;
+    }
+
+    this.labelsProm[pk] = Promise.resolve(label);
+    return this.labelsProm[pk];
+  }
+
+
+  getObjectLabelNG(database: string, table: string, ids: string[], object: any,
+    ownType?: string, resolve = false): Observable<string> {
+    return from(this.getObjectLabelAsync(database, table, ids, object, ownType, resolve))
+      .pipe(publishReplay(1), refCount());
+  }
+
   /**
    * get the label for the ID (used in table display where the object is not entirely present)
    */
   getIdLabel(link: string[]): Observable<string> {
-
     // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
     if (link[0] === '') {
       link.shift();
@@ -320,6 +435,42 @@ export class AppService implements CanActivate {
       return this.labels[pk];
     }
     return of(this.defaultLabel(link));
+  }
+
+  runtime: DJRuntimeService;
+  setRuntime(runtime) { this.runtime = runtime; }
+
+  getIdLabelNG(link: string[], resolve = false, ownType?: string): Observable<string> {
+
+    // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
+    if (link[0] === '') {
+      link.shift();
+      link[0] = '/' + link[0];
+    }
+
+    let database = null;
+    let table = null;
+    if (link.shift() === '/table') {
+      // /table/dbname/tablename becomes /resource/config/Table/encode(dj/dbname/tablename)
+      link = ['dj/' + link.shift() + '/' + link.shift()];
+      database = 'config';
+      table = 'Table';
+    } else {
+      database = link.shift();
+      table = link.shift();
+    }
+
+    // compute the cache pk
+    const pk = (ownType ? ownType + '#' : '') +
+      encodeURIComponent(database) + '/' + encodeURIComponent(table) + '/' + link.map(id => encodeURIComponent(id)).join('/');
+
+    if (this.labels2[pk]) {
+      return this.labels2[pk];
+    }
+
+    this.labels2[pk] = this.getObjectLabelNG(database, table, link, undefined, ownType, true);
+
+    return this.labels2[pk];
   }
 
   /**
