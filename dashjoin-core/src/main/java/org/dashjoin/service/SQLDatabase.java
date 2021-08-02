@@ -252,6 +252,13 @@ public class SQLDatabase extends AbstractDatabase {
       ps.query = m.replaceFirst("?");
     }
     ps.arguments = args.toArray();
+
+    // handle special case where we have a query with where col = ? and arg is [null]
+    if (args.size() == 1 && args.get(0) == null && ps.query.contains(" = ?")) {
+      ps.arguments = new Object[0];
+      ps.query = ps.query.replace(" = ?", " is null");
+    }
+
     return ps;
   }
 

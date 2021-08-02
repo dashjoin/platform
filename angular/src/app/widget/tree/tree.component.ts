@@ -123,7 +123,8 @@ export class TreeComponent extends LinksComponent {
     this.column = Object.keys(res)[0];
     const root = [];
 
-    const dres = (await this.getData().get({ arguments: { node: this.pk1 } })).data;
+    const node = this.database === 'config' && this.table === 'Table' ? null : this.pk1;
+    const dres = (await this.getData().get({ arguments: { node } })).data;
     for (const row of dres) {
       let vv = null;
       for (const v of Object.values(row)) {
