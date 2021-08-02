@@ -145,10 +145,6 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
    */
   getData(): DJData<any> {
 
-    if (this.dataSnapshot) {
-      return this.dataSnapshot;
-    }
-
     let data = this.data;
 
     if (!data && this.layout?.query) {
