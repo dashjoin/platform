@@ -156,7 +156,13 @@ public class Manage {
     List<String> record = new ArrayList<>();
 
     RowWrapper(FormulaEvaluator evaluator, Row record) {
+      int colindex = -1;
       for (Cell c : record) {
+        colindex++;
+        if (colindex < c.getColumnIndex()) {
+          colindex++;
+          this.record.add("");
+        }
         CellValue cellValue = evaluator.evaluate(c);
         if (cellValue.getCellType() == CellType.BOOLEAN)
           this.record.add("" + cellValue.getBooleanValue());
@@ -175,7 +181,10 @@ public class Manage {
 
     @Override
     public String get(int index) {
-      return record.get(index);
+      if (record.size() > index)
+        return record.get(index);
+      else
+        return "";
     }
 
     @Override
@@ -232,7 +241,7 @@ public class Manage {
         throw new Exception("No primary key defined in table: " + entry.getKey());
 
       if (type == null)
-        throw new Exception("No primary key type defined in table: " + entry.getKey());
+        type = "string";
 
       // create table(pk)
       data.create(sc, "config", "Table", new HashMap<>(of("name", entry.getKey(), "parent", dbId,
@@ -242,10 +251,11 @@ public class Manage {
       for (Map<String, Object> prop : (List<Map<String, Object>>) entry.getValue()) {
         if (prop.get("name").equals(pk))
           continue;
-        if (prop.get("type") == null)
-          throw new Exception("No type defined for column: " + prop.get("name"));
-        data.create(sc, "config", "Property", new HashMap<>(of("name", prop.get("name"), "type",
-            prop.get("type"), "parent", dbId + "/" + entry.getKey())));
+        String ctype = (String) prop.get("type");
+        if (ctype == null)
+          ctype = "string";
+        data.create(sc, "config", "Property", new HashMap<>(
+            of("name", prop.get("name"), "type", ctype, "parent", dbId + "/" + entry.getKey())));
       }
     }
 
