@@ -29,6 +29,37 @@ public class Doc2dataTest {
   }
 
   @Test
+  public void xmlArr() throws Exception {
+    Doc2data f = new Doc2data();
+    Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y><y>3</y></c>");
+    System.out.println(res);
+    Assert.assertEquals("{c={x=1, y=[2, 3]}}", res.toString());
+  }
+
+  @Test
+  public void xmlArr2() throws Exception {
+    Doc2data f = new Doc2data();
+    Object res = f.parse(
+        "<?xml version=\"1.0\"?><c x=\"1\"><list><y>2</y></list><list><y>2</y><y>2</y></list></c>");
+    Assert.assertEquals("{c={x=1, list=[{y=[2]}, {y=[2, 2]}]}}", res.toString());
+  }
+
+  @Test
+  public void testCleanArrays() {
+    Doc2data f = new Doc2data();
+    Object res = f.cleanArrays(MapUtil.of("x", Arrays.asList(1, 2)));
+    Assert.assertEquals("{x=[1, 2]}", res.toString());
+  }
+
+  @Test
+  public void testCleanArrays2() {
+    Doc2data f = new Doc2data();
+    Object res = f.cleanArrays(
+        MapUtil.of("x", Arrays.asList(MapUtil.of("y", 1), MapUtil.of("y", Arrays.asList(1, 2)))));
+    Assert.assertEquals("{x=[{y=[1]}, {y=[1, 2]}]}", res.toString());
+  }
+
+  @Test
   public void csv() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("id,name\n123,joe");

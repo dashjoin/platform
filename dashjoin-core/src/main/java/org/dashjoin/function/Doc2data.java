@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -7,11 +8,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,7 +26,6 @@ import org.apache.commons.io.IOUtils;
 import org.dashjoin.util.FileResource;
 import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.MapUtil;
-import org.hsqldb.lib.StringInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -84,7 +88,7 @@ public class Doc2data extends AbstractMultiInputFunction {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new StringInputStream(s));
+        Document doc = db.parse(new ByteArrayInputStream(s.getBytes()));
         return MapUtil.of(doc.getDocumentElement().getNodeName(), xml(doc.getDocumentElement()));
       } catch (Exception notXML) {
         List<Object> res = new ArrayList<>();
@@ -104,6 +108,7 @@ public class Doc2data extends AbstractMultiInputFunction {
     }
   }
 
+  @SuppressWarnings("unchecked")
   Object xml(Element node) {
     Map<String, Object> res = new LinkedHashMap<>();
     NamedNodeMap att = node.getAttributes();
@@ -113,11 +118,16 @@ public class Doc2data extends AbstractMultiInputFunction {
     for (int i = 0; i < list.getLength(); i++)
       if (list.item(i) instanceof Element) {
         Element kid = (Element) list.item(i);
-        // TODO: handle lists (child element names are repeated)
-        res.put(kid.getNodeName(), xml(kid));
+        Object old = res.get(kid.getNodeName());
+        if (old == null)
+          res.put(kid.getNodeName(), xml(kid));
+        else if (old instanceof List)
+          ((List<Object>) old).add(xml(kid));
+        else
+          res.put(kid.getNodeName(), Arrays.asList(old, xml(kid)));
       }
     if (!res.isEmpty())
-      return res;
+      return cleanArrays(res);
 
     for (int i = 0; i < list.getLength(); i++)
       if (list.item(i) instanceof Text) {
@@ -126,6 +136,43 @@ public class Doc2data extends AbstractMultiInputFunction {
       }
 
     return null;
+  }
+
+  /**
+   * in array of object fields, make sure all "types" are consistent (a single value might have to
+   * be converted to an array)
+   */
+  @SuppressWarnings("unchecked")
+  Object cleanArrays(Map<String, Object> res) {
+    for (String field : arrayFields(res)) {
+      Set<String> arrayFields = new HashSet<>();
+
+      // sweep 1: collect all array fields
+      for (Object i : (List<Object>) res.get(field)) {
+        if (i instanceof Map<?, ?>)
+          arrayFields.addAll(arrayFields((Map<String, Object>) i));
+      }
+
+      // sweep 2: add array if necessary
+      for (Object i : (List<Object>) res.get(field)) {
+        if (i instanceof Map<?, ?>) {
+          for (Entry<String, Object> e : ((Map<String, Object>) i).entrySet()) {
+            if (arrayFields.contains(e.getKey()))
+              if (!(e.getValue() instanceof List))
+                e.setValue(Arrays.asList(e.getValue()));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  Set<String> arrayFields(Map<String, Object> res) {
+    Set<String> arrayFields = new HashSet<>();
+    for (Entry<String, Object> e : res.entrySet())
+      if (e.getValue() instanceof List<?>)
+        arrayFields.add(e.getKey());
+    return arrayFields;
   }
 
   Object parseJsonDoc(String file) throws Throwable {
