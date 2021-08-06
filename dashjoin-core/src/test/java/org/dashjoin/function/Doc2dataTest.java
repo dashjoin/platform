@@ -32,7 +32,6 @@ public class Doc2dataTest {
   public void xmlArr() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y><y>3</y></c>");
-    System.out.println(res);
     Assert.assertEquals("{c={x=1, y=[2, 3]}}", res.toString());
   }
 
@@ -40,8 +39,8 @@ public class Doc2dataTest {
   public void xmlArr2() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse(
-        "<?xml version=\"1.0\"?><c x=\"1\"><list><y>2</y></list><list><y>2</y><y>2</y></list></c>");
-    Assert.assertEquals("{c={x=1, list=[{y=[2]}, {y=[2, 2]}]}}", res.toString());
+        "<?xml version=\"1.0\"?><c x=\"1\"><list><y>2</y></list><list><y>2</y><y>2</y><y>2</y></list></c>");
+    Assert.assertEquals("{c={x=1, list=[{y=[2]}, {y=[2, 2, 2]}]}}", res.toString());
   }
 
   @Test
@@ -99,17 +98,14 @@ public class Doc2dataTest {
     String s = "{\"a\":1,\"b\":2}{\"a\":4,\"b\":8}{\"a\":5,\"b\":9}";
     Object res =
         f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), true);
-    System.err.println(res);
     Assert.assertEquals("[{a=1, b=2}, {a=4, b=8}, {a=5, b=9}]", "" + res);
 
     s = "[1,2,3][4,5,6][7,8,9]";
     res = f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), true);
-    System.err.println(res);
     Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9]", "" + res);
 
     s = "[{\"a\":1,\"b\":2,\"c\":3}][{\"a\":4,\"b\":5,\"c\":6}][{\"a\":7,\"b\":8,\"c\":9}]";
     res = f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), true);;
-    System.err.println(res);
     Assert.assertEquals("[{a=1, b=2, c=3}, {a=4, b=5, c=6}, {a=7, b=8, c=9}]", "" + res);
   }
 
@@ -123,17 +119,14 @@ public class Doc2dataTest {
     String s = "{\"a\":1,\"b\":2}{\"a\":4,\"b\":8}{\"a\":5,\"b\":9}";
     Object res =
         f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), false);
-    System.err.println(res);
     Assert.assertEquals("[{a=1, b=2}, {a=4, b=8}, {a=5, b=9}]", "" + res);
 
     s = "[1,2,3][4,5,6][7,8,9]";
     res = f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), false);
-    System.err.println(res);
     Assert.assertEquals("[[1, 2, 3], [4, 5, 6], [7, 8, 9]]", "" + res);
 
     s = "[{\"a\":1,\"b\":2,\"c\":3}][{\"a\":4,\"b\":5,\"c\":6}][{\"a\":7,\"b\":8,\"c\":9}]";
     res = f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), false);;
-    System.err.println(res);
     Assert.assertEquals("[[{a=1, b=2, c=3}], [{a=4, b=5, c=6}], [{a=7, b=8, c=9}]]", "" + res);
 
   }

@@ -123,8 +123,12 @@ public class Doc2data extends AbstractMultiInputFunction {
           res.put(kid.getNodeName(), xml(kid));
         else if (old instanceof List)
           ((List<Object>) old).add(xml(kid));
-        else
-          res.put(kid.getNodeName(), Arrays.asList(old, xml(kid)));
+        else {
+          List<Object> tmp = new ArrayList<>();
+          tmp.add(old);
+          tmp.add(xml(kid));
+          res.put(kid.getNodeName(), tmp);
+        }
       }
     if (!res.isEmpty())
       return cleanArrays(res);
