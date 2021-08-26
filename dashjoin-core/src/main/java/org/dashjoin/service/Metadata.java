@@ -154,14 +154,18 @@ public class Metadata {
       while (res.next()) {
         tables.get(table).pk.set(res.getString("COLUMN_NAME"), res.getShort("KEY_SEQ"));
       }
-      res = md.getImportedKeys(null, schema, table);
-      while (res.next()) {
-        String pktable = res.getString("PKTABLE_NAME");
-        if (!this.tables.containsKey(pktable))
-          // DB2 allows defining table alias - the FK definition might point to the alias - skip
-          continue;
-        tables.get(res.getString("FKTABLE_NAME")).getOrCreateFk(pktable)
-            .set(res.getString("FKCOLUMN_NAME"), res.getShort("KEY_SEQ"));
+      try {
+        res = md.getImportedKeys(null, schema, table);
+        while (res.next()) {
+          String pktable = res.getString("PKTABLE_NAME");
+          if (!this.tables.containsKey(pktable))
+            // DB2 allows defining table alias - the FK definition might point to the alias - skip
+            continue;
+          tables.get(res.getString("FKTABLE_NAME")).getOrCreateFk(pktable)
+              .set(res.getString("FKCOLUMN_NAME"), res.getShort("KEY_SEQ"));
+        }
+      } catch (Exception e) {
+        logger.log(Level.WARNING, "Error gathering keys", e);
       }
       res = md.getColumns(null, schema, table, null);
       while (res.next()) {
