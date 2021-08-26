@@ -3,6 +3,7 @@ package org.dashjoin.util;
 import java.io.File;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import lombok.extern.java.Log;
@@ -21,7 +22,12 @@ public class Home {
 
   public synchronized static Home get() {
     if (instance == null) {
-      instance = javax.enterprise.inject.spi.CDI.current().select(Home.class).get();
+      Instance<Home> inst = javax.enterprise.inject.spi.CDI.current().select(Home.class);
+      if (inst.isUnsatisfied()) {
+        log.warning("Dashjoin Home is unresolvable - using default");
+        instance = new Home(Optional.empty());
+      } else
+        instance = inst.get();
     }
     return instance;
   }
