@@ -19,4 +19,9 @@ import { DashjoinWidget } from '../widget-registry';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent extends DJBaseComponent implements OnInit {
+  navigate() {
+    if (this.search) {
+      this.router.navigate(['/search', this.search]);
+    }
+  }
 }
