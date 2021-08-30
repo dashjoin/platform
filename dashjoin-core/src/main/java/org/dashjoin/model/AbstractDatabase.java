@@ -2,6 +2,7 @@ package org.dashjoin.model;
 
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -114,7 +115,7 @@ public abstract class AbstractDatabase implements Database {
             String url = "/resource/" + name + "/" + t.name;
             for (String p : key)
               if (p != null)
-                url += "/" + URLEncoder.encode(p, Charset.defaultCharset());
+                url += "/" + URLEncoder.encode(p, StandardCharsets.UTF_8);
 
             ret.add(ImmutableMap.of("url", url, "table", t.name, "column", e.getKey(), "match",
                 e.getValue()));
