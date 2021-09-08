@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.dashjoin.function.Index;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.DeleteBatch;
 import org.dashjoin.model.AbstractDatabase.MergeBatch;
@@ -98,7 +99,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
     for (Entry<String, List<Map<String, Object>>> e : tables.entrySet())
       info(e.getKey() + ": " + e.getValue().size() + " rows");
 
-
+    Index.reset();
     tables = Mapping.apply(expressionService, sc, tables, mappings);
     info("apply mapping: " + timer.seconds());
 
