@@ -220,4 +220,10 @@ public class TestDatabase extends AbstractDatabase {
       throws Exception {
     return null;
   }
+
+  @Override
+  public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
+    // disable search so tests with this DB do not influence other search results
+    return new ArrayList<>();
+  }
 }
