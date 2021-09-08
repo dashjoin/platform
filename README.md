@@ -1174,7 +1174,7 @@ doc2data | $doc2data(url) | Reads the URL (or list of URLs) and returns its cont
 load | $load(url) | Reads the URL (or list of URLs) and returns its content as text
 flatten | $flatten(table) | If a table (array of objects) contains a column with nested tables, flatten appends all these tables and appends the outer table's fields to each row
 index | $index() | Generates a unique row index ID
-streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found
+streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found, match is a Java regular expression that can be used to select URLs
 table2object | $table2object(table) | Given a table with two columns, returns an object by interpreting the first column as keys and the second as values
 download | $download() | Downloads a list of URLs to the upload folder
 djVersion | $djVersion() | Returns the platform version information
