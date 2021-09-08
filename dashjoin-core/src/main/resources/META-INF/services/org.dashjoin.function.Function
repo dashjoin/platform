@@ -11,6 +11,7 @@ org.dashjoin.mapping.ETL
 org.dashjoin.mapping.Receive
 org.dashjoin.function.DjVersion
 org.dashjoin.function.DjRoles
+org.dashjoin.function.DjUser
 org.dashjoin.function.DjGetDrivers
 org.dashjoin.function.DjGetDatabases
 org.dashjoin.function.DjGetFunctions

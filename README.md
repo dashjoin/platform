@@ -272,7 +272,12 @@ This trigger is a simple expression that calls the echo function. Echo takes an 
 {database=sqlite, search=null, command=create, table=REQUESTS, object={ID=762613, user=user, name=My test entry, submitted=2020-12-31T15:50:35.755459500Z}}
 ```
 
-Instead of calling the echo function, we can of course send an email or perform any other kind of action.
+Instead of calling the echo function, we can of course send an email or perform any other kind of action. A common use case is to automatically
+set the createdBy and createdOn fields. This can be achieved by setting the after create trigger to:
+
+```text
+$update(database, table, object.ID, {\"createdBy\": $djUser(), \"createdOn\": $now()})
+```
 
 ## Concepts
 
@@ -1167,6 +1172,10 @@ flatten | $flatten(table) | If a table (array of objects) contains a column with
 index | $index() | Generates a unique row index ID
 streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found
 table2object | $table2object(table) | Given a table with two columns, returns an object by interpreting the first column as keys and the second as values
+download | $download() | Downloads a list of URLs to the upload folder
+djVersion | $djVersion | Returns the platform version information
+djRoles | $djRoles | Returns the roles of the current user
+djUser | $djUser | Returns the current user's name
 
 ### Access Control
 

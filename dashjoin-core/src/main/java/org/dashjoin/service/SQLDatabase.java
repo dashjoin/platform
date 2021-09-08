@@ -551,7 +551,7 @@ public class SQLDatabase extends AbstractDatabase {
           while (keys.next()) {
             Object key = keys.getObject(1);
             for (Property p : m.properties.values()) {
-              if (p.pkpos != null)
+              if (p.pkpos != null && p.readOnly != null)
                 if (idx == p.pkpos) {
                   object.put(p.name, key);
                 }

@@ -5,6 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interprets a 2 column table as by object by using the first column as keys and the second column
+ * as values
+ */
 public class Table2Object extends AbstractFunction<List<Map<String, Object>>, Map<String, Object>> {
 
   @Override
