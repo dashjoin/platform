@@ -85,6 +85,7 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     List<Map<String, Object>> res = db.search(sc, "mike", null);
+    System.out.println(res);
     Assert.assertEquals(1, res.size());
     Assert.assertEquals("/resource/junit/EMP/1", res.get(0).get("url"));
     Assert.assertEquals("NAME", res.get(0).get("column"));
