@@ -279,6 +279,10 @@ set the createdBy and createdOn fields. This can be achieved by setting the afte
 $update(database, table, object.ID, {\"createdBy\": $djUser(), \"createdOn\": $now()})
 ```
 
+Note that triggers can invoke each other recursively. If this expression would be the update trigger, 
+we might end up with an endless recursion resulting in a stack overflow. This can be avoided by performing the 
+update only if $isRecursiveTrigger() is false.
+
 ## Concepts
 
 Before we dive into the user guide for the platform, this section explains a couple of key concepts.
@@ -1173,9 +1177,10 @@ index | $index() | Generates a unique row index ID
 streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found
 table2object | $table2object(table) | Given a table with two columns, returns an object by interpreting the first column as keys and the second as values
 download | $download() | Downloads a list of URLs to the upload folder
-djVersion | $djVersion | Returns the platform version information
-djRoles | $djRoles | Returns the roles of the current user
-djUser | $djUser | Returns the current user's name
+djVersion | $djVersion() | Returns the platform version information
+djRoles | $djRoles() | Returns the roles of the current user
+djUser | $djUser() | Returns the current user's name
+isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
 
 ### Access Control
 

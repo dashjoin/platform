@@ -22,3 +22,4 @@ org.dashjoin.function.Download
 org.dashjoin.function.Flatten
 org.dashjoin.function.Index
 org.dashjoin.function.Table2Object
+org.dashjoin.function.IsRecursiveTrigger
