@@ -1171,6 +1171,7 @@ incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link
 echo | $echo(any) | Prints the parameter to the log
 crawl | $crawl(url) | Crawls the URL and returns all URLs listed there
 doc2data | $doc2data(url) | Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing CSV, JSON, or XML
+excel2data | $excel2data(url) | Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing Excel
 load | $load(url) | Reads the URL (or list of URLs) and returns its content as text
 flatten | $flatten(table) | If a table (array of objects) contains a column with nested tables, flatten appends all these tables and appends the outer table's fields to each row
 index | $index() | Generates a unique row index ID
