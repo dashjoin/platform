@@ -1,6 +1,7 @@
 <div
-    [ngClass]="app.editLayout && (layout?.readOnly !== true || (value && value.ID === 'dj-toolbar')) ? 'main-edit' : 'main'">
-    <div *ngIf="layout && app.editLayout && (layout?.readOnly !== true || (value && value.ID === 'dj-toolbar'))">
+    [ngClass]="app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav') ? 'main-edit' : 'main'">
+    <div
+        *ngIf="layout && app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav')">
         <mat-icon *ngFor="let i of layoutWidget" [matMenuTriggerFor]="menu" style="cursor: pointer"
             (menuOpened)="menuOpenedT(i)" [matTooltip]="menuTitleT(i)">menu</mat-icon>
         <mat-icon [matMenuTriggerFor]="menu" style="cursor: pointer" (menuOpened)="menuOpened()"

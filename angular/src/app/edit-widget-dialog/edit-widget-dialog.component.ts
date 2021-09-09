@@ -88,8 +88,8 @@ export class EditWidgetDialogComponent {
       forkJoin(jobs).subscribe(res => {
         for (const w of res) {
           if ((w as any)?.ID) {
-            if ((w as any).ID === 'dj-toolbar') {
-              // ignore toolbar since it cannot be deleted via layout editor
+            if ((w as any).ID === 'dj-toolbar' || (w as any).ID === 'dj-sidenav') {
+              // ignore toolbar and sidenav since they cannot be deleted via layout editor
               continue;
             }
             // lookup root widget the custom widget uses and copy its props to the widget
