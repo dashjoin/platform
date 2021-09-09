@@ -1,11 +1,13 @@
 <mat-form-field>
     <mat-label>{{label}}</mat-label>
     <mat-select panelClass="select-panel" [value]=value (selectionChange)="onChange($event)">
-    <mat-select-trigger>
-        <div class="v-align"><mat-icon>{{item(value).icon}}</mat-icon>&nbsp;&nbsp;{{item(value).text}}</div>
-    </mat-select-trigger>
-    <mat-option *ngFor="let item of items" [value]="item.id">
-        <mat-icon>{{item.icon}}</mat-icon>{{item.text}}
-    </mat-option>
+        <mat-select-trigger>
+            <div class="v-align">
+                <mat-icon>{{item(value)?.icon}}</mat-icon>&nbsp;&nbsp;{{item(value)?.text}}
+            </div>
+        </mat-select-trigger>
+        <mat-option *ngFor="let item of items" [value]="item.id">
+            <mat-icon>{{item.icon}}</mat-icon>{{item.text}}
+        </mat-option>
     </mat-select>
 </mat-form-field>
