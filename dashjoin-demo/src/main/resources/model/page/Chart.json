@@ -12,12 +12,22 @@
       "rows" : 1,
       "cols" : 1
     }, {
+      "widget" : "chart",
+      "text" : "New Widget",
+      "x" : 1,
+      "y" : 1,
+      "rows" : 1,
+      "cols" : 1,
+      "query" : "firestore",
+      "database" : "firestore",
+      "chart" : "doughnut"
+    }, {
       "widget" : "table",
       "database" : "northwind",
       "query" : "group",
-      "x" : 1,
+      "x" : 0,
       "y" : 0,
-      "rows" : 1,
+      "rows" : 2,
       "cols" : 1
     } ],
     "pageLayout" : "grid"

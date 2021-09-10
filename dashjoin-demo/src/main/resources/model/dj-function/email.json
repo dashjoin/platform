@@ -1,0 +1,11 @@
+{
+  "djClassName" : "org.dashjoin.function.Email",
+  "ID" : "email",
+  "roles" : [ "admin" ],
+  "type" : "write",
+  "properties" : {
+    "mail.smtp.port" : "25"
+  },
+  "username" : "user",
+  "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
+}
