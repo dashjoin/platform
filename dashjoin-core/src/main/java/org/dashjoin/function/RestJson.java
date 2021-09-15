@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.dashjoin.model.JsonSchema;
+import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SuppressWarnings("rawtypes")
 @JsonSchema(required = {"url"},
     order = {"url", "username", "password", "method", "contentType", "headers"})
-public class RestJson extends AbstractConfigurableFunction<Map, Object> {
+public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -62,13 +63,14 @@ public class RestJson extends AbstractConfigurableFunction<Map, Object> {
    */
   @SuppressWarnings("unchecked")
   @Override
-  public Object run(Map map) throws Exception {
+  public Object run(Object obj) throws Exception {
+    Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     HttpClient client = HttpClient.newBuilder().build();
     String sv = map == null ? url : (String) Template.replace(url, map);
     Builder request = HttpRequest.newBuilder().uri(new URI(sv));
     if (username != null)
       request = request.header("Authorization",
-          "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes()));
+          "Basic " + Base64.getEncoder().encodeToString((username + ":" + password()).getBytes()));
     if (headers != null)
       for (Entry<String, String> e : headers.entrySet())
         request = request.header(e.getKey(), e.getValue());
@@ -77,7 +79,7 @@ public class RestJson extends AbstractConfigurableFunction<Map, Object> {
     if ("POST".equals(method))
       if ("application/json".equals(contentType))
         request = request.POST(BodyPublishers
-            .ofString(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map)));
+            .ofString(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
       else {
         String form =
             map == null ? ""
@@ -88,11 +90,19 @@ public class RestJson extends AbstractConfigurableFunction<Map, Object> {
       }
 
     HttpResponse<?> response = client.send(request.build(), BodyHandlers.ofString());
-    return objectMapper.readValue(response.body().toString(), Object.class);
+
+    if (response.statusCode() >= 400)
+      throw new Exception("HTTP " + response.statusCode());
+
+    String body = response.body().toString();
+    if (body.isEmpty())
+      return "";
+
+    return objectMapper.readValue(body, Object.class);
   }
 
   @Override
-  public Class<Map> getArgumentClass() {
-    return Map.class;
+  public Class<Object> getArgumentClass() {
+    return Object.class;
   }
 }

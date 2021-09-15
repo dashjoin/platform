@@ -493,7 +493,7 @@ public class ExpressionService {
       try {
         String f = getValuesListExpression(v, ctx, 0).asText();
         return o2j(function.callInternal(sc, f,
-            getArgumentCount(ctx) == 1 ? null : getValuesListExpression(v, ctx, 1), readOnly));
+            getArgumentCount(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)), readOnly));
       } catch (Exception e) {
         throw new WrappedException(e);
       }
