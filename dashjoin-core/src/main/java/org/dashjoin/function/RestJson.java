@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.dashjoin.model.JsonSchema;
+import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,8 +93,17 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
     HttpResponse<?> response = client.send(request.build(), BodyHandlers.ofString());
 
-    if (response.statusCode() >= 400)
-      throw new Exception("HTTP " + response.statusCode());
+    if (response.statusCode() >= 400) {
+      String error = "" + response.body();
+      try {
+        Map<String, Object> s =
+            objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
+        error = (String) s.get("details");
+      } catch (Exception e) {
+        // ignore and keep the body
+      }
+      throw new Exception("HTTP " + response.statusCode() + ": " + error);
+    }
 
     String body = response.body().toString();
     if (body.isEmpty())
