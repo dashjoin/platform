@@ -48,6 +48,10 @@ public class RemoteDatabase extends AbstractDatabase {
   @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
 
+  /**
+   * uses RestJson to communicate with the server. In case a "Schema not set" error is detected,
+   * setSchema is called and the call is repeated
+   */
   Object call(String method, Object arguments) throws Exception {
     RestJson client = new RestJson();
     client.url = url + "/" + method;
@@ -55,7 +59,16 @@ public class RemoteDatabase extends AbstractDatabase {
     client.password = password;
     client.method = "POST";
     client.contentType = "application/json";
-    return client.run(arguments);
+    client.headers = MapUtil.of("Accept", "application/json");
+    try {
+      return client.run(arguments);
+    } catch (Exception e) {
+      if (e.toString().endsWith("Schema not set")) {
+        call("setSchema", services.getConfig().getDatabase(ID).tables);
+        return client.run(arguments);
+      } else
+        throw e;
+    }
   }
 
   String e(String s) {
@@ -92,7 +105,7 @@ public class RemoteDatabase extends AbstractDatabase {
 
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
-    throw new UnsupportedOperationException();
+    object.putAll((Map<String, Object>) call("create/" + e(m.name), object));
   }
 
   @Override
@@ -118,7 +131,8 @@ public class RemoteDatabase extends AbstractDatabase {
 
   @Override
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
-    return (Map<String, Object>) call("connectAndCollectMetadata/" + e(ID), this.tables);
+    return (Map<String, Object>) call("connectAndCollectMetadata/" + e(ID),
+        services.getConfig().getDatabase(ID).tables);
   }
 
   @Override

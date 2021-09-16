@@ -61,6 +61,42 @@ public class DatabaseService {
     return db;
   }
 
+  /**
+   * create a QueryMeta object with defaults for ID and type
+   */
+  QueryMeta qi(Query q) throws Exception {
+    QueryMeta qi = QueryMeta.ofQuery(q.query);
+    qi.type = "read";
+    qi.database = db().ID;
+    return qi;
+  }
+
+  /**
+   * lookup table metadata
+   */
+  Table table(String table) throws Exception {
+    return table(db(), table);
+  }
+
+  /**
+   * lookup table metadata
+   * 
+   * @throws Exception if db.tables is null, must throw an exception "Schema not set" to signal the
+   *         caller that setSchema must be called and that the current call must be retried
+   *         afterwards
+   */
+  public static Table table(AbstractDatabase db, String table) throws Exception {
+    if (db.tables == null)
+      throw new Exception("Schema not set");
+    Table res = db.tables.get(table);
+    if (res == null)
+      throw new Exception("Table not found: " + table);
+    return res;
+  }
+
+  /**
+   * query / arguments holder
+   */
   public static class Query {
     public String query;
     public Map<String, Object> arguments;
@@ -69,27 +105,29 @@ public class DatabaseService {
   @POST
   @Path("/query")
   public List<Map<String, Object>> query(Query q) throws Exception {
-    QueryMeta qi = QueryMeta.ofQuery(q.query);
-    qi.database = db().ID;
-    return db().query(qi, q.arguments);
+    return db().query(qi(q), q.arguments);
   }
 
   @POST
   @Path("/queryMeta")
   public Map<String, Property> queryMeta(Query q) throws Exception {
-    QueryMeta qi = QueryMeta.ofQuery(q.query);
-    qi.type = "read";
-    qi.database = db().ID;
-    return db().queryMeta(qi, q.arguments);
+    return db().queryMeta(qi(q), q.arguments);
   }
 
   @POST
   @Path("/connectAndCollectMetadata/{id}")
-  public Map<String, Object> connectAndCollectMetadata(@PathParam("id") String id,
-      Map<String, Table> tables) throws Exception {
-    db().tables = tables;
+  public Map<String, Object> connectAndCollectMetadata(@PathParam("id") String id)
+      throws Exception {
+    // invalidate the table metadata since we need to fetch them from the config DB
+    db().tables = null;
     db().ID = id;
     return db().connectAndCollectMetadata();
+  }
+
+  @POST
+  @Path("/setSchema")
+  public void setSchema(Map<String, Table> tables) throws Exception {
+    db().tables = tables;
   }
 
   @POST
@@ -104,6 +142,14 @@ public class DatabaseService {
       @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
       @QueryParam("sort") String sort, @QueryParam("descending") boolean descending,
       Map<String, Object> arguments) throws Exception {
-    return db().all(Table.ofName(table), offset, limit, sort, descending, arguments);
+    return db().all(table(table), offset, limit, sort, descending, arguments);
+  }
+
+  @POST
+  @Path("/create/{table}")
+  public Map<String, Object> create(@PathParam("table") String table, Map<String, Object> object)
+      throws Exception {
+    db().create(table(table), object);
+    return object;
   }
 }

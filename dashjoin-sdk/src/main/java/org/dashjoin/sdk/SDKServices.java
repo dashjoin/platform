@@ -51,7 +51,7 @@ public class SDKServices extends Services {
       public Table getSchema(String clazz) throws Exception {
         String[] parts = clazz.split("/");
         clazz = parts[parts.length - 1];
-        return db.tables.get(clazz);
+        return DatabaseService.table(db, clazz);
       }
     };
   }
