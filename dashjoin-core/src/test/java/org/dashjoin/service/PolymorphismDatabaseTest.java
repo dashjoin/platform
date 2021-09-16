@@ -32,7 +32,9 @@ public class PolymorphismDatabaseTest {
 
     SQLDatabase res = new ObjectMapper().convertValue(new PolymorphismDatabase().tableProperties(),
         SQLDatabase.class);
-    Assert.assertEquals("[org.dashjoin.service.TestDatabase, org.dashjoin.service.SQLDatabase]",
+
+    Assert.assertEquals(
+        "[org.dashjoin.service.TestDatabase, org.dashjoin.service.SQLDatabase, org.dashjoin.service.RemoteDatabase]",
         res.tables.get("dj-database").properties.get("password")._case.toString());
   }
 

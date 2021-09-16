@@ -1,6 +1,7 @@
 package org.dashjoin.sdk;
 
 import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.Table;
 import org.dashjoin.service.Config;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
@@ -44,6 +45,13 @@ public class SDKServices extends Services {
       @Override
       public String password(String table, String id) throws Exception {
         return password;
+      }
+
+      @Override
+      public Table getSchema(String clazz) throws Exception {
+        String[] parts = clazz.split("/");
+        clazz = parts[parts.length - 1];
+        return db.tables.get(clazz);
       }
     };
   }

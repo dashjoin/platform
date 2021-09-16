@@ -27,6 +27,9 @@ public class FunctionService {
   synchronized Map<String, Function<Object, Object>> fn() throws Exception {
     if (fn == null) {
       fn = new HashMap<>();
+
+      // switch to djClassName and support config parameters too
+
       for (String key : ConfigProvider.getConfig().getPropertyNames())
         if (key.startsWith("dashjoin.function."))
           fn.put(key.substring("dashjoin.function.".length()),

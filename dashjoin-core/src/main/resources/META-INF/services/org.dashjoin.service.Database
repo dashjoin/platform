@@ -1,2 +1,3 @@
 org.dashjoin.service.SQLDatabase
 org.dashjoin.service.PojoDatabase
+org.dashjoin.service.RemoteDatabase
