@@ -110,18 +110,18 @@ public class RemoteDatabase extends AbstractDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    throw new UnsupportedOperationException();
+    return (Map<String, Object>) call("read/" + e(s.name), search);
   }
 
   @Override
-  public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
+  public boolean update(Table s, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
-    throw new UnsupportedOperationException();
+    return (boolean) call("update/" + e(s.name), MapUtil.of("search", search, "object", object));
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    throw new UnsupportedOperationException();
+    return (boolean) call("delete/" + e(s.name), search);
   }
 
   @Override

@@ -149,7 +149,40 @@ public class DatabaseService {
   @Path("/create/{table}")
   public Map<String, Object> create(@PathParam("table") String table, Map<String, Object> object)
       throws Exception {
+    db.cast(table(table), object);
     db().create(table(table), object);
     return object;
+  }
+
+  @POST
+  @Path("/read/{table}")
+  public Map<String, Object> read(@PathParam("table") String table, Map<String, Object> search)
+      throws Exception {
+    db.cast(table(table), search);
+    return db().read(table(table), search);
+  }
+
+  /**
+   * search / object holder
+   */
+  public static class SearchObject {
+    public Map<String, Object> search;
+    public Map<String, Object> object;
+  }
+
+  @POST
+  @Path("/update/{table}")
+  public boolean update(@PathParam("table") String table, SearchObject so) throws Exception {
+    db.cast(table(table), so.object);
+    db.cast(table(table), so.search);
+    return db().update(table(table), so.search, so.object);
+  }
+
+  @POST
+  @Path("/delete/{table}")
+  public boolean delete(@PathParam("table") String table, Map<String, Object> search)
+      throws Exception {
+    db.cast(table(table), search);
+    return db().delete(table(table), search);
   }
 }
