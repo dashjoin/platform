@@ -185,4 +185,59 @@ public class DatabaseService {
     db.cast(table(table), search);
     return db().delete(table(table), search);
   }
+
+  @POST
+  @Path("/createColumn/{table}/{columnName}/{columnType}")
+  public void createColumn(@PathParam("table") String table,
+      @PathParam("columnName") String columnName, @PathParam("columnType") String columnType)
+      throws Exception {
+    db().getSchemaChange().createColumn(table, columnName, columnType);
+  }
+
+  @POST
+  @Path("/alterColumn/{table}/{column}/{newType}")
+  public void alterColumn(@PathParam("table") String table, @PathParam("column") String column,
+      @PathParam("newType") String newType) throws Exception {
+    db().getSchemaChange().alterColumn(table, column, newType);
+  }
+
+  @POST
+  @Path("/renameColumn/{table}/{column}/{newName}")
+  public void renameColumn(@PathParam("table") String table, @PathParam("column") String column,
+      @PathParam("newName") String newName) throws Exception {
+    db().getSchemaChange().renameColumn(table, column, newName);
+  }
+
+  @POST
+  @Path("/dropColumn/{table}/{column}")
+  public void dropColumn(@PathParam("table") String table, @PathParam("column") String column)
+      throws Exception {
+    db().getSchemaChange().dropColumn(table, column);
+  }
+
+  @POST
+  @Path("/createTable/{table}/{keyName}/{keyType}")
+  public void createTable(@PathParam("table") String table, @PathParam("keyName") String keyName,
+      @PathParam("keyType") String keyType) throws Exception {
+    db().getSchemaChange().createTable(table, keyName, keyType);
+  }
+
+  @POST
+  @Path("/createTable/{table}")
+  public void createTable(@PathParam("table") String table) throws Exception {
+    db().getSchemaChange().createTable(table, null, null);
+  }
+
+  @POST
+  @Path("/renameTable/{table}/{newName}")
+  public void renameTable(@PathParam("table") String table, @PathParam("newName") String newName)
+      throws Exception {
+    db().getSchemaChange().renameTable(table, newName);
+  }
+
+  @POST
+  @Path("/dropTable/{table}")
+  public void dropTable(@PathParam("table") String table) throws Exception {
+    db().getSchemaChange().dropTable(table);
+  }
 }

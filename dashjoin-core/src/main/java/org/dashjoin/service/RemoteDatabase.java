@@ -207,44 +207,40 @@ public class RemoteDatabase extends AbstractDatabase {
 
     @Override
     public void createTable(String table, String keyName, String keyType) throws Exception {
-      throw new UnsupportedOperationException();
-
+      if (keyName == null)
+        call("createTable/" + e(table), null);
+      else
+        call("createTable/" + e(table) + "/" + e(keyName) + "/" + e(keyType), null);
     }
 
     @Override
     public void dropTable(String table) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("dropTable/" + e(table), null);
     }
 
     @Override
     public void renameTable(String table, String newName) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("renameTable/" + e(table) + "/" + e(newName), null);
     }
 
     @Override
     public void createColumn(String table, String columnName, String columnType) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("createColumn/" + e(table) + "/" + e(columnName) + "/" + e(columnType), null);
     }
 
     @Override
     public void renameColumn(String table, String column, String newName) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("renameColumn/" + e(table) + "/" + e(column) + "/" + e(newName), null);
     }
 
     @Override
     public void alterColumn(String table, String column, String newType) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("alterColumn/" + e(table) + "/" + e(column) + "/" + e(newType), null);
     }
 
     @Override
     public void dropColumn(String table, String column) throws Exception {
-      throw new UnsupportedOperationException();
-
+      call("dropColumn/" + e(table) + "/" + e(column), null);
     }
   }
 }
