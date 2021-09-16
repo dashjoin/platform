@@ -47,6 +47,7 @@
 		<module>dashjoin-demo</module>
 		<module>dashjoin-mongodb</module>
 		<module>dashjoin-kafka</module>
+		<module>dashjoin-sdk</module>
 		<!-- 
 		<module>dashjoin-rdf4j</module>
 		<module>dashjoin-redis</module>
