@@ -15,6 +15,24 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
  * database REST skeleton
+ * 
+ * there's a key difference in how the state of the database is handled, since (1) the DB cannot
+ * directly access the schema and (2) the container / VM might be restarted at any time. The
+ * database can be in 3 states:
+ * 
+ * initial: we were just started, no schema and no connection is present (any call - exception
+ * connectAndCollectMetadata() will fail). We reach this state upon startup and if close() is
+ * called.
+ * 
+ * connected: connectAndCollectMetadata() was called but we might not have received the schema. This
+ * is a chicken and egg type problem, since the schema can only be computed in the onfig DB once
+ * connectAndCollectMetadata() was called and the data is merged. We reach this state if the
+ * connectAndCollectMetadata() is called which happens upon startup of the central system and if the
+ * DB is created / updated
+ * 
+ * ready: connected and schema present. We reach this state if the central system calls setSchema()
+ * - which in turn is called when another call fails with the respective error message indicating
+ * that we are in one of the states above
  */
 @Path("/database")
 // @RolesAllowed("admin")
@@ -43,6 +61,11 @@ public class DatabaseService {
 
     if (db == null) {
       db = (AbstractDatabase) Class.forName(database).getDeclaredConstructor().newInstance();
+
+      // set db.tables to null to indicate that the field still needs to be set from the central
+      // system
+      db.tables = null;
+
       String password = null;
 
       for (String key : ConfigProvider.getConfig().getPropertyNames())
@@ -121,12 +144,15 @@ public class DatabaseService {
     // invalidate the table metadata since we need to fetch them from the config DB
     db().tables = null;
     db().ID = id;
-    return db().connectAndCollectMetadata();
+    Map<String, Object> res = db().connectAndCollectMetadata();
+    return res;
   }
 
   @POST
-  @Path("/setSchema")
-  public void setSchema(Map<String, Table> tables) throws Exception {
+  @Path("/setSchema/{id}")
+  public void setSchema(@PathParam("id") String id, Map<String, Table> tables) throws Exception {
+    if (db().ID == null)
+      this.connectAndCollectMetadata(db().ID);
     db().tables = tables;
   }
 
@@ -134,6 +160,8 @@ public class DatabaseService {
   @Path("/close")
   public void close() throws Exception {
     db().close();
+    db().ID = null;
+    db().tables = null;
   }
 
   @POST

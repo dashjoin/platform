@@ -63,8 +63,9 @@ public class RemoteDatabase extends AbstractDatabase {
     try {
       return client.run(arguments);
     } catch (Exception e) {
-      if (e.toString().endsWith("Schema not set")) {
-        call("setSchema", services.getConfig().getDatabase(ID).tables);
+      if (e.toString().endsWith("Schema not set")
+          || e.toString().contains("Database not yet initialized:")) {
+        call("setSchema/" + e(ID), services.getConfig().getDatabase(ID).tables);
         return client.run(arguments);
       } else
         throw e;
@@ -131,8 +132,7 @@ public class RemoteDatabase extends AbstractDatabase {
 
   @Override
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
-    return (Map<String, Object>) call("connectAndCollectMetadata/" + e(ID),
-        services.getConfig().getDatabase(ID).tables);
+    return (Map<String, Object>) call("connectAndCollectMetadata/" + e(ID), null);
   }
 
   @Override
