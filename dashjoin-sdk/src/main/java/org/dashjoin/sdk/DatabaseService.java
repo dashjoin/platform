@@ -6,6 +6,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -58,7 +59,10 @@ public class DatabaseService {
    * get and init db
    */
   synchronized AbstractDatabase db() throws Exception {
+    return db(true);
+  }
 
+  synchronized AbstractDatabase db(boolean expectSchema) throws Exception {
     if (db == null) {
       db = (AbstractDatabase) Class.forName(database).getDeclaredConstructor().newInstance();
 
@@ -81,6 +85,11 @@ public class DatabaseService {
       services = new SDKServices(db, password);
       db.init(services);
     }
+
+    if (expectSchema)
+      if (db.tables == null)
+        throw new WebApplicationException("Schema not set", 572);
+
     return db;
   }
 
@@ -109,8 +118,6 @@ public class DatabaseService {
    *         afterwards
    */
   public static Table table(AbstractDatabase db, String table) throws Exception {
-    if (db.tables == null)
-      throw new Exception("Schema not set");
     Table res = db.tables.get(table);
     if (res == null)
       throw new Exception("Table not found: " + table);
@@ -142,18 +149,18 @@ public class DatabaseService {
   public Map<String, Object> connectAndCollectMetadata(@PathParam("id") String id)
       throws Exception {
     // invalidate the table metadata since we need to fetch them from the config DB
-    db().tables = null;
-    db().ID = id;
-    Map<String, Object> res = db().connectAndCollectMetadata();
+    db(false).tables = null;
+    db(false).ID = id;
+    Map<String, Object> res = db(false).connectAndCollectMetadata();
     return res;
   }
 
   @POST
   @Path("/setSchema/{id}")
   public void setSchema(@PathParam("id") String id, Map<String, Table> tables) throws Exception {
-    if (db().ID == null)
-      this.connectAndCollectMetadata(db().ID);
-    db().tables = tables;
+    if (db(false).ID == null)
+      this.connectAndCollectMetadata(db(false).ID);
+    db(false).tables = tables;
   }
 
   @POST

@@ -14,6 +14,8 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
@@ -102,7 +104,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       } catch (Exception e) {
         // ignore and keep the body
       }
-      throw new Exception("HTTP " + response.statusCode() + ": " + error);
+      throw new WebApplicationException(
+          Response.status(response.statusCode()).entity(error).build());
     }
 
     String body = response.body().toString();

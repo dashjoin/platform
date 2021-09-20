@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.WebApplicationException;
 import org.dashjoin.function.RestJson;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
@@ -62,9 +63,8 @@ public class RemoteDatabase extends AbstractDatabase {
     client.headers = MapUtil.of("Accept", "application/json");
     try {
       return client.run(arguments);
-    } catch (Exception e) {
-      if (e.toString().endsWith("Schema not set")
-          || e.toString().contains("Database not yet initialized:")) {
+    } catch (WebApplicationException e) {
+      if (e.getResponse().getStatus() == 572) {
         call("setSchema/" + e(ID), services.getConfig().getDatabase(ID).tables);
         return client.run(arguments);
       } else
