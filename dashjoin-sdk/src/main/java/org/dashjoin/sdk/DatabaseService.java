@@ -7,10 +7,22 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.QueryEditor.AddColumnRequest;
+import org.dashjoin.service.QueryEditor.DistinctRequest;
+import org.dashjoin.service.QueryEditor.InitialQueryRequest;
+import org.dashjoin.service.QueryEditor.MoveColumnRequest;
+import org.dashjoin.service.QueryEditor.QueryDatabase;
+import org.dashjoin.service.QueryEditor.QueryResponse;
+import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
+import org.dashjoin.service.QueryEditor.RenameRequest;
+import org.dashjoin.service.QueryEditor.SetWhereRequest;
+import org.dashjoin.service.QueryEditor.SortRequest;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -274,5 +286,70 @@ public class DatabaseService {
   @Path("/dropTable/{table}")
   public void dropTable(@PathParam("table") String table) throws Exception {
     db().getSchemaChange().dropTable(table);
+  }
+
+  @POST
+  @Path("/getInitialQuery")
+  public QueryResponse getInitialQuery(@Context SecurityContext sc, InitialQueryRequest ac)
+      throws Exception {
+    return db().getQueryEditor().getInitialQuery(ac);
+  }
+
+  @POST
+  @Path("/distinct")
+  public QueryResponse distinct(DistinctRequest ac) throws Exception {
+    return db().getQueryEditor().distinct(ac);
+  }
+
+  @POST
+  @Path("/noop")
+  public QueryResponse noop(QueryDatabase query) throws Exception {
+    return db().getQueryEditor().noop(query);
+  }
+
+  @POST
+  @Path("/moveColumn")
+  public QueryResponse moveColumn(@Context SecurityContext sc, MoveColumnRequest ac)
+      throws Exception {
+    return db().getQueryEditor().moveColumn(ac);
+  }
+
+  @POST
+  @Path("/addColumn")
+  public QueryResponse addColumn(@Context SecurityContext sc, AddColumnRequest ac)
+      throws Exception {
+    return db().getQueryEditor().addColumn(ac);
+  }
+
+  @POST
+  @Path("/removeColumn")
+  public QueryResponse removeColumn(@Context SecurityContext sc, RemoveColumnRequest ac)
+      throws Exception {
+    return db().getQueryEditor().removeColumn(ac);
+  }
+
+  @POST
+  @Path("/setWhere")
+  public QueryResponse setWhere(@Context SecurityContext sc, SetWhereRequest ac) throws Exception {
+    return db().getQueryEditor().setWhere(ac);
+  }
+
+  @POST
+  @Path("/setGroupBy")
+  public QueryResponse setGroupBy(@Context SecurityContext sc, SetWhereRequest ac)
+      throws Exception {
+    return db().getQueryEditor().setGroupBy(ac);
+  }
+
+  @POST
+  @Path("/rename")
+  public QueryResponse rename(@Context SecurityContext sc, RenameRequest ac) throws Exception {
+    return db().getQueryEditor().rename(ac);
+  }
+
+  @POST
+  @Path("/sort")
+  public QueryResponse sort(@Context SecurityContext sc, SortRequest ac) throws Exception {
+    return db().getQueryEditor().sort(ac);
   }
 }

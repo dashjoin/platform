@@ -23,6 +23,7 @@ import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.MapUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Client for remote databases
@@ -30,6 +31,8 @@ import org.dashjoin.util.MapUtil;
 @JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 @SuppressWarnings("unchecked")
 public class RemoteDatabase extends AbstractDatabase {
+
+  private static final ObjectMapper objectMapper = new ObjectMapper();
 
   /**
    * service URL
@@ -154,52 +157,57 @@ public class RemoteDatabase extends AbstractDatabase {
 
     @Override
     public QueryResponse rename(RenameRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("rename", ac));
     }
 
     @Override
     public QueryResponse distinct(DistinctRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("distinct", ac));
     }
 
     @Override
     public QueryResponse sort(SortRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("sort", ac));
     }
 
     @Override
     public QueryResponse addColumn(AddColumnRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("addColumn", ac));
     }
 
     @Override
     public QueryResponse removeColumn(RemoveColumnRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("removeColumn", ac));
     }
 
     @Override
     public QueryResponse setWhere(SetWhereRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("setWhere", ac));
     }
 
     @Override
     public QueryResponse setGroupBy(SetWhereRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("setGroupBy", ac));
     }
 
     @Override
     public QueryResponse moveColumn(MoveColumnRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("moveColumn", ac));
     }
 
     @Override
     public QueryResponse noop(QueryDatabase query) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("noop", query));
     }
 
     @Override
     public QueryResponse getInitialQuery(InitialQueryRequest ac) throws Exception {
-      throw new UnsupportedOperationException();
+      return qr(call("getInitialQuery", ac));
+    }
+
+    QueryResponse qr(Object object) {
+      Map<String, Object> map = (Map<String, Object>) object;
+      return objectMapper.convertValue(map, QueryResponse.class);
     }
   }
 
