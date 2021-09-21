@@ -1454,6 +1454,9 @@ curl -H "Authorization: Bearer ..." https://demo.my.dashjoin.com/rest/manage/ver
 The easiest way to obtain a bearer token is to login using a browser and copying the token via the browser development tools.
 Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.
 
+In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
+RemoteDatabase clients. For more information, please refer to the dashjoin-sdk module documentation.
+
 ## Contribute
 
 We welcome contributions. If you are interested in contributing to Dashjoin, let us know!
