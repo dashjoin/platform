@@ -1,5 +1,6 @@
 package org.dashjoin.sdk;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.POST;
@@ -87,8 +88,9 @@ public class DatabaseService {
       for (String key : ConfigProvider.getConfig().getPropertyNames())
         if (key.startsWith("dashjoin.database.")) {
           String prop = key.substring("dashjoin.database.".length());
-          Object value =
-              ConfigProvider.getConfig().getValue(key, db.getClass().getField(prop).getType());
+          Object value = db.getClass().getField(prop).getType().equals(List.class)
+              ? Arrays.asList(ConfigProvider.getConfig().getValue(key, String.class).split(","))
+              : ConfigProvider.getConfig().getValue(key, db.getClass().getField(prop).getType());
           db.getClass().getField(prop).set(db, value);
           if (prop.equals("password"))
             password = (String) value;
