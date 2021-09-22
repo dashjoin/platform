@@ -34,7 +34,7 @@ public class ModelTest {
   @Test
   public void parseJson() throws Exception {
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
-        "dj-database"})
+        "dj-database", "dj-function", "dj-config"})
       for (String s : new Reflections("model." + folder, new ResourcesScanner())
           .getResources(Pattern.compile(".*\\.json"))) {
         // System.out.println(getClass() + " " + s);
@@ -189,7 +189,9 @@ public class ModelTest {
                               if (!s.equals("Unknown function: $alterColumnTrigger"))
                                 if (!s.equals("Unknown function: $alterTableTrigger"))
                                   if (!s.equals("Unknown function: $traverse"))
-                                    throw e;
+                                    if (!s.equals("Unknown function: $query"))
+                                      if (!s.equals("Unknown function: $doc2data"))
+                                        throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");
