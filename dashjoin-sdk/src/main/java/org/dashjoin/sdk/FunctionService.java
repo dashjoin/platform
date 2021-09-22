@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.Function;
 import org.eclipse.microprofile.config.ConfigProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * function REST skeleton
@@ -21,6 +22,8 @@ import org.eclipse.microprofile.config.ConfigProvider;
 @Path("/function")
 // @RolesAllowed("admin")
 public class FunctionService {
+
+  private static final ObjectMapper om = new ObjectMapper();
 
   /**
    * map of function name to implementation
@@ -90,6 +93,8 @@ public class FunctionService {
   public Object run(@PathParam("function") String function, Object arg) throws Exception {
     if (fn().get(function) == null)
       throw new Exception("Function does not exist: " + function);
+
+    arg = om.convertValue(arg, fn().get(function).getArgumentClass());
     return fn().get(function).run(arg);
   }
 }

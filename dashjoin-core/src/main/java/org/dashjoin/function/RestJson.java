@@ -112,7 +112,10 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     if (body.isEmpty())
       return "";
 
-    return objectMapper.readValue(body, Object.class);
+    if (body.trim().startsWith("{") || body.trim().startsWith("["))
+      return objectMapper.readValue(body, Object.class);
+    else
+      return body;
   }
 
   @Override

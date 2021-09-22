@@ -158,7 +158,7 @@ public class ExpressionService {
               public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
                 try {
                   return o2j(function.callInternal(sc, (AbstractFunction<Object, Object>) f,
-                      getArgumentCount(ctx) == 0 ? null : getValuesListExpression(v, ctx, 0),
+                      getArgumentCount(ctx) == 0 ? null : j2o(getValuesListExpression(v, ctx, 0)),
                       readOnly));
                 } catch (Exception e) {
                   throw new WrappedException(e);
