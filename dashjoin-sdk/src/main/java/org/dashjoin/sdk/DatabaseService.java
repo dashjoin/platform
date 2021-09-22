@@ -3,6 +3,7 @@ package org.dashjoin.sdk;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -56,7 +57,7 @@ public class DatabaseService {
    * equivalent to djClassName in JSON config
    */
   @ConfigProperty(name = "dashjoin.database.djClassName")
-  String database;
+  Optional<String> database;
 
   /**
    * contained DB instance
@@ -76,8 +77,8 @@ public class DatabaseService {
   }
 
   synchronized AbstractDatabase db(boolean expectSchema) throws Exception {
-    if (db == null) {
-      db = (AbstractDatabase) Class.forName(database).getDeclaredConstructor().newInstance();
+    if (db == null && database.isPresent()) {
+      db = (AbstractDatabase) Class.forName(database.get()).getDeclaredConstructor().newInstance();
 
       // set db.tables to null to indicate that the field still needs to be set from the central
       // system
