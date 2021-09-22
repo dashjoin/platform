@@ -1,5 +1,7 @@
 package org.dashjoin.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
@@ -199,6 +201,19 @@ public class ModelTest {
           // Entry<String, JsonNode> op = expr.fields().next();
           // Assert.assertTrue(Arrays.asList("object", "trigger", "call").contains(op.getKey()));
         }
+    }
+  }
+
+  public static void testDriver(String file) throws Exception {
+    JsonNode map = om.readTree(new FileInputStream(new File(file)));
+    file = map.get("test").get("file").asText();
+    JsonNode test = om.readTree(new FileInputStream(new File(file)));
+    String expr =
+        Expression.jsonata(map.get("test").get("expression").asText()).evaluate(test).asText();
+
+    Expression e = Expression.jsonata(expr);
+    for (JsonNode i : map.get("cases")) {
+      Assert.assertEquals(i.get("expected"), e.evaluate(i.get("data")));
     }
   }
 }
