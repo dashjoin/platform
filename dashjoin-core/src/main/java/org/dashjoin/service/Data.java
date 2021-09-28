@@ -978,7 +978,7 @@ public class Data {
     if (template.length() == 0)
       return null;
 
-    return services.getDashjoinID() + "/" + e(database) + "/" + e(schema.name) + "/"
+    return services.getDashjoinID() + "/" + database + "/" + schema.name + "/"
         + template.toString().substring(1);
   }
 

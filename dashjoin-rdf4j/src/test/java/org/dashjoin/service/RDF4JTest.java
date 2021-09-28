@@ -59,18 +59,6 @@ public class RDF4JTest extends DBTest {
 
   @Override
   @Test
-  public void testCRUD() throws Exception {
-    // TODO
-  }
-
-  @Override
-  @Test
-  public void testCRUD2() throws Exception {
-    // TODO
-  }
-
-  @Override
-  @Test
   public void testSearch() throws Exception {
     // TODO
   }

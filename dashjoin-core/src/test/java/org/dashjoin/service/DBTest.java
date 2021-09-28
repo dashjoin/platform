@@ -204,7 +204,7 @@ public class DBTest {
   }
 
   void id(String string, String id) {
-    Assert.assertEquals(string, id.replaceAll("urn%3A", ""));
+    Assert.assertEquals(string, id.replaceAll("http%3A%2F%2Fex.org%2F", ""));
   }
 
   @Test
