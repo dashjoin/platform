@@ -44,6 +44,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Path(Services.REST_PREFIX + "expression")
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
+@SuppressWarnings("serial")
 public class ExpressionService {
 
   private static final ObjectMapper om =
