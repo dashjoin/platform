@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -57,7 +58,6 @@ import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.UrlEscapers;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
@@ -400,7 +400,7 @@ public class SQLDatabase extends AbstractDatabase {
                   String url = "/resource/" + name + "/" + e.getKey().name;
                   for (String p : key)
                     if (p != null)
-                      url += "/" + UrlEscapers.urlPathSegmentEscaper().escape(p);
+                      url += "/" + URLEncoder.encode(p, StandardCharsets.UTF_8);
 
                   if (s.toLowerCase().contains(search)) {
                     ret.add(ImmutableMap.of("url", url, "table", e.getKey().name, "column",
