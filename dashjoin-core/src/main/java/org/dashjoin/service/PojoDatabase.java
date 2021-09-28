@@ -3,6 +3,8 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -709,7 +711,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
     List<Map<String, Object>> projected = new ArrayList<>();
     for (Map<String, Object> r : res) {
       Map<String, Object> tm = new LinkedHashMap<>();
-      tm.put("url", "/page/" + r.get("ID"));
+      tm.put("url", "/page/" + URLEncoder.encode((String) r.get("ID"), StandardCharsets.UTF_8));
       projected.add(tm);
     }
     return projected;
