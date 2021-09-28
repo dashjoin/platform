@@ -274,7 +274,7 @@ public class RDF4JEditor implements QueryEditorInternal {
   public QueryResponse getInitialQuery(InitialQueryRequest ac) throws Exception {
     Table s = services.getConfig().getSchema(ac.table);
     QueryDatabase query = new QueryDatabase();
-    IRI iri = db.iri(s.name);
+    IRI iri = db.iri(s);
     query.query =
         "select ?" + iri.getLocalName() + " where { ?" + iri.getLocalName() + " a <" + iri + "> }";
     query.limit = ac.limit;

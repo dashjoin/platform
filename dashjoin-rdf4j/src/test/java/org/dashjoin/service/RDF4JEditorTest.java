@@ -41,8 +41,9 @@ public class RDF4JEditorTest extends QueryEditorTest {
   @Test
   public void testGetIDsOfClassQuery() throws Exception {
     InitialQueryRequest r = new InitialQueryRequest();
-    r.table = "dj/junit/urn:EMP";
-    Assert.assertEquals("select ?EMP where { ?EMP a <urn:EMP> }", e.getInitialQuery(r).query);
+    r.table = "dj/junit/http%3A%2F%2Fex.org%2FEMP";
+    Assert.assertEquals("select ?EMP where { ?EMP a <http://ex.org/EMP> }",
+        e.getInitialQuery(r).query);
   }
 
   // T(ID, FK)
@@ -288,7 +289,7 @@ public class RDF4JEditorTest extends QueryEditorTest {
     QueryEditor.Delegate d = new QueryEditor.Delegate();
     d.services = services;
     InitialQueryRequest r = new InitialQueryRequest();
-    r.table = "dj/junit/urn:EMP";
+    r.table = "dj/junit/http%3A%2F%2Fex.org%2FEMP";
     QueryResponse q = d.getInitialQuery(sc, r);
     QueryDatabase query = new QueryDatabase();
     query.database = "dj/junit";

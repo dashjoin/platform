@@ -1,6 +1,9 @@
 package org.dashjoin.service;
 
 import java.io.InputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -100,6 +103,10 @@ public class RDF4J extends AbstractDatabase {
       return string((Resource) object);
   }
 
+  IRI iri(Table t) {
+    return iri(URLDecoder.decode(t.name, StandardCharsets.UTF_8));
+  }
+
   IRI iri(Object o) {
     String s = "" + o;
     if (vf == null)
@@ -151,7 +158,7 @@ public class RDF4J extends AbstractDatabase {
   public void create(Table m, Map<String, Object> object) throws Exception {
     try (RepositoryConnection con = getConnection()) {
       IRI subject = iri(object.get("ID"));
-      con.add(subject, RDF.TYPE, iri(m.name));
+      con.add(subject, RDF.TYPE, iri(m));
       for (Entry<String, Object> entry : object.entrySet()) {
         if (!entry.getKey().equals("ID")) {
           con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
@@ -186,8 +193,7 @@ public class RDF4J extends AbstractDatabase {
       throws Exception {
     try (RepositoryConnection con = getConnection()) {
       IRI subject = iri(search.get("ID"));
-      try (RepositoryResult<Statement> types =
-          con.getStatements(subject, RDF.TYPE, iri(schema.name))) {
+      try (RepositoryResult<Statement> types = con.getStatements(subject, RDF.TYPE, iri(schema))) {
         if (types.hasNext()) {
           for (Entry<String, Object> entry : object.entrySet()) {
             if (!entry.getKey().equals("ID")) {
@@ -236,8 +242,8 @@ public class RDF4J extends AbstractDatabase {
     String o = offset == null ? "" : " offset" + offset;
     try (RepositoryConnection con = getConnection()) {
       Map<String, Map<String, Object>> table = new HashMap<>();
-      TupleQuery tq = con.prepareTupleQuery(
-          "select ?s ?p ?o where {?s a <" + iri(s.name) + "> . ?s ?p ?o}" + l + o);
+      TupleQuery tq =
+          con.prepareTupleQuery("select ?s ?p ?o where {?s a <" + iri(s) + "> . ?s ?p ?o}" + l + o);
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();
@@ -313,10 +319,11 @@ public class RDF4J extends AbstractDatabase {
           while (types.hasNext()) {
             Resource s = types.next().getSubject();
             if (s instanceof IRI) {
+              String encoded = URLEncoder.encode(s.stringValue(), StandardCharsets.UTF_8);
               Map<String, Object> table = new HashMap<>();
               table.put("parent", ID);
-              table.put("name", s.stringValue());
-              table.put("ID", ID + "/" + s.stringValue());
+              table.put("name", encoded);
+              table.put("ID", ID + "/" + encoded);
               table.put("type", "object");
               Map<String, Object> properties = new HashMap<>();
               Map<String, Object> id = new HashMap<>();
@@ -327,7 +334,7 @@ public class RDF4J extends AbstractDatabase {
               id.put("ID", table.get("ID") + "/ID");
               properties.put("ID", id);
               table.put("properties", properties);
-              meta.put(s.stringValue(), table);
+              meta.put(encoded, table);
             }
           }
         }
