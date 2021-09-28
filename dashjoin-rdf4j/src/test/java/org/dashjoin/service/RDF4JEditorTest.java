@@ -3,7 +3,6 @@ package org.dashjoin.service;
 import static org.dashjoin.service.QueryEditor.Col.col;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
@@ -24,9 +23,6 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class RDF4JEditorTest extends QueryEditorTest {
-
-  @Inject
-  Services services;
 
   @Override
   protected QueryEditorInternal getQueryEditor() {
