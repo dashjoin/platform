@@ -70,7 +70,7 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   public Object run(Object obj) throws Exception {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     HttpClient client = HttpClient.newBuilder().build();
-    String sv = map == null ? url : (String) Template.replace(url, map);
+    String sv = map == null ? url : (String) Template.replace(url, map, true);
     Builder request = HttpRequest.newBuilder().uri(new URI(sv));
     if (username != null)
       request = request.header("Authorization",

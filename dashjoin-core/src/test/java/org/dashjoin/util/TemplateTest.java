@@ -27,6 +27,10 @@ public class TemplateTest {
     Assert.assertEquals("1 yyy",
         Template.replace("${x} ${y}", ImmutableMap.of("x", 1, "y", "yyy")));
     Assert.assertEquals("11", Template.replace("${x}${x}", ImmutableMap.of("x", 1)));
+
+    // urlencode
+    Assert.assertEquals("http://ex.org/a+b",
+        Template.replace("http://ex.org/${x}", ImmutableMap.of("x", "a b"), true));
   }
 
   @Test

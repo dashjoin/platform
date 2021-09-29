@@ -1,5 +1,7 @@
 package org.dashjoin.util;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +46,13 @@ public class Template {
   }
 
   /**
-   * replaces the template string's variables with the map values
+   * replaces the template string's variables with the map values (optionally urlencode the values)
    */
   public static Object replace(String template, Map<String, Object> values) {
+    return replace(template, values, false);
+  }
+
+  public static Object replace(String template, Map<String, Object> values, boolean urlEncode) {
     List<String> vars = getVariables(template);
 
     // special case where template is a single var, retain type
@@ -55,7 +61,9 @@ public class Template {
 
     for (String var : vars) {
       if (values.get(var) != null)
-        template = template.replace("${" + var + "}", "" + values.get(var));
+        template = template.replace("${" + var + "}",
+            urlEncode ? URLEncoder.encode("" + values.get(var), StandardCharsets.UTF_8)
+                : "" + values.get(var));
     }
 
     return template;
