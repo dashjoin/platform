@@ -11,8 +11,11 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.java.Log;
@@ -46,7 +49,84 @@ public abstract class JSONDatabase implements Database {
    * singleton mapper
    */
   protected static final ObjectMapper objectMapper =
-      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+          .setDefaultPrettyPrinter(new PrettyPrinter() {
+
+            int indent = 0;
+
+            void indent(JsonGenerator gen) throws IOException {
+              for (int i = 0; i < indent; i++)
+                gen.writeRaw("    ");
+            }
+
+            void newline(JsonGenerator gen) throws IOException {
+              gen.writeRaw(DefaultIndenter.SYS_LF);
+            }
+
+            @Override
+            public void writeStartObject(JsonGenerator gen) throws IOException {
+              gen.writeRaw('{');
+              newline(gen);
+              indent++;
+            }
+
+            @Override
+            public void writeStartArray(JsonGenerator gen) throws IOException {
+              gen.writeRaw('[');
+              newline(gen);
+              indent++;
+            }
+
+            @Override
+            public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
+
+            }
+
+            @Override
+            public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
+              gen.writeRaw(": ");
+            }
+
+            @Override
+            public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
+              gen.writeRaw(',');
+              newline(gen);
+              indent(gen);
+            }
+
+            @Override
+            public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
+              indent--;
+              newline(gen);
+              indent(gen);
+              gen.writeRaw('}');
+            }
+
+            @Override
+            public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
+              indent--;
+              newline(gen);
+              indent(gen);
+              gen.writeRaw(']');
+            }
+
+            @Override
+            public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
+              gen.writeRaw(',');
+              newline(gen);
+              indent(gen);
+            }
+
+            @Override
+            public void beforeObjectEntries(JsonGenerator gen) throws IOException {
+              indent(gen);
+            }
+
+            @Override
+            public void beforeArrayValues(JsonGenerator gen) throws IOException {
+              indent(gen);
+            }
+          });
 
   /**
    * like query, but for the "get all instances of table" queries, returns a map where the object ID
