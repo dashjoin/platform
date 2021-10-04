@@ -15,7 +15,6 @@ import org.dashjoin.model.Table;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.Home;
 import org.dashjoin.util.RuntimeDefinitions;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * file implementation of the config DB
@@ -69,9 +68,6 @@ public class JSONFileDatabase extends JSONDatabase {
     if (!file.getParentFile().exists())
       if (!file.getParentFile().mkdirs())
         throw new IOException("Error creating model folder");
-
-    // enable pretty print to make editing files easier
-    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
     objectMapper.writeValue(file, object);
   }

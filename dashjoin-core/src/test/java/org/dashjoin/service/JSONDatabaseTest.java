@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.quarkus.test.junit.QuarkusTest;
@@ -287,5 +288,40 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Assert.assertEquals("{ID=x, coord={z=3}}", "" + db.read(ofName("crud"), of("ID", "x")));
 
     db.delete(ofName("crud"), of("ID", "x"));
+  }
+
+  @Test
+  public void testJsonRead() throws Exception {
+    String newline = "\n";
+
+    // allow java comments
+    Assert.assertEquals("{}",
+        "" + JSONDatabase.objectMapper.readValue("/* comment */ {}".getBytes(), JSONDatabase.tr));
+
+    // allow single quote
+    Assert.assertEquals("{x=y}",
+        "" + JSONDatabase.objectMapper.readValue("{'x': 'y'}".getBytes(), JSONDatabase.tr));
+
+    // multi line string
+    Assert.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
+        .readValue(("{\"x\": \"1" + newline + "2\"}").getBytes(), JSONDatabase.tr));
+
+    // 'normal' string
+    Assert.assertEquals("{x=1\n2}", ""
+        + JSONDatabase.objectMapper.readValue(("{\"x\": \"1\\n2\"}").getBytes(), JSONDatabase.tr));
+  }
+
+  @Test
+  public void testSingleQuoteMultiLine() throws Exception {
+    String newline = "\n";
+
+    try {
+      // single quote and multi line
+      Assert.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
+          .readValue(("{\"x\": '1" + newline + "2'}").getBytes(), JSONDatabase.tr));
+      Assert.fail();
+    } catch (JsonParseException ok) {
+
+    }
   }
 }

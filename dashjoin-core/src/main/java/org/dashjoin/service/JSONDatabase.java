@@ -14,6 +14,7 @@ import org.dashjoin.model.Table;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +51,11 @@ public abstract class JSONDatabase implements Database {
    */
   protected static final ObjectMapper objectMapper =
       new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+          .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+          .configure(JsonReadFeature.ALLOW_SINGLE_QUOTES.mappedFeature(), true)
+          .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
+          .enable(SerializationFeature.INDENT_OUTPUT)
+
           .setDefaultPrettyPrinter(new PrettyPrinter() {
 
             int indent = 0;
