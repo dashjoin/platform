@@ -3,8 +3,6 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,6 +27,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.net.UrlEscapers;
 
 /**
  * The actual config database instance. Sits on top of the union database. It maintains a cache of
@@ -711,7 +710,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
     List<Map<String, Object>> projected = new ArrayList<>();
     for (Map<String, Object> r : res) {
       Map<String, Object> tm = new LinkedHashMap<>();
-      tm.put("url", "/page/" + URLEncoder.encode((String) r.get("ID"), StandardCharsets.UTF_8));
+      tm.put("url", "/page/" + UrlEscapers.urlPathSegmentEscaper().escape((String) r.get("ID")));
       projected.add(tm);
     }
     return projected;

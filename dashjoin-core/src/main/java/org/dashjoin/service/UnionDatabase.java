@@ -84,7 +84,8 @@ public class UnionDatabase extends AbstractDatabase {
       for (Entry<String, Map<String, Object>> e : d.queryMap(info, arguments).entrySet()) {
 
         // String path =
-        // "model/" + info.query + "/" + URLEncoder.encode("" + e.getKey(), "UTF-8") + ".deleted";
+        // "model/" + info.query + "/" + UrlEscapers.urlPathSegmentEscaper().escape("" + e.getKey())
+        // + ".deleted";
         // File deleted = new File(path);
         // if (deleted.exists())
         // continue;

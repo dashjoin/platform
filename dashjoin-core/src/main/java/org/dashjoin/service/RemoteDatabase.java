@@ -1,7 +1,5 @@
 package org.dashjoin.service;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.WebApplicationException;
@@ -24,6 +22,7 @@ import org.dashjoin.service.QueryEditor.SortRequest;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.UrlEscapers;
 
 /**
  * Client for remote databases
@@ -76,7 +75,7 @@ public class RemoteDatabase extends AbstractDatabase {
   }
 
   String e(String s) {
-    return URLEncoder.encode(s, StandardCharsets.UTF_8);
+    return UrlEscapers.urlPathSegmentEscaper().escape(s);
   }
 
   @Override

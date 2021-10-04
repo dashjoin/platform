@@ -17,15 +17,15 @@ public class RDF4JTest extends DBTest {
     if ("ID".equals(o))
       return o;
     if (o.equals("EMP"))
-      return "http%3A%2F%2Fex.org%2FEMP";
+      return "http:%2F%2Fex.org%2FEMP";
     if (o.equals("PRJ"))
-      return "http%3A%2F%2Fex.org%2FPRJ";
+      return "http:%2F%2Fex.org%2FPRJ";
     if (o.equals("NOKEY"))
-      return "http%3A%2F%2Fex.org%2FNOKEY";
+      return "http:%2F%2Fex.org%2FNOKEY";
     if (o.equals("T"))
-      return "http%3A%2F%2Fex.org%2FT";
+      return "http:%2F%2Fex.org%2FT";
     if (o.equals("U"))
-      return "http%3A%2F%2Fex.org%2FU";
+      return "http:%2F%2Fex.org%2FU";
     return "http://ex.org/" + o;
   }
 
@@ -38,11 +38,11 @@ public class RDF4JTest extends DBTest {
   @Override
   @Test
   public void testGetTables() throws Exception {
-    Assert.assertTrue(db.tables().contains("dj/junit/http%3A%2F%2Fex.org%2FEMP"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http%3A%2F%2Fex.org%2FPRJ"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http%3A%2F%2Fex.org%2FNOKEY"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http%3A%2F%2Fex.org%2FT"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http%3A%2F%2Fex.org%2FU"));
+    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FEMP"));
+    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FPRJ"));
+    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FNOKEY"));
+    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FT"));
+    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
 
   @Override

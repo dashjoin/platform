@@ -3,7 +3,6 @@ package org.dashjoin.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +14,7 @@ import org.dashjoin.model.Table;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.Home;
 import org.dashjoin.util.RuntimeDefinitions;
+import com.google.common.net.UrlEscapers;
 
 /**
  * file implementation of the config DB
@@ -31,8 +31,8 @@ public class JSONFileDatabase extends JSONDatabase {
    * internal get file method
    */
   File file(Table s, Map<String, Object> search) throws UnsupportedEncodingException {
-    String path =
-        "model/" + s.name + "/" + URLEncoder.encode("" + search.get("ID"), "UTF-8") + ".json";
+    String path = "model/" + s.name + "/"
+        + UrlEscapers.urlPathSegmentEscaper().escape("" + search.get("ID")) + ".json";
     return home.getFile(path);
   }
 

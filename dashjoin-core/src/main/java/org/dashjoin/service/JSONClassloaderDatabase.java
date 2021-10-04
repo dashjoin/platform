@@ -1,7 +1,6 @@
 package org.dashjoin.service;
 
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,6 +12,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
+import com.google.common.net.UrlEscapers;
 
 /**
  * loads config info from classpath (allows applications to bundle config data with code)
@@ -53,8 +53,8 @@ public class JSONClassloaderDatabase extends JSONDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    String path =
-        "model/" + s.name + "/" + URLEncoder.encode("" + search.get("ID"), "UTF-8") + ".json";
+    String path = "model/" + s.name + "/"
+        + UrlEscapers.urlPathSegmentEscaper().escape("" + search.get("ID")) + ".json";
 
     try (InputStream is = getClass().getResourceAsStream("/" + path)) {
       if (is != null) {

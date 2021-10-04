@@ -2,7 +2,6 @@ package org.dashjoin.service;
 
 import java.io.InputStream;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +37,7 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
+import com.google.common.net.UrlEscapers;
 
 /**
  * RDF4J implementation
@@ -319,7 +319,7 @@ public class RDF4J extends AbstractDatabase {
           while (types.hasNext()) {
             Resource s = types.next().getSubject();
             if (s instanceof IRI) {
-              String encoded = URLEncoder.encode(s.stringValue(), StandardCharsets.UTF_8);
+              String encoded = UrlEscapers.urlPathSegmentEscaper().escape(s.stringValue());
               Map<String, Object> table = new HashMap<>();
               table.put("parent", ID);
               table.put("name", encoded);
