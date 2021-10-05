@@ -436,14 +436,14 @@ public class PojoDatabase extends UnionDatabase implements Config {
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
     if (m.name.equals("dj-database")) {
-      String id = (String) object.get("ID");
-      if (id != null && id.contains("/"))
-        throw new Exception("Database ID must not contain /");
+      String name = (String) object.get("name");
+      if (name != null && !name.equals(UrlEscapers.urlPathSegmentEscaper().escape(name)))
+        throw new Exception("Database name must not special characters");
     }
     if (m.name.equals("Dashjoin")) {
-      String id = (String) object.get("ID");
-      if (id != null && id.contains("/"))
-        throw new Exception("Dashjoin ID must not contain /");
+      String name = (String) object.get("name");
+      if (name != null && !name.equals(UrlEscapers.urlPathSegmentEscaper().escape(name)))
+        throw new Exception("Dashjoin name must not contain /");
     }
     super.create(m, object);
     if (m.name.equals("dj-database"))
