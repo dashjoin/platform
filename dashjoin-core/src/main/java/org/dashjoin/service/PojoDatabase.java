@@ -435,6 +435,16 @@ public class PojoDatabase extends UnionDatabase implements Config {
 
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
+    if (m.name.equals("dj-database")) {
+      String id = (String) object.get("ID");
+      if (id != null && id.contains("/"))
+        throw new Exception("Database ID must not contain /");
+    }
+    if (m.name.equals("Dashjoin")) {
+      String id = (String) object.get("ID");
+      if (id != null && id.contains("/"))
+        throw new Exception("Dashjoin ID must not contain /");
+    }
     super.create(m, object);
     if (m.name.equals("dj-database"))
       metadataCollection(getDatabase((String) object.get("ID")));
@@ -513,7 +523,11 @@ public class PojoDatabase extends UnionDatabase implements Config {
   void removeCache(String id) throws Exception {
     AbstractDatabase db = cache().get(id);
     if (db != null)
-      db.close();
+      try {
+        db.close();
+      } catch (Exception ignore) {
+        logger.warning("error closing db" + ignore);
+      }
     JSONDatabase toDel = null;
     for (JSONDatabase p : dbs())
       if (p instanceof ProviderDatabase)
