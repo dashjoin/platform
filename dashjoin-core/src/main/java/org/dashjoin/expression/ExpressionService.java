@@ -335,10 +335,11 @@ public class ExpressionService {
       try {
         if (readOnly)
           return null;
-        return o2j(data.update(sc, getValuesListExpression(v, ctx, 0).asText(),
+        data.update(sc, getValuesListExpression(v, ctx, 0).asText(),
             getValuesListExpression(v, ctx, 1).asText(),
             getValuesListExpression(v, ctx, 2).asText(),
-            (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 3))));
+            (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 3)));
+        return null;
       } catch (Exception e) {
         throw new RuntimeException(e);
       }

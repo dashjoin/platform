@@ -10,6 +10,8 @@ import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Property;
 import org.dashjoin.service.Data.Choice;
 import org.dashjoin.service.Data.Origin;
+import org.dashjoin.service.Data.Resource;
+import org.dashjoin.service.Data.SearchResult;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -84,24 +86,27 @@ public class DBTest {
   public void testSearch() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    List<Map<String, Object>> res = db.search(sc, "mike", null);
+    List<SearchResult> res = db.search(sc, "mike", null);
     Assert.assertEquals(1, res.size());
-    Assert.assertEquals("/resource/junit/EMP/1", res.get(0).get("url"));
-    Assert.assertEquals("NAME", res.get(0).get("column"));
-    Assert.assertEquals("mike", res.get(0).get("match"));
+    Assert.assertEquals("junit", res.get(0).id.database);
+    Assert.assertEquals("EMP", res.get(0).id.table);
+    Assert.assertEquals(1, res.get(0).id.pk.get(0));
+    Assert.assertEquals("NAME", res.get(0).column);
+    Assert.assertEquals("mike", res.get(0).match);
   }
 
   @Test
   public void testSearchQuery() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    List<Map<String, Object>> res =
+    List<SearchResult> res =
         db.searchQuery(sc, services.getConfig().getDatabase("dj/junit"), "search", "mike");
     Assert.assertEquals(1, res.size());
-    Assert.assertEquals("/resource/junit/EMP/1", res.get(0).get("url"));
-    Assert.assertTrue(
-        "EMP.NAME".equals(res.get(0).get("column")) || "NAME".equals(res.get(0).get("column")));
-    Assert.assertEquals("mike", res.get(0).get("match"));
+    Assert.assertEquals("junit", res.get(0).id.database);
+    Assert.assertEquals("EMP", res.get(0).id.table);
+    Assert.assertEquals(1, res.get(0).id.pk.get(0));
+    Assert.assertTrue("EMP.NAME".equals(res.get(0).column) || "NAME".equals(res.get(0).column));
+    Assert.assertEquals("mike", res.get(0).match);
   }
 
   @Test
@@ -152,7 +157,9 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     List<Origin> links = db.incoming(sc, "junit", toID("PRJ"), toID("1000"), 0, 10);
     Assert.assertEquals("dj/junit/EMP/WORKSON", links.get(0).fk);
-    Assert.assertEquals("dj/junit/EMP/1", links.get(0).id);
+    Assert.assertEquals("junit", links.get(0).id.database);
+    Assert.assertEquals("EMP", links.get(0).id.table);
+    Assert.assertEquals(1, links.get(0).id.pk.get(0));
     Assert.assertEquals("dj/junit/PRJ/" + idRead(), links.get(0).pk);
   }
 
@@ -160,8 +167,8 @@ public class DBTest {
   public void testCRUD() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    String id = db.create(sc, "junit", toID("PRJ"), of(idRead(), toID(2000)));
-    id("dj/junit/PRJ/2000", id);
+    Resource id = db.create(sc, "junit", toID("PRJ"), of(idRead(), toID(2000)));
+    id("dj/junit/PRJ/2000", "dj/" + id.database + '/' + id.table + '/' + id.pk.get(0));
     Assert.assertNotNull(db.read(sc, "junit", toID("PRJ"), toID("2000")));
     db.update(sc, "junit", toID("PRJ"), toID("2000"), of(toID("NAME"), "new name"));
     Assert.assertEquals("new name",
@@ -178,8 +185,8 @@ public class DBTest {
   public void testCRUD2() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    String id = db.create(sc, "junit", toID("EMP"), of(idRead(), toID(3)));
-    id("dj/junit/EMP/3", id);
+    Resource id = db.create(sc, "junit", toID("EMP"), of(idRead(), toID(3)));
+    id("dj/junit/EMP/3", "dj/" + id.database + '/' + id.table + '/' + id.pk.get(0));
     Assert.assertNotNull(db.read(sc, "junit", toID("EMP"), toID("3")));
     db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("NAME"), "new name"));
     db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("WORKSON"), 1000));
@@ -204,7 +211,8 @@ public class DBTest {
   }
 
   void id(String string, String id) {
-    Assert.assertEquals(string, id.replaceAll("http:%2F%2Fex.org%2F", ""));
+    Assert.assertEquals(string,
+        id.replaceAll("http:%2F%2Fex.org%2F", "").replaceAll("http://ex.org/", ""));
   }
 
   @Test

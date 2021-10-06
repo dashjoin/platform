@@ -24,7 +24,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.function.AbstractDatabaseTrigger;
@@ -82,9 +81,9 @@ public class Data {
   @Path("/search/{search}")
   @Operation(summary = "performs a full text search on all databases")
   @APIResponse(description = "Tabular query result (list of JSON objects)")
-  public List<Map<String, Object>> search(@Context SecurityContext sc,
-      @PathParam("search") String search, @QueryParam("limit") Integer limit) throws Exception {
-    List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
+  public List<SearchResult> search(@Context SecurityContext sc, @PathParam("search") String search,
+      @QueryParam("limit") Integer limit) throws Exception {
+    List<SearchResult> res = new ArrayList<>();
     for (AbstractDatabase db : services.getConfig().getDatabases()) {
       try {
         if (db instanceof PojoDatabase)
@@ -99,7 +98,7 @@ public class Data {
           continue;
         String searchQuery = services.getConfig().databaseSearchQuery(db);
 
-        List<Map<String, Object>> tmp =
+        List<SearchResult> tmp =
             searchQuery == null ? db.search(search, limit == null ? null : limit - res.size())
                 : searchQuery(sc, db, searchQuery, search);
         if (tmp != null)
@@ -113,7 +112,7 @@ public class Data {
     return res;
   }
 
-  List<Map<String, Object>> searchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
+  List<SearchResult> searchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
       String search) throws Exception {
 
     // Special support for a union-ized search table,
@@ -140,10 +139,10 @@ public class Data {
 
     List<Map<String, Object>> res =
         this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
-    List<Map<String, Object>> projected = new ArrayList<>();
+    List<SearchResult> projected = new ArrayList<>();
     for (Map<String, Object> m : res) {
-      projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
-          "table", table, "column", column, "match", m.get(column)));
+      projected
+          .add(SearchResult.of(Resource.of(db.name, table, m.get(key)), column, m.get(column)));
     }
     return projected;
   }
@@ -158,8 +157,8 @@ public class Data {
    * @return
    * @throws Exception
    */
-  List<Map<String, Object>> indexSearchQuery(SecurityContext sc, AbstractDatabase db,
-      String searchQuery, String search) throws Exception {
+  List<SearchResult> indexSearchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
+      String search) throws Exception {
 
     Map<String, Property> meta =
         this.queryMeta(sc, db.name, searchQuery, MapUtil.of("search", search));
@@ -184,14 +183,14 @@ public class Data {
 
     List<Map<String, Object>> res =
         this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
-    List<Map<String, Object>> projected = new ArrayList<>();
+    List<SearchResult> projected = new ArrayList<>();
     for (Map<String, Object> m : res) {
 
       // For the union-ized search table: need to gather table from each record
       Object table = m.get(tableKey);
       if (table != null)
-        projected.add(MapUtil.of("url", "/resource/" + db.name + "/" + table + "/" + m.get(key),
-            "table", table, "column", column, "match", m.get(column)));
+        projected.add(
+            SearchResult.of(Resource.of(db.name, "" + table, m.get(key)), column, m.get(column)));
       else
         log.warning("Search result has no type, ignored: " + m);
     }
@@ -353,7 +352,7 @@ public class Data {
   @APIResponse(
       description = "Returns the global identifier of the new record (dj/database/table/ID). The segments are URL encoded. ID is the primary key. For composite primary keys, ID is pk1/../pkn where pki is URL encoded again.")
   @Produces({MediaType.TEXT_PLAIN})
-  public String create(@Context SecurityContext sc,
+  public Resource create(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
@@ -382,7 +381,7 @@ public class Data {
     if (dbTriggers(sc, "create", database, table, null, object, m.beforeCreate))
       db.create(m, object);
     dbTriggers(sc, "create", database, table, null, object, m.afterCreate);
-    return key(database, m, object);
+    return Resource.of(db, m, object);
   }
 
   boolean dbTriggers(SecurityContext sc, String command, String database, String table,
@@ -564,13 +563,73 @@ public class Data {
   public static class Origin {
 
     @Schema(title = "ID of the record where the link originates")
-    public String id;
+    public Resource id;
 
     @Schema(title = "ID of the pk column")
     public String pk;
 
     @Schema(title = "ID of the fk column")
     public String fk;
+  }
+
+  /**
+   * represents an object ID
+   */
+  @Schema(title = "Resource: represents an object ID")
+  public static class Resource {
+
+    @Schema(title = "name of the database")
+    public String database;
+
+    @Schema(title = "name of the table")
+    public String table;
+
+    @Schema(title = "primary keys")
+    public List<Object> pk = new ArrayList<>();
+
+    public static Resource of(AbstractDatabase d, Table s, Map<String, Object> object) {
+      Resource res = new Resource();
+      res.database = d.name;
+      res.table = s.name;
+      for (int i = 0; i < s.properties.size(); i++)
+        for (Property f : s.properties.values())
+          if (f.pkpos != null)
+            if (f.pkpos == i)
+              res.pk.add(object.get(f.name));
+      return res;
+    }
+
+    public static Resource of(String d, String s, Object pk) {
+      Resource res = new Resource();
+      res.database = d;
+      res.table = s;
+      res.pk = Arrays.asList(pk);
+      return res;
+    }
+  }
+
+  /**
+   * represents a search result
+   */
+  @Schema(title = "SearchResult: represents a search result")
+  public static class SearchResult {
+
+    @Schema(title = "ID of the record that matches")
+    public Resource id;
+
+    @Schema(title = "name of the column containing the match")
+    public String column;
+
+    @Schema(title = "matching value")
+    public Object match;
+
+    public static SearchResult of(Resource id, String column, Object match) {
+      SearchResult res = new SearchResult();
+      res.id = id;
+      res.column = column;
+      res.match = match;
+      return res;
+    }
   }
 
   /**
@@ -710,7 +769,7 @@ public class Data {
                 d.cast(s, search);
                 for (Map<String, Object> match : d.all(s, offset, limit, null, false, search)) {
                   Origin o = new Origin();
-                  o.id = key(d.name, s, match);
+                  o.id = Resource.of(d, s, match);
                   o.fk = p.ID;
                   o.pk = pk;
                   res.add(o);
@@ -760,7 +819,7 @@ public class Data {
   @Path("/crud/{database}/{table}/{objectId1}")
   @Operation(
       summary = "updates the object defined by the globally unique identifier with the values provided in object")
-  public Response update(@Context SecurityContext sc,
+  public void update(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
@@ -769,9 +828,6 @@ public class Data {
           example = "1") @PathParam("objectId1") String objectId1,
       Map<String, Object> object) throws Exception {
     update(sc, database, table, Arrays.asList(objectId1), object);
-    java.net.URI uri = new java.net.URI(
-        "/rest/database/crud/" + e(database) + "/" + e(table) + "/" + e(objectId1));
-    return Response.created(uri).build();
   }
 
   @POST
@@ -960,25 +1016,6 @@ public class Data {
     if (res.isEmpty())
       throw new Exception("Operation requires table with a primary key");
     return res;
-  }
-
-  /**
-   * given an object and a table, returns the globally unique identifier in the form of
-   * dj/database/table/ID
-   */
-  String key(String database, Table schema, Map<String, Object> object) {
-    StringBuffer template = new StringBuffer("");
-    for (int i = 0; i < schema.properties.size(); i++)
-      for (Property f : schema.properties.values())
-        if (f.pkpos != null)
-          if (f.pkpos == i)
-            template.append("/" + e(object.get(f.name)));
-
-    if (template.length() == 0)
-      return null;
-
-    return services.getDashjoinID() + "/" + database + "/" + schema.name + "/"
-        + template.toString().substring(1);
   }
 
   static String e(Object s) {

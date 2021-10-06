@@ -174,7 +174,13 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
    * translate /resource/db/table/a%2fb to [resource, db, table, a/b]
    */
   toRouterLink(link: string): string[] {
-    return link.split('/').map(p => decodeURIComponent(p));
+    const res = link.split('/').map(p => decodeURIComponent(p));
+    if (link.startsWith('/resource/config/Table/')) {
+      const table = Util.parseTableID(res[4]);
+      table[0] = '/table';
+      return table;
+    }
+    return res;
   }
 
   /**
@@ -182,6 +188,23 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
    */
   linkArray(s: string): string[] {
     return new TextComponent(this.elRef, this.cdRef, this.route, this.router).linkArray(s);
+  }
+
+  /**
+   * translate resource structure to [string]
+   */
+  linkResource(r: any): string[] {
+    if (r.database === 'config' && r.table === 'Table') {
+      const table = Util.parseTableID(r.pk[0]);
+      table[0] = '/table';
+      return table;
+    } else {
+      const res = ['/resource', r.database, r.table];
+      for (const x of r.pk) {
+        res.push(x)
+      }
+      return res;
+    }
   }
 
   /**

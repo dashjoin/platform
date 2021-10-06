@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.Resource;
+import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.Database;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
@@ -16,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.net.UrlEscapers;
 
 /**
  * abstract base class for all database implementations
@@ -92,9 +93,9 @@ public abstract class AbstractDatabase implements Database {
   }
 
   @Override
-  public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(String search, Integer limit) throws Exception {
     // TODO: only brute force search for now
-    List<Map<String, Object>> ret = new ArrayList<>();
+    List<SearchResult> ret = new ArrayList<>();
     for (Table t : services.getConfig().searchTables(this)) {
 
       // do not search performance traces
@@ -110,13 +111,7 @@ public abstract class AbstractDatabase implements Database {
               if (p.pkpos != null)
                 key[p.pkpos] = "" + res.get(p.name);
 
-            String url = "/resource/" + name + "/" + t.name;
-            for (String p : key)
-              if (p != null)
-                url += "/" + UrlEscapers.urlPathSegmentEscaper().escape(p);
-
-            ret.add(ImmutableMap.of("url", url, "table", t.name, "column", e.getKey(), "match",
-                e.getValue()));
+            ret.add(SearchResult.of(Resource.of(this, t, res), e.getKey(), e.getValue()));
             break;
           }
         }

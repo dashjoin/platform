@@ -597,7 +597,14 @@ export class DJDataREST<T> extends DJDataBase<T> {
         const data = await this.http.get<any>(this.url,
             { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }).toPromise();
         return Promise.resolve({
-            data
+            data: data.map(item => {
+                return {
+                    url: '/resource/' + encodeURIComponent(item.id.database) + '/' + encodeURIComponent(item.id.table) + '/' + item.id.pk.map(encodeURIComponent).join('/'),
+                    table: item.id.table,
+                    column: item.column,
+                    match: item.match
+                }
+            })
         });
     }
 }

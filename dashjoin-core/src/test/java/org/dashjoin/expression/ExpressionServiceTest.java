@@ -35,7 +35,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
 
-    Assert.assertEquals("\"dj/junit/EMP/8\"",
+    Assert.assertEquals("{\"database\":\"junit\",\"table\":\"EMP\",\"pk\":[8]}",
         "" + s.jsonata(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false));
 
     Assert.assertEquals(8,
@@ -61,7 +61,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     Assert.assertEquals(
-        "{\"id\":\"dj/junit/EMP/2\",\"pk\":\"dj/junit/PRJ/ID\",\"fk\":\"dj/junit/EMP/WORKSON\"}",
+        "{\"id\":{\"database\":\"junit\",\"table\":\"EMP\",\"pk\":[2]},\"pk\":\"dj/junit/PRJ/ID\",\"fk\":\"dj/junit/EMP/WORKSON\"}",
         "" + s.jsonata(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false).get(1));
   }
 

@@ -9,6 +9,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
@@ -222,7 +223,7 @@ public class TestDatabase extends AbstractDatabase {
   }
 
   @Override
-  public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(String search, Integer limit) throws Exception {
     // disable search so tests with this DB do not influence other search results
     return new ArrayList<>();
   }

@@ -6,6 +6,7 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.ddl.SchemaChange;
 
 /**
@@ -18,7 +19,7 @@ public interface Database {
    * runs a full text search. returns columns name (nice display name), url (starting with
    * /resource/), field (property where the match occurred), match (the actual string match)
    */
-  default public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
+  default public List<SearchResult> search(String search, Integer limit) throws Exception {
     return null;
   };
 

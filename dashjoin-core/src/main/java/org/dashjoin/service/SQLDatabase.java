@@ -46,6 +46,8 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.Resource;
+import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.QueryEditor.Col;
 import org.dashjoin.service.QueryEditor.QueryColumn;
 import org.dashjoin.service.ddl.SQLSchemaChange;
@@ -56,8 +58,6 @@ import org.postgresql.jdbc.PgResultSetMetaData;
 import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.net.UrlEscapers;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
@@ -351,12 +351,12 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  public List<Map<String, Object>> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(String search, Integer limit) throws Exception {
 
     long start = System.currentTimeMillis();
     Integer timeout = services.getConfig().getSearchTimeoutMs();
 
-    List<Map<String, Object>> ret = new ArrayList<>();
+    List<SearchResult> ret = new ArrayList<>();
     search = search.toLowerCase();
     Map<Table, List<String>> tables = new HashMap<>();
 
@@ -390,21 +390,22 @@ public class SQLDatabase extends AbstractDatabase {
             ResultSetMetaData md = res.getMetaData();
             while (res.next()) {
               for (int i = 1; i <= md.getColumnCount(); i++) {
-                String s = res.getString(i);
+                Object s = res.getObject(i);
                 if (s != null) {
-                  String[] key = new String[] {null, null, null, null};
+                  Object[] key = new Object[] {null, null, null, null};
                   for (Property p : e.getKey().properties.values())
                     if (p.pkpos != null)
-                      key[p.pkpos] = res.getString(p.name);
+                      key[p.pkpos] = res.getObject(p.name);
 
-                  String url = "/resource/" + name + "/" + e.getKey().name;
-                  for (String p : key)
+                  Resource url = new Resource();
+                  url.database = name;
+                  url.table = e.getKey().name;
+                  for (Object p : key)
                     if (p != null)
-                      url += "/" + UrlEscapers.urlPathSegmentEscaper().escape(p);
+                      url.pk.add(p);
 
-                  if (s.toLowerCase().contains(search)) {
-                    ret.add(ImmutableMap.of("url", url, "table", e.getKey().name, "column",
-                        md.getColumnName(i), "match", s));
+                  if (s.toString().toLowerCase().contains(search)) {
+                    ret.add(SearchResult.of(url, md.getColumnName(i), s));
                     if (limit != null && ret.size() >= limit)
                       return ret;
                     break;
