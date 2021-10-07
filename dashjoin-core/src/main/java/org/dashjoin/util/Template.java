@@ -1,7 +1,5 @@
 package org.dashjoin.util;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +60,7 @@ public class Template {
     for (String var : vars) {
       if (values.get(var) != null)
         template = template.replace("${" + var + "}",
-            urlEncode ? URLEncoder.encode("" + values.get(var), StandardCharsets.UTF_8)
-                : "" + values.get(var));
+            urlEncode ? Escape.form("" + values.get(var)) : "" + values.get(var));
     }
 
     return template;

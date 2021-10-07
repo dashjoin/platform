@@ -12,9 +12,9 @@ import javax.inject.Inject;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.DJRuntime;
+import org.dashjoin.util.Escape;
 import org.dashjoin.util.Home;
 import org.dashjoin.util.RuntimeDefinitions;
-import com.google.common.net.UrlEscapers;
 
 /**
  * file implementation of the config DB
@@ -31,8 +31,7 @@ public class JSONFileDatabase extends JSONDatabase {
    * internal get file method
    */
   File file(Table s, Map<String, Object> search) throws UnsupportedEncodingException {
-    String path = "model/" + s.name + "/"
-        + UrlEscapers.urlPathSegmentEscaper().escape("" + search.get("ID")) + ".json";
+    String path = "model/" + s.name + "/" + Escape.filename("" + search.get("ID")) + ".json";
     return home.getFile(path);
   }
 

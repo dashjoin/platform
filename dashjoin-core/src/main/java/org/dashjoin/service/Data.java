@@ -38,7 +38,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import com.google.common.net.UrlEscapers;
 import lombok.extern.java.Log;
 
 /**
@@ -1016,10 +1015,6 @@ public class Data {
     if (res.isEmpty())
       throw new Exception("Operation requires table with a primary key");
     return res;
-  }
-
-  static String e(Object s) {
-    return UrlEscapers.urlPathSegmentEscaper().escape("" + s);
   }
 
   String dj(String database) {

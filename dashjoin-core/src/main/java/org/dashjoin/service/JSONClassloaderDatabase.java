@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
-import com.google.common.net.UrlEscapers;
 
 /**
  * loads config info from classpath (allows applications to bundle config data with code)
@@ -53,8 +53,7 @@ public class JSONClassloaderDatabase extends JSONDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    String path = "model/" + s.name + "/"
-        + UrlEscapers.urlPathSegmentEscaper().escape("" + search.get("ID")) + ".json";
+    String path = "model/" + s.name + "/" + Escape.filename("" + search.get("ID")) + ".json";
 
     try (InputStream is = getClass().getResourceAsStream("/" + path)) {
       if (is != null) {

@@ -22,6 +22,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -724,7 +725,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
     List<Map<String, Object>> projected = new ArrayList<>();
     for (Map<String, Object> r : res) {
       Map<String, Object> tm = new LinkedHashMap<>();
-      tm.put("url", "/page/" + UrlEscapers.urlPathSegmentEscaper().escape((String) r.get("ID")));
+      tm.put("url", "/page/" + Escape.e((String) r.get("ID")));
       projected.add(tm);
     }
     return projected;

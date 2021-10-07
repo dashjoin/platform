@@ -2,14 +2,12 @@ package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,6 +16,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
+import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -85,11 +84,9 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
         request = request.POST(BodyPublishers
             .ofString(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
       else {
-        String form =
-            map == null ? ""
-                : (String) map.keySet().stream().map(
-                    key -> key + "=" + URLEncoder.encode("" + map.get(key), StandardCharsets.UTF_8))
-                    .collect(Collectors.joining("&"));
+        String form = map == null ? ""
+            : (String) map.keySet().stream().map(key -> key + "=" + Escape.form("" + map.get(key)))
+                .collect(Collectors.joining("&"));
         request = request.POST(BodyPublishers.ofString(form));
       }
 
