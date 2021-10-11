@@ -15,6 +15,7 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
+import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Resource;
@@ -257,7 +258,8 @@ public class RDF4J extends AbstractDatabase {
           IRI predicate = (IRI) x.getBinding("p").getValue();
           Value object = x.getBinding("o").getValue();
           if (!predicate.equals(RDF.TYPE))
-            getRow(table, string(subject)).put(string(predicate), object(object));
+            getRow(table, string(subject), !(subject instanceof BNode)).put(string(predicate),
+                object(object));
         }
       }
       List<Map<String, Object>> res = new ArrayList<>(table.values());
@@ -285,11 +287,13 @@ public class RDF4J extends AbstractDatabase {
     }
   }
 
-  Map<String, Object> getRow(Map<String, Map<String, Object>> table, String subject) {
+  Map<String, Object> getRow(Map<String, Map<String, Object>> table, String subject,
+      boolean addID) {
     Map<String, Object> res = table.get(subject);
     if (res == null) {
       res = new HashMap<>();
-      res.put("ID", subject);
+      if (addID)
+        res.put("ID", subject);
       table.put(subject, res);
     }
     return res;
