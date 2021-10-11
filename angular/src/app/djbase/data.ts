@@ -324,7 +324,7 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
     }
 
     private getDBAndTable() {
-        const parts = this.id.split('/');
+        const parts = Util.parseTableID(this.id);
         return encodeURIComponent(parts[1]) + '/' + encodeURIComponent(parts[2]);
     }
 

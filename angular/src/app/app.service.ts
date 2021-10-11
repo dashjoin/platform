@@ -94,7 +94,7 @@ export class AppService implements CanActivate {
     if (table == null) {
       return of(null);
     }
-    const type = 'dj' + '/' + database + '/' + table;
+    const type = 'dj' + '/' + database + '/' + Util.encodeTableOrColumnName(table);
     if (!this.cache[type]) {
       this.cache[type] = this.http.get<any>('/rest/database/crud/config/Table/' + encodeURIComponent(type))
         .pipe(publishReplay(1), refCount());
@@ -131,7 +131,7 @@ export class AppService implements CanActivate {
   setSchema(database: string, table: string): Observable<any> {
     return this.getSchema(database, table).pipe(switchMap(save => {
       delete save.order;
-      const type = 'dj' + '/' + database + '/' + table;
+      const type = 'dj' + '/' + database + '/' + Util.encodeTableOrColumnName(table);
       return this.http.post<any>('/rest/database/crud/config/Table/' + encodeURIComponent(type), save, {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
       });

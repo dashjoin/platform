@@ -8,6 +8,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmDialogComponent } from '../delete-confirm-dialog/delete-confirm-dialog.component';
+import { Util } from '../util';
 
 /**
  * widget base class
@@ -160,7 +161,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     }
 
     if (!data && this.database && this.table) {
-      data = 'dj/' + this.database + '/' + this.table;
+      data = 'dj/' + this.database + '/' + Util.encodeTableOrColumnName(this.table);
     }
 
     if (!data && this.search) {

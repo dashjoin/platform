@@ -4,12 +4,30 @@
 export class Util {
 
     /**
+     * in the config DB, table and column IDs are concatenated: dj/database/table/column. Therefore,
+     * this method URLEncodes / and %
+     */
+    static encodeTableOrColumnName(s: string): string {
+        return s.replace('%', '%25').replace('/', '%2F');
+    }
+
+    /**
+     * decode version of above
+     */
+    static decodeTableOrColumnName(s: string): string {
+        return s.replace('%2F', '/').replace('%25', '%');
+    }
+
+    /**
      * Column IDs in the config database look like dj/northwind/EMP/LAST_NAME
      * replaces id.split('/') since the table name might have / in it
      */
     static parseColumnID(id: string) {
         if (id.split('/').length === 4) {
-            return id.split('/');
+            const res = id.split('/');
+            res[2] = Util.decodeTableOrColumnName(res[2]);
+            res[3] = Util.decodeTableOrColumnName(res[3]);
+            return res;
         }
         throw new Error('illegal column id: ' + id);
     }
@@ -20,7 +38,9 @@ export class Util {
      */
     static parseTableID(id: string): string[] {
         if (id.split('/').length === 3) {
-            return id.split('/');
+            const res = id.split('/');
+            res[2] = Util.decodeTableOrColumnName(res[2]);
+            return res;
         }
         if (id.split('/')[2] === 'http:') {
             const first = id.indexOf('/');

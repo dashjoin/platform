@@ -467,7 +467,9 @@ export class InstanceComponent implements OnInit {
     if (this.route.snapshot.paramMap.get('tdatabase') && this.route.snapshot.paramMap.get('ttable')) {
       this.database = 'config';
       this.table = 'Table';
-      this.pk1 = 'dj/' + this.route.snapshot.paramMap.get('tdatabase') + '/' + this.route.snapshot.paramMap.get('ttable');
+      this.pk1 = 'dj/' +
+        Util.encodeTableOrColumnName(this.route.snapshot.paramMap.get('tdatabase')) + '/' +
+        Util.encodeTableOrColumnName(this.route.snapshot.paramMap.get('ttable'));
     }
     this.url = '/rest/database/crud/' + encodeURIComponent(this.database) + '/' +
       encodeURIComponent(this.table) + '/' + encodeURIComponent(this.pk1);
