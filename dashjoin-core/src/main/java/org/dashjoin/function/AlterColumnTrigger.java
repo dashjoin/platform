@@ -3,6 +3,7 @@ package org.dashjoin.function;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.PojoDatabase;
+import org.dashjoin.util.Escape;
 
 /**
  * wraps AlterColumn in order to make schema changes appear like a CRUD on the metadata
@@ -22,7 +23,7 @@ public class AlterColumnTrigger extends AbstractDatabaseTrigger {
         x.command = "create";
         String[] parts = ((String) arg.object.get("parent")).split("/");
         x.database = parts[0] + "/" + parts[1];
-        x.table = parts[2];
+        x.table = Escape.decodeTableOrColumnName(parts[2]);
         x.column = (String) arg.object.get("name");
         x.newType = (String) arg.object.get("type");
         at.run(x);
@@ -50,14 +51,15 @@ public class AlterColumnTrigger extends AbstractDatabaseTrigger {
         // pre flight check
         services.getConfig().getDatabase(x.database).getSchemaChange().check(arg);
 
-        x.table = parts[2];
-        x.column = parts[3];
+        x.table = Escape.decodeTableOrColumnName(parts[2]);
+        x.column = Escape.decodeTableOrColumnName(parts[3]);
         x.command = "alter";
         x.newType = (String) arg.object.get("type");
 
         // only call if name changes and is set
-        Property old =
-            services.getConfig().getSchema(x.database + "/" + x.table).properties.get(x.column);
+        Property old = services.getConfig()
+            .getSchema(x.database + "/" + Escape.encodeTableOrColumnName(x.table)).properties
+                .get(x.column);
 
         if (x.newType != null && !x.newType.equals(old.type)) {
           at.run(x);
@@ -88,8 +90,8 @@ public class AlterColumnTrigger extends AbstractDatabaseTrigger {
       case "delete": {
         String[] parts = ((String) arg.search.get("ID")).split("/");
         x.database = parts[0] + "/" + parts[1];
-        x.table = parts[2];
-        x.column = parts[3];
+        x.table = Escape.decodeTableOrColumnName(parts[2]);
+        x.column = Escape.decodeTableOrColumnName(parts[3]);
         x.command = "delete";
         at.run(x);
         ((PojoDatabase) services.getConfig()).metadataCollection(x.database);

@@ -25,8 +25,6 @@ public class AlterColumn extends AbstractFunction<AlterColumn.Config, Void> {
       throw new IllegalArgumentException("No table provided");
     if (arg.column == null)
       throw new IllegalArgumentException("No column provided");
-    if (arg.column.contains("/"))
-      throw new IllegalArgumentException("Column names must not contain /");
 
     AbstractDatabase db = services.getConfig().getDatabase(arg.database);
     SchemaChange s = db.getSchemaChange();

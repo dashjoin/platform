@@ -58,10 +58,25 @@ public class DDLTest {
     Assert.assertEquals("dj/ddl/T%2FT", "" + db.tables.get("T/T").ID);
     Assert.assertEquals("[name, ID]", "" + db.tables.get("T/T").properties.keySet());
 
+    // create col
+    create("Property", newHashMap(of("parent", "dj/ddl/T%2FT", "name", "ag/e", "type", "date")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("date", db.tables.get("T/T").properties.get("ag/e").widget);
+
+    // rename col
+    update("Property", "dj/ddl/T%2FT/ag%2Fe", newHashMap(of("name", "ag/e2")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("date", db.tables.get("T/T").properties.get("ag/e2").widget);
+
     // rename
     update("Table", "dj/ddl/T%2FT", newHashMap(of("name", "T/T2")));
     db = services.getConfig().getDatabase("dj/ddl");
     Assert.assertEquals("[T/T2]", "" + db.tables.keySet());
+
+    // drop column
+    delete("Property", "dj/ddl/T%2FT2/ag%2Fe2");
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertNull(db.tables.get("T/T2").properties.get("ag/e2"));
 
     // drop table and metadata
     delete("Table", "dj/ddl/T%2FT2");
