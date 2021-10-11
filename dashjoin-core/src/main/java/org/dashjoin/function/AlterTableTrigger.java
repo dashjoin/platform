@@ -72,7 +72,7 @@ public class AlterTableTrigger extends AbstractDatabaseTrigger {
           arg.object.put("after-delete", old.afterDelete);
 
         // before we continue, we need to change the update ID
-        arg.search.put("ID", x.database + "/" + x.newName);
+        arg.search.put("ID", x.database + "/" + Escape.encodeTableOrColumnName(x.newName));
 
         // continue with an update since other props might be set
         return true;

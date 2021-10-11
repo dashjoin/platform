@@ -311,7 +311,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
           Arrays.asList("dj-label", "before-create", "after-create", "before-update",
               "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout"));
 
-      String[] parts = ((String) search.get("ID")).split("/");
+      String[] parts = Escape.parseTableID((String) search.get("ID"));
 
       // read db to update from user()
       Map<String, Object> db =
@@ -358,7 +358,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       // on Table, we only edit these props, ignore all others
       MapUtil.keyWhitelist(object, Arrays.asList("pkpos", "ref", "displayWith", "createOnly"));
 
-      String[] parts = ((String) search.get("ID")).split("/");
+      String[] parts = Escape.parseColumnID((String) search.get("ID"));
 
       // read db to update from user()
       Map<String, Object> db =

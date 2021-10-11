@@ -45,6 +45,44 @@ public class DDLTest {
   }
 
   @Test
+  public void testSlashMetadata() throws Exception {
+    TestDatabase.init();
+    new File("model/dj-database/dj%2Fddl.json").delete();
+
+    AbstractDatabase db;
+
+    // create table
+    create("Table", newHashMap(of("parent", "dj/ddl", "name", "T/T")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("[T/T]", "" + db.tables.keySet());
+    Assert.assertEquals("dj/ddl/T%2FT", "" + db.tables.get("T/T").ID);
+    Assert.assertEquals("[name, ID]", "" + db.tables.get("T/T").properties.keySet());
+
+    // set dj-label
+    update("Table", "dj/ddl/T%2FT", newHashMap(of("dj-label", "display ${name}")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals(1, db.tables.size());
+    Assert.assertEquals("display ${name}", "" + db.tables.get("T/T").djLabel);
+
+    // create col
+    create("Property", newHashMap(of("parent", "dj/ddl/T%2FT", "name", "p/k", "type", "string")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("string", db.tables.get("T/T").properties.get("p/k").type);
+
+    // create col
+    create("Property", newHashMap(of("parent", "dj/ddl/T%2FT", "name", "f/k", "type", "string")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("string", db.tables.get("T/T").properties.get("f/k").type);
+
+    // set ref (i.e. no schema update)
+    update("Property", "dj/ddl/T%2FT/f%2Fk", newHashMap(of("ref", "dj/ddl/T%2FT/p%2Fk")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("dj/ddl/T%2FT/p%2Fk", "" + db.tables.get("T/T").properties.get("f/k").ref);
+
+    new File("model/dj-database/dj%2Fddl.json").delete();
+  }
+
+  @Test
   public void testSlash() throws Exception {
     TestDatabase.init();
     new File("model/dj-database/dj%2Fddl.json").delete();

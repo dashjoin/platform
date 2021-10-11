@@ -81,7 +81,8 @@ public class AlterColumnTrigger extends AbstractDatabaseTrigger {
             arg.object.put("displayWith", old.displayWith);
 
           // before we continue, we need to change the update ID
-          arg.search.put("ID", x.database + "/" + x.table + "/" + x.newName);
+          arg.search.put("ID", x.database + "/" + Escape.encodeTableOrColumnName(x.table) + "/"
+              + Escape.encodeTableOrColumnName(x.newName));
         }
 
         // continue with an update since other props might be set

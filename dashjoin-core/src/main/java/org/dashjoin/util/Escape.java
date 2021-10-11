@@ -47,4 +47,31 @@ public class Escape {
   public static String decodeTableOrColumnName(String s) {
     return s.replaceAll("%2F", "/").replaceAll("%25", "%");
   }
+
+  /**
+   * Table IDs in the config database look like dj/northwind/EMP replaces id.split('/') since the
+   * table name might have / in it
+   */
+  public static String[] parseTableID(String id) {
+    if (id.split("/").length == 3) {
+      String[] res = id.split("/");
+      res[2] = decodeTableOrColumnName(res[2]);
+      return res;
+    }
+    throw new IllegalArgumentException("illegal table id: " + id);
+  }
+
+  /**
+   * Column IDs in the config database look like dj/northwind/EMP/LAST_NAME replaces id.split('/')
+   * since the table name might have / in it
+   */
+  public static String[] parseColumnID(String id) {
+    if (id.split("/").length == 4) {
+      String[] res = id.split("/");
+      res[2] = decodeTableOrColumnName(res[2]);
+      res[3] = decodeTableOrColumnName(res[3]);
+      return res;
+    }
+    throw new IllegalArgumentException("illegal column id: " + id);
+  }
 }
