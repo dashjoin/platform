@@ -241,7 +241,8 @@ public class RDF4J extends AbstractDatabase {
     try (RepositoryConnection con = getConnection()) {
       Map<String, Map<String, Object>> table = new HashMap<>();
       TupleQuery tq =
-          con.prepareTupleQuery("select ?s ?p ?o where {?s a <" + iri(s) + "> . ?s ?p ?o}" + l + o);
+          con.prepareTupleQuery("select ?s ?p ?o where { ?s ?p ?o . { select ?s where { ?s a <"
+              + iri(s) + "> }" + l + o + " } }");
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();
