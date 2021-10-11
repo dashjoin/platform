@@ -32,4 +32,19 @@ public class Escape {
   public static String filename(String s) {
     return URLEncoder.encode(s, StandardCharsets.UTF_8);
   }
+
+  /**
+   * in the config DB, table and column IDs are concatenated: dj/database/table/column. Therefore,
+   * this method URLEncodes / and %
+   */
+  public static String encodeTableOrColumnName(String s) {
+    return s.replaceAll("%", "%25").replaceAll("/", "%2F");
+  }
+
+  /**
+   * decode version of above
+   */
+  public static String decodeTableOrColumnName(String s) {
+    return s.replaceAll("%2F", "/").replaceAll("%25", "%");
+  }
 }

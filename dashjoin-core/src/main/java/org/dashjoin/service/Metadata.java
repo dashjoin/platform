@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dashjoin.util.Escape;
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -259,7 +260,7 @@ public class Metadata {
     for (MdTable t : tables.values()) {
       Map<String, Object> schema = new LinkedHashMap<>();
       schema.put("name", t.name);
-      schema.put("ID", parent + "/" + t.name);
+      schema.put("ID", parent + "/" + Escape.encodeTableOrColumnName(t.name));
       schema.put("parent", parent);
       schema.put("type", "object");
 
@@ -278,7 +279,7 @@ public class Metadata {
           String pk = column.name;
           Map<String, Object> pkm = new LinkedHashMap<>();
           properties.put(pk, pkm);
-          pkm.put("ID", schema.get("ID") + "/" + pk);
+          pkm.put("ID", schema.get("ID") + "/" + Escape.encodeTableOrColumnName(pk));
           pkm.put("name", pk);
           pkm.put("parent", schema.get("ID"));
           if (column.readOnly)

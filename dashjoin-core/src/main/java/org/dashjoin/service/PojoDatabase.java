@@ -887,15 +887,20 @@ public class PojoDatabase extends UnionDatabase implements Config {
       Map<String, Object> meta = a.connectAndCollectMetadata();
 
       for (String key : new HashSet<>(meta.keySet())) {
-        if (key.contains("/"))
+        Map<String, Object> table = (Map<String, Object>) meta.get(key);
+        if (((String) table.get("ID")).split("/").length != 3) {
           meta.remove(key);
-        else {
-          Map<String, Object> table = (Map<String, Object>) meta.get(key);
+          logger.warning("ignoring unescaped table: " + key);
+        } else {
           Map<String, Object> properties = (Map<String, Object>) table.get("properties");
           if (properties != null)
-            for (String p : new HashSet<>(properties.keySet()))
-              if (p.contains("/"))
+            for (String p : new HashSet<>(properties.keySet())) {
+              Map<String, Object> property = (Map<String, Object>) properties.get(p);
+              if (((String) property.get("ID")).split("/").length != 4) {
                 properties.remove(p);
+                logger.warning("ignoring unescaped property: " + p);
+              }
+            }
         }
       }
 
