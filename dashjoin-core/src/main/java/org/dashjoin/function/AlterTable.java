@@ -46,8 +46,6 @@ public class AlterTable extends AbstractFunction<AlterTable.Config, Void> {
       throw new IllegalArgumentException("No command provided: create, rename or delete");
     if (arg.table == null)
       throw new IllegalArgumentException("No table provided");
-    if (arg.table.contains("/"))
-      throw new IllegalArgumentException("Table names must not contain /");
 
     AbstractDatabase db = services.getConfig().getDatabase(arg.database);
     SchemaChange s = db.getSchemaChange();

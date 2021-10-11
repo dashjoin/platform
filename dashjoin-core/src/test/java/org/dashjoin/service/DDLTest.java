@@ -45,6 +45,33 @@ public class DDLTest {
   }
 
   @Test
+  public void testSlash() throws Exception {
+    TestDatabase.init();
+    new File("model/dj-database/dj%2Fddl.json").delete();
+
+    AbstractDatabase db;
+
+    // create table
+    create("Table", newHashMap(of("parent", "dj/ddl", "name", "T/T")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("[T/T]", "" + db.tables.keySet());
+    Assert.assertEquals("dj/ddl/T%2FT", "" + db.tables.get("T/T").ID);
+    Assert.assertEquals("[name, ID]", "" + db.tables.get("T/T").properties.keySet());
+
+    // rename
+    update("Table", "dj/ddl/T%2FT", newHashMap(of("name", "T/T2")));
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals("[T/T2]", "" + db.tables.keySet());
+
+    // drop table and metadata
+    delete("Table", "dj/ddl/T%2FT2");
+    db = services.getConfig().getDatabase("dj/ddl");
+    Assert.assertEquals(0, db.tables.size());
+
+    new File("model/dj-database/dj%2Fddl.json").delete();
+  }
+
+  @Test
   public void test() throws Exception {
 
     TestDatabase.init();

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.PojoDatabase;
+import org.dashjoin.util.Escape;
 
 /**
  * wraps AlterTable in order to make schema changes appear like a CRUD on the metadata
@@ -40,7 +41,7 @@ public class AlterTableTrigger extends AbstractDatabaseTrigger {
         x.command = "rename";
         String[] parts = ((String) arg.search.get("ID")).split("/");
         x.database = parts[0] + "/" + parts[1];
-        x.table = parts[2];
+        x.table = Escape.decodeTableOrColumnName(parts[2]);
         x.newName = (String) arg.object.get("name");
 
         // only call if name changes and is set
@@ -80,7 +81,7 @@ public class AlterTableTrigger extends AbstractDatabaseTrigger {
         x.command = "delete";
         String[] parts = ((String) arg.search.get("ID")).split("/");
         x.database = parts[0] + "/" + parts[1];
-        x.table = parts[2];
+        x.table = Escape.decodeTableOrColumnName(parts[2]);
         at.run(x);
         ((PojoDatabase) services.getConfig()).metadataCollection(x.database);
         // continue with delete since the config DB things need to be deleted also
