@@ -376,7 +376,7 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
 
         const sort = options && options.sort && options.sort[0];
         let uri = this.getDataUri(offset, sz);
-        if (sort) { uri += '&sort=' + sort.field + '&descending=' + (sort.order === 'desc'); }
+        if (sort) { uri += '&sort=' + encodeURIComponent(sort.field) + '&descending=' + (sort.order === 'desc'); }
 
         const data = await this.http.get<any>(uri).toPromise();
         this.app.log('data', data);

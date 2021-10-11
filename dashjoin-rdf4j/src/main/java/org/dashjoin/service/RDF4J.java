@@ -2,6 +2,8 @@ package org.dashjoin.service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -237,12 +239,17 @@ public class RDF4J extends AbstractDatabase {
   public List<Map<String, Object>> all(Table s, Integer offset, Integer limit, String sort,
       boolean descending, Map<String, Object> arguments) throws Exception {
     String l = limit == null ? "" : " limit " + limit;
-    String o = offset == null ? "" : " offset" + offset;
+    String o = offset == null ? "" : " offset " + offset;
+    String srtc =
+        sort == null || sort.equals("ID") ? "" : " optional { ?s <" + iri(sort) + "> ?sort} ";
+    String srt = sort == null ? ""
+        : "order by " + (descending ? "desc" : "asc") + "(" + (sort.equals("ID") ? "?s" : "?sort")
+            + ")";
     try (RepositoryConnection con = getConnection()) {
       Map<String, Map<String, Object>> table = new HashMap<>();
       TupleQuery tq =
           con.prepareTupleQuery("select ?s ?p ?o where { ?s ?p ?o . { select ?s where { ?s a <"
-              + iri(s) + "> }" + l + o + " } }");
+              + iri(s) + "> " + srtc + " }" + srt + l + o + " } }");
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();
@@ -253,7 +260,28 @@ public class RDF4J extends AbstractDatabase {
             getRow(table, string(subject)).put(string(predicate), object(object));
         }
       }
-      return new ArrayList<>(table.values());
+      List<Map<String, Object>> res = new ArrayList<>(table.values());
+      if (sort != null)
+        Collections.sort(res, new Comparator<Map<String, Object>>() {
+          @SuppressWarnings("unchecked")
+          @Override
+          public int compare(Map<String, Object> m1, Map<String, Object> m2) {
+            Object o1 = (descending ? m2 : m1).get(sort);
+            Object o2 = (descending ? m1 : m2).get(sort);
+            if (o1 == null && o2 == null)
+              return 0;
+            if (o1 == null)
+              return -1;
+            if (o2 == null)
+              return 1;
+            if (o1 instanceof Number && o2 instanceof Number)
+              return Double.compare(((Number) o1).doubleValue(), ((Number) o2).doubleValue());
+            if (o1 instanceof Comparable)
+              return ((Comparable<Object>) o1).compareTo(o2);
+            return 0;
+          }
+        });
+      return res;
     }
   }
 
