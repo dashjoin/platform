@@ -1,8 +1,6 @@
 package org.dashjoin.service;
 
 import java.io.InputStream;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +12,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Literal;
 import org.eclipse.rdf4j.model.Resource;
@@ -37,7 +36,6 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
-import com.google.common.net.UrlEscapers;
 
 /**
  * RDF4J implementation
@@ -104,7 +102,7 @@ public class RDF4J extends AbstractDatabase {
   }
 
   IRI iri(Table t) {
-    return iri(URLDecoder.decode(t.name, StandardCharsets.UTF_8));
+    return iri(t.name);
   }
 
   IRI iri(Object o) {
@@ -319,11 +317,10 @@ public class RDF4J extends AbstractDatabase {
           while (types.hasNext()) {
             Resource s = types.next().getSubject();
             if (s instanceof IRI) {
-              String encoded = UrlEscapers.urlPathSegmentEscaper().escape(s.stringValue());
               Map<String, Object> table = new HashMap<>();
               table.put("parent", ID);
-              table.put("name", encoded);
-              table.put("ID", ID + "/" + encoded);
+              table.put("name", s.stringValue());
+              table.put("ID", ID + "/" + Escape.encodeTableOrColumnName(s.stringValue()));
               table.put("type", "object");
               Map<String, Object> properties = new HashMap<>();
               Map<String, Object> id = new HashMap<>();
@@ -334,7 +331,7 @@ public class RDF4J extends AbstractDatabase {
               id.put("ID", table.get("ID") + "/ID");
               properties.put("ID", id);
               table.put("properties", properties);
-              meta.put(encoded, table);
+              meta.put(s.stringValue(), table);
             }
           }
         }

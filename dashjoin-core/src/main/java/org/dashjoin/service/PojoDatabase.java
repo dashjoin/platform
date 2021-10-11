@@ -3,6 +3,8 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.net.UrlEscapers;
 
 /**
  * The actual config database instance. Sits on top of the union database. It maintains a cache of
@@ -438,13 +439,13 @@ public class PojoDatabase extends UnionDatabase implements Config {
   public void create(Table m, Map<String, Object> object) throws Exception {
     if (m.name.equals("dj-database")) {
       String name = (String) object.get("name");
-      if (name != null && !name.equals(UrlEscapers.urlPathSegmentEscaper().escape(name)))
-        throw new Exception("Database name must not special characters");
+      if (name != null && !name.equals(URLEncoder.encode(name, StandardCharsets.UTF_8)))
+        throw new Exception("Database name must not contain special characters");
     }
     if (m.name.equals("Dashjoin")) {
-      String name = (String) object.get("name");
-      if (name != null && !name.equals(UrlEscapers.urlPathSegmentEscaper().escape(name)))
-        throw new Exception("Dashjoin name must not contain /");
+      String name = (String) object.get("ID");
+      if (name != null && !name.equals(URLEncoder.encode(name, StandardCharsets.UTF_8)))
+        throw new Exception("Dashjoin name must not contain special characters");
     }
     super.create(m, object);
     if (m.name.equals("dj-database"))

@@ -8,14 +8,14 @@ export class Util {
      * this method URLEncodes / and %
      */
     static encodeTableOrColumnName(s: string): string {
-        return s.replace('%', '%25').replace('/', '%2F');
+        return (s as any).replaceAll('%', '%25').replaceAll('/', '%2F');
     }
 
     /**
      * decode version of above
      */
     static decodeTableOrColumnName(s: string): string {
-        return s.replace('%2F', '/').replace('%25', '%');
+        return (s as any).replaceAll('%2F', '/').replaceAll('%25', '%');
     }
 
     /**

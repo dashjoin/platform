@@ -17,15 +17,15 @@ public class RDF4JTest extends DBTest {
     if ("ID".equals(o))
       return o;
     if (o.equals("EMP"))
-      return "http:%2F%2Fex.org%2FEMP";
+      return "http://ex.org/EMP";
     if (o.equals("PRJ"))
-      return "http:%2F%2Fex.org%2FPRJ";
+      return "http://ex.org/PRJ";
     if (o.equals("NOKEY"))
-      return "http:%2F%2Fex.org%2FNOKEY";
+      return "http://ex.org/NOKEY";
     if (o.equals("T"))
-      return "http:%2F%2Fex.org%2FT";
+      return "http://ex.org/T";
     if (o.equals("U"))
-      return "http:%2F%2Fex.org%2FU";
+      return "http://ex.org/U";
     return "http://ex.org/" + o;
   }
 
