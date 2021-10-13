@@ -41,10 +41,12 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
+import lombok.extern.java.Log;
 
 /**
  * RDF4J implementation
  */
+@Log
 public class RDF4J extends AbstractDatabase {
 
   public List<String> datasets;
@@ -404,12 +406,19 @@ public class RDF4J extends AbstractDatabase {
                       String type = ranges.iterator().next().stringValue();
                       if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
                         if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
-                          p.put("type", "string");
+                          p.put("type", "integer");
+                        else if ("http://www.w3.org/2001/XMLSchema#gYear".equals(type))
+                          p.put("type", "integer");
+                        else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
+                          p.put("type", "number");
+                        else if ("http://www.w3.org/2001/XMLSchema#date".equals(type))
+                          p.put("type", "date");
                         else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
                           p.put("type", "string");
-                        else
-                          // TODO
-                          throw new Exception("unknown type: " + type);
+                        else {
+                          p.put("type", "string");
+                          log.warning("unknown type: " + type);
+                        }
                       } else {
                         p.put("type", "string");
                         p.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
