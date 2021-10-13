@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -344,6 +346,29 @@ public class RDF4J extends AbstractDatabase {
           con.add(ddl, "", format);
         }
 
+      // scan the ontology for property (domain and range info)
+      Map<IRI, Set<IRI>> type2props = new HashMap<>();
+      Map<IRI, Set<IRI>> prop2types = new HashMap<>();
+      for (IRI dr : new IRI[] {RDFS.DOMAIN, RDFS.RANGE}) {
+        Map<IRI, Set<IRI>> drs = dr == RDFS.DOMAIN ? type2props : prop2types;
+        try (RepositoryResult<Statement> d = con.getStatements(null, dr, null)) {
+          while (d.hasNext()) {
+            Statement i = d.next();
+            if (i.getSubject() instanceof IRI && i.getObject() instanceof IRI) {
+              IRI s = dr == RDFS.DOMAIN ? (IRI) i.getObject() : (IRI) i.getSubject();
+              IRI o = dr == RDFS.DOMAIN ? (IRI) i.getSubject() : (IRI) i.getObject();
+              Set<IRI> set = drs.get(s);
+              if (set == null) {
+                set = new HashSet<>();
+                drs.put(s, set);
+              }
+              set.add(o);
+            }
+          }
+        }
+      }
+
+      // scan the ontology for classes
       for (IRI[] i : new IRI[][] {new IRI[] {RDF.TYPE, OWL.CLASS}, new IRI[] {RDF.TYPE, RDFS.CLASS},
           new IRI[] {RDFS.SUBCLASSOF, null}})
         try (RepositoryResult<Statement> types = con.getStatements(null, i[0], i[1])) {
@@ -365,6 +390,23 @@ public class RDF4J extends AbstractDatabase {
               properties.put("ID", id);
               table.put("properties", properties);
               meta.put(s.stringValue(), table);
+
+              Set<IRI> props = type2props.get(s);
+              if (props != null)
+                for (IRI prop : props) {
+                  Set<IRI> ranges = prop2types.get(prop);
+                  if (ranges != null)
+                    if (ranges.size() == 1) {
+                      String name = prop.stringValue();
+                      Map<String, Object> p = new HashMap<>();
+                      p.put("name", name);
+                      p.put("type", "string");
+                      p.put("title", prop.getLocalName());
+                      p.put("parent", table.get("ID"));
+                      p.put("ID", table.get("ID") + "/" + Escape.encodeTableOrColumnName(name));
+                      properties.put((String) p.get("ID"), p);
+                    }
+                }
             }
           }
         }
