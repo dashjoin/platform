@@ -12,3 +12,10 @@
 <http://ex.org/EMP> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://ex.org/PRJ> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://ex.org/NOKEY> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+
+<http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/EMP> .
+<http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/PRJ> .
+<http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#integer> .
+
+<http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/EMP> .
+<http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#range> <http://ex.org/PRJ> .

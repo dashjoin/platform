@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Property;
+import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Choice;
 import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
@@ -35,6 +36,20 @@ public class DBTest {
 
   @Inject
   Data db;
+
+  @Test
+  public void testMetadata() throws Exception {
+    Table t = services.getConfig().getDatabase("dj/junit").tables.get("EMP");
+    Assert.assertEquals(idRead(), t.properties.get(idRead()).name);
+    Assert.assertEquals(0, t.properties.get(idRead()).pkpos.intValue());
+    Assert.assertNull(t.properties.get(idRead()).ref);
+    Assert.assertEquals("dj/junit/EMP/" + idRead(), t.properties.get(idRead()).ID);
+
+    Assert.assertEquals("WORKSON", t.properties.get("WORKSON").name);
+    Assert.assertNull(t.properties.get("WORKSON").pkpos);
+    Assert.assertEquals("dj/junit/PRJ/" + idRead(), t.properties.get("WORKSON").ref);
+    Assert.assertEquals("dj/junit/EMP/WORKSON", t.properties.get("WORKSON").ID);
+  }
 
   @Test
   public void testGetTables() throws Exception {

@@ -400,11 +400,25 @@ public class RDF4J extends AbstractDatabase {
                       String name = prop.stringValue();
                       Map<String, Object> p = new HashMap<>();
                       p.put("name", name);
-                      p.put("type", "string");
+
+                      String type = ranges.iterator().next().stringValue();
+                      if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
+                        if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
+                          p.put("type", "string");
+                        else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
+                          p.put("type", "string");
+                        else
+                          // TODO
+                          throw new Exception("unknown type: " + type);
+                      } else {
+                        p.put("type", "string");
+                        p.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
+                      }
+
                       p.put("title", prop.getLocalName());
                       p.put("parent", table.get("ID"));
                       p.put("ID", table.get("ID") + "/" + Escape.encodeTableOrColumnName(name));
-                      properties.put((String) p.get("ID"), p);
+                      properties.put(name, p);
                     }
                 }
             }
