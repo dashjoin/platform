@@ -1462,7 +1462,7 @@ RemoteDatabase clients. For more information, please refer to the dashjoin-sdk m
 We welcome contributions. If you are interested in contributing to Dashjoin, let us know!
 You'll get to know an open-minded and motivated team working together to build the next generation platform.
 
-* [Join our Slack](https://join.slack.com/t/dashjoin/shared_invite/zt-vfxv69hh-3ZtvNbbiBR0X5lgFNh2caA) and say hello
+* [Join our Slack](https://join.slack.com/t/dashjoin/shared_invite/zt-x4v8e5x1-Z03en2OSkzdjHqQ4PBwb~Q) and say hello
 * [Follow us](https://twitter.com/dashjoin) on Twitter
 * [Submit](https://github.com/dashjoin/platform/issues) your ideas by opening an issue with the enhancement label
 * [Help out](https://github.com/dashjoin/platform/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) by fixing "a good first issue"
