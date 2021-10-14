@@ -17,6 +17,7 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.Template;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Literal;
@@ -146,7 +147,8 @@ public class RDF4J extends AbstractDatabase {
       throws Exception {
     try (RepositoryConnection con = getConnection()) {
       List<Map<String, Object>> res = new ArrayList<>();
-      TupleQuery tq = con.prepareTupleQuery(info.query);
+      TupleQuery tq = con
+          .prepareTupleQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();
@@ -308,7 +310,8 @@ public class RDF4J extends AbstractDatabase {
       throws Exception {
     try (RepositoryConnection con = getConnection()) {
       Map<String, Property> res = new HashMap<>();
-      TupleQuery tq = con.prepareTupleQuery(info.query);
+      TupleQuery tq = con
+          .prepareTupleQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();
@@ -319,7 +322,7 @@ public class RDF4J extends AbstractDatabase {
             if (b.getValue() instanceof IRI) {
               IRI type = getType((Resource) b.getValue());
               if (type != null)
-                prop.parent = type.stringValue();
+                prop.parent = ID + "/" + Escape.encodeTableOrColumnName(type.stringValue());
             }
             res.put(b.getName(), prop);
           });
@@ -411,9 +414,10 @@ public class RDF4J extends AbstractDatabase {
                           p.put("type", "integer");
                         else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
                           p.put("type", "number");
-                        else if ("http://www.w3.org/2001/XMLSchema#date".equals(type))
-                          p.put("type", "date");
-                        else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
+                        else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
+                          p.put("widget", "date");
+                          p.put("type", "string");
+                        } else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
                           p.put("type", "string");
                         else {
                           p.put("type", "string");

@@ -1,0 +1,11 @@
+{
+	"ID": "search",
+	"query": "select ?ID ?NAME where { ?ID a <http://ex.org/EMP> . ?ID <http://ex.org/NAME> ?NAME . filter (?NAME=${search}) }",
+	"type": "read",
+	"roles": ["user"],
+  "arguments" : {
+    "search" : {
+      "type" : "string"
+    }
+  }
+}

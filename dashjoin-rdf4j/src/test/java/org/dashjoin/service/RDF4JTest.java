@@ -57,22 +57,4 @@ public class RDF4JTest extends DBTest {
     Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FT"));
     Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
-
-  @Override
-  @Test
-  public void testAllOffset() throws Exception {
-    // TODO
-  }
-
-  @Override
-  @Test
-  public void testSearchQuery() throws Exception {
-    // TODO: need to add search.json
-  }
-
-  @Override
-  @Test
-  public void testSearch() throws Exception {
-    // TODO
-  }
 }

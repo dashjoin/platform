@@ -27,6 +27,7 @@ import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -213,7 +214,9 @@ public class MongoDB extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
-    MongoDBQuery q = new MongoDBQuery(info.query);
+
+    MongoDBQuery q =
+        new MongoDBQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
 
     List<Map<String, Object>> res = new ArrayList<>();
 
@@ -296,7 +299,8 @@ public class MongoDB extends AbstractDatabase {
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
 
-    MongoDBQuery parse = new MongoDBQuery(info.query);
+    MongoDBQuery parse =
+        new MongoDBQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
     Table table = tables.get(parse.collection);
 
     Map<String, Property> meta = new LinkedHashMap<>();

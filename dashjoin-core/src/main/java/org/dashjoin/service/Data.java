@@ -33,6 +33,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -127,7 +128,7 @@ public class Data {
     for (Entry<String, Property> p : meta.entrySet())
       if (p.getValue().pkpos != null) {
         key = p.getKey();
-        table = p.getValue().parent.split("/")[2];
+        table = Escape.decodeTableOrColumnName(p.getValue().parent.split("/")[2]);
       } else {
         column = p.getKey();
       }

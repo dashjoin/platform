@@ -2,8 +2,10 @@ package org.dashjoin.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -84,5 +86,17 @@ public class Template {
     for (String var : vars)
       values.put(var, "', " + var + ", '");
     return "concat('" + replace(template, values) + "')";
+  }
+
+  /**
+   * returns a copy of the arguments where all strings s are replaced with "s"
+   */
+  public static Map<String, Object> quoteStrings(Map<String, Object> arguments) {
+    Map<String, Object> res = new LinkedHashMap<>();
+    if (arguments != null)
+      for (Entry<String, Object> e : arguments.entrySet())
+        res.put(e.getKey(),
+            e.getValue() instanceof String ? "" + '"' + e.getValue() + '"' : e.getValue());
+    return res;
   }
 }

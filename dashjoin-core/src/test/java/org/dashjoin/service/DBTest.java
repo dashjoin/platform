@@ -105,9 +105,9 @@ public class DBTest {
     List<SearchResult> res = db.search(sc, "mike", null);
     Assert.assertEquals(1, res.size());
     Assert.assertEquals("junit", res.get(0).id.database);
-    Assert.assertEquals("EMP", res.get(0).id.table);
-    Assert.assertEquals(1, res.get(0).id.pk.get(0));
-    Assert.assertEquals("NAME", res.get(0).column);
+    name("EMP", res.get(0).id.table);
+    number(1, res.get(0).id.pk.get(0));
+    name("NAME", res.get(0).column);
     Assert.assertEquals("mike", res.get(0).match);
   }
 
@@ -119,8 +119,8 @@ public class DBTest {
         db.searchQuery(sc, services.getConfig().getDatabase("dj/junit"), "search", "mike");
     Assert.assertEquals(1, res.size());
     Assert.assertEquals("junit", res.get(0).id.database);
-    Assert.assertEquals("EMP", res.get(0).id.table);
-    Assert.assertEquals(1, res.get(0).id.pk.get(0));
+    name("EMP", res.get(0).id.table);
+    number(1, res.get(0).id.pk.get(0));
     Assert.assertTrue("EMP.NAME".equals(res.get(0).column) || "NAME".equals(res.get(0).column));
     Assert.assertEquals("mike", res.get(0).match);
   }
@@ -149,7 +149,6 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     db.all(sc, "junit", toID("EMP"), 0, 1, null, false, null);
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 1, 10, null, false, null);
-    System.out.println(x.get(0));
     map("{ID=2, NAME=joe, WORKSON=1000}", x.get(0));
   }
 
@@ -175,8 +174,7 @@ public class DBTest {
     id("dj/junit/EMP/WORKSON", links.get(0).fk);
     Assert.assertEquals("junit", links.get(0).id.database);
     name("EMP", links.get(0).id.table);
-    Assert.assertTrue(
-        links.get(0).id.pk.get(0).equals(1) || links.get(0).id.pk.get(0).equals("http://ex.org/1"));
+    number(1, links.get(0).id.pk.get(0));
     id("dj/junit/PRJ/" + idRead(), links.get(0).pk);
   }
 
@@ -235,6 +233,10 @@ public class DBTest {
 
   void name(String string, String id) {
     Assert.assertEquals(string, id.replaceAll("http://ex.org/", ""));
+  }
+
+  void number(int expected, Object actual) {
+    Assert.assertTrue(actual.equals(expected) || actual.equals("http://ex.org/" + expected));
   }
 
   @Test
