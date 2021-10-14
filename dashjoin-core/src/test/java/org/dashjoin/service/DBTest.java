@@ -13,6 +13,7 @@ import org.dashjoin.service.Data.Choice;
 import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Data.SearchResult;
+import org.dashjoin.util.Escape;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -184,7 +185,8 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     Resource id = db.create(sc, "junit", toID("PRJ"), of(idRead(), toID(2000)));
-    id("dj/junit/PRJ/2000", "dj/" + id.database + '/' + id.table + '/' + id.pk.get(0));
+    id("dj/junit/PRJ/2000", "dj/" + id.database + '/' + Escape.encodeTableOrColumnName(id.table)
+        + '/' + Escape.encodeTableOrColumnName("" + id.pk.get(0)));
     Assert.assertNotNull(db.read(sc, "junit", toID("PRJ"), toID("2000")));
     db.update(sc, "junit", toID("PRJ"), toID("2000"), of(toID("NAME"), "new name"));
     Assert.assertEquals("new name",
@@ -202,7 +204,8 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     Resource id = db.create(sc, "junit", toID("EMP"), of(idRead(), toID(3)));
-    id("dj/junit/EMP/3", "dj/" + id.database + '/' + id.table + '/' + id.pk.get(0));
+    id("dj/junit/EMP/3", "dj/" + id.database + '/' + Escape.encodeTableOrColumnName(id.table) + '/'
+        + Escape.encodeTableOrColumnName("" + id.pk.get(0)));
     Assert.assertNotNull(db.read(sc, "junit", toID("EMP"), toID("3")));
     db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("NAME"), "new name"));
     db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("WORKSON"), 1000));
