@@ -1,0 +1,11 @@
+<http://ex.org/EMP> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+<http://ex.org/PRJ> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
+
+<http://ex.org/1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/1> <http://ex.org/NAME> "mike" .
+<http://ex.org/1> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/2> <http://ex.org/NAME> "joe" .
+<http://ex.org/2> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/1000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/PRJ> .
+<http://ex.org/1000> <http://ex.org/NAME> "dev-project" .

@@ -337,6 +337,7 @@ public class RDF4J extends AbstractDatabase {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
     Sail sail = new MemoryStore();
     _cp = new SailRepository(sail);
@@ -420,36 +421,7 @@ public class RDF4J extends AbstractDatabase {
                   Set<IRI> ranges = prop2types.get(prop);
                   if (ranges != null)
                     if (ranges.size() == 1) {
-                      String name = prop.stringValue();
-                      Map<String, Object> p = new HashMap<>();
-                      p.put("name", name);
-
-                      String type = ranges.iterator().next().stringValue();
-                      if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
-                        if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
-                          p.put("type", "integer");
-                        else if ("http://www.w3.org/2001/XMLSchema#gYear".equals(type))
-                          p.put("type", "integer");
-                        else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
-                          p.put("type", "number");
-                        else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
-                          p.put("widget", "date");
-                          p.put("type", "string");
-                        } else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
-                          p.put("type", "string");
-                        else {
-                          p.put("type", "string");
-                          log.warning("unknown type: " + type);
-                        }
-                      } else {
-                        p.put("type", "string");
-                        p.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
-                      }
-
-                      p.put("title", prop.getLocalName());
-                      p.put("parent", table.get("ID"));
-                      p.put("ID", table.get("ID") + "/" + Escape.encodeTableOrColumnName(name));
-                      properties.put(name, p);
+                      addProp("" + table.get("ID"), prop, properties, ranges.iterator().next());
                     }
                 }
             }
@@ -461,8 +433,94 @@ public class RDF4J extends AbstractDatabase {
         roots.removeAll(sub);
       for (IRI root : roots)
         copyProps(root, subclasses, meta);
+
+      // scan props using one sample
+      for (Entry<String, Object> cls : meta.entrySet())
+        try (RepositoryResult<Statement> types =
+            con.getStatements(null, RDF.TYPE, iri(cls.getKey()))) {
+          while (types.hasNext()) {
+            Statement type = types.next();
+            Map<String, Object> table = (Map<String, Object>) cls.getValue();
+            Map<String, Object> properties = (Map<String, Object>) table.get("properties");
+            try (RepositoryResult<Statement> columns =
+                con.getStatements(type.getSubject(), null, null)) {
+              Map<IRI, ColType> cols = new LinkedHashMap<>();
+              while (columns.hasNext()) {
+                Statement column = columns.next();
+
+                if (column.getPredicate().equals(RDF.TYPE))
+                  continue;
+
+                Map<String, Object> property =
+                    (Map<String, Object>) properties.get(column.getPredicate().stringValue());
+                if (property == null) {
+                  ColType col = cols.get(column.getPredicate());
+                  if (col != null)
+                    col.array = true;
+                  else {
+                    col = new ColType();
+                    col.sample = column.getObject();
+                    col.array = false;
+                    cols.put(column.getPredicate(), col);
+                  }
+                }
+              }
+
+              for (Entry<IRI, ColType> e : cols.entrySet()) {
+                Value value = e.getValue().sample;
+                if (value instanceof Literal)
+                  addProp((String) table.get("ID"), e.getKey(), properties,
+                      ((Literal) value).getDatatype());
+                else if (value instanceof IRI) {
+                  IRI t = getType((IRI) value);
+                  if (t != null)
+                    addProp((String) table.get("ID"), e.getKey(), properties, t);
+                }
+              }
+            }
+          }
+        }
     }
     return meta;
+  }
+
+  void addProp(String tableID, IRI prop, Map<String, Object> properties, IRI datatype) {
+    String name = prop.stringValue();
+    Map<String, Object> p = new HashMap<>();
+    p.put("name", name);
+
+    // TODO: handle cardinality
+    String type = datatype.stringValue();
+    if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
+      if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
+        p.put("type", "integer");
+      else if ("http://www.w3.org/2001/XMLSchema#gYear".equals(type))
+        p.put("type", "integer");
+      else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
+        p.put("type", "number");
+      else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
+        p.put("widget", "date");
+        p.put("type", "string");
+      } else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
+        p.put("type", "string");
+      else {
+        p.put("type", "string");
+        log.warning("unknown type: " + type);
+      }
+    } else {
+      p.put("type", "string");
+      p.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
+    }
+
+    p.put("title", prop.getLocalName());
+    p.put("parent", tableID);
+    p.put("ID", tableID + "/" + Escape.encodeTableOrColumnName(name));
+    properties.put(name, p);
+  }
+
+  static class ColType {
+    public boolean array;
+    public Value sample;
   }
 
   @SuppressWarnings("unchecked")
