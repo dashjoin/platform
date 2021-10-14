@@ -264,8 +264,7 @@ public class RDF4J extends AbstractDatabase {
           IRI predicate = (IRI) x.getBinding("p").getValue();
           Value object = x.getBinding("o").getValue();
           if (!predicate.equals(RDF.TYPE))
-            getRow(table, string(subject), !(subject instanceof BNode)).put(string(predicate),
-                object(object));
+            getRow(table, string(subject), subject).put(string(predicate), object(object));
         }
       }
       List<Map<String, Object>> res = new ArrayList<>(table.values());
@@ -294,11 +293,15 @@ public class RDF4J extends AbstractDatabase {
   }
 
   Map<String, Object> getRow(Map<String, Map<String, Object>> table, String subject,
-      boolean addID) {
+      Resource resource) {
     Map<String, Object> res = table.get(subject);
     if (res == null) {
-      res = new HashMap<>();
-      if (addID)
+      res = new LinkedHashMap<>();
+      if (resource instanceof BNode) {
+        resource = getIRI((BNode) resource);
+        if (resource != null)
+          res.put("ID", string(resource));
+      } else
         res.put("ID", subject);
       table.put(subject, res);
     }
@@ -494,6 +497,22 @@ public class RDF4J extends AbstractDatabase {
       try (RepositoryResult<Statement> out = con.getStatements(iri, RDF.TYPE, null)) {
         while (out.hasNext()) {
           Value s = out.next().getObject();
+          if (s instanceof IRI)
+            return (IRI) s;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * we cannot link to blank nodes, use a valid IRI in the neighborhood
+   */
+  public IRI getIRI(BNode bnode) {
+    try (RepositoryConnection con = getConnection()) {
+      try (RepositoryResult<Statement> out = con.getStatements(null, null, bnode)) {
+        while (out.hasNext()) {
+          Value s = out.next().getSubject();
           if (s instanceof IRI)
             return (IRI) s;
         }
