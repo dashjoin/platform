@@ -421,7 +421,9 @@ public class RDF4J extends AbstractDatabase {
                   Set<IRI> ranges = prop2types.get(prop);
                   if (ranges != null)
                     if (ranges.size() == 1) {
-                      addProp("" + table.get("ID"), prop, properties, ranges.iterator().next());
+                      Integer maxcard = getMaxCardinality(prop);
+                      addProp("" + table.get("ID"), prop, properties, ranges.iterator().next(),
+                          maxcard == null || maxcard > 1);
                     }
                 }
             }
@@ -470,11 +472,12 @@ public class RDF4J extends AbstractDatabase {
                 Value value = e.getValue().sample;
                 if (value instanceof Literal)
                   addProp((String) table.get("ID"), e.getKey(), properties,
-                      ((Literal) value).getDatatype());
+                      ((Literal) value).getDatatype(), e.getValue().array);
                 else if (value instanceof IRI) {
                   IRI t = getType((IRI) value);
                   if (t != null)
-                    addProp((String) table.get("ID"), e.getKey(), properties, t);
+                    addProp((String) table.get("ID"), e.getKey(), properties, t,
+                        e.getValue().array);
                 }
               }
             }
@@ -484,32 +487,40 @@ public class RDF4J extends AbstractDatabase {
     return meta;
   }
 
-  void addProp(String tableID, IRI prop, Map<String, Object> properties, IRI datatype) {
+  void addProp(String tableID, IRI prop, Map<String, Object> properties, IRI datatype,
+      boolean array) {
     String name = prop.stringValue();
     Map<String, Object> p = new HashMap<>();
     p.put("name", name);
 
-    // TODO: handle cardinality
+    Map<String, Object> ap;
+    if (array) {
+      ap = new HashMap<>();
+      p.put("items", ap);
+      p.put("type", "array");
+    } else
+      ap = p;
+
     String type = datatype.stringValue();
     if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
       if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
-        p.put("type", "integer");
+        ap.put("type", "integer");
       else if ("http://www.w3.org/2001/XMLSchema#gYear".equals(type))
-        p.put("type", "integer");
+        ap.put("type", "integer");
       else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
-        p.put("type", "number");
+        ap.put("type", "number");
       else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
-        p.put("widget", "date");
-        p.put("type", "string");
+        ap.put("widget", "date");
+        ap.put("type", "string");
       } else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
-        p.put("type", "string");
+        ap.put("type", "string");
       else {
-        p.put("type", "string");
+        ap.put("type", "string");
         log.warning("unknown type: " + type);
       }
     } else {
-      p.put("type", "string");
-      p.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
+      ap.put("type", "string");
+      ap.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
     }
 
     p.put("title", prop.getLocalName());
@@ -557,6 +568,19 @@ public class RDF4J extends AbstractDatabase {
           Value s = out.next().getObject();
           if (s instanceof IRI)
             return (IRI) s;
+        }
+      }
+    }
+    return null;
+  }
+
+  public Integer getMaxCardinality(Resource iri) {
+    try (RepositoryConnection con = getConnection()) {
+      try (RepositoryResult<Statement> out = con.getStatements(iri, OWL.MAXCARDINALITY, null)) {
+        while (out.hasNext()) {
+          Value s = out.next().getObject();
+          if (s instanceof Literal)
+            return ((Literal) s).intValue();
         }
       }
     }

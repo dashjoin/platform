@@ -16,6 +16,8 @@
 <http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/EMP> .
 <http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/PRJ> .
 <http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
+<http://ex.org/NAME> <http://www.w3.org/2002/07/owl#maxCardinality> 1 .
 
 <http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/EMP> .
 <http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#range> <http://ex.org/PRJ> .
+<http://ex.org/WORKSON> <http://www.w3.org/2002/07/owl#maxCardinality> 1 .

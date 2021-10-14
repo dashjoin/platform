@@ -16,7 +16,12 @@ public class MetadataTest {
 
   @Test
   public void subclass() throws Exception {
-    RDF4J db = new RDF4J();
+    RDF4J db = new RDF4J() {
+      @Override
+      RepositoryConnection getConnection() throws RepositoryException {
+        return _cp.getConnection();
+      }
+    };
     db.ID = "dj/meta";
     db.datasets = Arrays.asList("/data/meta.n3");
     Map<String, Table> meta =
@@ -44,6 +49,14 @@ public class MetadataTest {
         meta.get("http://ex.org/EMP").properties.get("http://ex.org/NAME").type);
     Assert.assertEquals("NAME",
         meta.get("http://ex.org/EMP").properties.get("http://ex.org/NAME").title);
+
+    Assert.assertEquals("dj/meta/http:%2F%2Fex.org%2FPRJ/ID",
+        meta.get("http://ex.org/EMP").properties.get("http://ex.org/WORKSON").ref);
+
+    Assert.assertEquals("array",
+        meta.get("http://ex.org/EMP").properties.get("http://ex.org/EMAIL").type);
+    Assert.assertEquals("string",
+        meta.get("http://ex.org/EMP").properties.get("http://ex.org/EMAIL").items.type);
   }
 
   @Test
@@ -60,7 +73,5 @@ public class MetadataTest {
         om.convertValue(db.connectAndCollectMetadata(), new TypeReference<Map<String, Table>>() {});
 
     name(meta);
-    Assert.assertEquals("dj/meta/http:%2F%2Fex.org%2FPRJ/ID",
-        meta.get("http://ex.org/EMP").properties.get("http://ex.org/WORKSON").ref);
   }
 }
