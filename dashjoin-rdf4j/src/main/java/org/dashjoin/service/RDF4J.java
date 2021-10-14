@@ -373,13 +373,28 @@ public class RDF4J extends AbstractDatabase {
         }
       }
 
+      // remember subclass tree (no multiple inheritance)
+      Map<IRI, Set<IRI>> subclasses = new LinkedHashMap<>();
+
       // scan the ontology for classes
       for (IRI[] i : new IRI[][] {new IRI[] {RDF.TYPE, OWL.CLASS}, new IRI[] {RDF.TYPE, RDFS.CLASS},
           new IRI[] {RDFS.SUBCLASSOF, null}})
         try (RepositoryResult<Statement> types = con.getStatements(null, i[0], i[1])) {
           while (types.hasNext()) {
-            Resource s = types.next().getSubject();
+            Statement stmt = types.next();
+            Resource s = stmt.getSubject();
             if (s instanceof IRI) {
+
+              if (stmt.getObject() instanceof IRI)
+                if (stmt.getPredicate().equals(RDFS.SUBCLASSOF)) {
+                  Set<IRI> set = subclasses.get(stmt.getObject());
+                  if (set == null) {
+                    set = new HashSet<>();
+                    subclasses.put((IRI) stmt.getObject(), set);
+                  }
+                  set.add((IRI) s);
+                }
+
               Map<String, Object> table = new HashMap<>();
               table.put("parent", ID);
               table.put("name", s.stringValue());
@@ -437,8 +452,41 @@ public class RDF4J extends AbstractDatabase {
             }
           }
         }
+
+      Set<IRI> roots = new HashSet<IRI>(subclasses.keySet());
+      for (Set<IRI> sub : subclasses.values())
+        roots.removeAll(sub);
+      for (IRI root : roots)
+        copyProps(root, subclasses, meta);
     }
     return meta;
+  }
+
+  @SuppressWarnings("unchecked")
+  void copyProps(IRI cls, Map<IRI, Set<IRI>> subclasses, Map<String, Object> meta) {
+    if (subclasses.containsKey(cls))
+      for (IRI sub : subclasses.get(cls)) {
+        Map<String, Object> table = (Map<String, Object>) meta.get(cls.stringValue());
+        Map<String, Object> subtable = (Map<String, Object>) meta.get(sub.stringValue());
+        if (table == null || subtable == null)
+          continue;
+        Map<String, Object> properties = (Map<String, Object>) table.get("properties");
+        Map<String, Object> subproperties = (Map<String, Object>) subtable.get("properties");
+
+        Set<String> p = new HashSet<>(properties.keySet());
+        p.removeAll(subproperties.keySet());
+
+        for (String add : p) {
+          Map<String, Object> map = new LinkedHashMap<>((Map<String, Object>) properties.get(add));
+          map.put("name", add);
+          map.put("parent", ID + "/" + Escape.encodeTableOrColumnName(sub.stringValue()));
+          map.put("ID", ID + "/" + Escape.encodeTableOrColumnName(sub.stringValue()) + "/"
+              + Escape.encodeTableOrColumnName(add));
+          subproperties.put(add, map);
+        }
+
+        copyProps(sub, subclasses, meta);
+      }
   }
 
   public IRI getType(Resource iri) {
