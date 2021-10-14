@@ -521,6 +521,7 @@ public class RDF4J extends AbstractDatabase {
     } else {
       ap.put("type", "string");
       ap.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
+      ap.put("displayWith", "fk");
     }
 
     p.put("title", prop.getLocalName());

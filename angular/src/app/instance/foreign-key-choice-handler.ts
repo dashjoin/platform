@@ -50,7 +50,7 @@ export class ForeignKeyChoiceHandler implements ChoiceHandler {
         }
         const parts = Util.parseColumnID((schema as any).ref);
         if (!current) { current = ''; }
-        return this.http.get<Choice[]>('/rest/database/keys/' + parts[1] + '/' + parts[2] + '?limit=10&prefix=' +
+        return this.http.get<Choice[]>('/rest/database/keys/' + parts[1] + '/' + encodeURIComponent(parts[2]) + '?limit=10&prefix=' +
             encodeURIComponent(current), {
             headers: new HttpHeaders({ 'Content-Type': 'application/json' })
         });
