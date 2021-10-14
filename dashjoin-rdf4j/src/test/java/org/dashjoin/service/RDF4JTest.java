@@ -32,12 +32,6 @@ public class RDF4JTest extends DBTest {
 
   @Override
   @Test
-  public void testIncoming() throws Exception {
-    // TODO
-  }
-
-  @Override
-  @Test
   public void testMetadata() throws Exception {
     String ns = "http:%2F%2Fex.org%2F";
     Table t = services.getConfig().getDatabase("dj/junit").tables.get("http://ex.org/EMP");

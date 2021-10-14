@@ -171,11 +171,12 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     List<Origin> links = db.incoming(sc, "junit", toID("PRJ"), toID("1000"), 0, 10);
-    Assert.assertEquals("dj/junit/EMP/WORKSON", links.get(0).fk);
+    id("dj/junit/EMP/WORKSON", links.get(0).fk);
     Assert.assertEquals("junit", links.get(0).id.database);
-    Assert.assertEquals("EMP", links.get(0).id.table);
-    Assert.assertEquals(1, links.get(0).id.pk.get(0));
-    Assert.assertEquals("dj/junit/PRJ/" + idRead(), links.get(0).pk);
+    name("EMP", links.get(0).id.table);
+    Assert.assertTrue(
+        links.get(0).id.pk.get(0).equals(1) || links.get(0).id.pk.get(0).equals("http://ex.org/1"));
+    id("dj/junit/PRJ/" + idRead(), links.get(0).pk);
   }
 
   @Test
@@ -226,8 +227,11 @@ public class DBTest {
   }
 
   void id(String string, String id) {
-    Assert.assertEquals(string,
-        id.replaceAll("http:%2F%2Fex.org%2F", "").replaceAll("http://ex.org/", ""));
+    Assert.assertEquals(string, id.replaceAll("http:%2F%2Fex.org%2F", ""));
+  }
+
+  void name(String string, String id) {
+    Assert.assertEquals(string, id.replaceAll("http://ex.org/", ""));
   }
 
   @Test
