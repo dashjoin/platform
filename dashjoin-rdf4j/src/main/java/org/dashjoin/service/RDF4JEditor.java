@@ -26,6 +26,7 @@ import org.dashjoin.service.rdf4j.Query.Cond;
 import org.dashjoin.service.rdf4j.Query.GroupByVariable;
 import org.dashjoin.service.rdf4j.Query.Stmt;
 import org.dashjoin.service.rdf4j.Query.Variable;
+import org.dashjoin.util.Escape;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.Value;
@@ -258,7 +259,7 @@ public class RDF4JEditor implements QueryEditorInternal {
       qc.col = new Col();
       qc.col.column = f;
       if (x != null)
-        qc.keyTable = x.get(f).pkpos == null ? null : x.get(f).parent;
+        qc.keyTable = x.get(f).pkpos == null ? null : Escape.parseTableID(x.get(f).parent)[2];
       for (Cond w : parse.filter)
         if (w.left.name.equals(f))
           qc.where = w.op + " " + (w.right == null ? "" : w.right);
