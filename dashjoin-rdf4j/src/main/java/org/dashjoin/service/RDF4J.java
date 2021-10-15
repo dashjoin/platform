@@ -89,6 +89,8 @@ public class RDF4J extends AbstractDatabase {
         return literal.intValue();
       if (XMLSchema.INT.equals(literal.getDatatype()))
         return literal.intValue();
+      if (XMLSchema.LONG.equals(literal.getDatatype()))
+        return literal.longValue();
       if (XMLSchema.STRING.equals(literal.getDatatype()))
         return literal.stringValue();
       if (RDF.LANGSTRING.equals(literal.getDatatype()))
@@ -115,6 +117,13 @@ public class RDF4J extends AbstractDatabase {
   }
 
   IRI iri(Object o) {
+
+    if (o == null)
+      throw new IllegalArgumentException("URI cannot be null");
+
+    if ("_dj_source".equals(o))
+      o = "urn:_dj_source";
+
     String s = "" + o;
     if (vf == null)
       vf = SimpleValueFactory.getInstance();
@@ -169,6 +178,10 @@ public class RDF4J extends AbstractDatabase {
   @SuppressWarnings("unchecked")
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
+
+    if (object.get("ID") == null)
+      throw new IllegalArgumentException("URI must be specified via the ID property");
+
     try (RepositoryConnection con = getConnection()) {
       IRI subject = iri(object.get("ID"));
       con.add(subject, RDF.TYPE, iri(m));
@@ -208,6 +221,10 @@ public class RDF4J extends AbstractDatabase {
   @Override
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
+
+    if (search.get("ID") == null)
+      throw new IllegalArgumentException("URI must be specified via the ID property");
+
     try (RepositoryConnection con = getConnection()) {
       IRI subject = iri(search.get("ID"));
       try (RepositoryResult<Statement> types = con.getStatements(subject, RDF.TYPE, iri(schema))) {

@@ -458,7 +458,7 @@ public class Manage {
     for (InputPart inputPart : inputParts) {
       MultivaluedMap<String, String> header = inputPart.getHeaders();
 
-      if (getFileName(header).contains("/")) {
+      if (getFileNameInternal(header).contains("/")) {
         // special case: model folder upload
         res.createMode = false;
         Map<String, List<Map<String, Object>>> tables = handleModel(inputParts);
@@ -731,7 +731,13 @@ public class Manage {
   }
 
   String getFileName(MultivaluedMap<String, String> header) {
-    return FilenameUtils.removeExtension(getFileNameInternal(header));
+    String res = FilenameUtils.removeExtension(getFileNameInternal(header));
+    if (!res.contains("/"))
+      if (res.contains("%3A") || res.contains("%2F"))
+        // allow RDF uploads where filename must be a URI
+        res = URLDecoder.decode(res, StandardCharsets.UTF_8);
+
+    return res;
   }
 
   String getFileNameInternal(MultivaluedMap<String, String> header) {
