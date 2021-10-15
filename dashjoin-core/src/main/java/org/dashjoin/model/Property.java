@@ -188,4 +188,16 @@ public class Property {
    */
   @Schema(title = "JSON schema form choices")
   public List<String> choices;
+
+  /**
+   * format
+   */
+  @Schema(title = "field string format")
+  public String format;
+
+  /**
+   * errorMessage
+   */
+  @Schema(title = "custom validation error message")
+  public String errorMessage;
 }

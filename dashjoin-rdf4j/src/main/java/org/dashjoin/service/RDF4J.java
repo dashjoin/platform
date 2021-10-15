@@ -16,6 +16,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.Template;
 import org.eclipse.rdf4j.model.BNode;
@@ -78,7 +79,7 @@ public class RDF4J extends AbstractDatabase {
 
   @Override
   public void close() {
-
+    _cp.shutDown();
   }
 
   Object object(Value object) {
@@ -432,11 +433,13 @@ public class RDF4J extends AbstractDatabase {
               table.put("name", s.stringValue());
               table.put("ID", ID + "/" + Escape.encodeTableOrColumnName(s.stringValue()));
               table.put("type", "object");
-              Map<String, Object> properties = new HashMap<>();
+              Map<String, Object> properties = new LinkedHashMap<>();
               Map<String, Object> id = new HashMap<>();
               id.put("pkpos", 0);
               id.put("name", "ID");
               id.put("type", "string");
+              id.put("format", "uri");
+              id.put("errorMessage", "Please enter a valid URI");
               id.put("parent", table.get("ID"));
               id.put("ID", table.get("ID") + "/ID");
               properties.put("ID", id);
@@ -549,6 +552,10 @@ public class RDF4J extends AbstractDatabase {
         ap.put("type", "integer");
       else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
         ap.put("type", "number");
+      else if ("http://www.w3.org/2001/XMLSchema#boolean".equals(type))
+        ap.put("type", "boolean");
+      else if ("http://www.w3.org/2001/XMLSchema#double".equals(type))
+        ap.put("type", "number");
       else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
         ap.put("widget", "date");
         ap.put("type", "string");
@@ -562,6 +569,8 @@ public class RDF4J extends AbstractDatabase {
       ap.put("type", "string");
       ap.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
       ap.put("displayWith", "fk");
+      ap.put("format", "uri");
+      ap.put("errorMessage", "Please enter a valid URI");
     }
 
     p.put("title", prop.getLocalName());
@@ -642,5 +651,10 @@ public class RDF4J extends AbstractDatabase {
       }
     }
     return null;
+  }
+
+  @Override
+  public SchemaChange getSchemaChange() {
+    return new RDF4JSchemaChange(this);
   }
 }
