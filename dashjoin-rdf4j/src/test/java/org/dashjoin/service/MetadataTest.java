@@ -1,8 +1,10 @@
 package org.dashjoin.service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.MapUtil;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.junit.Assert;
@@ -14,8 +16,7 @@ public class MetadataTest {
 
   private static final ObjectMapper om = new ObjectMapper();
 
-  @Test
-  public void subclass() throws Exception {
+  RDF4J db(List<String> datasets) throws Exception {
     RDF4J db = new RDF4J() {
       @Override
       RepositoryConnection getConnection() throws RepositoryException {
@@ -23,19 +24,25 @@ public class MetadataTest {
       }
     };
     db.ID = "dj/meta";
-    db.datasets = Arrays.asList("/data/meta.n3");
-    Map<String, Table> meta =
+    db.datasets = datasets;
+    db.tables =
         om.convertValue(db.connectAndCollectMetadata(), new TypeReference<Map<String, Table>>() {});
-    // Map<String, Object> meta = db.connectAndCollectMetadata();
+    return db;
+  }
+
+  @Test
+  public void subclass() throws Exception {
+    RDF4J db = db(Arrays.asList("/data/meta.n3"));
 
     // infer a subclass to be a type also
-    Assert.assertTrue(meta.containsKey("http://ex.org/EMP"));
+    Assert.assertTrue(db.tables.containsKey("http://ex.org/EMP"));
 
     // infer a subclass to also inherit properties
-    Assert
-        .assertTrue(meta.get("http://ex.org/INTERN").properties.containsKey("http://ex.org/NAME"));
-    Assert.assertTrue(meta.get("http://ex.org/EMP").properties.containsKey("http://ex.org/NAME"));
-    name(meta);
+    Assert.assertTrue(
+        db.tables.get("http://ex.org/INTERN").properties.containsKey("http://ex.org/NAME"));
+    Assert.assertTrue(
+        db.tables.get("http://ex.org/EMP").properties.containsKey("http://ex.org/NAME"));
+    name(db.tables);
   }
 
   void name(Map<String, Table> meta) {
@@ -61,17 +68,25 @@ public class MetadataTest {
 
   @Test
   public void detectProps() throws Exception {
-    RDF4J db = new RDF4J() {
-      @Override
-      RepositoryConnection getConnection() throws RepositoryException {
-        return _cp.getConnection();
-      }
-    };
-    db.ID = "dj/meta";
-    db.datasets = Arrays.asList("/data/props.n3");
-    Map<String, Table> meta =
-        om.convertValue(db.connectAndCollectMetadata(), new TypeReference<Map<String, Table>>() {});
+    RDF4J db = db(Arrays.asList("/data/props.n3"));
+    name(db.tables);
+  }
 
-    name(meta);
+  @Test
+  public void listProp() throws Exception {
+    RDF4J db = db(Arrays.asList("/data/props.n3"));
+
+    // read
+    Assert.assertEquals("mike",
+        db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
+            .get("http://ex.org/NAME"));
+    Assert.assertEquals("[joe@corp, joe@internal]",
+        db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
+            .get("http://ex.org/EMAIL").toString());
+
+    // all
+    Assert.assertEquals("[joe@corp, joe@internal]",
+        db.all(db.tables.get("http://ex.org/EMP"), null, null, null, false, null).get(0)
+            .get("http://ex.org/EMAIL").toString());
   }
 }
