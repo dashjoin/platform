@@ -125,6 +125,10 @@ public class RDF4J extends AbstractDatabase {
   }
 
   Literal literal(Object o) {
+    if (o == null)
+      throw new IllegalArgumentException("Literal cannot be null");
+    if (o instanceof List)
+      throw new IllegalArgumentException("Literal cannot be a list");
     if (o instanceof String)
       return vf.createLiteral((String) o);
     if (o instanceof Integer)
@@ -209,7 +213,8 @@ public class RDF4J extends AbstractDatabase {
                 for (Object o : ((List<Object>) entry.getValue()))
                   con.add(subject, iri(entry.getKey()), literal(o));
               } else {
-                con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
+                if (entry.getValue() != null)
+                  con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
               }
             }
           }
