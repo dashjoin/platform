@@ -89,4 +89,15 @@ public class MetadataTest {
         db.all(db.tables.get("http://ex.org/EMP"), null, null, null, false, null).get(0)
             .get("http://ex.org/EMAIL").toString());
   }
+
+  @Test
+  public void testSenseSingleCardinality() throws Exception {
+    // ontology does not define the cardinality - sensed data suggests 1 and adds this to onto
+    RDF4J db = db(Arrays.asList("/data/cardinality.n3"));
+
+    Assert.assertEquals("string",
+        db.tables.get("http://ex.org/EMP").properties.get("http://ex.org/SINGLE").type);
+    Assert.assertNull("string",
+        db.tables.get("http://ex.org/EMP").properties.get("http://ex.org/SINGLE").items);
+  }
 }

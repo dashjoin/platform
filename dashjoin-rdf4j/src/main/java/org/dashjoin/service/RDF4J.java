@@ -460,6 +460,8 @@ public class RDF4J extends AbstractDatabase {
             Map<String, Object> properties = (Map<String, Object>) table.get("properties");
             try (RepositoryResult<Statement> columns =
                 con.getStatements(type.getSubject(), null, null)) {
+
+              // list of detected props that will be added to / enhances the ontology
               Map<IRI, ColType> cols = new LinkedHashMap<>();
               while (columns.hasNext()) {
                 Statement column = columns.next();
@@ -467,31 +469,41 @@ public class RDF4J extends AbstractDatabase {
                 if (column.getPredicate().equals(RDF.TYPE))
                   continue;
 
-                Map<String, Object> property =
-                    (Map<String, Object>) properties.get(column.getPredicate().stringValue());
-                if (property == null) {
-                  ColType col = cols.get(column.getPredicate());
-                  if (col != null)
-                    col.array = true;
-                  else {
-                    col = new ColType();
-                    col.sample = column.getObject();
-                    col.array = false;
-                    cols.put(column.getPredicate(), col);
-                  }
+                ColType col = cols.get(column.getPredicate());
+                if (col != null)
+                  // predicate appears again => must be array
+                  col.array = true;
+                else {
+                  col = new ColType();
+                  col.sample = column.getObject();
+                  col.array = false;
+                  cols.put(column.getPredicate(), col);
                 }
               }
 
               for (Entry<IRI, ColType> e : cols.entrySet()) {
-                Value value = e.getValue().sample;
-                if (value instanceof Literal)
-                  addProp((String) table.get("ID"), e.getKey(), properties,
-                      ((Literal) value).getDatatype(), e.getValue().array);
-                else if (value instanceof IRI) {
-                  IRI t = getType((IRI) value);
-                  if (t != null)
-                    addProp((String) table.get("ID"), e.getKey(), properties, t,
-                        e.getValue().array);
+                Map<String, Object> property =
+                    (Map<String, Object>) properties.get(e.getKey().stringValue());
+                if (property == null) {
+                  // prop is not yet in the ontology
+                  Value value = e.getValue().sample;
+                  if (value instanceof Literal)
+                    addProp((String) table.get("ID"), e.getKey(), properties,
+                        ((Literal) value).getDatatype(), e.getValue().array);
+                  else if (value instanceof IRI) {
+                    IRI t = getType((IRI) value);
+                    if (t != null)
+                      addProp((String) table.get("ID"), e.getKey(), properties, t,
+                          e.getValue().array);
+                  }
+                } else {
+                  // check cardinality
+                  if (property.get("type").equals("array"))
+                    if (!e.getValue().array) {
+                      // data suggests single value - retract array type
+                      Map<String, Object> items = (Map<String, Object>) property.remove("items");
+                      property.put("type", items.get("type"));
+                    }
                 }
               }
             }
