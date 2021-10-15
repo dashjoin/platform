@@ -194,6 +194,7 @@ public class RDF4J extends AbstractDatabase {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
@@ -203,10 +204,13 @@ public class RDF4J extends AbstractDatabase {
         if (types.hasNext()) {
           for (Entry<String, Object> entry : object.entrySet()) {
             if (!entry.getKey().equals("ID")) {
-              if (entry.getValue() == null)
-                con.remove(subject, iri(entry.getKey()), literal(entry.getValue()));
-              else
+              con.remove(subject, iri(entry.getKey()), null);
+              if (entry.getValue() instanceof List) {
+                for (Object o : ((List<Object>) entry.getValue()))
+                  con.add(subject, iri(entry.getKey()), literal(o));
+              } else {
                 con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
+              }
             }
           }
           return true;

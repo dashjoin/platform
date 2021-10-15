@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
+import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
+import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -80,14 +82,42 @@ public class MetadataTest {
     Assert.assertEquals("mike",
         db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
             .get("http://ex.org/NAME"));
-    Assert.assertEquals("[joe@corp, joe@internal]",
-        db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
-            .get("http://ex.org/EMAIL").toString());
+    Assert.assertEquals("[joe@corp, joe@internal]", getEmail(db));
 
     // all
     Assert.assertEquals("[joe@corp, joe@internal]",
         db.all(db.tables.get("http://ex.org/EMP"), null, null, null, false, null).get(0)
             .get("http://ex.org/EMAIL").toString());
+
+    // update single value
+    db.update(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"),
+        MapUtil.of("http://ex.org/NAME", "hans"));
+    db.update(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"),
+        MapUtil.of("http://ex.org/NAME", "franz"));
+    Assert.assertEquals("franz",
+        db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
+            .get("http://ex.org/NAME"));
+    int count = 0;
+    try (RepositoryConnection con = db._cp.getConnection()) {
+      try (RepositoryResult<Statement> iter = con.getStatements(db.vf.createIRI("http://ex.org/1"),
+          db.vf.createIRI("http://ex.org/NAME"), null)) {
+        while (iter.hasNext()) {
+          iter.next();
+          count++;
+        }
+      }
+      Assert.assertEquals(1, count);
+    }
+
+    // update multi value
+    db.update(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"),
+        MapUtil.of("http://ex.org/EMAIL", Arrays.asList("joe@other")));
+    Assert.assertEquals("[joe@other]", getEmail(db));
+  }
+
+  String getEmail(RDF4J db) throws Exception {
+    return db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"))
+        .get("http://ex.org/EMAIL") + "";
   }
 
   @Test
