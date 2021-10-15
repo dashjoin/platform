@@ -165,6 +165,7 @@ public class RDF4J extends AbstractDatabase {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
     try (RepositoryConnection con = getConnection()) {
@@ -172,7 +173,11 @@ public class RDF4J extends AbstractDatabase {
       con.add(subject, RDF.TYPE, iri(m));
       for (Entry<String, Object> entry : object.entrySet()) {
         if (!entry.getKey().equals("ID")) {
-          con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
+          if (entry.getValue() instanceof List) {
+            for (Object o : ((List<Object>) entry.getValue()))
+              con.add(subject, iri(entry.getKey()), literal(o));
+          } else
+            con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
         }
       }
     }

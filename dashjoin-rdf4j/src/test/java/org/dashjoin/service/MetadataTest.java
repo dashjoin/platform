@@ -123,6 +123,20 @@ public class MetadataTest {
         db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"));
     Assert.assertNull(nullProps.get("http://ex.org/NAME"));
     Assert.assertNull(nullProps.get("http://ex.org/EMAIL"));
+
+    // delete
+    db.delete(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"));
+    Assert.assertNull(
+        db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1")));
+
+    // create
+    db.create(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1",
+        "http://ex.org/EMAIL", Arrays.asList("joe@new"), "http://ex.org/NAME", "new"));
+    nullProps = db.read(db.tables.get("http://ex.org/EMP"), MapUtil.of("ID", "http://ex.org/1"));
+    Assert.assertEquals(3, nullProps.keySet().size());
+    Assert.assertEquals("http://ex.org/1", nullProps.get("ID"));
+    Assert.assertEquals("new", nullProps.get("http://ex.org/NAME"));
+    Assert.assertEquals("[joe@new]", nullProps.get("http://ex.org/EMAIL").toString());
   }
 
   String getEmail(RDF4J db) throws Exception {
