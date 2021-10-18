@@ -14,6 +14,7 @@ import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.MapUtil;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -139,8 +140,20 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    Assert.assertEquals(2, x.size());
     x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    Assert.assertEquals(2, x.size());
+  }
+
+  @Test
+  public void testAllWhere() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    List<Map<String, Object>> x =
+        db.all(sc, "junit", toID("EMP"), 0, 10, null, false, MapUtil.of(toID("NAME"), "mike"));
+    map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    Assert.assertEquals(1, x.size());
   }
 
   @Test

@@ -283,11 +283,21 @@ public class RDF4J extends AbstractDatabase {
     String srt = sort == null ? ""
         : "order by " + (descending ? "desc" : "asc") + "(" + (sort.equals("ID") ? "?s" : "?sort")
             + ")";
+    String w = "";
+    if (arguments != null)
+      for (Entry<String, Object> a : arguments.entrySet()) {
+        if (s.properties.get(a.getKey()).ref == null)
+          w = w + " . ?s <" + iri(a.getKey()) + "> " + literal(a.getValue());
+        else
+          w = w + " . ?s <" + iri(a.getKey()) + "> <" + iri(a.getValue()) + ">";
+      }
     try (RepositoryConnection con = getConnection()) {
       Map<String, Map<String, Object>> table = new HashMap<>();
-      TupleQuery tq =
-          con.prepareTupleQuery("select ?s ?p ?o where { ?s ?p ?o . { select ?s where { ?s a <"
-              + iri(s) + "> " + srtc + " }" + srt + l + o + " } }");
+
+      String query = "select ?s ?p ?o where { ?s ?p ?o . { select ?s where { ?s a <" + iri(s) + "> "
+          + w + srtc + " }" + srt + l + o + " } }";
+
+      TupleQuery tq = con.prepareTupleQuery(query);
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();

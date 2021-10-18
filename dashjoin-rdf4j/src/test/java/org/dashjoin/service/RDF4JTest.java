@@ -17,16 +17,6 @@ public class RDF4JTest extends DBTest {
   protected Object toID(Object o) {
     if ("ID".equals(o))
       return o;
-    if (o.equals("EMP"))
-      return "http://ex.org/EMP";
-    if (o.equals("PRJ"))
-      return "http://ex.org/PRJ";
-    if (o.equals("NOKEY"))
-      return "http://ex.org/NOKEY";
-    if (o.equals("T"))
-      return "http://ex.org/T";
-    if (o.equals("U"))
-      return "http://ex.org/U";
     return "http://ex.org/" + o;
   }
 
