@@ -481,6 +481,11 @@ export class AppService implements CanActivate {
     if (ids.length === 1) {
       const key = ids[0];
       if (typeof (key) === 'string' && key.includes('/')) {
+        if (key === '/') {
+          return '/';
+        } else if (key.endsWith('/')) {
+          return key.substring(0, key.length - 1).split('/').pop();
+        }
         return key.split('/').pop();
       } else {
         return key;
