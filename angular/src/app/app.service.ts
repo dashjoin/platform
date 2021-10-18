@@ -478,6 +478,10 @@ export class AppService implements CanActivate {
    * Does a special handling for single keys like config/Table/Orders where label would be Orders
    */
   defaultLabel(ids: string[]): string {
+    return Util.localName(this.defaultLabelInternal(ids));
+  }
+
+  defaultLabelInternal(ids: string[]): string {
     if (ids.length === 1) {
       const key = ids[0];
       if (typeof (key) === 'string' && key.startsWith('dj/')) {

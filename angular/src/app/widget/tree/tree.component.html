@@ -11,7 +11,7 @@
                 [routerLink]="link(queryMeta, column, element(node))">{{labelId(link(queryMeta, column,
                 element(node)))|async}}
             </a>
-            <a *ngIf="node.href" [routerLink]="node.href">{{node.name}} </a>
+            <a *ngIf="node.href" [routerLink]="node.href">{{localName(node.name)}} </a>
             <span *ngIf="node.display">{{node.display}}</span>
         </li>
     </mat-tree-node>

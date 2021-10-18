@@ -3,6 +3,19 @@
  */
 export class Util {
 
+    static localName(s: string): string {
+        if (s && typeof (s) === 'string') {
+            if (s.startsWith('http://')) {
+                while (s.endsWith('#') || s.endsWith('/')) {
+                    s = s.substring(0, s.length - 1);
+                }
+                if (s.indexOf('#') >= 0) return s.split('#').pop();
+                if (s.indexOf('/') >= 0) return s.split('/').pop();
+            }
+        }
+        return s;
+    }
+
     /**
      * in the config DB, table and column IDs are concatenated: dj/database/table/column. Therefore,
      * this method URLEncodes / and %

@@ -322,4 +322,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     }
   }
 
+  localName(s: string): string {
+    return Util.localName(s);
+  }
 }
