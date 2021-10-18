@@ -481,12 +481,20 @@ export class AppService implements CanActivate {
     if (ids.length === 1) {
       const key = ids[0];
       if (typeof (key) === 'string' && key.includes('/')) {
+        let res: string;
         if (key === '/') {
           return '/';
         } else if (key.endsWith('/')) {
-          return key.substring(0, key.length - 1).split('/').pop();
+          res = key.substring(0, key.length - 1).split('/').pop();
+        } else {
+          res = key.split('/').pop();
         }
-        return key.split('/').pop();
+        res = Util.decodeTableOrColumnName(res);
+        if (res.startsWith('http://')) {
+          if (res.indexOf('#')) return res.split('#').pop();
+          if (res.indexOf('/')) return res.split('/').pop();
+        }
+        return res;
       } else {
         return key;
       }
