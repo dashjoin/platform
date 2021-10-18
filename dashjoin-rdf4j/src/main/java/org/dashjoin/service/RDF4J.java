@@ -498,7 +498,9 @@ public class RDF4J extends AbstractDatabase {
       for (Entry<String, Object> cls : meta.entrySet())
         try (RepositoryResult<Statement> types =
             con.getStatements(null, RDF.TYPE, iri(cls.getKey()))) {
-          while (types.hasNext()) {
+
+          int counter = 5;
+          while (types.hasNext() && (counter--) > 0) {
             Statement type = types.next();
             Map<String, Object> table = (Map<String, Object>) cls.getValue();
             Map<String, Object> properties = (Map<String, Object>) table.get("properties");
@@ -546,7 +548,7 @@ public class RDF4J extends AbstractDatabase {
                     if (!e.getValue().array) {
                       // data suggests single value - retract array type
                       Map<String, Object> items = (Map<String, Object>) property.remove("items");
-                      property.put("type", items.get("type"));
+                      property.putAll(items);
                     }
                 }
               }
