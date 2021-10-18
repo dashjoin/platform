@@ -480,21 +480,20 @@ export class AppService implements CanActivate {
   defaultLabel(ids: string[]): string {
     if (ids.length === 1) {
       const key = ids[0];
-      if (typeof (key) === 'string' && key.includes('/')) {
-        let res: string;
-        if (key === '/') {
-          return '/';
-        } else if (key.endsWith('/')) {
-          res = key.substring(0, key.length - 1).split('/').pop();
-        } else {
-          res = key.split('/').pop();
+      if (typeof (key) === 'string' && key.startsWith('dj/')) {
+        try {
+          return Util.parseColumnID(key)[3];
+        } catch (ignore) {
+          try {
+            return Util.parseTableID(key)[2];
+          } catch (ignore) {
+            try {
+              return Util.parseDatabaseID(key)[1];
+            } catch (ignore) {
+              return key;
+            }
+          }
         }
-        res = Util.decodeTableOrColumnName(res);
-        if (res.startsWith('http://')) {
-          if (res.indexOf('#')) return res.split('#').pop();
-          if (res.indexOf('/')) return res.split('/').pop();
-        }
-        return res;
       } else {
         return key;
       }
