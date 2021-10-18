@@ -334,7 +334,7 @@ export class AppService implements CanActivate {
     if (label) {
 
       if (loadObject && !object) {
-        const data = 'dj/' + encodeURIComponent(database) + '/' + encodeURIComponent(table);
+        const data = 'dj/' + database + '/' + Util.encodeTableOrColumnName(table);
         const key = ids.map(id => encodeURIComponent(id)).join('/');
 
         const d = this.runtime.getData(data);

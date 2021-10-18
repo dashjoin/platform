@@ -15,7 +15,7 @@ import { DjEvent } from './dj-event';
 import { Layout } from './layout';
 import { MatDialog } from '@angular/material/dialog';
 import { EditWidgetDialogComponent } from '../edit-widget-dialog/edit-widget-dialog.component';
-import { DatabaseNameChoiceHandler, ForeignKeyChoiceHandler } from './foreign-key-choice-handler';
+import { DatabaseNameChoiceHandler, ForeignKeyChoiceHandler, LocalNameChoiceHandler } from './foreign-key-choice-handler';
 import { GridsterConfig } from 'angular-gridster2';
 import { Widget } from './widget';
 import { ExpressionComponent } from '../expression/expression.component';
@@ -453,6 +453,7 @@ export class InstanceComponent implements OnInit {
 
     this.formService.registerDisplayWith('fk', new ForeignKeyChoiceHandler(this.http, this.app));
     this.formService.registerDisplayWith('fkdb', new DatabaseNameChoiceHandler(this.http, this.app));
+    this.formService.registerDisplayWith('fkln', new LocalNameChoiceHandler(this.http, this.app));
 
     this.database = this.route.snapshot.paramMap.get('database');
     this.search = this.route.snapshot.paramMap.get('search');

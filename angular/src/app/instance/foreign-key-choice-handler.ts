@@ -106,3 +106,30 @@ export class DatabaseNameChoiceHandler extends ForeignKeyChoiceHandler {
         }
     }
 }
+
+/**
+ * like ForeignKeyChoiceHandler but uses localName
+ */
+export class LocalNameChoiceHandler extends ForeignKeyChoiceHandler {
+
+    /**
+     * call super implementation and map using stripDjArr
+     */
+    filter(value: any, schema: Schema, current: string, choices: Observable<Choice[]>): Observable<Choice[]> {
+        return super.filter(value, schema, current, choices).pipe(map(arr => this.stripDjArr(arr)));
+    }
+
+    /**
+     * converts Choice[]
+     */
+    stripDjArr(arr: Choice[]): Choice[] {
+        return arr.map(c => this.stripDj(c));
+    }
+
+    /**
+     * converts Choice by applying localName
+     */
+    stripDj(c: Choice): Choice {
+        return { name: Util.localName(c.name), value: c.value };
+    }
+}

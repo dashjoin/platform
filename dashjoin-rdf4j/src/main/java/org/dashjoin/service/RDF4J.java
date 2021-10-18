@@ -597,7 +597,7 @@ public class RDF4J extends AbstractDatabase {
     } else {
       ap.put("type", "string");
       ap.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
-      ap.put("displayWith", "fk");
+      ap.put("displayWith", "fkln");
       ap.put("format", "uri");
       ap.put("errorMessage", "Please enter a valid URI");
     }
