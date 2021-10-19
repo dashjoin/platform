@@ -12,12 +12,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -261,6 +265,39 @@ public class RDF4J extends AbstractDatabase {
         return true;
       }
     }
+  }
+
+  @Override
+  public List<Origin> incoming(@Context SecurityContext sc, String database, String table,
+      String objectId, Integer offset, Integer limit, long start, Integer timeout, String pk)
+      throws Exception {
+    List<Origin> res = new ArrayList<>();
+    try (RepositoryConnection con = getConnection()) {
+      try (RepositoryResult<Statement> i = con.getStatements(null, null, iri(objectId))) {
+        while (i.hasNext()) {
+          Statement s = i.next();
+          if (s.getSubject() instanceof IRI) {
+            IRI type = getType(s.getSubject());
+            if (type != null) {
+              Table t = tables.get(string(type));
+              if (t != null) {
+                Property p = t.properties.get(string(s.getPredicate()));
+                if (p != null) {
+                  Map<String, Object> match = MapUtil.of("ID", string(s.getSubject()));
+
+                  Origin o = new Origin();
+                  o.id = org.dashjoin.service.Data.Resource.of(this, t, match);
+                  o.fk = p.ID;
+                  o.pk = pk;
+                  res.add(o);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return res;
   }
 
   @Override

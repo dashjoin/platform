@@ -6,8 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
+import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.Database;
@@ -411,5 +416,40 @@ public abstract class AbstractDatabase implements Database {
     try (CredentialManager.Credential c = new CredentialManager.Credential(password)) {
       return password != null ? new String(c.getSecret()) : null;
     }
+  }
+
+  public List<Origin> incoming(@Context SecurityContext sc, String database, String table,
+      String objectId, Integer offset, Integer limit, long start, Integer timeout, String pk)
+      throws Exception {
+    List<Origin> res = new ArrayList<>();
+    AbstractDatabase d = this;
+    for (Table s : d.tables.values()) {
+
+      if (s.name == null)
+        continue;
+
+      try {
+        ACLContainerRequestFilter.check(sc, d, s);
+        if (s.properties != null)
+          for (Property p : s.properties.values())
+            if (pk.equals(p.ref)) {
+              Map<String, Object> search = new HashMap<>();
+              search.put(p.name, objectId);
+              d.cast(s, search);
+              for (Map<String, Object> match : d.all(s, offset, limit, null, false, search)) {
+                Origin o = new Origin();
+                o.id = Resource.of(d, s, match);
+                o.fk = p.ID;
+                o.pk = pk;
+                res.add(o);
+              }
+              if (timeout != null)
+                if (System.currentTimeMillis() - start > timeout)
+                  return res;
+            }
+      } catch (NotAuthorizedException ignore) {
+      }
+    }
+    return res;
   }
 }

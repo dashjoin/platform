@@ -88,7 +88,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   /**
    * checks whether read is allowed on db and table
    */
-  static void check(SecurityContext sc, Database db, Table m) {
+  public static void check(SecurityContext sc, Database db, Table m) {
     check(sc, db, m, Operation.READ);
   }
 

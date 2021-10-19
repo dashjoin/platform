@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -754,33 +753,7 @@ public class Data {
 
     List<Origin> res = new ArrayList<>();
     for (AbstractDatabase d : services.getConfig().getDatabases())
-      for (Table s : d.tables.values()) {
-
-        if (s.name == null)
-          continue;
-
-        try {
-          ACLContainerRequestFilter.check(sc, d, m);
-          if (s.properties != null)
-            for (Property p : s.properties.values())
-              if (pk.equals(p.ref)) {
-                Map<String, Object> search = new HashMap<>();
-                search.put(p.name, objectId);
-                d.cast(s, search);
-                for (Map<String, Object> match : d.all(s, offset, limit, null, false, search)) {
-                  Origin o = new Origin();
-                  o.id = Resource.of(d, s, match);
-                  o.fk = p.ID;
-                  o.pk = pk;
-                  res.add(o);
-                }
-                if (timeout != null)
-                  if (System.currentTimeMillis() - start > timeout)
-                    return res;
-              }
-        } catch (NotAuthorizedException ignore) {
-        }
-      }
+      res.addAll(d.incoming(sc, database, table, objectId, offset, limit, start, timeout, pk));
     return res;
   }
 
