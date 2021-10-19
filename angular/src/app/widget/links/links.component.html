@@ -8,6 +8,18 @@
     </mat-list>
     <mat-list *ngIf="schema && schema.properties">
         <span *ngFor="let e of value | keyvalue">
+            <mat-list-item *ngIf="isArray(e.value) && schema.properties[e.key]?.items?.ref">
+                <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
+                <div mat-line>{{localName(e.key)}}</div>
+                <div mat-line *ngFor="let subArray of splitArray(e.value, 3)">
+                    <span *ngFor="let v of subArray">
+                        <a [routerLink]="link(pseudoSchema(e.key, schema), e.key, pseudoObject(e.key, v))">{{labelId(link(pseudoSchema(e.key,
+                            schema), e.key,
+                            pseudoObject(e.key, v)))|async}}</a>
+                        &nbsp;
+                    </span>
+                </div>
+            </mat-list-item>
             <mat-list-item *ngIf="externalLink(schema, e.key, value)">
                 <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
                 <div mat-line>{{localName(e.key)}}</div>

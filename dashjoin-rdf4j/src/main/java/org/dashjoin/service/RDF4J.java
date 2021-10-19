@@ -499,8 +499,7 @@ public class RDF4J extends AbstractDatabase {
         try (RepositoryResult<Statement> types =
             con.getStatements(null, RDF.TYPE, iri(cls.getKey()))) {
 
-          int counter = 5;
-          while (types.hasNext() && (counter--) > 0) {
+          if (types.hasNext()) {
             Statement type = types.next();
             Map<String, Object> table = (Map<String, Object>) cls.getValue();
             Map<String, Object> properties = (Map<String, Object>) table.get("properties");

@@ -83,6 +83,31 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
   }
 
   /**
+   * expose Array.isArray to template
+   */
+  isArray(a: any): boolean {
+    return Array.isArray(a);
+  }
+
+  /**
+   * wrap outgoing link array element in object: {col: value} for consumption by link method
+   */
+  pseudoObject(key: string, value: any): object {
+    const res = {};
+    res[key] = value;
+    return res;
+  }
+
+  /**
+   * wrap outgoing link array schema in {col: items} for consumption by link method
+   */
+  pseudoSchema(key: string, value: any): Table {
+    const res = {};
+    res[key] = value.properties[key].items;
+    return { properties: res } as Table;
+  }
+
+  /**
    * return true if this value is a normal value (no key)
    */
   noLink(table: Table, column: string, data: object): boolean {

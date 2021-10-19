@@ -151,7 +151,7 @@ public class MetadataTest {
 
     Assert.assertEquals("string",
         db.tables.get("http://ex.org/EMP").properties.get("http://ex.org/SINGLE").type);
-    Assert.assertNull("string",
+    Assert.assertNull(
         db.tables.get("http://ex.org/EMP").properties.get("http://ex.org/SINGLE").items);
   }
 }

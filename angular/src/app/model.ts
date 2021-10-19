@@ -47,6 +47,11 @@ export class Property {
      * json schema nested properties
      */
     public properties: { [key: string]: Property };
+
+    /**
+     * nested array type
+     */
+    public items?: Property;
 }
 
 /**
