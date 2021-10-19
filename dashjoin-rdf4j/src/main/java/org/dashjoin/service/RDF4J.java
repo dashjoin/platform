@@ -1,5 +1,6 @@
 package org.dashjoin.service;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,10 +44,11 @@ import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.RepositoryResult;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
+import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
-import org.eclipse.rdf4j.sail.Sail;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
+import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
 import lombok.extern.java.Log;
 
 /**
@@ -56,6 +58,19 @@ import lombok.extern.java.Log;
 public class RDF4J extends AbstractDatabase {
 
   public List<String> datasets;
+
+  public String endpoint;
+
+  public String folder;
+
+  public String username;
+
+  public String password;
+
+  /**
+   * one of memory, local, client
+   */
+  public String mode;
 
   /**
    * shared connection pool
@@ -442,8 +457,14 @@ public class RDF4J extends AbstractDatabase {
   @Override
   @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
-    Sail sail = new MemoryStore();
-    _cp = new SailRepository(sail);
+    if ("memory".equals(mode))
+      _cp = new SailRepository(new MemoryStore());
+    if ("local".equals(mode))
+      _cp = new SailRepository(new NativeStore(new File(folder)));
+    if ("client".equals(mode)) {
+      _cp = new SPARQLRepository(endpoint);
+      ((SPARQLRepository) _cp).setUsernameAndPassword(username, password);
+    }
     _cp.init();
     vf = _cp.getValueFactory();
 
@@ -451,7 +472,7 @@ public class RDF4J extends AbstractDatabase {
 
     try (RepositoryConnection con = _cp.getConnection()) {
 
-      if (datasets != null)
+      if (datasets != null && "memory".equals(mode))
         for (String s : datasets) {
           InputStream ddl = getClass().getResourceAsStream(s);
           RDFFormat format = Rio.getParserFormatForFileName(s).orElse(RDFFormat.RDFXML);
