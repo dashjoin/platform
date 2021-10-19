@@ -206,7 +206,7 @@ public class RDF4J extends AbstractDatabase {
         while (i.hasNext()) {
           found = true;
           Statement x = i.next();
-          add(s, res, x.getPredicate(), x.getObject());
+          add(s, res, x.getPredicate(), x.getObject(), true);
         }
         if (found) {
           res.put("ID", search.get("ID"));
@@ -304,7 +304,7 @@ public class RDF4J extends AbstractDatabase {
           Resource subject = (Resource) x.getBinding("s").getValue();
           IRI predicate = (IRI) x.getBinding("p").getValue();
           Value object = x.getBinding("o").getValue();
-          add(s, getRow(table, string(subject), subject), predicate, object);
+          add(s, getRow(table, string(subject), subject), predicate, object, false);
         }
       }
       List<Map<String, Object>> res = new ArrayList<>(table.values());
@@ -348,7 +348,7 @@ public class RDF4J extends AbstractDatabase {
     return res;
   }
 
-  void add(Table table, Map<String, Object> res, IRI predicate, Value value) {
+  void add(Table table, Map<String, Object> res, IRI predicate, Value value, boolean addType) {
     if (!predicate.equals(RDF.TYPE)) {
       Property p = table.properties.get(predicate.stringValue());
       if (p != null && "array".equals(p.type)) {
@@ -361,6 +361,16 @@ public class RDF4J extends AbstractDatabase {
         list.add(object(value));
       } else
         res.put(string(predicate), object(value));
+    } else {
+      if (addType && !value.stringValue().equals(table.name)) {
+        @SuppressWarnings("unchecked")
+        List<Object> list = (List<Object>) res.get(string(predicate));
+        if (list == null) {
+          list = new ArrayList<>();
+          res.put(string(predicate), list);
+        }
+        list.add(object(value));
+      }
     }
   }
 

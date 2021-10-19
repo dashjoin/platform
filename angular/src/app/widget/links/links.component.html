@@ -8,6 +8,16 @@
     </mat-list>
     <mat-list *ngIf="schema && schema.properties">
         <span *ngFor="let e of value | keyvalue">
+            <mat-list-item *ngIf="e.key === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'">
+                <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
+                <div mat-line>{{localName(e.key)}}</div>
+                <div mat-line *ngFor="let subArray of splitArray(e.value, 3)">
+                    <span *ngFor="let v of subArray">
+                        <a [routerLink]="['/resource', database, v, pk1]">{{localName(v)}}</a>
+                        &nbsp;
+                    </span>
+                </div>
+            </mat-list-item>
             <mat-list-item *ngIf="isArray(e.value) && schema.properties[e.key]?.items?.ref">
                 <mat-icon mat-list-icon color="accent">arrow_forward</mat-icon>
                 <div mat-line>{{localName(e.key)}}</div>
