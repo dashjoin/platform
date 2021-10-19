@@ -1,6 +1,8 @@
 package org.dashjoin.service;
 
 import static org.dashjoin.util.Escape.e;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.WebApplicationException;
@@ -97,7 +99,7 @@ public class RemoteDatabase extends AbstractDatabase {
     if (limit != null)
       u = u + "limit=" + limit + "&";
     if (sort != null)
-      u = u + "sort=" + sort + "&";
+      u = u + "sort=" + URLEncoder.encode(sort, StandardCharsets.UTF_8) + "&";
     u = u + "descending=" + descending;
     return (List<Map<String, Object>>) call(u, arguments);
   }
@@ -115,12 +117,13 @@ public class RemoteDatabase extends AbstractDatabase {
   @Override
   public boolean update(Table s, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
-    return (boolean) call("update/" + e(s.name), MapUtil.of("search", search, "object", object));
+    return Boolean.parseBoolean(
+        (String) call("update/" + e(s.name), MapUtil.of("search", search, "object", object)));
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    return (boolean) call("delete/" + e(s.name), search);
+    return Boolean.parseBoolean((String) call("delete/" + e(s.name), search));
   }
 
   @Override
