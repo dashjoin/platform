@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import com.api.jsonata4java.Expression;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -205,6 +207,13 @@ public class ModelTest {
   }
 
   public static void testDriver(String file) throws Exception {
+
+    ObjectMapper om =
+        new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+            .configure(JsonReadFeature.ALLOW_SINGLE_QUOTES.mappedFeature(), true)
+            .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
+
     JsonNode map = om.readTree(new FileInputStream(new File(file)));
     file = map.get("test").get("file").asText();
     JsonNode test = om.readTree(new FileInputStream(new File(file)));
