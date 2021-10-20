@@ -212,8 +212,27 @@ public class ModelTest {
         Expression.jsonata(map.get("test").get("expression").asText()).evaluate(test).asText();
 
     Expression e = Expression.jsonata(expr);
-    for (JsonNode i : map.get("cases")) {
-      Assert.assertEquals(i.get("expected"), e.evaluate(i.get("data")));
+    Iterator<String> cases = map.get("cases").fieldNames();
+    while (cases.hasNext()) {
+      String name = cases.next();
+      JsonNode c = map.get("cases").get(name);
+      ObjectNode basedata = map.get("basedata").deepCopy();
+
+      Iterator<String> dataFields = c.get("data").fieldNames();
+      while (dataFields.hasNext()) {
+        String field = dataFields.next();
+        basedata.set(field, c.get("data").get(field));
+      }
+
+      Assert.assertEquals("error in case: " + name, "" + c.get("expected"),
+          "" + wrap(e.evaluate(basedata)));
     }
+  }
+
+  static JsonNode wrap(JsonNode n) {
+    if (n instanceof ArrayNode)
+      return n;
+    else
+      return om.createArrayNode().add(n);
   }
 }
