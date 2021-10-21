@@ -1,9 +1,9 @@
 {
-	"ID": "invoke",
-	"djClassName": "org.dashjoin.function.Invoke",
-	"expression": "$query(\"northwind\", \"list\", {\"limit\": $}).$echo($.\"CATEGORIES.DESCRIPTION\")",
-	"roles": [
-		"authenticated"
-	],
-	"type": "read"
+    "ID": "invoke",
+    "djClassName": "org.dashjoin.function.Invoke",
+    "expression": "$query(\"northwind\", \"list\", {\"limit\": $}).$echo($.\"CATEGORIES.DESCRIPTION\")",
+    "roles": [
+        "authenticated"
+    ],
+    "type": "read"
 }

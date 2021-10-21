@@ -1,24 +1,31 @@
 {
-  "ID" : "card",
-  "layout" : {
-    "widget" : "page",
-    "children" : [ {
-      "widget" : "markdown",
-      "text" : "New Widget",
-      "markdown" : "The card widget is a container with a title section.\n\n```\n{\n  \"widget\": \"card\"\n  \"text\": \"Test\",\n  \"class\": [\"mat-elevation-z16\"],\n  \"style\": {\n    \"color\": \"red\"\n  },\n  \"children\": [\n    {\n      \"widget\" : \"text\",\n      \"text\" : \"New Widget\"\n    }\n  ]\n}\n```",
-      "title" : "Source Code"
-    }, {
-      "widget" : "card",
-      "text" : "Test",
-      "children" : [ {
-        "widget" : "text",
-        "text" : "New Widget"
-      } ],
-      "class" : [ "mat-elevation-z16" ],
-      "style" : {
-        "color" : "red"
-      },
-      "title" : "Live Example"
-    } ]
-  }
+    "ID": "card",
+    "layout": {
+        "widget": "page",
+        "children": [
+            {
+                "widget": "markdown",
+                "text": "New Widget",
+                "markdown": "The card widget is a container with a title section.\n\n```\n{\n  \"widget\": \"card\"\n  \"text\": \"Test\",\n  \"class\": [\"mat-elevation-z16\"],\n  \"style\": {\n    \"color\": \"red\"\n  },\n  \"children\": [\n    {\n      \"widget\" : \"text\",\n      \"text\" : \"New Widget\"\n    }\n  ]\n}\n```",
+                "title": "Source Code"
+            },
+            {
+                "widget": "card",
+                "text": "Test",
+                "children": [
+                    {
+                        "widget": "text",
+                        "text": "New Widget"
+                    }
+                ],
+                "class": [
+                    "mat-elevation-z16"
+                ],
+                "style": {
+                    "color": "red"
+                },
+                "title": "Live Example"
+            }
+        ]
+    }
 }

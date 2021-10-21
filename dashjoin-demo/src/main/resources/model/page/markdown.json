@@ -1,28 +1,33 @@
 {
-  "ID" : "markdown",
-  "layout" : {
-    "widget" : "page",
-    "pageLayout" : "horizontal",
-    "children" : [ {
-      "widget" : "markdown",
-      "title" : null,
-      "markdown" : "# Markdown Example\n\n## Layout\n\nthis is __bold__ some text.\n\n## Printing Variables\n\nVariables can be shown using $ {var}, e.g. $ {user} to show the current user: ${user}\n\n## Printing Context Variables\n\nIf the ?page=... mechanism is used, we can show the current value: ${value.LAST_NAME}\n\n## Additional Context\n\nUsing the context expression, we can define additional context variables. Here, we use the $traverse method to print the boss' last name: ${context.LAST_NAME}",
-      "context" : "$traverse(database, table, pk1, \"REPORTS_TO\")"
-    }, {
-      "widget" : "display",
-      "text" : "New Widget",
-      "display" : "{\"database\": \"northwind\", \"table\": \"EMPLOYEES\", \"pk1\": 1, \"page\":\"markdown\"}",
-      "title" : "Show an employee record using this page"
-    }, {
-      "widget" : "display",
-      "text" : "New Widget",
-      "display" : "value.LAST_NAME",
-      "title" : "Last Name"
-    }, {
-      "widget" : "display",
-      "text" : "New Widget",
-      "title" : "Boss' Last Name",
-      "display" : "$traverse(database, table, pk1, \"REPORTS_TO\").LAST_NAME"
-    } ]
-  }
+    "ID": "markdown",
+    "layout": {
+        "widget": "page",
+        "pageLayout": "horizontal",
+        "children": [
+            {
+                "widget": "markdown",
+                "title": null,
+                "markdown": "# Markdown Example\n\n## Layout\n\nthis is __bold__ some text.\n\n## Printing Variables\n\nVariables can be shown using $ {var}, e.g. $ {user} to show the current user: ${user}\n\n## Printing Context Variables\n\nIf the ?page=... mechanism is used, we can show the current value: ${value.LAST_NAME}\n\n## Additional Context\n\nUsing the context expression, we can define additional context variables. Here, we use the $traverse method to print the boss' last name: ${context.LAST_NAME}",
+                "context": "$traverse(database, table, pk1, \"REPORTS_TO\")"
+            },
+            {
+                "widget": "display",
+                "text": "New Widget",
+                "display": "{\"database\": \"northwind\", \"table\": \"EMPLOYEES\", \"pk1\": 1, \"page\":\"markdown\"}",
+                "title": "Show an employee record using this page"
+            },
+            {
+                "widget": "display",
+                "text": "New Widget",
+                "display": "value.LAST_NAME",
+                "title": "Last Name"
+            },
+            {
+                "widget": "display",
+                "text": "New Widget",
+                "title": "Boss' Last Name",
+                "display": "$traverse(database, table, pk1, \"REPORTS_TO\").LAST_NAME"
+            }
+        ]
+    }
 }

@@ -1,12 +1,12 @@
 {
-  "database" : "dj/northwind",
-  "query" : "SELECT\n  \"EMPLOYEES\".\"EMPLOYEE_ID\"\nFROM\n  \"EMPLOYEES\"\nWHERE\n  EMPLOYEES.REPORTS_TO = ${node}",
-  "ID" : "orgchart",
-  "type" : "read",
-  "arguments" : {
-    "node" : {
-      "type" : "integer",
-      "sample" : "2"
+    "database": "dj/northwind",
+    "query": "SELECT\n  \"EMPLOYEES\".\"EMPLOYEE_ID\"\nFROM\n  \"EMPLOYEES\"\nWHERE\n  EMPLOYEES.REPORTS_TO = ${node}",
+    "ID": "orgchart",
+    "type": "read",
+    "arguments": {
+        "node": {
+            "type": "integer",
+            "sample": "2"
+        }
     }
-  }
 }
