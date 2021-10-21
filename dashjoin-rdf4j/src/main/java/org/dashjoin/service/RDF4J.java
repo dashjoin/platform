@@ -43,6 +43,7 @@ import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 import org.eclipse.rdf4j.repository.RepositoryException;
 import org.eclipse.rdf4j.repository.RepositoryResult;
+import org.eclipse.rdf4j.repository.http.HTTPRepository;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.repository.sparql.SPARQLRepository;
 import org.eclipse.rdf4j.rio.RDFFormat;
@@ -68,7 +69,7 @@ public class RDF4J extends AbstractDatabase {
   public String password;
 
   /**
-   * one of memory, local, client
+   * one of memory, local, client, sesame
    */
   public String mode;
 
@@ -461,6 +462,10 @@ public class RDF4J extends AbstractDatabase {
       _cp = new SailRepository(new MemoryStore());
     if ("local".equals(mode))
       _cp = new SailRepository(new NativeStore(new File(folder)));
+    if ("sesame".equals(mode)) {
+      _cp = new HTTPRepository(endpoint);
+      ((HTTPRepository) _cp).setUsernameAndPassword(username, password);
+    }
     if ("client".equals(mode)) {
       _cp = new SPARQLRepository(endpoint);
       ((SPARQLRepository) _cp).setUsernameAndPassword(username, password);
