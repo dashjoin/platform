@@ -27,6 +27,7 @@ public class MetadataTest {
     };
     db.ID = "dj/meta";
     db.datasets = datasets;
+    db.mode = "memory";
     db.tables =
         om.convertValue(db.connectAndCollectMetadata(), new TypeReference<Map<String, Table>>() {});
     return db;

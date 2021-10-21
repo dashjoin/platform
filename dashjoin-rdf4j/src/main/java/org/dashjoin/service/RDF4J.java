@@ -470,6 +470,11 @@ public class RDF4J extends AbstractDatabase {
       _cp = new SPARQLRepository(endpoint);
       ((SPARQLRepository) _cp).setUsernameAndPassword(username, password);
     }
+
+    if (_cp == null)
+      throw new Exception(
+          "dashjoin.database.mode must be set to one of memory, local, sesame, client");
+
     _cp.init();
     vf = _cp.getValueFactory();
 

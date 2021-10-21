@@ -3,5 +3,6 @@
 	"name": "junit",
 	"parent": "dj",
 	"djClassName": "org.dashjoin.service.RDF4J",
+	"mode": "memory",
 	"datasets": ["/data/junit.n3"]
 }
