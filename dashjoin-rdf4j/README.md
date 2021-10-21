@@ -12,7 +12,7 @@ docker run --name rdf4j -p 8082:8082 gcr.io/djfire-1946d/rdf4j
 Or if you're building locally, you can start the process using:
 
 ```
-mvn compile quarkus:dev 
+mvn compile quarkus:dev -Ddebug=5006
 ```
 
 Test:
@@ -44,6 +44,7 @@ The RDF database can be configured via the following Quarkus config options:
 * dashjoin.database.endpoint: the endpoint for the sesame HTTP and SPARQL repositories
 * dashjoin.database.username: the username for the sesame HTTP and SPARQL repositories
 * dashjoin.database.password: the password for the sesame HTTP and SPARQL repositories
+* dashjoin.database.datasets: list of resources to load into the memory database
 
 So for instance if you'd like to use a blank local RDF store, you can start the container by setting the dashjoin.database.mode and dashjoin.database.folder environment variables using the -e command line option:
 

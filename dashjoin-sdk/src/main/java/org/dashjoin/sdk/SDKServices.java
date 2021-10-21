@@ -5,6 +5,7 @@ import org.dashjoin.model.Table;
 import org.dashjoin.service.Config;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
+import org.dashjoin.util.Escape;
 
 /**
  * Implementation of the central service manager that can be injected into remote functions and
@@ -49,7 +50,7 @@ public class SDKServices extends Services {
 
       @Override
       public Table getSchema(String clazz) throws Exception {
-        String[] parts = clazz.split("/");
+        String[] parts = Escape.parseTableID(clazz);
         clazz = parts[parts.length - 1];
         return DatabaseService.table(db, clazz);
       }

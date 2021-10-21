@@ -166,6 +166,7 @@ public class DatabaseService {
     // invalidate the table metadata since we need to fetch them from the config DB
     db(false).tables = null;
     db(false).ID = id;
+    System.out.println("ID=" + id);
     Map<String, Object> res = db(false).connectAndCollectMetadata();
     return res;
   }
@@ -174,7 +175,7 @@ public class DatabaseService {
   @Path("/setSchema/{id}")
   public void setSchema(@PathParam("id") String id, Map<String, Table> tables) throws Exception {
     if (db(false).ID == null)
-      this.connectAndCollectMetadata(db(false).ID);
+      this.connectAndCollectMetadata(id);
     db(false).tables = tables;
   }
 
