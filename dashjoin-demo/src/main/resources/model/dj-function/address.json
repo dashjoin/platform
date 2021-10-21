@@ -1,0 +1,7 @@
+{
+    "djClassName": "org.dashjoin.function.RestJson",
+    "url": "https://api.geoapify.com/v1/geocode/search?street=${street}&postcode=${postcode}&city=${city}&country=${country}&apiKey=...",
+    "method": "GET",
+    "contentType": "application/json",
+    "ID": "address"
+}

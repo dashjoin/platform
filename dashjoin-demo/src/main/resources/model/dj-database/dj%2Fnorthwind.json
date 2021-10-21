@@ -76,6 +76,12 @@
                             "widget": "text",
                             "layout": "vertical"
                         }
+                    },
+                    {
+                        "widget": "button",
+                        "text": "Check Address",
+                        "title": null,
+                        "print": "$call(\"address\", {\"street\": value.ADDRESS, \"postcode\": value.POSTAL_CODE, \"city\": value.CITY, \"country\": value.COUNTRY}).features.properties.formatted"
                     }
                 ]
             }
