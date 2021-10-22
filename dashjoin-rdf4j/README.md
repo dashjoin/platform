@@ -21,7 +21,19 @@ Test:
 http://localhost:8082/swagger-ui/
 ```
 
-On the main system, use this database config to access the remote container (use url http://localhost:8082/database if you're not using docker):
+To start the main system:
+
+```
+docker run --name dashjoin -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj gcr.io/djfire-1946d/dashjoin
+```
+
+Login using admin / djdjdj
+
+```
+http://localhost:8080/
+```
+
+On the main system, use this database config (http://localhost:8080/#/table/config/dj-database) to access the remote container (use url http://localhost:8082/database if you're not using docker):
 
 ```
 {
