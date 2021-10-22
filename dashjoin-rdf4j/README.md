@@ -21,13 +21,13 @@ Test:
 http://localhost:8082/swagger-ui/
 ```
 
-On the main system, use this database config to access the remote container:
+On the main system, use this database config to access the remote container (use url http://localhost:8082/database if you're not using docker):
 
 ```
 {
     "djClassName": "org.dashjoin.service.RemoteDatabase",
     "ID": "dj/rdf4j",
-    "url": "http://localhost:8082/database",
+    "url": "http://host.docker.internal:8082/database",
     "name": "rdf4j"
 }
 ```
