@@ -12,7 +12,7 @@ docker run --name rdf4j -p 8082:8082 gcr.io/djfire-1946d/rdf4j
 Or if you're building locally, you can start the process using:
 
 ```
-mvn compile quarkus:dev -Ddebug=5006
+mvn compile quarkus:dev -Denforcer.skip -Ddebug=5006
 ```
 
 Test:
