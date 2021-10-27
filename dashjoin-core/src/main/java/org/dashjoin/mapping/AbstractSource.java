@@ -56,6 +56,8 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
 
   public Date end;
 
+  public Boolean logStatusOnly;
+
   /**
    * contains the main merge logic
    */
@@ -73,12 +75,14 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
   }
 
   void info(String s) throws Exception {
-    log.info(s);
     set(of("status", s));
   }
 
   void set(Map<String, Object> update) throws Exception {
     if (ID == null)
+      return;
+    log.info("" + update);
+    if (Boolean.TRUE.equals(logStatusOnly))
       return;
     services.getConfig().getDatabase(services.getDashjoinID() + "/config")
         .update(Table.ofName("dj-function"), of("ID", ID), update);
