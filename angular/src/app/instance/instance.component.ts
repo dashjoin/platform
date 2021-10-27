@@ -428,7 +428,7 @@ export class InstanceComponent implements OnInit {
             this.setLayout(widget.layout, 'page', this.database);
             this.value = null;
             this.doLayout();
-            this.label().subscribe(l => this.titleService.setTitle(l));
+            this.label().subscribe(l => this.titleService.setTitle(decodeURIComponent(l)));
             sessionStorage.context = JSON.stringify(this.context());
           }, this.errorHandler);
         }
