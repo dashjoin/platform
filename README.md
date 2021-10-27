@@ -1161,6 +1161,7 @@ In addition to the default JSONata builtin functions ([see Function Library](htt
 Function | Syntax |  Returns
 ---|---|---
 create| $create(database, table, pk1) | ID of the new record
+all| $all(database, table) | array of all table records
 read|  $read(database, table, pk1) | The record
 traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
 update| $update(database, table, pk1, object)

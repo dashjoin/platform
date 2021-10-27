@@ -123,6 +123,7 @@ public class ExpressionService {
   Expressions parse(SecurityContext sc, String expression, boolean readOnly)
       throws ParseException, IOException {
     Expressions expr = Expressions.parse(expression);
+    expr.getEnvironment().setJsonataFunction("$all", new All(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$read", new Read(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$create", new Create(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$update", new Update(sc, readOnly));
@@ -214,6 +215,50 @@ public class ExpressionService {
       return null;
     else
       return res.textValue();
+  }
+
+  /**
+   * data.all(database, table)
+   */
+  public class All implements Function {
+    SecurityContext sc;
+    boolean readOnly;
+
+    public All(SecurityContext sc, boolean readOnly) {
+      this.readOnly = readOnly;
+      this.sc = sc;
+    }
+
+    @Override
+    public int getMaxArgs() {
+      return 2;
+    }
+
+    @Override
+    public int getMinArgs() {
+      return 2;
+    }
+
+    @Override
+    public String getSignature() {
+      return "<j:ss>";
+    }
+
+    @Override
+    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
+      if (getArgumentCount(ctx) < 2)
+        throw new RuntimeException("Arguments required: $all(database, table)");
+      if (getValuesListExpression(v, ctx, 0) == null)
+        throw new RuntimeException("Database name cannot be null");
+      if (getValuesListExpression(v, ctx, 1) == null)
+        throw new RuntimeException("Table name cannot be null");
+      try {
+        return o2j(data.all(sc, getValuesListExpression(v, ctx, 0).asText(),
+            getValuesListExpression(v, ctx, 1).asText(), null, null, null, false, null));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   /**
