@@ -230,6 +230,10 @@
 <!-- Quarkus -->
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jgit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-client-jackson</artifactId>
     </dependency>
     <dependency>

@@ -2,9 +2,13 @@ package org.dashjoin.util;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.logging.Level;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import lombok.extern.java.Log;
 
@@ -25,7 +29,7 @@ public class Home {
       Instance<Home> inst = javax.enterprise.inject.spi.CDI.current().select(Home.class);
       if (inst.isUnsatisfied()) {
         log.warning("Dashjoin Home is unresolvable - using default");
-        instance = new Home(Optional.empty());
+        instance = new Home(Optional.empty(), Optional.empty());
       } else
         instance = inst.get();
     }
@@ -33,7 +37,8 @@ public class Home {
   }
 
   @Inject
-  public Home(@ConfigProperty(name = "dashjoin.home", defaultValue = "") Optional<String> home) {
+  public Home(@ConfigProperty(name = "dashjoin.home", defaultValue = "") Optional<String> home,
+      @ConfigProperty(name = "dashjoin.appurl") Optional<String> appurl) {
     this.home = home.orElse("");
     this.fileHome = this.home.isBlank() ? new File("").getAbsolutePath()
         : this.home.replace("$HOME", System.getProperty("user.home"));
@@ -41,6 +46,27 @@ public class Home {
     log.info("DASHJOIN_HOME = " + fileHome);
 
     ensureHomeExists();
+
+    // do a git checkout
+    if (appurl.isPresent()) {
+      try {
+        String[] files = new File(fileHome).list();
+        if (files != null && files.length > 0) {
+          try (Git git = new Git(new FileRepository(fileHome + "/.git"))) {
+            log.info("git pull ...");
+            git.pull().call();
+          }
+        } else {
+          log.info("git clone ...");
+          CloneCommand cloneCommand = Git.cloneRepository();
+          cloneCommand.setDirectory(new File(fileHome));
+          cloneCommand.setURI(appurl.get());
+          cloneCommand.call();
+        }
+      } catch (Exception e) {
+        log.log(Level.SEVERE, "git error", e);
+      }
+    }
 
     Home.instance = this;
   }

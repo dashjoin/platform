@@ -29,7 +29,7 @@ public class JSONDatabaseFactory {
     }
 
     JSONFileDatabase db = new JSONFileDatabase();
-    db.home = new Home(Optional.empty());
+    db.home = new Home(Optional.empty(), Optional.empty());
     return db;
   }
 
