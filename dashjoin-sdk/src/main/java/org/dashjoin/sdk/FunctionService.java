@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -39,6 +40,10 @@ public class FunctionService {
       fn = new HashMap<>();
 
       Map<String, Object> functions = new LinkedHashMap<>();
+
+      for (Function<Object, Object> i : ServiceLoader.load(Function.class))
+        fn.put(i.getID(), i);
+
       for (String key : ConfigProvider.getConfig().getPropertyNames())
         if (key.startsWith("dashjoin.function.")) {
           String[] parts = key.split("\\.");
