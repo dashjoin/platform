@@ -37,6 +37,17 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    * generate data / label objects for chart
    */
   prepareDataForChart() {
+
+    // this.all = [{ name: 'bus', count: 3, other: 6 }, { name: 'car', count: 2, other: 5 }, { name: null, count: 4 }]
+
+    const types = this.checkColumns(this.all);
+    if (!(Object.values(types)[0] === 'string' && Object.values(types)[1] !== 'string')) {
+      throw new Error('cannot display multi dim table: ' + JSON.stringify(types));
+    }
+
+    // treat the first column as the label
+    // all other columns are treate as series - this only makes sense for queries like
+    // select type, min(weight), max(weight) group by type
     const res = this.all;
     this.columns = [];
     this.all = [];
@@ -65,5 +76,24 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     for (const [k, v] of Object.entries(cols)) {
       this.all.push({ data: v, label: k });
     }
+  }
+
+  /**
+   * check the column datatypes
+   */
+  checkColumns(table: object[]) {
+    const res = {};
+    for (const row of table) {
+      for (const [k, v] of Object.entries(row)) {
+        if (res[k]) {
+          if (typeof (v) === 'string') {
+            res[k] = 'string';
+          }
+        } else {
+          res[k] = typeof (v);
+        }
+      }
+    }
+    return res;
   }
 }
