@@ -42,7 +42,8 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
 
     const types = this.checkColumns(this.all);
     if (!(Object.values(types)[0] === 'string' && Object.values(types)[1] !== 'string')) {
-      throw new Error('cannot display multi dim table: ' + JSON.stringify(types));
+      this.prepareDataForMultiDimChart();
+      return;
     }
 
     // treat the first column as the label
@@ -75,6 +76,60 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     delete cols[first];
     for (const [k, v] of Object.entries(cols)) {
       this.all.push({ data: v, label: k });
+    }
+  }
+
+  /**
+   * interpret the first col as the series, the second as the labels
+   */
+  prepareDataForMultiDimChart() {
+    const types = this.checkColumns(this.all);
+    const series = {};
+    const labels = [];
+
+    // assume three columns
+    const first = Object.keys(types)[0];
+    const second = Object.keys(types)[1];
+    const data = Object.keys(types)[2];
+
+    // get all labels and prepare series object with empty child objects
+    for (const row of this.all) {
+      const serie = row[first];
+      const label = row[second];
+      if (!labels.includes(label)) {
+        labels.push(label);
+      }
+      if (!series[serie]) {
+        series[serie] = {};
+      }
+    }
+
+    // copy data into new structure
+    for (const row of this.all) {
+      const serie = row[first];
+      const label = row[second];
+      series[serie][label] = row[data];
+    }
+
+    // missing values are null
+    for (const row of Object.values(series)) {
+      for (const label of labels) {
+        if (!row[label]) {
+          row[label] = null;
+        }
+      }
+    }
+
+    // generate structure
+    this.columns = labels;
+    this.all = [];
+    for (const [k, v] of Object.entries(series)) {
+      // make sure d has the order of labels
+      const d = [];
+      for (const label of labels) {
+        d.push(v[label]);
+      }
+      this.all.push({ data: d, label: k });
     }
   }
 
