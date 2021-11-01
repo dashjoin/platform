@@ -30,7 +30,9 @@ export class DisplayComponent extends TextComponent implements OnInit {
    * compute expressions
    */
   async initWidget() {
-    this.displayData = await this.evaluateExpression(this.layout.display);
+    if (this.layout.display) {
+      this.displayData = await this.evaluateExpression(this.layout.display);
+    }
   }
 
   /**

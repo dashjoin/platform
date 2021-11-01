@@ -90,6 +90,9 @@ export class Util {
      * format / limit text for snack bar
      */
     static limitTextForSnackBar(s: string): string {
+        if (!s) {
+            return s;
+        }
         const maxCharsPerLine = 40;
         let res = '';
         for (const line of s.split(/\s+/)) {
