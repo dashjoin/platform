@@ -761,7 +761,9 @@ Runs / evaluates an expression when clicked.
 Chart for visualizing query results.
 
 * database: database to run the query on
-* query: query to run
+* query: query to run; the query is expected to project the following column structure:
+    * label followed by a value column: in this case, a chart with a single series is shown. The first column is used as the series axis label and the second column is used as the value range
+    * two label columns followed by a value column: in this case, a chart with a multiple series is shown. The first column identifies which series the row belongs to. From there, the process described above is repeated
 * arguments: optional expression resulting in query arguments
 * chart: chart type
 
