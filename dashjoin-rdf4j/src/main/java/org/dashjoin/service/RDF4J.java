@@ -209,12 +209,20 @@ public class RDF4J extends AbstractDatabase {
         if (!entry.getKey().equals("ID")) {
           if (entry.getValue() instanceof List) {
             for (Object o : ((List<Object>) entry.getValue()))
-              con.add(subject, iri(entry.getKey()), literal(o));
+              con.add(subject, iri(entry.getKey()), value(m, entry.getKey(), o));
           } else
-            con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
+            con.add(subject, iri(entry.getKey()), value(m, entry.getKey(), entry.getValue()));
         }
       }
     }
+  }
+
+  Value value(Table m, String key, Object o) {
+    Property p = m.properties.get(key);
+    if (p != null && p.ref != null)
+      return iri(o);
+    else
+      return literal(o);
   }
 
   @Override
@@ -254,10 +262,11 @@ public class RDF4J extends AbstractDatabase {
               con.remove(subject, iri(entry.getKey()), null);
               if (entry.getValue() instanceof List) {
                 for (Object o : ((List<Object>) entry.getValue()))
-                  con.add(subject, iri(entry.getKey()), literal(o));
+                  con.add(subject, iri(entry.getKey()), value(schema, entry.getKey(), o));
               } else {
                 if (entry.getValue() != null)
-                  con.add(subject, iri(entry.getKey()), literal(entry.getValue()));
+                  con.add(subject, iri(entry.getKey()),
+                      value(schema, entry.getKey(), entry.getValue()));
               }
             }
           }
