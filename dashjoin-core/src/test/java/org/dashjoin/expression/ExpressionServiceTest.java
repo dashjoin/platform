@@ -3,6 +3,7 @@ package org.dashjoin.expression;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.SecurityContext;
+import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Services;
 import org.junit.Assert;
@@ -111,5 +112,40 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
     Assert.assertEquals("[\"mike\",\"joe\"]",
         "" + s.jsonata(sc, "$query(\"junit\", \"list\").$echo($.\"EMP.NAME\")", null, false));
+  }
+
+  @Test
+  public void testPojoArg() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    s.jsonata(sc, "$coord({\"x\":1})", null, false);
+  }
+
+  public static class Coord {
+    public int x;
+    public int y;
+  }
+
+  public static class EchoCoord extends AbstractFunction<Coord, Coord> {
+
+    @Override
+    public Coord run(Coord arg) throws Exception {
+      return arg;
+    }
+
+    @Override
+    public Class<Coord> getArgumentClass() {
+      return Coord.class;
+    }
+
+    @Override
+    public String getID() {
+      return "coord";
+    }
+
+    @Override
+    public String getType() {
+      return "read";
+    }
   }
 }

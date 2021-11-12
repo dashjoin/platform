@@ -67,6 +67,6 @@ public class FunctionService {
     a.sc = sc;
     a.expressionService = data.getExpressionService();
 
-    return a.run(argument);
+    return a.run(om.convertValue(argument, a.getArgumentClass()));
   }
 }
