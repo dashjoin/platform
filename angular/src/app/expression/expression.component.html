@@ -1,6 +1,6 @@
 <mat-form-field style="width: 600px">
     <mat-label>{{label}}</mat-label>
-    <input style="font-family: monospace" matInput [formControl]="text" autocomplete="off">
+    <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"></textarea>
 </mat-form-field>
 <p *ngIf="rootSchema.required?.includes(label) && !value" style="color: red;" class="mat-typography">required</p>
 <br>
