@@ -64,6 +64,7 @@ import net.sf.jsqlparser.expression.MySQLGroupConcat;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.create.view.CreateView;
 import net.sf.jsqlparser.statement.delete.Delete;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.select.Join;
@@ -754,6 +755,8 @@ public class SQLDatabase extends AbstractDatabase {
       return Arrays.asList(s(((Update) parsed).getTable().getName()));
     if (parsed instanceof Delete)
       return Arrays.asList(s(((Delete) parsed).getTable().getName()));
+    if (parsed instanceof CreateView)
+      return getTablesInQuery(((CreateView) parsed).getSelect().toString());
 
     SelectBody body = ((Select) parsed).getSelectBody();
     res.add(s(((net.sf.jsqlparser.schema.Table) ((PlainSelect) body).getFromItem()).getName()));
