@@ -21,6 +21,8 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.service.rdf4j.Query;
+import org.dashjoin.service.rdf4j.Query.Variable;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
@@ -180,6 +182,7 @@ public class RDF4J extends AbstractDatabase {
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
     try (RepositoryConnection con = getConnection()) {
+      Query q = new Query(info.query);
       List<Map<String, Object>> res = new ArrayList<>();
       TupleQuery tq = con
           .prepareTupleQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
@@ -188,7 +191,8 @@ public class RDF4J extends AbstractDatabase {
           BindingSet x = i.next();
           Map<String, Object> row = new LinkedHashMap<>();
           res.add(row);
-          x.forEach(b -> row.put(b.getName(), object(b.getValue())));
+          for (Variable p : q.projection)
+            row.put(p.name, object(x.getBinding(p.name).getValue()));
         }
       }
       return res;
@@ -440,7 +444,7 @@ public class RDF4J extends AbstractDatabase {
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
     try (RepositoryConnection con = getConnection()) {
-      Map<String, Property> res = new HashMap<>();
+      Map<String, Property> res = new LinkedHashMap<>();
       TupleQuery tq = con
           .prepareTupleQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
       try (TupleQueryResult i = tq.evaluate()) {
@@ -457,6 +461,7 @@ public class RDF4J extends AbstractDatabase {
             }
             res.put(b.getName(), prop);
           });
+          System.out.println(res);
           return res;
         }
       }
