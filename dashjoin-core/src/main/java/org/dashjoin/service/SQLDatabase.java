@@ -54,6 +54,7 @@ import org.dashjoin.service.ddl.SQLSchemaChange;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
+import org.postgresql.jdbc.PgArray;
 import org.postgresql.jdbc.PgResultSetMetaData;
 import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -337,6 +338,9 @@ public class SQLDatabase extends AbstractDatabase {
           } catch (JsonProcessingException e) {
             throw new SQLException(e);
           }
+      } else if (obj instanceof PgArray) {
+        PgArray arr = (PgArray) obj;
+        obj = arr.getArray();
       }
     }
 
