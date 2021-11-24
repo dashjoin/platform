@@ -321,7 +321,7 @@ public class ExpressionService {
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
       if (getArgumentCount(ctx) < 3)
-        throw new RuntimeException("Arguments required: $create(database, table, pk1)");
+        throw new RuntimeException("Arguments required: $create(database, table, object)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
       if (getValuesListExpression(v, ctx, 1) == null)
