@@ -1,0 +1,8 @@
+/target/
+/model/
+/.settings/
+/.classpath
+/.project
+/doc
+/.flattened-pom.xml
+/.factorypath

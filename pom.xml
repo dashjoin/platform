@@ -51,6 +51,7 @@
 		<!-- 
 		<module>dashjoin-rdf4j</module>
 		<module>dashjoin-redis</module>
+		<module>dashjoin-arangodb</module>
 		 -->
 	</modules>
 	

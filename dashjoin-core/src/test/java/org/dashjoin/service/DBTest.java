@@ -249,7 +249,8 @@ public class DBTest {
   }
 
   void number(int expected, Object actual) {
-    Assert.assertTrue(actual.equals(expected) || actual.equals("http://ex.org/" + expected));
+    Assert.assertTrue((actual + "").equals(expected + "") || actual.equals(expected)
+        || actual.equals("http://ex.org/" + expected));
   }
 
   @Test

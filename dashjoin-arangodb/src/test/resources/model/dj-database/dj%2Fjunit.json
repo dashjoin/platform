@@ -1,0 +1,44 @@
+{
+	"ID": "dj/junit",
+	"name": "junit",
+	"parent": "dj",
+	"djClassName": "org.dashjoin.service.ArangoDB",
+	"hostname": "localhost",
+	"database": "junit",
+	"port": 8529,
+	"username": "root",
+	"password": "test123",
+	"datasets": ["/data/EMP.json", "/data/PRJ.json", "/data/NOKEY.json", "/data/T.json", "/data/U.json"],
+	"tables": {
+		"PRJ": {
+			"ID": "dj/junit/PRJ",
+			"parent": "dj/junit",
+			"name": "PRJ",
+			"type": "object",
+			"properties": {
+				"_key": {
+					"ID": "dj/junit/PRJ/_key",
+					"parent": "dj/junit/PRJ",
+					"name": "_key",
+					"type": "number",
+					"pkpos": 0
+				}
+			}
+		},
+		"EMP": {
+			"ID": "dj/junit/EMP",
+			"parent": "dj/junit",
+			"name": "EMP",
+			"type": "object",
+			"properties": {
+				"WORKSON": {
+					"ID": "dj/junit/EMP/WORKSON",
+					"parent": "dj/junit/EMP",
+					"name": "WORKSON",
+					"type": "number",
+					"ref": "dj/junit/PRJ/_key"
+				}
+			}
+		}
+	}
+}
