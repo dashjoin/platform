@@ -1,0 +1,5 @@
+{
+	"ID": "list",
+	"query": "for i in EMP filter i.NAME==${search} return {\"_key\":i._key, \"NAME\":i.NAME}",
+	"type": "read"
+}

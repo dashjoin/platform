@@ -1,0 +1,5 @@
+{
+	"ID": "list",
+	"query": "for i in EMP return i",
+	"type": "read"
+}

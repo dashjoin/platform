@@ -20,6 +20,7 @@ import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.Template;
 import com.arangodb.ArangoCollection;
 import com.arangodb.ArangoCursor;
 import com.arangodb.ArangoDatabase;
@@ -154,7 +155,10 @@ public class ArangoDB extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
-    throw new NotImplementedException();
+    ArangoDBQuery q =
+        new ArangoDBQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
+
+    return query(q.toString());
   }
 
   @Override
@@ -235,7 +239,29 @@ public class ArangoDB extends AbstractDatabase {
   @Override
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
-    throw new NotImplementedException();
+    ArangoDBQuery parse =
+        new ArangoDBQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
+    Table table = tables.get(parse.collection);
+
+    Map<String, Property> meta = new LinkedHashMap<>();
+    List<Map<String, Object>> res = query(info, arguments);
+    for (Map<String, Object> row : res) {
+      for (Entry<String, Object> c : row.entrySet()) {
+        Property p = meta.get(c.getKey());
+        if (p == null) {
+          if (table.properties.containsKey(c.getKey()))
+            meta.put(c.getKey(), table.properties.get(c.getKey()));
+          else {
+            Property prop = new Property();
+            prop.name = c.getKey();
+            prop.type = c.getValue() instanceof Number ? "number" : "string";
+            meta.put(c.getKey(), prop);
+          }
+        }
+      }
+      break;
+    }
+    return meta;
   }
 
   @Override
