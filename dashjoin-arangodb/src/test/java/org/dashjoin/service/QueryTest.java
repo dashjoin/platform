@@ -10,6 +10,8 @@ public class QueryTest {
   @Test
   public void testAggregate() throws Exception {
     eq("FOR i IN col RETURN i");
+    eq("FOR i IN col LIMIT 1,2 RETURN i");
+    eq("FOR i IN col LIMIT 1 RETURN i");
     eq("FOR i IN col RETURN {\"col\": i.col}");
     eq("FOR i IN col FILTER field==5 RETURN i");
     eq("FOR i IN col FILTER field==\"5\" RETURN i");
@@ -21,5 +23,11 @@ public class QueryTest {
     Assert.assertEquals(query.replaceAll(" ", "").replaceAll("\"", ""),
         q.toString().replaceAll("\\['emp'\\]", "emp").replaceAll("\\['orders'\\]", "orders")
             .replaceAll(" ", "").replaceAll("\"", ""));
+  }
+
+  @Test
+  public void testBetween() {
+    Assert.assertEquals(" 1,2Aa ",
+        ArangoDBQuery.between(".. LIMIT 1,2Aa RETURN ..", "limit", "return"));
   }
 }

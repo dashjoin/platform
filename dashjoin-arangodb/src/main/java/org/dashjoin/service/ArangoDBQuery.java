@@ -33,6 +33,10 @@ public class ArangoDBQuery {
 
   public String project;
 
+  public Integer limit;
+
+  public Integer offset;
+
   public List<Expression> filters = new ArrayList<>();
 
   public ArangoDBQuery(String query) {
@@ -50,9 +54,29 @@ public class ArangoDBQuery {
       filters.add(new Expression(f));
     }
 
+    String lmt = between(query, "limit", "return");
+    if (lmt != null) {
+      String[] lmts = lmt.split(",");
+      if (lmts.length == 1)
+        limit = Integer.parseInt(lmts[0].trim());
+      else {
+        offset = Integer.parseInt(lmts[0].trim());
+        limit = Integer.parseInt(lmts[1].trim());
+      }
+    }
+
     variable = parts[1];
     collection = parts[3];
-    project = query.split("return|RETURN")[1];
+    project = query.split("return|RETURN")[1].trim();
+  }
+
+  static String between(String query, String from, String to) {
+    String lower = query.toLowerCase();
+    int l = lower.indexOf(from);
+    int r = lower.indexOf(to);
+    if (r >= 0 && l >= 0)
+      return query.substring(l + from.length(), r);
+    return null;
   }
 
   @Override
@@ -60,6 +84,13 @@ public class ArangoDBQuery {
     String f = "";
     for (Expression e : filters)
       f = f + "FILTER " + e + " ";
-    return "FOR " + variable + " IN " + collection + " " + f + "RETURN " + project;
+    String lim = "";
+    if (limit != null || offset != null) {
+      if (offset == null)
+        lim = "LIMIT " + limit + " ";
+      else
+        lim = "LIMIT " + offset + "," + limit + " ";
+    }
+    return "FOR " + variable + " IN " + collection + " " + f + lim + "RETURN " + project;
   }
 }

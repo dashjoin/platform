@@ -199,7 +199,7 @@ public class ArangoDB extends AbstractDatabase {
 
   @Override
   public QueryEditorInternal getQueryEditor() {
-    throw new NotImplementedException();
+    return new ArangoDBEditor(services, this);
   }
 
   @Override
