@@ -1,8 +1,10 @@
 package org.dashjoin.service;
 
+import static org.dashjoin.service.QueryEditor.Col.col;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
+import org.dashjoin.service.QueryEditor.SortRequest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
@@ -53,7 +55,10 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testAddColumn() throws Exception {
-    // TODO
+    String sql = "FOR i IN T RETURN {\"A\": i.A}";
+    // add a column from the same table
+    QueryResponse res = e.addColumn(addColumnRequest(sql, col("T", "A"), col("T", "B")));
+    eq("FOR i IN T RETURN {\"A\": i.A, \"B\": i.B}", res.query);
   }
 
   @Override
@@ -91,7 +96,10 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testOrderBy() throws Exception {
-    // TODO
+    SortRequest r = json(
+        "{'order':'asc', 'query':'FOR i IN EMP RETURN {\\\"NAME\\\": i.NAME}', 'col':{'table':'T', 'column':'A'}}",
+        SortRequest.class);
+    eq("FOR i IN EMP SORT i.A RETURN {\"NAME\": i.NAME}", e.sort(r).query);
   }
 
   @Override

@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import java.util.ArrayList;
 import java.util.Map;
+import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -49,15 +50,25 @@ public class ArangoDBEditor implements QueryEditorInternal {
   @Override
   public QueryResponse sort(SortRequest ac) throws Exception {
     ArangoDBQuery q = new ArangoDBQuery(ac.query);
-    // q.orderBy(ac.col.column, ac.order);
+    if (ac.order == null || ac.order.isEmpty())
+      q.sort = null;
+    else {
+      q.sort = q.variable + "." + ac.col.column + (ac.order.equals("desc") ? " DESC" : "");
+    }
     ac.query = q.toString();
     return noop(ac);
   }
 
   @Override
   public QueryResponse addColumn(AddColumnRequest ac) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    ArangoDBQuery q = new ArangoDBQuery(ac.query);
+    if (ac.add.table.equals(ac.col.table))
+      q.project.vars.put("\"" + ac.add.column + "\"", q.variable + "." + ac.add.column);
+    else {
+      throw new NotImplementedException("join not implemented");
+    }
+    ac.query = q.toString();
+    return noop(ac);
   }
 
   @Override

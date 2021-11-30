@@ -1,5 +1,5 @@
 {
 	"ID": "list",
-	"query": "for i in EMP return i",
+	"query": "for i in EMP return {\"_key\": i._key, \"NAME\": i.NAME}",
 	"type": "read"
 }

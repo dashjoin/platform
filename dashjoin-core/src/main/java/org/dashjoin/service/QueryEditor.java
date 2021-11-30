@@ -314,7 +314,7 @@ public interface QueryEditor {
     /**
      * sort order (null, asc, desc)
      */
-    @Schema(title = "sort order (null, asc, desc)")
+    @Schema(title = "sort order (null - empty string, asc, desc)")
     public String order;
   }
 
