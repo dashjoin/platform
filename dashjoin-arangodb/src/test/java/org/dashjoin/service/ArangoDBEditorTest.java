@@ -4,6 +4,7 @@ import static org.dashjoin.service.QueryEditor.Col.col;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
+import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -136,7 +137,12 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testRemove() throws Exception {
-    // TODO
+    RemoveColumnRequest ac = new RemoveColumnRequest();
+    ac.database = "db";
+    ac.col = col("T", "A");
+
+    ac.query = "FOR i IN EMP RETURN {\"_key\": i._key, \"A\": i.A}";
+    eq("FOR i IN EMP RETURN {\"_key\": i._key}", e.removeColumn(ac).query);
   }
 
   @Override

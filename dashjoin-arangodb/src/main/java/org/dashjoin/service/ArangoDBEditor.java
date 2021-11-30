@@ -73,8 +73,10 @@ public class ArangoDBEditor implements QueryEditorInternal {
 
   @Override
   public QueryResponse removeColumn(RemoveColumnRequest ac) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    ArangoDBQuery q = new ArangoDBQuery(ac.query);
+    q.project.vars.remove("\"" + ac.col.column + "\"");
+    ac.query = q.toString();
+    return noop(ac);
   }
 
   @Override
