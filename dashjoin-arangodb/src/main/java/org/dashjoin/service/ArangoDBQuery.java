@@ -143,8 +143,8 @@ public class ArangoDBQuery {
       else
         lim = "LIMIT " + offset + "," + limit + " ";
     }
-    return "FOR " + variable + " IN " + collection + " " + f
-        + (sort == null ? "" : "SORT " + sort + " ") + lim + "RETURN "
+    return "FOR " + variable + " IN " + collection + " "
+        + (sort == null ? "" : "SORT " + sort + " ") + lim + f + "RETURN "
         + (distinct ? "DISTINCT " : "") + project;
   }
 }

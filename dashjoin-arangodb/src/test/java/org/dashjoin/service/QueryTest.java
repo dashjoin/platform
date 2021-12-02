@@ -11,6 +11,7 @@ public class QueryTest {
     eq("FOR i IN col LIMIT 1,2 RETURN {\"x\": i.x}");
     eq("FOR i IN col LIMIT 1 RETURN {\"x\": i.x}");
     eq("FOR i IN col SORT i.name LIMIT 1 RETURN {\"x\": i.x}");
+    eq("FOR i IN col SORT i.name LIMIT 1 FILTER i.field==5 RETURN {\"x\": i.x}");
     eq("FOR i IN col SORT i.name RETURN {\"x\": i.x}");
     eq("FOR i IN col SORT i.name DESC RETURN {\"x\": i.x}");
     eq("FOR i IN col RETURN {\"col\": i.col}");

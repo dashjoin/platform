@@ -12,6 +12,7 @@ import org.dashjoin.model.Table;
 import org.dashjoin.service.ArangoDBQuery.Expression;
 import org.dashjoin.service.QueryEditor.AddColumnRequest;
 import org.dashjoin.service.QueryEditor.Col;
+import org.dashjoin.service.QueryEditor.ColCondition;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.MoveColumnRequest;
@@ -86,8 +87,20 @@ public class ArangoDBEditor implements QueryEditorInternal {
 
   @Override
   public QueryResponse setWhere(SetWhereRequest ac) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    ArangoDBQuery q = new ArangoDBQuery(ac.query);
+    q.filters.clear();
+    for (ColCondition w : ac.cols) {
+      if (w.condition != null)
+        if (w.condition.startsWith("=")) {
+          String value = w.condition.substring(1).trim();
+          if (value.startsWith("'"))
+            value = "\"" + value.substring(1, value.length() - 1) + "\"";
+          q.filters.add(new Expression(q.variable + "." + w.col.column, "==", value));
+        } else
+          throw new Exception("Operator not supported: " + w.condition);
+    }
+    ac.query = q.toString();
+    return noop(ac);
   }
 
   @Override
@@ -165,9 +178,9 @@ public class ArangoDBEditor implements QueryEditorInternal {
           qc.keyTable = prop.ref.split("/")[2];
       }
       for (Expression w : parse.filters)
-        if (w.left.equals(f))
+        if (w.left.equals(parse.variable + "." + f))
           // TODO: other types and operators / group by
-          qc.where = "== \"" + w.right + "\"";
+          qc.where = "= " + w.right;
       res.metadata.add(qc);
     }
 

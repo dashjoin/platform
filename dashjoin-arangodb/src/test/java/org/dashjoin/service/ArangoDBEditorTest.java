@@ -1,12 +1,15 @@
 package org.dashjoin.service;
 
 import static org.dashjoin.service.QueryEditor.Col.col;
+import java.util.Arrays;
+import org.dashjoin.service.QueryEditor.ColCondition;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.MoveColumnRequest;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
+import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -108,7 +111,12 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testAddWhere() throws Exception {
-    // TODO
+    SetWhereRequest r = new SetWhereRequest();
+    r.cols = Arrays.asList(new ColCondition());
+    r.cols.get(0).col = col("EMP", "NAME");
+    r.cols.get(0).condition = "='x'";
+    r.query = "FOR i IN EMP RETURN { \"NAME\": i.NAME }";
+    eq("FOR i IN EMP FILTER i.NAME == \"x\" RETURN {\"NAME\": i.NAME}", e.setWhere(r).query);
   }
 
   @Override
