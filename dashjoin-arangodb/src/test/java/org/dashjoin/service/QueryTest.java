@@ -17,6 +17,7 @@ public class QueryTest {
     eq("FOR i IN col FILTER i.field==5 RETURN {\"x\": i.x}");
     eq("FOR i IN col FILTER i.field==\"5\" RETURN {\"x\": i.x}");
     eq("FOR i IN col FILTER i.field==\"so what\" RETURN {\"x\": i.x}");
+    eq("FOR i IN col RETURN DISTINCT {\"x\": i.x}");
   }
 
   void eq(String query) throws Exception {

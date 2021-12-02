@@ -68,6 +68,8 @@ public class ArangoDBQuery {
 
   public String sort;
 
+  public boolean distinct;
+
   public List<Expression> filters = new ArrayList<>();
 
   public ArangoDBQuery(String query) throws IOException {
@@ -125,6 +127,8 @@ public class ArangoDBQuery {
 
     variable = tree.getChild(1).getText();
     collection = tree.getChild(3).getText();
+
+    distinct = tree.getChild(tree.getChildCount() - 2).getText().equals("DISTINCT");
   }
 
   static String between(String query, String from, String to) {
@@ -149,6 +153,7 @@ public class ArangoDBQuery {
         lim = "LIMIT " + offset + "," + limit + " ";
     }
     return "FOR " + variable + " IN " + collection + " " + f
-        + (sort == null ? "" : "SORT " + sort + " ") + lim + "RETURN " + project;
+        + (sort == null ? "" : "SORT " + sort + " ") + lim + "RETURN "
+        + (distinct ? "DISTINCT " : "") + project;
   }
 }

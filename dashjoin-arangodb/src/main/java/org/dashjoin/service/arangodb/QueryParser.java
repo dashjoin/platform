@@ -18,7 +18,8 @@ public class QueryParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, STRING=14, VAR=15, INT=16, WS=17;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, STRING=15, VAR=16, INT=17, 
+		WS=18;
 	public static final int
 		RULE_query = 0, RULE_sort = 1, RULE_limit = 2, RULE_obj = 3, RULE_pair = 4, 
 		RULE_filter = 5, RULE_value = 6;
@@ -31,15 +32,15 @@ public class QueryParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'FOR'", "'IN'", "'RETURN'", "'SORT'", "'.'", "'DESC'", "'LIMIT'", 
-			"','", "'{'", "'}'", "':'", "'FILTER'", "'=='"
+			null, "'FOR'", "'IN'", "'RETURN'", "'DISTINCT'", "'SORT'", "'.'", "'DESC'", 
+			"'LIMIT'", "','", "'{'", "'}'", "':'", "'FILTER'", "'=='"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, "STRING", "VAR", "INT", "WS"
+			null, null, null, "STRING", "VAR", "INT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -145,7 +146,7 @@ public class QueryParser extends Parser {
 			setState(19);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__3) {
+			if (_la==T__4) {
 				{
 				setState(18);
 				sort();
@@ -155,7 +156,7 @@ public class QueryParser extends Parser {
 			setState(22);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__6) {
+			if (_la==T__7) {
 				{
 				setState(21);
 				limit();
@@ -165,7 +166,7 @@ public class QueryParser extends Parser {
 			setState(27);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__11) {
+			while (_la==T__12) {
 				{
 				{
 				setState(24);
@@ -178,7 +179,17 @@ public class QueryParser extends Parser {
 			}
 			setState(30);
 			match(T__2);
-			setState(31);
+			setState(32);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__3) {
+				{
+				setState(31);
+				match(T__3);
+				}
+			}
+
+			setState(34);
 			obj();
 			}
 		}
@@ -219,21 +230,21 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(33);
-			match(T__3);
-			setState(34);
-			match(VAR);
-			setState(35);
-			match(T__4);
 			setState(36);
+			match(T__4);
+			setState(37);
 			match(VAR);
 			setState(38);
+			match(T__5);
+			setState(39);
+			match(VAR);
+			setState(41);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__5) {
+			if (_la==T__6) {
 				{
-				setState(37);
-				match(T__5);
+				setState(40);
+				match(T__6);
 				}
 			}
 
@@ -273,28 +284,28 @@ public class QueryParser extends Parser {
 		LimitContext _localctx = new LimitContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_limit);
 		try {
-			setState(46);
+			setState(49);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(40);
-				match(T__6);
-				setState(41);
-				match(INT);
-				setState(42);
-				match(T__7);
 				setState(43);
+				match(T__7);
+				setState(44);
+				match(INT);
+				setState(45);
+				match(T__8);
+				setState(46);
 				match(INT);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(44);
-				match(T__6);
-				setState(45);
+				setState(47);
+				match(T__7);
+				setState(48);
 				match(INT);
 				}
 				break;
@@ -337,43 +348,43 @@ public class QueryParser extends Parser {
 		enterRule(_localctx, 6, RULE_obj);
 		int _la;
 		try {
-			setState(61);
+			setState(64);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(48);
-				match(T__8);
-				setState(49);
+				setState(51);
+				match(T__9);
+				setState(52);
 				pair();
-				setState(54);
+				setState(57);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				while (_la==T__7) {
+				while (_la==T__8) {
 					{
 					{
-					setState(50);
-					match(T__7);
-					setState(51);
+					setState(53);
+					match(T__8);
+					setState(54);
 					pair();
 					}
 					}
-					setState(56);
+					setState(59);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(57);
-				match(T__9);
+				setState(60);
+				match(T__10);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(59);
-				match(T__8);
-				setState(60);
+				setState(62);
 				match(T__9);
+				setState(63);
+				match(T__10);
 				}
 				break;
 			}
@@ -415,15 +426,15 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
-			match(STRING);
-			setState(64);
-			match(T__10);
-			setState(65);
-			match(VAR);
 			setState(66);
-			match(T__4);
+			match(STRING);
 			setState(67);
+			match(T__11);
+			setState(68);
+			match(VAR);
+			setState(69);
+			match(T__5);
+			setState(70);
 			match(VAR);
 			}
 		}
@@ -466,17 +477,17 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(69);
-			match(T__11);
-			setState(70);
-			match(VAR);
-			setState(71);
-			match(T__4);
 			setState(72);
-			match(VAR);
-			setState(73);
 			match(T__12);
+			setState(73);
+			match(VAR);
 			setState(74);
+			match(T__5);
+			setState(75);
+			match(VAR);
+			setState(76);
+			match(T__13);
+			setState(77);
 			value();
 			}
 		}
@@ -515,7 +526,7 @@ public class QueryParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(76);
+			setState(79);
 			_la = _input.LA(1);
 			if ( !(_la==STRING || _la==INT) ) {
 			_errHandler.recoverInline(this);
@@ -539,26 +550,27 @@ public class QueryParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23Q\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24T\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\3\2\3\2\3\2\3\2\5\2\26"+
-		"\n\2\3\2\5\2\31\n\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\2\3\3\3"+
-		"\3\3\3\3\3\3\3\5\3)\n\3\3\4\3\4\3\4\3\4\3\4\3\4\5\4\61\n\4\3\5\3\5\3\5"+
-		"\3\5\7\5\67\n\5\f\5\16\5:\13\5\3\5\3\5\3\5\3\5\5\5@\n\5\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\2\2\t\2\4\6\b\n\f\16"+
-		"\2\3\4\2\20\20\22\22\2P\2\20\3\2\2\2\4#\3\2\2\2\6\60\3\2\2\2\b?\3\2\2"+
-		"\2\nA\3\2\2\2\fG\3\2\2\2\16N\3\2\2\2\20\21\7\3\2\2\21\22\7\21\2\2\22\23"+
-		"\7\4\2\2\23\25\7\21\2\2\24\26\5\4\3\2\25\24\3\2\2\2\25\26\3\2\2\2\26\30"+
-		"\3\2\2\2\27\31\5\6\4\2\30\27\3\2\2\2\30\31\3\2\2\2\31\35\3\2\2\2\32\34"+
-		"\5\f\7\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3"+
-		"\2\2\2\37\35\3\2\2\2 !\7\5\2\2!\"\5\b\5\2\"\3\3\2\2\2#$\7\6\2\2$%\7\21"+
-		"\2\2%&\7\7\2\2&(\7\21\2\2\')\7\b\2\2(\'\3\2\2\2()\3\2\2\2)\5\3\2\2\2*"+
-		"+\7\t\2\2+,\7\22\2\2,-\7\n\2\2-\61\7\22\2\2./\7\t\2\2/\61\7\22\2\2\60"+
-		"*\3\2\2\2\60.\3\2\2\2\61\7\3\2\2\2\62\63\7\13\2\2\638\5\n\6\2\64\65\7"+
-		"\n\2\2\65\67\5\n\6\2\66\64\3\2\2\2\67:\3\2\2\28\66\3\2\2\289\3\2\2\29"+
-		";\3\2\2\2:8\3\2\2\2;<\7\f\2\2<@\3\2\2\2=>\7\13\2\2>@\7\f\2\2?\62\3\2\2"+
-		"\2?=\3\2\2\2@\t\3\2\2\2AB\7\20\2\2BC\7\r\2\2CD\7\21\2\2DE\7\7\2\2EF\7"+
-		"\21\2\2F\13\3\2\2\2GH\7\16\2\2HI\7\21\2\2IJ\7\7\2\2JK\7\21\2\2KL\7\17"+
-		"\2\2LM\5\16\b\2M\r\3\2\2\2NO\t\2\2\2O\17\3\2\2\2\t\25\30\35(\608?";
+		"\n\2\3\2\5\2\31\n\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\5\2#\n\2\3"+
+		"\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3,\n\3\3\4\3\4\3\4\3\4\3\4\3\4\5\4\64\n\4"+
+		"\3\5\3\5\3\5\3\5\7\5:\n\5\f\5\16\5=\13\5\3\5\3\5\3\5\3\5\5\5C\n\5\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\2\2\t\2\4"+
+		"\6\b\n\f\16\2\3\4\2\21\21\23\23\2T\2\20\3\2\2\2\4&\3\2\2\2\6\63\3\2\2"+
+		"\2\bB\3\2\2\2\nD\3\2\2\2\fJ\3\2\2\2\16Q\3\2\2\2\20\21\7\3\2\2\21\22\7"+
+		"\22\2\2\22\23\7\4\2\2\23\25\7\22\2\2\24\26\5\4\3\2\25\24\3\2\2\2\25\26"+
+		"\3\2\2\2\26\30\3\2\2\2\27\31\5\6\4\2\30\27\3\2\2\2\30\31\3\2\2\2\31\35"+
+		"\3\2\2\2\32\34\5\f\7\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36"+
+		"\3\2\2\2\36 \3\2\2\2\37\35\3\2\2\2 \"\7\5\2\2!#\7\6\2\2\"!\3\2\2\2\"#"+
+		"\3\2\2\2#$\3\2\2\2$%\5\b\5\2%\3\3\2\2\2&\'\7\7\2\2\'(\7\22\2\2()\7\b\2"+
+		"\2)+\7\22\2\2*,\7\t\2\2+*\3\2\2\2+,\3\2\2\2,\5\3\2\2\2-.\7\n\2\2./\7\23"+
+		"\2\2/\60\7\13\2\2\60\64\7\23\2\2\61\62\7\n\2\2\62\64\7\23\2\2\63-\3\2"+
+		"\2\2\63\61\3\2\2\2\64\7\3\2\2\2\65\66\7\f\2\2\66;\5\n\6\2\678\7\13\2\2"+
+		"8:\5\n\6\29\67\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<>\3\2\2\2=;\3\2\2"+
+		"\2>?\7\r\2\2?C\3\2\2\2@A\7\f\2\2AC\7\r\2\2B\65\3\2\2\2B@\3\2\2\2C\t\3"+
+		"\2\2\2DE\7\21\2\2EF\7\16\2\2FG\7\22\2\2GH\7\b\2\2HI\7\22\2\2I\13\3\2\2"+
+		"\2JK\7\17\2\2KL\7\22\2\2LM\7\b\2\2MN\7\22\2\2NO\7\20\2\2OP\5\16\b\2P\r"+
+		"\3\2\2\2QR\t\2\2\2R\17\3\2\2\2\n\25\30\35\"+\63;B";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

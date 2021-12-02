@@ -43,8 +43,11 @@ public class ArangoDBEditor implements QueryEditorInternal {
 
   @Override
   public QueryResponse distinct(DistinctRequest ac) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    ArangoDBQuery q = new ArangoDBQuery(ac.query);
+    q.distinct = ac.distinct;
+    q.limit = ac.querylimit;
+    ac.query = q.toString();
+    return noop(ac);
   }
 
   @Override
@@ -197,7 +200,7 @@ public class ArangoDBEditor implements QueryEditorInternal {
 
     res.query = query.query;
     res.querylimit = parse.limit;
-    res.distinct = false;
+    res.distinct = parse.distinct;
 
     return res;
   }

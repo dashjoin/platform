@@ -1,7 +1,7 @@
 grammar Query;
 
 query
-   : 'FOR' VAR 'IN' VAR sort? limit? filter* 'RETURN' obj
+   : 'FOR' VAR 'IN' VAR sort? limit? filter* 'RETURN' ('DISTINCT')? obj
    ;
 
 sort

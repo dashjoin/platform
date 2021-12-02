@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import static org.dashjoin.service.QueryEditor.Col.col;
+import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
@@ -154,7 +155,13 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testDistinct() throws Exception {
-    // TODO
+    DistinctRequest ac = new DistinctRequest();
+    ac.database = "db";
+    ac.querylimit = 88;
+    ac.distinct = true;
+
+    ac.query = "FOR i IN EMP RETURN {\"_key\": i._key, \"A\": i.A}";
+    eq("FOR i IN EMP LIMIT 88 RETURN DISTINCT {\"_key\": i._key}", e.distinct(ac).query);
   }
 
   @Override
