@@ -2,7 +2,9 @@ package org.dashjoin.service;
 
 import static com.google.common.collect.ImmutableMap.of;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -96,8 +98,20 @@ public class ArangoDBEditor implements QueryEditorInternal {
 
   @Override
   public QueryResponse moveColumn(MoveColumnRequest ac) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+    ArangoDBQuery q = new ArangoDBQuery(ac.query);
+    String keep = q.project.vars.remove("\"" + ac.col.column + "\"");
+    List<Entry<String, String>> list = new ArrayList<>();
+    for (Entry<String, String> e : q.project.vars.entrySet())
+      list.add(e);
+    list.add(ac.position, null);
+    q.project.vars.clear();
+    for (Entry<String, String> i : list)
+      if (i == null)
+        q.project.vars.put("\"" + ac.col.column + "\"", keep);
+      else
+        q.project.vars.put(i.getKey(), i.getValue());
+    ac.query = q.toString();
+    return noop(ac);
   }
 
   @Override

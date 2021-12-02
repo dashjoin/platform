@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static org.dashjoin.service.QueryEditor.Col.col;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
+import org.dashjoin.service.QueryEditor.MoveColumnRequest;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
@@ -149,7 +150,13 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   @Override
   @Test
   public void testMove() throws Exception {
-    // TODO
+    MoveColumnRequest ac = new MoveColumnRequest();
+    ac.database = "db";
+    ac.col = col("EMP", "A");
+    ac.position = 0;
+
+    ac.query = "FOR i IN EMP RETURN {\"_key\": i._key, \"A\": i.A}";
+    eq("FOR i IN EMP RETURN {\"A\": i.A, \"_key\": i._key}", e.moveColumn(ac).query);
   }
 
   @Override

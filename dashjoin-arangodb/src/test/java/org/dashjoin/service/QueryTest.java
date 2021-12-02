@@ -26,10 +26,4 @@ public class QueryTest {
         q.toString().replaceAll("\\['emp'\\]", "emp").replaceAll("\\['orders'\\]", "orders")
             .replaceAll(" ", "").replaceAll("\"", ""));
   }
-
-  @Test
-  public void testBetween() {
-    Assert.assertEquals(" 1,2Aa ",
-        ArangoDBQuery.between(".. LIMIT 1,2Aa RETURN ..", "limit", "return"));
-  }
 }

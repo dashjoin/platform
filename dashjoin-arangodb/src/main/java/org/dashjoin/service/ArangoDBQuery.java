@@ -131,15 +131,6 @@ public class ArangoDBQuery {
     distinct = tree.getChild(tree.getChildCount() - 2).getText().equals("DISTINCT");
   }
 
-  static String between(String query, String from, String to) {
-    String lower = query.toLowerCase();
-    int l = lower.indexOf(from);
-    int r = lower.indexOf(to);
-    if (r >= 0 && l >= 0)
-      return query.substring(l + from.length(), r);
-    return null;
-  }
-
   @Override
   public String toString() {
     String f = "";
