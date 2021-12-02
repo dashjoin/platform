@@ -1,28 +1,30 @@
 package org.dashjoin.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.dashjoin.service.arangodb.QueryBaseListener;
+import org.dashjoin.service.arangodb.QueryLexer;
+import org.dashjoin.service.arangodb.QueryListener;
+import org.dashjoin.service.arangodb.QueryParser;
 
 public class ArangoDBQuery {
 
   public static class Project {
 
     Map<String, String> vars = new LinkedHashMap<>();
-
-    public Project(String s) {
-      s = s.trim();
-      if (!s.startsWith("{") || !s.endsWith("}"))
-        throw new RuntimeException("Projection must be a JSON structure");
-      s = s.substring(1, s.length() - 1).trim();
-      for (String part : s.split(",")) {
-        String[] f = part.split(":");
-        vars.put(f[0].trim(), f[1].trim());
-      }
-    }
 
     @Override
     public String toString() {
@@ -42,14 +44,10 @@ public class ArangoDBQuery {
     public String left;
     public String right;
 
-    public Expression(String s) {
-      String[] parts = s.split("==");
-      if (parts.length == 2) {
-        this.left = parts[0].trim();
-        this.right = parts[1].trim();
-        this.operator = "==";
-      } else
-        throw new RuntimeException("unsupported operator: " + s);
+    public Expression(String left, String operator, String right) {
+      this.left = left;
+      this.operator = operator;
+      this.right = right;
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ArangoDBQuery {
 
   public String variable;
 
-  public Project project;
+  public Project project = new Project();
 
   public Integer limit;
 
@@ -72,43 +70,61 @@ public class ArangoDBQuery {
 
   public List<Expression> filters = new ArrayList<>();
 
-  public ArangoDBQuery(String query) {
-    query = query.trim();
-    String[] parts = query.split("\\s+");
-    if (!parts[0].equalsIgnoreCase("for") || !parts[2].equalsIgnoreCase("in"))
-      throw new RuntimeException("Only FOR ... IN queries supported");
+  public ArangoDBQuery(String query) throws IOException {
 
-    List<String> filt = new ArrayList<>(Arrays.asList(query.split("filter|FILTER")));
-    filt.remove(0);
-    if (!filt.isEmpty())
-      filt.set(filt.size() - 1, filt.get(filt.size() - 1).split("return|RETURN")[0]);
-    for (String f : filt) {
-      f = f.trim();
-      filters.add(new Expression(f));
-    }
-
-    sort = between(query, "sort", "return");
-    if (sort != null) {
-      String srt2 = between(query, "sort", "limit");
-      if (srt2 != null)
-        sort = srt2;
-      sort = sort.trim();
-    }
-
-    String lmt = between(query, "limit", "return");
-    if (lmt != null) {
-      String[] lmts = lmt.split(",");
-      if (lmts.length == 1)
-        limit = Integer.parseInt(lmts[0].trim());
-      else {
-        offset = Integer.parseInt(lmts[0].trim());
-        limit = Integer.parseInt(lmts[1].trim());
+    BaseErrorListener errorHandler = new BaseErrorListener() {
+      @Override
+      public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
+          int charPositionInLine, String msg, RecognitionException e) {
+        throw new RuntimeException("line " + line + ":" + charPositionInLine + " " + msg);
       }
-    }
+    };
 
-    variable = parts[1];
-    collection = parts[3];
-    project = new Project(query.split("return|RETURN")[1].trim());
+    CharStream input = CharStreams.fromStream(new ByteArrayInputStream(query.getBytes()));
+    QueryLexer lexer = new QueryLexer(input);
+    lexer.addErrorListener(errorHandler);
+    CommonTokenStream token = new CommonTokenStream(lexer);
+    QueryParser parser = new QueryParser(token);
+    parser.addErrorListener(errorHandler);
+    ParseTree tree = parser.query();
+
+    QueryListener listener = new QueryBaseListener() {
+      @Override
+      public void exitSort(QueryParser.SortContext ctx) {
+        sort = ctx.getChild(1).getText() + "." + ctx.getChild(3).getText();
+        if (ctx.getChildCount() == 5)
+          sort = sort + " " + ctx.getChild(4).getText();
+      }
+
+      @Override
+      public void exitLimit(QueryParser.LimitContext ctx) {
+        System.out.println();
+        if (ctx.getChildCount() == 4) {
+          offset = Integer.parseInt(ctx.getChild(1).getText());
+          limit = Integer.parseInt(ctx.getChild(3).getText());
+        } else {
+          limit = Integer.parseInt(ctx.getChild(1).getText());
+        }
+      }
+
+      @Override
+      public void exitFilter(QueryParser.FilterContext ctx) {
+        filters.add(new Expression(ctx.getChild(1).getText() + "." + ctx.getChild(3).getText(),
+            "==", ctx.getChild(5).getText()));
+      }
+
+      @Override
+      public void exitPair(QueryParser.PairContext ctx) {
+        project.vars.put(ctx.getChild(0).getText(),
+            ctx.getChild(2).getText() + "." + ctx.getChild(4).getText());
+      }
+    };
+
+    ParseTreeWalker walker = new ParseTreeWalker();
+    walker.walk(listener, tree);
+
+    variable = tree.getChild(1).getText();
+    collection = tree.getChild(3).getText();
   }
 
   static String between(String query, String from, String to) {

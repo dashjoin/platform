@@ -2,9 +2,7 @@ package org.dashjoin.service;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import io.quarkus.test.junit.QuarkusTest;
 
-@QuarkusTest
 public class QueryTest {
 
   @Test
@@ -16,12 +14,12 @@ public class QueryTest {
     eq("FOR i IN col SORT i.name RETURN {\"x\": i.x}");
     eq("FOR i IN col SORT i.name DESC RETURN {\"x\": i.x}");
     eq("FOR i IN col RETURN {\"col\": i.col}");
-    eq("FOR i IN col FILTER field==5 RETURN {\"x\": i.x}");
-    eq("FOR i IN col FILTER field==\"5\" RETURN {\"x\": i.x}");
-    eq("FOR i IN col FILTER field==\"so what\" RETURN {\"x\": i.x}");
+    eq("FOR i IN col FILTER i.field==5 RETURN {\"x\": i.x}");
+    eq("FOR i IN col FILTER i.field==\"5\" RETURN {\"x\": i.x}");
+    eq("FOR i IN col FILTER i.field==\"so what\" RETURN {\"x\": i.x}");
   }
 
-  void eq(String query) {
+  void eq(String query) throws Exception {
     ArangoDBQuery q = new ArangoDBQuery(query);
     Assert.assertEquals(query.replaceAll(" ", "").replaceAll("\"", ""),
         q.toString().replaceAll("\\['emp'\\]", "emp").replaceAll("\\['orders'\\]", "orders")
