@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import javax.inject.Inject;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Metadata.Key;
+import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.QueryEditor.Col;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,6 +51,20 @@ public class MetadataTest {
             new Metadata(con, url).toString());
       }
     }
+  }
+
+  @Test
+  public void testMultipleFksToSameTable() {
+    MdTable t = new MdTable("t");
+    t.pk = new Key();
+    t.pk.col.add("id");
+    Key fk1 = new Key();
+    fk1.col.add("fk1");
+    Key fk2 = new Key();
+    fk2.col.add("fk2");
+    t.fks.put("s", fk1);
+    t.fks.put("s", fk2);
+    Assert.assertEquals(2, t.fks.list.size());
   }
 
   @Test

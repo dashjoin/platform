@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.dashjoin.util.Escape;
@@ -48,6 +47,34 @@ public class Metadata {
     @Override
     public String toString() {
       return col.toString();
+    }
+  }
+
+  public static class TableAndKey {
+    public String table;
+    public Key key;
+  }
+
+  public static class FKList {
+
+    List<TableAndKey> list = new ArrayList<>();
+
+    public boolean containsKey(String table) {
+      return get(table) != null;
+    }
+
+    public Key get(String table) {
+      for (TableAndKey tk : list)
+        if (tk.table.equals(table))
+          return tk.key;
+      return null;
+    }
+
+    public void put(String table, Key key) {
+      TableAndKey tk = new TableAndKey();
+      tk.key = key;
+      tk.table = table;
+      list.add(tk);
     }
   }
 
@@ -97,11 +124,11 @@ public class Metadata {
     public Key pk = new Key();
 
     /**
-     * table's FKs in a Map: referenced table name is the map key. The foreign key is stored with
-     * the table where is it defined: create table t (pk int primary key, fk int references r(id)).
-     * Both pk and fk columns are stored in the object of table t
+     * table's FKs: referenced table name and the foreign key is stored with the table where is it
+     * defined: create table t (pk int primary key, fk int references r(id)). Both pk and fk columns
+     * are stored in the object of table t
      */
-    public Map<String, Key> fks = new LinkedHashMap<>();
+    public FKList fks = new FKList();
 
     /**
      * like fks.get(table) but also puts new map entry if table does not yet exist
@@ -118,7 +145,10 @@ public class Metadata {
 
     @Override
     public String toString() {
-      return "Table " + name + " {pk=" + pk + ", fk=" + fks + "}";
+      Map<String, Key> fk = new LinkedHashMap<>();
+      for (TableAndKey i : fks.list)
+        fk.put(i.table, i.key);
+      return "Table " + name + " {pk=" + pk + ", fk=" + fk + "}";
     }
   }
 
@@ -300,12 +330,12 @@ public class Metadata {
             pkm.put("pkpos", t.pk.col.indexOf(pk));
             pkm.put("createOnly", true);
           }
-          for (Entry<String, Key> e : t.fks.entrySet()) {
-            if (e.getValue().col.contains(pk)) {
+          for (TableAndKey e : t.fks.list) {
+            if (e.key.col.contains(pk)) {
               // within the fk key group, this is the pos-th key
-              int pos = e.getValue().col.indexOf(pk);
-              String x = tables.get(e.getKey()).pk.col.get(pos);
-              pkm.put("ref", parent + "/" + e.getKey() + "/" + x);
+              int pos = e.key.col.indexOf(pk);
+              String x = tables.get(e.table).pk.col.get(pos);
+              pkm.put("ref", parent + "/" + e.table + "/" + x);
               pkm.put("displayWith", "fk");
             }
           }
