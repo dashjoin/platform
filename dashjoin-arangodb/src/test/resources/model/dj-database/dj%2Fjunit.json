@@ -16,11 +16,11 @@
 			"name": "PRJ",
 			"type": "object",
 			"properties": {
-				"_key": {
-					"ID": "dj/junit/PRJ/_key",
+				"_id": {
+					"ID": "dj/junit/PRJ/_id",
 					"parent": "dj/junit/PRJ",
-					"name": "_key",
-					"type": "number",
+					"name": "_id",
+					"type": "string",
 					"pkpos": 0
 				}
 			}
@@ -35,8 +35,8 @@
 					"ID": "dj/junit/EMP/WORKSON",
 					"parent": "dj/junit/EMP",
 					"name": "WORKSON",
-					"type": "number",
-					"ref": "dj/junit/PRJ/_key"
+					"type": "string",
+					"ref": "dj/junit/PRJ/_id"
 				}
 			}
 		}

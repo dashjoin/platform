@@ -132,10 +132,10 @@ public class ArangoDBEditorTest extends QueryEditorTest {
     query.database = "db";
     QueryResponse res;
 
-    query.query = "FOR i IN EMP RETURN {\"_key\": i._key}";
+    query.query = "FOR i IN EMP RETURN {\"_id\": i._id}";
     res = e.noop(query);
-    Assert.assertEquals("EMP._key", res.metadata.get(0).col.toString());
-    Assert.assertEquals("_key", res.fieldNames.get(0));
+    Assert.assertEquals("EMP._id", res.metadata.get(0).col.toString());
+    Assert.assertEquals("_id", res.fieldNames.get(0));
   }
 
   @Override

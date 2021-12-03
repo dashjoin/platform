@@ -241,7 +241,7 @@ public class DBTest {
   }
 
   void id(String string, String id) {
-    Assert.assertEquals(string, id.replaceAll("http:%2F%2Fex.org%2F", ""));
+    Assert.assertEquals(string, id.replaceAll("http:%2F%2Fex.org%2F", "").replaceAll("PRJ%2F", ""));
   }
 
   void name(String string, String id) {
@@ -250,7 +250,7 @@ public class DBTest {
 
   void number(int expected, Object actual) {
     Assert.assertTrue((actual + "").equals(expected + "") || actual.equals(expected)
-        || actual.equals("http://ex.org/" + expected));
+        || actual.equals("http://ex.org/" + expected) || actual.equals("EMP/" + expected));
   }
 
   @Test

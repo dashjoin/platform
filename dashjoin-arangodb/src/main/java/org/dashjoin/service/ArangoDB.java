@@ -88,7 +88,7 @@ public class ArangoDB extends AbstractDatabase {
       @SuppressWarnings("rawtypes")
       Map row = new LinkedHashMap(cursor.next());
       row.remove("_rev");
-      row.remove("_id");
+      row.remove("_key");
       res.add(row);
     }
     return res;
@@ -120,12 +120,12 @@ public class ArangoDB extends AbstractDatabase {
         continue;
       MdTable prj = new MdTable(c.getName());
       prj.pk = new Key();
-      prj.pk.col.add("_key");
+      prj.pk.col.add("_id");
       for (Map<String, Object> sample : query("for t in " + c.getName() + " limit 1 return t")) {
         for (Entry<String, Object> e : sample.entrySet()) {
           Column col = new Column();
           col.name = e.getKey();
-          if (col.name.equals("_key"))
+          if (col.name.equals("_id"))
             col.readOnly = true;
           if (e.getValue() instanceof Integer)
             col.typeName = "INTEGER";
@@ -177,32 +177,45 @@ public class ArangoDB extends AbstractDatabase {
 
   @Override
   public void create(Table m, Map<String, Object> object) throws Exception {
+    object = new LinkedHashMap<>(object);
+    String key = search2key(object);
+    if (key != null) {
+      object.put("_key", key);
+      object.remove("_id");
+    }
     con().collection(m.name).insertDocument(object);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    Map<String, Object> tmp =
-        con().collection(s.name).getDocument((String) search.get("_key"), Map.class);
+    Map<String, Object> tmp = con().collection(s.name).getDocument(search2key(search), Map.class);
     if (tmp == null)
       return null;
     Map<String, Object> m = new LinkedHashMap<>(tmp);
     m.remove("_rev");
-    m.remove("_id");
+    m.remove("_key");
     return m;
+  }
+
+  String search2key(Map<String, Object> search) {
+    String id = (String) search.get("_id");
+    if (id == null)
+      return null;
+    int slash = id.indexOf('/');
+    return id.substring(slash + 1, id.length());
   }
 
   @Override
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
-    con().collection(schema.name).updateDocument((String) search.get("_key"), object);
+    con().collection(schema.name).updateDocument(search2key(search), object);
     return true;
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    con().collection(s.name).deleteDocument((String) search.get("_key"));
+    con().collection(s.name).deleteDocument(search2key(search));
     return true;
   }
 
