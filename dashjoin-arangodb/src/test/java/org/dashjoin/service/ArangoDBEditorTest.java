@@ -116,7 +116,7 @@ public class ArangoDBEditorTest extends QueryEditorTest {
     r.cols.get(0).col = col("EMP", "NAME");
     r.cols.get(0).condition = "='x'";
     r.query = "FOR i IN EMP RETURN { \"NAME\": i.NAME }";
-    eq("FOR i IN EMP FILTER i.NAME == \"x\" RETURN {\"NAME\": i.NAME}", e.setWhere(r).query);
+    eq("FOR i IN EMP FILTER i.NAME==\"x\" RETURN {\"NAME\": i.NAME}", e.setWhere(r).query);
   }
 
   @Override
@@ -175,7 +175,7 @@ public class ArangoDBEditorTest extends QueryEditorTest {
     ac.querylimit = 88;
     ac.distinct = true;
 
-    ac.query = "FOR i IN EMP RETURN {\"_key\": i._key, \"A\": i.A}";
+    ac.query = "FOR i IN EMP RETURN {\"_key\": i._key}";
     eq("FOR i IN EMP LIMIT 88 RETURN DISTINCT {\"_key\": i._key}", e.distinct(ac).query);
   }
 
