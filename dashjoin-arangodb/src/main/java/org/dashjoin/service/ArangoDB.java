@@ -25,10 +25,11 @@ import com.arangodb.ArangoCollection;
 import com.arangodb.ArangoCursor;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
+import com.arangodb.entity.CollectionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * MongoDB implementation
+ * ArangoDB implementation
  */
 @JsonSchema(required = {"hostname", "database"},
     order = {"hostname", "port", "database", "username", "password"})
@@ -83,8 +84,13 @@ public class ArangoDB extends AbstractDatabase {
     @SuppressWarnings("rawtypes")
     ArangoCursor<Map> cursor = con().query(query, Map.class);
     List<Map<String, Object>> res = new ArrayList<>();
-    while (cursor.hasNext())
-      res.add(cursor.next());
+    while (cursor.hasNext()) {
+      @SuppressWarnings("rawtypes")
+      Map row = new LinkedHashMap(cursor.next());
+      row.remove("_rev");
+      row.remove("_id");
+      res.add(row);
+    }
     return res;
   }
 
@@ -117,8 +123,6 @@ public class ArangoDB extends AbstractDatabase {
       prj.pk.col.add("_key");
       for (Map<String, Object> sample : query("for t in " + c.getName() + " limit 1 return t")) {
         for (Entry<String, Object> e : sample.entrySet()) {
-          if (e.getKey().equals("_rev") || e.getKey().equals("_id"))
-            continue;
           Column col = new Column();
           col.name = e.getKey();
           if (col.name.equals("_key"))
@@ -136,6 +140,16 @@ public class ArangoDB extends AbstractDatabase {
             col.typeName = "VARCHAR";
           prj.columns.add(col);
         }
+
+        if (c.getType().equals(CollectionType.EDGES)) {
+          Key from = new Key();
+          from.col.add("_from");
+          Key to = new Key();
+          to.col.add("_to");
+          prj.fks.put(sample.get("_from").toString().split("/")[0], from);
+          prj.fks.put(sample.get("_to").toString().split("/")[0], to);
+        }
+
         break;
       }
       meta.tables.put(c.getName(), prj);
@@ -206,7 +220,7 @@ public class ArangoDB extends AbstractDatabase {
   public List<Map<String, Object>> all(Table s, Integer offset, Integer limit, String sort,
       boolean descending, Map<String, Object> arguments) throws Exception {
 
-    String sorts = sort == null ? "" : " sort " + sort + (descending ? " desc " : " asc ");
+    String sorts = sort == null ? "" : " sort t." + sort + (descending ? " desc " : " asc ");
     List<String> filters = new ArrayList<>();
     if (arguments != null)
       for (Entry<String, Object> e : arguments.entrySet())
@@ -228,10 +242,7 @@ public class ArangoDB extends AbstractDatabase {
 
     List<Map<String, Object>> list = new ArrayList<>();
     for (Map<String, Object> d : query(query)) {
-      Map<String, Object> m = new LinkedHashMap<>(d);
-      m.remove("_rev");
-      m.remove("_id");
-      list.add(m);
+      list.add(d);
     }
     return list;
   }
