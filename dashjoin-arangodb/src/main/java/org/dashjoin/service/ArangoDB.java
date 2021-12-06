@@ -136,15 +136,17 @@ public class ArangoDB extends AbstractDatabase {
         id.typeName = "VARCHAR";
         prj.columns.add(id);
 
-        Column cfrom = new Column();
-        cfrom.name = "_from";
-        cfrom.typeName = "VARCHAR";
-        prj.columns.add(cfrom);
+        if (c.getType().equals(CollectionType.EDGES)) {
+          Column cfrom = new Column();
+          cfrom.name = "_from";
+          cfrom.typeName = "VARCHAR";
+          prj.columns.add(cfrom);
 
-        Column cto = new Column();
-        cto.name = "_to";
-        cto.typeName = "VARCHAR";
-        prj.columns.add(cto);
+          Column cto = new Column();
+          cto.name = "_to";
+          cto.typeName = "VARCHAR";
+          prj.columns.add(cto);
+        }
 
         for (Entry<String, Object> e : properties.entrySet()) {
           String type = (String) ((Map<String, Object>) e.getValue()).get("type");
