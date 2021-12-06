@@ -135,6 +135,17 @@ public class ArangoDB extends AbstractDatabase {
         id.readOnly = true;
         id.typeName = "VARCHAR";
         prj.columns.add(id);
+
+        Column cfrom = new Column();
+        cfrom.name = "_from";
+        cfrom.typeName = "VARCHAR";
+        prj.columns.add(cfrom);
+
+        Column cto = new Column();
+        cto.name = "_to";
+        cto.typeName = "VARCHAR";
+        prj.columns.add(cto);
+
         for (Entry<String, Object> e : properties.entrySet()) {
           String type = (String) ((Map<String, Object>) e.getValue()).get("type");
           Column col = new Column();
@@ -151,6 +162,20 @@ public class ArangoDB extends AbstractDatabase {
             col.typeName = "VARCHAR";
           prj.columns.add(col);
         }
+
+        if (c.getType().equals(CollectionType.EDGES)) {
+          Key from = new Key();
+          from.col.add("_from");
+          Key to = new Key();
+          to.col.add("_to");
+          for (Map<String, Object> sample : query(
+              "for t in " + c.getName() + " limit 1 return t")) {
+            prj.fks.put(sample.get("_from").toString().split("/")[0], from);
+            prj.fks.put(sample.get("_to").toString().split("/")[0], to);
+            break;
+          }
+        }
+
       } else
         for (Map<String, Object> sample : query("for t in " + c.getName() + " limit 1 return t")) {
           for (Entry<String, Object> e : sample.entrySet()) {
