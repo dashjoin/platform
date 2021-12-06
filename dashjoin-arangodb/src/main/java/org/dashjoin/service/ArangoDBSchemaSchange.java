@@ -50,29 +50,45 @@ public class ArangoDBSchemaSchange implements SchemaChange {
     Map<String, Map<String, Object>> schema =
         objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
     schema.get("properties").put(columnName, MapUtil.of("type", columnType));
+    writeSchema(collection, schema);
+  }
 
+  @Override
+  public void renameColumn(String table, String column, String newName) throws Exception {
+    ArangoCollection collection = db.con().collection(table);
+    Map<String, Map<String, Object>> schema =
+        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    Object keep = schema.get("properties").remove(column);
+    schema.get("properties").put(newName, keep);
+    writeSchema(collection, schema);
+  }
+
+  @Override
+  public void alterColumn(String table, String column, String newType) throws Exception {
+    ArangoCollection collection = db.con().collection(table);
+    Map<String, Map<String, Object>> schema =
+        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    @SuppressWarnings("unchecked")
+    Map<String, Object> col = (Map<String, Object>) schema.get("properties").get(column);
+    col.put("type", newType);
+    writeSchema(collection, schema);
+  }
+
+  @Override
+  public void dropColumn(String table, String column) throws Exception {
+    ArangoCollection collection = db.con().collection(table);
+    Map<String, Map<String, Object>> schema =
+        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    schema.get("properties").remove(column);
+    writeSchema(collection, schema);
+  }
+
+  void writeSchema(ArangoCollection collection, Map<String, Map<String, Object>> schema)
+      throws Exception {
     CollectionPropertiesOptions opts = new CollectionPropertiesOptions();
     CollectionSchema rule = new CollectionSchema();
     rule.setRule(objectMapper.writeValueAsString(schema));
     opts.schema(rule);
     collection.changeProperties(opts);
-  }
-
-  @Override
-  public void renameColumn(String table, String column, String newName) throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void alterColumn(String table, String column, String newType) throws Exception {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void dropColumn(String table, String column) throws Exception {
-    // TODO Auto-generated method stub
-
   }
 }
