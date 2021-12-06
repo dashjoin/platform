@@ -2,7 +2,7 @@ package org.dashjoin.service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
@@ -26,6 +25,7 @@ import com.arangodb.ArangoCursor;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
 import com.arangodb.entity.CollectionType;
+import com.arangodb.model.CollectionSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -95,6 +95,7 @@ public class ArangoDB extends AbstractDatabase {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
 
     arangoDB = new com.arangodb.ArangoDB.Builder().host(hostname, port).user(username)
@@ -121,37 +122,67 @@ public class ArangoDB extends AbstractDatabase {
       MdTable prj = new MdTable(c.getName());
       prj.pk = new Key();
       prj.pk.col.add("_id");
-      for (Map<String, Object> sample : query("for t in " + c.getName() + " limit 1 return t")) {
-        for (Entry<String, Object> e : sample.entrySet()) {
+
+      // need extra call since schema is not part of CollectionEntity
+      CollectionSchema sc = con().collection(c.getName()).getProperties().getSchema();
+
+      if (sc != null && sc.getRule() != null) {
+        Map<String, Map<String, Object>> schema =
+            objectMapper.readValue(sc.getRule(), JSONDatabase.trr);
+        Map<String, Object> properties = schema.get("properties");
+        Column id = new Column();
+        id.name = "_id";
+        id.readOnly = true;
+        id.typeName = "VARCHAR";
+        prj.columns.add(id);
+        for (Entry<String, Object> e : properties.entrySet()) {
+          String type = (String) ((Map<String, Object>) e.getValue()).get("type");
           Column col = new Column();
           col.name = e.getKey();
-          if (col.name.equals("_id"))
-            col.readOnly = true;
-          if (e.getValue() instanceof Integer)
+          if (schema.get("required") != null)
+            id.readOnly = ((List<String>) schema.get("required")).contains(col.name);
+          if (type.equals("integer"))
             col.typeName = "INTEGER";
-          else if (e.getValue() instanceof Long)
-            col.typeName = "INTEGER";
-          else if (e.getValue() instanceof Double)
+          else if (type.equals("number"))
             col.typeName = "DOUBLE";
-          else if (e.getValue() instanceof Boolean)
+          else if (type.equals("boolean"))
             col.typeName = "BIT";
           else
-            // TODO: other types
             col.typeName = "VARCHAR";
           prj.columns.add(col);
         }
+      } else
+        for (Map<String, Object> sample : query("for t in " + c.getName() + " limit 1 return t")) {
+          for (Entry<String, Object> e : sample.entrySet()) {
+            Column col = new Column();
+            col.name = e.getKey();
+            if (col.name.equals("_id"))
+              col.readOnly = true;
+            if (e.getValue() instanceof Integer)
+              col.typeName = "INTEGER";
+            else if (e.getValue() instanceof Long)
+              col.typeName = "INTEGER";
+            else if (e.getValue() instanceof Double)
+              col.typeName = "DOUBLE";
+            else if (e.getValue() instanceof Boolean)
+              col.typeName = "BIT";
+            else
+              // TODO: other types
+              col.typeName = "VARCHAR";
+            prj.columns.add(col);
+          }
 
-        if (c.getType().equals(CollectionType.EDGES)) {
-          Key from = new Key();
-          from.col.add("_from");
-          Key to = new Key();
-          to.col.add("_to");
-          prj.fks.put(sample.get("_from").toString().split("/")[0], from);
-          prj.fks.put(sample.get("_to").toString().split("/")[0], to);
+          if (c.getType().equals(CollectionType.EDGES)) {
+            Key from = new Key();
+            from.col.add("_from");
+            Key to = new Key();
+            to.col.add("_to");
+            prj.fks.put(sample.get("_from").toString().split("/")[0], from);
+            prj.fks.put(sample.get("_to").toString().split("/")[0], to);
+          }
+
+          break;
         }
-
-        break;
-      }
       meta.tables.put(c.getName(), prj);
     }
     return meta.getTables(ID);
@@ -160,10 +191,6 @@ public class ArangoDB extends AbstractDatabase {
   @Override
   public void close() {
     arangoDB.shutdown();
-  }
-
-  public Collection<String> getClasses() throws Exception {
-    throw new NotImplementedException();
   }
 
   @Override
@@ -221,7 +248,8 @@ public class ArangoDB extends AbstractDatabase {
 
   @Override
   public List<String> getTablesInQuery(String query) throws Exception {
-    throw new NotImplementedException();
+    ArangoDBQuery q = new ArangoDBQuery(query);
+    return Arrays.asList(q.collection);
   }
 
   @Override
@@ -295,6 +323,6 @@ public class ArangoDB extends AbstractDatabase {
 
   @Override
   public SchemaChange getSchemaChange() {
-    throw new NotImplementedException();
+    return new ArangoDBSchemaSchange(this);
   }
 }

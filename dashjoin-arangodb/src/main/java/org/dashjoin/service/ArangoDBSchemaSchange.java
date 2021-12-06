@@ -1,0 +1,78 @@
+package org.dashjoin.service;
+
+import java.util.Map;
+import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.MapUtil;
+import com.arangodb.ArangoCollection;
+import com.arangodb.model.CollectionCreateOptions;
+import com.arangodb.model.CollectionPropertiesOptions;
+import com.arangodb.model.CollectionSchema;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class ArangoDBSchemaSchange implements SchemaChange {
+
+  private static final ObjectMapper objectMapper = new ObjectMapper();
+
+  ArangoDB db;
+
+  public ArangoDBSchemaSchange(ArangoDB db) {
+    this.db = db;
+  }
+
+  @Override
+  public void createTable(String table, String keyName, String keyType) throws Exception {
+    if (keyName == null) {
+      CollectionCreateOptions opts = new CollectionCreateOptions();
+      CollectionSchema schema = new CollectionSchema();
+      schema.setRule("{ \"properties\": { \"name\": { \"type\": \"string\" } } }");
+      opts.schema(schema);
+      db.con().createCollection(table, opts);
+    } else {
+      if (!keyName.equals("_id"))
+        throw new Exception("Primary key must be called _id");
+      db.con().createCollection(table, null);
+    }
+  }
+
+  @Override
+  public void dropTable(String table) throws Exception {
+    db.con().collection(table).drop();
+  }
+
+  @Override
+  public void renameTable(String table, String newName) throws Exception {
+    db.con().collection(table).rename(newName);
+  }
+
+  @Override
+  public void createColumn(String table, String columnName, String columnType) throws Exception {
+    ArangoCollection collection = db.con().collection(table);
+    Map<String, Map<String, Object>> schema =
+        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    schema.get("properties").put(columnName, MapUtil.of("type", columnType));
+
+    CollectionPropertiesOptions opts = new CollectionPropertiesOptions();
+    CollectionSchema rule = new CollectionSchema();
+    rule.setRule(objectMapper.writeValueAsString(schema));
+    opts.schema(rule);
+    collection.changeProperties(opts);
+  }
+
+  @Override
+  public void renameColumn(String table, String column, String newName) throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void alterColumn(String table, String column, String newType) throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void dropColumn(String table, String column) throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+}
