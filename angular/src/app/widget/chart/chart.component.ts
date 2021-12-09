@@ -129,7 +129,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       for (const label of labels) {
         d.push(v[label]);
       }
-      this.all.push({ data: d, label: k });
+      this.all.push({ data: d, label: k, stack: 'a' });
     }
   }
 
