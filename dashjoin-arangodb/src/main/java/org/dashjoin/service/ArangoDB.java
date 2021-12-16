@@ -19,6 +19,8 @@ import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.OpenCypherQuery.Path;
+import org.dashjoin.util.OpenCypherQuery.Step;
 import org.dashjoin.util.Template;
 import com.arangodb.ArangoCollection;
 import com.arangodb.ArangoCursor;
@@ -232,19 +234,40 @@ public class ArangoDB extends AbstractDatabase {
   /**
    * recursively explores the query result and adds _dj_table key (db/arango/col) where _id: col/123
    * is found
+   * 
+   * path return structures are converted from {edges, vertices} to the Path(start, steps) pattern
    */
+  @SuppressWarnings("unchecked")
   void addTable(Object res) {
     if (res instanceof List)
       for (Object item : (List<?>) res)
         addTable(item);
     if (res instanceof Map) {
-      @SuppressWarnings("unchecked")
       Map<String, Object> map = (Map<String, Object>) res;
       String _id = (String) map.get("_id");
       if (_id != null)
         map.put("_dj_table", ID + "/" + _id.split("/")[0]);
       for (Entry<?, ?> e : map.entrySet())
         addTable(e.getValue());
+
+      Object edges = map.get("edges");
+      Object vertices = map.get("vertices");
+      if (edges instanceof List && vertices instanceof List) {
+        List<Map<String, Object>> e = (List<Map<String, Object>>) edges;
+        List<Map<String, Object>> v = (List<Map<String, Object>>) vertices;
+        map.remove("edges");
+        map.remove("vertices");
+        Path path = new Path();
+        path.start = v.remove(0);
+        for (int i = 0; i < v.size(); i++) {
+          Step step = new Step();
+          step.edge = e.get(i);
+          step.end = v.get(i);
+          path.steps.add(step);
+        }
+        map.put("start", path.start);
+        map.put("steps", path.steps);
+      }
     }
   }
 

@@ -237,3 +237,14 @@ Authorization: Basic admin:dj
     "expression": "$query(\"northwind\", \"list\", {\"limit\": $}).$call(\"echo\", {\"res\": $.\"CATEGORIES.DESCRIPTION\", \"log\": $.\"CATEGORIES.CATEGORY_NAME\"})",
     "data": 3
 }
+
+### list
+POST http://localhost:8080/rest/database/queryGraph/*/cypher HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:djdjdj
+
+### list
+POST http://localhost:8080/rest/database/queryGraph/arango/graph HTTP/1.1
+content-type: application/json
+Authorization: Basic admin:djdjdj
+

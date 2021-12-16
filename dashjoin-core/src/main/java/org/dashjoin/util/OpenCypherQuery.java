@@ -23,7 +23,9 @@ import org.dashjoin.util.cypher.CypherListener;
 import org.dashjoin.util.cypher.CypherParser;
 import org.dashjoin.util.cypher.CypherParser.OC_PatternElementChainContext;
 import org.dashjoin.util.cypher.CypherParser.OC_PatternElementContext;
+import org.dashjoin.util.cypher.CypherParser.OC_PatternPartContext;
 import org.dashjoin.util.cypher.CypherParser.OC_ReturnContext;
+import org.dashjoin.util.cypher.CypherParser.OC_VariableContext;
 
 /**
  * Represents an OpenCypher query, where a small subset of the language is supported.
@@ -176,6 +178,43 @@ public class OpenCypherQuery {
   }
 
   /**
+   * represents a path which is the result of a graph traversal
+   */
+  public static class Path {
+
+    /**
+     * starting record
+     */
+    public Map<String, Object> start;
+
+    /**
+     * list of steps leading to the destination
+     */
+    public List<Step> steps = new ArrayList<>();
+  }
+
+  /**
+   * step in a path
+   */
+  public static class Step {
+
+    /**
+     * after taking the step, we arrive at this record
+     */
+    public Map<String, Object> end;
+
+    /**
+     * we take the step across this edge
+     */
+    public Map<String, Object> edge;
+  }
+
+  /**
+   * name of the path variable: MATCH path=(...
+   */
+  public String pathVariable;
+
+  /**
    * initial context to match
    */
   public Table context;
@@ -214,6 +253,12 @@ public class OpenCypherQuery {
     CypherListener listener = new CypherBaseListener() {
 
       @Override
+      public void exitOC_PatternPart(OC_PatternPartContext ctx) {
+        if (ctx.getChild(0) instanceof OC_VariableContext)
+          pathVariable = ctx.getChild(0).getText();
+      }
+
+      @Override
       public void exitOC_PatternElement(OC_PatternElementContext ctx) {
         String s = ctx.getChild(0).getText().trim();
         context = new Table(s, false);
@@ -244,9 +289,19 @@ public class OpenCypherQuery {
     walker.walk(listener, tree);
   }
 
+  /**
+   * helper used to debug / visualize the parse tree
+   */
+  void print(ParseTree tree, String indent) {
+    System.out.println(indent + tree.getClass().toString()
+        .substring("class org.dashjoin.util.cypher.CypherParser$".length()) + " " + tree.getText());
+    for (int i = 0; i < tree.getChildCount(); i++)
+      print(tree.getChild(i), indent + "  ");
+  }
+
   @Override
   public String toString() {
-    String s = "MATCH " + context;
+    String s = "MATCH " + (pathVariable == null ? "" : pathVariable + "=") + context;
 
     for (Chain c : links)
       s = s + c;
@@ -269,21 +324,34 @@ public class OpenCypherQuery {
       Map<String, Object> vars = new LinkedHashMap<>();
       vars.put(context.variable, row);
 
+      Path path = new Path();
+      path.start = row;
+
       for (Chain link : links) {
+        Map<String, Object> edge =
+            MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
+        vars.put(link.edge.variable, edge);
         Object dest = data.traverse(sc, table[1], table[2],
             /* TODO lookup pk col */row.get("EMPLOYEE_ID") + "", link.edge.name);
         vars.put(link.table.variable, dest);
+        Step step = new Step();
+        step.edge = edge;
+        step.end = (Map<String, Object>) dest;
+        path.steps.add(step);
       }
 
       Map<String, Object> projected = new LinkedHashMap<>();
       for (List<String> var : ret) {
         Object current = vars;
-        for (String path : var) {
+        for (String p : var) {
           if (current != null)
-            current = ((Map<String, Object>) current).get(path);
+            current = ((Map<String, Object>) current).get(p);
         }
         projected.put(String.join(".", var), current);
       }
+
+      if (pathVariable != null)
+        projected.put(pathVariable, path);
 
       res.add(projected);
     }
