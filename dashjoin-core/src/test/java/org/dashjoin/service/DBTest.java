@@ -109,7 +109,7 @@ public class DBTest {
     Resource r = (Resource) ((Map<?, ?>) res.get(0).get("x")).get("_dj_resource");
     Assert.assertEquals("junit", r.database);
     Assert.assertEquals("EMP", r.table);
-    Assert.assertEquals(1, r.pk.get(0));
+    Assert.assertEquals("1", "" + r.pk.get(0));
   }
 
   @Test

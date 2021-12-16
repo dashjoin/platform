@@ -248,7 +248,7 @@ public class ArangoDB extends AbstractDatabase {
       String _id = (String) map.get("_id");
       if (_id != null)
         map.put("_dj_resource",
-            Resource.of(ID, _id.split("/")[0], _id.substring(_id.split("/")[0].length() + 1)));
+            Resource.of(name, _id.split("/")[0], _id.substring(_id.split("/")[0].length() + 1)));
       for (Entry<?, ?> e : map.entrySet())
         addTable(e.getValue());
 
