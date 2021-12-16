@@ -15,6 +15,7 @@ import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
@@ -232,8 +233,8 @@ public class ArangoDB extends AbstractDatabase {
   }
 
   /**
-   * recursively explores the query result and adds _dj_table key (db/arango/col) where _id: col/123
-   * is found
+   * recursively explores the query result and adds _dj_resource key (db/arango/col/123) where _id:
+   * col/123 is found
    * 
    * path return structures are converted from {edges, vertices} to the Path(start, steps) pattern
    */
@@ -246,7 +247,8 @@ public class ArangoDB extends AbstractDatabase {
       Map<String, Object> map = (Map<String, Object>) res;
       String _id = (String) map.get("_id");
       if (_id != null)
-        map.put("_dj_table", ID + "/" + _id.split("/")[0]);
+        map.put("_dj_resource",
+            Resource.of(ID, _id.split("/")[0], _id.substring(_id.split("/")[0].length() + 1)));
       for (Entry<?, ?> e : map.entrySet())
         addTable(e.getValue());
 

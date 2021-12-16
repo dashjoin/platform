@@ -106,7 +106,10 @@ public class DBTest {
     List<Map<String, Object>> res = db.queryGraph(sc, "junit", "graph", null);
     Assert.assertEquals(2, res.size());
     Assert.assertEquals(toID(1), ((Map<?, ?>) res.get(0).get("x")).get(idRead()));
-    Assert.assertEquals("dj/junit/EMP", ((Map<?, ?>) res.get(0).get("x")).get("_dj_table"));
+    Resource r = (Resource) ((Map<?, ?>) res.get(0).get("x")).get("_dj_resource");
+    Assert.assertEquals("junit", r.database);
+    Assert.assertEquals("EMP", r.table);
+    Assert.assertEquals(1, r.pk.get(0));
   }
 
   @Test

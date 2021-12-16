@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,11 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.Property;
 import org.dashjoin.service.Data;
+import org.dashjoin.service.Data.Resource;
+import org.dashjoin.service.Services;
 import org.dashjoin.util.cypher.CypherBaseListener;
 import org.dashjoin.util.cypher.CypherLexer;
 import org.dashjoin.util.cypher.CypherListener;
@@ -313,14 +318,29 @@ public class OpenCypherQuery {
   }
 
   @SuppressWarnings("unchecked")
-  public List<Map<String, Object>> run(Data data, SecurityContext sc, Map<String, Object> arguments)
-      throws Exception {
+  public List<Map<String, Object>> run(Services service, Data data, SecurityContext sc,
+      Map<String, Object> arguments) throws Exception {
+    Map<String, AbstractDatabase> cache = new HashMap<>();
     List<Map<String, Object>> res = new ArrayList<>();
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
         arguments)) {
 
-      row.put("_dj_table", context.name);
+      String[] parts = Escape.parseTableID(context.name);
+      AbstractDatabase db = cache.get(parts[1]);
+      if (db == null) {
+        db = service.getConfig().getDatabase(parts[0] + '/' + parts[1]);
+        cache.put(parts[1], db);
+      }
+      List<Object> keys = new ArrayList<>();
+      for (Property prop : db.tables.get(parts[2]).properties.values()) {
+        if (prop.pkpos != null) {
+          while (keys.size() <= prop.pkpos)
+            keys.add(null);
+          keys.set(prop.pkpos, row.get(prop.name));
+        }
+      }
+      row.put("_dj_resource", Resource.of(parts[1], parts[2], keys));
       Map<String, Object> vars = new LinkedHashMap<>();
       vars.put(context.variable, row);
 

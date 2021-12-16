@@ -202,8 +202,8 @@ public class Data {
    * arguments, runs the query and returns the result
    * 
    * The result has a tabular structure. If resources are returned (e.g. via a query MATCH (p:EMP)
-   * return p), then the column p contains a JSON object which must include a _dj_table field
-   * pointing to the table ID
+   * return p), then the column p contains a JSON object which must include a _dj_resource field
+   * pointing to dj/db/table/pk
    */
   @POST
   @Path("/queryGraph/{database}/{queryId}")
@@ -234,7 +234,7 @@ public class Data {
     // database * means: run query across all DBs using the opencypher engine
     if (database.equals("*")) {
       OpenCypherQuery q = new OpenCypherQuery(info.query);
-      return q.run(this, sc, arguments);
+      return q.run(services, this, sc, arguments);
     } else {
       // delegate to DB
       Database db = services.getConfig().getDatabase(dj(database));
@@ -243,7 +243,7 @@ public class Data {
         // null means that the delegate DB does not support graph queries - default to internal
         // engine (like with database='*')
         OpenCypherQuery q = new OpenCypherQuery(info.query);
-        return q.run(this, sc, arguments);
+        return q.run(services, this, sc, arguments);
       }
       return res;
     }
@@ -652,11 +652,15 @@ public class Data {
       return res;
     }
 
+    @SuppressWarnings("unchecked")
     public static Resource of(String d, String s, Object pk) {
       Resource res = new Resource();
       res.database = d;
       res.table = s;
-      res.pk = Arrays.asList(pk);
+      if (pk instanceof List)
+        res.pk = (List<Object>) pk;
+      else
+        res.pk = Arrays.asList(pk);
       return res;
     }
   }
