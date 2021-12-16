@@ -438,6 +438,8 @@ public class Data {
     if (p != null && p.ref != null) {
       // fk is an outgoing fk
       String[] parts = m.properties.get(fk).ref.split("/");
+      if (o.get(fk) == null)
+        return null;
       return read(sc, parts[1], parts[2], "" + o.get(fk));
     } else {
       String[] parts = fk.split("/");
