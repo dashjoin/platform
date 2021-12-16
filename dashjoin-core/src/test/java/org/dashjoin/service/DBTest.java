@@ -100,6 +100,16 @@ public class DBTest {
   }
 
   @Test
+  public void testGraph() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    List<Map<String, Object>> res = db.queryGraph(sc, "junit", "graph", null);
+    Assert.assertEquals(2, res.size());
+    Assert.assertEquals(toID(1), ((Map<?, ?>) res.get(0).get("x")).get(idRead()));
+    Assert.assertEquals("dj/junit/EMP", ((Map<?, ?>) res.get(0).get("x")).get("_dj_table"));
+  }
+
+  @Test
   public void testSearch() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);

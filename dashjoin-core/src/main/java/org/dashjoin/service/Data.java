@@ -34,6 +34,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
+import org.dashjoin.util.OpenCypherQuery;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -196,6 +197,57 @@ public class Data {
     return projected;
   }
 
+  /**
+   * looks up the query with the given ID in the catalog, finds the right database, inserts the
+   * arguments, runs the query and returns the result
+   * 
+   * The result has a tabular structure. If resources are returned (e.g. via a query MATCH (p:EMP)
+   * return p), then the column p contains a JSON object which must include a _dj_table field
+   * pointing to the table ID
+   */
+  @POST
+  @Path("/queryGraph/{database}/{queryId}")
+  @Operation(
+      summary = "looks up the query with the given ID in the catalog, finds the right database, inserts the arguments, runs the query and returns the result")
+  @APIResponse(description = "Tabular query result (list of JSON objects)")
+  public List<Map<String, Object>> queryGraph(@Context SecurityContext sc,
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database,
+      @PathParam("queryId") String queryId, Map<String, Object> arguments) throws Exception {
+    return queryGraphInternal(sc, database, queryId, arguments, false);
+  }
+
+  /**
+   * callable from JSONata (adding readOnly flag to make sure we do not run update queries in
+   * preview)
+   */
+  public List<Map<String, Object>> queryGraphInternal(SecurityContext sc, String database,
+      String queryId, Map<String, Object> arguments, boolean readOnly) throws Exception {
+    if (arguments == null)
+      arguments = new HashMap<>();
+    QueryMeta info = services.getConfig().getQueryMeta(queryId);
+    if (info == null)
+      throw new Exception("Query " + queryId + " not found");
+
+    ACLContainerRequestFilter.check(sc, info);
+
+    // database * means: run query across all DBs using the opencypher engine
+    if (database.equals("*")) {
+      OpenCypherQuery q = new OpenCypherQuery(info.query);
+      return q.run(this, sc, arguments);
+    } else {
+      // delegate to DB
+      Database db = services.getConfig().getDatabase(dj(database));
+      List<Map<String, Object>> res = db.queryGraph(info, arguments);
+      if (res == null) {
+        // null means that the delegate DB does not support graph queries - default to internal
+        // engine (like with database='*')
+        OpenCypherQuery q = new OpenCypherQuery(info.query);
+        return q.run(this, sc, arguments);
+      }
+      return res;
+    }
+  }
 
   /**
    * looks up the query with the given ID in the catalog, finds the right database, inserts the

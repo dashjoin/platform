@@ -30,6 +30,14 @@ public interface Database {
       throws Exception;
 
   /**
+   * runs that query defined in info using the arguments. Returns the query result
+   */
+  default public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments)
+      throws Exception {
+    return null;
+  }
+
+  /**
    * returns the column metadata for the query
    */
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)

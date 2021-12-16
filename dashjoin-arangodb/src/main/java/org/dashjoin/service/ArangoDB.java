@@ -221,6 +221,34 @@ public class ArangoDB extends AbstractDatabase {
   }
 
   @Override
+  public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments)
+      throws Exception {
+    String s = "" + Template.replace(info.query, Template.quoteStrings(arguments));
+    List<Map<String, Object>> res = query(s);
+    addTable(res);
+    return res;
+  }
+
+  /**
+   * recursively explores the query result and adds _dj_table key (db/arango/col) where _id: col/123
+   * is found
+   */
+  void addTable(Object res) {
+    if (res instanceof List)
+      for (Object item : (List<?>) res)
+        addTable(item);
+    if (res instanceof Map) {
+      @SuppressWarnings("unchecked")
+      Map<String, Object> map = (Map<String, Object>) res;
+      String _id = (String) map.get("_id");
+      if (_id != null)
+        map.put("_dj_table", ID + "/" + _id.split("/")[0]);
+      for (Entry<?, ?> e : map.entrySet())
+        addTable(e.getValue());
+    }
+  }
+
+  @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
     ArangoDBQuery q =

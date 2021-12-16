@@ -1,0 +1,6 @@
+{
+	"ID": "graph",
+	"query": "FOR x IN EMP RETURN {x:x}",
+	"type": "read",
+	"roles": ["user"]
+}
