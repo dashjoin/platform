@@ -344,8 +344,9 @@ public class OpenCypherQuery {
       Map<String, Object> vars = new LinkedHashMap<>();
       vars.put(context.variable, row);
 
-      Path path = new Path();
-      path.start = row;
+      Map<String, Object> path = MapUtil.of("start", row, "steps", new ArrayList<>());
+      if (pathVariable != null)
+        vars.put(pathVariable, path);
 
       for (Chain link : links) {
         Map<String, Object> edge =
@@ -354,10 +355,7 @@ public class OpenCypherQuery {
         Object dest = data.traverse(sc, table[1], table[2],
             /* TODO lookup pk col */row.get("EMPLOYEE_ID") + "", link.edge.name);
         vars.put(link.table.variable, dest);
-        Step step = new Step();
-        step.edge = edge;
-        step.end = (Map<String, Object>) dest;
-        path.steps.add(step);
+        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", dest));
       }
 
       Map<String, Object> projected = new LinkedHashMap<>();
@@ -369,9 +367,6 @@ public class OpenCypherQuery {
         }
         projected.put(String.join(".", var), current);
       }
-
-      if (pathVariable != null)
-        projected.put(pathVariable, path);
 
       res.add(projected);
     }
