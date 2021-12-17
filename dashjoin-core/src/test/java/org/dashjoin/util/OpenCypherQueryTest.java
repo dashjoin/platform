@@ -106,7 +106,7 @@ public class OpenCypherQueryTest {
   @Test
   public void testTraverse() throws Exception {
     List<Map<String, Object>> res =
-        run("MATCH (p:`dj/junit/EMP`)-[e:WORKSON]->(project:`dj/junit/PRJ`) RETURN p, e, project");
+        run("MATCH (p:`dj/junit/EMP`)-[e:WORKSON]->(project) RETURN p, e, project");
     Assert.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("e"));
     Assert.assertEquals(
         "{ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
@@ -116,7 +116,7 @@ public class OpenCypherQueryTest {
   @Test
   public void testPath() throws Exception {
     List<Map<String, Object>> res =
-        run("MATCH path=(p:`dj/junit/EMP`)-[e:WORKSON]->(project:`dj/junit/PRJ`) RETURN path");
+        run("MATCH path=(p:`dj/junit/EMP`)-[e:WORKSON]->(project) RETURN path");
     @SuppressWarnings("unchecked")
     Map<String, Object> x = (Map<String, Object>) res.get(0).get("path");
     Assert.assertEquals(
@@ -129,8 +129,8 @@ public class OpenCypherQueryTest {
 
   @Test
   public void testPathIn() throws Exception {
-    List<Map<String, Object>> res = run(
-        "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp:`dj/junit/EMP`) RETURN emp.NAME");
+    List<Map<String, Object>> res =
+        run("MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp) RETURN emp.NAME");
     Assert.assertEquals("[{emp.NAME=mike}, {emp.NAME=joe}]", "" + res);
   }
 }

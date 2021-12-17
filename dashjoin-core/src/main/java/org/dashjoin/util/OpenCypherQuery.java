@@ -373,12 +373,19 @@ public class OpenCypherQuery {
       if (row == null)
         return;
       List<Map<String, Object>> incRes;
-      if (link.left2right)
+      if (link.left2right) {
+        if (ctx.name == null) {
+          ctx.name = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
+          ctx.name = ctx.name.substring(0, ctx.name.lastIndexOf('/'));
+        }
         incRes = Arrays.asList((Map<String, Object>) data.traverse(sc, table[1], table[2],
             "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name));
-      else {
+      } else {
         incRes = (List<Map<String, Object>>) data.traverse(sc, table[1], table[2],
             "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
+        if (ctx.name == null) {
+          ctx.name = link.edge.name.substring(0, link.edge.name.lastIndexOf('/'));
+        }
       }
       for (Map<String, Object> i : incRes) {
         row = i;
