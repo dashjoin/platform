@@ -60,6 +60,17 @@ public class OpenCypherQueryTest {
     edge("[a:`b/c` *3..5]");
   }
 
+  @Test
+  public void testProject() throws Exception {
+    OpenCypherQuery q = new OpenCypherQuery("MATCH (a:B) RETURN a, a.b, a.b.c");
+    Assert.assertEquals("{a=null, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of()));
+    Assert.assertEquals("{a=1, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of("a", 1)));
+    Assert.assertEquals("{a={b=1}, a.b=1, a.b.c=null}",
+        "" + q.project(MapUtil.of("a", MapUtil.of("b", 1))));
+    Assert.assertEquals("{a={b={c=1}}, a.b={c=1}, a.b.c=1}",
+        "" + q.project(MapUtil.of("a", MapUtil.of("b", MapUtil.of("c", 1)))));
+  }
+
   void table(String s) {
     Table t = new Table(s, false);
     Assert.assertEquals(s, t.toString());
@@ -104,7 +115,6 @@ public class OpenCypherQueryTest {
   public void testPath() throws Exception {
     List<Map<String, Object>> res =
         run("MATCH path=(p:`dj/junit/EMP`)-[e:WORKSON]->(project) RETURN path");
-    System.out.println(res);
     @SuppressWarnings("unchecked")
     Map<String, Object> x = (Map<String, Object>) res.get(0).get("path");
     Assert.assertEquals(
@@ -113,5 +123,11 @@ public class OpenCypherQueryTest {
     Assert.assertEquals(
         "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project}}]",
         "" + x.get("steps"));
+  }
+
+  public void testPathIn() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (prj:`dj/junit/PRJ`)-[wo:`dj/junit/EMP/WORKSON`]->(emp) RETURN prj");
+    System.out.println(res);
   }
 }

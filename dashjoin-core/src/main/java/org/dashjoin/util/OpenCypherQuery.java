@@ -317,30 +317,23 @@ public class OpenCypherQuery {
     return s + " RETURN " + String.join(", ", projections);
   }
 
+  Map<String, AbstractDatabase> dbs = new HashMap<>();
+
   @SuppressWarnings("unchecked")
   public List<Map<String, Object>> run(Services service, Data data, SecurityContext sc,
       Map<String, Object> arguments) throws Exception {
-    Map<String, AbstractDatabase> cache = new HashMap<>();
+
+    for (AbstractDatabase db : service.getConfig().getDatabases())
+      dbs.put(db.name, db);
+
     List<Map<String, Object>> res = new ArrayList<>();
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
         arguments)) {
 
       String[] parts = Escape.parseTableID(context.name);
-      AbstractDatabase db = cache.get(parts[1]);
-      if (db == null) {
-        db = service.getConfig().getDatabase(parts[0] + '/' + parts[1]);
-        cache.put(parts[1], db);
-      }
-      List<Object> keys = new ArrayList<>();
-      for (Property prop : db.tables.get(parts[2]).properties.values()) {
-        if (prop.pkpos != null) {
-          while (keys.size() <= prop.pkpos)
-            keys.add(null);
-          keys.set(prop.pkpos, row.get(prop.name));
-        }
-      }
-      row.put("_dj_resource", Resource.of(parts[1], parts[2], keys));
+      addResource(parts[1], parts[2], row);
+
       Map<String, Object> vars = new LinkedHashMap<>();
       vars.put(context.variable, row);
 
@@ -353,7 +346,7 @@ public class OpenCypherQuery {
             MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
         vars.put(link.edge.variable, edge);
         String pk = null;
-        for (Property p : db.tables.get(table[2]).properties.values())
+        for (Property p : dbs.get(table[1]).tables.get(table[2]).properties.values())
           if (p.pkpos != null)
             pk = p.name;
         if (row != null)
@@ -363,18 +356,42 @@ public class OpenCypherQuery {
         ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
       }
 
-      Map<String, Object> projected = new LinkedHashMap<>();
-      for (List<String> var : ret) {
-        Object current = vars;
-        for (String p : var) {
-          if (current != null)
-            current = ((Map<String, Object>) current).get(p);
-        }
-        projected.put(String.join(".", var), current);
-      }
-
-      res.add(projected);
+      res.add(project(vars));
     }
     return res;
+  }
+
+  /**
+   * given a variable binding map, evaluates the "ret" projection
+   */
+  @SuppressWarnings("unchecked")
+  Map<String, Object> project(Map<String, Object> vars) {
+    Map<String, Object> projected = new LinkedHashMap<>();
+    for (List<String> var : ret) {
+      Object current = vars;
+      for (String p : var) {
+        if (current instanceof Map)
+          current = ((Map<String, Object>) current).get(p);
+        else
+          current = null;
+      }
+      projected.put(String.join(".", var), current);
+    }
+    return projected;
+  }
+
+  /**
+   * adds the resource object to the current object
+   */
+  void addResource(String database, String table, Map<String, Object> object) {
+    List<Object> keys = new ArrayList<>();
+    for (Property prop : dbs.get(database).tables.get(table).properties.values()) {
+      if (prop.pkpos != null) {
+        while (keys.size() <= prop.pkpos)
+          keys.add(null);
+        keys.set(prop.pkpos, object.get(prop.name));
+      }
+    }
+    object.put("_dj_resource", Resource.of(database, table, keys));
   }
 }
