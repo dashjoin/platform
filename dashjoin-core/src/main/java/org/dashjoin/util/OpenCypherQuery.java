@@ -317,43 +317,67 @@ public class OpenCypherQuery {
     return s + " RETURN " + String.join(", ", projections);
   }
 
+  /**
+   * db cache
+   */
   Map<String, AbstractDatabase> dbs = new HashMap<>();
 
-  @SuppressWarnings("unchecked")
+  /**
+   * query result
+   */
+  List<Map<String, Object>> res = new ArrayList<>();
+
   public List<Map<String, Object>> run(Services service, Data data, SecurityContext sc,
       Map<String, Object> arguments) throws Exception {
 
+    // fill db cache
     for (AbstractDatabase db : service.getConfig().getDatabases())
       dbs.put(db.name, db);
 
-    List<Map<String, Object>> res = new ArrayList<>();
+    // compute starting context nodes
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
         arguments)) {
 
-      addResource(table[1], table[2], row);
-
+      // initialize variable bindings
       Map<String, Object> vars = new LinkedHashMap<>();
-      vars.put(context.variable, row);
 
+      // initialize path variable
       Map<String, Object> path = MapUtil.of("start", row, "steps", new ArrayList<>());
       if (pathVariable != null)
         vars.put(pathVariable, path);
 
-      for (Chain link : links) {
-        Map<String, Object> edge =
-            MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
-        vars.put(link.edge.variable, edge);
-        if (row != null)
-          row = (Map<String, Object>) data.traverse(sc, table[1], table[2],
-              "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
-        vars.put(link.table.variable, row);
-        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
-      }
-
-      res.add(project(vars));
+      step(service, data, sc, context, vars, path, row, 0);
     }
     return res;
+  }
+
+  @SuppressWarnings("unchecked")
+  void step(Services service, Data data, SecurityContext sc, Table ctx, Map<String, Object> vars,
+      Map<String, Object> path, Map<String, Object> row, int linkIndex) throws Exception {
+
+    // parse context metadata
+    String[] table = Escape.parseTableID(ctx.name);
+    addResource(table[1], table[2], row);
+    vars.put(ctx.variable, row);
+
+    if (linkIndex == links.size())
+      // solution found
+      res.add(project(vars));
+    else {
+      Chain link = links.get(linkIndex);
+      ctx = link.table;
+      Map<String, Object> edge =
+          MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
+      vars.put(link.edge.variable, edge);
+      if (row == null)
+        return;
+      row = (Map<String, Object>) data.traverse(sc, table[1], table[2],
+          "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
+      vars.put(link.table.variable, row);
+      ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
+      step(service, data, sc, ctx, vars, path, row, linkIndex + 1);
+    }
   }
 
   /**
