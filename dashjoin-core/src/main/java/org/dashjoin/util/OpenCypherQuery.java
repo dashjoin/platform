@@ -331,8 +331,7 @@ public class OpenCypherQuery {
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
         arguments)) {
 
-      String[] parts = Escape.parseTableID(context.name);
-      addResource(parts[1], parts[2], row);
+      addResource(table[1], table[2], row);
 
       Map<String, Object> vars = new LinkedHashMap<>();
       vars.put(context.variable, row);
@@ -345,13 +344,9 @@ public class OpenCypherQuery {
         Map<String, Object> edge =
             MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
         vars.put(link.edge.variable, edge);
-        String pk = null;
-        for (Property p : dbs.get(table[1]).tables.get(table[2]).properties.values())
-          if (p.pkpos != null)
-            pk = p.name;
         if (row != null)
-          row = (Map<String, Object>) data.traverse(sc, table[1], table[2], "" + row.get(pk),
-              link.edge.name);
+          row = (Map<String, Object>) data.traverse(sc, table[1], table[2],
+              "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
         vars.put(link.table.variable, row);
         ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
       }
@@ -393,5 +388,15 @@ public class OpenCypherQuery {
       }
     }
     object.put("_dj_resource", Resource.of(database, table, keys));
+  }
+
+  /**
+   * get the property name with pkpos=0
+   */
+  String pk(AbstractDatabase db, String table) {
+    for (Property p : db.tables.get(table).properties.values())
+      if (p.pkpos != null)
+        return p.name;
+    return null;
   }
 }
