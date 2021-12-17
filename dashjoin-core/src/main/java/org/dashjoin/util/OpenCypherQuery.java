@@ -352,10 +352,15 @@ public class OpenCypherQuery {
         Map<String, Object> edge =
             MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
         vars.put(link.edge.variable, edge);
-        Object dest = data.traverse(sc, table[1], table[2],
-            /* TODO lookup pk col */row.get("EMPLOYEE_ID") + "", link.edge.name);
-        vars.put(link.table.variable, dest);
-        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", dest));
+        String pk = null;
+        for (Property p : db.tables.get(table[2]).properties.values())
+          if (p.pkpos != null)
+            pk = p.name;
+        if (row != null)
+          row = (Map<String, Object>) data.traverse(sc, table[1], table[2], "" + row.get(pk),
+              link.edge.name);
+        vars.put(link.table.variable, row);
+        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
       }
 
       Map<String, Object> projected = new LinkedHashMap<>();
