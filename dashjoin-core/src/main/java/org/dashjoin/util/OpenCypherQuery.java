@@ -372,11 +372,20 @@ public class OpenCypherQuery {
       vars.put(link.edge.variable, edge);
       if (row == null)
         return;
-      row = (Map<String, Object>) data.traverse(sc, table[1], table[2],
-          "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
-      vars.put(link.table.variable, row);
-      ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
-      step(service, data, sc, ctx, vars, path, row, linkIndex + 1);
+      List<Map<String, Object>> incRes;
+      if (link.left2right)
+        incRes = Arrays.asList((Map<String, Object>) data.traverse(sc, table[1], table[2],
+            "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name));
+      else {
+        incRes = (List<Map<String, Object>>) data.traverse(sc, table[1], table[2],
+            "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
+      }
+      for (Map<String, Object> i : incRes) {
+        row = i;
+        vars.put(link.table.variable, row);
+        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
+        step(service, data, sc, ctx, vars, path, row, linkIndex + 1);
+      }
     }
   }
 

@@ -127,9 +127,10 @@ public class OpenCypherQueryTest {
         "" + x.get("steps"));
   }
 
+  @Test
   public void testPathIn() throws Exception {
-    List<Map<String, Object>> res =
-        run("MATCH (prj:`dj/junit/PRJ`)-[wo:`dj/junit/EMP/WORKSON`]->(emp) RETURN prj");
-    System.out.println(res);
+    List<Map<String, Object>> res = run(
+        "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp:`dj/junit/EMP`) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=mike}, {emp.NAME=joe}]", "" + res);
   }
 }
