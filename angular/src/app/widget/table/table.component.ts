@@ -54,4 +54,18 @@ export class TableComponent extends LinksComponent implements OnInit {
       this.errorHandler(e);
     }
   }
+
+  /**
+   * special path json structure
+   */
+  isPath(value: any): boolean {
+    if (value)
+      if (this.typeof(value, 'object'))
+        if (Object.keys(value).length === 2)
+          if (value.start?._dj_resource) {
+            if (Array.isArray(value.steps))
+              return true;
+          }
+    return false;
+  }
 }

@@ -12,9 +12,21 @@
                 </a>
                 <span *ngIf="noLink(queryMeta, column, element)" [matTooltip]="matTooltip(element[column])"
                     (click)="jsonDialog(element[column])">
-                    <a [routerLink]="toRouterLink(element[column])"
-                        *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
-                    <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
+                    <span *ngIf="isPath(element[column]); else nopath_content">
+                        <a
+                            [routerLink]="['/resource', element[column].start._dj_resource.database, element[column].start._dj_resource.table, element[column].start._dj_resource.pk[0]]">{{element[column].start._dj_resource.pk[0]}}</a>
+                        <span *ngFor="let step of element[column].steps">
+                            <span *ngIf="step.edge._dj_outbound"> -{{step.edge._dj_edge}}-&gt; </span>
+                            <span *ngIf="!step.edge._dj_outbound"> &lt;-{{step.edge._dj_edge}}- </span>
+                            <a
+                                [routerLink]="['/resource', step.end._dj_resource.database, step.end._dj_resource.table, step.end._dj_resource.pk[0]]">{{step.end._dj_resource.pk[0]}}</a>
+                        </span>
+                    </span>
+                    <ng-template #nopath_content>
+                        <a [routerLink]="toRouterLink(element[column])"
+                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
+                        <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
+                    </ng-template>
                 </span>
             </td>
         </ng-container>

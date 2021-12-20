@@ -451,6 +451,11 @@ public class OpenCypherQuery {
         }
       }
       for (Struct i : incRes) {
+
+        // omit nulls
+        if (i.i == null)
+          continue;
+
         // check condition
         if (link.table.key != null) {
           String val = link.table.value;
