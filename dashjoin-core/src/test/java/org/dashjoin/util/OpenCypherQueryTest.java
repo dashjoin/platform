@@ -28,6 +28,8 @@ public class OpenCypherQueryTest {
 
   @Test
   public void testAggregate() throws Exception {
+    eq("MATCH (prj:`dj/junit/PRJ`)<-[rel]-(emp) RETURN emp.NAME");
+    eq("MATCH (prj:`dj/junit/EMP`)-[]->(prj) RETURN prj.NAME");
     eq("MATCH p=(tom:Person {name: 'Tom Hanks'})-[directed:DIRECTED]->(movie:Movie) RETURN p");
     eq("MATCH (var:A1_B {key: 'value'}) RETURN var");
     eq("MATCH (var:A1_B) RETURN var");
@@ -177,6 +179,64 @@ public class OpenCypherQueryTest {
   public void testPathInCheckType() throws Exception {
     List<Map<String, Object>> res = run(
         "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp:`dj/junit/PRJ`) RETURN emp.NAME");
+    // no result due to type mismatch
+    Assert.assertEquals(0, res.size());
+  }
+
+
+  // same tests as above but without a specific edge type
+
+
+  @Test
+  public void testTraverse2() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (p:`dj/junit/EMP`)-[e]->(project) RETURN p, e, project");
+    Assert.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("e"));
+    Assert.assertEquals(
+        "{ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
+        "" + res.get(0).get("project"));
+  }
+
+  @Test
+  public void testTraverseCheckType2() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (p:`dj/junit/EMP`)-[e]->(project:`dj/junit/EMP`) RETURN project");
+    // no result due to type mismatch
+    Assert.assertEquals(0, res.size());
+  }
+
+  @Test
+  public void testPath2() throws Exception {
+    List<Map<String, Object>> res = run("MATCH path=(p:`dj/junit/EMP`)-[e]->(project) RETURN path");
+    @SuppressWarnings("unchecked")
+    Map<String, Object> x = (Map<String, Object>) res.get(0).get("path");
+    Assert.assertEquals(
+        "{ID=1, NAME=mike, WORKSON=1000, _dj_resource={database=junit, table=EMP, pk=[1]}}",
+        "" + x.get("start"));
+    Assert.assertEquals(
+        "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}}]",
+        "" + x.get("steps"));
+  }
+
+  @Test
+  public void testPathIn2() throws Exception {
+    List<Map<String, Object>> res = run("MATCH (prj:`dj/junit/PRJ`)<-[wo]-(emp) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=mike}, {emp.NAME=joe}]", "" + res);
+  }
+
+  @Test
+  public void testPathInWhere2() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (prj:`dj/junit/PRJ`)<-[wo]-(emp {NAME:'joe'}) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=joe}]", "" + res);
+    res = run("MATCH (prj:`dj/junit/PRJ`)<-[wo]-(emp {ID:2}) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=joe}]", "" + res);
+  }
+
+  @Test
+  public void testPathInCheckType2() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (prj:`dj/junit/PRJ`)<-[wo]-(emp:`dj/junit/PRJ`) RETURN emp.NAME");
     // no result due to type mismatch
     Assert.assertEquals(0, res.size());
   }

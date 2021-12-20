@@ -20,6 +20,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.service.Data;
+import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Services;
 import org.dashjoin.util.cypher.CypherBaseListener;
@@ -404,28 +405,50 @@ public class OpenCypherQuery {
       ctx = link.table.getVariableName();
       if (row == null)
         return;
-      List<Struct> incRes;
+      List<Struct> incRes = new ArrayList<>();
       if (link.left2right) {
-        String ref = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
-        ref = ref == null ? null : ref.substring(0, ref.lastIndexOf('/'));
-        if (ctx.name == null) {
-          ctx.name = ref;
-        } else if (!ctx.name.equals(ref))
-          // ref type and table type do not match
-          return;
-        incRes = Arrays.asList(new Struct(
-            (Map<String, Object>) data.traverse(sc, table[1], table[2],
-                "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
-            link.edge.name, ctx.name));
+        if (link.edge.name == null) {
+          // outgoing link, no rel type specified, check all properties for "ref"
+          for (Property p : dbs.get(table[1]).tables.get(table[2]).properties.values())
+            if (p.ref != null) {
+              if (!checkContext(ctx, p.ref.substring(0, p.ref.lastIndexOf('/'))))
+                return;
+              incRes
+                  .add(new Struct(
+                      (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                          "" + row.get(pk(dbs.get(table[1]), table[2])), p.name),
+                      p.name, ctx.name));
+            }
+        } else {
+          // outgoing link with prop, do a simple traverse
+          String ref = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
+          ref = ref == null ? null : ref.substring(0, ref.lastIndexOf('/'));
+          if (!checkContext(ctx, ref))
+            return;
+          incRes.add(new Struct(
+              (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                  "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
+              link.edge.name, ctx.name));
+        }
       } else {
-        if (ctx.name == null) {
-          ctx.name = link.edge.name.substring(0, link.edge.name.lastIndexOf('/'));
-        } else if (!ctx.name.equals(link.edge.name.substring(0, link.edge.name.lastIndexOf('/'))))
-          return;
-        incRes = new ArrayList<>();
-        for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
-            table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
-          incRes.add(new Struct(x, link.edge.name, ctx.name));
+        if (link.edge.name == null) {
+          // incoming, no prop specified, call data.incoming
+          for (Origin o : data.incoming(sc, table[1], table[2],
+              "" + row.get(pk(dbs.get(table[1]), table[2])), 0, 100)) {
+            Map<String, Object> lookup =
+                data.read(sc, o.id.database, o.id.table, "" + o.id.pk.get(0));
+            if (!checkContext(ctx, "dj/" + o.id.database + "/" + o.id.table))
+              return;
+            incRes.add(new Struct(lookup, o.fk, ctx.name));
+          }
+        } else {
+          // incoming, prop specified, do a traverse (which might yield several results)
+          if (!checkContext(ctx, link.edge.name.substring(0, link.edge.name.lastIndexOf('/'))))
+            return;
+          for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
+              table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
+            incRes.add(new Struct(x, link.edge.name, ctx.name));
+        }
       }
       for (Struct i : incRes) {
         // check condition
@@ -449,6 +472,15 @@ public class OpenCypherQuery {
         step(service, data, sc, ctx, new LinkedHashMap<>(vars), path, row, linkIndex + 1);
       }
     }
+  }
+
+  boolean checkContext(VariableName ctx, String ref) {
+    if (ctx.name == null)
+      ctx.name = ref;
+    else if (!ctx.name.equals(ref))
+      // ref type and table type do not match
+      return false;
+    return true;
   }
 
   /**
