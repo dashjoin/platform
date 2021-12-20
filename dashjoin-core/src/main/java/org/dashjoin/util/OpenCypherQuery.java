@@ -121,7 +121,7 @@ public class OpenCypherQuery {
         }
       }
       if (!s.contains(":"))
-        variable = s;
+        variable = s.trim();
       else {
         variable = s.split(":")[0].trim();
         name = s.substring(variable.length() + 1);
@@ -398,6 +398,15 @@ public class OpenCypherQuery {
           return;
       }
       for (Map<String, Object> i : incRes) {
+        // check condition
+        if (link.table.key != null) {
+          String val = link.table.value;
+          if (val.startsWith("'") && val.endsWith("'"))
+            val = val.substring(1, val.length() - 1);
+          if (!("" + i.get(link.table.key)).equals(val))
+            continue;
+        }
+
         row = i;
         vars.put(link.table.variable, row);
         ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));

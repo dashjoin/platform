@@ -164,6 +164,16 @@ public class OpenCypherQueryTest {
   }
 
   @Test
+  public void testPathInWhere() throws Exception {
+    List<Map<String, Object>> res = run(
+        "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp {NAME:'joe'}) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=joe}]", "" + res);
+    res =
+        run("MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp {ID:2}) RETURN emp.NAME");
+    Assert.assertEquals("[{emp.NAME=joe}]", "" + res);
+  }
+
+  @Test
   public void testPathInCheckType() throws Exception {
     List<Map<String, Object>> res = run(
         "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp:`dj/junit/PRJ`) RETURN emp.NAME");
