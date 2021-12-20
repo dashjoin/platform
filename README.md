@@ -1170,6 +1170,7 @@ update| $update(database, table, pk1, object)
 delete| $delete(database, table, pk1)
 call| $call(function, argument) |   Dashjoin function result
 query| $query(database, queryId, arguments) |Query result table
+queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 echo | $echo(any) | Prints the parameter to the log
 crawl | $crawl(url) | Crawls the URL and returns all URLs listed there

@@ -130,6 +130,7 @@ public class ExpressionService {
     expr.getEnvironment().setJsonataFunction("$traverse", new Traverse(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$delete", new Delete(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$query", new Query(sc, readOnly));
+    expr.getEnvironment().setJsonataFunction("$queryGraph", new QueryGraph(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$call", new Call(sc, readOnly));
     expr.getEnvironment().setJsonataFunction("$incoming", new Incoming(sc));
 
@@ -494,6 +495,36 @@ public class ExpressionService {
         throw new RuntimeException("Query name cannot be null");
       try {
         return o2j(data.queryInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
+            getValuesListExpression(v, ctx, 1).asText(), getArgumentCount(ctx) == 2 ? null
+                : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
+            readOnly));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  /**
+   * data.query(sc, database, queryId, arguments)
+   */
+  public class QueryGraph extends Query {
+
+    public QueryGraph(SecurityContext sc, boolean readOnly) {
+      super(sc, readOnly);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
+      if (getArgumentCount(ctx) < 2)
+        throw new RuntimeException(
+            "Arguments required: $queryGraph(database, queryId, arguments?)");
+      if (getValuesListExpression(v, ctx, 0) == null)
+        throw new RuntimeException("Database name cannot be null");
+      if (getValuesListExpression(v, ctx, 0) == null)
+        throw new RuntimeException("Query name cannot be null");
+      try {
+        return o2j(data.queryGraphInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
             getValuesListExpression(v, ctx, 1).asText(), getArgumentCount(ctx) == 2 ? null
                 : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
             readOnly));
