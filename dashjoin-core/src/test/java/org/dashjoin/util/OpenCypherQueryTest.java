@@ -98,6 +98,14 @@ public class OpenCypherQueryTest {
   }
 
   @Test
+  public void testMatchEquality() throws Exception {
+    List<Map<String, Object>> res = run("MATCH (p:`dj/junit/EMP`{ID:1}) RETURN p");
+    Assert.assertEquals(1, res.size());
+    res = run("MATCH (p:`dj/junit/EMP`{NAME:'mike'}) RETURN p");
+    Assert.assertEquals(1, res.size());
+  }
+
+  @Test
   public void testProjectField() throws Exception {
     List<Map<String, Object>> res = run("MATCH (p:`dj/junit/EMP`) RETURN p.NAME, p.WORKSON");
     Assert.assertEquals("{p.NAME=mike, p.WORKSON=1000}", "" + res.get(0));
@@ -111,6 +119,14 @@ public class OpenCypherQueryTest {
     Assert.assertEquals(
         "{ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
         "" + res.get(0).get("project"));
+  }
+
+  @Test
+  public void testTraverseCheckType() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (p:`dj/junit/EMP`)-[e:WORKSON]->(project:`dj/junit/EMP`) RETURN project");
+    // no result due to type mismatch
+    Assert.assertEquals(0, res.size());
   }
 
   @Test
@@ -132,5 +148,13 @@ public class OpenCypherQueryTest {
     List<Map<String, Object>> res =
         run("MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp) RETURN emp.NAME");
     Assert.assertEquals("[{emp.NAME=mike}, {emp.NAME=joe}]", "" + res);
+  }
+
+  @Test
+  public void testPathInCheckType() throws Exception {
+    List<Map<String, Object>> res = run(
+        "MATCH (prj:`dj/junit/PRJ`)<-[wo:`dj/junit/EMP/WORKSON`]-(emp:`dj/junit/PRJ`) RETURN emp.NAME");
+    // no result due to type mismatch
+    Assert.assertEquals(0, res.size());
   }
 }

@@ -337,7 +337,11 @@ public class OpenCypherQuery {
     // compute starting context nodes
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
-        arguments)) {
+        context.key == null ? null
+            : MapUtil.of(context.key,
+                context.value.startsWith("'") && context.value.endsWith("'")
+                    ? context.value.substring(1, context.value.length() - 1)
+                    : context.value))) {
 
       // initialize variable bindings
       Map<String, Object> vars = new LinkedHashMap<>();
@@ -374,10 +378,13 @@ public class OpenCypherQuery {
         return;
       List<Map<String, Object>> incRes;
       if (link.left2right) {
+        String ref = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
+        ref = ref == null ? null : ref.substring(0, ref.lastIndexOf('/'));
         if (ctx.name == null) {
-          ctx.name = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
-          ctx.name = ctx.name.substring(0, ctx.name.lastIndexOf('/'));
-        }
+          ctx.name = ref;
+        } else if (!ctx.name.equals(ref))
+          // ref type and table type do not match
+          return;
         incRes = Arrays.asList((Map<String, Object>) data.traverse(sc, table[1], table[2],
             "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name));
       } else {
@@ -385,7 +392,8 @@ public class OpenCypherQuery {
             "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
         if (ctx.name == null) {
           ctx.name = link.edge.name.substring(0, link.edge.name.lastIndexOf('/'));
-        }
+        } else if (!ctx.name.equals(link.edge.name.substring(0, link.edge.name.lastIndexOf('/'))))
+          return;
       }
       for (Map<String, Object> i : incRes) {
         row = i;
