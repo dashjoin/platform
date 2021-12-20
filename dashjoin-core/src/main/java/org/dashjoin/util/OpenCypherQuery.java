@@ -87,6 +87,23 @@ public class OpenCypherQuery {
      */
     public Integer to;
 
+    @Override
+    public Table clone() {
+      Table res = new Table();
+      res.from = from;
+      res.isEdge = isEdge;
+      res.key = key;
+      res.name = name;
+      res.nameEscaped = nameEscaped;
+      res.star = star;
+      res.to = to;
+      res.value = value;
+      res.variable = variable;
+      return res;
+    }
+
+    public Table() {}
+
     /**
      * parses an ANTLR parse tree fragment tree.getText() which looks like [var:Collection
      * {key:value}] or (var:edge *1..2)
@@ -353,7 +370,7 @@ public class OpenCypherQuery {
       if (pathVariable != null)
         vars.put(pathVariable, path);
 
-      step(service, data, sc, context, vars, path, row, 0);
+      step(service, data, sc, context, new LinkedHashMap<>(vars), path, row, 0);
     }
     return res;
   }
@@ -372,7 +389,7 @@ public class OpenCypherQuery {
       res.add(project(vars));
     else {
       Chain link = links.get(linkIndex);
-      ctx = link.table;
+      ctx = link.table.clone();
       Map<String, Object> edge =
           MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
       vars.put(link.edge.variable, edge);
@@ -410,7 +427,7 @@ public class OpenCypherQuery {
         row = i;
         vars.put(link.table.variable, row);
         ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
-        step(service, data, sc, ctx, vars, path, row, linkIndex + 1);
+        step(service, data, sc, ctx, new LinkedHashMap<>(vars), path, row, linkIndex + 1);
       }
     }
   }
