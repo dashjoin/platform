@@ -11,7 +11,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that displays a table',
   htmlTag: 'dj-table',
-  fields: ['title', 'database', 'query', 'arguments']
+  fields: ['title', 'database', 'query', 'arguments', 'graph']
 })
 @Component({
   selector: 'app-table',
@@ -38,7 +38,7 @@ export class TableComponent extends LinksComponent implements OnInit {
       super.ngOnInit();
 
       this.meta = await this.getData().getMeta();
-      this.queryMeta = this.meta.schema as Table;
+      this.queryMeta = this.meta?.schema as Table;
     } catch (e) {
       this.errorHandler(e);
     }

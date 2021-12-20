@@ -121,6 +121,11 @@ export interface Widget {
     readOnly: boolean;
 
     /**
+     * query is a graph query
+     */
+    graph: boolean;
+
+    /**
      * static text
      */
     text: string;

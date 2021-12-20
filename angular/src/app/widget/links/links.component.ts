@@ -166,6 +166,10 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
       return null;
     }
 
+    if (Object.keys(value).length === 3 && value.database && value.table && value.pk?.[0]) {
+      return ['/resource', value.database, value.table, value.pk[0]];
+    }
+
     if (!table) {
       return null;
     }

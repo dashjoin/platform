@@ -218,6 +218,12 @@ export class EditWidgetDialogComponent {
               widgetType: 'expression',
               case: this.generateCase('arguments')
             },
+            graph: {
+              static: true,
+              title: 'Query is a graph query',
+              type: 'boolean',
+              case: this.generateCase('graph')
+            },
             roles: {
               static: true,
               title: 'Restrict access to these roles',

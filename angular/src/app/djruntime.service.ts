@@ -47,7 +47,10 @@ export class DJRuntimeService {
 
     if (true) {
       if (name.startsWith('dj/query/'))
-        return new DJDataDashjoinQuery<any>(name, this.http);
+        return new DJDataDashjoinQuery<any>(name, this.http, false);
+
+      if (name.startsWith('dj/queryGraph/'))
+        return new DJDataDashjoinQuery<any>(name, this.http, true);
 
       if (name.startsWith('dj/search/'))
         return new DJDataREST(name, this.http, '/rest/database/search/' + encodeURIComponent(name.substring('dj/search/'.length)) + '?limit=100')

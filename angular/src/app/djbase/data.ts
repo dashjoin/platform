@@ -502,15 +502,17 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
 
     http: HttpClient;
     catDbTable: string;
+    graph: boolean;
 
     /**
      * Constructor
      *
      * @param id dj/query/<database>/<queryid>
      */
-    constructor(id: string, http: HttpClient) {
+    constructor(id: string, http: HttpClient, graph: boolean) {
         super(id);
         this.http = http;
+        this.graph = graph;
         const parts = id.split('/');
         // we're in the DB/* category:
         // any change in any table might change the query result
@@ -519,7 +521,7 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
 
     private getQueryUri(): string {
         const parts = this.id.split('/');
-        return '/rest/database/query/' + encodeURIComponent(parts[2]) + '/' + encodeURIComponent(parts[3]);
+        return '/rest/database/query' + (this.graph ? 'Graph' : '') + '/' + encodeURIComponent(parts[2]) + '/' + encodeURIComponent(parts[3]);
     }
 
     protected async getInternal(options?: DJDataGetOptions): Promise<DJDataPage<T>> {
@@ -553,7 +555,7 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
     }
 
     async getMeta(): Promise<DJDataMeta> {
-        if (!this.meta) {
+        if (!this.meta && !this.graph) {
             const props = await this.http.post<any>(this.getMetaUri(), null,
                 {
                     headers: new HttpHeaders({

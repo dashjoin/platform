@@ -149,7 +149,10 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     let data = this.data;
 
     if (!data && this.layout?.query) {
-      data = 'dj/query/' + this.layout.database + '/' + this.layout.query;
+      if (this.layout.graph)
+        data = 'dj/queryGraph/' + this.layout.database + '/' + this.layout.query;
+      else
+        data = 'dj/query/' + this.layout.database + '/' + this.layout.query;
     }
 
     if (!data && this.layout?.database) {
