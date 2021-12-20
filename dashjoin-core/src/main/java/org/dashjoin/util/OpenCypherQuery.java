@@ -38,9 +38,9 @@ import org.dashjoin.util.cypher.CypherParser.OC_VariableContext;
 public class OpenCypherQuery {
 
   /**
-   * query template fragment like [var:collection] or (var:edge)
+   * volatile part of table which is cloned and written during steps
    */
-  public static class Table {
+  public static class VariableName {
 
     /**
      * variable bound to this step
@@ -51,6 +51,12 @@ public class OpenCypherQuery {
      * table / collection / edge name
      */
     public String name;
+  }
+
+  /**
+   * query template fragment like [var:collection] or (var:edge)
+   */
+  public static class Table extends VariableName {
 
     /**
      * name escaped with back ticks
@@ -87,22 +93,12 @@ public class OpenCypherQuery {
      */
     public Integer to;
 
-    @Override
-    public Table clone() {
-      Table res = new Table();
-      res.from = from;
-      res.isEdge = isEdge;
-      res.key = key;
+    public VariableName getVariableName() {
+      VariableName res = new VariableName();
       res.name = name;
-      res.nameEscaped = nameEscaped;
-      res.star = star;
-      res.to = to;
-      res.value = value;
       res.variable = variable;
       return res;
     }
-
-    public Table() {}
 
     /**
      * parses an ANTLR parse tree fragment tree.getText() which looks like [var:Collection
@@ -375,9 +371,25 @@ public class OpenCypherQuery {
     return res;
   }
 
+  /**
+   * holds potential recursion data
+   */
+  static class Struct {
+    Struct(Map<String, Object> i, String linkEdgeName, String ctxName) {
+      this.i = i;
+      this.linkEdgeName = linkEdgeName;
+      this.ctxName = ctxName;
+    }
+
+    Map<String, Object> i;
+    String linkEdgeName;
+    String ctxName;
+  }
+
   @SuppressWarnings("unchecked")
-  void step(Services service, Data data, SecurityContext sc, Table ctx, Map<String, Object> vars,
-      Map<String, Object> path, Map<String, Object> row, int linkIndex) throws Exception {
+  void step(Services service, Data data, SecurityContext sc, VariableName ctx,
+      Map<String, Object> vars, Map<String, Object> path, Map<String, Object> row, int linkIndex)
+      throws Exception {
 
     // parse context metadata
     String[] table = Escape.parseTableID(ctx.name);
@@ -389,13 +401,10 @@ public class OpenCypherQuery {
       res.add(project(vars));
     else {
       Chain link = links.get(linkIndex);
-      ctx = link.table.clone();
-      Map<String, Object> edge =
-          MapUtil.of("_dj_edge", link.edge.name, "_dj_outbound", link.left2right);
-      vars.put(link.edge.variable, edge);
+      ctx = link.table.getVariableName();
       if (row == null)
         return;
-      List<Map<String, Object>> incRes;
+      List<Struct> incRes;
       if (link.left2right) {
         String ref = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
         ref = ref == null ? null : ref.substring(0, ref.lastIndexOf('/'));
@@ -404,29 +413,39 @@ public class OpenCypherQuery {
         } else if (!ctx.name.equals(ref))
           // ref type and table type do not match
           return;
-        incRes = Arrays.asList((Map<String, Object>) data.traverse(sc, table[1], table[2],
-            "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name));
+        incRes = Arrays.asList(new Struct(
+            (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
+            link.edge.name, ctx.name));
       } else {
-        incRes = (List<Map<String, Object>>) data.traverse(sc, table[1], table[2],
-            "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name);
         if (ctx.name == null) {
           ctx.name = link.edge.name.substring(0, link.edge.name.lastIndexOf('/'));
         } else if (!ctx.name.equals(link.edge.name.substring(0, link.edge.name.lastIndexOf('/'))))
           return;
+        incRes = new ArrayList<>();
+        for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
+            table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
+          incRes.add(new Struct(x, link.edge.name, ctx.name));
       }
-      for (Map<String, Object> i : incRes) {
+      for (Struct i : incRes) {
         // check condition
         if (link.table.key != null) {
           String val = link.table.value;
           if (val.startsWith("'") && val.endsWith("'"))
             val = val.substring(1, val.length() - 1);
-          if (!("" + i.get(link.table.key)).equals(val))
+          if (!("" + i.i.get(link.table.key)).equals(val))
             continue;
         }
 
-        row = i;
+        row = i.i;
         vars.put(link.table.variable, row);
+
+        Map<String, Object> edge =
+            MapUtil.of("_dj_edge", i.linkEdgeName, "_dj_outbound", link.left2right);
+        vars.put(link.edge.variable, edge);
+
         ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
+        ctx.name = i.ctxName;
         step(service, data, sc, ctx, new LinkedHashMap<>(vars), path, row, linkIndex + 1);
       }
     }
