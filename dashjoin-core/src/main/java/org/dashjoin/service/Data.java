@@ -233,8 +233,8 @@ public class Data {
 
     // database * means: run query across all DBs using the opencypher engine
     if (database.equals("*")) {
-      OpenCypherQuery q = new OpenCypherQuery(info.query);
-      return q.run(services, this, sc, arguments);
+      OpenCypherQuery q = new OpenCypherQuery(info.query, arguments);
+      return q.run(services, this, sc);
     } else {
       // delegate to DB
       Database db = services.getConfig().getDatabase(dj(database));
@@ -242,8 +242,8 @@ public class Data {
       if (res == null) {
         // null means that the delegate DB does not support graph queries - default to internal
         // engine (like with database='*')
-        OpenCypherQuery q = new OpenCypherQuery(info.query);
-        return q.run(services, this, sc, arguments);
+        OpenCypherQuery q = new OpenCypherQuery(info.query, arguments);
+        return q.run(services, this, sc);
       }
       return res;
     }

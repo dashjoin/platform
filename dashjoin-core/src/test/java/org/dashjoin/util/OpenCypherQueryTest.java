@@ -38,7 +38,7 @@ public class OpenCypherQueryTest {
   }
 
   void eq(String query) throws Exception {
-    OpenCypherQuery q = new OpenCypherQuery(query);
+    OpenCypherQuery q = new OpenCypherQuery(query, null);
     Assert.assertEquals(query, q.toString());
   }
 
@@ -62,7 +62,7 @@ public class OpenCypherQueryTest {
 
   @Test
   public void testProject() throws Exception {
-    OpenCypherQuery q = new OpenCypherQuery("MATCH (a:B) RETURN a, a.b, a.b.c");
+    OpenCypherQuery q = new OpenCypherQuery("MATCH (a:B) RETURN a, a.b, a.b.c", null);
     Assert.assertEquals("{a=null, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of()));
     Assert.assertEquals("{a=1, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of("a", 1)));
     Assert.assertEquals("{a={b=1}, a.b=1, a.b.c=null}",
@@ -82,10 +82,14 @@ public class OpenCypherQueryTest {
   }
 
   List<Map<String, Object>> run(String s) throws Exception {
+    return run(s, null);
+  }
+
+  List<Map<String, Object>> run(String s, Map<String, Object> arguments) throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    OpenCypherQuery q = new OpenCypherQuery(s);
-    return objectMapper.convertValue(q.run(services, data, sc, null), JSONDatabase.trTable);
+    OpenCypherQuery q = new OpenCypherQuery(s, arguments);
+    return objectMapper.convertValue(q.run(services, data, sc), JSONDatabase.trTable);
   }
 
   @Test
@@ -102,6 +106,15 @@ public class OpenCypherQueryTest {
     List<Map<String, Object>> res = run("MATCH (p:`dj/junit/EMP`{ID:1}) RETURN p");
     Assert.assertEquals(1, res.size());
     res = run("MATCH (p:`dj/junit/EMP`{NAME:'mike'}) RETURN p");
+    Assert.assertEquals(1, res.size());
+  }
+
+  @Test
+  public void testMatchEqualityParameter() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (p:`dj/junit/EMP`{ID:${ID}}) RETURN p", MapUtil.of("ID", 1));
+    Assert.assertEquals(1, res.size());
+    res = run("MATCH (p:`dj/junit/EMP`{NAME:${NAME}}) RETURN p", MapUtil.of("NAME", "mike"));
     Assert.assertEquals(1, res.size());
   }
 

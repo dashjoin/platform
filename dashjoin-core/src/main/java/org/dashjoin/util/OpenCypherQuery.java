@@ -237,7 +237,9 @@ public class OpenCypherQuery {
   /**
    * parse query string into instance
    */
-  public OpenCypherQuery(String query) throws IOException {
+  public OpenCypherQuery(String query, Map<String, Object> arguments) throws IOException {
+
+    query = "" + Template.replace(query, arguments);
 
     BaseErrorListener errorHandler = new BaseErrorListener() {
       @Override
@@ -327,8 +329,8 @@ public class OpenCypherQuery {
    */
   List<Map<String, Object>> res = new ArrayList<>();
 
-  public List<Map<String, Object>> run(Services service, Data data, SecurityContext sc,
-      Map<String, Object> arguments) throws Exception {
+  public List<Map<String, Object>> run(Services service, Data data, SecurityContext sc)
+      throws Exception {
 
     // fill db cache
     for (AbstractDatabase db : service.getConfig().getDatabases())
