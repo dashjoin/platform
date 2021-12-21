@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~11.2.12",
     "@angular/platform-browser-dynamic": "~11.2.12",
     "@angular/router": "~11.2.12",
-    "@dashjoin/json-schema-form": "^0.8.1",
+    "@dashjoin/json-schema-form": "^0.8.2",
     "@types/marked": "^2.0.0",
     "angular-gridster2": "^11.1.5",
     "chart.js": "^2.9.3",
