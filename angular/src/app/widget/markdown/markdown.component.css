@@ -1,0 +1,19 @@
+:host ::ng-deep .margin1 {
+    margin: 1em;
+}
+
+:host ::ng-deep .margin2 {
+    margin: 2em;
+}
+
+:host ::ng-deep .margin3 {
+    margin: 3em;
+}
+
+:host ::ng-deep .margin4 {
+    margin: 4em;
+}
+
+:host ::ng-deep .margin5 {
+    margin: 5em;
+}
