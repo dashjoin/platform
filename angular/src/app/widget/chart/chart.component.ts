@@ -12,7 +12,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that draws a chart (Pie, Line, or Bar charts)',
   htmlTag: 'dj-chart',
-  fields: ['title', 'database', 'query', 'arguments', 'chart']
+  fields: ['title', 'database', 'query', 'arguments', 'chart', 'style']
 })
 @Component({
   selector: 'app-chart',
@@ -22,9 +22,45 @@ import { DashjoinWidget } from '../widget-registry';
 export class ChartComponent extends DJBaseComponent implements OnInit {
 
   /**
+   * see https://www.chartjs.org/docs/2.9.4/configuration/
+   */
+  chartoptions: any = {}
+
+  /**
+   * parses style key/value to config object
+   */
+  setOptions() {
+    for (let [key, value] of Object.entries(this.layout.style)) {
+      let ctx = this.chartoptions;
+      const arr = key.split('.');
+      const last = arr.pop();
+      for (const k of arr) {
+        if (k === 'xAxes') {
+          if (!ctx.xAxes) ctx.xAxes = [{}];
+          ctx = ctx.xAxes[0];
+        } else if (k === 'yAxes') {
+          if (!ctx.yAxes) ctx.yAxes = [{}];
+          ctx = ctx.yAxes[0];
+        } else {
+          if (!ctx[k]) ctx[k] = {};
+          ctx = ctx[k];
+        }
+      }
+      if (value === 'true')
+        value = true;
+      if (value === 'false')
+        value = false;
+      if (!isNaN(Number(value)))
+        value = Number(value);
+      ctx[last] = value;
+    }
+  }
+
+  /**
    * get data and generate chart data
    */
   async initWidget() {
+    this.setOptions();
     try {
       await this.page({ pageIndex: 0, pageSize: 50, length: null });
       this.prepareDataForChart();

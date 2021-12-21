@@ -294,7 +294,7 @@ export class EditWidgetDialogComponent {
               additionalProperties: { type: 'string' },
               layout: 'vertical',
               static: true,
-              title: 'CSS styles applied to child elements',
+              title: 'CSS / chart styles applied to child elements',
               case: this.generateCase('style')
             },
             context: {
