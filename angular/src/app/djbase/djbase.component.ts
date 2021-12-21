@@ -256,6 +256,17 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
   }
 
   /**
+   * non cache version to be used from button.onCall() etc.
+   */
+  async runExpression(expr: string) {
+    const ctx = this.context();
+    const res = await this.http.post<any>('/rest/expression', { expression: expr, data: ctx }, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    }).toPromise();
+    return res;
+  }
+
+  /**
    * table sort event
    */
   sortData(event: Sort) {

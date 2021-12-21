@@ -32,7 +32,7 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
    * button widget action (navigate or print)
    */
   call() {
-    this.evaluateExpression(this.layout.print ? this.layout.print : this.layout.navigate)
+    this.runExpression(this.layout.print ? this.layout.print : this.layout.navigate)
       .then(res => {
         if (this.layout.print) {
           this.snackBar.open(res as string, 'Ok', { duration: 3000 });
