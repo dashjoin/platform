@@ -319,13 +319,17 @@ public class PojoDatabase extends UnionDatabase implements Config {
           user().read(Table.ofName("dj-database"), of("ID", parts[0] + "/" + parts[1]));
 
       // create if it does not yet exist in user DB
-      if (db == null)
+      if (db == null) {
         db = MapUtil.of("ID", parts[0] + "/" + parts[1]);
+        user().create(Table.ofName("dj-database"), db);
+      }
 
       // create tables if not there
       if (!db.containsKey("tables")) {
         db.put("tables", MapUtil.of());
-        user().create(Table.ofName("dj-database"), db);
+        user().update(Table.ofName("dj-database"), MapUtil.of("ID", db.get("ID")),
+            MapUtil.of("tables", MapUtil.of()));
+        // user().create(Table.ofName("dj-database"), db);
       }
 
       // create table key
