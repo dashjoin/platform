@@ -1,7 +1,9 @@
 package org.dashjoin.service;
 
+import org.junit.jupiter.api.Disabled;
 import io.quarkus.test.junit.QuarkusTest;
 
+@Disabled("Requires a local ArangoDB instance running")
 @QuarkusTest
 public class ArangoDBTest extends DBTest {
 

@@ -12,9 +12,11 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
+@Disabled("Requires a local ArangoDB instance running")
 @QuarkusTest
 public class ArangoDBEditorTest extends QueryEditorTest {
 
