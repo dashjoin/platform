@@ -13,6 +13,8 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 /**
  * oracle and sql server do not provide resultSet.getTableName(). This class provides the default
  * implementation for other database which simple delegates to resultSet.getTableName()
+ * 
+ * we also parse out a limit parameter - if no limit is set, we restrict the result size to 1000
  */
 public class TableName {
 
@@ -24,7 +26,7 @@ public class TableName {
       return new JTDSTableName(query);
     if (url.startsWith("jdbc:postgresql"))
       return new PostgresTableName(query);
-    return new TableName();
+    return new AbstractTableName(query);
   }
 
   /**
@@ -42,6 +44,13 @@ public class TableName {
   }
 
   /**
+   * optional limit
+   */
+  public Integer getLimit() {
+    return null;
+  }
+
+  /**
    * base implementation which handles query parsing in the constructor
    */
   public static class AbstractTableName extends TableName {
@@ -51,6 +60,13 @@ public class TableName {
      */
     PlainSelect body;
 
+    Integer limit;
+
+    @Override
+    public Integer getLimit() {
+      return limit;
+    }
+
     /**
      * construct the instance and parse the query so we can lookup the table info
      */
@@ -58,6 +74,11 @@ public class TableName {
       try {
         Select select = (Select) CCJSqlParserUtil.parse(query);
         body = (PlainSelect) select.getSelectBody();
+        try {
+          if (body.getLimit() != null)
+            limit = Integer.parseInt(body.getLimit().getRowCount() + "");
+        } catch (Exception ignore) {
+        }
       } catch (JSQLParserException e) {
         throw new SQLException(e);
       }

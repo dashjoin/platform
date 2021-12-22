@@ -438,15 +438,22 @@ public class SQLDatabase extends AbstractDatabase {
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws SQLException {
 
-    // if no limit is provided, protect against rogue queries that sometime cause
-    // extreme CPU / memory load during stmt.execute() already
-    return query(info, arguments, 1000);
+    return query(info, arguments, null);
   }
 
   List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments, Integer limit)
       throws SQLException {
     PreparedStmt ps = prepareStatement(info.query, arguments);
     TableName tn = TableName.create(url, ps.query);
+
+    // if no limit is provided, protect against rogue queries that sometime cause
+    // extreme CPU / memory load during stmt.execute() already
+    if (limit == null) {
+      limit = tn.getLimit();
+      if (limit == null) {
+        limit = 1000;
+      }
+    }
 
     List<Map<String, Object>> data = new ArrayList<>();
     try (Connection con = getConnection()) {
