@@ -1,9 +1,0 @@
-{
-    "ID": "group",
-    "database": "dj/northwind",
-    "query": "SELECT CUSTOMERS.COUNTRY, COUNT(*) AS \"Number of Customers\" FROM CUSTOMERS GROUP BY CUSTOMERS.COUNTRY",
-    "roles": [
-        "authenticated"
-    ],
-    "type": "read"
-}

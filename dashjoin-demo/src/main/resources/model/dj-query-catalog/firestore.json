@@ -1,9 +1,0 @@
-{
-    "ID": "firestore",
-    "database": "dj/firestore",
-    "type": "read",
-    "roles": [
-        "authenticated"
-    ],
-    "query": "db.collection(\"REQUESTS\").aggregate(\"ID\", \"COUNT\", \"customer\", \"GROUP BY\").project(\"customer\", \"ID\")"
-}
