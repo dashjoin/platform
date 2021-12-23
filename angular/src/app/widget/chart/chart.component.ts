@@ -60,7 +60,8 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    * get data and generate chart data
    */
   async initWidget() {
-    this.setOptions();
+    if (this.layout.style)
+      this.setOptions();
     try {
       await this.page({ pageIndex: 0, pageSize: 50, length: null });
       this.prepareDataForChart();
