@@ -53,6 +53,10 @@ public class FileSystemTest {
       System.out.println(FileSystem.getJdbcUrl("jdbc:h2:../TestDataBase"));
     });
 
+    // tmp folder is ok (for appengine)
+    System.out.println(FileSystem.getJdbcUrl("jdbc:h2:/tmp/TestDataBase"));
+    System.out.println(FileSystem.getJdbcUrl("jdbc:sqlite:/tmp/sub/dashjoin-demo.db"));
+
     System.out.println(FileSystem.getJdbcUrl("jdbc:postgresql://your_host:5432/your_database"));
   }
 

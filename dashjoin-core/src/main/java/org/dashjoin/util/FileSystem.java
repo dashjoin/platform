@@ -49,12 +49,12 @@ public class FileSystem {
   public static String getJdbcUrl(String url) throws IOException {
     if (url.toLowerCase().startsWith("jdbc:sqlite:")) {
       String file = url.substring("jdbc:sqlite:".length());
-      checkSQLiteAccess(new File(file));
+      checkSQLiteAccess(Home.get().getFile(file));
       return "jdbc:sqlite:" + Home.get().getFile(file);
     }
     if (url.toLowerCase().startsWith("jdbc:h2:") && !url.toLowerCase().startsWith("jdbc:h2:mem:")) {
       String file = url.substring("jdbc:h2:".length());
-      checkSQLiteAccess(new File(file));
+      checkSQLiteAccess(Home.get().getFile(file));
       return "jdbc:h2:" + Home.get().getFile(file);
     }
     return url;
@@ -65,9 +65,10 @@ public class FileSystem {
    */
   public static void checkSQLiteAccess(File file) throws IOException {
 
+    String tmp = new File("/tmp").getCanonicalPath();
     String root = Home.get().getFile(".").getCanonicalPath();
     String test = file.getCanonicalPath();
-    if (!test.startsWith(root))
+    if (!test.startsWith(root) && !test.startsWith(tmp))
       throw new RuntimeException("You do not have access to the folder '" + file
           + "'. Choose a file in the application folder.");
   }
