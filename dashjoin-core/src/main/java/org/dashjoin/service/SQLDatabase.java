@@ -52,6 +52,7 @@ import org.dashjoin.service.QueryEditor.Col;
 import org.dashjoin.service.QueryEditor.QueryColumn;
 import org.dashjoin.service.ddl.SQLSchemaChange;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
 import org.postgresql.jdbc.PgArray;
@@ -199,7 +200,7 @@ public class SQLDatabase extends AbstractDatabase {
     url = url.trim();
 
     BasicDataSource ds = new BasicDataSource();
-    ds.setUrl(url);
+    ds.setUrl(FileSystem.getJdbcUrl(url));
     ds.setUsername(username == null ? null : username.trim());
     if (url.startsWith("jdbc:jtds")) {
       ds.setDriverClassName("net.sourceforge.jtds.jdbc.Driver");

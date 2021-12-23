@@ -38,7 +38,22 @@ public class FileSystemTest {
     Assertions.assertThrows(RuntimeException.class, () -> {
       System.err.println(FileSystem.getUploadURL("file:/../upload/test.txt"));
     });
+  }
 
+  @Test
+  public void testJdbcUrl() throws Exception {
+
+    System.out.println(FileSystem.getJdbcUrl("jdbc:h2:mem:test"));
+
+    System.out.println(FileSystem.getJdbcUrl("jdbc:sqlite:dashjoin-demo.db"));
+
+    System.out.println(FileSystem.getJdbcUrl("jdbc:SQLite:dashjoin-demo.db"));
+
+    Assertions.assertThrows(RuntimeException.class, () -> {
+      System.out.println(FileSystem.getJdbcUrl("jdbc:h2:../TestDataBase"));
+    });
+
+    System.out.println(FileSystem.getJdbcUrl("jdbc:postgresql://your_host:5432/your_database"));
   }
 
   @Test
