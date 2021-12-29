@@ -21,6 +21,11 @@ public class RDF4JTest extends DBTest {
   }
 
   @Override
+  protected Object thousand() {
+    return toID(1000);
+  }
+
+  @Override
   @Test
   public void testMetadata() throws Exception {
     String ns = "http:%2F%2Fex.org%2F";

@@ -181,11 +181,11 @@ public class RDF4J extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
+    String query = "" + Template.replace(info.query, Template.quoteStrings(arguments));
     try (RepositoryConnection con = getConnection()) {
-      Query q = new Query(info.query);
+      Query q = new Query(query);
       List<Map<String, Object>> res = new ArrayList<>();
-      TupleQuery tq = con
-          .prepareTupleQuery("" + Template.replace(info.query, Template.quoteStrings(arguments)));
+      TupleQuery tq = con.prepareTupleQuery(query);
       try (TupleQueryResult i = tq.evaluate()) {
         while (i.hasNext()) {
           BindingSet x = i.next();

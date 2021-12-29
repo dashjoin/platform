@@ -1,0 +1,6 @@
+{
+	"ID": "graph",
+	"query": "MATCH (x:`dj/junit/http:%2F%2Fex.org%2FEMP`) RETURN x",
+	"type": "read",
+	"roles": ["user"]
+}

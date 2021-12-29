@@ -108,8 +108,8 @@ public class DBTest {
     Assert.assertEquals(toID(1), ((Map<?, ?>) res.get(0).get("x")).get(idRead()));
     Resource r = (Resource) ((Map<?, ?>) res.get(0).get("x")).get("_dj_resource");
     Assert.assertEquals("junit", r.database);
-    Assert.assertEquals("EMP", r.table);
-    Assert.assertEquals("1", "" + r.pk.get(0));
+    name("EMP", r.table);
+    name("1", "" + r.pk.get(0));
   }
 
   @Test
@@ -232,7 +232,7 @@ public class DBTest {
         + Escape.encodeTableOrColumnName("" + id.pk.get(0)));
     Assert.assertNotNull(db.read(sc, "junit", toID("EMP"), toID("3")));
     db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("NAME"), "new name"));
-    db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("WORKSON"), 1000));
+    db.update(sc, "junit", toID("EMP"), toID("3"), of(toID("WORKSON"), thousand()));
     Assert.assertEquals("new name", db.read(sc, "junit", toID("EMP"), toID("3")).get(toID("NAME")));
     Assert.assertEquals(thousand(),
         db.read(sc, "junit", toID("EMP"), toID("3")).get(toID("WORKSON")));
