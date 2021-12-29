@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -214,7 +215,7 @@ public class RDF4J extends AbstractDatabase {
           if (entry.getValue() instanceof List) {
             for (Object o : ((List<Object>) entry.getValue()))
               con.add(subject, iri(entry.getKey()), value(m, entry.getKey(), o));
-          } else
+          } else if (entry.getValue() != null)
             con.add(subject, iri(entry.getKey()), value(m, entry.getKey(), entry.getValue()));
         }
       }
@@ -563,6 +564,7 @@ public class RDF4J extends AbstractDatabase {
               id.put("ID", table.get("ID") + "/ID");
               properties.put("ID", id);
               table.put("properties", properties);
+              table.put("required", Arrays.asList("ID"));
               meta.put(s.stringValue(), table);
 
               Set<IRI> props = type2props.get(s);
