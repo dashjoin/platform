@@ -1501,13 +1501,17 @@ SAP HANA | com.sap.db.jdbc.Driver | 2.5.49 | beta
 
 ### Document Databases
 
-* [Firestore](https://cloud.google.com/firestore): Available in Dashjoin PaaS
-* [MongoDB](https://www.mongodb.com/): beta
+| Database  | Driver class  | Driver version | Status |
+|---|---|---|---|
+Firestore | google-cloud-firestore  | 2.1.0 | Available in Dashjoin PaaS |
+MongoDB | mongodb-driver-sync  | 4.1.0 | beta |
 
 ### Graph Databases
 
-* [RDF4J](https://rdf4j.org/): beta / must be deployed as a remote database - see the [module page](https://github.com/dashjoin/platform/tree/master/dashjoin-rdf4j) for setup instructions
-* [ArangoDB](https://www.arangodb.com/): beta
+| Database  | Driver class  | Driver version | Status |
+|---|---|---|---|
+RDF4J | rdf4j-runtime  | 3.1.2 | beta / must be deployed as a remote database - see the [module page](https://github.com/dashjoin/platform/tree/master/dashjoin-rdf4j) for setup instructions |
+ArangoDB | arangodb-java-driver  | 6.14.0 | beta |
 
 ## API
 
