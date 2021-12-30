@@ -585,14 +585,18 @@ public class Manage {
   void handleJson(DetectResult res, String database, String tablename, Table m, String fileName,
       List<Map<String, Object>> parsed) throws Exception {
     List<String> headers = new ArrayList<>();
-    List<List<String>> data = new ArrayList<>();
-
     for (Map<String, Object> x : parsed) {
-      List<String> row = new ArrayList<>();
       for (Entry<String, Object> cell : x.entrySet()) {
-        row.add("" + cell.getValue());
         if (!headers.contains(cell.getKey()))
           headers.add(cell.getKey());
+      }
+    }
+
+    List<List<String>> data = new ArrayList<>();
+    for (Map<String, Object> x : parsed) {
+      List<String> row = new ArrayList<>();
+      for (String header : headers) {
+        row.add("" + x.get(header));
       }
       data.add(row);
     }

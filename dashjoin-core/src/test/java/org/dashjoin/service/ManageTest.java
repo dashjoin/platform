@@ -14,6 +14,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.service.Manage.DetectResult;
 import org.dashjoin.service.Manage.TypeSample;
+import org.dashjoin.util.MapUtil;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.junit.Assert;
@@ -150,6 +151,19 @@ public class ManageTest {
     Assert.assertEquals(2, x.get(0).sample.get(1));
     Assert.assertEquals("name", x.get(1).name);
     Assert.assertEquals("test", x.get(1).sample.get(0));
+  }
+
+  @Test
+  public void testHandleJson() throws Exception {
+    DetectResult res = new DetectResult();
+    res.createMode = true;
+    new Manage().handleJson(res, null, null, null, null,
+        Arrays.asList(MapUtil.of("y", 2), MapUtil.of("x", 1, "y", 2), MapUtil.of("y", 2, "x", 1)));
+    Assert.assertEquals(2, res.schema.get(null).size());
+    Assert.assertEquals("y", res.schema.get(null).get(0).name);
+    Assert.assertEquals("x", res.schema.get(null).get(1).name);
+    Assert.assertEquals(2, res.schema.get(null).get(0).sample.get(1));
+    Assert.assertEquals(1, res.schema.get(null).get(1).sample.get(1));
   }
 
   @Test
