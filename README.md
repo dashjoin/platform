@@ -1425,6 +1425,23 @@ USER_HOME/.dashjoin> git status
 
 Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) to find out about the recommended app folder structure.
 
+### [Multi Line JSON](https://demo.my.dashjoin.com/#/page/multi-line-json)
+
+Markdown, queries, and JSONata expressions can be hard to read if they are stored in JSON files.
+You can use multi-line JSON strings to make these more readable. Rather than escaping the newline character within the string, 
+simply add a newline in the file. Note that quotes still need to be escaped:
+
+```
+"regular": "line 1\nline \"2\"",
+"multi": "
+line 1
+line \"2\"
+"
+```
+
+Important: if you edit the file via the query, expression, or layout editors, the file will be reverted back to the default single line
+representation.
+
 On the production system, there are three ways of deploying an application:
 
 ### Upload to the Configuration Database
