@@ -44,7 +44,7 @@ Features
 
 ## Getting Started: 15 Minute Tour
 
-This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/platform/tree/master/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
+This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
 
 We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.
 
@@ -768,6 +768,10 @@ Chart for visualizing query results.
 * chart: chart type
 * style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/2.9.4/configuration/) - for instance, scales.yAxes.ticks.min = 0 makes sure the y-axis starts at 0
 
+Examples:
+* [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
+* [chart-timeline](https://demo.my.dashjoin.com/#/chart-timeline)
+
 ##### create
 
 Creates new database records:
@@ -1220,7 +1224,7 @@ In the Dashjoin cloud, users can authenticate via OpenID. The tenant user dashbo
 
 ### Creating a local Admin User
 
-After installing Dashjoin, no user is set up in the system.
+After installing Dashjoin, no user is set up in the system (a user can be defined via the environment variables - see below for more information).
 To set up the local development admin user, navigate to http://localhost:8080/#/setup.
 
 Choose a name, a username, and the password.
@@ -1252,6 +1256,16 @@ If you would like to make the registered databases and credentials persistent, y
 ```bash
 docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
 ```
+
+### Environment
+
+A Dashjoin instance can be configured using the following environment variables:
+
+* DJ_ADMIN_USER: admin user name (defaults to "admin")
+* DJ_ADMIN_PASS: admin password (default is blank)
+* DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
+* DASHJOIN_HOME: defines the dashjoin working directory (defaults to userhome/.dashjoin or /deployments/model when using docker)
+* DASHJOIN_APPURL: optional git url where an app is cloned / pulled from
 
 ### Build Locally
 
@@ -1395,7 +1409,7 @@ You can put the model folder under version control by following these steps:
 
 * create a repository, for instance on GitHub
 * install Dashjoin locally
-* clone the repository into your Dashjoib user home directory:
+* clone the repository into your Dashjoin user home directory:
 
 ```bash
 USER_HOME> git clone https://github.com/ORG/PROJECT.git .dashjoin
@@ -1409,7 +1423,28 @@ USER_HOME> git clone https://github.com/ORG/PROJECT.git .dashjoin
 USER_HOME/.dashjoin> git status
 ```
 
-On the production system, you can pull the changes using the same setup.
+Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) to find out about the recommended app folder structure.
+
+On the production system, there are three ways of deploying an application:
+
+### Upload to the Configuration Database
+
+You can upload an entire model folder to the config DB. On the database page, select "Configuration Database".
+Open the "Database Management" tab and select "Upload". Select the model folder there and either append or replace
+the contents of the config database.
+
+### Automatic GIT Checkout
+
+You can specify the DASHJOIN_APPURL environment variable and have it point to your app repository.
+Upon startup, the system will perform a git clone if the model folder is empty or a git pull if the model has content already.
+Note that you can specify credentials via the URL (http://user:password@domain.com/).
+Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) for an example of how to run
+Dashjoin with the demo application installed.
+
+### Manual App Installation
+
+Last but not least, you can also copy the app into the Dashoin working directory using other means
+before starting the platform. 
 If you are using containers, you can mount the model folder under /deployments/model.
 
 ## Security
