@@ -195,7 +195,8 @@ public class ModelTest {
                                   if (!s.equals("Unknown function: $traverse"))
                                     if (!s.equals("Unknown function: $query"))
                                       if (!s.equals("Unknown function: $doc2data"))
-                                        throw e;
+                                        if (!s.equals("Unknown function: $djSubscription"))
+                                          throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");
