@@ -1425,17 +1425,18 @@ USER_HOME/.dashjoin> git status
 
 Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) to find out about the recommended app folder structure.
 
-### [Multi Line JSON](https://demo.my.dashjoin.com/#/page/multi-line-json)
+### Multi Line JSON
 
 Markdown, queries, and JSONata expressions can be hard to read if they are stored in JSON files.
 You can use multi-line JSON strings to make these more readable. Rather than escaping the newline character within the string, 
 simply add a newline in the file. Note that quotes still need to be escaped:
 
 ```
-"regular": "line 1\nline \"2\"",
+"regular": "  line 1\n  line \"2\"",
+// comments are allowed too
 "multi": "
-line 1
-line \"2\"
+  line 1
+  line \"2\"
 "
 ```
 
@@ -1478,7 +1479,9 @@ In order to register new databases, the user must be in the "admin" role.
 
 ## Supported Databases
 
-In addition to the PaaS Firestore DB, we support all of the SQL databases out of the [top 10 database engines](https://db-engines.com/en/ranking):
+### Relational Databases
+
+We support all of the SQL databases out of the [top 10 database engines](https://db-engines.com/en/ranking):
 
 | Database  | Driver class  | Driver version | Status |
 |---|---|---|---|
@@ -1495,6 +1498,16 @@ Amazon RDS Aurora PostgreSQL | org.postgresql.Driver | 42.2.12 | beta
 Amazon RDS Aurora MySQL | com.mysql.cj.jdbc.Driver | 8.0.20 | beta
 Sybase (SAP) ASE 16.2 | net.sourceforge.jtds.jdbc.Driver | 1.3.1 | beta
 SAP HANA | com.sap.db.jdbc.Driver | 2.5.49 | beta
+
+### Document Databases
+
+* [Firestore](https://cloud.google.com/firestore): Available in Dashjoin PaaS
+* [MongoDB](https://www.mongodb.com/): beta
+
+### Graph Databases
+
+* [RDF4J](https://rdf4j.org/): beta / must be deployed as a remote database - see the [module page](https://github.com/dashjoin/platform/tree/master/dashjoin-rdf4j) for setup instructions
+* [ArangoDB](https://www.arangodb.com/): beta
 
 ## API
 
@@ -1518,7 +1531,7 @@ The easiest way to obtain a bearer token is to login using a browser and copying
 Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.
 
 In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
-RemoteDatabase clients. For more information, please refer to the dashjoin-sdk module documentation.
+RemoteDatabase clients. For more information, please refer to the [dashjoin-sdk](https://github.com/dashjoin/platform/tree/master/dashjoin-sdk) module documentation.
 
 ## Contribute
 
