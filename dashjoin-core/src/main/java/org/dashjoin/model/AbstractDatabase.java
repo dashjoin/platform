@@ -204,6 +204,8 @@ public abstract class AbstractDatabase implements Database {
       String s = (String) object;
 
       if ("integer".equals(p.type)) {
+        if (s.endsWith(".0"))
+          s = s.substring(0, s.length() - 2);
         try {
           return Integer.parseInt(s);
         } catch (Exception e) {

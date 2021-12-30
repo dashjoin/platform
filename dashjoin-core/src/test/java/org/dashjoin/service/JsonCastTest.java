@@ -29,6 +29,9 @@ public class JsonCastTest {
   @Test
   public void testInt() throws Exception {
     Assert.assertEquals(5, db().cast(p("integer", "INT"), "5"));
+
+    // allow casting of .0 values to int
+    Assert.assertEquals(5, db().cast(p("integer", "INT"), "5.0"));
   }
 
   @Test
