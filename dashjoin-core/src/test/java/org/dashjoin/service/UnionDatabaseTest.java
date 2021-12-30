@@ -96,4 +96,17 @@ public class UnionDatabaseTest {
     u.delete(qc, of("ID", "myquery"));
     Assert.assertEquals(0, new File("model/dj-query-catalog").listFiles().length);
   }
+
+  @Test
+  public void testDeleteTable() throws Exception {
+    UnionDatabase u = new UnionDatabase();
+    JSONDatabase cp = JSONDatabaseFactory.getReadOnlyInstance();
+    u._dbs = Arrays.asList(cp);
+    u._user = JSONDatabaseFactory.getPersistantInstance();
+
+    Table qc = new Table();
+    qc.name = "page";
+
+    u.delete(qc);
+  }
 }

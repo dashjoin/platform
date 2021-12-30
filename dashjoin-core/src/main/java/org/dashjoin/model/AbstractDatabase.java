@@ -285,11 +285,16 @@ public abstract class AbstractDatabase implements Database {
    */
   public void delete(Table m) throws Exception {
     for (;;) {
-      List<Map<String, Object>> batch = all(m, 0, getBatchSize(), null, false, null);
+      List<Map<String, Object>> batch =
+          deleteTableDb().all(m, 0, getBatchSize(), null, false, null);
       if (batch.isEmpty())
         return;
       delete(m, batch);
     }
+  }
+
+  protected Database deleteTableDb() {
+    return this;
   }
 
   /**

@@ -427,4 +427,9 @@ public class UnionDatabase extends AbstractDatabase {
     // no operation required
     return Collections.emptyMap();
   }
+
+  @Override
+  protected Database deleteTableDb() {
+    return user();
+  }
 }
