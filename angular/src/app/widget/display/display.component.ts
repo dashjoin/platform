@@ -61,7 +61,7 @@ export class DisplayComponent extends TextComponent implements OnInit {
   /**
    * detects the type of displayData such that the UI can select the appropriate visualization
    */
-  displayType(): 'link' | 'string' | 'string[]' | 'object' | 'object[]' {
+  displayType(): 'link' | 'string' | 'string[]' | 'object' | 'object[]' | 'img' {
     if (!this.displayData) {
       return 'string';
     }
@@ -79,6 +79,18 @@ export class DisplayComponent extends TextComponent implements OnInit {
         if (Object.keys(this.displayData).length === 4 && this.displayData.database &&
           this.displayData.table && this.displayData.pk1 && this.displayData.page) {
           return 'link';
+        }
+        if (Object.keys(this.displayData).length === 1 && this.displayData.img) {
+          return 'img';
+        }
+        if (Object.keys(this.displayData).length === 2 && this.displayData.img && this.displayData.width) {
+          return 'img';
+        }
+        if (Object.keys(this.displayData).length === 2 && this.displayData.img && this.displayData.height) {
+          return 'img';
+        }
+        if (Object.keys(this.displayData).length === 3 && this.displayData.img && this.displayData.width && this.displayData.height) {
+          return 'img';
         }
       }
       return typeof this.displayData === 'object' ? 'object' : 'string';

@@ -2,6 +2,9 @@
     <a [routerLink]="['/resource', displayData.database, displayData.table, displayData.pk1]"
         [queryParams]="displayData.page?{page: displayData.page} : null">{{displayData.pk1}}</a>
 </div>
+<div *ngIf="displayType() === 'img'">
+    <img [src]="displayData.img" [style.width]="displayData.width" [style.height]="displayData.height">
+</div>
 <div *ngIf="displayType() === 'string'">
     {{displayData}}
 </div>
