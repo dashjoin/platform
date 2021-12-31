@@ -1,6 +1,6 @@
 {
 	"ID": "graph",
-	"query": "MATCH (x:`dj/junit/http:%2F%2Fex.org%2FEMP`) RETURN x",
+	"query": "select ?x where { ?x a <http://ex.org/EMP> }",
 	"type": "read",
 	"roles": ["user"]
 }

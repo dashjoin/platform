@@ -182,6 +182,11 @@ public class RDF4J extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
+    return queryInternal(info, arguments, false);
+  }
+
+  List<Map<String, Object>> queryInternal(QueryMeta info, Map<String, Object> arguments,
+      boolean wrapResource) throws Exception {
     String query = "" + Template.replace(info.query, Template.quoteStrings(arguments));
     try (RepositoryConnection con = getConnection()) {
       Query q = new Query(query);
@@ -192,8 +197,20 @@ public class RDF4J extends AbstractDatabase {
           BindingSet x = i.next();
           Map<String, Object> row = new LinkedHashMap<>();
           res.add(row);
-          for (Variable p : q.projection)
-            row.put(p.name, object(x.getBinding(p.name).getValue()));
+          for (Variable p : q.projection) {
+            Value v = x.getBinding(p.name).getValue();
+
+            // the wrapResource flag indicates that queryInternal is called via the graph query API.
+            // This implies that keys carry type meta information in a return structure. So rather
+            // than simply adding a resource, we wrap them into this struct and add the Resource
+            // object
+            if (wrapResource && v instanceof Resource)
+              row.put(p.name,
+                  MapUtil.of("ID", object(v), "_dj_resource", org.dashjoin.service.Data.Resource
+                      .of(name, string(getType((Resource) v)), object(v))));
+            else
+              row.put(p.name, object(v));
+          }
         }
       }
       return res;
@@ -462,12 +479,18 @@ public class RDF4J extends AbstractDatabase {
             }
             res.put(b.getName(), prop);
           });
-          System.out.println(res);
           return res;
         }
       }
     }
     return null;
+  }
+
+  @Override
+  public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments)
+      throws Exception {
+    List<Map<String, Object>> res = queryInternal(info, arguments, true);
+    return res;
   }
 
   @Override
