@@ -113,6 +113,30 @@ public class DBTest {
   }
 
   @Test
+  public void testPath() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    List<Map<String, Object>> res = db.queryGraph(sc, "junit", "path", null);
+    Assert.assertEquals(2, res.size());
+    Map<String, Object> first = getMap(res.get(0), "path");
+    Assert.assertTrue(getMap(first, "start").containsKey("_dj_resource"));
+    List<Map<String, Object>> steps = getList(first, "steps");
+    Assert.assertEquals(1, steps.size());
+    Assert.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + steps.get(0).get("edge"));
+    Assert.assertTrue(getMap(steps.get(0), "end").containsKey("_dj_resource"));
+  }
+
+  @SuppressWarnings("unchecked")
+  Map<String, Object> getMap(Map<String, Object> map, String field) {
+    return (Map<String, Object>) map.get(field);
+  }
+
+  @SuppressWarnings("unchecked")
+  List<Map<String, Object>> getList(Map<String, Object> map, String field) {
+    return (List<Map<String, Object>>) map.get(field);
+  }
+
+  @Test
   public void testSearch() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);

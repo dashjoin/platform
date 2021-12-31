@@ -52,4 +52,10 @@ public class RDF4JTest extends DBTest {
     Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FT"));
     Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
+
+  @Override
+  @Test
+  public void testPath() throws Exception {
+    // SPARQL does not support tracking property paths
+  }
 }

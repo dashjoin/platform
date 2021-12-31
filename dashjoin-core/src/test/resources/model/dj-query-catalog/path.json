@@ -1,0 +1,6 @@
+{
+	"ID": "path",
+	"query": "MATCH path=(x:`dj/junit/EMP`)-[:WORKSON]->(p) RETURN path",
+	"type": "read",
+	"roles": ["user"]
+}
