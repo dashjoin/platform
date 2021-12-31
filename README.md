@@ -586,6 +586,42 @@ select * from PERSON where NAME='Mike' and AGE>20
 
 Once the editor is closed, the samples are replaced with the template variables again. Note that this replacement is string based, so you should choose parameter names that do not "collide" with other parts of the query. Hence, we choose the prefix p_.
 
+#### Graph Queries
+
+Apart from managing traditional queries, the Dashjoin query catalog can also be used to store graph queries.
+There are different flavors of graph query languages. We orient ourselves at the [OpenCypher](https://opencypher.org/) language
+and the upcoming [GQL Standard](https://www.gqlstandards.org/). Like queries on document and relational database,
+graph queries return a table where the columns represent the projection variables and each row contains variable values
+that match the query pattern / path.
+
+The difference between the query types is that a graph query may return very different record types for a column / variable.
+Consider a graph query that returns all related records that are reachable with two hops from the starting record.
+Obviously, you will end up on very different records. In the northwind case, starting from an employee, these might be
+orders processed by the employee, the employee's boss's boss, and so on. Therefore, Dashjoin graph queries will make
+sure that apart from the raw data, the result also contains type information that can be used by the UI in order to
+interpret the values.
+
+Graph queries can be run on a specific or on all databases. Dashjoin contains a partial OpenCypher implementation. Consider the following OpenCypher example:
+
+```
+MATCH 
+  path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish) 
+RETURN 
+  start._dj_resource, boss.LAST_NAME, finish._dj_resource, path"
+}
+```
+
+This query traverses the recursive "reports to" relationship. The variables start, boss, and finish
+represent the graph nodes. As mentioned before, the engine adds the record metadata. i.e. which database and table / collection
+the record comes from. The path variable matches the entire traversal and contains all nodes and edges (relationships) that were
+traversed.
+
+[AQL](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html) and [SPARQL Property Paths](https://www.w3.org/TR/sparql11-property-paths/)
+are alternative graph query languages that can be pushed down to the native database query engine if the query is run on the respective ArangoDB / RDF4J
+database. The Dashjoin drivers make sure that the query result has the same structure as a corresponding OpenCypher query.
+
+Note that the graphical query editor does not yet support composing graph queries.
+
 ### User Interface Layout
 
 While Dashjoin has a rich default page layout that is suitable for many use cases, every aspects of the display can be configured using the functionality described in this section.
@@ -767,6 +803,7 @@ Chart for visualizing query results.
 * arguments: optional expression resulting in query arguments
 * chart: chart type
 * style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/2.9.4/configuration/) - for instance, scales.yAxes.ticks.min = 0 makes sure the y-axis starts at 0
+* graph: specifies whether the query is a graph query
 
 Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
@@ -842,6 +879,7 @@ Displays query results as a table
 * database: database to run the query on
 * query: query to run
 * arguments: optional expression resulting in query arguments
+* graph: specifies whether the query is a graph query
 
 ##### text
 
