@@ -12,7 +12,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that draws a chart (Pie, Line, or Bar charts)',
   htmlTag: 'dj-chart',
-  fields: ['title', 'database', 'query', 'arguments', 'chart', 'style']
+  fields: ['title', 'database', 'query', 'arguments', 'chart', 'style', 'graph']
 })
 @Component({
   selector: 'app-chart',
