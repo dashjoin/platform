@@ -204,6 +204,21 @@ public class Data {
    * The result has a tabular structure. If resources are returned (e.g. via a query MATCH (p:EMP)
    * return p), then the column p contains a JSON object which must include a _dj_resource field
    * pointing to dj/db/table/pk
+   * 
+   * consider the following query:
+   * 
+   * MATCH path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish)
+   * RETURN start._dj_resource, boss.LAST_NAME, path
+   * 
+   * On the northwind DB, this query yields the following output:
+   * 
+   * "start._dj_resource": { "database": "northwind", "table": "EMPLOYEES", "pk": [ 6 ] },
+   * 
+   * "boss.LAST_NAME": "Buchanan",
+   * 
+   * "path": { "start": record, "steps": [ { "edge": { "_dj_edge": "REPORTS_TO", "_dj_outbound":
+   * true }, "end": record }, { "edge": { "_dj_edge": "REPORTS_TO", "_dj_outbound": true }, "end":
+   * record } ] }
    */
   @POST
   @Path("/queryGraph/{database}/{queryId}")

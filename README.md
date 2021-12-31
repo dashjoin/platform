@@ -601,14 +601,14 @@ orders processed by the employee, the employee's boss's boss, and so on. Therefo
 sure that apart from the raw data, the result also contains type information that can be used by the UI in order to
 interpret the values.
 
-Graph queries can be run on a specific or on all databases. Dashjoin contains a partial OpenCypher implementation. Consider the following OpenCypher example:
+Graph queries can be run on a specific or on all databases. Dashjoin contains a partial OpenCypher implementation. Consider the following OpenCypher 
+example (to learn OpenCypher, please refer to [this interactive guide](https://neo4j.com/developer/cypher/querying/)):
 
 ```
 MATCH 
   path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish) 
 RETURN 
   start._dj_resource, boss.LAST_NAME, finish._dj_resource, path"
-}
 ```
 
 This query traverses the recursive "reports to" relationship. The variables start, boss, and finish
