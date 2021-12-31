@@ -786,13 +786,14 @@ Displays the result of an expression:
 
 * display: expression to display
 
-Depending on the result of the evaluation, one of the following four cases applies:
+Depending on the result of the evaluation, one of the following cases applies:
 
 * a single result value is displayed as is
 * an object is displayed as a key-value list
 * if the object has exactly the keys "database", "table", and "pk1", the result is displayed as a link to the record identified by these values
 * if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record
 * an array of objects is displayed as a table
+* if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
 
 ##### edit
 
