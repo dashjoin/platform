@@ -665,6 +665,12 @@ public class RDF4J extends AbstractDatabase {
                       // data suggests single value - retract array type
                       Map<String, Object> items = (Map<String, Object>) property.remove("items");
                       property.putAll(items);
+
+                      // change display props also - see addProp below
+                      // https://github.com/dashjoin/platform/issues/94
+                      property.remove("layout");
+                      if (property.remove("displayWith") != null)
+                        property.put("displayWith", "fkln");
                     }
                 }
               }
@@ -713,7 +719,16 @@ public class RDF4J extends AbstractDatabase {
     } else {
       ap.put("type", "string");
       ap.put("ref", ID + "/" + Escape.encodeTableOrColumnName(type) + "/ID");
-      ap.put("displayWith", "fkln");
+      if (array) {
+        // in a first step, arrays of URIs are shown using "array-select"
+        // this allows deleting array items and makes for a nice / space saving visualization
+        // in a next step, we'll add proper array edit capability
+        // https://github.com/dashjoin/platform/issues/94
+        p.put("layout", "select");
+        p.put("displayWith", "localName");
+      } else
+        // single keys are editable with the key lookup + localname
+        ap.put("displayWith", "fkln");
       ap.put("format", "uri");
       ap.put("errorMessage", "Please enter a valid URI");
     }
