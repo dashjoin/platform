@@ -120,6 +120,13 @@ export class Util {
         } else if (error.details) {
             msg = error.details;
         }
+
+        // If we got a HTML page, show the title as error msg
+        if (msg.indexOf('<title>') > 0) {
+            const i1 = msg.indexOf('<title>');
+            const i2 = msg.indexOf('</title>');
+            msg = msg.substring(i1 + '<title>'.length, i2);
+        }
         return Util.limitTextForSnackBar(msg);
     }
 
