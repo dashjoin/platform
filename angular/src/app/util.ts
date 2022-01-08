@@ -97,10 +97,10 @@ export class Util {
         let res = '';
         for (const line of s.split(/\s+/)) {
             for (let i = 0; i < Math.ceil(line.length / maxCharsPerLine); i++) {
-                res = res + line.substr(i * maxCharsPerLine, maxCharsPerLine) + ' ';
+                res = res + line.substring(i * maxCharsPerLine, maxCharsPerLine) + ' ';
             }
         }
-        return res.substr(0, 400);
+        return res.substring(0, 400);
     }
 
     /**
@@ -108,7 +108,7 @@ export class Util {
      */
     static errorMsg(error: any) {
         console.error(error);
-        let msg = error;
+        let msg = '' + error;
         if (typeof error.error === 'string') {
             msg = error.error;
         } else if (error.error instanceof ProgressEvent) {
