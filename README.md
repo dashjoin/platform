@@ -13,6 +13,8 @@ Webpage: <https://dashjoin.com/>
 
 Blog: <https://medium.com/@dashjoin>
 
+Training course slides: <https://download.dashjoin.com/training/platform.pdf>
+
 Video tutorials:
 
 [![Video tutorial](https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg)](https://www.youtube.com/channel/UCcXpJB1GzQN_opSGqegCgoA)
@@ -44,7 +46,7 @@ Features
 
 ## Getting Started: 15 Minute Tour
 
-This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
+This section will guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
 
 We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.
 
@@ -415,7 +417,9 @@ This section explains all Dashjoin features in more detail and serves as a refer
 
 ### Universal Database Frontend
 
-Dashjoin offers an intuitive default visualization for any kind of data. It features the following building blocks:
+Dashjoin offers an intuitive default visualization for any kind of data. 
+[Click here](https://www.youtube.com/watch?v=zXXtR9zSOXs) for a demo video.
+It features the following building blocks:
 
 #### Default Visualization of Tables
 
@@ -519,6 +523,7 @@ Please see the section on expressions for more details.
 ### Query Catalog and Editor
 
 The query catalog allows you to save queries that are used by other parts of the application. Usually, these are chart and table widgets that display query results. The catalog allows you to manage queries in a central place, reuse them across the application and define important metadata about parameters and access control.
+[Click here](https://www.youtube.com/watch?v=yxjE8GgXtfo) for a demo video.
 
 #### Query Catalog Page
 
@@ -967,6 +972,8 @@ These functions are introduced further later in the section on expressions. Seco
 however, they require additional configuration parameters. An example would be a function to send an email. The actual function call requires you to specify subject, sender, receiver, and the body. But you would not want to have to repeat the email server address and credentials every time. So you can
 register an instance of email service with specific parameters and call it email-service-1. This section describes the latter configurable functions.
 
+[Click here](https://www.youtube.com/watch?v=XuymQh6aMIk) for a demo video.
+
 #### Function Page
 
 The function page works a lot like the database page. It shows a table of the functions that have been created on the system. To create a new function, you first need to select the function type. Depending on your choice, you can enter the respective configuration parameters. The function type specifies whether the function is read only or whether it has side effects like sending email or writing data. Finally, the roles specify which user role is allowed to run the function.
@@ -1034,7 +1041,9 @@ Return value
 
 Mapping functions are specialized functions that have no invocation parameters and outputs.
 They are used to write data into a database and can be run in a scheduled fashion.
-All mapping functions perform the following three steps:
+All mapping functions perform the following three steps.
+
+[Click here](https://www.youtube.com/watch?v=ZsjyucALidY) for a demo video.
 
 ##### Gathering Data
 
@@ -1272,6 +1281,8 @@ Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'
 Note: this only works the very first time! After a development admin is created, no more local users can be created from the UI. To change or disable the local user, please edit or delete the files djroles.properties and djusers.properties in the application root directory.
 
 The Dashjoin authentication is configured to allow log in using social Google or Github accounts, or to allow registration of users by e-mail and password (authentication via e-mail uses the Google Firebase authentication).
+
+[Click here](https://www.youtube.com/watch?v=_xmFRwhbAFA) for a demo video.
 
 ### Opening the Dashjoin application
 
@@ -1551,6 +1562,8 @@ MongoDB | mongodb-driver-sync  | 4.1.0 | beta |
 |---|---|---|---|
 RDF4J | rdf4j-runtime  | 3.1.2 | beta / must be deployed as a remote database - see the [module page](https://github.com/dashjoin/platform/tree/master/dashjoin-rdf4j) for setup instructions |
 ArangoDB | arangodb-java-driver  | 6.14.0 | beta |
+
+[Click here](https://www.youtube.com/watch?v=_itCZjvw9D8) for a demo video.
 
 ## API
 
