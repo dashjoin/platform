@@ -439,7 +439,12 @@ Dashjoin offers a powerful search capability of the underlying databases. When y
 * the name of the column that matched the search
 * the matching column value
 
-TODO: define the exact search semantics (lower / upper case, startswith, contains, etc.)
+In order to boost performance, Dashjoin pushes down the search queries to the underlying databases if possible.
+Therefore, depending on the database, the search might match keywords slight differently:
+
+* SQL databases perform a case insensitive contains operation (i.e. "My Test String" would match the search term "test")
+* Firestore performs a case sensitive starts with operation (i.e. "My Test String" would match the search term "My" but not "test")
+* The default implementation behaves like SQL
 
 ### Data and Database Management
 
