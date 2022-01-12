@@ -1319,7 +1319,7 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_ADMIN_USER: admin user name (defaults to "admin")
 * DJ_ADMIN_PASS: admin password (default is blank)
 * DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
-* DASHJOIN_HOME: defines the dashjoin working directory (defaults to userhome/.dashjoin or /deployments/model when using docker)
+* DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from
 
 ### Build Locally

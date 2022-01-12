@@ -67,6 +67,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.sqlite.JDBC;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.db2.jcc.DB2Driver;
@@ -193,7 +194,10 @@ public class Manage {
     }
   }
 
-  protected static final ObjectMapper objectMapper = new ObjectMapper();
+  protected static final ObjectMapper objectMapper = new ObjectMapper()
+      .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+      .configure(JsonReadFeature.ALLOW_SINGLE_QUOTES.mappedFeature(), true)
+      .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);;
 
   @Inject
   UserProfileManager userProfileManager;
