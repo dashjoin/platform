@@ -411,7 +411,7 @@ public class SQLDatabase extends AbstractDatabase {
                       url.pk.add(p);
 
                   if (s.toString().toLowerCase().contains(search)) {
-                    ret.add(SearchResult.of(url, md.getColumnName(i), s));
+                    ret.add(SearchResult.of(url, md.getColumnName(i), serialize(md, res, i)));
                     if (limit != null && ret.size() >= limit)
                       return ret;
                     break;
