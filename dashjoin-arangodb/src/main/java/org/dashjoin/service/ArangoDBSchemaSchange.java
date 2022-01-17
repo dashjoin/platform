@@ -47,8 +47,7 @@ public class ArangoDBSchemaSchange implements SchemaChange {
   @Override
   public void createColumn(String table, String columnName, String columnType) throws Exception {
     ArangoCollection collection = db.con().collection(table);
-    Map<String, Map<String, Object>> schema =
-        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    Map<String, Map<String, Object>> schema = getSchemaOrDefault(collection);
     schema.get("properties").put(columnName, MapUtil.of("type", columnType));
     writeSchema(collection, schema);
   }
@@ -56,8 +55,7 @@ public class ArangoDBSchemaSchange implements SchemaChange {
   @Override
   public void renameColumn(String table, String column, String newName) throws Exception {
     ArangoCollection collection = db.con().collection(table);
-    Map<String, Map<String, Object>> schema =
-        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    Map<String, Map<String, Object>> schema = getSchemaOrDefault(collection);
     Object keep = schema.get("properties").remove(column);
     schema.get("properties").put(newName, keep);
     writeSchema(collection, schema);
@@ -66,8 +64,7 @@ public class ArangoDBSchemaSchange implements SchemaChange {
   @Override
   public void alterColumn(String table, String column, String newType) throws Exception {
     ArangoCollection collection = db.con().collection(table);
-    Map<String, Map<String, Object>> schema =
-        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    Map<String, Map<String, Object>> schema = getSchemaOrDefault(collection);
     @SuppressWarnings("unchecked")
     Map<String, Object> col = (Map<String, Object>) schema.get("properties").get(column);
     col.put("type", newType);
@@ -77,8 +74,7 @@ public class ArangoDBSchemaSchange implements SchemaChange {
   @Override
   public void dropColumn(String table, String column) throws Exception {
     ArangoCollection collection = db.con().collection(table);
-    Map<String, Map<String, Object>> schema =
-        objectMapper.readValue(collection.getProperties().getSchema().getRule(), JSONDatabase.trr);
+    Map<String, Map<String, Object>> schema = getSchemaOrDefault(collection);
     schema.get("properties").remove(column);
     writeSchema(collection, schema);
   }
@@ -90,5 +86,14 @@ public class ArangoDBSchemaSchange implements SchemaChange {
     rule.setRule(objectMapper.writeValueAsString(schema));
     opts.schema(rule);
     collection.changeProperties(opts);
+  }
+
+  Map<String, Map<String, Object>> getSchemaOrDefault(ArangoCollection collection)
+      throws Exception {
+    if (collection.getProperties().getSchema() != null)
+      return objectMapper.readValue(collection.getProperties().getSchema().getRule(),
+          JSONDatabase.trr);
+    else
+      return MapUtil.of("properties", MapUtil.of());
   }
 }
