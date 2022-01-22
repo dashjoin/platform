@@ -160,7 +160,7 @@ public class Manage {
       int colindex = -1;
       for (Cell c : record) {
         colindex++;
-        if (colindex < c.getColumnIndex()) {
+        while (colindex < c.getColumnIndex()) {
           colindex++;
           this.record.add("");
         }
