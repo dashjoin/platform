@@ -24,7 +24,7 @@ http://localhost:8082/swagger-ui/
 To start the main system:
 
 ```
-docker run --name dashjoin -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj dashjoin/dashjoin
+docker run --name dashjoin -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj dashjoin/platform
 ```
 
 Login using admin / djdjdj
