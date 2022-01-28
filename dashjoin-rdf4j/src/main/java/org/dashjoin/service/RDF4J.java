@@ -63,6 +63,8 @@ public class RDF4J extends AbstractDatabase {
 
   public List<String> datasets;
 
+  public List<String> ontologies;
+
   public String endpoint;
 
   public String folder;
@@ -130,7 +132,7 @@ public class RDF4J extends AbstractDatabase {
         return literal.calendarValue();
       if (XSD.DATETIME.equals(literal.getDatatype()))
         return literal.calendarValue();
-      throw new RuntimeException("Not implemented");
+      return literal.stringValue();
     } else
       return string((Resource) object);
   }
@@ -522,12 +524,28 @@ public class RDF4J extends AbstractDatabase {
 
       if (datasets != null && "memory".equals(mode))
         for (String s : datasets) {
+          log.info("loading dataset " + s);
           InputStream ddl = getClass().getResourceAsStream(s);
           RDFFormat format = Rio.getParserFormatForFileName(s).orElse(RDFFormat.RDFXML);
           con.add(ddl, "", format);
         }
 
+      if (ontologies != null) {
+        log.info("loading ontologies from " + ontologies);
+        RDF4J tmp = new RDF4J() {
+          @Override
+          RepositoryConnection getConnection() {
+            return _cp.getConnection();
+          }
+        };
+        tmp.ID = ID;
+        tmp.mode = "memory";
+        tmp.datasets = this.ontologies;
+        return tmp.connectAndCollectMetadata();
+      }
+
       // scan the ontology for property (domain and range info)
+      log.info("loading ontologies from database");
       Map<IRI, Set<IRI>> type2props = new HashMap<>();
       Map<IRI, Set<IRI>> prop2types = new HashMap<>();
       for (IRI dr : new IRI[] {RDFS.DOMAIN, RDFS.RANGE}) {
@@ -611,7 +629,10 @@ public class RDF4J extends AbstractDatabase {
       for (IRI root : roots)
         copyProps(root, subclasses, meta);
 
+      log.info("detected " + meta.size() + " classes");
+
       // scan props using one sample
+      log.info("scannning data...");
       for (Entry<String, Object> cls : meta.entrySet())
         try (RepositoryResult<Statement> types =
             con.getStatements(null, RDF.TYPE, iri(cls.getKey()))) {
@@ -677,6 +698,9 @@ public class RDF4J extends AbstractDatabase {
             }
           }
         }
+
+      log.info("done");
+      log.info("" + meta);
     }
     return meta;
   }
@@ -801,11 +825,6 @@ public class RDF4J extends AbstractDatabase {
   }
 
   public Integer getMaxCardinality(Resource iri) {
-
-    // skip this due to performance reasons
-    if ("client".equals(mode))
-      return null;
-
     try (RepositoryConnection con = getConnection()) {
       try (RepositoryResult<Statement> out = con.getStatements(iri, OWL.MAXCARDINALITY, null)) {
         while (out.hasNext()) {
