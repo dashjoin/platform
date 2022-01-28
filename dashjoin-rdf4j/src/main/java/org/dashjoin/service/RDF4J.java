@@ -38,7 +38,7 @@ import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.model.vocabulary.OWL;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.model.vocabulary.RDFS;
-import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.query.TupleQuery;
 import org.eclipse.rdf4j.query.TupleQueryResult;
@@ -108,27 +108,27 @@ public class RDF4J extends AbstractDatabase {
   Object object(Value object) {
     if (object instanceof Literal) {
       Literal literal = (Literal) object;
-      if (XMLSchema.INTEGER.equals(literal.getDatatype()))
+      if (XSD.INTEGER.equals(literal.getDatatype()))
         return literal.intValue();
-      if (XMLSchema.INT.equals(literal.getDatatype()))
+      if (XSD.INT.equals(literal.getDatatype()))
         return literal.intValue();
-      if (XMLSchema.LONG.equals(literal.getDatatype()))
+      if (XSD.LONG.equals(literal.getDatatype()))
         return literal.longValue();
-      if (XMLSchema.STRING.equals(literal.getDatatype()))
+      if (XSD.STRING.equals(literal.getDatatype()))
         return literal.stringValue();
       if (RDF.LANGSTRING.equals(literal.getDatatype()))
         return literal.stringValue();
-      if (XMLSchema.BOOLEAN.equals(literal.getDatatype()))
+      if (XSD.BOOLEAN.equals(literal.getDatatype()))
         return literal.booleanValue();
-      if (XMLSchema.DOUBLE.equals(literal.getDatatype()))
+      if (XSD.DOUBLE.equals(literal.getDatatype()))
         return literal.doubleValue();
-      if (XMLSchema.DECIMAL.equals(literal.getDatatype()))
+      if (XSD.DECIMAL.equals(literal.getDatatype()))
         return literal.decimalValue();
-      if (XMLSchema.DATE.equals(literal.getDatatype()))
+      if (XSD.DATE.equals(literal.getDatatype()))
         return literal.calendarValue();
-      if (XMLSchema.GYEAR.equals(literal.getDatatype()))
+      if (XSD.GYEAR.equals(literal.getDatatype()))
         return literal.calendarValue();
-      if (XMLSchema.DATETIME.equals(literal.getDatatype()))
+      if (XSD.DATETIME.equals(literal.getDatatype()))
         return literal.calendarValue();
       throw new RuntimeException("Not implemented");
     } else
@@ -699,6 +699,10 @@ public class RDF4J extends AbstractDatabase {
     if (type.startsWith("http://www.w3.org/2001/XMLSchema#")) {
       if ("http://www.w3.org/2001/XMLSchema#integer".equals(type))
         ap.put("type", "integer");
+      else if ("http://www.w3.org/2001/XMLSchema#positiveInteger".equals(type))
+        ap.put("type", "integer");
+      else if ("http://www.w3.org/2001/XMLSchema#nonNegativeInteger".equals(type))
+        ap.put("type", "integer");
       else if ("http://www.w3.org/2001/XMLSchema#gYear".equals(type))
         ap.put("type", "integer");
       else if ("http://www.w3.org/2001/XMLSchema#decimal".equals(type))
@@ -707,10 +711,22 @@ public class RDF4J extends AbstractDatabase {
         ap.put("type", "boolean");
       else if ("http://www.w3.org/2001/XMLSchema#double".equals(type))
         ap.put("type", "number");
+      else if ("http://www.w3.org/2001/XMLSchema#float".equals(type))
+        ap.put("type", "number");
       else if ("http://www.w3.org/2001/XMLSchema#date".equals(type)) {
         ap.put("widget", "date");
         ap.put("type", "string");
-      } else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
+      } else if ("http://www.w3.org/2001/XMLSchema#anyURI".equals(type))
+        ap.put("type", "string");
+      else if ("http://www.w3.org/2001/XMLSchema#string".equals(type))
+        ap.put("type", "string");
+      else if ("http://www.w3.org/2001/XMLSchema#dateTime".equals(type))
+        ap.put("type", "string");
+      else if ("http://www.w3.org/2001/XMLSchema#gYearMonth".equals(type))
+        ap.put("type", "string");
+      else if ("http://www.w3.org/2001/XMLSchema#gMonthDay".equals(type))
+        ap.put("type", "string");
+      else if ("http://www.w3.org/2001/XMLSchema#Literal".equals(type))
         ap.put("type", "string");
       else {
         ap.put("type", "string");
@@ -785,6 +801,11 @@ public class RDF4J extends AbstractDatabase {
   }
 
   public Integer getMaxCardinality(Resource iri) {
+
+    // skip this due to performance reasons
+    if ("client".equals(mode))
+      return null;
+
     try (RepositoryConnection con = getConnection()) {
       try (RepositoryResult<Statement> out = con.getStatements(iri, OWL.MAXCARDINALITY, null)) {
         while (out.hasNext()) {

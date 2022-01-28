@@ -164,6 +164,7 @@ public class RDF4JEditor implements QueryEditorInternal {
     return noop(ac);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public QueryResponse noop(QueryDatabase query) throws Exception {
     QueryResponse res = new QueryResponse();

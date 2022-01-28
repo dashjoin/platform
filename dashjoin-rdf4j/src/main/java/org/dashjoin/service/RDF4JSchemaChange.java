@@ -6,7 +6,7 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.vocabulary.OWL;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.model.vocabulary.RDFS;
-import org.eclipse.rdf4j.model.vocabulary.XMLSchema;
+import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.eclipse.rdf4j.query.Update;
 import org.eclipse.rdf4j.repository.RepositoryConnection;
 
@@ -28,7 +28,7 @@ public class RDF4JSchemaChange implements SchemaChange {
     try (RepositoryConnection con = db.getConnection()) {
       con.add(db.iri(table), RDF.TYPE, RDFS.CLASS, context);
       con.add(RDFS.LABEL, RDFS.DOMAIN, db.iri(table), context);
-      con.add(RDFS.LABEL, RDFS.RANGE, XMLSchema.STRING, context);
+      con.add(RDFS.LABEL, RDFS.RANGE, XSD.STRING, context);
       con.add(RDFS.LABEL, OWL.MAXCARDINALITY, db.literal(1), context);
     }
   }
@@ -61,15 +61,15 @@ public class RDF4JSchemaChange implements SchemaChange {
   IRI type(String columnType) {
     switch (columnType) {
       case "date":
-        return XMLSchema.DATE;
+        return XSD.DATE;
       case "integer":
-        return XMLSchema.INTEGER;
+        return XSD.INTEGER;
       case "number":
-        return XMLSchema.DOUBLE;
+        return XSD.DOUBLE;
       case "string":
-        return XMLSchema.STRING;
+        return XSD.STRING;
       case "boolean":
-        return XMLSchema.BOOLEAN;
+        return XSD.BOOLEAN;
       default:
         throw new IllegalArgumentException("Unknown type: " + columnType);
     }
