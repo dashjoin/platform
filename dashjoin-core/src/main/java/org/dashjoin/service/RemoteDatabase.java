@@ -3,8 +3,10 @@ package org.dashjoin.service;
 import static org.dashjoin.util.Escape.e;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.ws.rs.WebApplicationException;
 import org.dashjoin.function.RestJson;
 import org.dashjoin.model.AbstractDatabase;
@@ -86,8 +88,12 @@ public class RemoteDatabase extends AbstractDatabase {
   @Override
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
-    return (Map<String, Property>) call("queryMeta",
+    Map<String, Map<String, Object>> res = (Map<String, Map<String, Object>>) call("queryMeta",
         MapUtil.of("query", info.query, "arguments", arguments));
+    Map<String, Property> props = new LinkedHashMap<>();
+    for (Entry<String, Map<String, Object>> e : res.entrySet())
+      props.put(e.getKey(), objectMapper.convertValue(e.getValue(), Property.class));
+    return props;
   }
 
   @Override

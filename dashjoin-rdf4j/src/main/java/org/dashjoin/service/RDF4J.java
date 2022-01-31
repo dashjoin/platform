@@ -701,7 +701,6 @@ public class RDF4J extends AbstractDatabase {
         }
 
       log.info("done");
-      log.info("" + meta);
     }
     return meta;
   }
@@ -813,6 +812,11 @@ public class RDF4J extends AbstractDatabase {
   }
 
   public IRI getType(Resource iri) {
+
+    // BNode references not supported by SPARQL end-points
+    if ("client".equals(mode) && iri instanceof BNode)
+      return null;
+
     try (RepositoryConnection con = getConnection()) {
       try (RepositoryResult<Statement> out = con.getStatements(iri, RDF.TYPE, null)) {
         while (out.hasNext()) {
