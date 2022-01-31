@@ -248,6 +248,29 @@ public class RDF4JEditor implements QueryEditorInternal {
                   res.joinOptions.add(ac);
               }
             }
+
+            String tbl = Escape.parseTableID(p.parent)[2];
+            if (tbl != null) {
+              Table tb = db.tables.get(tbl);
+              if (tb != null)
+                for (Property tp : tb.properties.values()) {
+                  AddColumnRequest ac = new AddColumnRequest();
+                  ac.col = new Col();
+                  ac.col.column = p.name;
+                  ac.add = new Col();
+                  ac.add.table = tb.name;
+                  ac.add.column = tp.name;
+
+                  boolean alreadyPresent = false;
+                  for (Stmt m : parse.where)
+                    if (m.object.name.equals(p.name))
+                      if (m.predicate.name.equals(ac.add.column))
+                        alreadyPresent = true;
+
+                  if (!alreadyPresent)
+                    res.joinOptions.add(ac);
+                }
+            }
           }
         }
     }

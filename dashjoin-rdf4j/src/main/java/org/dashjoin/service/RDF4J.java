@@ -828,14 +828,20 @@ public class RDF4J extends AbstractDatabase {
 
     try (RepositoryConnection con = getConnection()) {
       try (RepositoryResult<Statement> out = con.getStatements(iri, RDF.TYPE, null)) {
+        IRI fallback = null;
         while (out.hasNext()) {
           Value s = out.next().getObject();
-          if (s instanceof IRI)
-            return (IRI) s;
+          if (s instanceof IRI) {
+            if (fallback == null)
+              fallback = (IRI) s;
+            String table = string((IRI) s);
+            if (tables.containsKey(table))
+              return (IRI) s;
+          }
         }
+        return fallback;
       }
     }
-    return null;
   }
 
   public Integer getMaxCardinality(Resource iri) {
