@@ -62,5 +62,5 @@ The RDF database can be configured via the following Quarkus config options:
 So for instance if you'd like to use a blank local RDF store, you can start the container by setting the dashjoin.database.mode and dashjoin.database.folder environment variables using the -e command line option:
 
 ```
-docker run --name rdf4j -p 8082:8082 -e dashjoin.database.mode=local -e dashjoin.database.folder=. dashjoin/rdf4j
+docker run --name rdf4j -p 8082:8082 -e DASHJOIN_DATABASE_MODE=local -e DASHJOIN_DATABASE_FOLDER=. dashjoin/rdf4j
 ```
