@@ -53,6 +53,7 @@ import org.dashjoin.service.QueryEditor.QueryColumn;
 import org.dashjoin.service.ddl.SQLSchemaChange;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.FileSystem;
+import org.dashjoin.util.Loader;
 import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
 import org.postgresql.jdbc.PgArray;
@@ -213,7 +214,7 @@ public class SQLDatabase extends AbstractDatabase {
     try (Connection con = ds.getConnection()) {
       if (initScripts != null)
         for (String s : initScripts) {
-          InputStream ddl = getClass().getResourceAsStream(s);
+          InputStream ddl = Loader.open(s);
           RunScript.execute(con, new InputStreamReader(ddl, StandardCharsets.UTF_8));
         }
       Metadata meta = new Metadata(con, url);

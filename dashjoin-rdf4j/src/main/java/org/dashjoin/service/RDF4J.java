@@ -25,6 +25,7 @@ import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.service.rdf4j.Query;
 import org.dashjoin.service.rdf4j.Query.Variable;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.Loader;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import org.eclipse.rdf4j.model.BNode;
@@ -525,7 +526,7 @@ public class RDF4J extends AbstractDatabase {
       if (datasets != null && "memory".equals(mode))
         for (String s : datasets) {
           log.info("loading dataset " + s);
-          InputStream ddl = getClass().getResourceAsStream(s);
+          InputStream ddl = Loader.open(s);
           RDFFormat format = Rio.getParserFormatForFileName(s).orElse(RDFFormat.RDFXML);
           con.add(ddl, "", format);
         }

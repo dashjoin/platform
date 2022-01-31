@@ -20,6 +20,7 @@ import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.Loader;
 import org.dashjoin.util.OpenCypherQuery.Path;
 import org.dashjoin.util.OpenCypherQuery.Step;
 import org.dashjoin.util.Template;
@@ -111,7 +112,7 @@ public class ArangoDB extends AbstractDatabase {
         if (drop.exists())
           drop.drop();
         CollectionEntity col = con.createCollection(FilenameUtils.getBaseName(s));
-        InputStream ddl = getClass().getResourceAsStream(s);
+        InputStream ddl = Loader.open(s);
         List<Map<String, Object>> arr = objectMapper.readValue(ddl, JSONDatabase.trTable);
         for (Map<String, Object> i : arr) {
           con.collection(col.getName()).insertDocument(i);

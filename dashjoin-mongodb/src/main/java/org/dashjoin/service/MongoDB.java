@@ -27,6 +27,7 @@ import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.Loader;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +92,7 @@ public class MongoDB extends AbstractDatabase {
     if (datasets != null)
       for (String s : datasets) {
         MongoCollection<Document> col = con.getCollection(FilenameUtils.getBaseName(s));
-        InputStream ddl = getClass().getResourceAsStream(s);
+        InputStream ddl = Loader.open(s);
         ArrayNode arr = (ArrayNode) objectMapper.readTree(ddl);
         for (JsonNode i : arr) {
           Document doc = Document.parse(i.toString());
