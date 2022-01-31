@@ -373,7 +373,16 @@ public class RDF4J extends AbstractDatabase {
     String w = "";
     if (arguments != null)
       for (Entry<String, Object> a : arguments.entrySet()) {
-        if (s.properties.get(a.getKey()).ref == null)
+        if (a.getValue() instanceof List) {
+          @SuppressWarnings("unchecked")
+          List<Object> list = (List<Object>) a.getValue();
+          if (list.isEmpty())
+            continue;
+          a.setValue(list.get(0));
+        }
+        Property prop = s.properties.get(a.getKey());
+        String ref = prop.items == null ? prop.ref : prop.items.ref;
+        if (ref == null)
           w = w + " . ?s <" + iri(a.getKey()) + "> " + literal(a.getValue());
         else
           w = w + " . ?s <" + iri(a.getKey()) + "> <" + iri(a.getValue()) + ">";

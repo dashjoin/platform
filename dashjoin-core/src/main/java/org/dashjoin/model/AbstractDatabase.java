@@ -439,7 +439,7 @@ public abstract class AbstractDatabase implements Database {
         ACLContainerRequestFilter.check(sc, d, s);
         if (s.properties != null)
           for (Property p : s.properties.values())
-            if (pk.equals(p.ref)) {
+            if (pk.equals(p.items == null ? p.ref : p.items.ref)) {
               Map<String, Object> search = new HashMap<>();
               search.put(p.name, objectId);
               d.cast(s, search);
