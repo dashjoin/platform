@@ -52,6 +52,11 @@ public class Home {
       try {
         String[] files = new File(fileHome).list();
         if (files != null && files.length > 0) {
+
+          if (!new File(fileHome + "/.git").exists())
+            throw new Exception(
+                "Directory " + fileHome + " must be empty or contain a .git folder");
+
           try (Git git = new Git(new FileRepository(fileHome + "/.git"))) {
             log.info("git pull ...");
             git.pull().call();
