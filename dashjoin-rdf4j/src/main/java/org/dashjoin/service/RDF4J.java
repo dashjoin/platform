@@ -1,7 +1,11 @@
 package org.dashjoin.service;
 
+import static org.eclipse.rdf4j.model.util.Values.iri;
+
 import java.io.File;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,6 +58,17 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
 import org.eclipse.rdf4j.sail.nativerdf.NativeStore;
+
+import com.inova8.intelligentgraph.constants.IntelligentGraphConstants;
+import com.inova8.intelligentgraph.dashjoin.PathSteps;
+import com.inova8.intelligentgraph.model.Thing;
+import com.inova8.intelligentgraph.path.Path;
+import com.inova8.intelligentgraph.results.PathResults;
+import com.inova8.intelligentgraph.sail.IntelligentGraphConfig;
+import com.inova8.intelligentgraph.sail.IntelligentGraphFactory;
+import com.inova8.intelligentgraph.sail.IntelligentGraphSail;
+import com.inova8.intelligentgraph.vocabulary.PATHQL;
+
 import lombok.extern.java.Log;
 
 /**
@@ -499,27 +514,68 @@ public class RDF4J extends AbstractDatabase {
   }
 
   @Override
-  public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments)
-      throws Exception {
-    List<Map<String, Object>> res = queryInternal(info, arguments, true);
-    return res;
-  }
+  @SuppressWarnings("unchecked")
+	public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments) throws Exception {
+		List<Map<String, Object>> res =  new ArrayList<>();
+		String[] queryParts = info.query.split(IntelligentGraphConstants.PATH_QL_REGEX);
+		switch (queryParts[0]) {
+			case "getFact":
+			case "getFacts":
+				break;
+			case "getPath":
+			case "getPaths":
+				IRI predicate = iri(PATHQL.NAMESPACE + URLEncoder.encode(info.query, StandardCharsets.UTF_8.toString()));
+				IRI subject = (IRI) info.arguments.get("subject");
+				Value object = (IRI) info.arguments.get("object");
+				PathResults pathsIterator = null;
+				try (RepositoryConnection con = getConnection()) {
+					RepositoryResult<Statement> resultsIterator = con.getStatements(subject, predicate, object);
+					Thing subjectThing = Thing.create(null, subject, null);
+					pathsIterator = new PathResults(resultsIterator, subjectThing, null, null);
+	
+					while (pathsIterator.hasNext()) {
+						Path path = pathsIterator.next();
+					    @SuppressWarnings("rawtypes")
+					    Map row = new LinkedHashMap(new PathSteps(path));
+					    res.add(row);
+						//System.out.println(path);
+						// use inova8 parsing libs
+					}
+				}catch(Exception e){
+					System.out.println(e.getMessage());
+				}finally {
+					if(pathsIterator!=null) pathsIterator.close();
+				}
+				break;
+			default:
+				res = queryInternal(info, arguments, true);
+
+		}
+		return res;
+	}
 
   @Override
   @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
-    if ("memory".equals(mode))
-      _cp = new SailRepository(new MemoryStore());
-    if ("local".equals(mode))
-      _cp = new SailRepository(new NativeStore(new File(folder)));
-    if ("sesame".equals(mode)) {
-      _cp = new HTTPRepository(endpoint);
-      ((HTTPRepository) _cp).setUsernameAndPassword(username, password);
-    }
-    if ("client".equals(mode)) {
-      _cp = new SPARQLRepository(endpoint);
-      ((SPARQLRepository) _cp).setUsernameAndPassword(username, password);
-    }
+		if ("memory".equals(mode)) {
+			IntelligentGraphConfig intelligentGraphConfig = new IntelligentGraphConfig();
+			IntelligentGraphFactory intelligentGraphFactory = new IntelligentGraphFactory();
+			IntelligentGraphSail intelligentGraphSail = (IntelligentGraphSail) intelligentGraphFactory
+					.getSail(intelligentGraphConfig);
+			intelligentGraphSail.setBaseSail(new MemoryStore());
+			_cp = new SailRepository(intelligentGraphSail);
+		}
+
+		if ("local".equals(mode))
+			_cp = new SailRepository(new NativeStore(new File(folder)));
+		if ("sesame".equals(mode)) {
+			_cp = new HTTPRepository(endpoint);
+			((HTTPRepository) _cp).setUsernameAndPassword(username, password);
+		}
+		if ("client".equals(mode)) {
+			_cp = new SPARQLRepository(endpoint);
+			((SPARQLRepository) _cp).setUsernameAndPassword(username, password);
+		}
 
     if (_cp == null)
       throw new Exception(

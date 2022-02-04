@@ -1,9 +1,21 @@
 package org.dashjoin.service;
 
+
+import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import com.inova8.intelligentgraph.vocabulary.PATHQL;
+
 import io.quarkus.test.junit.QuarkusTest;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.eclipse.rdf4j.model.util.Values.iri;
 
 @QuarkusTest
 public class RDF4JTest extends DBTest {
@@ -41,7 +53,7 @@ public class RDF4JTest extends DBTest {
         t.properties.get("http://ex.org/WORKSON").ref);
     Assert.assertEquals("dj/junit/" + ns + "EMP/" + ns + "WORKSON",
         t.properties.get("http://ex.org/WORKSON").ID);
-  }
+  } 
 
   @Override
   @Test
@@ -56,6 +68,43 @@ public class RDF4JTest extends DBTest {
   @Override
   @Test
   public void testPath() throws Exception {
-    // SPARQL does not support tracking property paths
+	  
+/*	  
+ 	{
+			"ID": "intelligentGraph.PathQL1",
+			"query": "getPaths?pathQL=(<http://ex.org/WORKSON>|^<http://ex.org/WORKSON>){0,3}",
+			"type": "read",
+			"roles": ["user"],
+			"arguments" : {
+    			"subject" : iri("http://ex.org/1"),
+    			 "object" : null
+  			}
+	}
+*/
+	  
+	  
+	  QueryMeta queryMeta =QueryMeta.ofQuery("getPaths?pathQL=(<http://ex.org/WORKSON>|^<http://ex.org/WORKSON>){1,3}");
+	  queryMeta.ID= "intelligentGraph.PathQL1";
+	  queryMeta.database = "dj/junit";
+	  Map<String, Object>  arguments = new HashMap<>();
+	  arguments.put("subject", iri("http://ex.org/1"));
+	  arguments.put("object", null);
+	  queryMeta.arguments=arguments;
+	  
+	  
+	  AbstractDatabase database = services.getConfig().getDatabase( queryMeta.database);
+
+	  List<Map<String, Object>> res = database.queryGraph(queryMeta, null);
+	  
+//	    SecurityContext sc = Mockito.mock(SecurityContext.class);
+//	    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+//	    List<Map<String, Object>> res = db.queryGraph(sc, "junit", "path", null);
+//	    Assert.assertEquals(2, res.size());
+//	    Map<String, Object> first = getMap(res.get(0), "path");
+//	    Assert.assertTrue(getMap(first, "start").containsKey("_dj_resource"));
+//	    List<Map<String, Object>> steps = getList(first, "steps");
+//	    Assert.assertEquals(1, steps.size());
+//	    Assert.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + steps.get(0).get("edge"));
+//	    Assert.assertTrue(getMap(steps.get(0), "end").containsKey("_dj_resource"));
   }
 }
