@@ -1,0 +1,73 @@
+[ {
+  "start" : {
+    "_dj_resource" : {
+      "database" : "dj/junit",
+      "pk" : [ "http://ex.org/1" ],
+      "table" : null
+    }
+  },
+  "steps" : [ {
+    "edge" : {
+      "edge.Predicate" : {
+        "_dj_resource" : {
+          "database" : "dj/junit",
+          "pk" : [ "http://ex.org/REPORTSTO" ],
+          "table" : null
+        }
+      },
+      "edge.Direction" : "DIRECT"
+    },
+    "end" : {
+      "_dj_resource" : {
+        "database" : "dj/junit",
+        "pk" : [ "http://ex.org/6" ],
+        "table" : null
+      }
+    }
+  } ]
+}, {
+  "start" : {
+    "_dj_resource" : {
+      "database" : "dj/junit",
+      "pk" : [ "http://ex.org/1" ],
+      "table" : null
+    }
+  },
+  "steps" : [ {
+    "edge" : {
+      "edge.Predicate" : {
+        "_dj_resource" : {
+          "database" : "dj/junit",
+          "pk" : [ "http://ex.org/REPORTSTO" ],
+          "table" : null
+        }
+      },
+      "edge.Direction" : "DIRECT"
+    },
+    "end" : {
+      "_dj_resource" : {
+        "database" : "dj/junit",
+        "pk" : [ "http://ex.org/6" ],
+        "table" : null
+      }
+    }
+  }, {
+    "edge" : {
+      "edge.Predicate" : {
+        "_dj_resource" : {
+          "database" : "dj/junit",
+          "pk" : [ "http://ex.org/REPORTSTO" ],
+          "table" : null
+        }
+      },
+      "edge.Direction" : "DIRECT"
+    },
+    "end" : {
+      "_dj_resource" : {
+        "database" : "dj/junit",
+        "pk" : [ "http://ex.org/8" ],
+        "table" : null
+      }
+    }
+  } ]
+} ]

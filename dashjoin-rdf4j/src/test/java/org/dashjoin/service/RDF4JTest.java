@@ -7,10 +7,12 @@ import org.dashjoin.model.Table;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import com.inova8.intelligentgraph.vocabulary.PATHQL;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +74,7 @@ public class RDF4JTest extends DBTest {
 /*	  
  	{
 			"ID": "intelligentGraph.PathQL1",
-			"query": "getPaths?pathQL=(<http://ex.org/WORKSON>|^<http://ex.org/WORKSON>){0,3}",
+			"query": "getPaths?pathQL=(<http://ex.org/REPORTSTO>){1,2}",
 			"type": "read",
 			"roles": ["user"],
 			"arguments" : {
@@ -82,9 +84,8 @@ public class RDF4JTest extends DBTest {
 	}
 */
 	  
-	  
-	  QueryMeta queryMeta =QueryMeta.ofQuery("getPaths?pathQL=(<http://ex.org/WORKSON>|^<http://ex.org/WORKSON>){1,3}");
-	  queryMeta.ID= "intelligentGraph.PathQL1";
+	  QueryMeta queryMeta =QueryMeta.ofQuery("getPaths?pathQL=(<http://ex.org/REPORTSTO>){1,2}");
+	  queryMeta.ID= "testPath";
 	  queryMeta.database = "dj/junit";
 	  Map<String, Object>  arguments = new HashMap<>();
 	  arguments.put("subject", iri("http://ex.org/1"));
@@ -96,15 +97,11 @@ public class RDF4JTest extends DBTest {
 
 	  List<Map<String, Object>> res = database.queryGraph(queryMeta, null);
 	  
-//	    SecurityContext sc = Mockito.mock(SecurityContext.class);
-//	    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-//	    List<Map<String, Object>> res = db.queryGraph(sc, "junit", "path", null);
-//	    Assert.assertEquals(2, res.size());
-//	    Map<String, Object> first = getMap(res.get(0), "path");
-//	    Assert.assertTrue(getMap(first, "start").containsKey("_dj_resource"));
-//	    List<Map<String, Object>> steps = getList(first, "steps");
-//	    Assert.assertEquals(1, steps.size());
-//	    Assert.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + steps.get(0).get("edge"));
-//	    Assert.assertTrue(getMap(steps.get(0), "end").containsKey("_dj_resource"));
+	  ObjectMapper mapper = new ObjectMapper();
+	  String resJSON = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.convertValue(res, JsonNode.class));
+
+	  String expectedJSON = Files.readString( Paths.get("./src/test/resources/results/", "junit", queryMeta.ID +".json"));
+
+	  Assert.assertEquals( expectedJSON, resJSON);
   }
 }

@@ -1,7 +1,5 @@
 package org.dashjoin.service;
 
-import static org.eclipse.rdf4j.model.util.Values.iri;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -535,11 +533,10 @@ public class RDF4J extends AbstractDatabase {
 	
 					while (pathsIterator.hasNext()) {
 						Path path = pathsIterator.next();
+					    PathSteps pathSteps= new PathSteps(info.database , path);
 					    @SuppressWarnings("rawtypes")
-					    Map row = new LinkedHashMap(new PathSteps(path));
+						Map row = new LinkedHashMap(pathSteps);
 					    res.add(row);
-						//System.out.println(path);
-						// use inova8 parsing libs
 					}
 				}catch(Exception e){
 					System.out.println(e.getMessage());
@@ -557,17 +554,24 @@ public class RDF4J extends AbstractDatabase {
   @Override
   @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
+	  IntelligentGraphConfig intelligentGraphConfig = null;
+	  IntelligentGraphFactory intelligentGraphFactory ;
+	  IntelligentGraphSail intelligentGraphSail;
 		if ("memory".equals(mode)) {
-			IntelligentGraphConfig intelligentGraphConfig = new IntelligentGraphConfig();
-			IntelligentGraphFactory intelligentGraphFactory = new IntelligentGraphFactory();
-			IntelligentGraphSail intelligentGraphSail = (IntelligentGraphSail) intelligentGraphFactory
-					.getSail(intelligentGraphConfig);
+			intelligentGraphConfig = new IntelligentGraphConfig();
+			intelligentGraphFactory = new IntelligentGraphFactory();
+			intelligentGraphSail = (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
 			intelligentGraphSail.setBaseSail(new MemoryStore());
 			_cp = new SailRepository(intelligentGraphSail);
 		}
-
-		if ("local".equals(mode))
-			_cp = new SailRepository(new NativeStore(new File(folder)));
+		if ("local".equals(mode)) {
+		//	_cp = new SailRepository(new NativeStore(new File(folder)));
+			intelligentGraphConfig = new IntelligentGraphConfig();
+			intelligentGraphFactory = new IntelligentGraphFactory();
+			intelligentGraphSail = (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
+			intelligentGraphSail.setBaseSail(new NativeStore(new File(folder)));
+			_cp = new SailRepository(intelligentGraphSail);
+		}
 		if ("sesame".equals(mode)) {
 			_cp = new HTTPRepository(endpoint);
 			((HTTPRepository) _cp).setUsernameAndPassword(username, password);
