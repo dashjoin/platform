@@ -28,17 +28,15 @@
 	<dependencies>
 		<!-- dev dependencies -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+    		<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
-		    <groupId>org.mockito</groupId>
-		    <artifactId>mockito-all</artifactId>
-		    <version>1.10.19</version>
-		    <scope>test</scope>
+    		<groupId>org.mockito</groupId>
+    		<artifactId>mockito-core</artifactId>
+    		<scope>test</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
@@ -226,11 +224,11 @@
 		    <artifactId>microprofile-jwt-auth-api</artifactId>
 		</dependency>
 
-
 <!-- Quarkus -->
     <dependency>
-      <groupId>io.quarkus</groupId>
+      <groupId>io.quarkiverse.jgit</groupId>
       <artifactId>quarkus-jgit</artifactId>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
