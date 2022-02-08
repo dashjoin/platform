@@ -1,6 +1,6 @@
 package org.dashjoin.util;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class EscapeTest {
@@ -18,7 +18,7 @@ public class EscapeTest {
   }
 
   void test(String s, String expected) {
-    Assert.assertEquals(Escape.encodeTableOrColumnName(s), expected);
-    Assert.assertEquals(s, Escape.decodeTableOrColumnName(Escape.encodeTableOrColumnName(s)));
+    Assertions.assertEquals(Escape.encodeTableOrColumnName(s), expected);
+    Assertions.assertEquals(s, Escape.decodeTableOrColumnName(Escape.encodeTableOrColumnName(s)));
   }
 }

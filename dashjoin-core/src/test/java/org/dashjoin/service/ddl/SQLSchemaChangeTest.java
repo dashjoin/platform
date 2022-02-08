@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import org.dashjoin.service.SQLDatabase;
 import org.dashjoin.service.Services;
 import org.h2.Driver;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
@@ -39,15 +38,15 @@ public class SQLSchemaChangeTest {
     SQLDatabase db = new SQLDatabase();
     db.url = "jdbc:postgres:...";
     SQLSchemaChange s = new SQLSchemaChange(db);
-    Assert.assertEquals("jsonb", s.t(null, null, "object"));
-    Assert.assertEquals("jsonb", s.t(null, null, "array"));
-    Assert.assertEquals("INTEGER", s.t(null, null, "integer"));
-    Assert.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
-    Assert.assertEquals("DOUBLE PRECISION", s.t(null, null, "number"));
-    Assert.assertEquals("TIMESTAMP", s.t(null, null, "date"));
-    Assert.assertEquals("TEXT", s.t(null, null, "string"));
+    Assertions.assertEquals("jsonb", s.t(null, null, "object"));
+    Assertions.assertEquals("jsonb", s.t(null, null, "array"));
+    Assertions.assertEquals("INTEGER", s.t(null, null, "integer"));
+    Assertions.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
+    Assertions.assertEquals("DOUBLE PRECISION", s.t(null, null, "number"));
+    Assertions.assertEquals("TIMESTAMP", s.t(null, null, "date"));
+    Assertions.assertEquals("TEXT", s.t(null, null, "string"));
     Assertions.assertThrows(RuntimeException.class, () -> {
-      Assert.assertEquals("BOOLEAN", s.t(null, null, "unknown"));
+      Assertions.assertEquals("BOOLEAN", s.t(null, null, "unknown"));
     });
   }
 
@@ -56,16 +55,16 @@ public class SQLSchemaChangeTest {
     SQLDatabase db = new SQLDatabase();
     db.url = "jdbc:other:...";
     SQLSchemaChange s = new SQLSchemaChange(db);
-    Assert.assertEquals("INTEGER", s.t(null, null, "integer"));
-    Assert.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
-    Assert.assertEquals("DOUBLE", s.t(null, null, "number"));
-    Assert.assertEquals("DATETIME", s.t(null, null, "date"));
-    Assert.assertEquals("VARCHAR(255)", s.t(null, null, "string"));
+    Assertions.assertEquals("INTEGER", s.t(null, null, "integer"));
+    Assertions.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
+    Assertions.assertEquals("DOUBLE", s.t(null, null, "number"));
+    Assertions.assertEquals("DATETIME", s.t(null, null, "date"));
+    Assertions.assertEquals("VARCHAR(255)", s.t(null, null, "string"));
     Assertions.assertThrows(RuntimeException.class, () -> {
-      Assert.assertEquals("jsonb", s.t(null, null, "object"));
+      Assertions.assertEquals("jsonb", s.t(null, null, "object"));
     });
     Assertions.assertThrows(RuntimeException.class, () -> {
-      Assert.assertEquals("jsonb", s.t(null, null, "array"));
+      Assertions.assertEquals("jsonb", s.t(null, null, "array"));
     });
   }
 }

@@ -20,7 +20,6 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -61,8 +60,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Table s = new Table();
     s.name = "EMP";
     db.update(s, of("ID", 1), of("NAME", "newname"));
-    Assert.assertEquals("newname", db.read(s, of("ID", 1)).get("NAME"));
-    Assert.assertEquals(1000, db.read(s, of("ID", 1)).get("WORKSON"));
+    Assertions.assertEquals("newname", db.read(s, of("ID", 1)).get("NAME"));
+    Assertions.assertEquals(1000, db.read(s, of("ID", 1)).get("WORKSON"));
     db.delete(s, of("ID", 1));
 
     // cleanup
@@ -74,7 +73,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Map<String, Object> old = ImmutableMap.of("a", 1);
     Map<String, Object> value = ImmutableMap.of("b", "B");
     Map<String, Object> merge = merge(old, value);
-    Assert.assertEquals("{a=1, b=B}", merge.toString());
+    Assertions.assertEquals("{a=1, b=B}", merge.toString());
   }
 
   @Test
@@ -82,38 +81,38 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Map<String, Object> old = ImmutableMap.of("a", 1);
     Map<String, Object> value = ImmutableMap.of("a", "B");
     Map<String, Object> merge = merge(old, value);
-    Assert.assertEquals("{a=B}", merge.toString());
+    Assertions.assertEquals("{a=B}", merge.toString());
   }
 
   @Test
   public void mergeLeftNull() {
     Map<String, Object> merge = merge(null, of("a", 1));
-    Assert.assertEquals("{a=1}", merge.toString());
+    Assertions.assertEquals("{a=1}", merge.toString());
   }
 
   @Test
   public void mergeRightNull() {
     Map<String, Object> merge = merge(of("a", 1), null);
-    Assert.assertEquals("{a=1}", merge.toString());
+    Assertions.assertEquals("{a=1}", merge.toString());
   }
 
   @Test
   public void mergeNested() {
     Map<String, Object> merge = merge(of("a", of("b", 1)), of("a", of("c", 1)));
-    Assert.assertEquals("{a={b=1, c=1}}", merge.toString());
+    Assertions.assertEquals("{a={b=1, c=1}}", merge.toString());
   }
 
   @Test
   public void mergeDelete() {
     Map<String, Object> merge = merge(of("a", 1), singletonMap("a", null));
-    Assert.assertEquals("{}", merge.toString());
+    Assertions.assertEquals("{}", merge.toString());
   }
 
   @Test
   public void mergeArray() {
     // lists are not merged, since otherwise there is no way to delete a list
     Map<String, Object> merge = merge(of("a", asList(1)), of("a", asList(2)));
-    Assert.assertEquals("{a=[2]}", merge.toString());
+    Assertions.assertEquals("{a=[2]}", merge.toString());
   }
 
   @Test
@@ -121,28 +120,28 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     // lists are not merged, since otherwise there is no way to delete a list
     Map<String, Object> merge = UnionDatabase.mergeArray(of("a", newArrayList(asList(1))),
         of("a", newArrayList(asList(2))));
-    Assert.assertEquals("{a=[1, 2]}", merge.toString());
+    Assertions.assertEquals("{a=[1, 2]}", merge.toString());
   }
 
   @Test
   public void deleteArray() {
     // lists are not merged, since otherwise there is no way to delete a list
     Map<String, Object> merge = merge(of("a", asList(1)), singletonMap("a", null));
-    Assert.assertEquals("{}", merge.toString());
+    Assertions.assertEquals("{}", merge.toString());
   }
 
   @Test
   public void pojo() throws Exception {
     PojoDatabase db = db();
     Database d = db.getDatabase("dj/junit");
-    Assert.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d).url);
+    Assertions.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d).url);
   }
 
   @Test
   public void pojoAll() throws Exception {
     PojoDatabase db = db();
     List<AbstractDatabase> d = db.getDatabases();
-    Assert.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d.get(0)).url);
+    Assertions.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d.get(0)).url);
   }
 
   @Test
@@ -152,19 +151,19 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Table m = new Table();
     m.name = "dj-database";
     db.create(m, of("ID", "c", "djClassName", SQLDatabase.class.getName(), "url", "jdbc:h2:mem:c"));
-    Assert.assertNotNull(db.getCached("c"));
+    Assertions.assertNotNull(db.getCached("c"));
 
     Object beforeUpdate = db.getCached("c");
     db.update(m, of("ID", "c"), MapUtil.of("url", "jdbc:h2:mem:newurl"));
     Object afterUpdate = db.getCached("c");
-    Assert.assertNotNull(afterUpdate);
-    Assert.assertFalse(beforeUpdate == afterUpdate);
+    Assertions.assertNotNull(afterUpdate);
+    Assertions.assertFalse(beforeUpdate == afterUpdate);
 
     db.delete(m, of("ID", "c"));
-    Assert.assertNull(db.getCached("c"));
+    Assertions.assertNull(db.getCached("c"));
     try {
       db.getDatabase("c");
-      Assert.fail();
+      Assertions.fail();
     } catch (IllegalArgumentException shouldOccurr) {
     }
   }
@@ -179,29 +178,29 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Table schema = new Table();
     schema.name = "EMP";
     u.update(schema, Maps.newHashMap(of("ID", 1)), Maps.newHashMap(of("NAME", "mike", "x", 7)));
-    Assert.assertEquals(null, u._user.read(schema, of("ID", 1)).get("NAME"));
+    Assertions.assertEquals(null, u._user.read(schema, of("ID", 1)).get("NAME"));
     u.delete(schema, of("ID", 1));
     new File("model/EMP/1.deleted").delete();
 
     u.update(schema, Maps.newHashMap(of("ID", 2)), Maps.newHashMap(of("NAME", "joe2")));
-    Assert.assertEquals("{ID=2, NAME=joe2}", "" + u._user.read(schema, of("ID", 2)));
+    Assertions.assertEquals("{ID=2, NAME=joe2}", "" + u._user.read(schema, of("ID", 2)));
 
     // this save is a noop (only redundant data) - user entry actually gets deleted
     u.update(schema, Maps.newHashMap(of("ID", 2)), Maps.newHashMap(of("NAME", "joe")));
-    Assert.assertNull(u._user.read(schema, of("ID", 2)));
-    Assert.assertEquals("{ID=2, NAME=joe, WORKSON=1000}", "" + u.read(schema, of("ID", 2)));
+    Assertions.assertNull(u._user.read(schema, of("ID", 2)));
+    Assertions.assertEquals("{ID=2, NAME=joe, WORKSON=1000}", "" + u.read(schema, of("ID", 2)));
   }
 
   @Test
   public void mapEquality() {
-    Assert.assertEquals(Collections.EMPTY_MAP, of());
-    Assert.assertEquals(of("a", 1), of("a", 1));
-    Assert.assertEquals(of("a", of("a", 1)), of("a", of("a", 1)));
+    Assertions.assertEquals(Collections.EMPTY_MAP, of());
+    Assertions.assertEquals(of("a", 1), of("a", 1));
+    Assertions.assertEquals(of("a", of("a", 1)), of("a", of("a", 1)));
     Map<String, Map<String, Object>> map = new HashMap<>();
     Map<String, Object> map2 = new LinkedHashMap<>();
     map2.put("a", 1);
     map.put("a", map2);
-    Assert.assertEquals(of("a", of("a", 1)), map);
+    Assertions.assertEquals(of("a", of("a", 1)), map);
   }
 
   @Test
@@ -211,12 +210,12 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     QueryMeta info = new QueryMeta();
     info.query = "widget";
     List<Map<String, Object>> res = db.query(info, null);
-    Assert.assertTrue(res.toString().contains("ID=Test"));
+    Assertions.assertTrue(res.toString().contains("ID=Test"));
 
     Table table = new Table();
     table.name = "widget";
     List<Map<String, Object>> res2 = db.all(table, 0, 9, null, false, null);
-    Assert.assertTrue(res2.toString().contains("ID=Test"));
+    Assertions.assertTrue(res2.toString().contains("ID=Test"));
   }
 
   @Test
@@ -267,7 +266,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     JSONDatabase db = JSONDatabaseFactory.getReadOnlyInstance();
     db.connectAndCollectMetadata();
     db.close();
-    Assert.assertEquals("table", db.getTablesInQuery("table/id").get(0));
+    Assertions.assertEquals("table", db.getTablesInQuery("table/id").get(0));
   }
 
   @Test
@@ -285,7 +284,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     // setting a new coord does NOT merge
     db.update(ofName("crud"), of("ID", "x"), MapUtil.of("coord", MapUtil.of("z", 3)));
 
-    Assert.assertEquals("{ID=x, coord={z=3}}", "" + db.read(ofName("crud"), of("ID", "x")));
+    Assertions.assertEquals("{ID=x, coord={z=3}}", "" + db.read(ofName("crud"), of("ID", "x")));
 
     db.delete(ofName("crud"), of("ID", "x"));
   }
@@ -295,19 +294,19 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     String newline = "\n";
 
     // allow java comments
-    Assert.assertEquals("{}",
+    Assertions.assertEquals("{}",
         "" + JSONDatabase.objectMapper.readValue("/* comment */ {}".getBytes(), JSONDatabase.tr));
 
     // allow single quote
-    Assert.assertEquals("{x=y}",
+    Assertions.assertEquals("{x=y}",
         "" + JSONDatabase.objectMapper.readValue("{'x': 'y'}".getBytes(), JSONDatabase.tr));
 
     // multi line string
-    Assert.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
+    Assertions.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
         .readValue(("{\"x\": \"1" + newline + "2\"}").getBytes(), JSONDatabase.tr));
 
     // 'normal' string
-    Assert.assertEquals("{x=1\n2}", ""
+    Assertions.assertEquals("{x=1\n2}", ""
         + JSONDatabase.objectMapper.readValue(("{\"x\": \"1\\n2\"}").getBytes(), JSONDatabase.tr));
   }
 
@@ -317,9 +316,9 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
 
     try {
       // single quote and multi line
-      Assert.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
+      Assertions.assertEquals("{x=1" + newline + "2}", "" + JSONDatabase.objectMapper
           .readValue(("{\"x\": '1" + newline + "2'}").getBytes(), JSONDatabase.tr));
-      Assert.fail();
+      Assertions.fail();
     } catch (JsonParseException ok) {
 
     }

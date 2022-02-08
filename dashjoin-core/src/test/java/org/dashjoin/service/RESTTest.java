@@ -1,7 +1,7 @@
 package org.dashjoin.service;
 
 import org.dashjoin.service.Manage.Version;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,7 +15,7 @@ public class RESTTest {
     for (Version d : new Manage().getDrivers())
       if (d.name.equals("org.h2.Driver"))
         return;
-    Assert.fail();
+    Assertions.fail();
   }
 
   @Test
@@ -23,7 +23,7 @@ public class RESTTest {
     for (Version d : new Manage().getDatabases())
       if (d.name.equals("org.dashjoin.service.SQLDatabase"))
         return;
-    Assert.fail();
+    Assertions.fail();
   }
 
   @Test
@@ -31,6 +31,6 @@ public class RESTTest {
     for (Version d : new Manage().getFunctions())
       if (d.name.equals("org.dashjoin.function.AlterTableTrigger"))
         return;
-    Assert.fail();
+    Assertions.fail();
   }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,18 +27,18 @@ public class UnionDatabaseTest {
     List<Map<String, Object>> res =
         db.all(Table.ofName("dj-database"), 0, 99, "ID", false, MapUtil.of("parent", "dj"));
     // asc - smallest first
-    Assert.assertEquals("dj/config", res.get(0).get("ID"));
+    Assertions.assertEquals("dj/config", res.get(0).get("ID"));
 
     res = db.all(Table.ofName("dj-database"), 0, 99, "ID", true, MapUtil.of("parent", "dj"));
     // desc - largest first (junit or rdf4j)
-    Assert.assertTrue(
+    Assertions.assertTrue(
         "dj/junit".equals(res.get(0).get("ID")) || "dj/rdf4j".equals(res.get(0).get("ID")));
   }
 
   @Test
   public void mergeArray() {
     Map<String, Object> merge = UnionDatabase.mergeArray(of(), of("a", asList(1)));
-    Assert.assertEquals("{a=[1]}", merge.toString());
+    Assertions.assertEquals("{a=[1]}", merge.toString());
   }
 
   // @Test
@@ -53,18 +53,18 @@ public class UnionDatabaseTest {
     qc.name = "dj-query-catalog";
 
     // this comes off the read only part
-    Assert.assertNotNull(u.read(qc, of("ID", "list")));
+    Assertions.assertNotNull(u.read(qc, of("ID", "list")));
 
     // must be able to delete it anyway
-    Assert.assertTrue(u.delete(qc, of("ID", "list")));
+    Assertions.assertTrue(u.delete(qc, of("ID", "list")));
 
     // now it must be gone
-    Assert.assertNull(u.read(qc, of("ID", "list")));
+    Assertions.assertNull(u.read(qc, of("ID", "list")));
     QueryMeta qm = new QueryMeta();
     qm.query = qc.name;
     for (Map<String, Object> q : u.query(qm, of("ID", "list")))
       if (q.get("ID").equals("list"))
-        Assert.fail("list should have been deleted");
+        Assertions.fail("list should have been deleted");
 
     // re-create it
     // note that recreating it immediately brings back the read only properties (e.g. the type
@@ -75,7 +75,8 @@ public class UnionDatabaseTest {
     test.put("ID", "list");
     test.put("query", null);
     u.create(qc, test);
-    Assert.assertEquals("{ID=list, type=read, roles=[user]}", "" + u.read(qc, of("ID", "list")));
+    Assertions.assertEquals("{ID=list, type=read, roles=[user]}",
+        "" + u.read(qc, of("ID", "list")));
 
     // clean up
     new File("model/dj-query-catalog/list.json").delete();
@@ -94,7 +95,7 @@ public class UnionDatabaseTest {
     u.create(qc, of("ID", "myquery", "query", "bla"));
     u.delete(qc, of("ID", "myquery"));
     u.delete(qc, of("ID", "myquery"));
-    Assert.assertEquals(0, new File("model/dj-query-catalog").listFiles().length);
+    Assertions.assertEquals(0, new File("model/dj-query-catalog").listFiles().length);
   }
 
   @Test

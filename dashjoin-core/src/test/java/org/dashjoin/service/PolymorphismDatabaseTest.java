@@ -9,7 +9,7 @@ import java.util.Map;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -22,7 +22,8 @@ public class PolymorphismDatabaseTest {
   @SuppressWarnings("unchecked")
   @Test
   public void jsonSchemaAnnotation() {
-    Assert.assertEquals("{widget=password, type=string, case=[org.dashjoin.service.SQLDatabase]}",
+    Assertions.assertEquals(
+        "{widget=password, type=string, case=[org.dashjoin.service.SQLDatabase]}",
         "" + ((Map<String, Object>) PolymorphismDatabase.jsonSchema(SQLDatabase.class)
             .get("properties")).get("password"));
   }
@@ -33,7 +34,7 @@ public class PolymorphismDatabaseTest {
     SQLDatabase res = new ObjectMapper().convertValue(new PolymorphismDatabase().tableProperties(),
         SQLDatabase.class);
 
-    Assert.assertEquals(
+    Assertions.assertEquals(
         "[org.dashjoin.service.TestDatabase, org.dashjoin.service.SQLDatabase, org.dashjoin.service.RemoteDatabase]",
         res.tables.get("dj-database").properties.get("password")._case.toString());
   }
@@ -41,13 +42,13 @@ public class PolymorphismDatabaseTest {
   @Test
   public void parse() {
     Map<String, Object> s = PolymorphismDatabase.jsonSchema(String[].class);
-    Assert.assertEquals("{type=array, items={type=string}}", s.toString());
+    Assertions.assertEquals("{type=array, items={type=string}}", s.toString());
   }
 
   @Test
   public void parse2() {
     Map<String, Object> s = PolymorphismDatabase.jsonSchema(Map.class);
-    Assert.assertEquals("{type=object, additionalProperties={type=string}}", s.toString());
+    Assertions.assertEquals("{type=object, additionalProperties={type=string}}", s.toString());
   }
 
   public static class C {
@@ -75,22 +76,22 @@ public class PolymorphismDatabaseTest {
     JsonSchema s = C.class.getField("s").getAnnotation(JsonSchema.class);
     Class<?> c = C.class.getField("s").getType();
     Map<String, Object> res = PolymorphismDatabase.item(s, c, null);
-    Assert.assertEquals("[a, b]", "" + res.get("enum"));
+    Assertions.assertEquals("[a, b]", "" + res.get("enum"));
 
-    Assert.assertEquals("{type=boolean}",
+    Assertions.assertEquals("{type=boolean}",
         "" + PolymorphismDatabase.item(null, C.class.getField("b").getType(), null));
-    Assert.assertEquals("{type=number}",
+    Assertions.assertEquals("{type=number}",
         "" + PolymorphismDatabase.item(null, C.class.getField("i").getType(), null));
-    Assert.assertEquals("{type=number}",
+    Assertions.assertEquals("{type=number}",
         "" + PolymorphismDatabase.item(null, C.class.getField("l").getType(), null));
 
-    Assert.assertEquals(Arrays.asList("s", "i"),
+    Assertions.assertEquals(Arrays.asList("s", "i"),
         PolymorphismDatabase.item(D.class.getField("c").getAnnotation(JsonSchema.class),
             D.class.getField("c").getType(), null).get("required"));
 
-    Assert.assertEquals("{type=array, items={type=string}}",
+    Assertions.assertEquals("{type=array, items={type=string}}",
         "" + PolymorphismDatabase.item(null, C.class.getField("list").getType(), null));
-    Assert.assertEquals("{type=array, items={type=number}}",
+    Assertions.assertEquals("{type=array, items={type=number}}",
         "" + PolymorphismDatabase.item(null, C.class.getField("array").getType(), null));
   }
 
@@ -104,10 +105,10 @@ public class PolymorphismDatabaseTest {
     PolymorphismDatabase p = new PolymorphismDatabase();
     Table s = new Table();
     s.name = "t";
-    Assert.assertNull(p.read(s, of("x", "y")));
+    Assertions.assertNull(p.read(s, of("x", "y")));
     s.name = "dj-database";
     Object res = p.read(s, of("ID", "dj/config")).get("tables");
-    Assert.assertNotNull(res);
+    Assertions.assertNotNull(res);
   }
 
   @Test
@@ -116,7 +117,7 @@ public class PolymorphismDatabaseTest {
     QueryMeta s = new QueryMeta();
     s.query = "dj-database";
     Object res = p.queryMap(s, of("ID", "dj/config"));
-    Assert.assertNotNull(res);
+    Assertions.assertNotNull(res);
   }
 
   @JsonSchema(style = {"color", "red"})
@@ -132,7 +133,7 @@ public class PolymorphismDatabaseTest {
     Map<String, Object> tmp = new HashMap<>();
     PolymorphismDatabase.put(tmp, getClass().getField("dummy").getAnnotation(JsonSchema.class));
 
-    Assert.assertEquals("{style={font=courier, color=red}}",
+    Assertions.assertEquals("{style={font=courier, color=red}}",
         "" + UnionDatabase.mergeArray(res, tmp));
   }
 
@@ -147,6 +148,6 @@ public class PolymorphismDatabaseTest {
     Map<String, Object> tmp = new HashMap<>();
     PolymorphismDatabase.put(tmp, getClass().getField("dummy2").getAnnotation(JsonSchema.class));
 
-    Assert.assertEquals("[a, b]", "" + UnionDatabase.mergeArray(res, tmp).get("order"));
+    Assertions.assertEquals("[a, b]", "" + UnionDatabase.mergeArray(res, tmp).get("order"));
   }
 }

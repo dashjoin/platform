@@ -10,7 +10,7 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -77,7 +77,7 @@ public class MongoDBEditorTest extends QueryEditorTest {
   public void testGetIDsOfClassQuery() throws Exception {
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/junit/EMP";
-    Assert.assertEquals("db.['EMP'].aggregate([{$project:{_id: \"$_id\"}}])",
+    Assertions.assertEquals("db.['EMP'].aggregate([{$project:{_id: \"$_id\"}}])",
         e.getInitialQuery(r).query);
   }
 
@@ -138,8 +138,8 @@ public class MongoDBEditorTest extends QueryEditorTest {
 
     query.query = "db.EMP.aggregate([{$project: {_id:1}}])";
     res = e.noop(query);
-    Assert.assertEquals("EMP._id", res.metadata.get(0).col.toString());
-    Assert.assertEquals("_id", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP._id", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("_id", res.fieldNames.get(0));
   }
 
   @Override
@@ -181,6 +181,6 @@ public class MongoDBEditorTest extends QueryEditorTest {
 
   @Override
   void eq(String expected, String actual) throws Exception {
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 }

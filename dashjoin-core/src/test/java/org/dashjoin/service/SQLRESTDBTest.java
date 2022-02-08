@@ -13,7 +13,7 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.SQLDatabase.PreparedStmt;
 import org.h2.Driver;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.google.common.collect.Maps;
 import io.quarkus.test.junit.QuarkusTest;
@@ -33,31 +33,31 @@ public class SQLRESTDBTest {
     arguments.put("offset", 20);
     PreparedStmt ps =
         SQLDatabase.prepareStatement("select * from t limit ${limit} offset ${offset}", arguments);
-    Assert.assertArrayEquals(new Object[] {10, 20}, ps.arguments);
-    Assert.assertEquals("select * from t limit ? offset ?", ps.query);
+    Assertions.assertArrayEquals(new Object[] {10, 20}, ps.arguments);
+    Assertions.assertEquals("select * from t limit ? offset ?", ps.query);
   }
 
   @Test
   public void testPrepEscape() throws Exception {
 
     PreparedStmt ps = SQLDatabase.prepareStatement("select * from t limit \\${limit}", null);
-    Assert.assertArrayEquals(new Object[] {}, ps.arguments);
-    Assert.assertEquals("select * from t limit \\${limit}", ps.query);
+    Assertions.assertArrayEquals(new Object[] {}, ps.arguments);
+    Assertions.assertEquals("select * from t limit \\${limit}", ps.query);
   }
 
   @Test
   public void testTablesInQuery() throws Exception {
     List<String> list = new SQLDatabase().getTablesInQuery("select * from t,u");
-    Assert.assertEquals("[t, u]", list.toString());
+    Assertions.assertEquals("[t, u]", list.toString());
 
     list = new SQLDatabase().getTablesInQuery("delete from t");
-    Assert.assertEquals("[t]", list.toString());
+    Assertions.assertEquals("[t]", list.toString());
 
     list = new SQLDatabase().getTablesInQuery("insert into t values (1)");
-    Assert.assertEquals("[t]", list.toString());
+    Assertions.assertEquals("[t]", list.toString());
 
     list = new SQLDatabase().getTablesInQuery("update t set x=1");
-    Assert.assertEquals("[t]", list.toString());
+    Assertions.assertEquals("[t]", list.toString());
   }
 
   @Test
@@ -85,32 +85,32 @@ public class SQLRESTDBTest {
     Map<String, Object> object = Maps.newHashMap(of("name", "test"));
     db.create(m, object);
     // stmt.getGeneratedKeys() no longer works after H2 upgrade 1.4.196 => 1.4.200
-    // Assert.assertEquals("{name=test, id=1}", "" + object);
+    // Assertions.assertEquals("{name=test, id=1}", "" + object);
   }
 
   @Test
   public void testComp() throws Exception {
-    Assert.assertEquals("Only plain SELECT queries are supported (no WITH or VALUES clauses)",
+    Assertions.assertEquals("Only plain SELECT queries are supported (no WITH or VALUES clauses)",
         compatibilityError(parse("create table t (i int)")));
-    Assert.assertEquals("Select * and TABLE.* are not supported",
+    Assertions.assertEquals("Select * and TABLE.* are not supported",
         compatibilityError(parse("select * from t")));
-    Assert.assertEquals("Only select from table is supported",
+    Assertions.assertEquals("Only select from table is supported",
         compatibilityError(parse("select * from (select * from t)")));
-    Assert.assertEquals("Only select from table is supported",
+    Assertions.assertEquals("Only select from table is supported",
         compatibilityError(parse("select * from t, (select * from t)")));
-    Assert.assertEquals("Having not supported",
+    Assertions.assertEquals("Having not supported",
         compatibilityError(parse("select * from t group by id having count(id) > 7")));
-    Assert.assertEquals("Unsupported expression: a + b",
+    Assertions.assertEquals("Unsupported expression: a + b",
         compatibilityError(parse("select a+b from t")));
-    Assert.assertEquals("Unsupported expression: sum(a + b)",
+    Assertions.assertEquals("Unsupported expression: sum(a + b)",
         compatibilityError(parse("select sum(a+b) from t")));
-    Assert.assertEquals("Unsupported expression: f(a, b)",
+    Assertions.assertEquals("Unsupported expression: f(a, b)",
         compatibilityError(parse("select f(a,b) from t")));
-    Assert.assertEquals("Left side of where expressions must be a column",
+    Assertions.assertEquals("Left side of where expressions must be a column",
         compatibilityError(parse("select t.a from t where 1 < t.a")));
-    Assert.assertNull(compatibilityError(
+    Assertions.assertNull(compatibilityError(
         parse("select t.a from t where t.a = 3 and (t.b like '%test' or t.b < 5)")));
-    Assert.assertEquals("Unsupported expression: count(*)",
+    Assertions.assertEquals("Unsupported expression: count(*)",
         compatibilityError(parse("select count(*) from t")));
   }
 }

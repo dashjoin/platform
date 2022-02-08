@@ -763,6 +763,12 @@
           "type": "string",
           "createOnly": true
         },
+        "description": {
+          "ID": "dj/config/dj-role/description",
+          "name": "description",
+          "parent": "dj/config/dj-role",
+          "type": "string"
+        },
         "homepage": {
           "ID": "dj/config/dj-role/homepage",
           "name": "homepage",

@@ -4,7 +4,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.service.Services;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
@@ -27,34 +27,36 @@ public class InferenceTest {
 
     // empty
     i.expression = "";
-    Assert.assertEquals("{table=[{column=null}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{column=null}]}", i.gather(sc).toString());
 
     // single value
     i.expression = "123";
-    Assert.assertEquals("{table=[{column=123}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{column=123}]}", i.gather(sc).toString());
 
     // empty array
     i.expression = "[]";
-    Assert.assertEquals("{table=[]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[]}", i.gather(sc).toString());
 
     // array of single value
     i.expression = "[4, 5, 6]";
-    Assert.assertEquals("{table=[{column=4}, {column=5}, {column=6}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{column=4}, {column=5}, {column=6}]}",
+        i.gather(sc).toString());
 
     // single object
     i.expression = "{\"x\":1}";
-    Assert.assertEquals("{table=[{x=1}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{x=1}]}", i.gather(sc).toString());
 
     // single table
     i.expression = "[{\"column\":4}, {\"column\":5}, {\"column\":6}]";
-    Assert.assertEquals("{table=[{column=4}, {column=5}, {column=6}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{column=4}, {column=5}, {column=6}]}",
+        i.gather(sc).toString());
 
     // map of tables
     i.expression = "{\"a\":[{\"x\":1}]}";
-    Assert.assertEquals("{a=[{x=1}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{a=[{x=1}]}", i.gather(sc).toString());
 
     // mixed is treated like a normal object
     i.expression = "{\"a\":[{\"x\":1}], \"b\":[1,2,3]}";
-    Assert.assertEquals("{table=[{a=[{x=1}], b=[1, 2, 3]}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{table=[{a=[{x=1}], b=[1, 2, 3]}]}", i.gather(sc).toString());
   }
 }
