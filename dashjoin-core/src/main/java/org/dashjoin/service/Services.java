@@ -23,9 +23,8 @@ import lombok.extern.java.Log;
  * and exception handlers
  */
 @ApplicationScoped
-// @ApplicationPath("/")
 @Log
-public class Services { // extends Application {
+public class Services {
 
   public static final String REST_PREFIX = "rest/";
 
