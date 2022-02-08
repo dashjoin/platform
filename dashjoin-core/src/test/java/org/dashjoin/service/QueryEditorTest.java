@@ -18,12 +18,12 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import net.sf.jsqlparser.JSQLParserException;
@@ -68,7 +68,7 @@ public class QueryEditorTest {
   @Test
   public void testDelegate() throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
-    when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     QueryEditor.Delegate d = new QueryEditor.Delegate();
     d.services = services;
     InitialQueryRequest r = new InitialQueryRequest();
@@ -84,39 +84,39 @@ public class QueryEditorTest {
   public void testGetIDsOfClassQuery() throws Exception {
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/junit/EMP";
-    Assert.assertEquals(
+    Assertions.assertEquals(
         "SELECT\n" + "  \"EMP\".\"ID\", \"EMP\".\"NAME\"\n" + "FROM\n" + "  \"EMP\"",
         e.getInitialQuery(r).query);
   }
 
   @Test
   public void testEquals() {
-    Assert.assertFalse(SQLEditor.equals("a", "A"));
-    Assert.assertTrue(SQLEditor.equals("\"a\"", "a"));
-    Assert.assertFalse(SQLEditor.equals("\"a", "a"));
+    Assertions.assertFalse(SQLEditor.equals("a", "A"));
+    Assertions.assertTrue(SQLEditor.equals("\"a\"", "a"));
+    Assertions.assertFalse(SQLEditor.equals("\"a", "a"));
   }
 
   @Test
   public void testEqualsTable() {
     FromItem fi = new net.sf.jsqlparser.schema.Table("\"T\"");
-    Assert.assertTrue(SQLEditor.equals(fi, "T"));
-    Assert.assertFalse(SQLEditor.equals(fi, "\"T"));
-    Assert.assertFalse(SQLEditor.equals(fi, "'T'"));
-    Assert.assertFalse(SQLEditor.equals(fi, "t"));
+    Assertions.assertTrue(SQLEditor.equals(fi, "T"));
+    Assertions.assertFalse(SQLEditor.equals(fi, "\"T"));
+    Assertions.assertFalse(SQLEditor.equals(fi, "'T'"));
+    Assertions.assertFalse(SQLEditor.equals(fi, "t"));
   }
 
   @Test
   public void testEqualsSelect() throws Exception {
     SelectExpressionItem si =
         new SelectExpressionItem(new Column(new net.sf.jsqlparser.schema.Table("T"), "C"));
-    Assert.assertTrue(SQLEditor.equals(si, col("T", "C")));
+    Assertions.assertTrue(SQLEditor.equals(si, col("T", "C")));
 
     si = new SelectExpressionItem(CCJSqlParserUtil.parseExpression("count(T.A)"));
-    Assert.assertTrue(SQLEditor.equals(si, col("T", "A")));
+    Assertions.assertTrue(SQLEditor.equals(si, col("T", "A")));
 
     Alias alias = new Alias("X");
     si.setAlias(alias);
-    Assert.assertTrue(SQLEditor.equals(si, col("T", "A")));
+    Assertions.assertTrue(SQLEditor.equals(si, col("T", "A")));
   }
 
   // T(ID, FK)
@@ -359,36 +359,36 @@ public class QueryEditorTest {
 
     query.query = "select EMP.ID from EMP";
     res = e.noop(query);
-    Assert.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
-    Assert.assertEquals("EMP.ID", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("EMP.ID", res.fieldNames.get(0));
 
     query.query = "select EMP.ID AS RENAME from EMP";
     res = e.noop(query);
-    Assert.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
-    Assert.assertEquals("RENAME", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("RENAME", res.fieldNames.get(0));
 
     query.query = "select COUNT(EMP.ID) from EMP";
     res = e.noop(query);
-    Assert.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
-    Assert.assertEquals("COUNT(EMP.ID)", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("COUNT(EMP.ID)", res.fieldNames.get(0));
 
     query.query = "select COUNT(EMP.ID) AS RENAME from EMP";
     res = e.noop(query);
-    Assert.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
-    Assert.assertEquals("RENAME", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("RENAME", res.fieldNames.get(0));
 
     query.query = "select * from EMP";
     res = e.noop(query);
-    Assert.assertTrue(res.query.contains("WORKSON"));
+    Assertions.assertTrue(res.query.contains("WORKSON"));
 
     query.query = "select * from EMP, PRJ where EMP.WORKSON = PRJ.ID";
     res = e.noop(query);
-    Assert.assertTrue(res.query.contains("WORKSON"));
+    Assertions.assertTrue(res.query.contains("WORKSON"));
 
     query.query =
         "select emp.id, count(emp.workson) from EMP where emp.workson > 0 group by emp.id";
     res = e.noop(query);
-    Assert.assertEquals("> 0", res.metadata.get(1).where);
+    Assertions.assertEquals("> 0", res.metadata.get(1).where);
   }
 
   @Test
@@ -520,7 +520,7 @@ public class QueryEditorTest {
       ac.query = "select count(*) from a group by b";
       e.addColumn(ac);
     } catch (Exception e) {
-      Assert.assertEquals("Cannot join an aggregated query", e.getMessage());
+      Assertions.assertEquals("Cannot join an aggregated query", e.getMessage());
     }
   }
 
@@ -541,7 +541,7 @@ public class QueryEditorTest {
     expected = expected.replaceAll("_", "");
     actual = actual.replace('"', '_');
     actual = actual.replaceAll("_", "");
-    Assert.assertEquals(normalize(expected), normalize(actual));
+    Assertions.assertEquals(normalize(expected), normalize(actual));
   }
 
   String normalize(String query) throws JSQLParserException {

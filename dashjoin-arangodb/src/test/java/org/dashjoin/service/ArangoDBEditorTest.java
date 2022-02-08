@@ -11,7 +11,7 @@ import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
@@ -74,7 +74,7 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   public void testGetIDsOfClassQuery() throws Exception {
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/junit/EMP";
-    Assert.assertEquals("FOR i IN EMP RETURN {\"_key\": i._key}", e.getInitialQuery(r).query);
+    Assertions.assertEquals("FOR i IN EMP RETURN {\"_key\": i._key}", e.getInitialQuery(r).query);
   }
 
   @Override
@@ -136,8 +136,8 @@ public class ArangoDBEditorTest extends QueryEditorTest {
 
     query.query = "FOR i IN EMP RETURN {\"_id\": i._id}";
     res = e.noop(query);
-    Assert.assertEquals("EMP._id", res.metadata.get(0).col.toString());
-    Assert.assertEquals("_id", res.fieldNames.get(0));
+    Assertions.assertEquals("EMP._id", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("_id", res.fieldNames.get(0));
   }
 
   @Override
@@ -183,6 +183,6 @@ public class ArangoDBEditorTest extends QueryEditorTest {
 
   @Override
   void eq(String expected, String actual) throws Exception {
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 }

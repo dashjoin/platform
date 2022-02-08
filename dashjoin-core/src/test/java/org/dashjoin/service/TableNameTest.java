@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import org.h2.Driver;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
@@ -23,12 +23,12 @@ public class TableNameTest {
     con.createStatement().executeUpdate("create table t(i int)");
     ResultSet res = con.createStatement().executeQuery(query);
     TableName tn = TableName.create(url, query);
-    Assert.assertEquals("T", tn.getTableName(res.getMetaData(), 1));
+    Assertions.assertEquals("T", tn.getTableName(res.getMetaData(), 1));
 
     // this forces meta.getTableName() to be ""
     res = con.createStatement().executeQuery("select count(*) from T");
     url = "jdbc:jtds:";
     tn = TableName.create(url, query);
-    Assert.assertEquals("T", tn.getTableName(res.getMetaData(), 1));
+    Assertions.assertEquals("T", tn.getTableName(res.getMetaData(), 1));
   }
 }

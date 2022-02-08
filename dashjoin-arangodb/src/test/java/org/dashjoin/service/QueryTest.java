@@ -1,6 +1,6 @@
 package org.dashjoin.service;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class QueryTest {
@@ -23,7 +23,7 @@ public class QueryTest {
 
   void eq(String query) throws Exception {
     ArangoDBQuery q = new ArangoDBQuery(query);
-    Assert.assertEquals(query.replaceAll(" ", "").replaceAll("\"", ""),
+    Assertions.assertEquals(query.replaceAll(" ", "").replaceAll("\"", ""),
         q.toString().replaceAll("\\['emp'\\]", "emp").replaceAll("\\['orders'\\]", "orders")
             .replaceAll(" ", "").replaceAll("\"", ""));
   }

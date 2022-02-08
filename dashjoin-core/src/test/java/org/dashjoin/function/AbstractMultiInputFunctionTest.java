@@ -2,7 +2,7 @@ package org.dashjoin.function;
 
 import java.util.Arrays;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbstractMultiInputFunctionTest {
@@ -40,7 +40,7 @@ public class AbstractMultiInputFunctionTest {
 
   void check(Object o, String d) throws Exception {
     TestMultiInputFunction f = new TestMultiInputFunction();
-    Assert.assertEquals(d, f.run(o).toString());
+    Assertions.assertEquals(d, f.run(o).toString());
   }
 
   public static class TestMultiInputFunction extends AbstractMultiInputFunction {

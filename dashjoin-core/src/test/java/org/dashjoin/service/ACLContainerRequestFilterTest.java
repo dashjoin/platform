@@ -17,7 +17,7 @@ import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.specimpl.ResteasyUriInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import com.sun.security.auth.UnixPrincipal;
 import io.quarkus.test.junit.QuarkusTest;
@@ -31,7 +31,7 @@ public class ACLContainerRequestFilterTest {
   @Test
   public void testFunction() {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.contains("authenticated"))).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     AbstractConfigurableFunction<?, ?> function = new Email();
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
       ACLContainerRequestFilter.check(sc, function);
@@ -43,7 +43,7 @@ public class ACLContainerRequestFilterTest {
   @Test
   public void testQueryMeta() {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.contains("authenticated"))).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     QueryMeta query = new QueryMeta();
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
       ACLContainerRequestFilter.check(sc, query);
@@ -55,7 +55,7 @@ public class ACLContainerRequestFilterTest {
   @Test
   public void testDatabase() {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.contains("authenticated"))).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     SQLDatabase db = new SQLDatabase();
     Table table = Table.ofName("table");
 

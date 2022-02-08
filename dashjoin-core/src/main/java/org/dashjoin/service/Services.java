@@ -9,8 +9,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.expression.ExpressionPreviewService;
 import org.dashjoin.expression.ExpressionService;
@@ -25,9 +23,9 @@ import lombok.extern.java.Log;
  * and exception handlers
  */
 @ApplicationScoped
-@ApplicationPath("/")
+// @ApplicationPath("/")
 @Log
-public class Services extends Application {
+public class Services { // extends Application {
 
   public static final String REST_PREFIX = "rest/";
 
@@ -134,7 +132,7 @@ public class Services extends Application {
    * any location in the webapps folder (due to CORS constraints, the API metadata cannot be
    * accessed from UIs served from different hosts).
    */
-  @Override
+  // @Override
   public Set<Object> getSingletons() {
     if (persistantDB == null) {
       try {
@@ -180,6 +178,6 @@ public class Services extends Application {
         throw new RuntimeException(e);
       }
     } else
-      return super.getSingletons();
+      return null; // super.getSingletons();
   }
 }

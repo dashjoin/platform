@@ -14,9 +14,9 @@ import org.dashjoin.service.Data.Choice;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -38,7 +38,7 @@ public class PojoDatabaseTest {
 
     // check the ID Property of the database table
     schema.name = "Property";
-    Assert.assertEquals(
+    Assertions.assertEquals(
         "{ID=dj/config/dj-database/ID, name=ID, parent=dj/config/dj-database, pkpos=0, type=string}",
         "" + config.read(schema, of("ID", "dj/config/dj-database/ID")));
 
@@ -59,11 +59,11 @@ public class PojoDatabaseTest {
       }
     });
 
-    Assert.assertEquals("test",
+    Assertions.assertEquals("test",
         (config.read(schema, of("ID", "dj/config/dj-database/ID")).get("widget")));
 
     AbstractDatabase db = config.getDatabase("dj/config");
-    Assert.assertEquals("test", db.tables.get("dj-database").properties.get("ID").widget);
+    Assertions.assertEquals("test", db.tables.get("dj-database").properties.get("ID").widget);
   }
 
   @Test
@@ -79,22 +79,22 @@ public class PojoDatabaseTest {
     table.name = "Table";
     config.update(table, of("ID", "dj/config/dj-database"), of("dj-label", "prop"));
 
-    Assert.assertEquals("prop",
+    Assertions.assertEquals("prop",
         (config.read(table, of("ID", "dj/config/dj-database")).get("dj-label")));
-    Assert.assertEquals("test",
+    Assertions.assertEquals("test",
         (config.read(property, of("ID", "dj/config/dj-database/ID")).get("ref")));
-    Assert.assertEquals("test2",
+    Assertions.assertEquals("test2",
         (config.read(property, of("ID", "dj/config/dj-database/name")).get("ref")));
 
     // config.delete(property, of("ID", "dj/config/dj-database/ID"));
     config.update(property, of("ID", "dj/config/dj-database/ID"), MapUtil.of("ref", null));
     config.update(property, of("ID", "dj/config/dj-database/name"), MapUtil.of("ref", null));
-    Assert.assertFalse(
+    Assertions.assertFalse(
         config.read(property, of("ID", "dj/config/dj-database/ID")).toString().contains("ref"));
 
     // config.delete(table, of("ID", "dj/config/dj-database"));
     config.update(table, of("ID", "dj/config/dj-database"), MapUtil.of("dj-label", null));
-    Assert.assertFalse(
+    Assertions.assertFalse(
         config.read(table, of("ID", "dj/config/dj-database")).toString().contains("dj-label=prop"));
   }
 
@@ -117,19 +117,19 @@ public class PojoDatabaseTest {
     res = config.query(qi, null);
     qi.query = "dj-databases-no-config";
     res = config.query(qi, null);
-    Assert.assertEquals("dj/junit", res.get(0).get("ID"));
+    Assertions.assertEquals("dj/junit", res.get(0).get("ID"));
     Map<String, Property> meta = config.queryMeta(qi, null);
-    Assert.assertEquals((Integer) 0, meta.get("ID").pkpos);
+    Assertions.assertEquals((Integer) 0, meta.get("ID").pkpos);
 
     qi.query = "Table";
     res = config.query(qi, null);
-    Assert.assertEquals("dj/junit/T", res.get(0).get("ID"));
+    Assertions.assertEquals("dj/junit/T", res.get(0).get("ID"));
     meta = config.queryMeta(qi, null);
-    Assert.assertEquals((Integer) 0, meta.get("ID").pkpos);
+    Assertions.assertEquals((Integer) 0, meta.get("ID").pkpos);
 
     qi.query = "Property";
     res = config.query(qi, null);
-    Assert.assertEquals("dj/junit/T/ID", res.get(0).get("ID"));
+    Assertions.assertEquals("dj/junit/T/ID", res.get(0).get("ID"));
   }
 
   @Test
@@ -139,29 +139,29 @@ public class PojoDatabaseTest {
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/config/dj-database";
     QueryResponse q = qe.getInitialQuery(r);
-    Assert.assertEquals("dj-database", q.query);
+    Assertions.assertEquals("dj-database", q.query);
   }
 
   @Test
   public void testStoredProcMeta() throws Exception {
     PojoDatabase config = services.pojoDatabase();
     QueryMeta meta = config.getQueryMeta("dj-page-urls");
-    Assert.assertEquals("authenticated", meta.roles.get(0));
-    Assert.assertEquals("dj-page-urls", meta.query);
+    Assertions.assertEquals("authenticated", meta.roles.get(0));
+    Assertions.assertEquals("dj-page-urls", meta.query);
   }
 
   @Test
   public void testFunctions() throws Exception {
     PojoDatabase config = services.pojoDatabase();
     List<Map<String, Object>> f = config.queryFunctions(null, null);
-    Assert.assertEquals("echo", f.get(0).get("ID"));
+    Assertions.assertEquals("echo", f.get(0).get("ID"));
   }
 
   @Test
   public void testQueries() throws Exception {
     PojoDatabase config = services.pojoDatabase();
     List<Map<String, Object>> f = config.queryQueries(null, null);
-    Assert.assertTrue("list".equals(f.get(0).get("ID")) || "search".equals(f.get(0).get("ID")));
+    Assertions.assertTrue("list".equals(f.get(0).get("ID")) || "search".equals(f.get(0).get("ID")));
   }
 
   @Inject
@@ -169,48 +169,48 @@ public class PojoDatabaseTest {
 
   void create(String table, Map<String, Object> object) throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     // Data data = new Data();
     // data.services = services;
     // data.function = new FunctionService();
     // data.function.services = services;
     try {
       data.create(sc, "config", table, object);
-      Assert.fail();
+      Assertions.fail();
     } catch (RuntimeException e) {
-      Assert.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
+      Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
     }
   }
 
   void update(String table, String search, Map<String, Object> object) throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     // Data data = new Data();
     // data.services = services;
     // data.function = new FunctionService();
     // data.function.services = services;
     try {
       data.update(sc, "config", table, search, object);
-      Assert.fail();
+      Assertions.fail();
     } catch (RuntimeException e) {
-      Assert.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
+      Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
     }
   }
 
   void delete(String table, String search) throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     // Data data = new Data();
     // data.services = services;
     // data.function = new FunctionService();
     // data.function.services = services;
     try {
       data.delete(sc, "config", table, search);
-      Assert.fail();
+      Assertions.fail();
     } catch (RuntimeException e) {
-      Assert.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
+      Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
     }
   }
@@ -251,8 +251,8 @@ public class PojoDatabaseTest {
     Table table = new Table();
     table.name = "Table";
     List<Choice> keys = config.keys(table, "T", 1);
-    Assert.assertEquals(1, keys.size());
-    Assert.assertEquals("dj/junit/T", keys.get(0).value);
+    Assertions.assertEquals(1, keys.size());
+    Assertions.assertEquals("dj/junit/T", keys.get(0).value);
   }
 
   @Test
