@@ -7,7 +7,7 @@ import java.util.Map;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.google.common.collect.ImmutableMap;
 
@@ -19,8 +19,8 @@ public abstract class AbstractDatabaseTest {
     Table s = new Table();
     s.name = "EMP";
     Map<String, Object> res = db.read(s, Collections.singletonMap("ID", 1));
-    Assert.assertEquals("mike", res.get("NAME"));
-    Assert.assertEquals(1000, res.get("WORKSON"));
+    Assertions.assertEquals("mike", res.get("NAME"));
+    Assertions.assertEquals(1000, res.get("WORKSON"));
   }
 
   @Test
@@ -32,16 +32,16 @@ public abstract class AbstractDatabaseTest {
     s.properties.get("ID").pkpos = 0;
     db().create(s, Collections.singletonMap("ID", 3));
     Map<String, Object> res = db.read(s, Collections.singletonMap("ID", 3));
-    Assert.assertEquals(3, res.get("ID"));
+    Assertions.assertEquals(3, res.get("ID"));
 
-    Assert.assertTrue(
+    Assertions.assertTrue(
         db().update(s, Collections.singletonMap("ID", 3), ImmutableMap.of("NAME", "newname")));
     Map<String, Object> res2 = db.read(s, Collections.singletonMap("ID", 3));
-    Assert.assertEquals("newname", res2.get("NAME"));
+    Assertions.assertEquals("newname", res2.get("NAME"));
 
-    Assert.assertTrue(db.delete(s, Collections.singletonMap("ID", 3)));
-    Assert.assertNotNull(db.read(s, Collections.singletonMap("ID", 1)));
-    Assert.assertNull(db.read(s, Collections.singletonMap("ID", 3)));
+    Assertions.assertTrue(db.delete(s, Collections.singletonMap("ID", 3)));
+    Assertions.assertNotNull(db.read(s, Collections.singletonMap("ID", 1)));
+    Assertions.assertNull(db.read(s, Collections.singletonMap("ID", 3)));
   }
 
   @Test
@@ -55,9 +55,9 @@ public abstract class AbstractDatabaseTest {
         db().query(info2, null))) {
       int idx = res.size() - 1;
       if (res.get(idx).get("EMP.WORKSON") != null)
-        Assert.assertEquals(1000, res.get(idx).get("EMP.WORKSON"));
+        Assertions.assertEquals(1000, res.get(idx).get("EMP.WORKSON"));
       else
-        Assert.assertEquals(1000, res.get(idx).get("WORKSON"));
+        Assertions.assertEquals(1000, res.get(idx).get("WORKSON"));
     }
   }
 

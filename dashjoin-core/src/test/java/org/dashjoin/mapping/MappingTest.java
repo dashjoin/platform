@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import com.api.jsonata4java.expressions.Expressions;
@@ -33,6 +33,6 @@ public class MappingTest {
     Expressions rm = s.prepare(Mockito.mock(SecurityContext.class), m.rowMapping());
 
     Map<String, Object> res = Mapping.apply(s, null, rm, MapUtil.of("y", 1, "z", "a"));
-    Assert.assertEquals("{z=a, x=1a}", res.toString());
+    Assertions.assertEquals("{z=a, x=1a}", res.toString());
   }
 }

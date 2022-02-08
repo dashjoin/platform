@@ -42,10 +42,10 @@
 			<version>${revision}</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
@@ -104,7 +104,7 @@
     <dependency>
 		<groupId>org.projectlombok</groupId>
 		<artifactId>lombok</artifactId>
-		<version>1.18.16</version>
+		<version>1.18.22</version>
 		<scope>provided</scope>
 	</dependency>
 	
@@ -114,7 +114,7 @@
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus-plugin.version}</version>
+        <version>${quarkus.platform.version}</version>
         <executions>
           <execution>
             <goals>

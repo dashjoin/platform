@@ -5,7 +5,7 @@ import static org.dashjoin.util.MapUtil.of;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbstractSourceTest {
@@ -14,11 +14,11 @@ public class AbstractSourceTest {
 
   @Test
   public void testCols() {
-    Assert.assertEquals(asList("_dj_source", "x", "y", "z"), Provider.cols(table, true));
+    Assertions.assertEquals(asList("_dj_source", "x", "y", "z"), Provider.cols(table, true));
   }
 
   @Test
   public void testType() {
-    Assert.assertEquals("date", Provider.type("z", table));
+    Assertions.assertEquals("date", Provider.type("z", table));
   }
 }

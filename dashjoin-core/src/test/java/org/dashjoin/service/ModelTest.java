@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import org.apache.commons.collections4.IteratorUtils;
 import org.dashjoin.model.QueryMeta;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -81,12 +81,12 @@ public class ModelTest {
         if (e.getKey().equals("EMP"))
           continue;
 
-        Assert.assertEquals(e.getKey(), e.getValue().get("name"));
+        Assertions.assertEquals(e.getKey(), e.getValue().get("name"));
         check(map, map.get("ID"), e.getValue());
         if (e.getValue().containsKey("properties"))
           for (Entry<String, Map<String, Object>> p : ((Map<String, Map<String, Object>>) e
               .getValue().get("properties")).entrySet()) {
-            Assert.assertEquals(p.getKey(), p.getValue().get("name"));
+            Assertions.assertEquals(p.getKey(), p.getValue().get("name"));
             check(map, e.getValue().get("ID"), p.getValue());
           }
       }
@@ -98,19 +98,19 @@ public class ModelTest {
     if (((String) map.get("ID")).split("/").length > 2)
       if (((String) map.get("ID")).contains("dj-database"))
         if (map.get("type") == null)
-          Assert.fail("no type: " + map);
+          Assertions.fail("no type: " + map);
     if (parentId != null)
-      Assert.assertEquals(parentId, map.get("parent"));
-    Assert.assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"));
-    Assert.assertTrue(((String) map.get("ID")).startsWith("dj/"));
+      Assertions.assertEquals(parentId, map.get("parent"));
+    Assertions.assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"));
+    Assertions.assertTrue(((String) map.get("ID")).startsWith("dj/"));
     if (map.get("ref") != null)
-      Assert.assertTrue(pk(root, (String) map.get("ref")));
+      Assertions.assertTrue(pk(root, (String) map.get("ref")));
   }
 
   @SuppressWarnings("unchecked")
   boolean pk(Map<String, Object> root, String ref) {
     if (ref.equals(root.get("ID"))) {
-      Assert.assertEquals(0, root.get("pkpos"));
+      Assertions.assertEquals(0, root.get("pkpos"));
       return true;
     }
     for (Object e : root.values())
@@ -136,7 +136,7 @@ public class ModelTest {
 
     if (tree.get("widget") != null) {
       // System.out.println(tree.get("widget"));
-      Assert
+      Assertions
           .assertTrue(Arrays
               .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
                   "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
@@ -148,14 +148,14 @@ public class ModelTest {
 
     for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
       // System.out.println(e);
-      Assert.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
+      Assertions.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
           "tooltip", "icon", "href", "children", "database", "table", "schema", "chart", "query",
           "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles", "if",
           "context", "properties", "deleteConfirmation", "print", "navigate", "markdown", "layout",
           "style", "class", /* schema info in config.json */ "name", "parent",
           /* gridster stuff */ "x", "y", "rows", "cols").contains(e.getKey()));
       if (e.getKey().equals("url"))
-        Assert.assertTrue(e.getValue() instanceof TextNode);
+        Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
   }
 
@@ -167,7 +167,7 @@ public class ModelTest {
     while (i.hasNext()) {
       Entry<String, JsonNode> kid = i.next();
       if (kid.getKey().equals("object"))
-        Assert.assertTrue(kid.getValue() instanceof ArrayNode);
+        Assertions.assertTrue(kid.getValue() instanceof ArrayNode);
       checkExpressions(kid.getValue());
       for (String field : new String[] {"if", "context", "display", "expression", "onClick",
           "before-create", "after-create", "before-update", "after-update", "before-delete",
@@ -175,7 +175,7 @@ public class ModelTest {
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
           if (!(kid.getValue() instanceof ObjectNode)) {
-            Assert.assertTrue(
+            Assertions.assertTrue(
                 expr.startsWith("{") || expr.startsWith("$") || expr.startsWith("value."));
             Expression jsonata = Expression.jsonata(expr);
             try {
@@ -200,9 +200,10 @@ public class ModelTest {
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");
-          // Assert.assertEquals(1, expr.size());
+          // Assertions.assertEquals(1, expr.size());
           // Entry<String, JsonNode> op = expr.fields().next();
-          // Assert.assertTrue(Arrays.asList("object", "trigger", "call").contains(op.getKey()));
+          // Assertions.assertTrue(Arrays.asList("object", "trigger",
+          // "call").contains(op.getKey()));
         }
     }
   }
@@ -234,7 +235,7 @@ public class ModelTest {
         basedata.set(field, c.get("data").get(field));
       }
 
-      Assert.assertEquals("error in case: " + name, "" + c.get("expected"),
+      Assertions.assertEquals("error in case: " + name, "" + c.get("expected"),
           "" + wrap(e.evaluate(basedata)));
     }
   }

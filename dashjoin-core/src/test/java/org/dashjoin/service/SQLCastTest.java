@@ -15,7 +15,6 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
 import org.h2.Driver;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,12 +27,13 @@ public class SQLCastTest extends JsonCastTest {
 
   @Test
   public void testDate() throws Exception {
-    Assert.assertTrue(db().cast(p("date", "time"), "10:33:26") instanceof LocalTime);
-    Assert.assertTrue(db().cast(p("date", "DATE"), "2020-02-12") instanceof Date);
-    Assert.assertTrue(db().cast(p("date", "DATE"), "2021-01-19T10:33:26+00:00") instanceof Date);
-    Assert.assertTrue(db().cast(p("date", "DATE"), "2021-01-19T10:33:26Z") instanceof Date);
-    Assert.assertTrue(db().cast(p("date", "DATE"), "2021-11-06 05:20:44") instanceof Date);
-    Assert.assertTrue(db().cast(p("date", "DATE"), "2021-11-06 05:20") instanceof Date);
+    Assertions.assertTrue(db().cast(p("date", "time"), "10:33:26") instanceof LocalTime);
+    Assertions.assertTrue(db().cast(p("date", "DATE"), "2020-02-12") instanceof Date);
+    Assertions
+        .assertTrue(db().cast(p("date", "DATE"), "2021-01-19T10:33:26+00:00") instanceof Date);
+    Assertions.assertTrue(db().cast(p("date", "DATE"), "2021-01-19T10:33:26Z") instanceof Date);
+    Assertions.assertTrue(db().cast(p("date", "DATE"), "2021-11-06 05:20:44") instanceof Date);
+    Assertions.assertTrue(db().cast(p("date", "DATE"), "2021-11-06 05:20") instanceof Date);
     // System.out.println(db().cast(p("date", "DATE"), "2021-11-06 05:20"));
   }
 
@@ -41,11 +41,11 @@ public class SQLCastTest extends JsonCastTest {
   public void testDatePostgres() throws Exception {
     SQLDatabase db = (SQLDatabase) db();
     db.url = "jdbc:postgresql:blabla";
-    Assert.assertTrue(db.cast(p("date", "DATE"), "2021-01-19T10:33:26Z") instanceof LocalDate);
-    Assert.assertTrue(db.cast(p("date", "time"), "10:33:26") instanceof LocalTime);
-    Assert.assertTrue(
+    Assertions.assertTrue(db.cast(p("date", "DATE"), "2021-01-19T10:33:26Z") instanceof LocalDate);
+    Assertions.assertTrue(db.cast(p("date", "time"), "10:33:26") instanceof LocalTime);
+    Assertions.assertTrue(
         db.cast(p("date", "timestamp"), "2021-01-19T10:33:26Z") instanceof LocalDateTime);
-    Assert.assertTrue(
+    Assertions.assertTrue(
         db.cast(p("date", "timestampz"), "2021-01-19T10:33:26Z") instanceof OffsetDateTime);
   }
 
@@ -63,7 +63,7 @@ public class SQLCastTest extends JsonCastTest {
   public void testSchema() {
     SQLDatabase db = (SQLDatabase) db();
     db.url = "jdbc:jtds://host:port;SCHEMA=TEST";
-    Assert.assertEquals("TEST.", db.schema());
+    Assertions.assertEquals("TEST.", db.schema());
   }
 
   @Test

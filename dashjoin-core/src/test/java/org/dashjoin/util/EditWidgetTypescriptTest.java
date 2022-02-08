@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class EditWidgetTypescriptTest {
@@ -71,7 +71,7 @@ public class EditWidgetTypescriptTest {
 
     System.out.println("editable but not defined");
     System.out.println(minus(edit, widget));
-    Assert.assertTrue(minus(edit, widget).isEmpty());
+    Assertions.assertTrue(minus(edit, widget).isEmpty());
 
     System.out.println("defined but not editable");
     System.out.println(minus(widget, edit));

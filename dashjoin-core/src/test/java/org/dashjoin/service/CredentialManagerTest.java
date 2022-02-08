@@ -1,6 +1,6 @@
 package org.dashjoin.service;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -20,7 +20,7 @@ public class CredentialManagerTest {
     System.err.println(e);
     String d = CredentialManager.getInstance().decrypt(e);
     System.err.println(d);
-    Assert.assertEquals(d, pass);
+    Assertions.assertEquals(d, pass);
   }
 
   @Test
@@ -28,7 +28,7 @@ public class CredentialManagerTest {
     String hash = CredentialManager.getInstance().hash(pass);
     System.err.println(hash);
     boolean valid = (CredentialManager.getInstance().checkPassword(pass, hash));
-    Assert.assertTrue("Hashed password is valid", valid);
+    Assertions.assertTrue(valid, "Hashed password is valid");
   }
 
   @Test
@@ -42,8 +42,8 @@ public class CredentialManagerTest {
     System.err.println(d);
     System.err.println(e2);
     System.err.println(d2);
-    Assert.assertEquals("Password must match", pass, d);
-    Assert.assertEquals("Password(2) must match", pass, d2);
+    Assertions.assertEquals(pass, d, "Password must match");
+    Assertions.assertEquals(pass, d2, "Password(2) must match");
   }
 
   @Test
@@ -51,7 +51,7 @@ public class CredentialManagerTest {
     String e = CredentialManager.encryptCredential(pass);
     try (CredentialManager.Credential c = new CredentialManager.Credential(e)) {
       char[] secret = c.getSecret();
-      Assert.assertEquals("Password must match", pass, new String(secret));
+      Assertions.assertEquals(pass, new String(secret), "Password must match");
     }
   }
 }

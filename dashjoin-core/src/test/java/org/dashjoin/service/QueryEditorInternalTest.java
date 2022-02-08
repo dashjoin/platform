@@ -7,7 +7,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.service.QueryEditor.QueryColumn;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.util.MapUtil;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -31,7 +31,7 @@ public class QueryEditorInternalTest {
     res.metadata.add(qc);
     res.joinOptions = new ArrayList<>();
     QueryEditorInternal.joinColumns(db, res, "EMP", null);
-    Assert.assertEquals("PRJ.ID", res.joinOptions.get(0).add.toString());
+    Assertions.assertEquals("PRJ.ID", res.joinOptions.get(0).add.toString());
   }
 
   @Test
@@ -42,6 +42,6 @@ public class QueryEditorInternalTest {
     res.fieldNames = Arrays.asList("x");
     res.joinOptions = new ArrayList<>();
     QueryEditorInternal.tableColumns(db, res, db.tables.get("EMP"), null);
-    Assert.assertEquals("WORKSON", res.joinOptions.get(2).col.column);
+    Assertions.assertEquals("WORKSON", res.joinOptions.get(2).col.column);
   }
 }

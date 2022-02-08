@@ -6,9 +6,9 @@ import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Services;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -26,42 +26,42 @@ public class ExpressionServiceTest {
   @Test
   public void read() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    Assert.assertEquals("{\"ID\":1,\"NAME\":\"mike\",\"WORKSON\":1000}",
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    org.junit.jupiter.api.Assertions.assertEquals("{\"ID\":1,\"NAME\":\"mike\",\"WORKSON\":1000}",
         "" + s.jsonata(sc, "$read(\"junit\", \"EMP\", 1)", null, false));
   }
 
   @Test
   public void createUpdateDelete() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Assert.assertEquals("{\"database\":\"junit\",\"table\":\"EMP\",\"pk\":[8]}",
+    Assertions.assertEquals("{\"database\":\"junit\",\"table\":\"EMP\",\"pk\":[8]}",
         "" + s.jsonata(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false));
 
-    Assert.assertEquals(8,
+    Assertions.assertEquals(8,
         s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false).get("ID").asInt());
 
     s.jsonata(sc, "$update(\"junit\", \"EMP\", 8, {\"NAME\": \"jsonata\"})", null, false);
 
-    Assert.assertEquals("jsonata",
+    Assertions.assertEquals("jsonata",
         s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false).get("NAME").asText());
 
     s.jsonata(sc, "$delete(\"junit\", \"EMP\", 8)", null, false);
 
     try {
       s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
-      Assert.fail();
+      Assertions.fail();
     } catch (RuntimeException wrapped404) {
-      Assert.assertTrue(wrapped404.getCause() instanceof NotFoundException);
+      Assertions.assertTrue(wrapped404.getCause() instanceof NotFoundException);
     }
   }
 
   @Test
   public void incoming() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    Assert.assertEquals(
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertEquals(
         "{\"id\":{\"database\":\"junit\",\"table\":\"EMP\",\"pk\":[2]},\"pk\":\"dj/junit/PRJ/ID\",\"fk\":\"dj/junit/EMP/WORKSON\"}",
         "" + s.jsonata(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false).get(1));
   }
@@ -69,8 +69,8 @@ public class ExpressionServiceTest {
   @Test
   public void query() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    Assert.assertEquals(
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertEquals(
         "[{\"EMP.ID\":1,\"EMP.NAME\":\"mike\"},{\"EMP.ID\":2,\"EMP.NAME\":\"joe\"}]",
         "" + s.jsonata(sc, "$query(\"junit\", \"list\")", null, false));
   }
@@ -78,29 +78,29 @@ public class ExpressionServiceTest {
   @Test
   public void echo() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Assert.assertEquals("result", s.jsonata(sc, "$echo(\"result\")", null, false).asText());
+    Assertions.assertEquals("result", s.jsonata(sc, "$echo(\"result\")", null, false).asText());
   }
 
   @Test
   public void call() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
     // see echo.json
-    Assert.assertEquals(123, s.jsonata(sc, "$call(\"echo\")", null, false).asInt());
+    Assertions.assertEquals(123, s.jsonata(sc, "$call(\"echo\")", null, false).asInt());
   }
 
   @Test
   public void traverse() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Assert.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\"}",
+    Assertions.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\"}",
         s.jsonata(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
 
-    Assert.assertEquals(
+    Assertions.assertEquals(
         "[{\"ID\":1,\"NAME\":\"mike\",\"WORKSON\":1000},{\"ID\":2,\"NAME\":\"joe\",\"WORKSON\":1000}]",
         s.jsonata(sc, "$traverse(\"junit\", \"PRJ\", 1000, \"dj/junit/EMP/WORKSON\")", null, false)
             .toString());
@@ -109,15 +109,15 @@ public class ExpressionServiceTest {
   @Test
   public void map() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    Assert.assertEquals("[\"mike\",\"joe\"]",
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertEquals("[\"mike\",\"joe\"]",
         "" + s.jsonata(sc, "$query(\"junit\", \"list\").$echo($.\"EMP.NAME\")", null, false));
   }
 
   @Test
   public void testPojoArg() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
-    Mockito.when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     s.jsonata(sc, "$coord({\"x\":1})", null, false);
   }
 

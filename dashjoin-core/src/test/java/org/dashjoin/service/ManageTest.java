@@ -17,10 +17,9 @@ import org.dashjoin.service.Manage.TypeSample;
 import org.dashjoin.util.MapUtil;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -35,14 +34,14 @@ public class ManageTest {
 
   @Test
   public void testConfigFunctions() {
-    Assert.assertTrue(manage.getConfigurableFunctions().size() > 0);
+    Assertions.assertTrue(manage.getConfigurableFunctions().size() > 0);
   }
 
   @Test
   public void testRoles() throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
-    when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
-    Assert.assertTrue(manage.roles(sc).size() > 0);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertTrue(manage.roles(sc).size() > 0);
   }
 
   @Test
@@ -55,7 +54,7 @@ public class ManageTest {
     MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
     headers.put("Content-Disposition", Arrays.asList("filename=\"filename.jpg\""));
     String name = new Manage().getFileName(headers);
-    Assert.assertEquals("filename", name);
+    Assertions.assertEquals("filename", name);
   }
 
   @Test
@@ -70,37 +69,37 @@ public class ManageTest {
   @Test
   public void detectExisting() throws Exception {
     DetectResult dr = detect("PRJ.csv", "ID,NAME\n17,import");
-    Assert.assertEquals(false, dr.createMode);
-    Assert.assertEquals(true, dr.schema.get("PRJ").get(0).pk);
-    Assert.assertEquals("ID", dr.schema.get("PRJ").get(0).name);
-    Assert.assertEquals("17", dr.schema.get("PRJ").get(0).sample.get(0));
-    Assert.assertEquals("number", dr.schema.get("PRJ").get(0).type);
-    Assert.assertEquals(false, dr.schema.get("PRJ").get(1).pk);
-    Assert.assertEquals("NAME", dr.schema.get("PRJ").get(1).name);
-    Assert.assertEquals("import", dr.schema.get("PRJ").get(1).sample.get(0));
-    Assert.assertEquals("string", dr.schema.get("PRJ").get(1).type);
+    Assertions.assertEquals(false, dr.createMode);
+    Assertions.assertEquals(true, dr.schema.get("PRJ").get(0).pk);
+    Assertions.assertEquals("ID", dr.schema.get("PRJ").get(0).name);
+    Assertions.assertEquals("17", dr.schema.get("PRJ").get(0).sample.get(0));
+    Assertions.assertEquals("number", dr.schema.get("PRJ").get(0).type);
+    Assertions.assertEquals(false, dr.schema.get("PRJ").get(1).pk);
+    Assertions.assertEquals("NAME", dr.schema.get("PRJ").get(1).name);
+    Assertions.assertEquals("import", dr.schema.get("PRJ").get(1).sample.get(0));
+    Assertions.assertEquals("string", dr.schema.get("PRJ").get(1).type);
   }
 
   @Test
   public void detectNew() throws Exception {
     DetectResult dr = detect("NEW.csv", "B,I,D,S\ntrue,42,3.14,hello\ntrue,42,3.14,pk");
-    Assert.assertEquals(true, dr.createMode);
-    Assert.assertEquals(false, dr.schema.get("NEW").get(0).pk);
-    Assert.assertEquals("B", dr.schema.get("NEW").get(0).name);
-    Assert.assertEquals(true, dr.schema.get("NEW").get(0).sample.get(0));
-    Assert.assertEquals("boolean", dr.schema.get("NEW").get(0).type);
-    Assert.assertEquals(false, dr.schema.get("NEW").get(1).pk);
-    Assert.assertEquals("I", dr.schema.get("NEW").get(1).name);
-    Assert.assertEquals(42, dr.schema.get("NEW").get(1).sample.get(0));
-    Assert.assertEquals("integer", dr.schema.get("NEW").get(1).type);
-    Assert.assertEquals(false, dr.schema.get("NEW").get(2).pk);
-    Assert.assertEquals("D", dr.schema.get("NEW").get(2).name);
-    Assert.assertEquals(3.14, dr.schema.get("NEW").get(2).sample.get(0));
-    Assert.assertEquals("number", dr.schema.get("NEW").get(2).type);
-    Assert.assertEquals(true, dr.schema.get("NEW").get(3).pk);
-    Assert.assertEquals("S", dr.schema.get("NEW").get(3).name);
-    Assert.assertEquals("hello", dr.schema.get("NEW").get(3).sample.get(0));
-    Assert.assertEquals("string", dr.schema.get("NEW").get(3).type);
+    Assertions.assertEquals(true, dr.createMode);
+    Assertions.assertEquals(false, dr.schema.get("NEW").get(0).pk);
+    Assertions.assertEquals("B", dr.schema.get("NEW").get(0).name);
+    Assertions.assertEquals(true, dr.schema.get("NEW").get(0).sample.get(0));
+    Assertions.assertEquals("boolean", dr.schema.get("NEW").get(0).type);
+    Assertions.assertEquals(false, dr.schema.get("NEW").get(1).pk);
+    Assertions.assertEquals("I", dr.schema.get("NEW").get(1).name);
+    Assertions.assertEquals(42, dr.schema.get("NEW").get(1).sample.get(0));
+    Assertions.assertEquals("integer", dr.schema.get("NEW").get(1).type);
+    Assertions.assertEquals(false, dr.schema.get("NEW").get(2).pk);
+    Assertions.assertEquals("D", dr.schema.get("NEW").get(2).name);
+    Assertions.assertEquals(3.14, dr.schema.get("NEW").get(2).sample.get(0));
+    Assertions.assertEquals("number", dr.schema.get("NEW").get(2).type);
+    Assertions.assertEquals(true, dr.schema.get("NEW").get(3).pk);
+    Assertions.assertEquals("S", dr.schema.get("NEW").get(3).name);
+    Assertions.assertEquals("hello", dr.schema.get("NEW").get(3).sample.get(0));
+    Assertions.assertEquals("string", dr.schema.get("NEW").get(3).type);
   }
 
   @Test
@@ -134,11 +133,11 @@ public class ManageTest {
     DetectResult res =
         detect("import.xlsx", getClass().getResourceAsStream("/data/import.xlsx"), null, null);
     List<TypeSample> x = res.schema.values().iterator().next();
-    Assert.assertEquals("ID", x.get(0).name);
-    Assert.assertEquals(1.0, x.get(0).sample.get(0));
-    Assert.assertEquals(2.0, x.get(0).sample.get(1));
-    Assert.assertEquals("name", x.get(1).name);
-    Assert.assertEquals("joe", x.get(1).sample.get(0));
+    Assertions.assertEquals("ID", x.get(0).name);
+    Assertions.assertEquals(1.0, x.get(0).sample.get(0));
+    Assertions.assertEquals(2.0, x.get(0).sample.get(1));
+    Assertions.assertEquals("name", x.get(1).name);
+    Assertions.assertEquals("joe", x.get(1).sample.get(0));
   }
 
   @Test
@@ -146,11 +145,11 @@ public class ManageTest {
     DetectResult res =
         detect("import.sqlite", getClass().getResourceAsStream("/data/import.sqlite"), null, null);
     List<TypeSample> x = res.schema.values().iterator().next();
-    Assert.assertEquals("ID", x.get(0).name);
-    Assert.assertEquals(1, x.get(0).sample.get(0));
-    Assert.assertEquals(2, x.get(0).sample.get(1));
-    Assert.assertEquals("name", x.get(1).name);
-    Assert.assertEquals("test", x.get(1).sample.get(0));
+    Assertions.assertEquals("ID", x.get(0).name);
+    Assertions.assertEquals(1, x.get(0).sample.get(0));
+    Assertions.assertEquals(2, x.get(0).sample.get(1));
+    Assertions.assertEquals("name", x.get(1).name);
+    Assertions.assertEquals("test", x.get(1).sample.get(0));
   }
 
   @Test
@@ -159,11 +158,11 @@ public class ManageTest {
     res.createMode = true;
     new Manage().handleJson(res, null, null, null, null,
         Arrays.asList(MapUtil.of("y", 2), MapUtil.of("x", 1, "y", 2), MapUtil.of("y", 2, "x", 1)));
-    Assert.assertEquals(2, res.schema.get(null).size());
-    Assert.assertEquals("y", res.schema.get(null).get(0).name);
-    Assert.assertEquals("x", res.schema.get(null).get(1).name);
-    Assert.assertEquals(2, res.schema.get(null).get(0).sample.get(1));
-    Assert.assertEquals(1, res.schema.get(null).get(1).sample.get(1));
+    Assertions.assertEquals(2, res.schema.get(null).size());
+    Assertions.assertEquals("y", res.schema.get(null).get(0).name);
+    Assertions.assertEquals("x", res.schema.get(null).get(1).name);
+    Assertions.assertEquals(2, res.schema.get(null).get(0).sample.get(1));
+    Assertions.assertEquals(1, res.schema.get(null).get(1).sample.get(1));
   }
 
   @Test
@@ -172,7 +171,7 @@ public class ManageTest {
         "import.sqlite"})
       for (int i = 0; i < 3; i++) {
         SecurityContext sc = mock(SecurityContext.class);
-        when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+        when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
         DetectResult res;
         {
@@ -235,7 +234,7 @@ public class ManageTest {
   DetectResult detect(String filename, InputStream csv, String filename2, String csv2)
       throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
-    when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
     MultivaluedMap<String, String> headers = new MultivaluedHashMap<>();
     headers.put("Content-Disposition", Arrays.asList("filename=\"" + filename + "\""));
