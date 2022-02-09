@@ -69,8 +69,8 @@
 		    </executions>
 		    
 		    <configuration>
-		        <nodeVersion>v15.2.1</nodeVersion>
-			<yarnVersion>v1.22.10</yarnVersion>
+				<nodeVersion>v16.14.0</nodeVersion>
+				<yarnVersion>v1.22.17</yarnVersion>
 		        <!-- optional: with node version greater than 4.0.0 will use npm provided by node distribution
 		        <npmVersion>2.15.9</npmVersion>
 		        -->
