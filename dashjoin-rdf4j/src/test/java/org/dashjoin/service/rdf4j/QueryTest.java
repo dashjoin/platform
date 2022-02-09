@@ -1,7 +1,7 @@
 package org.dashjoin.service.rdf4j;
 
 import org.dashjoin.service.RDF4JEditorTest;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class QueryTest {
@@ -102,16 +102,16 @@ public class QueryTest {
   public void testRename() throws Exception {
     Query q = new Query("select (count(?s) as ?c) where { ?s ?p ?o } group by ?o");
     q.rename("o", "tmp");
-    Assert.assertEquals("select (count(?s) as ?c) where { ?s ?p ?tmp } group by ?tmp",
+    Assertions.assertEquals("select (count(?s) as ?c) where { ?s ?p ?tmp } group by ?tmp",
         spaces(q.toString()));
     q.rename("tmp", "oo");
-    Assert.assertEquals("select (count(?s) as ?c) where { ?s ?p ?oo } group by ?oo",
+    Assertions.assertEquals("select (count(?s) as ?c) where { ?s ?p ?oo } group by ?oo",
         spaces(q.toString()));
     q.rename("c", "cc");
-    Assert.assertEquals("select (count(?s) as ?cc) where { ?s ?p ?oo } group by ?oo",
+    Assertions.assertEquals("select (count(?s) as ?cc) where { ?s ?p ?oo } group by ?oo",
         spaces(q.toString()));
     q.rename("s", "ss");
-    Assert.assertEquals("select (count(?ss) as ?cc) where { ?ss ?p ?oo } group by ?oo",
+    Assertions.assertEquals("select (count(?ss) as ?cc) where { ?ss ?p ?oo } group by ?oo",
         spaces(q.toString()));
   }
 
@@ -119,13 +119,13 @@ public class QueryTest {
   public void testJoin() throws Exception {
     Query q = new Query("select ?s where { ?s a <:T> }");
     q.join("s", ":C");
-    Assert.assertEquals(
+    Assertions.assertEquals(
         "select ?s ?C where { ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <:T> . ?s <:C> ?C }",
         spaces(q.toString()));
   }
 
   void query(String query) throws Exception {
-    Assert.assertEquals(query, spaces(new Query(query).toString()));
+    Assertions.assertEquals(query, spaces(new Query(query).toString()));
     new RDF4JEditorTest().eq(query, new Query(query).toString());
   }
 
