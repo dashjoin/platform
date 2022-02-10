@@ -12,7 +12,7 @@
 	<artifactId>dashjoin-rdf4j</artifactId>
 	
 	<description>Enables RDF4J graph databases for the dashjoin platform</description>
-	<url>https://github.com/dashjoin/query-editor</url>
+	<url>https://github.com/dashjoin/platform</url>
 
 	<packaging>jar</packaging>
 
