@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DJBaseComponent } from '../../djbase/djbase.component';
-import marked from 'marked';
+import { marked } from 'marked';
 import { DashjoinWidget } from '../widget-registry';
 import { Expression } from '../../expression/expression';
 
@@ -40,7 +40,7 @@ export class MarkdownComponent extends DJBaseComponent implements OnInit {
    */
   markdown(): string {
     if (this.layout.markdown) {
-      return marked.setOptions({}).parse(this.id(this.layout.markdown));
+      return marked(this.id(this.layout.markdown));
     }
   }
 

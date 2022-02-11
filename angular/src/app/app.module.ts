@@ -14,7 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -141,7 +141,7 @@ export const __DJ_TYPES = [
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
-    ChartsModule,
+    NgChartsModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatFormFieldModule,
