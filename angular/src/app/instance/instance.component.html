@@ -97,7 +97,7 @@
                 <div *ngIf="rowKids" fxLayout="row wrap" fxLayoutGap="7px">
                     <div *ngFor="let child of rowKids" [ngStyle]="layout.style" [ngClass]="layout.class"
                         style="padding-top: 7px;">
-                        <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child)"
+                        <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child.widget)"
                             style="height: calc(100% - 32px);">
                             <mat-card-header>
                                 <mat-card-title>{{id(child.widget.title)}}</mat-card-title>
@@ -112,7 +112,7 @@
                 <div *ngIf="colKids" fxLayout="row" fxLayout.xs="row wrap" fxLayoutGap="7px" style="padding-top: 7px;">
                     <div *ngFor="let col of colKids" fxLayout="column" fxLayoutGap="7px">
                         <div *ngFor="let child of col" [ngStyle]="layout.style" [ngClass]="layout.class">
-                            <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child)">
+                            <mat-card appHoverClass="mat-elevation-z6" *ngIf="isInRole(child.widget)">
                                 <mat-card-header>
                                     <mat-card-title>{{id(child.widget.title)}}</mat-card-title>
                                 </mat-card-header>
