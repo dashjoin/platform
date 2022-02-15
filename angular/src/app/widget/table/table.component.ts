@@ -28,7 +28,12 @@ export class TableComponent extends LinksComponent implements OnInit {
   /**
    * default pagination
    */
-  @Input() pagination = true;
+  @Input() pagination: boolean;
+
+  /**
+   * True if the data source is sortable
+   */
+  @Input() sortable: boolean;
 
   /**
    * get schema and call doLayout
@@ -39,6 +44,11 @@ export class TableComponent extends LinksComponent implements OnInit {
 
       this.meta = await this.getData().getMeta();
       this.queryMeta = this.meta?.schema as Table;
+
+      // Set pagination and sorting capabilities from meta data
+      // (preset @Input values have priority)
+      this.pagination ||= this.meta?.paging;
+      this.sortable ||= this.meta?.sortCaps?.sortableFields != null;
     } catch (e) {
       this.errorHandler(e);
     }
