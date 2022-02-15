@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.eclipse.rdf4j.model.util.Values.iri;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class RDF4JTest extends DBTest {
@@ -103,6 +104,6 @@ public class RDF4JTest extends DBTest {
 
 	  String expectedJSON = Files.readString( Paths.get("./src/test/resources/results/", "junit", queryMeta.ID +".json"));
 
-	  Assert.assertEquals( expectedJSON, resJSON);
+	  assertEquals( expectedJSON, resJSON);
   }
 }
