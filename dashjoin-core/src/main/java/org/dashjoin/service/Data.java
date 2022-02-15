@@ -1052,13 +1052,15 @@ public class Data {
     if (type == null)
       throw new IllegalArgumentException("Unknown table");
     Map<String, Object> res = new HashMap<>();
-    for (Property p : type.properties.values())
-      if (p.pkpos != null) {
-        if (p.pkpos >= id.size())
-          throw new IllegalArgumentException("Missing composite key: " + p.name);
-        String s = id.get(p.pkpos);
-        res.put(p.name, s);
-      }
+    if (type.properties != null) {
+      for (Property p : type.properties.values())
+        if (p.pkpos != null) {
+          if (p.pkpos >= id.size())
+            throw new IllegalArgumentException("Missing composite key: " + p.name);
+          String s = id.get(p.pkpos);
+          res.put(p.name, s);
+        }
+    }
     if (res.isEmpty())
       throw new Exception("Operation requires table with a primary key");
     return res;
