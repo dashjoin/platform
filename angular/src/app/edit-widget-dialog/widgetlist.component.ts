@@ -86,6 +86,7 @@ export class WidgetListComponent implements WidgetComponent, OnInit, OnDestroy {
     // tslint:disable
     // Map some nice icons for widgets -> feed from metadata
     icons = {
+        'map': 'map',
         'button': 'smart_button', //
         'card': 'badge', //
         'chart': 'insert_chart', //
