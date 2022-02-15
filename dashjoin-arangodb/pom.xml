@@ -12,7 +12,7 @@
 	<artifactId>dashjoin-arangodb</artifactId>
   
 	<description>Enables ArangoDB databases for the dashjoin platform</description>
-	<url>https://github.com/dashjoin/query-editor</url>
+	<url>https://github.com/dashjoin/platform</url>
 
 	<packaging>jar</packaging>
 

@@ -12,7 +12,7 @@
 	<artifactId>dashjoin-core</artifactId>
 
 	<description>A visual query editor for SQL and other query languages</description>
-	<url>https://github.com/dashjoin/query-editor</url>
+	<url>https://github.com/dashjoin/platform</url>
 
 	<packaging>jar</packaging>
 

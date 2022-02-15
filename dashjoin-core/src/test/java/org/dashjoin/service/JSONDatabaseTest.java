@@ -323,4 +323,14 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
 
     }
   }
+
+  public static class Payload {
+    public String s;
+  }
+
+  @Test
+  public void testExtraField() throws Exception {
+    Payload p = JSONDatabase.fromMap(MapUtil.of("s", "hello world", "unknown", 42), Payload.class);
+    Assertions.assertEquals(p.s, "hello world");
+  }
 }

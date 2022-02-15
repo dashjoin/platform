@@ -16,9 +16,9 @@ import org.dashjoin.service.QueryEditor.SortRequest;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.parser.QueryParserUtil;
 import org.eclipse.rdf4j.queryrender.sparql.SPARQLQueryRenderer;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -42,7 +42,7 @@ public class RDF4JEditorTest extends QueryEditorTest {
   public void testGetIDsOfClassQuery() throws Exception {
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/junit/http:%2F%2Fex.org%2FEMP";
-    Assert.assertEquals("select ?EMP where { ?EMP a <http://ex.org/EMP> }",
+    Assertions.assertEquals("select ?EMP where { ?EMP a <http://ex.org/EMP> }",
         e.getInitialQuery(r).query);
   }
 
@@ -100,18 +100,18 @@ public class RDF4JEditorTest extends QueryEditorTest {
 
     query.query = "select ?EMP where { ?EMP a <:EMP> }";
     res = e.noop(query);
-    Assert.assertEquals("null.EMP", res.metadata.get(0).col.toString());
-    Assert.assertEquals("EMP", res.fieldNames.get(0));
+    Assertions.assertEquals("null.EMP", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("EMP", res.fieldNames.get(0));
 
     query.query = "select (COUNT(?EMP)as ?count) where { ?EMP a <:EMP> }";
     res = e.noop(query);
-    Assert.assertEquals("null.count", res.metadata.get(0).col.toString());
-    Assert.assertEquals("count", res.fieldNames.get(0));
+    Assertions.assertEquals("null.count", res.metadata.get(0).col.toString());
+    Assertions.assertEquals("count", res.fieldNames.get(0));
 
     query.query =
         "select (count(?emp) as ?w) ?workson where { ?emp a <:EMP> . ?emp <:WORKSON> ?workson filter (?workson = <:1000>) } group by ?workson";
     res = e.noop(query);
-    Assert.assertEquals("= <:1000>", res.metadata.get(1).where);
+    Assertions.assertEquals("= <:1000>", res.metadata.get(1).where);
   }
 
   @Override
@@ -276,7 +276,7 @@ public class RDF4JEditorTest extends QueryEditorTest {
   @Override
   public void eq(String expected, String actual) throws Exception {
     SPARQLQueryRenderer r = new SPARQLQueryRenderer();
-    Assert.assertEquals(
+    Assertions.assertEquals(
         r.render(QueryParserUtil.parseTupleQuery(QueryLanguage.SPARQL, expected, null)),
         r.render(QueryParserUtil.parseTupleQuery(QueryLanguage.SPARQL, actual, null)));
   }
@@ -285,7 +285,7 @@ public class RDF4JEditorTest extends QueryEditorTest {
   @Test
   public void testDelegate() throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
-    when(sc.isUserInRole(Matchers.anyString())).thenReturn(true);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     QueryEditor.Delegate d = new QueryEditor.Delegate();
     d.services = services;
     InitialQueryRequest r = new InitialQueryRequest();

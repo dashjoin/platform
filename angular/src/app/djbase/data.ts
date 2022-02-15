@@ -283,7 +283,7 @@ export class DJDataBase<T> implements DJData<T> {
                 for (const k in schema.properties) {
                     if (schema.properties.hasOwnProperty(k)) {
                         const v = schema.properties[k];
-                        if ((v as any).pkpos === i) {
+                        if ((v as any)?.pkpos === i) {
                             keyFields.push(k);
                             found = true; break;
                         }

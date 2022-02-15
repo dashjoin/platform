@@ -4,7 +4,7 @@ package org.dashjoin.service;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,27 +44,28 @@ public class RDF4JTest extends DBTest {
   public void testMetadata() throws Exception {
     String ns = "http:%2F%2Fex.org%2F";
     Table t = services.getConfig().getDatabase("dj/junit").tables.get("http://ex.org/EMP");
-    Assert.assertEquals(idRead(), t.properties.get(idRead()).name);
-    Assert.assertEquals(0, t.properties.get(idRead()).pkpos.intValue());
-    Assert.assertNull(t.properties.get(idRead()).ref);
-    Assert.assertEquals("dj/junit/" + ns + "EMP/" + idRead(), t.properties.get(idRead()).ID);
+    Assertions.assertEquals(idRead(), t.properties.get(idRead()).name);
+    Assertions.assertEquals(0, t.properties.get(idRead()).pkpos.intValue());
+    Assertions.assertNull(t.properties.get(idRead()).ref);
+    Assertions.assertEquals("dj/junit/" + ns + "EMP/" + idRead(), t.properties.get(idRead()).ID);
 
-    Assert.assertEquals("http://ex.org/WORKSON", t.properties.get("http://ex.org/WORKSON").name);
-    Assert.assertNull(t.properties.get("http://ex.org/WORKSON").pkpos);
-    Assert.assertEquals("dj/junit/" + ns + "PRJ/" + idRead(),
+    Assertions.assertEquals("http://ex.org/WORKSON",
+        t.properties.get("http://ex.org/WORKSON").name);
+    Assertions.assertNull(t.properties.get("http://ex.org/WORKSON").pkpos);
+    Assertions.assertEquals("dj/junit/" + ns + "PRJ/" + idRead(),
         t.properties.get("http://ex.org/WORKSON").ref);
-    Assert.assertEquals("dj/junit/" + ns + "EMP/" + ns + "WORKSON",
+    Assertions.assertEquals("dj/junit/" + ns + "EMP/" + ns + "WORKSON",
         t.properties.get("http://ex.org/WORKSON").ID);
   } 
 
   @Override
   @Test
   public void testGetTables() throws Exception {
-    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FEMP"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FPRJ"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FNOKEY"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FT"));
-    Assert.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
+    Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FEMP"));
+    Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FPRJ"));
+    Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FNOKEY"));
+    Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FT"));
+    Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
 
   @Override

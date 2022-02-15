@@ -12,7 +12,7 @@
 	<artifactId>dashjoin-kafka</artifactId>
   
 	<description>Enables kafka / ksql databases for the dashjoin platform</description>
-	<url>https://github.com/dashjoin/query-editor</url>
+	<url>https://github.com/dashjoin/platform</url>
 
 	<packaging>jar</packaging>
 

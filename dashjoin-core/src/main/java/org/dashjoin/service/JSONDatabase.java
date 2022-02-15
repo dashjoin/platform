@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.java.Log;
@@ -55,6 +56,7 @@ public abstract class JSONDatabase implements Database {
           .configure(JsonReadFeature.ALLOW_SINGLE_QUOTES.mappedFeature(), true)
           .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
           .enable(SerializationFeature.INDENT_OUTPUT)
+          .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
           .setDefaultPrettyPrinter(new PrettyPrinter() {
 

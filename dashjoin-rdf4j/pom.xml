@@ -12,7 +12,7 @@
 	<artifactId>dashjoin-rdf4j</artifactId>
 	
 	<description>Enables RDF4J graph databases for the dashjoin platform</description>
-	<url>https://github.com/dashjoin/query-editor</url>
+	<url>https://github.com/dashjoin/platform</url>
 
 	<packaging>jar</packaging>
 
@@ -58,16 +58,15 @@
 	
 		<!-- dev dependencies -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+    		<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		
 		<dependency>
-		    <groupId>org.mockito</groupId>
-		    <artifactId>mockito-all</artifactId>
-		    <version>1.10.19</version>
-		    <scope>test</scope>
+    		<groupId>org.mockito</groupId>
+    		<artifactId>mockito-core</artifactId>
+    		<scope>test</scope>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-model -->
@@ -89,7 +88,7 @@
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus-plugin.version}</version>
+        <version>${quarkus.platform.version}</version>
         <executions>
           <execution>
             <goals>
