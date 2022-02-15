@@ -115,12 +115,24 @@ export interface DJDataMeta {
      */
     schema: Schema;
 
+    /**
+     * The primary key of this data source
+     */
     primaryKey?: DJKeyDef;
 
-    // links?: DJDataLink[];
+    /**
+     * True if paging is supported
+     */
+    paging?: boolean;
 
+    /**
+     * Sorting capabilities
+     */
     sortCaps?: DJSortCapabilities;
 
+    /**
+     * Filter capabilities
+     */
     filterCaps?: DJFilterCapabilities;
 }
 
@@ -353,6 +365,9 @@ export class DJDataDashjoin<T> extends DJDataBase<T> {
                 schema, // this.inferSchemaFromData(page.data),
                 size: page.paging && page.paging.totalSize || null,
                 sizeEstimate: page.paging && page.paging.totalSize || null,
+                paging: page.paging?.next !== null || null,
+                // Return all fields as sortable (we have no per field info)
+                sortCaps: { sortableFields: Object.keys(schema.properties) },
                 primaryKey: this.keyDefFromSchema(schema)
             };
             this.computeLabels();
