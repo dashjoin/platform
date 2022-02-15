@@ -60,7 +60,7 @@
 				        "install", so unless you need to run some other npm command,
 				        you can remove this whole <configuration> section.
 				        -->
-				        <arguments>run --max_old_space_size=2048 build --configuration production</arguments>
+				        <arguments>run --max_old_space_size=3072 build --configuration production</arguments>
 				        <!-- workingDirectory>./angular</workingDirectory>
 				         -->
 				    </configuration>
