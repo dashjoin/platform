@@ -7,7 +7,7 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 
 Download: <https://download.dashjoin.com/>
 
-Live demo: <https://demo.my.dashjoin.com/> (log in as guest, or with your registered user)
+Live demo: <https://demo.my.dashjoin.com/>
 
 Webpage: <https://dashjoin.com/>
 
