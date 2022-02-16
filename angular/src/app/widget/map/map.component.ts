@@ -32,22 +32,34 @@ export class MapComponent extends DJBaseComponent implements OnInit {
    */
   map: Map;
 
+  error: string;
+
   async initWidget() {
     const displayData = await this.evaluateExpression(this.layout.display);
     const res: any = await this.http.get('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(displayData) + '&format=json&limit=1').
       toPromise();
 
-    this.map = new Map({
-      target: 'map_widget',
-      layers: [
-        new TileLayer({
-          source: new OSM()
+    const delta = res[0]?.boundingbox[1] - res[0]?.boundingbox[0];
+
+    let zoom = 10;
+    if (delta > 1) zoom = 4;
+    if (delta < 0.1) zoom = 16;
+
+    if (res[0]?.lon && res[0]?.lat) {
+      this.map = new Map({
+        target: 'map_widget',
+        layers: [
+          new TileLayer({
+            source: new OSM()
+          })
+        ],
+        view: new View({
+          center: olProj.fromLonLat([res[0].lon, res[0].lat]),
+          zoom
         })
-      ],
-      view: new View({
-        center: olProj.fromLonLat([res[0].lon, res[0].lat]),
-        zoom: 8
-      })
-    });
+      });
+    } else {
+      this.error = 'Cannot resolve address: ' + displayData;
+    }
   }
 }
