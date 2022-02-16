@@ -518,6 +518,28 @@
           }
         ]
       },
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Edit Record",
+            "deleteConfirmation": "Are you sure you want to delete this query?"
+          },
+          {
+            "widget": "container",
+            "text": "New Widget",
+            "if": "value.type = \"write\"",
+            "children": [
+              {
+                "widget": "button",
+                "text": "Run Query",
+                "print": "$query($substringAfter(value.database, '/'), pk1)"
+              }
+            ]
+          }
+        ]
+      },
       "properties": {
         "ID": {
           "ID": "dj/config/dj-query-catalog/ID",
@@ -600,11 +622,7 @@
           {
             "title": "Edit Record",
             "widget": "edit",
-            "deleteConfirmation": "Are you sure you want to delete this record?"
-          },
-          {
-            "title": "Related Records",
-            "widget": "links"
+            "deleteConfirmation": "Are you sure you want to delete this widget?"
           },
           {
             "title": "Widget Preview",
@@ -722,11 +740,7 @@
           {
             "widget": "edit",
             "title": "Edit Record",
-            "deleteConfirmation": "Are you sure you want to delete this record?"
-          },
-          {
-            "widget": "links",
-            "title": "Related Records"
+            "deleteConfirmation": "Are you sure you want to delete this function?"
           },
           {
             "widget": "container",
