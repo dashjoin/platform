@@ -300,6 +300,10 @@ public class Manage {
 
       if (getFileName(header).contains("/")) {
         // special case: model folder upload
+        JSONClassloaderDatabase cl = null;
+        if (db.name.equals("config"))
+          cl = new JSONClassloaderDatabase();
+
         Map<String, List<Map<String, Object>>> tables = handleModel(inputParts);
         for (Entry<String, List<Map<String, Object>>> t : tables.entrySet()) {
           Table m = db.tables.get(t.getKey());
@@ -311,7 +315,12 @@ public class Manage {
           CreateBatch batch = db.openCreateBatch(m);
           for (Map<String, Object> object : t.getValue()) {
             db.cast(m, object);
-            batch.create(object);
+            if (clearTable && cl != null && cl.read(m, object) != null)
+              // special case: update read only object (instead of create) defined on the
+              // classloader
+              db.update(m, object, object);
+            else
+              batch.create(object);
           }
           batch.complete();
         }
