@@ -34,7 +34,14 @@ export class MapComponent extends DJBaseComponent implements OnInit {
 
   error: string;
 
+  style: any;
+
   async initWidget() {
+
+    this.style = JSON.parse(JSON.stringify(this.layout.style));
+    if (!this.style.width) this.style.width = '400px';
+    if (!this.style.height) this.style.height = '400px';
+
     const displayData = await this.evaluateExpression(this.layout.display);
     const res: any = await this.http.get('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(displayData) + '&format=json&limit=1').
       toPromise();

@@ -869,6 +869,12 @@ Displays a hyperlink icon with tooltip
 
 Displays links to related records
 
+##### [map](https://demo.my.dashjoin.com/#/resource/northwind/CUSTOMERS/BERGS)
+
+Displays a map for a given location. 
+
+* display: expression that results in a location - this value is resolved using the q query parameter of the [Open Streetmap API](https://nominatim.org/release-docs/latest/api/Search/) service
+
 ##### [markdown](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
 
 Displays markdown
