@@ -1,7 +1,7 @@
 [ {
   "start" : {
     "_dj_resource" : {
-      "database" : "dj/junit",
+      "database" : "dj/pathql",
       "pk" : [ "http://ex.org/1" ],
       "table" : null
     }
@@ -10,7 +10,7 @@
     "edge" : {
       "edge.Predicate" : {
         "_dj_resource" : {
-          "database" : "dj/junit",
+          "database" : "dj/pathql",
           "pk" : [ "http://ex.org/REPORTSTO" ],
           "table" : null
         }
@@ -19,7 +19,7 @@
     },
     "end" : {
       "_dj_resource" : {
-        "database" : "dj/junit",
+        "database" : "dj/pathql",
         "pk" : [ "http://ex.org/6" ],
         "table" : null
       }
@@ -28,7 +28,7 @@
 }, {
   "start" : {
     "_dj_resource" : {
-      "database" : "dj/junit",
+      "database" : "dj/pathql",
       "pk" : [ "http://ex.org/1" ],
       "table" : null
     }
@@ -37,7 +37,7 @@
     "edge" : {
       "edge.Predicate" : {
         "_dj_resource" : {
-          "database" : "dj/junit",
+          "database" : "dj/pathql",
           "pk" : [ "http://ex.org/REPORTSTO" ],
           "table" : null
         }
@@ -46,7 +46,7 @@
     },
     "end" : {
       "_dj_resource" : {
-        "database" : "dj/junit",
+        "database" : "dj/pathql",
         "pk" : [ "http://ex.org/6" ],
         "table" : null
       }
@@ -55,7 +55,7 @@
     "edge" : {
       "edge.Predicate" : {
         "_dj_resource" : {
-          "database" : "dj/junit",
+          "database" : "dj/pathql",
           "pk" : [ "http://ex.org/REPORTSTO" ],
           "table" : null
         }
@@ -64,7 +64,7 @@
     },
     "end" : {
       "_dj_resource" : {
-        "database" : "dj/junit",
+        "database" : "dj/pathql",
         "pk" : [ "http://ex.org/8" ],
         "table" : null
       }

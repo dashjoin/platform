@@ -95,7 +95,7 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Map<String, Object>> res = db.query(sc, "junit", "list", null);
-    Assertions.assertEquals(8, res.size());
+    Assertions.assertEquals(2, res.size());
     Assertions.assertEquals(toID(1), res.get(0).get(idQuery()));
   }
 
@@ -104,7 +104,7 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Map<String, Object>> res = db.queryGraph(sc, "junit", "graph", null);
-    Assertions.assertEquals(8, res.size());
+    Assertions.assertEquals(2, res.size());
     Assertions.assertEquals(toID(1), ((Map<?, ?>) res.get(0).get("x")).get(idRead()));
     Resource r = (Resource) ((Map<?, ?>) res.get(0).get("x")).get("_dj_resource");
     Assertions.assertEquals("junit", r.database);
@@ -176,11 +176,11 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
-    map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
-    Assertions.assertEquals(9, x.size());
+    map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    Assertions.assertEquals(2, x.size());
     x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
-    map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
-    Assertions.assertEquals(9, x.size());
+    map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
+    Assertions.assertEquals(2, x.size());
   }
 
   @Test
@@ -189,7 +189,7 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Map<String, Object>> x =
         db.all(sc, "junit", toID("EMP"), 0, 10, null, false, MapUtil.of(toID("NAME"), "mike"));
-    map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
+    map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
     Assertions.assertEquals(1, x.size());
   }
 
@@ -199,7 +199,7 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     db.all(sc, "junit", toID("EMP"), 0, 1, null, false, null);
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 1, 10, null, false, null);
-    map("{ID=2, NAME=joe, WORKSON=1000, REPORTSTO=6}", x.get(0));
+    map("{ID=2, NAME=joe, WORKSON=1000}", x.get(0));
   }
 
   void map(String string, Map<String, Object> map) {
@@ -295,7 +295,7 @@ public class DBTest {
   @Test
   public void testList() throws Exception {
     Map<String, Map<String, Object>> res = db.list("junit", toID("EMP"), Arrays.asList(toID("1")));
-    map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", res.get(toID("1")));
+    map("{WORKSON=1000, ID=1, NAME=mike}", res.get(toID("1")));
   }
 
   @Test
