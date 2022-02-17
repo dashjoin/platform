@@ -195,6 +195,7 @@
 				<executions>
 					<!-- enable flattening -->
 					<execution>
+						<?m2e execute?>
 						<id>flatten</id>
 						<phase>process-resources</phase>
 						<goals>
@@ -203,6 +204,7 @@
 					</execution>
 					<!-- ensure proper cleanup -->
 					<execution>
+						<?m2e execute?>
 						<id>flatten.clean</id>
 						<phase>clean</phase>
 						<goals>
