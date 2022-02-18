@@ -20,7 +20,7 @@ import org.dashjoin.util.FileSystem;
  * like Doc2data, but load an excel sheet from a json structure (map of sheetname to table). we
  * interpret the first row as the table field names
  */
-public class Excel2data extends AbstractMultiInputFunction {
+public class Excel2data extends AbstractFunction<String, Object> {
 
   @Override
   public String getID() {
@@ -33,18 +33,8 @@ public class Excel2data extends AbstractMultiInputFunction {
   }
 
   @Override
-  public String inputField() {
-    return "url";
-  }
-
-  @Override
-  public String outputField() {
-    return ".";
-  }
-
-  @Override
-  public Object single(Object arg) throws Exception {
-    URL url = FileSystem.getUploadURL((String) arg);
+  public Object run(String arg) throws Exception {
+    URL url = FileSystem.getUploadURL(arg);
     return parse(url);
   }
 
@@ -86,5 +76,10 @@ public class Excel2data extends AbstractMultiInputFunction {
       return null;
     else
       throw new RuntimeException("Illegal cell type");
+  }
+
+  @Override
+  public Class<String> getArgumentClass() {
+    return String.class;
   }
 }

@@ -11,11 +11,11 @@ import lombok.extern.java.Log;
  * function to download a url (or list of urls) to the local upload folder
  */
 @Log
-public class Download extends AbstractMultiInputFunction {
+public class Download extends AbstractFunction<String, Void> {
 
   @Override
-  public Object single(Object arg) throws Exception {
-    URL url = FileSystem.getUploadURL((String) arg);
+  public Void run(String arg) throws Exception {
+    URL url = FileSystem.getUploadURL(arg);
     log.info("downloading: " + url);
     try (InputStream in = url.openStream()) {
       String filename = url.getPath().isEmpty() ? url.getHost() : new File(url.getPath()).getName();
@@ -25,8 +25,8 @@ public class Download extends AbstractMultiInputFunction {
   }
 
   @Override
-  public Class<Object> getArgumentClass() {
-    return Object.class;
+  public Class<String> getArgumentClass() {
+    return String.class;
   }
 
   @Override
@@ -37,15 +37,5 @@ public class Download extends AbstractMultiInputFunction {
   @Override
   public String getType() {
     return "write";
-  }
-
-  @Override
-  public String inputField() {
-    return "url";
-  }
-
-  @Override
-  public String outputField() {
-    return null;
   }
 }

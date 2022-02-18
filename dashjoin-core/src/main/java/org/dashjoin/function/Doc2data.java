@@ -45,28 +45,25 @@ import lombok.extern.java.Log;
  * given a URL, parses the contents from JSON, XML, CSV to a json object
  */
 @Log
-public class Doc2data extends AbstractMultiInputFunction {
+public class Doc2data extends AbstractFunction<String, Object> {
 
   private static final ObjectMapper om = new ObjectMapper();
 
   long MAX_SIZE = 100 * 1024 * 1024;
 
   @Override
-  public Object single(Object arg) throws Exception {
-
-    if (arg == null || !(arg instanceof String))
-      return null;
+  public Object run(String arg) throws Exception {
 
     try {
       try {
-        Object res = parseJsonDoc((String) arg);
+        Object res = parseJsonDoc(arg);
         return res;
       } catch (Throwable e) {
         // ignore
         log.info("Error parsing JSON: " + e + " - fallback to regular parser");
       }
 
-      URL url = FileSystem.getUploadURL((String) arg);
+      URL url = FileSystem.getUploadURL(arg);
 
       if (new java.io.File(url.getPath()).length() > MAX_SIZE)
         throw new RuntimeException("Data file too large: " + url);
@@ -76,7 +73,7 @@ public class Doc2data extends AbstractMultiInputFunction {
         return parse(s);
       }
     } catch (MalformedURLException textNotUrl) {
-      return parse((String) arg);
+      return parse(arg);
     }
   }
 
@@ -239,12 +236,7 @@ public class Doc2data extends AbstractMultiInputFunction {
   }
 
   @Override
-  public String inputField() {
-    return "url";
-  }
-
-  @Override
-  public String outputField() {
-    return ".";
+  public Class<String> getArgumentClass() {
+    return String.class;
   }
 }

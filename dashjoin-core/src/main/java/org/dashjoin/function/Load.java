@@ -9,7 +9,7 @@ import org.dashjoin.util.FileSystem;
 /**
  * simply load a URL to a string
  */
-public class Load extends AbstractMultiInputFunction {
+public class Load extends AbstractFunction<String, String> {
 
   @Override
   public String getID() {
@@ -22,20 +22,15 @@ public class Load extends AbstractMultiInputFunction {
   }
 
   @Override
-  public Object single(Object arg) throws Exception {
-    URL url = FileSystem.getUploadURL((String) arg);
+  public String run(String arg) throws Exception {
+    URL url = FileSystem.getUploadURL(arg);
     try (InputStream in = url.openStream()) {
       return IOUtils.toString(in, Charset.defaultCharset());
     }
   }
 
   @Override
-  public String inputField() {
-    return "url";
-  }
-
-  @Override
-  public String outputField() {
-    return "content";
+  public Class<String> getArgumentClass() {
+    return String.class;
   }
 }
