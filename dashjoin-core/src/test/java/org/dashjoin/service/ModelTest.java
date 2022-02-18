@@ -175,8 +175,8 @@ public class ModelTest {
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
           if (!(kid.getValue() instanceof ObjectNode)) {
-            Assertions.assertTrue(
-                expr.startsWith("{") || expr.startsWith("$") || expr.startsWith("value."));
+            Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("$")
+                || expr.startsWith("value.") || expr.startsWith("("));
             Expression jsonata = Expression.jsonata(expr);
             try {
               jsonata.evaluate(null);
