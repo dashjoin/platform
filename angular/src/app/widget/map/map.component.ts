@@ -38,7 +38,7 @@ export class MapComponent extends DJBaseComponent implements OnInit {
 
   async initWidget() {
 
-    this.style = JSON.parse(JSON.stringify(this.layout.style));
+    this.style = this.layout.style ? JSON.parse(JSON.stringify(this.layout.style)) : {};
     if (!this.style.width) this.style.width = '400px';
     if (!this.style.height) this.style.height = '400px';
 
