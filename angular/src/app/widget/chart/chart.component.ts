@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Schema } from '@dashjoin/json-schema-form';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
+import { baseColors } from 'ng2-charts';
 
 /**
  * chart (Pie, Line, or Bar charts)
@@ -60,6 +61,11 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    * get data and generate chart data
    */
   async initWidget() {
+
+    while (baseColors.length < 100) {
+      baseColors.push(...baseColors)
+    }
+
     if (this.layout.style)
       this.setOptions();
     try {
