@@ -4,14 +4,22 @@ import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import javax.inject.Inject;
+import javax.ws.rs.core.SecurityContext;
 import org.apache.commons.io.input.ReaderInputStream;
+import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class Doc2dataTest {
+
+  @Inject
+  ExpressionService expr;
 
   @Test
   public void url() throws Exception {
@@ -73,21 +81,13 @@ public class Doc2dataTest {
   @Test
   public void list() throws Exception {
     Doc2data f = new Doc2data();
-    Assertions.assertEquals("[{x=1}]", f.run(Arrays.asList("{\"x\":1}")).toString());
+    Assertions.assertEquals("[{x=1}]", f.run("[{\"x\":1}]").toString());
   }
 
   @Test
   public void map() throws Exception {
     Doc2data f = new Doc2data();
-    Assertions.assertEquals("{x=1, url={\"x\":1}}",
-        f.run(MapUtil.of("url", "{\"x\":1}")).toString());
-  }
-
-  @Test
-  public void map2() throws Exception {
-    Doc2data f = new Doc2data();
-    Assertions.assertEquals("[{x=1, url=[{\"x\":1}]}]",
-        f.run(MapUtil.of("url", "[{\"x\":1}]")).toString());
+    Assertions.assertEquals("{x=1}", f.run("{\"x\":1}").toString());
   }
 
   @Test
@@ -128,7 +128,13 @@ public class Doc2dataTest {
     s = "[{\"a\":1,\"b\":2,\"c\":3}][{\"a\":4,\"b\":5,\"c\":6}][{\"a\":7,\"b\":8,\"c\":9}]";
     res = f.parseJson(new ReaderInputStream(new StringReader(s), Charset.defaultCharset()), false);;
     Assertions.assertEquals("[[{a=1, b=2, c=3}], [{a=4, b=5, c=6}], [{a=7, b=8, c=9}]]", "" + res);
-
   }
 
+  @Test
+  public void jsonata() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Object res = expr.resolve(sc, "[\"1\", \"2\"].$doc2data($&\"1\").{\"output\": $}", null);
+    Assertions.assertEquals("[{output=11}, {output=21}]", res.toString());
+  }
 }
