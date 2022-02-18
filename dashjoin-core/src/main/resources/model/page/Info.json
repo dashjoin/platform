@@ -2,13 +2,11 @@
   "ID": "Info",
   "layout": {
     "widget": "page",
-    "children": [
-      {
+    "children": [{
         "widget": "container",
         "layout": "vertical",
         "text": "User Information",
-        "children": [
-          {
+        "children": [{
             "widget": "display",
             "display": "{\"user\": user}"
           },
@@ -28,14 +26,12 @@
           },
           {
             "widget": "container",
-            "children": [
-              {
-                "widget": "text",
-                "text": "Tenant Users",
-                "href": "/table/config/tenantusers",
-                "icon": "people"
-              }
-            ],
+            "children": [{
+              "widget": "text",
+              "text": "Tenant Users",
+              "href": "/table/config/tenantusers",
+              "icon": "people"
+            }],
             "if": "$contains(href, \".my.dashjoin.\")"
           }
         ],
@@ -43,7 +39,7 @@
       },
       {
         "widget": "display",
-        "display": "$djVersion()",
+        "display": "( $f:=function($x){ $merge( [$x, {\"© third party licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}]) }; $f($djVersion()) )",
         "title": "Software"
       },
       {
