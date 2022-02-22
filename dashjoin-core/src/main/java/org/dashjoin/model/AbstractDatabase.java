@@ -68,14 +68,14 @@ public abstract class AbstractDatabase implements Database {
   public String status;
 
   /**
-   * roles that are allowed to run the function
+   * roles that are allowed to read the database
    */
   @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
       jsonata = "ID")
   public List<String> readRoles;
 
   /**
-   * roles that are allowed to run the function
+   * roles that are allowed to write the database
    */
   @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
       jsonata = "ID")

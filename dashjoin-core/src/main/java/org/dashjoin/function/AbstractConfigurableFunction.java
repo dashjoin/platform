@@ -28,7 +28,8 @@ public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFun
   /**
    * roles that are allowed to run the function
    */
-  @JsonSchema(layout = "select", choicesUrl = "/rest/database/all/config/dj-role", jsonata = "ID")
+  @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
+      jsonata = "ID")
   public List<String> roles;
 
   /**

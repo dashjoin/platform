@@ -577,7 +577,7 @@
           "name": "roles",
           "parent": "dj/config/dj-query-catalog",
           "type": "array",
-          "choicesUrl": "/rest/database/all/config/dj-role",
+          "choicesUrl": "/rest/database/query/config/dj-roles-without-admin",
           "jsonata": "ID",
           "layout": "select",
           "items": {

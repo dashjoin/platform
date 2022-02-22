@@ -97,7 +97,7 @@ public interface QueryEditor {
         throws Exception {
       Table s = services.getConfig().getSchema(ac.table);
       Database db = services.getConfig().getDatabase(s.parent);
-      ACLContainerRequestFilter.check(sc, db, null);
+      ACLContainerRequestFilter.check(sc, db, s);
       return limit(db.getQueryEditor().getInitialQuery(ac));
     }
   }
