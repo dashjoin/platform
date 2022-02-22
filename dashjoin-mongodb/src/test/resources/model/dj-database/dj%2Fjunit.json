@@ -7,6 +7,7 @@
 	"database": "db",
 	"port": 27018,
 	"datasets": ["/data/EMP.json", "/data/PRJ.json", "/data/NOKEY.json", "/data/T.json", "/data/U.json"],
+	"readRoles": ["authenticated"],
 	"tables": {
 		"PRJ": {
 			"ID": "dj/junit/PRJ",
@@ -28,6 +29,7 @@
 			"parent": "dj/junit",
 			"name": "EMP",
 			"type": "object",
+			"readRoles": ["admin"],
 			"properties": {
 				"WORKSON": {
 					"ID": "dj/junit/EMP/WORKSON",

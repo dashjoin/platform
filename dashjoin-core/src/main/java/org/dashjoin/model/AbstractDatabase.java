@@ -98,10 +98,17 @@ public abstract class AbstractDatabase implements Database {
   }
 
   @Override
-  public List<SearchResult> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(@Context SecurityContext sc, String search, Integer limit)
+      throws Exception {
     // TODO: only brute force search for now
     List<SearchResult> ret = new ArrayList<>();
     for (Table t : services.getConfig().searchTables(this)) {
+
+      try {
+        ACLContainerRequestFilter.check(sc, this, t);
+      } catch (NotAuthorizedException ex) {
+        continue;
+      }
 
       // do not search performance traces
       if ("dj-query-performance".equals(t.name))

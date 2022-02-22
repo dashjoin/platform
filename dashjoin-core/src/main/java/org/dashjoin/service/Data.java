@@ -99,7 +99,7 @@ public class Data {
         String searchQuery = services.getConfig().databaseSearchQuery(db);
 
         List<SearchResult> tmp =
-            searchQuery == null ? db.search(search, limit == null ? null : limit - res.size())
+            searchQuery == null ? db.search(sc, search, limit == null ? null : limit - res.size())
                 : searchQuery(sc, db, searchQuery, search);
         if (tmp != null)
           res.addAll(tmp);

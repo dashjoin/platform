@@ -74,6 +74,27 @@ public class ACLContainerRequestFilterTest {
     ACLContainerRequestFilter.check(sc, db, table);
   }
 
+  @Test
+  public void testDatabaseAcl() {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("admin"))).thenReturn(false);
+
+    SQLDatabase db = new SQLDatabase();
+    db.readRoles = Arrays.asList("authenticated");
+
+    Table admin = Table.ofName("admin");
+    admin.readRoles = Arrays.asList("admin");
+
+    // this table inherits the DB roles
+    Table authenticated = Table.ofName("authenticated");
+
+    ACLContainerRequestFilter.check(sc, db, authenticated);
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      ACLContainerRequestFilter.check(sc, db, admin);
+    });
+  }
+
   /**
    * make sure GET throws 401 unauthorized
    */

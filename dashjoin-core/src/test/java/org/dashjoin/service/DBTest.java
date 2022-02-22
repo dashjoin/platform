@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Property;
@@ -150,6 +151,24 @@ public class DBTest {
   }
 
   @Test
+  public void testSearchAcl() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+
+    List<SearchResult> res = db.search(sc, "dev-project", null);
+    Assertions.assertEquals(1, res.size());
+    Assertions.assertEquals("junit", res.get(0).id.database);
+    name("PRJ", res.get(0).id.table);
+    number(1000, res.get(0).id.pk.get(0));
+    name("NAME", res.get(0).column);
+    Assertions.assertEquals("dev-project", res.get(0).match);
+
+    res = db.search(sc, "mike", null);
+    Assertions.assertEquals(0, res.size());
+  }
+
+  @Test
   public void testSearchQuery() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
@@ -181,6 +200,16 @@ public class DBTest {
     x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
     Assertions.assertEquals(2, x.size());
+  }
+
+  @Test
+  public void testAllAcl() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
+    });
   }
 
   @Test
@@ -226,6 +255,15 @@ public class DBTest {
     name("EMP", links.get(0).id.table);
     number(1, links.get(0).id.pk.get(0));
     id("dj/junit/PRJ/" + idRead(), links.get(0).pk);
+  }
+
+  @Test
+  public void testIncomingAcl() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+    List<Origin> links = db.incoming(sc, "junit", toID("PRJ"), toID("1000"), 0, 10);
+    Assertions.assertEquals(0, links.size());
   }
 
   @Test
@@ -289,7 +327,8 @@ public class DBTest {
 
   void number(int expected, Object actual) {
     Assertions.assertTrue((actual + "").equals(expected + "") || actual.equals(expected)
-        || actual.equals("http://ex.org/" + expected) || actual.equals("EMP/" + expected));
+        || actual.equals("http://ex.org/" + expected) || actual.equals("EMP/" + expected)
+        || actual.equals("PRJ/" + expected));
   }
 
   @Test

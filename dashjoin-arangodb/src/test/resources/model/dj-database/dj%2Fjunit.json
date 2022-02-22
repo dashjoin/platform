@@ -8,6 +8,7 @@
 	"port": 8529,
 	"username": "root",
 	"password": "test123",
+	"readRoles": ["authenticated"],
 	"datasets": ["/data/EMP.json", "/data/PRJ.json", "/data/NOKEY.json", "/data/T.json", "/data/U.json"],
 	"tables": {
 		"PRJ": {
@@ -30,6 +31,7 @@
 			"parent": "dj/junit",
 			"name": "EMP",
 			"type": "object",
+			"readRoles": ["admin"],
 			"properties": {
 				"WORKSON": {
 					"ID": "dj/junit/EMP/WORKSON",

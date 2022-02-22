@@ -59,4 +59,10 @@ public class RDF4JTest extends DBTest {
   public void testPath() throws Exception {
     // SPARQL does not support tracking property paths
   }
+
+  @Override
+  @Test
+  public void testIncomingAcl() throws Exception {
+    // class level ACLs not supported
+  }
 }

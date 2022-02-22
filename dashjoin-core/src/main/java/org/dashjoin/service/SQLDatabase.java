@@ -39,6 +39,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.SecurityContext;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
@@ -358,7 +360,8 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  public List<SearchResult> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(SecurityContext sc, String search, Integer limit)
+      throws Exception {
 
     long start = System.currentTimeMillis();
     Integer timeout = services.getConfig().getSearchTimeoutMs();
@@ -383,6 +386,11 @@ public class SQLDatabase extends AbstractDatabase {
     }
 
     for (Entry<Table, List<String>> e : tables.entrySet()) {
+      try {
+        ACLContainerRequestFilter.check(sc, this, e.getKey());
+      } catch (NotAuthorizedException ex) {
+        continue;
+      }
       String sql =
           "SELECT * FROM " + q(e.getKey().name) + " WHERE " + String.join(" or ", e.getValue());
       try (Connection con = getConnection()) {

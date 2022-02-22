@@ -126,6 +126,30 @@
           "parent": "dj/config/Table",
           "type": "string"
         },
+        "readRoles": {
+          "ID": "dj/config/Table/readRoles",
+          "name": "readRoles",
+          "parent": "dj/config/Table",
+          "type": "array",
+          "choicesUrl": "/rest/database/all/config/dj-role",
+          "jsonata": "ID",
+          "layout": "select",
+          "items": {
+            "type": "string"
+          }
+        },
+        "writeRoles": {
+          "ID": "dj/config/Table/writeRoles",
+          "name": "writeRoles",
+          "parent": "dj/config/Table",
+          "type": "array",
+          "choicesUrl": "/rest/database/all/config/dj-role",
+          "jsonata": "ID",
+          "layout": "select",
+          "items": {
+            "type": "string"
+          }
+        },
         "before-create": {
           "ID": "dj/config/Table/before-create",
           "name": "before-create",

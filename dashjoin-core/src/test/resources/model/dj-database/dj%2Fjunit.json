@@ -5,6 +5,7 @@
 	"djClassName": "org.dashjoin.service.SQLDatabase",
 	"url": "jdbc:h2:mem:test",
 	"initScripts": ["/sql/junit.sql"],
+	"readRoles": ["authenticated"],
 	"tables": {
 		"T": {
 			"ID": "dj/junit/T",
@@ -44,6 +45,7 @@
 			}
 		},
 		"EMP": {
+			"readRoles": ["admin"],
 			"after-create": "$echo(\"done \" & command)"
 		}
 	}

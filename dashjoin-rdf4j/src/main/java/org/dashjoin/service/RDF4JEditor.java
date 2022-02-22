@@ -252,7 +252,7 @@ public class RDF4JEditor implements QueryEditorInternal {
             String tbl = Escape.parseTableID(p.parent)[2];
             if (tbl != null) {
               Table tb = db.tables.get(tbl);
-              if (tb != null)
+              if (tb != null && tb.properties != null)
                 for (Property tp : tb.properties.values()) {
                   AddColumnRequest ac = new AddColumnRequest();
                   ac.col = new Col();

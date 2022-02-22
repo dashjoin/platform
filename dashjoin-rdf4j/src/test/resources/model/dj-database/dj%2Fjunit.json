@@ -4,5 +4,11 @@
 	"parent": "dj",
 	"djClassName": "org.dashjoin.service.RDF4J",
 	"mode": "memory",
-	"datasets": ["/data/junit.n3"]
+	"readRoles": ["authenticated"],
+	"datasets": ["/data/junit.n3"],
+	"tables": {
+		"http://ex.org/EMP": {
+			"readRoles": ["admin"]
+		}
+	}
 }

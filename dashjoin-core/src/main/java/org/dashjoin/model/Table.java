@@ -50,6 +50,16 @@ public class Table {
   public Map<String, Object> tableLayout;
 
   /**
+   * roles that are allowed to read the table
+   */
+  public List<String> readRoles;
+
+  /**
+   * roles that are allowed to write the table
+   */
+  public List<String> writeRoles;
+
+  /**
    * json schema form switch
    */
   @JsonProperty("switch")

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -223,7 +225,8 @@ public class TestDatabase extends AbstractDatabase {
   }
 
   @Override
-  public List<SearchResult> search(String search, Integer limit) throws Exception {
+  public List<SearchResult> search(@Context SecurityContext sc, String search, Integer limit)
+      throws Exception {
     // disable search so tests with this DB do not influence other search results
     return new ArrayList<>();
   }

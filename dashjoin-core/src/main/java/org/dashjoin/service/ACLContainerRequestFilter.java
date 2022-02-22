@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import java.io.IOException;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -99,8 +100,10 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     if (sc.isUserInRole("admin"))
       return;
     if (operation.equals(Operation.READ)) {
-      if (((AbstractDatabase) db).readRoles != null)
-        for (String role : ((AbstractDatabase) db).readRoles) {
+      List<String> readRoles =
+          m != null && m.readRoles != null ? m.readRoles : ((AbstractDatabase) db).readRoles;
+      if (readRoles != null)
+        for (String role : readRoles) {
           if (sc.isUserInRole(role))
             return;
         }
@@ -108,8 +111,10 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
           + operation.toString().toLowerCase() + " table " + (m == null ? "" : m.name)
           + " in database " + ((AbstractDatabase) db).name);
     } else {
-      if (((AbstractDatabase) db).writeRoles != null)
-        for (String role : ((AbstractDatabase) db).writeRoles) {
+      List<String> writeRoles =
+          m != null && m.writeRoles != null ? m.writeRoles : ((AbstractDatabase) db).writeRoles;
+      if (writeRoles != null)
+        for (String role : writeRoles) {
           if (sc.isUserInRole(role))
             return;
         }

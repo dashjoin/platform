@@ -310,7 +310,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
       // on Table, we only edit these props, ignore all others
       MapUtil.keyWhitelist(object,
           Arrays.asList("dj-label", "before-create", "after-create", "before-update",
-              "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout"));
+              "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout",
+              "writeRoles", "readRoles"));
 
       String[] parts = Escape.parseTableID((String) search.get("ID"));
 

@@ -80,6 +80,8 @@ public class ModelTest {
 
         if (e.getKey().equals("EMP"))
           continue;
+        if (e.getKey().equals("http://ex.org/EMP"))
+          continue;
 
         Assertions.assertEquals(e.getKey(), e.getValue().get("name"));
         check(map, map.get("ID"), e.getValue());
