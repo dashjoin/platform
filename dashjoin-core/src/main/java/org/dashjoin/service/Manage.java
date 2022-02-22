@@ -1,6 +1,8 @@
 package org.dashjoin.service;
 
 import static com.google.common.collect.ImmutableMap.of;
+import static org.dashjoin.service.ACLContainerRequestFilter.Operation.CREATE;
+import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -225,7 +227,7 @@ public class Manage {
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
-    ACLContainerRequestFilter.check(sc, db, null);
+    ACLContainerRequestFilter.check(sc, db, null, CREATE);
 
     String dbId = services.getDashjoinID() + "/" + database;
 
@@ -287,7 +289,7 @@ public class Manage {
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
-    ACLContainerRequestFilter.check(sc, db, null);
+    ACLContainerRequestFilter.check(sc, db, null, CREATE);
 
     insert(db, inputParts, false);
   }
@@ -445,7 +447,8 @@ public class Manage {
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
-    ACLContainerRequestFilter.check(sc, db, null);
+    ACLContainerRequestFilter.check(sc, db, null, DELETE);
+    ACLContainerRequestFilter.check(sc, db, null, CREATE);
 
     insert(db, inputParts, true);
   }

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.SecurityContext;
@@ -163,6 +164,21 @@ public class ManageTest {
     Assertions.assertEquals("x", res.schema.get(null).get(1).name);
     Assertions.assertEquals(2, res.schema.get(null).get(0).sample.get(1));
     Assertions.assertEquals(1, res.schema.get(null).get(1).sample.get(1));
+  }
+
+  @Test
+  public void testCreateAcl() throws Exception {
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      SecurityContext sc = mock(SecurityContext.class);
+      when(sc.isUserInRole(ArgumentMatchers.eq("admin"))).thenReturn(false);
+      when(sc.isUserInRole(ArgumentMatchers.eq("authenticated"))).thenReturn(true);
+      MultipartFormDataInput input = mock(MultipartFormDataInput.class);
+      InputPart token = mock(InputPart.class);
+      when(token.getBody(InputStream.class, null))
+          .thenReturn(new ByteArrayInputStream("{}".getBytes()));
+      when(input.getFormDataMap()).thenReturn(MapUtil.of("__dj_schema", Arrays.asList(token)));
+      manage.create(sc, "junit", input);
+    });
   }
 
   @Test
