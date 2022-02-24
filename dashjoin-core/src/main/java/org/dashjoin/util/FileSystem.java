@@ -32,10 +32,19 @@ public class FileSystem {
           + "'. Choose a file in the upload folder.");
   }
 
+  /**
+   * given a file path, returns the File object. Takes the DJ Home dir into account if path is
+   * relative. Throws a RuntimeException if the path is not in the upload folder
+   */
   public static File getUploadFile(String name) throws IOException {
-    return Home.get().getFile(name);
+    File res = Home.get().getFile(name);
+    checkFileAccess(res);
+    return res;
   }
 
+  /**
+   * given a URL, returns the URL object. If the URL is a file URL, works like getUploadFile
+   */
   public static URL getUploadURL(String name) throws IOException {
     URL url = new URL(name);
     if (url.getProtocol().equals("file")) {

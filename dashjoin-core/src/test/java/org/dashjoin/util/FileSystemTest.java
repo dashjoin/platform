@@ -18,6 +18,11 @@ public class FileSystemTest {
 
     FileSystem.checkFileAccess(new File("upload"));
     FileSystem.checkFileAccess(new URL("file:upload"));
+
+    Assertions.assertThrows(RuntimeException.class, () -> {
+      FileSystem.checkFileAccess(new File("upload/../other/test.json"));
+    });
+    FileSystem.checkFileAccess(new File("upload/test.json"));
   }
 
   @Test

@@ -18,7 +18,7 @@ public class Loader {
     InputStream res = Loader.class.getResourceAsStream(location);
     if (res != null)
       return res;
-    File file = new File(location);
+    File file = FileSystem.getUploadFile(location);
     if (file.exists())
       if (!file.isDirectory())
         return new FileInputStream(file);

@@ -1,6 +1,7 @@
 package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -25,6 +26,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.dashjoin.util.FileResource;
 import org.dashjoin.util.FileSystem;
+import org.dashjoin.util.Home;
 import org.dashjoin.util.MapUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,6 +55,16 @@ public class Doc2data extends AbstractFunction<String, Object> {
 
   @Override
   public Object run(String arg) throws Exception {
+
+    try {
+      // url?
+      FileSystem.checkFileAccess(new URL(arg));
+    } catch (MalformedURLException e) {
+      File res = Home.get().getFile(arg);
+      if (res.exists())
+        // file / else raw data
+        FileSystem.getUploadFile(arg);
+    }
 
     try {
       try {

@@ -19,7 +19,8 @@ public class Download extends AbstractFunction<String, Void> {
     log.info("downloading: " + url);
     try (InputStream in = url.openStream()) {
       String filename = url.getPath().isEmpty() ? url.getHost() : new File(url.getPath()).getName();
-      FileUtils.copyInputStreamToFile(in, new File("upload/" + filename));
+      FileUtils.copyInputStreamToFile(in,
+          FileSystem.getUploadFile("upload/" + url.getHost() + "/" + filename));
       return null;
     }
   }

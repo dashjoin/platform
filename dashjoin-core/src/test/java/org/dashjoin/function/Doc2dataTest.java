@@ -29,10 +29,29 @@ public class Doc2dataTest {
   }
 
   @Test
+  public void file() throws Exception {
+    Assertions.assertThrows(RuntimeException.class, () -> {
+      new Doc2data().run("src/test/resources/data/json.json");
+    });
+    Assertions.assertThrows(RuntimeException.class, () -> {
+      new Doc2data().run("file:src/test/resources/data/json.json");
+    });
+    Assertions.assertThrows(RuntimeException.class, () -> {
+      new Load().run("file:src/test/resources/data/json.json");
+    });
+  }
+
+  @Test
   public void xml() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y></c>");
     Assertions.assertEquals("{c={x=1, y=2}}", res.toString());
+  }
+
+  // @Test
+  public void xmlUrl() throws Exception {
+    Object res = new Doc2data().run("https://www.w3schools.com/xml/note.xml");
+    System.out.println(res);
   }
 
   @Test
