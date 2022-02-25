@@ -14,7 +14,7 @@ public class FileSystem {
    */
   public static void checkFileAccess(URL url) throws IOException {
     if (url.getProtocol().equals("file")) {
-      checkFileAccess(new File(url.getPath()));
+      checkFileAccess(Home.get().getFile(url.getPath()));
     }
   }
 
