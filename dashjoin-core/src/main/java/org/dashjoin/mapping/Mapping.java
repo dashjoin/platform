@@ -11,6 +11,7 @@ import org.dashjoin.function.Index;
 import org.dashjoin.util.MapUtil;
 import com.api.jsonata4java.expressions.EvaluateException;
 import com.api.jsonata4java.expressions.Expressions;
+import io.quarkus.logging.Log;
 
 /**
  * represents a table mapping which is part of the JSON structure for provider functions
@@ -150,11 +151,14 @@ public class Mapping {
         Expressions rowMapping = mapping.getValue().rowMapping() == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
 
+        int counter = 0;
         for (Map<String, Object> row : source) {
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
           if (mappedRow != null)
             mapped.add(mappedRow);
           Index.increment();
+          if (counter++ % 1000 == 0)
+            Log.info(counter-1);
         }
         res.put(mapping.getKey(), mapped);
       }
