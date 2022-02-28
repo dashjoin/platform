@@ -3,10 +3,11 @@ package org.dashjoin.function;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Preview extends AbstractFunction<List<Object>, List<Object>> {
+@SuppressWarnings("rawtypes")
+public class Preview extends AbstractFunction<List, List> {
 
   @Override
-  public List<Object> run(List<Object> arg) throws Exception {
+  public List run(List arg) throws Exception {
     if (!this.readOnly)
       return arg;
     List<Object> res = new ArrayList<>();
@@ -18,10 +19,9 @@ public class Preview extends AbstractFunction<List<Object>, List<Object>> {
     return res;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public Class<List<Object>> getArgumentClass() {
-    return (Class<List<Object>>) new ArrayList<Object>().getClass();
+  public Class<List> getArgumentClass() {
+    return List.class;
   }
 
   @Override
