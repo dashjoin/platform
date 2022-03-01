@@ -102,12 +102,21 @@ public class Doc2data extends AbstractFunction<String, Object> {
       if (new java.io.File(url.getPath()).length() > MAX_SIZE)
         throw new RuntimeException("Data file too large: " + url);
 
-      OkHttpClient cl = getHttpClient();
-      Request req = new Request.Builder().url(url).build();
-      try (Response res = cl.newCall(req).execute()) {
-        log.info("$doc2data " + url);
-        String s = res.peekBody(MAX_SIZE).string();
-        return parse(s);
+      // Use OkHttp for http(s)
+      if (url.getProtocol().startsWith("http")) {
+        OkHttpClient cl = getHttpClient();
+        Request req = new Request.Builder().url(url).build();
+        try (Response res = cl.newCall(req).execute()) {
+          log.info("$doc2data " + url);
+          String s = res.peekBody(MAX_SIZE).string();
+          return parse(s);
+        }
+      } else {
+        // All other protocols
+        try (InputStream in = url.openStream()) {
+          String s = IOUtils.toString(in, Charset.defaultCharset());
+          return parse(s);
+        }
       }
     } catch (MalformedURLException textNotUrl) {
       return parse(arg);
