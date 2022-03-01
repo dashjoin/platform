@@ -42,6 +42,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.java.Log;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * given a URL, parses the contents from JSON, XML, CSV to a json object
@@ -51,7 +55,25 @@ public class Doc2data extends AbstractFunction<String, Object> {
 
   private static final ObjectMapper om = new ObjectMapper();
 
+  /**
+   * Max size of a single document/file to load + parse
+   */
   long MAX_SIZE = 100 * 1024 * 1024;
+
+  // Cache settings
+  static long CACHE_SIZE = 1024L * 1024 * 1024;
+  static String CACHE_DIR = "./http-cache";
+  static OkHttpClient httpClient;
+
+  public static synchronized OkHttpClient getHttpClient() throws Exception {
+    if (httpClient == null) {
+      File cacheDirectory = new File(CACHE_DIR);
+      cacheDirectory.mkdirs();
+      Cache cache = new Cache(cacheDirectory, CACHE_SIZE);
+      httpClient = new OkHttpClient.Builder().cache(cache).build();
+    }
+    return httpClient;
+  }
 
   @Override
   public Object run(String arg) throws Exception {
@@ -72,7 +94,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
         return res;
       } catch (Throwable e) {
         // ignore
-        log.info("Error parsing JSON: " + e + " - fallback to regular parser");
+        // log.info("Error parsing JSON: " + e + " - fallback to regular parser");
       }
 
       URL url = FileSystem.getUploadURL(arg);
@@ -80,8 +102,11 @@ public class Doc2data extends AbstractFunction<String, Object> {
       if (new java.io.File(url.getPath()).length() > MAX_SIZE)
         throw new RuntimeException("Data file too large: " + url);
 
-      try (InputStream in = url.openStream()) {
-        String s = IOUtils.toString(in, Charset.defaultCharset());
+      OkHttpClient cl = getHttpClient();
+      Request req = new Request.Builder().url(url).build();
+      try (Response res = cl.newCall(req).execute()) {
+        log.info("$doc2data " + url);
+        String s = res.peekBody(MAX_SIZE).string();
         return parse(s);
       }
     } catch (MalformedURLException textNotUrl) {

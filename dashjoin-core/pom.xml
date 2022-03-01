@@ -224,6 +224,13 @@
 		    <artifactId>microprofile-jwt-auth-api</artifactId>
 		</dependency>
 
+		<!-- HTTP client w/ caching capabilities -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.9.3</version>
+		</dependency>
+
 <!-- Quarkus -->
     <dependency>
       <groupId>io.quarkiverse.jgit</groupId>
