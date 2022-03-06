@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Schema, WidgetComponent } from '@dashjoin/json-schema-form';
 import { debounceTime, map } from 'rxjs/operators';
 
@@ -18,7 +19,12 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    * constructor
    * @param http needed for backend evaluations
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
+
+  /**
+   * if set, jsonata IDE is enabled
+   */
+  static dialogClass: any;
 
   /**
    * expression field label
@@ -109,6 +115,13 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
   }
 
   /**
+   * used to show edit button ngIf
+   */
+  ide(): boolean {
+    return ExpressionComponent.dialogClass;
+  }
+
+  /**
    * set the message but limit and format output
    * @param message msg to display
    */
@@ -122,5 +135,19 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
       res += l + '\n';
     }
     this.message = res;
+  }
+
+  /**
+   * open editor button clicked
+   */
+  editor() {
+
+    const dialogRef = this.dialog.open(ExpressionComponent.dialogClass, { data: this.value, minWidth: '98vw' });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.text.setValue(result);
+      }
+    });
   }
 }
