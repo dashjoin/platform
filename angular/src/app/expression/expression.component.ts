@@ -143,14 +143,14 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
   editor() {
 
     const dialogRef = this.dialog.open(ExpressionComponent.dialogClass, {
-      data: this.value,
+      data: { expression: this.value, context: JSON.parse(sessionStorage.context) },
       minWidth: '98vw',
       minHeight: '98vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.text.setValue(result);
+        this.text.setValue(result.expression);
       }
     });
   }
