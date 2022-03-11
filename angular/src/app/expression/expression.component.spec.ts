@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 import { Expression } from './expression';
 import { ExpressionComponent } from './expression.component';
 
@@ -10,7 +11,7 @@ describe('ExpressionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ExpressionComponent],
-      imports: [HttpClientModule]
+      imports: [HttpClientModule, MatDialogModule]
     })
       .compileComponents();
   }));

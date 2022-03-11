@@ -1,4 +1,8 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { MapComponent } from './map.component';
 
@@ -8,9 +12,10 @@ describe('MapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MapComponent ]
+      declarations: [MapComponent],
+      imports: [MatDialogModule, MatSnackBarModule, HttpClientModule, RouterTestingModule],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
