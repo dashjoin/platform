@@ -141,7 +141,8 @@ public class Doc2data extends AbstractFunction<String, Object> {
           Map<String, Object> object = new HashMap<>();
           int col = 0;
           for (String r : records.next()) {
-            object.put(headers.get(col), r);
+            if (col < headers.size())
+              object.put(headers.get(col), r);
             col++;
           }
           res.add(object);
