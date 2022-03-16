@@ -70,20 +70,17 @@ export class WidgetListComponent implements WidgetComponent, OnInit, OnDestroy {
         return undefined;
     }
 
-    // tslint:disable
     // Replace display texts for some widgets -> feed from metadata
     texts = {
         'editRelated': 'Edit Related',
         'dj-sidenav': 'Side Navigation',
         'dj-table-metadata': 'Table Metadata'
     };
-    // tslint:enable
 
     display(item) {
         return this.texts[item] || item.substring(0, 1).toUpperCase() + item.substring(1);
     }
 
-    // tslint:disable
     // Map some nice icons for widgets -> feed from metadata
     icons = {
         'map': 'map',
@@ -106,7 +103,6 @@ export class WidgetListComponent implements WidgetComponent, OnInit, OnDestroy {
         'tree': 'account_tree', //
         'variable': 'plus_one' //
     };
-    // tslint:enable
 
     icon(item: string) {
         return this.icons[item] || 'dashboard_customize';
