@@ -157,8 +157,12 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
 
   /**
    * return link or null if normal literal value
+   * 
+   * @preferPk  there can be cases, where a field is both a PK and a FK. 
+   * If that is the case, we could generate two legal links here. The UI may give us a hint as to 
+   * what kind is preferred (on the table select * view, we prefer PKs, otherwise we take the FK first)
    */
-  link(table: Table, column: string, data: object): string[] {
+  link(table: Table, column: string, data: object, preferPk?: boolean): string[] {
 
     const value = data[column];
 
@@ -174,7 +178,8 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
       return null;
     }
 
-    if (table.properties[column] && table.properties[column].ref) {
+    // if we do not prefer PKs, a FK has perference
+    if (!preferPk && table.properties[column] && table.properties[column].ref) {
       const parts = Util.parseColumnID(table.properties[column].ref);
       if (parts[1] === 'config' && parts[2] === 'Table') {
         return ['/table', Util.parseTableID(value)[1], Util.parseTableID(value)[2]];
@@ -182,6 +187,7 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
         return ['/resource', parts[1], parts[2], value];
       }
     }
+    // try PK
     if (table.properties[column] && table.properties[column].pkpos !== null && table.properties[column].pkpos >= 0) {
       const parts = Util.parseTableID(table.properties[column].parent);
       if (parts[1] === 'config' && parts[2] === 'Table') {
@@ -193,6 +199,15 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
             return null;
           }
         }
+        return ['/resource', parts[1], parts[2], value];
+      }
+    }
+    // we tried PK, now try FK (if it was not already handled)
+    if (table.properties[column] && table.properties[column].ref) {
+      const parts = Util.parseColumnID(table.properties[column].ref);
+      if (parts[1] === 'config' && parts[2] === 'Table') {
+        return ['/table', Util.parseTableID(value)[1], Util.parseTableID(value)[2]];
+      } else {
         return ['/resource', parts[1], parts[2], value];
       }
     }
