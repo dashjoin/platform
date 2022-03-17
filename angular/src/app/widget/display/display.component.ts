@@ -59,6 +59,17 @@ export class DisplayComponent extends TextComponent implements OnInit {
   }
 
   /**
+   * is the data to be displayed a URL?
+   */
+  isUrl(x: any): boolean {
+    if (typeof x === 'string') {
+      return x.startsWith('http://') || x.startsWith('https://');
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * detects the type of displayData such that the UI can select the appropriate visualization
    */
   displayType(): 'link' | 'string' | 'string[]' | 'object' | 'object[]' | 'img' {

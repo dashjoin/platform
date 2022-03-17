@@ -6,17 +6,25 @@
     <img [src]="displayData.img" [style.width]="displayData.width" [style.height]="displayData.height">
 </div>
 <div *ngIf="displayType() === 'string'">
-    {{displayData}}
+    <a *ngIf="isUrl(displayData)" [href]="displayData">{{displayData}}</a>
+    <span *ngIf="isUrl(displayData)">{{displayData}}</span>
 </div>
 <div *ngIf="displayType() === 'string[]'">
-    {{displayData.join(', ')}}
+    <span *ngFor="let i of displayData; let idx=index">
+        <span *ngIf="idx>0">, </span>
+        <a *ngIf="isUrl(i)" [href]="i">{{i}}</a>
+        <span *ngIf="!isUrl(i)">{{i}}</span>
+    </span>
 </div>
 <div *ngIf="displayType() === 'object'">
     <mat-list>
         <mat-list-item *ngFor="let e of displayData | keyvalue">
             <mat-icon mat-list-icon color="accent">{{iconKey(e.key)}}</mat-icon>
             <div mat-line>{{camelCase2display(e.key)}}</div>
-            <div mat-line class="list-value"> {{e.value}} </div>
+            <div mat-line class="list-value">
+                <a *ngIf="isUrl(e.value)" [href]="e.value">{{e.value}}</a>
+                <span *ngIf="!isUrl(e.value)">{{e.value}}</span>
+            </div>
         </mat-list-item>
     </mat-list>
 </div>
@@ -27,7 +35,10 @@
             </th>
         </tr>
         <tr *ngFor="let r of displayData" class="mat-row">
-            <td *ngFor="let e of r | keyvalue" class="mat-cell">{{e.value}}</td>
+            <td *ngFor="let e of r | keyvalue" class="mat-cell">
+                <a *ngIf="isUrl(e.value)" [href]="e.value">{{e.value}}</a>
+                <span *ngIf="!isUrl(e.value)">{{e.value}}</span>
+            </td>
         </tr>
     </table>
 </div>
