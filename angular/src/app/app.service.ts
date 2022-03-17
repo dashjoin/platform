@@ -442,6 +442,10 @@ export class AppService implements CanActivate {
 
   getIdLabelNG(link: string[], resolve = false, ownType?: string): Observable<string> {
 
+    if (!link) {
+      return undefined;
+    }
+
     // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
     if (link[0] === '') {
       link.shift();
