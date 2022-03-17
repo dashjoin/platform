@@ -648,8 +648,14 @@ public class SQLDatabase extends AbstractDatabase {
       if (search != null && !search.isEmpty()) {
         select = select + " where ";
         for (String k : search.keySet()) {
-          select = select + "\"" + k + "\"" + "=? and ";
-          args.add(search.get(k));
+          if (url.startsWith("jdbc:postgresql:") && search.get(k) instanceof List
+              && s.properties.get(k).dbType.equals("jsonb") && (((List<?>) search.get(k)).size()==1)) {
+            select = select + "\"" + k + "\"::jsonb ??" + " ? and ";
+            args.add(((List<?>) search.get(k)).get(0));
+          } else {
+            select = select + "\"" + k + "\"" + "=? and ";
+            args.add(search.get(k));
+          }
         }
         select = select.substring(0, select.length() - "and ".length());
       }
