@@ -1,5 +1,6 @@
 package org.dashjoin.service;
 
+
 import org.dashjoin.model.Table;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,11 +55,46 @@ public class RDF4JTest extends DBTest {
     Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
 
-  @Override
-  @Test
-  public void testPath() throws Exception {
-    // SPARQL does not support tracking property paths
-  }
+  // @Override
+  // @Test
+  // public void testPath() throws Exception {
+  //
+  /// *
+  // {
+  // "ID": "intelligentGraph.PathQL1",
+  // "query": "getPaths?pathQL=(<http://ex.org/REPORTSTO>){1,2}",
+  // "type": "read",
+  // "roles": ["user"],
+  // "arguments" : {
+  // "subject" : iri("http://ex.org/1"),
+  // "object" : null
+  // }
+  // }
+  // */
+  //
+  // QueryMeta queryMeta =QueryMeta.ofQuery("getPaths?pathQL=(<http://ex.org/REPORTSTO>){1,2}");
+  // queryMeta.ID= "testPath";
+  // queryMeta.database = "dj/junit";
+  // Map<String, Object> arguments = new HashMap<>();
+  // arguments.put("subject", iri("http://ex.org/1"));
+  // arguments.put("object", null);
+  // queryMeta.arguments=arguments;
+  //
+  //
+  // AbstractDatabase database = services.getConfig().getDatabase( queryMeta.database);
+  //
+  // List<Map<String, Object>> res = database.queryGraph(queryMeta, null);
+  //
+  // ObjectMapper mapper = new ObjectMapper();
+  // String resJSON =
+  // mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.convertValue(res,
+  // JsonNode.class));
+  //
+  // String expectedJSON = Files.readString( Paths.get("./src/test/resources/results/", "junit",
+  // queryMeta.ID +".json"));
+  //
+  // assertEquals( expectedJSON, resJSON);
+  // }
 
   @Override
   @Test
