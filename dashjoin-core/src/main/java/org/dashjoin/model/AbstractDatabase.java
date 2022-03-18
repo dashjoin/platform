@@ -241,7 +241,11 @@ public abstract class AbstractDatabase implements Database {
 
       if ("array".equals(p.type) || "object".equals(p.type)) {
         try {
-          return objectMapper.readValue(s, Object.class);
+          Object tmp = objectMapper.readValue(s, Object.class);
+          // make sure tmp really is an array or object
+          if (!(tmp instanceof List<?> || tmp instanceof Map<?, ?>))
+            throw new Exception();
+          return tmp;
         } catch (Exception fallback) {
           if ("array".equals(p.type)) {
             List<Object> res = new ArrayList<>();
