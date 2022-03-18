@@ -1,0 +1,39 @@
+# baseURI: file:///D:/MyWorkspaces/Ontologies/Dashjoin/junit.additions.n3
+# imports: file:///D:/MyWorkspaces/Ontologies/Dashjoin/junit.n3
+
+<http://ex.org/1> <http://ex.org/REPORTSTO> <http://ex.org/6> .
+<http://ex.org/2> <http://ex.org/REPORTSTO> <http://ex.org/6> .
+
+<http://ex.org/3> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/3> <http://ex.org/NAME> "fred" .
+<http://ex.org/3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/3> <http://ex.org/REPORTSTO> <http://ex.org/7> .
+
+<http://ex.org/4> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/4> <http://ex.org/NAME> "george" .
+<http://ex.org/4> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/4> <http://ex.org/REPORTSTO> <http://ex.org/7> .
+
+<http://ex.org/5> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/5> <http://ex.org/NAME> "emily" .
+<http://ex.org/5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/5> <http://ex.org/REPORTSTO> <http://ex.org/7> .
+
+<http://ex.org/6> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/6> <http://ex.org/NAME> "jane" .
+<http://ex.org/6> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/6> <http://ex.org/REPORTSTO> <http://ex.org/8> .
+
+<http://ex.org/7> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/7> <http://ex.org/NAME> "coleen" .
+<http://ex.org/7> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/7> <http://ex.org/REPORTSTO> <http://ex.org/8> .
+
+<http://ex.org/8> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/8> <http://ex.org/NAME> "colin" .
+<http://ex.org/8> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
+<http://ex.org/8> <http://ex.org/REPORTSTO> <http://ex.org/9> .
+
+<http://ex.org/9> <http://ex.org/WORKSON> <http://ex.org/1000> .
+<http://ex.org/9> <http://ex.org/NAME> "andy" .
+<http://ex.org/9> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/EMP> .
