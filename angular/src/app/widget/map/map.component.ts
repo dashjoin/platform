@@ -9,6 +9,9 @@ import Icon from 'ol/style/Icon';
 import OSM from 'ol/source/OSM';
 import * as olProj from 'ol/proj';
 import TileLayer from 'ol/layer/Tile';
+import VectorSource from 'ol/source/Vector';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 
 /**
  * displays a text with optional link and icon
@@ -36,13 +39,27 @@ export class MapComponent extends DJBaseComponent implements OnInit {
 
   style: any;
 
+  countries = {
+    "FR": "France",
+    "DE": "Germany"
+  }
+
   async initWidget() {
 
     this.style = this.layout.style ? JSON.parse(JSON.stringify(this.layout.style)) : {};
     if (!this.style.width) this.style.width = '400px';
     if (!this.style.height) this.style.height = '400px';
 
-    const displayData = await this.evaluateExpression(this.layout.display);
+    let displayData = await this.evaluateExpression(this.layout.display);
+
+    if (Array.isArray(displayData)) {
+      displayData = displayData[0];
+    }
+
+    if (this.countries[displayData]) {
+      displayData = this.countries[displayData];
+    }
+
     const res: any = await this.http.get('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(displayData) + '&format=json&limit=1').
       toPromise();
 
@@ -58,7 +75,17 @@ export class MapComponent extends DJBaseComponent implements OnInit {
         layers: [
           new TileLayer({
             source: new OSM()
-          })
+          }),
+          new VectorLayer({
+            source: new VectorSource({
+              features: [
+                new Feature({
+                  geometry: new Point(olProj.fromLonLat([res[0].lon, res[0].lat]))
+                })
+              ],
+            })
+          }
+          )
         ],
         view: new View({
           center: olProj.fromLonLat([res[0].lon, res[0].lat]),
