@@ -40,9 +40,14 @@ export class MapComponent extends DJBaseComponent implements OnInit {
   style: any;
 
   countries = {
+    "CN": "China",
     "FR": "France",
+    "IT": "Italy",
+    "PL": "Poland",
+    "GR": "Greece",
+    "RU": "Russia",
     "DE": "Germany"
-  }
+  };
 
   async initWidget() {
 
@@ -50,26 +55,58 @@ export class MapComponent extends DJBaseComponent implements OnInit {
     if (!this.style.width) this.style.width = '400px';
     if (!this.style.height) this.style.height = '400px';
 
-    let displayData = await this.evaluateExpression(this.layout.display);
+    let displayData: any = await this.evaluateExpression(this.layout.display);
 
-    if (Array.isArray(displayData)) {
-      displayData = displayData[0];
+    // convert single value to [single]
+    if (!Array.isArray(displayData)) {
+      displayData = [displayData];
     }
 
-    if (this.countries[displayData]) {
-      displayData = this.countries[displayData];
+    // map points
+    const features = [];
+
+    let error = "";
+
+    // min / max bounding box, used to compute the center
+    let min = 9999;
+    let max = -9999;
+    let min2 = 9999;
+    let max2 = -9999;
+
+    for (let dd of displayData) {
+      if (this.countries[dd]) {
+        dd = this.countries[dd];
+      }
+
+      let res: any;
+
+      res = await this.http.get('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(dd) + '&format=json&limit=1').
+        toPromise();
+
+      if (res[0]) {
+        features.push(
+          new Feature({
+            geometry: new Point(olProj.fromLonLat([res[0].lon, res[0].lat]))
+          })
+        )
+
+        max = Math.max(max, res[0]?.boundingbox[1]);
+        min = Math.min(min, res[0]?.boundingbox[0]);
+        max2 = Math.max(max2, res[0]?.boundingbox[3]);
+        min2 = Math.min(min2, res[0]?.boundingbox[2]);
+      } else {
+        error = 'Cannot resolve address: ' + dd;
+      }
     }
 
-    const res: any = await this.http.get('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(displayData) + '&format=json&limit=1').
-      toPromise();
-
-    const delta = res[0]?.boundingbox[1] - res[0]?.boundingbox[0];
+    const delta = max - min;
 
     let zoom = 10;
     if (delta > 1) zoom = 4;
+    if (delta > 10) zoom = 1;
     if (delta < 0.1) zoom = 16;
 
-    if (res[0]?.lon && res[0]?.lat) {
+    if (!error || features.length > 0) {
       this.map = new Map({
         target: 'map_widget',
         layers: [
@@ -78,22 +115,18 @@ export class MapComponent extends DJBaseComponent implements OnInit {
           }),
           new VectorLayer({
             source: new VectorSource({
-              features: [
-                new Feature({
-                  geometry: new Point(olProj.fromLonLat([res[0].lon, res[0].lat]))
-                })
-              ],
+              features
             })
           }
           )
         ],
         view: new View({
-          center: olProj.fromLonLat([res[0].lon, res[0].lat]),
+          center: olProj.fromLonLat([(min2 + max2) / 2, (min + max) / 2]),
           zoom
         })
       });
     } else {
-      this.error = 'Cannot resolve address: ' + displayData;
+      this.error = error;
     }
   }
 }
