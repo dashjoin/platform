@@ -21,7 +21,7 @@ import Point from 'ol/geom/Point';
   category: 'Default',
   description: 'Component that displays a map',
   htmlTag: 'dj-map',
-  fields: ['display', 'style']
+  fields: ['title', 'display', 'style']
 })
 @Component({
   selector: 'app-map',
