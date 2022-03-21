@@ -783,6 +783,8 @@ public class SQLEditor implements QueryEditorInternal {
     if (expr instanceof LikeExpression) {
       LikeExpression o = (LikeExpression) expr;
       Column left = (Column) o.getLeftExpression();
+      if (left.getTable() == null)
+        throw new IllegalArgumentException(left + " has no table information");
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
