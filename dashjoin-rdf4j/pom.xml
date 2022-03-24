@@ -23,16 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
-	<repositories>
-	    <repository>
-      		<id>local</id>
-      		<name>local Repository</name> 
-      		<url>${user.home}/.m2/repository</url>
-			<!-- <url>file://c:/Users/peter/.m2/repository</url> -->
-        </repository>
-	</repositories>
 	<dependencies>
-	
 	  	<dependency>
 	  		<groupId>org.dashjoin</groupId>
 	  		<artifactId>dashjoin-core</artifactId>

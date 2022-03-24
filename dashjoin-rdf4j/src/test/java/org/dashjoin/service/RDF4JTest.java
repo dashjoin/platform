@@ -55,6 +55,12 @@ public class RDF4JTest extends DBTest {
     Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
 
+  @Override
+  @Test
+  public void testPath() throws Exception {
+
+  }
+
   // @Override
   // @Test
   // public void testPath() throws Exception {
