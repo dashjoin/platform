@@ -231,6 +231,28 @@
 			<version>4.9.3</version>
 		</dependency>
 
+
+		<!-- Graal JS dependencies to use Javascript engine in non-Graal JVMs
+			Note: graal-sdk is bundled with Quarkus, the version number should match
+			
+			If these dependencies are left out, JSONata falls back to Jsonata4Java
+		 -->
+		<dependency>
+		  <groupId>org.graalvm.js</groupId>
+		  <artifactId>js</artifactId>
+		    <version>21.3.1</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.graalvm.js</groupId>
+		  <artifactId>js-scriptengine</artifactId>
+		    <version>21.3.1</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.graalvm.truffle</groupId>
+		  <artifactId>truffle-api</artifactId>
+		    <version>21.3.1</version>
+		</dependency>
+
 <!-- Quarkus -->
     <dependency>
       <groupId>io.quarkiverse.jgit</groupId>
