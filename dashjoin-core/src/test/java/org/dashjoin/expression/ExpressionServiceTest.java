@@ -53,7 +53,8 @@ public class ExpressionServiceTest {
       s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
       Assertions.fail();
     } catch (RuntimeException wrapped404) {
-      Assertions.assertTrue(wrapped404.getCause() instanceof NotFoundException);
+      // Note: exception loses cause from Javascript to Java world...
+      Assertions.assertTrue(wrapped404.toString().indexOf("NotFoundException") > 0);
     }
   }
 
