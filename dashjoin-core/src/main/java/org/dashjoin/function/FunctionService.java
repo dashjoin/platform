@@ -1,5 +1,7 @@
 package org.dashjoin.function;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -57,6 +59,7 @@ public class FunctionService {
     return callInternal(sc, a, argument, readOnly);
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public Object callInternal(SecurityContext sc, AbstractFunction<Object, Object> a,
       Object argument, boolean readOnly) throws Exception {
     if (readOnly && "write".equals(a.getType()))
@@ -67,6 +70,14 @@ public class FunctionService {
     a.sc = sc;
     a.expressionService = data.getExpressionService();
 
-    return a.run(om.convertValue(argument, a.getArgumentClass()));
+    if (a instanceof AbstractVarArgFunction) {
+      List<Object> args = new ArrayList<>();
+      int index = 0;
+      AbstractVarArgFunction<Object> vf = (AbstractVarArgFunction) a;
+      for (Class<Object> c : vf.getArgumentClassList())
+        args.add(om.convertValue(((List) argument).get(index++), c));
+      return a.run(args);
+    } else
+      return a.run(om.convertValue(argument, a.getArgumentClass()));
   }
 }

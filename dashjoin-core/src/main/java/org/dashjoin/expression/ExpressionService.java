@@ -19,6 +19,7 @@ import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.jsonatajs.JsonataJS;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
+import org.dashjoin.function.AbstractVarArgFunction;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Manage;
@@ -257,13 +258,27 @@ public class ExpressionService {
             return "<j:j>";
           }
 
-          @SuppressWarnings("unchecked")
+          @SuppressWarnings({"unchecked", "unused"})
           @Override
           public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
             try {
-              return o2j(function.callInternal(sc, (AbstractFunction<Object, Object>) f,
-                  getArgumentCount(ctx) == 0 ? null : j2o(getValuesListExpression(v, ctx, 0)),
-                  readOnly));
+              if (f instanceof AbstractVarArgFunction) {
+                AbstractVarArgFunction<Object> vf = (AbstractVarArgFunction<Object>) f;
+                List<Object> args = new ArrayList<>();
+                int index = 0;
+                for (Class<?> c : vf.getArgumentClassList()) {
+                  if (index < getArgumentCount(ctx))
+                    args.add(j2o(getValuesListExpression(v, ctx, index)));
+                  else
+                    args.add(null);
+                  index++;
+                }
+                return o2j(function.callInternal(sc, (AbstractFunction<Object, Object>) f, args,
+                    readOnly));
+              } else
+                return o2j(function.callInternal(sc, (AbstractFunction<Object, Object>) f,
+                    getArgumentCount(ctx) == 0 ? null : j2o(getValuesListExpression(v, ctx, 0)),
+                    readOnly));
             } catch (Exception e) {
               throw new WrappedException(e);
             }
