@@ -58,7 +58,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
   /**
    * Max size of a single document/file to load + parse
    */
-  long MAX_SIZE = 100 * 1024 * 1024;
+  public static long MAX_SIZE = 100 * 1024 * 1024;
 
   // Cache settings
   static long CACHE_SIZE = 1024L * 1024 * 1024;
