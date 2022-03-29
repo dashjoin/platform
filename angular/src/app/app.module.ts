@@ -35,6 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 import { ExpressionComponent } from './expression/expression.component';
+import { StreamExpressionComponent } from './expression/stream.expression.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HoverClassDirective } from './instance/hover-class.directive';
@@ -122,6 +123,7 @@ export const __DJ_TYPES = [
     DeleteConfirmDialogComponent,
     JsonCellDialogCopyComponent,
     ExpressionComponent,
+    StreamExpressionComponent,
     HoverClassDirective,
     MappingComponent,
     ConfirmationDialogComponent,

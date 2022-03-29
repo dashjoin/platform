@@ -19,6 +19,7 @@ import { DatabaseNameChoiceHandler, ForeignKeyChoiceHandler, LocalNameChoiceHand
 import { GridsterConfig } from 'angular-gridster2';
 import { Widget } from './widget';
 import { ExpressionComponent } from '../expression/expression.component';
+import { StreamExpressionComponent } from '../expression/stream.expression.component';
 import { Expression } from '../expression/expression';
 import { MappingComponent } from '../mapping/mapping.component';
 import { DepInjectorService } from '../dep-injector.service';
@@ -446,6 +447,7 @@ export class InstanceComponent implements OnInit {
       this.formService.registerComponent('query', QueryComponent);
     }
     this.formService.registerComponent('expression', ExpressionComponent);
+    this.formService.registerComponent('stream-expressions', StreamExpressionComponent);
     if (!((this.formService.registry as any).mapping)) {
       this.formService.registerComponent('mapping', MappingComponent);
     }
