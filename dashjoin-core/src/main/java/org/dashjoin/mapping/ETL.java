@@ -32,7 +32,7 @@ public class ETL extends AbstractSource {
   }
 
   @SuppressWarnings("unchecked")
-  Map<String, List<Map<String, Object>>> convertToMapOfTables(Object res) {
+  public Map<String, List<Map<String, Object>>> convertToMapOfTables(Object res) {
     if (res instanceof List<?>)
       if (isTable((List<?>) res))
         return MapUtil.of("table", (List<Map<String, Object>>) res);
