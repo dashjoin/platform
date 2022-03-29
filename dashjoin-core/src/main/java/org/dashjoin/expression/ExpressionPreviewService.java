@@ -44,6 +44,7 @@ public class ExpressionPreviewService {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
         expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
+        ETL.context.get().producerDone();
         if (ETL.context.get().queue.size() > 10) {
           List<Object> res = new ArrayList<>();
           Iterator<Object> iter = ETL.context.get().queue.iterator();
