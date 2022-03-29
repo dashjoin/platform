@@ -1,5 +1,8 @@
 package org.dashjoin.expression;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -41,7 +44,14 @@ public class ExpressionPreviewService {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
         expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
-        return ETL.context.get().queue;
+        if (ETL.context.get().queue.size() > 10) {
+          List<Object> res = new ArrayList<>();
+          Iterator<Object> iter = ETL.context.get().queue.iterator();
+          for (int i = 0; i < 10; i++)
+            res.add(iter.next());
+          return res;
+        } else
+          return ETL.context.get().queue;
       } finally {
         ETL.context.set(null);
       }

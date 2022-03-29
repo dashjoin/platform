@@ -27,6 +27,11 @@ export class StreamExpressionComponent extends ExpressionComponent implements On
    * setup form and handlers
    */
   ngOnInit(): void {
+
+    if (!this.value) {
+      this.value = {};
+    }
+
     this.setup(this.value.expression, this.text, () => {
       if (this.value.foreach) {
         if (this.cursor) {
@@ -78,7 +83,7 @@ export class StreamExpressionComponent extends ExpressionComponent implements On
     let context: Observable<any>;
     if (this.value.foreach) {
       if (this.cursor) {
-        context = of(this.cursor);
+        context = of(this.cursor[0]);
       } else {
         context = this.http.post('/rest/expression-preview', {
           expression: this.value.foreach,
@@ -111,7 +116,7 @@ export class StreamExpressionComponent extends ExpressionComponent implements On
   editorForeach() {
 
     const dialogRef = this.dialog.open(ExpressionComponent.dialogClass, {
-      data: { expression: this.value.foreach, context: JSON.parse(sessionStorage.context) },
+      data: { expression: this.value.foreach, context: JSON.parse(sessionStorage.context), foreach: true },
       minWidth: '98vw',
       minHeight: '98vh'
     });
