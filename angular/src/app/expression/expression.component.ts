@@ -19,7 +19,7 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    * constructor
    * @param http needed for backend evaluations
    */
-  constructor(private http: HttpClient, private dialog: MatDialog) { }
+  constructor(public http: HttpClient, private dialog: MatDialog) { }
 
   /**
    * if set, jsonata IDE is enabled
@@ -75,29 +75,29 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    * setup form and handlers
    */
   ngOnInit(): void {
-    if (!this.value) {
-      // value if not set, do nothing
-    } else {
-      this.text.setValue(this.value);
-      this.setMessage('');
-    }
-    this.text.valueChanges.pipe(
-      map(event => {
-        try {
-          this.value = event;
-          this.valueChange.emit(this.value);
-        } catch (e) {
-          this.setMessage(e.message);
-          this.value = event;
-          this.valueChange.emit(this.value);
-        }
-      }),
-      debounceTime(500)
-    ).subscribe(_ => {
-      this.http.post('/rest/expression-preview', {
+    this.setup(this.value, this.text, () => {
+      return {
         expression: this.value,
         data: JSON.parse(sessionStorage.context)
-      }).subscribe(res => {
+      };
+    }, event => {
+      this.value = event;
+      this.valueChange.emit(this.value);
+    })
+  }
+
+  setup(value: any, text: FormControl, expAndData: Function, onValueChange: any) {
+    if (!value) {
+      // value if not set, do nothing
+    } else {
+      text.setValue(value);
+      this.setMessage('');
+    }
+    text.valueChanges.pipe(
+      map(onValueChange),
+      debounceTime(500)
+    ).subscribe(_ => {
+      this.http.post('/rest/expression-preview', expAndData()).subscribe(res => {
         this.setMessage(JSON.stringify(res, null, 2));
       }, error => {
         const line = error.error?.lastIndexOf('line 1:');
