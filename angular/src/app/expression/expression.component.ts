@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Schema, WidgetComponent } from '@dashjoin/json-schema-form';
+import { of } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 
 /**
@@ -19,7 +20,7 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    * constructor
    * @param http needed for backend evaluations
    */
-  constructor(public http: HttpClient, private dialog: MatDialog) { }
+  constructor(public http: HttpClient, public dialog: MatDialog) { }
 
   /**
    * if set, jsonata IDE is enabled
@@ -76,17 +77,17 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    */
   ngOnInit(): void {
     this.setup(this.value, this.text, () => {
-      return {
+      return of({
         expression: this.value,
         data: JSON.parse(sessionStorage.context)
-      };
+      });
     }, event => {
       this.value = event;
       this.valueChange.emit(this.value);
     })
   }
 
-  setup(value: any, text: FormControl, expAndData: Function, onValueChange: any) {
+  setup(value: any, text: FormControl, expAndData: Function, onValueChange: any, onData?: any) {
     if (!value) {
       // value if not set, do nothing
     } else {
@@ -97,19 +98,22 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
       map(onValueChange),
       debounceTime(500)
     ).subscribe(_ => {
-      this.http.post('/rest/expression-preview', expAndData()).subscribe(res => {
-        this.setMessage(JSON.stringify(res, null, 2));
-      }, error => {
-        const line = error.error?.lastIndexOf('line 1:');
-        if (line >= 0) {
-          const end = error.error.indexOf('at', line);
-          if (end >= 0) {
-            const pos = '-'.repeat(Number.parseInt(error.error.substring(line + 7, end), 10)) + '^\n\n';
-            this.setMessage(pos + error.error);
-            return;
+      expAndData().subscribe(par => {
+        this.http.post('/rest/expression-preview', par).subscribe(res => {
+          if (onData) onData(res);
+          this.setMessage(JSON.stringify(res, null, 2));
+        }, error => {
+          const line = error.error?.lastIndexOf('line 1:');
+          if (line >= 0) {
+            const end = error.error.indexOf('at', line);
+            if (end >= 0) {
+              const pos = '-'.repeat(Number.parseInt(error.error.substring(line + 7, end), 10)) + '^\n\n';
+              this.setMessage(pos + error.error);
+              return;
+            }
           }
-        }
-        this.setMessage(error.error);
+          this.setMessage(error.error);
+        });
       });
     });
   }
