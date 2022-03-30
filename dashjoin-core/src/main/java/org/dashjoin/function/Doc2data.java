@@ -153,7 +153,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
   }
 
   @SuppressWarnings("unchecked")
-  Object xml(Element node) {
+  public static Object xml(Element node) {
     Map<String, Object> res = new LinkedHashMap<>();
     NamedNodeMap att = node.getAttributes();
     for (int i = 0; i < att.getLength(); i++)
@@ -191,7 +191,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
    * be converted to an array)
    */
   @SuppressWarnings("unchecked")
-  Object cleanArrays(Map<String, Object> res) {
+  static Object cleanArrays(Map<String, Object> res) {
     for (String field : arrayFields(res)) {
       Set<String> arrayFields = new HashSet<>();
 
@@ -215,7 +215,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
     return res;
   }
 
-  Set<String> arrayFields(Map<String, Object> res) {
+  static Set<String> arrayFields(Map<String, Object> res) {
     Set<String> arrayFields = new HashSet<>();
     for (Entry<String, Object> e : res.entrySet())
       if (e.getValue() instanceof List<?>)
