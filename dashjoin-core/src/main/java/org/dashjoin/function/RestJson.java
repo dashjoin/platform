@@ -1,29 +1,22 @@
 package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import org.apache.commons.io.IOUtils;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.Escape;
-import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @SuppressWarnings("rawtypes")
 @JsonSchema(required = {"url"},
-    order = {"url", "username", "password", "method", "contentType", "headers", "cache"})
+    order = {"url", "username", "password", "method", "contentType", "headers"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -58,8 +51,6 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   public Map<String, String> headers;
 
-  public Boolean cache;
-
   /**
    * one of application/x-www-form-urlencoded, application/json
    */
@@ -73,31 +64,9 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
    * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
    * POSTs the arg serialized as JSON. If arg is null, GETs the result.
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Object run(Object obj) throws Exception {
-
-    File file = null;
-    if (Boolean.TRUE.equals(cache)) {
-      String filename =
-          URLEncoder.encode(objectMapper.writeValueAsString(obj), Charset.defaultCharset());
-      file = FileSystem.getUploadFile("upload/" + ID + "/" + filename + ".json");
-      if (file.exists())
-        try (InputStream in = new FileInputStream(file)) {
-          return IOUtils.toString(in, Charset.defaultCharset());
-        }
-      else
-        file.getParentFile().mkdirs();
-    }
-
-    Object res = runInternal(obj);
-    if (file != null)
-      objectMapper.writeValue(file, res);
-
-    return res;
-  }
-
-  @SuppressWarnings("unchecked")
-  Object runInternal(Object obj) throws Exception {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     HttpClient client = HttpClient.newBuilder().build();
     String sv = map == null ? url : (String) Template.replace(url, map, true);
