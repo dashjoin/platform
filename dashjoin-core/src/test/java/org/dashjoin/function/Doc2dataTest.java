@@ -70,16 +70,21 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void testCleanArrays() {
+  public void xmlTextWithAtt() throws Exception {
     Doc2data f = new Doc2data();
-    Object res = f.cleanArrays(MapUtil.of("x", Arrays.asList(1, 2)));
+    Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\">test</c>");
+    Assertions.assertEquals("{c={x=1, _content=test}}", res.toString());
+  }
+
+  @Test
+  public void testCleanArrays() {
+    Object res = Doc2data.cleanArrays(MapUtil.of("x", Arrays.asList(1, 2)));
     Assertions.assertEquals("{x=[1, 2]}", res.toString());
   }
 
   @Test
   public void testCleanArrays2() {
-    Doc2data f = new Doc2data();
-    Object res = f.cleanArrays(
+    Object res = Doc2data.cleanArrays(
         MapUtil.of("x", Arrays.asList(MapUtil.of("y", 1), MapUtil.of("y", Arrays.asList(1, 2)))));
     Assertions.assertEquals("{x=[{y=[1]}, {y=[1, 2]}]}", res.toString());
   }

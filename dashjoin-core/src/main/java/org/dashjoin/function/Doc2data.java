@@ -159,6 +159,13 @@ public class Doc2data extends AbstractFunction<String, Object> {
     for (int i = 0; i < att.getLength(); i++)
       res.put(att.item(i).getNodeName(), att.item(i).getNodeValue());
     NodeList list = node.getChildNodes();
+
+    // special case where the element has attributes and a text child
+    if (!res.isEmpty() && list.getLength() == 1 && list.item(0) instanceof Text) {
+      res.put("_content", list.item(0).getNodeValue());
+      return res;
+    }
+
     for (int i = 0; i < list.getLength(); i++)
       if (list.item(i) instanceof Element) {
         Element kid = (Element) list.item(i);
@@ -173,8 +180,6 @@ public class Doc2data extends AbstractFunction<String, Object> {
           tmp.add(xml(kid));
           res.put(kid.getNodeName(), tmp);
         }
-      } else if (list.item(i) instanceof Text) {
-        res.put("_content", list.item(i).getNodeValue());
       }
     if (!res.isEmpty())
       return cleanArrays(res);
