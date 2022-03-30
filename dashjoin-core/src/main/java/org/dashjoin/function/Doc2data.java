@@ -173,6 +173,8 @@ public class Doc2data extends AbstractFunction<String, Object> {
           tmp.add(xml(kid));
           res.put(kid.getNodeName(), tmp);
         }
+      } else if (list.item(i) instanceof Text) {
+        res.put("_content", list.item(i).getNodeValue());
       }
     if (!res.isEmpty())
       return cleanArrays(res);
