@@ -1,39 +1,28 @@
 package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpRequest.Builder;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import org.apache.commons.io.IOUtils;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
-import org.dashjoin.util.Escape;
-import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import okhttp3.FormBody.Builder;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * calls a JSON REST service
  */
 @SuppressWarnings("rawtypes")
 @JsonSchema(required = {"url"},
-    order = {"url", "username", "password", "method", "contentType", "headers", "cache"})
+    order = {"url", "username", "password", "method", "contentType", "headers"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -58,8 +47,6 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   public Map<String, String> headers;
 
-  public Boolean cache;
-
   /**
    * one of application/x-www-form-urlencoded, application/json
    */
@@ -73,35 +60,13 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
    * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
    * POSTs the arg serialized as JSON. If arg is null, GETs the result.
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Object run(Object obj) throws Exception {
-
-    File file = null;
-    if (Boolean.TRUE.equals(cache)) {
-      String filename =
-          URLEncoder.encode(objectMapper.writeValueAsString(obj), Charset.defaultCharset());
-      file = FileSystem.getUploadFile("upload/" + ID + "/" + filename + ".json");
-      if (file.exists())
-        try (InputStream in = new FileInputStream(file)) {
-          return IOUtils.toString(in, Charset.defaultCharset());
-        }
-      else
-        file.getParentFile().mkdirs();
-    }
-
-    Object res = runInternal(obj);
-    if (file != null)
-      objectMapper.writeValue(file, res);
-
-    return res;
-  }
-
-  @SuppressWarnings("unchecked")
-  Object runInternal(Object obj) throws Exception {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
-    HttpClient client = HttpClient.newBuilder().build();
+    OkHttpClient client = Doc2data.getHttpClient();
     String sv = map == null ? url : (String) Template.replace(url, map, true);
-    Builder request = HttpRequest.newBuilder().uri(new URI(sv));
+    Request.Builder request = new Request.Builder().url(sv);
     if (username != null)
       request = request.header("Authorization",
           "Basic " + Base64.getEncoder().encodeToString((username + ":" + password()).getBytes()));
@@ -112,18 +77,18 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       request = request.header("Content-Type", contentType);
     if ("POST".equals(method))
       if ("application/json".equals(contentType))
-        request = request.POST(BodyPublishers
-            .ofString(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
+        request = request.post(RequestBody.create(MediaType.parse("application/json"),
+            objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
       else {
-        String form = map == null ? ""
-            : (String) map.keySet().stream().map(key -> key + "=" + Escape.form("" + map.get(key)))
-                .collect(Collectors.joining("&"));
-        request = request.POST(BodyPublishers.ofString(form));
+        Builder fb = new Builder();
+        for (Object key : map.keySet())
+          fb.add((String) key, (String) map.get(key));
+        request = request.post(fb.build());
       }
 
-    HttpResponse<?> response = client.send(request.build(), BodyHandlers.ofString());
+    okhttp3.Response response = client.newCall(request.build()).execute();
 
-    if (response.statusCode() >= 400) {
+    if (response.code() >= 400) {
       String error = "" + response.body();
       try {
         Map<String, Object> s =
@@ -132,11 +97,10 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       } catch (Exception e) {
         // ignore and keep the body
       }
-      throw new WebApplicationException(
-          Response.status(response.statusCode()).entity(error).build());
+      throw new WebApplicationException(Response.status(response.code()).entity(error).build());
     }
 
-    String body = response.body().toString();
+    String body = response.body().string();
     if (body.isEmpty())
       return "";
 
