@@ -94,7 +94,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
     }
   }
 
-  void info(String s) throws Exception {
+  protected void info(String s) throws Exception {
     set(of("status", s));
   }
 

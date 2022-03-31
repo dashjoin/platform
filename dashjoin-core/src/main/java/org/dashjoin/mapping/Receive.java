@@ -32,7 +32,7 @@ public class Receive extends AbstractMapping<Object> {
       }
 
       @Override
-      void info(String s) throws Exception {
+      protected void info(String s) throws Exception {
         // noop
       }
     };
