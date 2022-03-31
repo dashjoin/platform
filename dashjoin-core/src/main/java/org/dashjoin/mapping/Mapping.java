@@ -153,14 +153,16 @@ public class Mapping {
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
 
         long t0 = System.currentTimeMillis();
-        Log.info("Mapping started #records=" + source.size());
+        Log.debug("Mapping started #records=" + source.size());
 
         int counter = 0;
         for (Map<String, Object> row : source) {
+          long ix = Index.increment();
+          Index.setReturnValue(ix);
+
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
           if (mappedRow != null)
             mapped.add(mappedRow);
-          Index.increment();
           if (counter++ % 1000 == 0) {
             long t = System.currentTimeMillis();
             if (t - t0 >= 1000) {
@@ -169,7 +171,7 @@ public class Mapping {
             }
           }
         }
-        Log.info("Mapping done #records=" + counter);
+        Log.debug("Mapping done #records=" + counter);
         res.put(mapping.getKey(), mapped);
       }
     }
