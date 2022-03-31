@@ -98,14 +98,22 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
     set(of("status", s));
   }
 
+  // Global lock for ConfigDB workaround
+  protected static Object lock = new Object();
+
   protected void set(Map<String, Object> update) throws Exception {
     if (ID == null)
       return;
     log.info("" + update);
     if (Boolean.TRUE.equals(logStatusOnly))
       return;
-    services.getConfig().getDatabase(services.getDashjoinID() + "/config")
-        .update(Table.ofName("dj-function"), of("ID", ID), update);
+
+    // FIXME: workaround for ConfigDB multi threading issue
+    // Remove this once fixed
+    synchronized (lock) {
+      services.getConfig().getDatabase(services.getDashjoinID() + "/config")
+          .update(Table.ofName("dj-function"), of("ID", ID), update);
+    }
   }
 
   AbstractDatabase ddl(AbstractDatabase db, Map<String, List<Map<String, Object>>> tables)
