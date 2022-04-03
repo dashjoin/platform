@@ -15,7 +15,7 @@ public class Excel2dataTest {
     Excel2data f = new Excel2data();
     @SuppressWarnings("unchecked")
     Map<String, List<Map<String, Object>>> res = (Map<String, List<Map<String, Object>>>) f
-        .parse(new URL("file:src/test/resources/data/import.xlsx"));
+        .parse(new URL("file:src/test/resources/data/import.xlsx").openStream());
     Assertions.assertEquals("mike", res.get("Tabelle1").get(1).get("name"));
   }
 }

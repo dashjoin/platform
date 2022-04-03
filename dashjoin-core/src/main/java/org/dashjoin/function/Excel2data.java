@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,11 +36,11 @@ public class Excel2data extends AbstractFunction<String, Object> {
   @Override
   public Object run(String arg) throws Exception {
     URL url = FileSystem.getUploadURL(arg);
-    return parse(url);
+    return parse(url.openStream());
   }
 
-  Object parse(URL url) throws Exception {
-    Workbook wb = WorkbookFactory.create(url.openStream());
+  protected Object parse(InputStream in) throws Exception {
+    Workbook wb = WorkbookFactory.create(in);
     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
     Map<String, List<Map<String, Object>>> res = new LinkedHashMap<>();
     for (Sheet sheet : wb) {
