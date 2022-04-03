@@ -225,6 +225,8 @@ public class ExpressionService {
 
   Map<String, Function> getJsonataFunctions(SecurityContext sc, boolean readOnly)
       throws ParseException, IOException {
+    // TODO: combine these with the service loader functions
+    // keep in sync with org.dashjoin.service.Manage.getFunctions()
     HashMap<String, Function> res = new HashMap<>();
     res.put("$all", new All(sc, readOnly));
     res.put("$read", new Read(sc, readOnly));

@@ -830,7 +830,7 @@ public class Manage {
       res.add(v);
     }
     for (String f : new String[] {"$read", "$create", "$update", "$traverse", "$delete", "$query",
-        "$call", "$incoming"}) {
+        "$call", "$incoming", "$all", "$queryGraph"}) {
       FunctionVersion v = (FunctionVersion) metaInf(getClass(), null, new FunctionVersion());
       v.function = f;
       if (f.equals("$create") || f.equals("$update") || f.equals("$delete"))
