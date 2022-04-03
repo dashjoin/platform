@@ -1,6 +1,7 @@
 package org.dashjoin.expression;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
@@ -51,8 +52,10 @@ public class ExpressionPreviewService {
           for (int i = 0; i < 10; i++)
             res.add(iter.next());
           return res;
-        } else
-          return ETL.context.get().queue;
+        } else if (ETL.context.get().queue.isEmpty())
+          return Arrays.asList(
+              "Warning: foreach queue is empty. End your expression with $toStream($) or use another streaming function.");
+        return ETL.context.get().queue;
       } finally {
         ETL.context.set(null);
       }
