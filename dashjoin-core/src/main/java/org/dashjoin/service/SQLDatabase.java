@@ -58,9 +58,11 @@ import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.Loader;
 import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
+import org.jboss.logmanager.Level;
 import org.postgresql.jdbc.PgArray;
 import org.postgresql.jdbc.PgResultSetMetaData;
 import org.postgresql.util.PGobject;
+import lombok.extern.java.Log;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sf.jsqlparser.expression.Expression;
@@ -83,6 +85,7 @@ import net.sf.jsqlparser.statement.update.Update;
 /**
  * SQL Reference implementation
  */
+@Log
 @JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 public class SQLDatabase extends AbstractDatabase {
 
@@ -353,7 +356,8 @@ public class SQLDatabase extends AbstractDatabase {
 
   boolean supportsIlike() {
     if (url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:")
-        || url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlite"))
+        || url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
+        || url.startsWith("jdbc:sqlite"))
       return false;
     else
       return true;
@@ -563,7 +567,11 @@ public class SQLDatabase extends AbstractDatabase {
       }
       insert = insert.substring(0, insert.length() - 1);
       insert = insert + ")";
-      try (PreparedStatement stmt = con.prepareStatement(insert)) {
+
+      if (log.isLoggable(Level.DEBUG))
+        log.fine("insert=" + insert);
+      try (PreparedStatement stmt =
+          con.prepareStatement(insert, java.sql.Statement.RETURN_GENERATED_KEYS)) {
         int i = 1;
         for (Object o : args)
           setObject(stmt, i++, o);
@@ -649,7 +657,8 @@ public class SQLDatabase extends AbstractDatabase {
         select = select + " where ";
         for (String k : search.keySet()) {
           if (url.startsWith("jdbc:postgresql:") && search.get(k) instanceof List
-              && s.properties.get(k).dbType.equals("jsonb") && (((List<?>) search.get(k)).size()==1)) {
+              && s.properties.get(k).dbType.equals("jsonb")
+              && (((List<?>) search.get(k)).size() == 1)) {
             select = select + "\"" + k + "\"::jsonb ??" + " ? and ";
             args.add(((List<?>) search.get(k)).get(0));
           } else {
@@ -659,7 +668,7 @@ public class SQLDatabase extends AbstractDatabase {
         }
         select = select.substring(0, select.length() - "and ".length());
       }
-      if (url.startsWith("jdbc:jtds:")) {
+      if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")) {
         // SQL server uses "select * from table order by x offset 5 rows fetch next 5 rows only
         if (offset != null) {
           String orderBy = null;
@@ -678,6 +687,10 @@ public class SQLDatabase extends AbstractDatabase {
         if (offset != null)
           select = select + " offset " + offset;
       }
+
+      if (log.isLoggable(Level.DEBUG))
+        log.fine("select=" + select);
+
       try (PreparedStatement stmt = con.prepareStatement(select)) {
         if (limit != null)
           stmt.setMaxRows(limit);
@@ -759,6 +772,10 @@ public class SQLDatabase extends AbstractDatabase {
         }
       }
       select = select.substring(0, select.length() - "and ".length());
+
+      if (log.isLoggable(Level.DEBUG))
+        log.fine("delete=" + select);
+
       try (PreparedStatement stmt = con.prepareStatement(select)) {
         int i = 1;
         for (Object o : args)
@@ -1093,7 +1110,7 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   String schema() {
-    if (url.startsWith("jdbc:jtds:"))
+    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver"))
       for (String part : url.split(";"))
         if (part.startsWith("SCHEMA="))
           return part.substring("SCHEMA=".length()) + ".";

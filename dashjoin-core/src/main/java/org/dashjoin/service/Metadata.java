@@ -247,7 +247,7 @@ public class Metadata {
    */
   String getSchema(Connection con, String url) {
 
-    if (url.startsWith("jdbc:jtds:")) {
+    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")) {
       for (String part : url.split(";"))
         if (part.startsWith("SCHEMA="))
           return part.substring("SCHEMA=".length());
