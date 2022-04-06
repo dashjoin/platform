@@ -113,7 +113,7 @@ public class SQLSchemaChange implements SchemaChange {
       return db.url.startsWith("jdbc:postgres") ? "TIMESTAMP" : "DATETIME";
     if ("string".equals(s))
       return db.url.startsWith("jdbc:postgres") ? "TEXT"
-          : (db.url.startsWith("jdbc:sqlserver") ? "NVARCHAR(MAX)" : "VARCHAR(255)");
+          : (db.url.startsWith("jdbc:sqlserver") ? "NVARCHAR(1023)" : "VARCHAR(1023)");
     throw new RuntimeException("unknown type for column " + t + "." + c + ": " + s);
   }
 }
