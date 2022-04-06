@@ -21,6 +21,7 @@ import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
 import org.dashjoin.function.FunctionService;
+import org.dashjoin.function.JobStatus;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Manage;
 import org.dashjoin.service.Services;
@@ -324,8 +325,16 @@ public class ExpressionService {
         objectIds.add(get(data, "pk4"));
       if (get(data, "database") != null && get(data, "table") != null && objectIds.size() > 0)
         try {
-          ((ObjectNode) data).set("value",
-              o2j(this.data.read(sc, get(data, "database"), get(data, "table"), objectIds)));
+          Map<String, Object> read =
+              this.data.read(sc, get(data, "database"), get(data, "table"), objectIds);
+
+          if (read != null && "config".equals(get(data, "database"))
+              && "dj-function".equals(get(data, "table")))
+            JobStatus.set(read.get("status"), read.get("start"), read.get("end"));
+          else
+            JobStatus.reset();
+
+          ((ObjectNode) data).set("value", o2j(read));
         } catch (Exception e) {
           throw new IOException(e);
         }
