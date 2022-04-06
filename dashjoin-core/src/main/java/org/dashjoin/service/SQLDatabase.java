@@ -671,13 +671,18 @@ public class SQLDatabase extends AbstractDatabase {
       if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")) {
         // SQL server uses "select * from table order by x offset 5 rows fetch next 5 rows only
         if (offset != null) {
-          String orderBy = null;
-          for (Property p : s.properties.values()) {
-            orderBy = p.name;
-            if (p.pkpos != null)
-              break;
+          if (sort == null) {
+            // OFFSET always needs an ORDER BY
+            // In case no sorting is active, add the primary key order
+            String orderBy = null;
+            for (Property p : s.properties.values()) {
+              orderBy = p.name;
+              if (p.pkpos != null)
+                break;
+            }
+            select = select + " order by " + orderBy;
           }
-          select = select + " order by " + orderBy + " offset " + offset + " rows fetch next "
+          select = select + " offset " + offset + " rows fetch next "
               + (limit == null ? Integer.MAX_VALUE : limit) + " rows only";
         }
       } else {
@@ -690,7 +695,7 @@ public class SQLDatabase extends AbstractDatabase {
 
       if (log.isLoggable(Level.DEBUG))
         log.fine("select=" + select);
-
+      System.out.println(select);
       try (PreparedStatement stmt = con.prepareStatement(select)) {
         if (limit != null)
           stmt.setMaxRows(limit);
