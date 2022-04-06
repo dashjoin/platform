@@ -106,13 +106,14 @@ public class SQLSchemaChange implements SchemaChange {
     if ("integer".equals(s))
       return "INTEGER";
     if ("boolean".equals(s))
-      return "BOOLEAN";
+      return db.url.startsWith("jdbc:sqlserver") ? "BIT" : "BOOLEAN";
     if ("number".equals(s))
       return db.url.startsWith("jdbc:postgres") ? "DOUBLE PRECISION" : "DOUBLE";
     if ("date".equals(s))
       return db.url.startsWith("jdbc:postgres") ? "TIMESTAMP" : "DATETIME";
     if ("string".equals(s))
-      return db.url.startsWith("jdbc:postgres") ? "TEXT" : "VARCHAR(255)";
+      return db.url.startsWith("jdbc:postgres") ? "TEXT"
+          : (db.url.startsWith("jdbc:sqlserver") ? "NVARCHAR(MAX)" : "VARCHAR(255)");
     throw new RuntimeException("unknown type for column " + t + "." + c + ": " + s);
   }
 }
