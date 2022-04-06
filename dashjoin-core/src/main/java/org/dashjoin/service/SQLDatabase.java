@@ -696,7 +696,6 @@ public class SQLDatabase extends AbstractDatabase {
 
       if (log.isLoggable(Level.DEBUG))
         log.fine("select=" + select);
-      System.out.println(select);
       try (PreparedStatement stmt = con.prepareStatement(select)) {
         if (limit != null)
           stmt.setMaxRows(limit);
