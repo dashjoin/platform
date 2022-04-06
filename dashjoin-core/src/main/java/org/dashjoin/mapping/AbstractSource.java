@@ -63,7 +63,8 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
   public static ThreadLocal<Context> context = new ThreadLocal<>();
 
   public static class Context {
-    public BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
+    // default queue size 1000 - producers have to assure that object size is reasonable
+    public BlockingQueue<Object> queue = new LinkedBlockingQueue<>(1000);
     boolean producerDone;
 
     public void producerDone() {
