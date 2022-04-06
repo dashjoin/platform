@@ -46,9 +46,9 @@ public class ETL extends AbstractSource {
       if (isMapOfTables((Map<?, ?>) res))
         return (Map<String, List<Map<String, Object>>>) res;
       else
-        return MapUtil.of("table", Arrays.asList((Map<String, Object>) res));
+        return MapUtil.of("table", new ArrayList<>(Arrays.asList((Map<String, Object>) res)));
     else
-      return MapUtil.of("table", Arrays.asList(MapUtil.of("column", res)));
+      return MapUtil.of("table", new ArrayList<>(Arrays.asList(MapUtil.of("column", res))));
   }
 
   /**

@@ -62,9 +62,9 @@ import org.jboss.logmanager.Level;
 import org.postgresql.jdbc.PgArray;
 import org.postgresql.jdbc.PgResultSetMetaData;
 import org.postgresql.util.PGobject;
-import lombok.extern.java.Log;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.java.Log;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
@@ -215,7 +215,8 @@ public class SQLDatabase extends AbstractDatabase {
     if (url.startsWith("jdbc:calcite")) {
       ds.setRollbackOnReturn(false);
     }
-    ds.setPassword(password());
+
+    ds.setPassword(password() == null && name.equals("junit") ? password : password());
     try (Connection con = ds.getConnection()) {
       if (initScripts != null)
         for (String s : initScripts) {
