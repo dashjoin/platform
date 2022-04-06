@@ -59,7 +59,7 @@ public class SQLSchemaChangeTest {
     Assertions.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
     Assertions.assertEquals("DOUBLE", s.t(null, null, "number"));
     Assertions.assertEquals("DATETIME", s.t(null, null, "date"));
-    Assertions.assertEquals("VARCHAR(255)", s.t(null, null, "string"));
+    Assertions.assertEquals("VARCHAR(1023)", s.t(null, null, "string"));
     Assertions.assertThrows(RuntimeException.class, () -> {
       Assertions.assertEquals("jsonb", s.t(null, null, "object"));
     });
