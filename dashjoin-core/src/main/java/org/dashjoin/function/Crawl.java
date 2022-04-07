@@ -20,6 +20,9 @@ public class Crawl extends AbstractFunction<String, List<String>> {
   @Override
   public List<String> run(String arg) throws Exception {
 
+    if (readOnly)
+      throw new Exception("$crawl is deprecated. Please use $ls instead.");
+
     List<String> res = new ArrayList<>();
     URL url = FileSystem.getUploadURL(arg);
 
