@@ -1094,16 +1094,6 @@ The expression result can be a map of table names to an array of rows (JSON obje
 If the expression result has a simpler structure (for instance only a single table),
 the ETL function wraps this in a default table called "table".
 
-##### ETLStream
-
-Like ETL but supports stream processing of very large JSON documents.
-
-Configuration
-
-* workerThreads: ETL worker threads (defaults to 4)
-* preSweepData: Pre-sweep all data to gather schema and metadata
-* limitRecords: if set, enforces an ETL import records limit to the specified value
-
 ##### Receive
 
 The receive function allows handling cases, where the platform is being sent data that is to be processed and saved into a database.
@@ -1243,10 +1233,7 @@ query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 echo | $echo(any) | Prints the parameter to the log
-crawl | $crawl(url) | Crawls the URL and returns all URLs listed there
-doc2data | $doc2data(url) | Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing CSV, JSON, or XML
 index | $index() | Generates a unique row index ID
-streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found, match is a Java regular expression that can be used to select URLs
 djVersion | $djVersion() | Returns the platform version information
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name

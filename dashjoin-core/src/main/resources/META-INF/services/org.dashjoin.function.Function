@@ -7,7 +7,6 @@ org.dashjoin.function.AlterColumn
 org.dashjoin.function.AlterTableTrigger
 org.dashjoin.function.AlterColumnTrigger
 org.dashjoin.function.Invoke
-org.dashjoin.mapping.ETL
 org.dashjoin.mapping.Receive
 org.dashjoin.function.DjVersion
 org.dashjoin.function.DjRoles
