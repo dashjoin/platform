@@ -741,7 +741,11 @@ Widgets can be grouped into the following three categories.
 
 #### Container Widgets
 
-Container widgets can contain other widgets.
+Container widgets can contain other widgets. All container widgets have features that control under which
+conditions content is shown or hidden. Please note that these features are enforced on the client and thus
+can be manipulated by malicious users. Specifically, do not rely on these features to implement security
+and data privacy. You can safely restrict access on the server side by applying access control to
+functions, databases, tables, and queries.
 
 ##### [card](https://demo.my.dashjoin.com/#/page/card)
 

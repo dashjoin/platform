@@ -226,7 +226,7 @@ export class EditWidgetDialogComponent {
             },
             roles: {
               static: true,
-              title: 'Restrict access to these roles',
+              title: 'Show only for roles',
               layout: 'select',
               type: 'array',
               choicesUrl: '/rest/database/all/config/dj-role',
