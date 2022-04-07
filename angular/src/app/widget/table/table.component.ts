@@ -49,6 +49,12 @@ export class TableComponent extends LinksComponent implements OnInit {
       // (preset @Input values have priority)
       this.pagination ||= this.meta?.paging;
       this.sortable ||= this.meta?.sortCaps?.sortableFields != null;
+
+      if (this.search) {
+        // remove id column from the display; it is used as the href label for url
+        this.columns.shift();
+      }
+
     } catch (e) {
       this.errorHandler(e);
     }

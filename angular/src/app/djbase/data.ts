@@ -616,7 +616,9 @@ export class DJDataREST<T> extends DJDataBase<T> {
         return Promise.resolve({
             data: data.map(item => {
                 return {
+                    id: item.id.pk[0],
                     url: '/resource/' + encodeURIComponent(item.id.database) + '/' + encodeURIComponent(item.id.table) + '/' + item.id.pk.map(encodeURIComponent).join('/'),
+                    database: item.id.database,
                     table: item.id.table,
                     column: item.column,
                     match: item.match

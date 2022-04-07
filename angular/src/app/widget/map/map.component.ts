@@ -92,10 +92,19 @@ export class MapComponent extends DJBaseComponent implements OnInit {
     SA: "Saudi Arabia",
     EG: "Egypt",
     BD: "Bangladesh",
-    CA: "Canada"
+    CA: "Canada",
+    HU: 'Hungary',
+    DO: 'Dominican Republic',
+    RS: 'Serbia',
+    KW: 'Kuwait',
   };
 
   cache = {
+    Hungary: [{ "lat": "47.1817585", "lon": "19.5060937", "boundingbox": ["45.737128", "48.585257", "16.1138866", "22.8977094"] }],
+    Greece: [{ "lat": "38.9953683", "lon": "21.9877132", "boundingbox": ["34.7188863", "41.7488889", "19.1127535", "29.68381"] }],
+    'Dominican Republic': [{ "lat": "19.0974031", "lon": "-70.3028026", "boundingbox": ["17.2701708", "21.2928771", "-72.0574706", "-68.1101463"] }],
+    Serbia: [{ "lat": "44.1534121", "lon": "20.55144", "boundingbox": ["42.2314466", "46.1900524", "18.8149945", "23.006309"] }],
+    Kuwait: [{ "lat": "29.2733964", "lon": "47.4979476", "boundingbox": ["28.5243622", "30.1038082", "46.5526837", "49.0046809"] }],
     "Puerto Rico": [{ "lat": "18.19897685", "lon": "-66.26152219418967", "boundingbox": ["17.7306659", "18.6663822", "-68.1109184", "-65.1100908"] }],
     "Palestine, State of": [{ "lat": "32.1332947", "lon": "35.2111045", "boundingbox": ["32.1332447", "32.1333447", "35.2110545", "35.2111545"] }],
     "Hong Kong, China": [{ "lat": "22.2793278", "lon": "114.1628131", "boundingbox": ["22.1926504", "22.3002834", "114.1098795", "114.3090495"] }],

@@ -25,7 +25,8 @@
                     </span>
                     <ng-template #nopath_content>
                         <a [routerLink]="toRouterLink(element[column])"
-                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
+                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{search
+                            ? element.id : element[column]}}</a>
                         <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
                     </ng-template>
                 </span>
