@@ -36,9 +36,6 @@ public class Doc2dataTest {
     Assertions.assertThrows(RuntimeException.class, () -> {
       new Doc2data().run("file:src/test/resources/data/json.json");
     });
-    Assertions.assertThrows(RuntimeException.class, () -> {
-      new Load().run("file:src/test/resources/data/json.json");
-    });
   }
 
   @Test

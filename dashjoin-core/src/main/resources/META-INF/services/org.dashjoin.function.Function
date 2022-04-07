@@ -16,14 +16,8 @@ org.dashjoin.function.DjGetDrivers
 org.dashjoin.function.DjGetDatabases
 org.dashjoin.function.DjGetFunctions
 org.dashjoin.function.Crawl
-org.dashjoin.function.Preview
 org.dashjoin.function.Doc2data
-org.dashjoin.function.Load
-org.dashjoin.function.Download
-org.dashjoin.function.Flatten
 org.dashjoin.function.Index
 org.dashjoin.function.JobStatus
-org.dashjoin.function.Table2Object
 org.dashjoin.function.IsRecursiveTrigger
-org.dashjoin.function.Excel2data
 org.dashjoin.function.MoveField
