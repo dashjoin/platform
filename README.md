@@ -1437,6 +1437,15 @@ from EMP
 where NAME like concat(${search}, '%')
 ```
 
+You can also use union queries to search over multiple tables. Note that in this case,
+the query needs to project table, id, match:
+
+```sql
+select 'EMP', ID, NAME from EMP where NAME=${search}
+union 
+select 'PRJ', ID, NAME from PRJ where NAME=${search}
+```
+
 Note that the query must have a single parameter "search" in order to be used this way.
 The platform will run this query by replacing the search parameter with the contents of the search field.
 

@@ -23,7 +23,8 @@ public class TableName {
    * create the right instance for computing the table name
    */
   public static TableName create(String url, String query) throws SQLException {
-    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver") || url.startsWith("jdbc:oracle:"))
+    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
+        || url.startsWith("jdbc:oracle:"))
       return new JTDSTableName(query);
     if (url.startsWith("jdbc:postgresql"))
       return new PostgresTableName(query);
@@ -77,6 +78,8 @@ public class TableName {
         if (!(parsed instanceof Select))
           return;
         Select select = (Select) parsed;
+        if (!(select.getSelectBody() instanceof PlainSelect))
+          return;
         body = (PlainSelect) select.getSelectBody();
         try {
           if (body.getLimit() != null)
