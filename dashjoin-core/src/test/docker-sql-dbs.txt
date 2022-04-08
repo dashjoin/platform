@@ -1,0 +1,22 @@
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+	"url": "jdbc:postgresql://localhost:5432/junit",
+	"username": "postgres",
+	"password": "password",
+
+
+docker run --detach -p 3306:3306 --name some-mariadb --env MARIADB_USER=mariadb --env MARIADB_PASSWORD=password --env MARIADB_ROOT_PASSWORD=password mariadb:latest
+	"url": "jdbc:mysql://localhost:3306/junit",
+	"username": "root",
+	"password": "password",
+
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+	"url": "jdbc:sqlserver://localhost:1433;databaseName=master",
+	"username": "sa",
+	"password": "yourStrong(!)Password",
+
+
+docker run -itd --privileged=true -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb  ibmcom/db2
+	"url": "jdbc:db2://localhost:50000/testdb",
+	"username": "db2inst1",
+	"password": "password",
