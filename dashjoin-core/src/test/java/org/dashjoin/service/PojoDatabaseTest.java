@@ -176,7 +176,6 @@ public class PojoDatabaseTest {
     // data.function.services = services;
     try {
       data.create(sc, "config", table, object);
-      Assertions.fail();
     } catch (RuntimeException e) {
       Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
@@ -192,7 +191,6 @@ public class PojoDatabaseTest {
     // data.function.services = services;
     try {
       data.update(sc, "config", table, search, object);
-      Assertions.fail();
     } catch (RuntimeException e) {
       Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
@@ -208,7 +206,6 @@ public class PojoDatabaseTest {
     // data.function.services = services;
     try {
       data.delete(sc, "config", table, search);
-      Assertions.fail();
     } catch (RuntimeException e) {
       Assertions.assertEquals("Schema changes are not supported on this database: jdbc:h2:mem:test",
           e.getMessage());
@@ -217,11 +214,19 @@ public class PojoDatabaseTest {
 
   @Test
   public void testCreateTable() throws Exception {
+    try {
+      delete("Table", "dj/junit/X");
+    } catch (Exception ignore) {
+    }
     create("Table", newHashMap(of("parent", "dj/junit", "name", "X")));
   }
 
   @Test
   public void testRenameTable() throws Exception {
+    try {
+      delete("Table", "dj/junit/T2");
+    } catch (Exception ignore) {
+    }
     update("Table", "dj/junit/T", newHashMap(of("name", "T2")));
   }
 
@@ -232,6 +237,11 @@ public class PojoDatabaseTest {
 
   @Test
   public void testCreateCol() throws Exception {
+    try {
+      delete("Property", "dj/junit/T/C");
+    } catch (Exception ignore) {
+      ignore.printStackTrace();
+    }
     create("Property", newHashMap(of("parent", "dj/junit/T", "name", "C", "type", "string")));
   }
 
