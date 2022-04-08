@@ -237,12 +237,7 @@ public class PojoDatabaseTest {
 
   @Test
   public void testCreateCol() throws Exception {
-    try {
-      delete("Property", "dj/junit/T/C");
-    } catch (Exception ignore) {
-      ignore.printStackTrace();
-    }
-    create("Property", newHashMap(of("parent", "dj/junit/T", "name", "C", "type", "string")));
+    create("Property", newHashMap(of("parent", "dj/junit/T", "name", "NEWCOL", "type", "string")));
   }
 
   @Test

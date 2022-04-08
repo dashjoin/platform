@@ -218,6 +218,10 @@ public class SQLDatabase extends AbstractDatabase {
 
     ds.setPassword(password() == null && name.equals("junit") ? password : password());
     try (Connection con = ds.getConnection()) {
+      if (url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
+        try (java.sql.Statement stmt = con.createStatement()) {
+          stmt.execute("SET sql_mode='ANSI_QUOTES';");
+        }
       if (initScripts != null)
         for (String s : initScripts) {
           InputStream ddl = Loader.open(s);
@@ -687,7 +691,8 @@ public class SQLDatabase extends AbstractDatabase {
               + (limit == null ? Integer.MAX_VALUE : limit) + " rows only";
         }
       } else {
-        if (url.startsWith("jdbc:db2:") || url.startsWith("jdbc:sqlite"))
+        if (url.startsWith("jdbc:db2:") || url.startsWith("jdbc:sqlite")
+            || url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
           // DB2 offset only works with limit
           select = select + " limit " + (limit == null ? Integer.MAX_VALUE : limit);
         if (offset != null)
@@ -1108,8 +1113,7 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   public String q(String column) {
-    if (url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:")
-        || url.startsWith("jdbc:ucanaccess:"))
+    if (url.startsWith("jdbc:ucanaccess:"))
       return column;
     return "\"" + column + "\"";
   }

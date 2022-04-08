@@ -76,8 +76,11 @@ public class SQLSchemaChange implements SchemaChange {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
         String typeKeyword = db.url.startsWith("jdbc:postgres") ? "TYPE " : "";
-        stmt.execute("ALTER TABLE " + db.q(table) + " ALTER COLUMN " + db.q(column) + " "
-            + typeKeyword + t(table, column, newType));
+        String alterColumn =
+            db.url.startsWith("jdbc:mysql") || db.url.startsWith("jdbc:mariadb") ? " MODIFY "
+                : " ALTER COLUMN ";
+        stmt.execute("ALTER TABLE " + db.q(table) + alterColumn + db.q(column) + " " + typeKeyword
+            + t(table, column, newType));
       }
     }
   }

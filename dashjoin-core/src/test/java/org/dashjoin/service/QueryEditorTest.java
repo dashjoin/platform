@@ -584,6 +584,7 @@ public class QueryEditorTest {
   QueryDatabase q(QueryDatabase q) {
     if (!(e instanceof SQLEditor))
       return q;
+    q.query = q.query.replaceAll("RENAME", "\"RENAME\"");
     q.query = q.query.replaceAll("EMP", "\"EMP\"");
     q.query = q.query.replaceAll("PRJ", "\"PRJ\"");
     q.query = q.query.replaceAll("ID", "\"ID\"");
