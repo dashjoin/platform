@@ -90,7 +90,7 @@
         "widget": "page",
         "children": [
           {
-            "title": "Table Data",
+            "title": "Table: ${value.name}",
             "widget": "table"
           },
           {
