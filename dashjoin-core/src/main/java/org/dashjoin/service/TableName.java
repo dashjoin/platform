@@ -104,7 +104,7 @@ public class TableName {
     @Override
     public String getColumnLabel(ResultSetMetaData meta, int i) throws SQLException {
       String label = meta.getColumnLabel(i);
-      if (i - 1 < body.getSelectItems().size()) {
+      if (body != null && i - 1 < body.getSelectItems().size()) {
         SelectItem selex = body.getSelectItems().get(i - 1);
         if (selex instanceof SelectExpressionItem)
           if (((SelectExpressionItem) selex).getExpression() instanceof Function) {
@@ -135,7 +135,7 @@ public class TableName {
     public String getTableName(ResultSetMetaData meta, int i) throws SQLException {
       String tablename = meta.getTableName(i);
       if ("".equals(tablename))
-        if (i - 1 < body.getSelectItems().size()) {
+        if (body != null && i - 1 < body.getSelectItems().size()) {
           SelectItem selex = body.getSelectItems().get(i - 1);
           if (selex instanceof SelectExpressionItem)
             if (((SelectExpressionItem) selex).getExpression() instanceof Function)

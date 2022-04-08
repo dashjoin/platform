@@ -1,6 +1,6 @@
 {
 	"ID": "search",
-	"query": "select 'EMP', ID, NAME from EMP where NAME=${search} union select 'PRJ', ID, NAME from PRJ where NAME=${search}",
+	"query": "select 'EMP', \"ID\", \"NAME\" from \"EMP\" where \"NAME\"=${search} union select 'PRJ', \"ID\", \"NAME\" from \"PRJ\" where \"NAME\"=${search}",
 	"type": "read",
 	"roles": ["user"],
   "arguments" : {
