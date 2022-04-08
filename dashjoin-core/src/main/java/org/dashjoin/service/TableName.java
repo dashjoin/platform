@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
@@ -143,6 +144,8 @@ public class TableName {
           String sel = "" + selex;
           if (sel.split("\\.").length == 2)
             tablename = SQLDatabase.s(sel.split("\\.")[0]);
+          else
+            tablename = SQLDatabase.s(((Table) body.getFromItem()).getName());
         }
       return tablename;
     }

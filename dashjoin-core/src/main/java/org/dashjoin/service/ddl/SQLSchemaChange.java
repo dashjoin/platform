@@ -46,7 +46,10 @@ public class SQLSchemaChange implements SchemaChange {
   public void renameTable(String table, String newName) throws SQLException {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
-        stmt.execute("ALTER TABLE " + db.q(table) + " RENAME TO " + db.q(newName));
+        if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
+          stmt.execute("EXEC sp_rename " + db.q(table) + ", " + db.q(newName));
+        else
+          stmt.execute("ALTER TABLE " + db.q(table) + " RENAME TO " + db.q(newName));
       }
     }
   }
@@ -65,8 +68,12 @@ public class SQLSchemaChange implements SchemaChange {
   public void renameColumn(String table, String column, String newName) throws SQLException {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
-        stmt.execute("ALTER TABLE " + db.q(table) + " RENAME COLUMN " + db.q(column) + " TO "
-            + db.q(newName));
+        if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
+          stmt.execute(
+              "EXEC sp_rename '" + db.q(table) + "." + db.q(column) + "', '" + db.q(newName) + "'");
+        else
+          stmt.execute("ALTER TABLE " + db.q(table) + " RENAME COLUMN " + db.q(column) + " TO "
+              + db.q(newName));
       }
     }
   }
