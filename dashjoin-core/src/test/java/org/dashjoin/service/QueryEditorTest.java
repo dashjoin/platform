@@ -143,6 +143,7 @@ public class QueryEditorTest {
     String sql = "SELECT A, FK FROM T";
     // FK -> C
     QueryResponse res = e.addColumn(addColumnRequest(sql, col("T", "FK"), col("U", "C")));
+    q(res);
     eq("SELECT A, FK, U.C FROM T INNER JOIN U ON T.FK = U.ID", res.query);
   }
 
@@ -151,6 +152,7 @@ public class QueryEditorTest {
     String sql = "SELECT U.ID FROM U";
     // U.ID -> T.ID
     QueryResponse res = e.addColumn(addColumnRequest(sql, col("U", "ID"), col("T", "ID")));
+    q(res);
     eq("SELECT U.ID, T.ID FROM U INNER JOIN T ON U.ID = T.FK", res.query);
   }
 
@@ -159,6 +161,7 @@ public class QueryEditorTest {
     String sql = "SELECT U.ID AS RENAME FROM U";
     // U.ID -> T.C
     QueryResponse res = e.addColumn(addColumnRequest(sql, col("U", "ID"), col("T", "C")));
+    q(res);
     eq("SELECT U.ID AS RENAME, T.C FROM U INNER JOIN T ON U.ID = T.FK", res.query);
   }
 
@@ -325,13 +328,17 @@ public class QueryEditorTest {
     ac.col = col("T", "A");
 
     ac.query = "SELECT T.A, T.B FROM T";
+    q(ac);
     eq("SELECT T.B, T.A FROM T", e.moveColumn(ac).query);
 
-    ac.query = "SELECT COUNT(T.A), T.B FROM T GROUP BY T.A";
-    eq("SELECT T.B, COUNT(T.A) FROM T GROUP BY T.A", e.moveColumn(ac).query);
+    ac.col = col("T", "B");
+    ac.query = "SELECT COUNT(T.B), T.A FROM T GROUP BY T.A";
+    q(ac);
+    eq("SELECT T.A, COUNT(T.B) FROM T GROUP BY T.A", e.moveColumn(ac).query);
 
-    ac.query = "SELECT COUNT(T.A) AS RENAME, T.B FROM T GROUP BY T.A";
-    eq("SELECT T.B, COUNT(T.A) AS RENAME FROM T GROUP BY T.A", e.moveColumn(ac).query);
+    ac.query = "SELECT COUNT(T.B) AS RENAME, T.A FROM T GROUP BY T.A";
+    q(ac);
+    eq("SELECT T.A, COUNT(T.B) AS RENAME FROM T GROUP BY T.A", e.moveColumn(ac).query);
   }
 
   @Test
@@ -342,13 +349,17 @@ public class QueryEditorTest {
     ac.col = col("T", "A");
 
     ac.query = "SELECT T.A, T.B FROM T";
+    q(ac);
     eq("SELECT T.B FROM T", e.removeColumn(ac).query);
 
-    ac.query = "SELECT COUNT(T.A), T.B FROM T GROUP BY T.A";
-    eq("SELECT T.B FROM T GROUP BY T.A", e.removeColumn(ac).query);
+    ac.query = "SELECT COUNT(T.B), T.A FROM T GROUP BY T.A";
+    ac.col.column = "B";
+    q(ac);
+    eq("SELECT T.A FROM T GROUP BY T.A", e.removeColumn(ac).query);
 
-    ac.query = "SELECT COUNT(T.A) AS RENAME, T.B FROM T GROUP BY T.A";
-    eq("SELECT T.B FROM T GROUP BY T.A", e.removeColumn(ac).query);
+    ac.query = "SELECT COUNT(T.B) AS RENAME, T.A FROM T GROUP BY T.A";
+    q(ac);
+    eq("SELECT T.A FROM T GROUP BY T.A", e.removeColumn(ac).query);
   }
 
   @Test
@@ -358,35 +369,42 @@ public class QueryEditorTest {
     QueryResponse res;
 
     query.query = "select EMP.ID from EMP";
+    q(query);
     res = e.noop(query);
     Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
     Assertions.assertEquals("EMP.ID", res.fieldNames.get(0));
 
     query.query = "select EMP.ID AS RENAME from EMP";
+    q(query);
     res = e.noop(query);
     Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
     Assertions.assertEquals("RENAME", res.fieldNames.get(0));
 
     query.query = "select COUNT(EMP.ID) from EMP";
+    q(query);
     res = e.noop(query);
     Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
-    Assertions.assertEquals("COUNT(EMP.ID)", res.fieldNames.get(0));
+    Assertions.assertEquals("COUNT(EMP.ID)", res.fieldNames.get(0).replaceAll("\"", ""));
 
     query.query = "select COUNT(EMP.ID) AS RENAME from EMP";
+    q(query);
     res = e.noop(query);
     Assertions.assertEquals("EMP.ID", res.metadata.get(0).col.toString());
     Assertions.assertEquals("RENAME", res.fieldNames.get(0));
 
     query.query = "select * from EMP";
+    q(query);
     res = e.noop(query);
     Assertions.assertTrue(res.query.contains("WORKSON"));
 
     query.query = "select * from EMP, PRJ where EMP.WORKSON = PRJ.ID";
+    q(query);
     res = e.noop(query);
     Assertions.assertTrue(res.query.contains("WORKSON"));
 
     query.query =
-        "select emp.id, count(emp.workson) from EMP where emp.workson > 0 group by emp.id";
+        "select EMP.ID, count(EMP.WORKSON) from EMP where EMP.WORKSON > 0 group by EMP.ID";
+    q(query);
     res = e.noop(query);
     Assertions.assertEquals("> 0", res.metadata.get(1).where);
   }
@@ -524,12 +542,13 @@ public class QueryEditorTest {
     }
   }
 
-  public static AddColumnRequest addColumnRequest(String query, Col selected, Col add) {
+  public AddColumnRequest addColumnRequest(String query, Col selected, Col add) {
     AddColumnRequest res = new AddColumnRequest();
     res.query = query;
     res.add = add;
     res.col = selected;
     res.database = "dj/junit";
+    q(res);
     return res;
   }
 
@@ -552,11 +571,31 @@ public class QueryEditorTest {
     s = s.replace('\'', '"');
     try {
       T t = objectMapper.readValue(s.getBytes(), c);
-      if (t instanceof QueryDatabase)
+      if (t instanceof QueryDatabase) {
         ((QueryDatabase) t).database = "dj/junit";
+        q((QueryDatabase) t);
+      }
       return t;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  QueryDatabase q(QueryDatabase q) {
+    if (!(e instanceof SQLEditor))
+      return q;
+    q.query = q.query.replaceAll("EMP", "\"EMP\"");
+    q.query = q.query.replaceAll("PRJ", "\"PRJ\"");
+    q.query = q.query.replaceAll("ID", "\"ID\"");
+    q.query = q.query.replaceAll("FK", "\"FK\"");
+    q.query = q.query.replaceAll("WORKSON", "\"WORKSON\"");
+    q.query = q.query.replaceAll("T\\.A", "\"T\".\"A\"");
+    q.query = q.query.replaceAll("T.B", "\"T\".\"B\"");
+    q.query = q.query.replaceAll("U.ID", "\"U\".\"ID\"");
+    q.query = q.query.replaceAll(" U", " \"U\"");
+    q.query = q.query.replaceAll(" T", " \"T\"");
+    q.query = q.query.replaceAll(" A ", " \"A\" ");
+    q.query = q.query.replaceAll("A,", "\"A\",");
+    return q;
   }
 }
