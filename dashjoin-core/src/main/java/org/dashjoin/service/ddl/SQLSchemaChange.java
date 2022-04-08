@@ -46,7 +46,9 @@ public class SQLSchemaChange implements SchemaChange {
   public void renameTable(String table, String newName) throws SQLException {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
-        if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
+        if (db.url.startsWith("jdbc:db2:"))
+          stmt.execute("RENAME TABLE " + db.q(table) + " TO " + db.q(newName));
+        else if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
           stmt.execute("EXEC sp_rename " + db.q(table) + ", " + db.q(newName));
         else
           stmt.execute("ALTER TABLE " + db.q(table) + " RENAME TO " + db.q(newName));
@@ -83,6 +85,8 @@ public class SQLSchemaChange implements SchemaChange {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
         String typeKeyword = db.url.startsWith("jdbc:postgres") ? "TYPE " : "";
+        if (db.url.startsWith("jdbc:db2:"))
+          typeKeyword = " SET DATA TYPE ";
         String alterColumn =
             db.url.startsWith("jdbc:mysql") || db.url.startsWith("jdbc:mariadb") ? " MODIFY "
                 : " ALTER COLUMN ";

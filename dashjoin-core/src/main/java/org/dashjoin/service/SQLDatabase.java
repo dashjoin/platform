@@ -362,7 +362,7 @@ public class SQLDatabase extends AbstractDatabase {
   boolean supportsIlike() {
     if (url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:")
         || url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
-        || url.startsWith("jdbc:sqlite"))
+        || url.startsWith("jdbc:sqlite") || url.startsWith("jdbc:db2:"))
       return false;
     else
       return true;
