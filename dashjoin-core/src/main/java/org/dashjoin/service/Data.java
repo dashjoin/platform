@@ -6,6 +6,7 @@ import static org.dashjoin.service.ACLContainerRequestFilter.Operation.UPDATE;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -115,11 +116,6 @@ public class Data {
   List<SearchResult> searchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
       String search) throws Exception {
 
-    // Special support for a union-ized search table,
-    // where all search tables are union-ized in one index table.
-    if (searchQuery.startsWith("dj_search"))
-      return indexSearchQuery(sc, db, searchQuery, search);
-
     Map<String, Property> meta =
         this.queryMeta(sc, db.name, searchQuery, MapUtil.of("search", search));
     String table = null;
@@ -133,67 +129,31 @@ public class Data {
         column = p.getKey();
       }
 
-    if (table == null || key == null || column == null)
-      log.warning(
-          "Search configuration issue: table=" + table + " key=" + key + " column=" + column);
-
     List<Map<String, Object>> res =
         this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
     List<SearchResult> projected = new ArrayList<>();
-    for (Map<String, Object> m : res) {
-      projected
-          .add(SearchResult.of(Resource.of(db.name, table, m.get(key)), column, m.get(column)));
+
+    if (table == null || key == null || column == null) {
+      if (meta.size() < 3) {
+        log.warning(
+            "Search configuration issue: table=" + table + " key=" + key + " column=" + column);
+      } else {
+        for (Map<String, Object> m : res) {
+          Iterator<Entry<String, Object>> i = m.entrySet().iterator();
+          Entry<String, Object> t = i.next();
+          Entry<String, Object> k = i.next();
+          Entry<String, Object> c = i.next();
+          projected.add(SearchResult.of(Resource.of(db.name, "" + t.getValue(), k.getValue()),
+              c.getKey(), c.getValue()));
+        }
+      }
+    } else {
+      for (Map<String, Object> m : res) {
+        projected
+            .add(SearchResult.of(Resource.of(db.name, table, m.get(key)), column, m.get(column)));
+      }
     }
-    return projected;
-  }
 
-  /**
-   * Perform search on search index for multiple/all types
-   * 
-   * @param sc
-   * @param db
-   * @param searchQuery
-   * @param search
-   * @return
-   * @throws Exception
-   */
-  List<SearchResult> indexSearchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
-      String search) throws Exception {
-
-    Map<String, Property> meta =
-        this.queryMeta(sc, db.name, searchQuery, MapUtil.of("search", search));
-
-    // We expect the search index to return these columns:
-    //
-    // type -> the table of the result
-    // id -> the ID of the record in the table
-    // match -> the matching text
-    String tableKey = "type";
-    String key = "id";
-    String column = "match";
-    // Look if the columns are prefixed with table name
-    // i.e. "table.col" instead of col
-    for (Entry<String, Property> p : meta.entrySet())
-      if (p.getKey().endsWith(".id"))
-        key = p.getKey();
-      else if (p.getKey().endsWith(".type"))
-        tableKey = p.getKey();
-    // else if (p.getKey().endsWith(".match"))
-    // column = p.getKey();
-
-    List<Map<String, Object>> res =
-        this.query(sc, db.name, searchQuery, MapUtil.of("search", search));
-    List<SearchResult> projected = new ArrayList<>();
-    for (Map<String, Object> m : res) {
-
-      // For the union-ized search table: need to gather table from each record
-      Object table = m.get(tableKey);
-      if (table != null)
-        projected.add(
-            SearchResult.of(Resource.of(db.name, "" + table, m.get(key)), column, m.get(column)));
-      else
-        log.warning("Search result has no type, ignored: " + m);
-    }
     return projected;
   }
 

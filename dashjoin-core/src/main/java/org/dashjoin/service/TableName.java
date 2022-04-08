@@ -23,7 +23,8 @@ public class TableName {
    * create the right instance for computing the table name
    */
   public static TableName create(String url, String query) throws SQLException {
-    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver") || url.startsWith("jdbc:oracle:"))
+    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
+        || url.startsWith("jdbc:oracle:"))
       return new JTDSTableName(query);
     if (url.startsWith("jdbc:postgresql"))
       return new PostgresTableName(query);
@@ -77,6 +78,8 @@ public class TableName {
         if (!(parsed instanceof Select))
           return;
         Select select = (Select) parsed;
+        if (!(select.getSelectBody() instanceof PlainSelect))
+          return;
         body = (PlainSelect) select.getSelectBody();
         try {
           if (body.getLimit() != null)
@@ -101,7 +104,7 @@ public class TableName {
     @Override
     public String getColumnLabel(ResultSetMetaData meta, int i) throws SQLException {
       String label = meta.getColumnLabel(i);
-      if (i - 1 < body.getSelectItems().size()) {
+      if (body != null && i - 1 < body.getSelectItems().size()) {
         SelectItem selex = body.getSelectItems().get(i - 1);
         if (selex instanceof SelectExpressionItem)
           if (((SelectExpressionItem) selex).getExpression() instanceof Function) {
@@ -132,7 +135,7 @@ public class TableName {
     public String getTableName(ResultSetMetaData meta, int i) throws SQLException {
       String tablename = meta.getTableName(i);
       if ("".equals(tablename))
-        if (i - 1 < body.getSelectItems().size()) {
+        if (body != null && i - 1 < body.getSelectItems().size()) {
           SelectItem selex = body.getSelectItems().get(i - 1);
           if (selex instanceof SelectExpressionItem)
             if (((SelectExpressionItem) selex).getExpression() instanceof Function)
