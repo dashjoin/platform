@@ -33,8 +33,8 @@
                       "title": "User Information"
                           }, {
                             "widget": "display",
-              "display": "$merge( [$djVersion(),\n{\"Third Party Licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"},\n{\"_dj_icons\":{\n\"version\":\"content_copy\",\n\"runtime\":\"build\",\n\"buildTime\":\"access_time\",\n\"vendor\":\"store\",\n\"name\":\"check_circle_outline\",\n\"title\":\"title\",\n\"Third Party Licenses\":\"copyright\"\n}\n}])",
-              "title": "Software"
+                            "display": "($x:=$djVersion();\n$merge( [$x,\n{\"Third Party Licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore(x.version, '-') & \"/license-report.html\"},\n{\"_dj_icons\":{\n\"version\":\"content_copy\",\n\"runtime\":\"build\",\n\"buildTime\":\"access_time\",\n\"vendor\":\"store\",\n\"name\":\"check_circle_outline\",\n\"title\":\"title\",\n\"Third Party Licenses\":\"copyright\"\n}\n}])\n)",
+                            "title": "Software"
               }, {
                 "widget": "display",
                 "display": "$djGetDatabases()",
