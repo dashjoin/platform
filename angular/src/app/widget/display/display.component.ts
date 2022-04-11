@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DJBaseComponent } from '../../djbase/djbase.component';
@@ -39,23 +40,46 @@ export class DisplayComponent extends TextComponent implements OnInit {
    * used for display widget: transforms camelCase into Camel Case
    */
   camelCase2display(s: string) {
+
+    // If string consists of multiple words, it's no camel case
+    if (s.indexOf(' ') > 0)
+      return s;
+
     return s.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
   }
 
   /**
-   * some default key to icon associations
+   * Maps the text key to Material icon
+   *
+   * Looks up the icon from the _dj_icons map (if defined).
+   * Otherwise directly takes the key as icon.
+   * 
+   * See https://fonts.google.com/icons for list of icons
    */
   iconKey(s: string): string {
-    if (s === 'status') { return 'error_outline'; }
-    if (s === 'user') { return 'account_circle'; }
-    if (s === 'roles') { return 'person_search'; }
-    if (s === 'buildTime') { return 'access_time'; }
-    if (s === 'runtime') { return 'build'; }
-    if (s === 'version') { return 'content_copy'; }
-    if (s === 'vendor') { return 'store'; }
-    if (s === 'subscription') { return 'payment'; }
-    if (s === 'name') { return 'check_circle_outline'; }
-    return s;
+    const ico = this.displayData._dj_icons;
+    if (ico) {
+      if (typeof ico === 'string')
+        s = ico;
+      else
+        s = ico[s];
+    }
+    return s || 'arrow_forward';
+  }
+
+  // Preserve original property order
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  }
+
+  /**
+   * Returns the displayData without the config
+   * @returns 
+   */
+  getDisplayData() {
+    let filtered = { ...this.displayData };
+    delete filtered._dj_icons;
+    return filtered;
   }
 
   /**
