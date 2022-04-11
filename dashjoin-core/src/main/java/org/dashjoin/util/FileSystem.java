@@ -66,6 +66,11 @@ public class FileSystem {
       checkSQLiteAccess(Home.get().getFile(file));
       return "jdbc:h2:" + Home.get().getFile(file);
     }
+    if (url.toLowerCase().startsWith("jdbc:ucanaccess://")) {
+      String file = url.substring("jdbc:ucanaccess://".length());
+      checkSQLiteAccess(Home.get().getFile(file));
+      return "jdbc:ucanaccess://" + Home.get().getFile(file);
+    }
     return url;
   }
 

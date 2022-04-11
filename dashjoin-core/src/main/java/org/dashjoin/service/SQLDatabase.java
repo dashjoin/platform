@@ -95,7 +95,7 @@ public class SQLDatabase extends AbstractDatabase {
    * JSON config field
    */
   @JsonSchema(choices = {"jdbc:postgresql://your_host:5432/your_database",
-      "jdbc:h2:tcp:your_host:9092/path/your_database", "jdbc:sqlite:/path/your_database.db"
+      "jdbc:h2:tcp:your_host:9092/path/your_database", "jdbc:sqlite:path/your_database.db"
       /*
        * "jdbc:jtds:sqlserver://your_host:1433/your_database;SCHEMA=your_schema",
        * "jdbc:mysql://your_host:3306/your_database", "jdbc:oracle:thin:@your_host:1521/ORCL",
@@ -667,7 +667,7 @@ public class SQLDatabase extends AbstractDatabase {
             select = select + "\"" + k + "\"::jsonb ??" + " ? and ";
             args.add(((List<?>) search.get(k)).get(0));
           } else {
-            select = select + "\"" + k + "\"" + "=? and ";
+            select = select + q(k) + "=? and ";
             args.add(search.get(k));
           }
         }

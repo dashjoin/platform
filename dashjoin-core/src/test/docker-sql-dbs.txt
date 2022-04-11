@@ -20,3 +20,10 @@ docker run -itd --privileged=true -p 50000:50000 -e LICENSE=accept -e DB2INST1_P
 	"url": "jdbc:db2://localhost:50000/testdb",
 	"username": "db2inst1",
 	"password": "password",
+
+	
+	"url": "jdbc:sqlite:junit.sqlite",
+
+
+	"url": "jdbc:ucanaccess://junit.accdb",
+	junit.sql does not work, need to create the tables in the app
