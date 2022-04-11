@@ -50,13 +50,20 @@ export class TableComponent extends LinksComponent implements OnInit {
       this.pagination ||= this.meta?.paging;
       this.sortable ||= this.meta?.sortCaps?.sortableFields != null;
 
-      if (this.search) {
-        // remove id column from the display; it is used as the href label for url
-        this.columns.shift();
-      }
-
     } catch (e) {
       this.errorHandler(e);
+    }
+  }
+
+  /**
+   * on the search page, combine link and id column into one
+   */
+  computeColumnsFromAll() {
+    super.computeColumnsFromAll();
+
+    if (this.search) {
+      // remove id column from the display; it is used as the href label for url
+      this.columns.shift();
     }
   }
 
