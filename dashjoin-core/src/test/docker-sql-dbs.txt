@@ -16,6 +16,13 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:143
 	"password": "yourStrong(!)Password",
 
 
+docker run -d -it -p 1521:1521 -p 5500:5500 store/oracle/database-enterprise:12.2.0.1
+	"url": "jdbc:oracle:thin:@localhost:1521:ORCLCDB",
+	"username": "sys as sysdba",
+	"password": "Oradoc_db1",
+	remove "if not exists" from junit.sql
+	
+
 docker run -itd --privileged=true -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=password -e DBNAME=testdb  ibmcom/db2
 	"url": "jdbc:db2://localhost:50000/testdb",
 	"username": "db2inst1",

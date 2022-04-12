@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -353,6 +354,10 @@ public class SQLDatabase extends AbstractDatabase {
       } else if (obj instanceof PgArray) {
         PgArray arr = (PgArray) obj;
         obj = arr.getArray();
+      } else if (obj instanceof BigDecimal) {
+        obj = ((BigDecimal) obj).longValue();
+        if (Integer.MIN_VALUE < (long) obj && (long) obj < Integer.MAX_VALUE)
+          obj = Math.toIntExact((long) obj);
       }
     }
 
@@ -362,7 +367,8 @@ public class SQLDatabase extends AbstractDatabase {
   boolean supportsIlike() {
     if (url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:")
         || url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
-        || url.startsWith("jdbc:sqlite") || url.startsWith("jdbc:db2:"))
+        || url.startsWith("jdbc:sqlite") || url.startsWith("jdbc:db2:")
+        || url.startsWith("jdbc:oracle:thin:"))
       return false;
     else
       return true;
@@ -696,7 +702,8 @@ public class SQLDatabase extends AbstractDatabase {
           // DB2 offset only works with limit
           select = select + " limit " + (limit == null ? Integer.MAX_VALUE : limit);
         if (offset != null)
-          select = select + " offset " + offset;
+          select =
+              select + " offset " + offset + (url.startsWith("jdbc:oracle:thin:") ? " rows" : "");
       }
 
       if (log.isLoggable(Level.DEBUG))

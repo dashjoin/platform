@@ -170,53 +170,56 @@ public class Metadata {
   public Metadata(Connection con, String url) throws SQLException {
     DatabaseMetaData md = con.getMetaData();
     String schema = getSchema(con, url);
-    ResultSet res = md.getTables(null, schema, null, null);
-    while (res.next()) {
-      if ("TABLE".equals(res.getString("TABLE_TYPE"))) {
-        String name = res.getString("TABLE_NAME");
-        tables.put(name, new MdTable(name));
+    try (ResultSet res = md.getTables(null, schema, null, null)) {
+      while (res.next()) {
+        if ("TABLE".equals(res.getString("TABLE_TYPE"))) {
+          String name = res.getString("TABLE_NAME");
+            tables.put(name, new MdTable(name));
+        }
       }
     }
     // H2 and jTDS require table keys to be queried individually
     // Note: before we used table==null for Postgres, but this was the
     // only DB which allowed this. Thus we are now doing the safe way for all DBs.
     for (String table : tables.keySet()) {
-      res = md.getPrimaryKeys(null, schema, table);
-      while (res.next()) {
-        tables.get(table).pk.set(res.getString("COLUMN_NAME"), res.getShort("KEY_SEQ"));
+      try (ResultSet res = md.getPrimaryKeys(null, schema, table)) {
+        while (res.next()) {
+          tables.get(table).pk.set(res.getString("COLUMN_NAME"), res.getShort("KEY_SEQ"));
+        }
       }
       try {
-        res = md.getImportedKeys(null, schema, table);
-        while (res.next()) {
-          String pktable = res.getString("PKTABLE_NAME");
-          if (!this.tables.containsKey(pktable))
-            // DB2 allows defining table alias - the FK definition might point to the alias - skip
-            continue;
-          tables.get(res.getString("FKTABLE_NAME")).getOrCreateFk(pktable)
-              .set(res.getString("FKCOLUMN_NAME"), res.getShort("KEY_SEQ"));
+        try (ResultSet res = md.getImportedKeys(null, schema, table)) {
+          while (res.next()) {
+            String pktable = res.getString("PKTABLE_NAME");
+            if (!this.tables.containsKey(pktable))
+              // DB2 allows defining table alias - the FK definition might point to the alias - skip
+              continue;
+            tables.get(res.getString("FKTABLE_NAME")).getOrCreateFk(pktable)
+                .set(res.getString("FKCOLUMN_NAME"), res.getShort("KEY_SEQ"));
+          }
         }
       } catch (Exception e) {
         logger.log(Level.WARNING, "Error gathering keys", e);
       }
-      res = md.getColumns(null, schema, table, null);
-      while (res.next()) {
-        MdTable t = tables.get(res.getString("TABLE_NAME"));
+      try (ResultSet res = md.getColumns(null, schema, table, null)) {
+        while (res.next()) {
+          MdTable t = tables.get(res.getString("TABLE_NAME"));
 
-        // column might be from a view
-        if (t == null)
-          continue;
+          // column might be from a view
+          if (t == null)
+            continue;
 
-        Column col = new Column();
-        col.name = res.getString("COLUMN_NAME");
-        // unused: col.type = res.getInt("DATA_TYPE");
-        col.typeName = res.getString("TYPE_NAME");
-        // col.columnSize = res.getInt("COLUMN_SIZE");
-        col.required = DatabaseMetaData.columnNoNulls == res.getInt("NULLABLE");
-        col.readOnly = "YES".equals(res.getString("IS_AUTOINCREMENT"));
-        // H2 does not have: col.isGenerated = res.getString("IS_GENERATEDCOLUMN");
+          Column col = new Column();
+          col.name = res.getString("COLUMN_NAME");
+          // unused: col.type = res.getInt("DATA_TYPE");
+          col.typeName = res.getString("TYPE_NAME");
+          // col.columnSize = res.getInt("COLUMN_SIZE");
+          col.required = DatabaseMetaData.columnNoNulls == res.getInt("NULLABLE");
+          col.readOnly = "YES".equals(res.getString("IS_AUTOINCREMENT"));
+          // H2 does not have: col.isGenerated = res.getString("IS_GENERATEDCOLUMN");
 
-        t.columns.add(col);
-        // res.close();
+          t.columns.add(col);
+        }
       }
 
       // If metadata had no info about the table,
@@ -224,14 +227,15 @@ public class Metadata {
       MdTable t = tables.get(table);
       if (t.columns.isEmpty()) {
         try (Statement stmt = con.createStatement()) {
-          stmt.setMaxRows(10);
-          try (ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " LIMIT 10")) {
+          stmt.setMaxRows(1);
+          try (ResultSet rs = stmt.executeQuery("SELECT * FROM " + table)) {
             for (int col = 1; col <= rs.getMetaData().getColumnCount(); col++) {
               Column c = new Column();
               c.name = rs.getMetaData().getColumnName(col);
               c.typeName = rs.getMetaData().getColumnTypeName(col);
               t.columns.add(c);
             }
+            break;
           }
         } catch (Throwable ex) {
           logger.log(Level.WARNING,
