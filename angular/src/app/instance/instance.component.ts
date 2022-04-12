@@ -31,6 +31,7 @@ import { Util } from '../util';
 import { Table } from '../model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { WidgetListComponent } from '../edit-widget-dialog/widgetlist.component';
+import { IconSelectComponent } from '../edit-widget-dialog/icon-select.component';
 import { DJRuntimeService } from '../djruntime.service';
 
 /**
@@ -452,6 +453,7 @@ export class InstanceComponent implements OnInit {
       this.formService.registerComponent('mapping', MappingComponent);
     }
     this.formService.registerComponent('imagelist', WidgetListComponent);
+    this.formService.registerComponent('icon', IconSelectComponent);
 
     this.formService.registerDisplayWith('fk', new ForeignKeyChoiceHandler(this.http, this.app));
     this.formService.registerDisplayWith('fkdb', new DatabaseNameChoiceHandler(this.http, this.app));

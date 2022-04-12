@@ -117,13 +117,15 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Icon',
               type: 'string',
+              widget: 'custom',
+              widgetType: 'icon',
               case: this.generateCase('icon')
             },
             tooltip: {
               static: true,
               title: 'Tooltip',
               type: 'string',
-              case: this.generateCase('icon')
+              case: this.generateCase('tooltip')
             },
             href: {
               static: true,
