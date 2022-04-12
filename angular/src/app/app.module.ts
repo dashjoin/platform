@@ -77,6 +77,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { WidgetListComponent } from './edit-widget-dialog/widgetlist.component';
 import { MapComponent } from './widget/map/map.component';
+import { HTMLComponent } from './widget/html/html.component';
 
 export const __DJ_TYPES = [
   DJBaseComponent,
@@ -105,6 +106,7 @@ export const __DJ_TYPES = [
   TreeComponent,
   SidenavSwitchComponent,
   MapComponent,
+  HTMLComponent
 ];
 // Decouple access to avoid circular deps:
 (window as any).__DJ_TYPES = __DJ_TYPES;
@@ -128,7 +130,8 @@ export const __DJ_TYPES = [
     MappingComponent,
     ConfirmationDialogComponent,
     WidgetListComponent,
-    ...__DJ_TYPES
+    ...__DJ_TYPES,
+    HTMLComponent
   ],
   imports: [
     AppRoutingModule,
