@@ -836,6 +836,7 @@ Creates new database records:
 Displays the result of an expression:
 
 * display: expression to display
+* icons: if display evaluates to an object, icons maps the object keys to [material icons]([https://fonts.google.com/icons])
 
 Depending on the result of the evaluation, one of the following cases applies:
 
@@ -846,21 +847,16 @@ Depending on the result of the evaluation, one of the following cases applies:
 * an array of objects is displayed as a table
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
 
-###### display widget of an object: configure which icons to display
-
-* when the displayed data is an object, the icon mapping can be configured with the "_dj_icons" property.
-* you can look up available items here: [https://fonts.google.com/icons]
-
 Example:
 ```
-  {
+  "display": {
     "item one": "this item's value",
     "item two": "another value",
     "item three": "last value",
-    "_dj_icons": {
-      "item one": "traffic",
-      "item two": "turn_left"
-    }
+  },
+  "icons": {
+    "item one": "traffic",
+    "item two": "turn_left"
   }
 ```
 
@@ -869,7 +865,7 @@ Example:
 Item one will be displayed with the "traffic" icon, item two with the "turn_left" icon.
 When no item is specified for a key, the default item is used. In the above example, "item three" will display the default icon.
 
-When a string is specified for "_dj_icons", all icons will be mapped to that same specified icon.
+When icons is "*": "icon", all icons will be mapped to that same specified icon.
 
 ##### edit
 

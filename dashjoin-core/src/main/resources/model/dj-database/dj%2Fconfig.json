@@ -267,7 +267,11 @@
           {
             "widget": "display",
             "title": "Database Information",
-            "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}"
+            "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}",
+            "icons": {
+              "status": "error_outline",
+              "tables": "table_view"
+            }
           },
           {
             "widget": "expansion",
@@ -776,7 +780,12 @@
               },
               {
                 "widget": "display",
-                "display": "{\"start\": value.start, \"end\": value.end, \"status\": value.status}"
+                "display": "{\"start\": value.start, \"end\": value.end, \"status\": value.status}",
+                "icons": {
+                  "status": "error_outline",
+                  "end": "flag",
+                  "start": "start"
+                }
               }
             ],
             "layout": "vertical"

@@ -13,7 +13,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that displays values, arrays, or tables',
   htmlTag: 'dj-display',
-  fields: ['title', 'display']
+  fields: ['title', 'display', 'icons']
 })
 @Component({
   selector: 'app-display',
@@ -57,29 +57,18 @@ export class DisplayComponent extends TextComponent implements OnInit {
    * See https://fonts.google.com/icons for list of icons
    */
   iconKey(s: string): string {
-    const ico = this.displayData._dj_icons;
-    if (ico) {
-      if (typeof ico === 'string')
-        s = ico;
-      else
-        s = ico[s];
+    if (this.layout.icons?.[s]) {
+      return this.layout.icons[s];
     }
-    return s || 'arrow_forward';
+    if (this.layout.icons?.['*']) {
+      return this.layout.icons['*'];
+    }
+    return 'arrow_forward';
   }
 
   // Preserve original property order
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
-  }
-
-  /**
-   * Returns the displayData without the config
-   * @returns 
-   */
-  getDisplayData() {
-    let filtered = { ...this.displayData };
-    delete filtered._dj_icons;
-    return filtered;
   }
 
   /**

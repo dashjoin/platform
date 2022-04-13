@@ -73,6 +73,7 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.db2.jcc.DB2Driver;
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
 /**
  * REST API for management tasks
@@ -986,6 +987,8 @@ public class Manage {
       jar = "db2";
     if (c.equals(JDBC.class))
       jar = "sqlite";
+    if (c.equals(SQLServerDriver.class))
+      jar = "sqlserver";
 
     if (jar != null)
       try {
@@ -1001,6 +1004,8 @@ public class Manage {
               v.version = p.getProperty("Bundle-Version");
             if (v.title == null)
               v.title = p.getProperty("Bundle-Name");
+            if (v.vendor == null)
+              v.vendor = p.getProperty("Bundle-Vendor");
           }
         }
       } catch (IOException ignore) {

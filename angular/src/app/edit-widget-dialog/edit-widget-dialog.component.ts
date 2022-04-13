@@ -323,6 +323,18 @@ export class EditWidgetDialogComponent {
               title: 'CSS / chart styles applied to child elements',
               case: this.generateCase('style')
             },
+            icons: {
+              type: 'object',
+              additionalProperties: {
+                type: 'string',
+                widget: 'custom',
+                widgetType: 'icon',
+              },
+              layout: 'vertical',
+              static: true,
+              title: 'CSS / chart styles applied to child elements',
+              case: this.generateCase('icons')
+            },
             context: {
               static: true,
               title: 'Expression',

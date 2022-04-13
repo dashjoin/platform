@@ -1,53 +1,85 @@
 {
-  "ID": "Info",
-  "layout": {
-      "widget": "page",
-      "children": [{
-          "widget": "container",
-          "layout": "vertical",
-          "text": "User Information",
-          "children": [{
-                "widget": "display",
-                      "display": "{\"user\": user, \"_dj_icons\": \"account_circle\"}"
-                      }, {
+    "ID": "Info",
+    "layout": {
+        "widget": "page",
+        "children": [
+            {
+                "widget": "container",
+                "layout": "vertical",
+                "text": "User Information",
+                "children": [
+                    {
                         "widget": "display",
-                        "display": "{\"email\": email}"
-                      }, {
+                        "display": "{\"user\": user}",
+                        "icons": {
+                            "user": "account_circle"
+                        }
+                    },
+                    {
                         "widget": "display",
-                      "display": "{\"roles\": $djRoles(), \"_dj_icons\":\"person_search\"}"
-                      }, {
+                        "display": "{\"email\": email}",
+                        "icons": {
+                            "email": "email"
+                        }
+                    },
+                    {
+                        "widget": "display",
+                        "display": "{\"roles\": $djRoles()}",
+                        "icons": {
+                            "roles": "person_search"
+                        }
+                    },
+                    {
                         "widget": "text",
                         "text": "System Roles",
                         "href": "/table/config/dj-role",
                         "icon": "people_outline"
-                      }, {
+                    },
+                    {
                         "widget": "container",
-                        "children": [{
-                          "widget": "text",
-                          "text": "Tenant Users",
-                          "href": "/table/config/tenantusers",
-                          "icon": "people"
-                        }],
+                        "children": [
+                            {
+                                "widget": "text",
+                                "text": "Tenant Users",
+                                "href": "/table/config/tenantusers",
+                                "icon": "people"
+                            }
+                        ],
                         "if": "$contains(href, \".my.dashjoin.\")"
-                      }],
-                      "title": "User Information"
-                          }, {
-                            "widget": "display",
-                            "display": "($x:=$djVersion();\n$merge( [$x,\n{\"Third Party Licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore(x.version, '-') & \"/license-report.html\"},\n{\"_dj_icons\":{\n\"version\":\"content_copy\",\n\"runtime\":\"build\",\n\"buildTime\":\"access_time\",\n\"vendor\":\"store\",\n\"name\":\"check_circle_outline\",\n\"title\":\"title\",\n\"Third Party Licenses\":\"copyright\"\n}\n}])\n)",
-                            "title": "Software"
-              }, {
+                    }
+                ],
+                "title": "User Information"
+            },
+            {
+                "widget": "display",
+                "display": "( $f:=function($x){ $merge( [$x, {\"© third party licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}]) }; $f($djVersion()) )",
+                "title": "Software",
+                "icons": {
+                    "version": "content_copy",
+                    "vendor": "store",
+                    "name": "check_circle_outline",
+                    "buildTime": "access_time",
+                    "runtime": "build",
+                    "© third party licenses": "copyright",
+                    "title": "title"
+                }
+            },
+            {
                 "widget": "display",
                 "display": "$djGetDatabases()",
                 "title": "Database Drivers"
-              }, {
+            },
+            {
                 "widget": "display",
                 "display": "$djGetDrivers()",
                 "title": "JDBC Drivers"
-              }, {
+            },
+            {
                 "widget": "display",
                 "display": "$djGetFunctions()",
                 "title": "Functions"
-              }],
-              "pageLayout": "2 column"
-  }
+            }
+        ],
+        "pageLayout": "2 column"
+    }
 }
