@@ -219,4 +219,16 @@ export interface Widget {
      * additional context expression
      */
     context: string;
+
+
+    /**
+     * HTML for HTMLComponent
+     */
+    html: string;
+
+    /**
+     * CSS for HTMLComponent
+     */
+    css: string;
+
 }

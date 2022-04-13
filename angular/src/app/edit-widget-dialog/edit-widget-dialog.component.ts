@@ -168,6 +168,30 @@ export class EditWidgetDialogComponent {
               type: 'string',
               case: this.generateCase('markdown')
             },
+            html: {
+              static: true,
+              widget: 'textarea',
+              style: {
+                width: '600px',
+                height: '300px',
+                'font-family': 'courier'
+              },
+              title: 'HTML Source',
+              type: 'string',
+              case: this.generateCase('html')
+            },
+            css: {
+              static: true,
+              widget: 'textarea',
+              style: {
+                width: '600px',
+                height: '300px',
+                'font-family': 'courier'
+              },
+              title: 'CSS Source',
+              type: 'string',
+              case: this.generateCase('css')
+            },
             text: {
               static: true,
               title: 'Element text',

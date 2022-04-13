@@ -10,13 +10,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   category: 'Default',
   description: 'Component that displays HTML',
   htmlTag: 'dj-html',
-  fields: ['title', 'markdown', 'class', 'style', 'context']
+  fields: ['title', 'html', 'css', 'context']
 })
 @Component({
   selector: 'app-html',
   templateUrl: './html.component.html',
   styleUrls: ['./html.component.css'],
-  encapsulation: ViewEncapsulation.ShadowDom,
+  //encapsulation: ViewEncapsulation.ShadowDom
 })
 export class HTMLComponent extends DJBaseComponent implements OnInit {
 
@@ -38,7 +38,22 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
     if (this.layout.context) {
       this.additionalContext = await this.evaluateExpression(this.layout.context);
     }
-    this.sanHtml = this.sanitizeHtml(this.id(this.layout.markdown));
+
+    let html = this.id(this.layout.html);
+
+    let useShadowDom = html.startsWith('<!--ShadowDOM-->');
+
+    let root = useShadowDom ? this.elRef.nativeElement.attachShadow({ mode: 'open' }) :
+      this.elRef.nativeElement;
+
+    let wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+
+    let style = document.createElement('style');
+    style.textContent = this.layout.css;
+
+    root.appendChild(style);
+    root.appendChild(wrapper);
   }
 
   /**
@@ -49,9 +64,5 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
     ctx.value = this.value;
     ctx.context = this.additionalContext;
     return Expression.template(name, ctx, null);
-  }
-
-  sanitizeHtml(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 }
