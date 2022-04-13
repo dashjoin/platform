@@ -18,6 +18,7 @@ import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * REST API for expression evaluation in read only mode
@@ -44,7 +45,7 @@ public class ExpressionPreviewService {
     if (e.foreach) {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
-        expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
+        JsonNode node = expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
         ETL.context.get().producerDone();
         if (ETL.context.get().queue.size() > 10) {
           List<Object> res = new ArrayList<>();
@@ -52,10 +53,17 @@ public class ExpressionPreviewService {
           for (int i = 0; i < 10; i++)
             res.add(iter.next());
           return res;
-        } else if (ETL.context.get().queue.isEmpty())
-          return Arrays.asList(
-              "Warning: foreach queue is empty. End your expression with $toStream($) or use another streaming function.");
-        return ETL.context.get().queue;
+        } else if (ETL.context.get().queue.isEmpty()) {
+          // no queue, use result directly
+          Object o = ExpressionService.j2o(node);
+          @SuppressWarnings("unchecked")
+          List<Object> list = o instanceof List ? (List<Object>) o : Arrays.asList(o);
+          if (list.size() > 10)
+            return list.subList(0, 10);
+          else
+            return list;
+        } else
+          return ETL.context.get().queue;
       } finally {
         ETL.context.set(null);
       }
