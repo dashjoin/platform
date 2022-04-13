@@ -146,6 +146,11 @@ export interface Widget {
     icon: string;
 
     /**
+     * display data key to icon map
+     */
+    icons: object;
+
+    /**
      * widget tooltip
      */
     tooltip: string;

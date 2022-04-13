@@ -18,7 +18,7 @@
 </div>
 <div *ngIf="displayType() === 'object'">
     <mat-list>
-        <mat-list-item *ngFor="let e of getDisplayData() | keyvalue: originalOrder">
+        <mat-list-item *ngFor="let e of displayData | keyvalue: originalOrder">
             <mat-icon mat-list-icon color="accent">{{iconKey(e.key)}}</mat-icon>
             <div mat-line>{{camelCase2display(e.key)}}</div>
             <div mat-line class="list-value">
