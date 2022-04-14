@@ -236,4 +236,8 @@ export interface Widget {
      */
     css: string;
 
+    /**
+     * Switch to hide the widget card's frame
+     */
+    hideframe: boolean;
 }

@@ -192,6 +192,12 @@ export class EditWidgetDialogComponent {
               type: 'string',
               case: this.generateCase('css')
             },
+            hideframe: {
+              static: true,
+              title: 'Hide the widget\'s card frame',
+              type: 'boolean',
+              case: this.generateCase('hideframe')
+            },
             text: {
               static: true,
               title: 'Element text',

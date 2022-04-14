@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   category: 'Default',
   description: 'Component that displays HTML',
   htmlTag: 'dj-html',
-  fields: ['title', 'html', 'css', 'context']
+  fields: ['title', 'hideframe', 'html', 'css', 'context']
 })
 @Component({
   selector: 'app-html',
@@ -61,10 +61,19 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
       }
     }
 
-    console.log('shadowdom', useShadowDom);
-
     let root = useShadowDom ? this.elRef.nativeElement.attachShadow({ mode: 'open' }) :
       this.elRef.nativeElement;
+
+    // Show/hide the widget's frame
+    try {
+      const classList = (this.elRef.nativeElement as HTMLElement).parentElement.parentElement.parentElement.classList;
+      // Remove mat-card class from parent tag <mat-card ... >
+      // Bit of a hack, but does the job...
+      if (this.layout.hideframe)
+        classList.remove('mat-card');
+      else
+        classList.add('mat-card');
+    } catch (e) { console.warn(e); }
 
     this.renderer.appendChild(root, cssEl);
 
