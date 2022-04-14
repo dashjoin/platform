@@ -1,9 +1,14 @@
 package org.dashjoin.service;
 
-
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -58,7 +63,21 @@ public class RDF4JTest extends DBTest {
   @Override
   @Test
   public void testPath() throws Exception {
-
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    // need a non null starting point
+    List<Map<String, Object>> res =
+        db.queryGraph(sc, "junit", "path", MapUtil.of("subject", "http://ex.org/1"));
+    // we have one path
+    Assertions.assertEquals(1, res.size());
+    Map<String, Object> first = getMap(res.get(0), "path");
+    Assertions.assertTrue(getMap(first, "start").containsKey("_dj_resource"));
+    List<Map<String, Object>> steps = getList(first, "steps");
+    Assertions.assertEquals(1, steps.size());
+    // WORKSON -> http://ex.org/WORKSON
+    Assertions.assertEquals("{_dj_edge=http://ex.org/WORKSON, _dj_outbound=true}",
+        "" + steps.get(0).get("edge"));
+    Assertions.assertTrue(getMap(steps.get(0), "end").containsKey("_dj_resource"));
   }
 
   // @Override
