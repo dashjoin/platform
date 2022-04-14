@@ -1,3 +1,5 @@
+import ejs from 'ejs';
+
 /**
  * handles client side expression evaluation
  */
@@ -17,6 +19,12 @@ export class Expression {
             return expression.replace(/\${(.*?)}/g, (g) => {
                 return this.traverse(g.substring(2, g.length - 1), context);
             });
+        } else if (expression.includes('<%')) {
+            // Compile the Embedded JavaScript (EJS) template
+            const template = ejs.compile(expression);
+            // Evaluate the template with our context
+            const html = template(context);
+            return html;
         } else {
             return expression;
         }
