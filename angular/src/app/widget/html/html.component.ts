@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { Expression } from '../../expression/expression';
 import { DashjoinWidget } from '../widget-registry';
@@ -15,8 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-html',
   templateUrl: './html.component.html',
-  styleUrls: ['./html.component.css'],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./html.component.css']
 })
 export class HTMLComponent extends DJBaseComponent implements OnInit {
 
@@ -27,7 +26,8 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
 
   sanHtml: SafeHtml;
 
-  constructor(protected elRef: ElementRef, protected cdRef: ChangeDetectorRef, protected route: ActivatedRoute, public router: Router, private sanitizer: DomSanitizer) {
+  constructor(protected elRef: ElementRef, protected cdRef: ChangeDetectorRef, protected route: ActivatedRoute, public router: Router,
+    private sanitizer: DomSanitizer, private renderer: Renderer2) {
     super(elRef, cdRef, route, router);
   }
 
@@ -41,19 +41,74 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
 
     let html = this.id(this.layout.html);
 
-    let useShadowDom = html.startsWith('<!--ShadowDOM-->');
+    let htmlEl = this.renderer.createElement('div');
+    htmlEl.innerHTML = html;
+
+    let cssEl = this.renderer.createElement('style');
+    cssEl.textContent = this.layout.css;
+
+    // Shadow DOM is active by default
+    let useShadowDom = true;
+
+    // Check if shadow DOM is disabled. Looks for:
+    // <!-- encapsulation:off -->
+    if (htmlEl.hasChildNodes()) {
+      const n = htmlEl.childNodes[0];
+      if (n.nodeType === Node.COMMENT_NODE) {
+        if (n.textContent.trim().toLowerCase().startsWith('encapsulation:off')) {
+          useShadowDom = false;
+        }
+      }
+    }
+
+    console.log('shadowdom', useShadowDom);
 
     let root = useShadowDom ? this.elRef.nativeElement.attachShadow({ mode: 'open' }) :
       this.elRef.nativeElement;
 
-    let wrapper = document.createElement('div');
-    wrapper.innerHTML = html;
+    this.renderer.appendChild(root, cssEl);
 
-    let style = document.createElement('style');
-    style.textContent = this.layout.css;
+    // @font-face definitions do NOT work in shadow DOM!
+    // See issues here:
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=336876
+    // https://github.com/google/material-design-icons/issues/1165
+    // -> font files need to be loaded in root document as well
+    if (useShadowDom) {
+      let imports = [];
 
-    root.appendChild(style);
-    root.appendChild(wrapper);
+      // Find linked CSS imports in HTML
+      htmlEl.
+        querySelectorAll("link[rel=stylesheet]").
+        forEach((a: HTMLElement) => {
+          imports.push('@import url(' + a.getAttribute("href") + ');')
+        });
+
+      // Find all @import statements in CSS
+
+      // Unfortunately we cannot rely on the browser to parse the CSS...
+      // In Chrome it would work, but FF has style==null
+      // const cssRules = style.sheet?.cssRules;
+      // for (let i = 0; i < cssRules?.length; i++) {
+      //   const rule = cssRules[i];
+      //   if (rule instanceof CSSImportRule) {
+      //     console.log('import', rule)
+      //     imports.push(rule.cssText);
+      //   }
+      // }
+
+      let lines = this.layout.css?.split('\n')
+      let cssimports = lines?.filter((a) => { return a.trim().startsWith('@import ') });
+      if (cssimports)
+        imports.push(...cssimports);
+
+      // Import linked styles in the root document
+      if (imports && imports.length > 0) {
+        let rootStyle = document.createElement('style');
+        rootStyle.textContent = imports.join('\n');
+        document.head.appendChild(rootStyle);
+      }
+    }
+    this.renderer.appendChild(root, htmlEl);
   }
 
   /**
