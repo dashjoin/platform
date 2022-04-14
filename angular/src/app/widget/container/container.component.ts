@@ -60,8 +60,6 @@ export class ContainerComponent extends DJBaseComponent implements OnInit {
       // Bit of a hack, but does the job...
       if (this.layout.hideframe)
         classList.remove('mat-card');
-      else
-        classList.add('mat-card');
     } catch (e) { console.warn(e); }
 
 
