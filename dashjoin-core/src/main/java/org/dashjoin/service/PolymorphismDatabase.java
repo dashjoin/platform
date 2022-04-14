@@ -119,6 +119,13 @@ public class PolymorphismDatabase extends JSONDatabase {
         distinct.set(username, Arrays.asList("username", "password"));
         distinct.remove("password");
       }
+      int expression = distinct.indexOf("expression");
+      int expressions = distinct.indexOf("expressions");
+      if (expression >= 0 && expressions >= 0) {
+        distinct.remove("expressions");
+        expression = distinct.indexOf("expression");
+        distinct.add(expression, "expressions");
+      }
       res.put("order", distinct);
     }
 
