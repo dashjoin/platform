@@ -12,7 +12,7 @@ import { DashjoinWidget } from '../widget-registry';
   description: 'Component that draws a container',
   htmlTag: 'dj-container',
   isContainer: true,
-  fields: ['title', 'roles', 'layout', 'if', 'foreach', 'class', 'style']
+  fields: ['title', 'roles', 'layout', 'if', 'foreach', 'class', 'style', 'hideframe']
 })
 @Component({
   selector: 'app-container',
@@ -52,6 +52,19 @@ export class ContainerComponent extends DJBaseComponent implements OnInit {
    */
   async initWidget() {
     const layout = this.layout as any;
+
+    // Show/hide the widget's frame
+    try {
+      const classList = (this.elRef.nativeElement as HTMLElement).parentElement.parentElement.parentElement.classList;
+      // Remove mat-card class from parent tag <mat-card ... >
+      // Bit of a hack, but does the job...
+      if (this.layout.hideframe)
+        classList.remove('mat-card');
+      else
+        classList.add('mat-card');
+    } catch (e) { console.warn(e); }
+
+
     if (layout.if) {
       this.ifDisplay = await this.evaluateExpression(layout.if);
       this.hideParentPageCard();
