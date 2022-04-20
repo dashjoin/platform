@@ -12,7 +12,6 @@ import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.FormBody.Builder;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -77,7 +76,7 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       request = request.header("Content-Type", contentType);
     if ("POST".equals(method))
       if ("application/json".equals(contentType))
-        request = request.post(RequestBody.create(MediaType.parse("application/json"),
+        request = request.post(RequestBody.create(null,
             objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
       else {
         Builder fb = new Builder();
