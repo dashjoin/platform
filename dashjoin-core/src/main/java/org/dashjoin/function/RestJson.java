@@ -89,7 +89,7 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     okhttp3.Response response = client.newCall(request.build()).execute();
 
     if (response.code() >= 400) {
-      String error = "" + response.body();
+      String error = "" + response.body().string();
       try {
         Map<String, Object> s =
             objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
