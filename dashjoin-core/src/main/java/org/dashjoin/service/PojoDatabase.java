@@ -446,6 +446,15 @@ public class PojoDatabase extends UnionDatabase implements Config {
       String name = (String) object.get("name");
       if (name != null && !name.equals(URLEncoder.encode(name, StandardCharsets.UTF_8)))
         throw new Exception("Database name must not contain special characters");
+      String djClassName = (String) object.get("djClassName");
+      String url = (String) object.get("url");
+      if (!(services.persistantDB instanceof JSONFileDatabase))
+        if ("org.dashjoin.service.SQLDatabase".equals(djClassName))
+          if (url != null)
+            if (url.startsWith("jdbc:sqlite:"))
+              if (!url.contains("/tmp/"))
+                throw new Exception(
+                    "In the cloud, only non-persistent SQLite databases in the /tmp folder are supported");
     }
     if (m.name.equals("Dashjoin")) {
       String name = (String) object.get("ID");
