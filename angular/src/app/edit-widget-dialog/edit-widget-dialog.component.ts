@@ -352,7 +352,7 @@ export class EditWidgetDialogComponent {
             properties: {
               type: 'object',
               additionalProperties: {
-                type: 'string', enum: ['boolean', 'integer', 'number', 'string', 'date']
+                type: 'string', enum: ['boolean', 'integer', 'number', 'string', 'date', 'upload']
               },
               layout: 'vertical',
               static: true,
