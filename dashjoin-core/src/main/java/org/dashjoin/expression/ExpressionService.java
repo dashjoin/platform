@@ -361,6 +361,10 @@ public class ExpressionService {
       }
 
       String json = res.toString();
+
+      if ("undefined".equals(json))
+        return null;
+
       return om.readValue(json, JsonNode.class);
     }
 
