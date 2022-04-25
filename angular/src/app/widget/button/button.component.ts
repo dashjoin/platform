@@ -63,6 +63,8 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
       for (const [k, v] of Object.entries(this.layout.properties)) {
         if (v === 'date') {
           tmp[k] = { type: 'string', widget: 'date' };
+        } else if (v === 'upload') {
+          tmp[k] = { type: 'string', widget: 'upload' };
         } else {
           tmp[k] = { type: v };
         }
