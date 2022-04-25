@@ -3,6 +3,7 @@ package org.dashjoin.expression.jsonatajs;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.graalvm.polyglot.Context;
@@ -94,7 +95,16 @@ public class JsonataJS {
     try {
       Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
 
-      return Context.create();
+      // Configure custom type mappings
+      HostAccess access = HostAccess.newBuilder(HostAccess.EXPLICIT)
+          // map to Long if possible
+          .targetTypeMapping(Long.class, Object.class, null, v -> v)
+          // map to List (fix for #139)
+          .targetTypeMapping(Value.class, Object.class, (v) -> v.hasArrayElements(),
+              (v) -> v.as(List.class))
+          .build();
+
+      return Context.newBuilder().allowHostAccess(access).build();
     } finally {
       Thread.currentThread().setContextClassLoader(quarkusClassLoader);
     }
