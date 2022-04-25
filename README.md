@@ -1412,6 +1412,89 @@ These settings are stored in the configuration database. For the open source ver
 in the model folder. In the docker container, this folder is located under /deployments/model. For locally installed
 systems, this folder can be found under USER_HOME/.dashjoin/model.
 
+### Configuring OpenID
+
+The Dashjoin platform can be setup to delegate identity management to an OpenID provider such as Google, Microsoft Azure AD, Okta, or Keycloak.
+
+#### Registering the Dashjoin Application
+
+The first step is to register the Dashjoin application in your OpenID management console.
+This [example](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) explains the process
+for Azure AD. Note that you will have to have a redirect URL such as "https://dashjoin-app.example.com/login" available.
+
+#### Configuring the OpenID Provider in Dashjoin
+
+The Dashjoin login page can be configured via a configuration file located at /assets/logincfg.json. The default config is:
+
+```json
+{
+    "signInTabText": "My Dashjoin",
+    "signInCardTitleText": "Sign In",
+    "emailText": "E-Mail or Username",
+    "registerTabText": "New User",
+    "resetPasswordTabText": "Reset My Password",
+    "resetPasswordInputText": "Enter your E-Mail. Password reset instructions will be sent",
+    "emailLoginEnabled": true,
+    "registrationEnabled": true,
+    "guestEnabled": false,
+    "guestLoginEnabled": true,
+    "providers": "google",
+    "openIdConfigs": []
+}
+```
+
+The information you gathered from registering your application in the previous step can be added in the openIdConfigs array as shown in the 
+following Azure AD example:
+
+```json
+    ...
+    "openIdConfigs": [
+        { 
+            "domain": "dashjoin.com", 
+            "name": "Dashjoin Example.com", 
+            "logo": "/favicon.ico", 
+            "config": { 
+                "issuer": "https://login.microsoftonline.com/.../v2.0", 
+                "clientId": "...", 
+                "redirectUri": "https://dashjoin-app.example.com/login", 
+                "scope": "openid profile email", 
+                "requestAccessToken": false, 
+                "strictDiscoveryDocumentValidation": false 
+            } 
+        }
+    ]
+```
+
+This config fields are defined as follows:
+
+* Domain: the domain the application is running on
+* Name: Application name in the IDM
+* Logo: Absolute or relative URL to the IDM logo to be displayed on teh login screen
+* Issuer: URL / UUID of the IDM issuing authorizations
+* Client ID: ID of the registered application in the IDM
+* Redirect URI: URL of the Dashjoin login page
+* Scopes: scopes are used by an application during authentication to authorize access to a user's details
+* Request Access Token: obtain an Access Token, an ID Token, and optionally a Refresh Token
+* Strict Discovery Document Validation: ensure that all of the endpoints provided via the ID Provider discovery document share the same base URL as the issuer parameter
+
+You can configure multiple OpenID providers:
+
+![Features of the Query Editor](angular/src/assets/openid.png)
+
+#### Creating and Assigning Application Roles
+
+* After the application is registered within the IDM and the IDM made known to the application, you need to define
+the roles an IDM user has within the application. On Azure AD, this is the "App roles" dialog. Note that these roles must match
+the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.
+
+#### Adding the Open ID Config to the Platfrom
+
+The Open ID configuration can be changed as follows:
+
+* On premise installer: simply locate and edit the file /assets/logincfg.json in your installation
+* Docker: Use the Docker -v option to mount logincfg.json to /deployments/classes/META-INF/resources/assets/logincfg.json
+* PaaS: [Send an email](https://dashjoin.com/#contact) to request the change.
+
 ### Query Performance
 
 When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
