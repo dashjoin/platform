@@ -1447,6 +1447,7 @@ The information you gathered from registering your application in the previous s
 following Azure AD example:
 
 ```json
+{
     ...
     "openIdConfigs": [
         { 
@@ -1463,6 +1464,7 @@ following Azure AD example:
             } 
         }
     ]
+}
 ```
 
 This config fields are defined as follows:
@@ -1491,7 +1493,7 @@ the role names defined in the Dashjoin platform. The IDM must be configured to e
 
 The Open ID configuration can be changed as follows:
 
-* On premise installer: simply locate and edit the file /assets/logincfg.json in your installation
+* On premise installer: create the file /target/quarkus-app/classes/META-INF/resources/assets/logincfg.json in your installation
 * Docker: Use the Docker -v option to mount logincfg.json to /deployments/classes/META-INF/resources/assets/logincfg.json
 * PaaS: [Send an email](https://dashjoin.com/#contact) to request the change.
 
