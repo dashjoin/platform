@@ -1119,6 +1119,16 @@ The expression result can be a map of table names to an array of rows (JSON obje
 If the expression result has a simpler structure (for instance only a single table),
 the ETL function wraps this in a default table called "table".
 
+If you want to load a large amount of data, you can use the "foreach" expression to specify
+how to split the loading process into smaller parts. Assume you have a directory with
+thousands of files to load. The foreach expression can list the files using $ls("url").
+The expression then specifies how each file is handled. Its $ context is set to
+each individual URL and the expression and subsequent ETL are called for each URL individually.
+
+Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
+functions. In this case, these functions split a large file into smaller chunks which are then
+passed to the mapping expression.
+
 ##### Receive
 
 The receive function allows handling cases, where the platform is being sent data that is to be processed and saved into a database.
@@ -1163,8 +1173,6 @@ As an example, you can navigate to the info page, enter the page edit mode and e
 {"user": user}
 ```
 
-Note that any expression must be prefixed with =. If you omit this, the system treats the value as a constant string and the expression editor will show the message: "Constant, prefix expressions with =".
-
 If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:
 
 ```text
@@ -1184,6 +1192,21 @@ $
 ```
 
 displays the entire page context.
+
+Apart from the inline editor, you also have the ability to compose and debug JSONata expressions by opening the
+drag and drop editor with the edit icon:
+
+![Drag and Drop JSONata Editor](angular/src/assets/jsonata.png)
+
+* Drag and drop fuctions and operators onto the canvas from the left palette
+* Edit the parameters and re-arrange the steps using drag and drop
+* You can run the expression step by step; the data context is shown on the left
+
+The screenshot shows the following expression just before the final filter is applied.
+
+```
+$openJson("https://filesamples.com/samples/code/json/sample4.json").people.$[age > 30]
+```
 
 #### JSONata in Widgets
 
@@ -1263,6 +1286,17 @@ djVersion | $djVersion() | Returns the platform version information
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
+jobStatus | $jobStatus() | if evaluated within a function, start and stop timestamps (millis since 1970) and job status
+moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
+ls | $ls(url) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt)
+streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+streamCsv | $streamCsv(url) | Parses CSV at the url and splits it at the record boundaries
+openJson | $openJson(url) | Parses JSON at the url
+openCsv | $openCsv(url) | Parses CSV at the url and converts it to JSON
+openXml | $openXml(url) | Parses XML at the url and converts it to JSON
+openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
+openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 
 ### Access Control
 

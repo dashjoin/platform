@@ -31,6 +31,10 @@ public class ExMapper implements ExceptionMapper<Throwable> {
     String msg = throwable.getMessage();
     if (msg == null || msg.isEmpty())
       msg = throwable.getClass().getSimpleName();
+
+    if (msg.startsWith("org.dashjoin.expression.WrappedException: "))
+      msg = msg.substring("org.dashjoin.expression.WrappedException: ".length());
+
     return toResponse(msg);
   }
 

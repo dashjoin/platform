@@ -19,6 +19,10 @@ public class MoveField extends AbstractVarArgFunction<Object> {
     Map object = (Map) arg.get(0);
     String from = (String) arg.get(1);
     String to = (String) arg.get(2);
+
+    if (object == null || from == null || to == null)
+      throw new IllegalArgumentException("Syntax: $moveField(object, 'from', 'to')");
+
     Object f = object.remove(from);
     Object t = object.get(to);
     if (t instanceof List) {
