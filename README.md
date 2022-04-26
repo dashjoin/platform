@@ -882,6 +882,24 @@ Allows editing related records of a database record:
 * columns: columns to display in the editRelated table display
 * deleteConfirmation: optional confirmation message before deleting a related record
 
+##### [html](https://demo.my.dashjoin.com/#/page/html)
+
+Displays custom HTML
+
+* html: HTML to display, can include [Embedded JavaScript templating](https://ejs.co/) 
+* css: CSS code to apply to the HTML
+* hideframe: Remove mat-card class from parent tag
+* context: an expression that allows setting additional context variables that can be referenced via ${context.VARIABLE}
+
+Note that by default, the CSS styles are only applied to the component.
+This feature can be turned off by adding the following comment to the HTML:
+
+```html
+<!-- encapsulation:off -->
+```
+
+With this setting, Dashjoin does not apply any sort of view encapsulation meaning that any styles specified for the component are actually globally applied and can affect any HTML element present within the application. This mode is essentially the same as including the styles into the HTML itself.
+
 ##### icon
 
 Displays a hyperlink icon with tooltip
