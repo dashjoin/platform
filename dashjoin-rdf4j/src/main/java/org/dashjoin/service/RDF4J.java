@@ -523,7 +523,7 @@ public class RDF4J extends AbstractDatabase {
       case "getPaths":
         IRI predicate = iri(
             PATHQL.NAMESPACE + URLEncoder.encode(info.query, StandardCharsets.UTF_8.toString()));
-        // PathQL queries have an implicit subject and object parameter (subject is required)
+        // PathQL queries have an implicit subject and object parameter (subject is optionally null)
         IRI subject = arguments == null || arguments.get("subject") == null ? null
             : iri(arguments.get("subject"));
         Value object = arguments == null || arguments.get("object") == null ? null
@@ -532,7 +532,7 @@ public class RDF4J extends AbstractDatabase {
         try (RepositoryConnection con = getConnection()) {
           RepositoryResult<Statement> resultsIterator =
               con.getStatements(subject, predicate, object);
-          Thing subjectThing = Thing.create(null, subject, null);
+          Thing subjectThing = subject == null ? null : Thing.create(null, subject, null);
           pathsIterator = new PathResults(resultsIterator, subjectThing, null, null);
 
           while (pathsIterator.hasNext()) {

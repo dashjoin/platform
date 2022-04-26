@@ -67,7 +67,8 @@ public class RDF4JTest extends DBTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     // need a non null starting point
     List<Map<String, Object>> res =
-        db.queryGraph(sc, "junit", "path", MapUtil.of("subject", "http://ex.org/1"));
+   //   db.queryGraph(sc, "junit", "path", MapUtil.of("subject", "http://ex.org/1"));
+   		 db.queryGraph(sc, "junit", "path", null);
     // we have one path
     Assertions.assertEquals(1, res.size());
     Map<String, Object> first = getMap(res.get(0), "path");
