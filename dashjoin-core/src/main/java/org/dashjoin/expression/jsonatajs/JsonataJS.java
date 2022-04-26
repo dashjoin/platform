@@ -52,8 +52,7 @@ public class JsonataJS {
     try {
       instance.set(new JsonataJS());
     } catch (Throwable e) {
-      log.warning("Fallback to Jsonata4Java - cannot create Jsonata reference instance: " + e);
-      // e.printStackTrace();
+      log.log(Level.WARN, "Fallback to Jsonata4Java - cannot create Jsonata reference instance", e);
       return null;
     }
     return getInstance();
