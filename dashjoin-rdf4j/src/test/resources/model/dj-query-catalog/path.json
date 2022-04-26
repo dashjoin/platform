@@ -1,6 +1,6 @@
 {
 	"ID": "path",
-	"query": "getPaths?pathQL=(<http://ex.org/WORKSON>){1,2}",
+	"query": "getPaths?pathQL=[eq <http://ex.org/1>]/(<http://ex.org/WORKSON>){1,2}",
 	"type": "read",
 	"roles": ["user"]
 }
