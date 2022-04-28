@@ -84,6 +84,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
           fb.add((String) key, (String) map.get(key));
         request = request.post(fb.build());
       }
+    else
+      request = request.get();
 
     okhttp3.Response response = client.newCall(request.build()).execute();
 
