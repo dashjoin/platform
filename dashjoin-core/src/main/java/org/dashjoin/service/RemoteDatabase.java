@@ -86,6 +86,13 @@ public class RemoteDatabase extends AbstractDatabase {
   }
 
   @Override
+  public List<Map<String, Object>> queryGraph(QueryMeta info, Map<String, Object> arguments)
+      throws Exception {
+    return (List<Map<String, Object>>) call("queryGraph",
+        MapUtil.of("query", info.query, "arguments", arguments));
+  }
+
+  @Override
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
     Map<String, Map<String, Object>> res = (Map<String, Map<String, Object>>) call("queryMeta",

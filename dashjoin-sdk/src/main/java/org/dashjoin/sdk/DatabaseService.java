@@ -154,6 +154,12 @@ public class DatabaseService {
   }
 
   @POST
+  @Path("/queryGraph")
+  public List<Map<String, Object>> queryGraph(Query q) throws Exception {
+    return db().queryGraph(qi(q), q.arguments);
+  }
+
+  @POST
   @Path("/queryMeta")
   public Map<String, Property> queryMeta(Query q) throws Exception {
     return db().queryMeta(qi(q), q.arguments);
