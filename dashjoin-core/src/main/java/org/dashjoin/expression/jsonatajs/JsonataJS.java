@@ -34,6 +34,8 @@ public class JsonataJS {
 
   static ThreadLocal<JsonataJS> instance = new ThreadLocal<>();
 
+  static boolean logged = false;
+
   /**
    * Returns instance of JsonataJS
    * 
@@ -52,7 +54,11 @@ public class JsonataJS {
     try {
       instance.set(new JsonataJS());
     } catch (Throwable e) {
-      log.log(Level.WARN, "Fallback to Jsonata4Java - cannot create Jsonata reference instance", e);
+      if (!logged) {
+        logged = true;
+        log.log(Level.WARN, "Fallback to Jsonata4Java - cannot create Jsonata reference instance",
+            e);
+      }
       return null;
     }
     return getInstance();
@@ -70,7 +76,10 @@ public class JsonataJS {
         JsonataJS.class.getClassLoader().getResourceAsStream("jsonata/package.json")) {
       jsonataVersion = (String) new ObjectMapper().readValue(jin, Map.class).get("version");
     }
-    log.info("Using JSONata reference version=" + jsonataVersion);
+    if (!logged) {
+      logged = true;
+      log.info("Using JSONata reference version=" + jsonataVersion);
+    }
 
     // 2) parse jsonata.js and set reference to variable jsonata
     String jsonataJs = null;
