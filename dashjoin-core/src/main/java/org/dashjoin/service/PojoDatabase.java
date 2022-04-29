@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -678,6 +679,16 @@ public class PojoDatabase extends UnionDatabase implements Config {
   public List<Map<String, Object>> queryNavigation(QueryMeta qi, Map<String, Object> arguments)
       throws Exception {
     List<AbstractDatabase> objects = this.getDatabases();
+    objects.sort(new Comparator<AbstractDatabase>() {
+      @Override
+      public int compare(AbstractDatabase o1, AbstractDatabase o2) {
+        try {
+          return o1.name.toLowerCase().compareTo(o2.name.toLowerCase());
+        } catch (Exception e) {
+          return 0;
+        }
+      }
+    });
     List<Map<String, Object>> projected = new ArrayList<>();
 
     List<Map<String, Object>> configs = new ArrayList<>();
@@ -695,6 +706,17 @@ public class PojoDatabase extends UnionDatabase implements Config {
     QueryMeta db = new QueryMeta();
     db.query = "page";
     List<Map<String, Object>> pages = this.query(db, null);
+    pages.sort(new Comparator<Map<String, Object>>() {
+      @Override
+      public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+        try {
+          return ((String) o1.get("ID")).toLowerCase()
+              .compareTo(((String) o2.get("ID")).toLowerCase());
+        } catch (Exception e) {
+          return 0;
+        }
+      }
+    });
     List<Map<String, Object>> dashboards = new ArrayList<>();
     for (Map<String, Object> page : pages) {
       if ("Home".equals(page.get("ID")))
@@ -716,7 +738,18 @@ public class PojoDatabase extends UnionDatabase implements Config {
       if ("dj/config".equals(r.ID))
         continue;
       List<Map<String, Object>> tabs = new ArrayList<>();
-      for (Table i : r.tables.values())
+      List<Table> sortedTables = new ArrayList<>(r.tables.values());
+      sortedTables.sort(new Comparator<Table>() {
+        @Override
+        public int compare(Table o1, Table o2) {
+          try {
+            return o1.name.toLowerCase().compareTo(o2.name.toLowerCase());
+          } catch (Exception e) {
+            return 0;
+          }
+        }
+      });
+      for (Table i : sortedTables)
         if (i.name != null)
           tabs.add(ImmutableMap.of("name", i.name, "children", Arrays.asList(), "href",
               Arrays.asList("/table", r.name, i.name)));
