@@ -7,7 +7,7 @@
 </div>
 <div *ngIf="displayType() === 'string'">
     <a *ngIf="isUrl(displayData)" [href]="displayData">{{displayData}}</a>
-    <span *ngIf="isUrl(displayData)">{{displayData}}</span>
+    <span *ngIf="!isUrl(displayData)">{{displayData}}</span>
 </div>
 <div *ngIf="displayType() === 'string[]'">
     <span *ngFor="let i of displayData; let idx=index">
