@@ -902,7 +902,7 @@ public class RDF4J extends AbstractDatabase {
             if (fallback == null)
               fallback = (IRI) s;
             String table = string((IRI) s);
-            if (tables.containsKey(table))
+            if (tables != null && tables.containsKey(table))
               return (IRI) s;
           }
         }
