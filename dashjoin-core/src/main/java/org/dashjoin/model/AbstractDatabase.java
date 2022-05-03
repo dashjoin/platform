@@ -189,6 +189,8 @@ public abstract class AbstractDatabase implements Database {
    * @param object pk search, create or update map
    */
   public void cast(Table m, Map<String, Object> object) {
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table");
     if (m.properties != null && object != null)
       for (Entry<String, Property> p : m.properties.entrySet()) {
         Object obj = object.get(p.getKey());
