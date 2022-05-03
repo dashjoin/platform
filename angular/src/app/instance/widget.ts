@@ -237,6 +237,11 @@ export interface Widget {
     css: string;
 
     /**
+     * JavaScript for HTMLComponent
+     */
+    script: string;
+
+    /**
      * Switch to hide the widget card's frame
      */
     hideframe: boolean;

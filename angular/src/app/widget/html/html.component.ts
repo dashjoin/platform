@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   category: 'Default',
   description: 'Component that displays HTML',
   htmlTag: 'dj-html',
-  fields: ['title', 'hideframe', 'html', 'css', 'context']
+  fields: ['title', 'hideframe', 'html', 'css', 'script', 'context']
 })
 @Component({
   selector: 'app-html',
@@ -41,7 +41,7 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
 
     let html = this.id(this.layout.html);
 
-    let htmlEl = this.renderer.createElement('div');
+    let htmlEl: HTMLElement = this.renderer.createElement('div');
     htmlEl.innerHTML = html;
 
     let cssEl = this.renderer.createElement('style');
@@ -118,6 +118,46 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
       }
     }
     this.renderer.appendChild(root, htmlEl);
+
+    // Process scripts referred to or included in HTML
+    const scripts = htmlEl.getElementsByTagName('script');
+    for (let i = 0; i < scripts.length; i++) {
+      const scr = scripts[i];
+      //console.log('Adding script', scr);
+
+      const scrTag = document.createElement('script');
+      if (scr.src)
+        scrTag.src = scr.src;
+      else
+        scrTag.innerHTML = scr.innerHTML;
+
+      // Set dj.root for the script's usage
+      this.setDjContext(root);
+      this.renderer.appendChild(root, scrTag);
+    }
+
+    // Process the main script
+    const script = this.layout.script;
+    if (script) {
+      const scrTag = document.createElement('script');
+      //console.log('Activating script', script);
+      scrTag.innerHTML = script;
+
+      // Set dj.root for the script's usage
+      this.setDjContext(root);
+      this.renderer.appendChild(root, scrTag);
+    }
+  }
+
+  /**
+   * Initialize the window.dj context
+   * @param root 
+   */
+  setDjContext(root) {
+    const w: any = window;
+    w.dj = w.dj || {};
+    w.dj.root = root;
+    w.dj.run = this.runExpression.bind(this);
   }
 
   /**

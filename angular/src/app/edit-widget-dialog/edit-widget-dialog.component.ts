@@ -192,6 +192,18 @@ export class EditWidgetDialogComponent {
               type: 'string',
               case: this.generateCase('css')
             },
+            script: {
+              static: true,
+              widget: 'textarea',
+              style: {
+                width: '600px',
+                height: '300px',
+                'font-family': 'courier'
+              },
+              title: 'JavaScript Source',
+              type: 'string',
+              case: this.generateCase('script')
+            },
             hideframe: {
               static: true,
               title: 'Hide the widget\'s card frame',
