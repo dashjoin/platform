@@ -170,36 +170,27 @@ export class EditWidgetDialogComponent {
             },
             html: {
               static: true,
-              widget: 'textarea',
-              style: {
-                width: '600px',
-                height: '300px',
-                'font-family': 'courier'
-              },
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'html' },
               title: 'HTML Source',
               type: 'string',
               case: this.generateCase('html')
             },
             css: {
               static: true,
-              widget: 'textarea',
-              style: {
-                width: '600px',
-                height: '300px',
-                'font-family': 'courier'
-              },
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'css' },
               title: 'CSS Source',
               type: 'string',
               case: this.generateCase('css')
             },
             script: {
               static: true,
-              widget: 'textarea',
-              style: {
-                width: '600px',
-                height: '300px',
-                'font-family': 'courier'
-              },
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'javascript' },
               title: 'JavaScript Source',
               type: 'string',
               case: this.generateCase('script')

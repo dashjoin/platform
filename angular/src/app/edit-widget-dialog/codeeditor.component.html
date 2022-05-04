@@ -1,0 +1,8 @@
+<mat-form-field style="width: 600px">
+    <mat-label>{{label}}</mat-label>
+    <textarea class="text-area" matInput [value]="value" (change)="value=$event.target.value" autocomplete="off"></textarea>
+</mat-form-field>
+
+<button *ngIf="ide()" mat-button (click)="editor()">
+    <mat-icon>edit</mat-icon>
+</button>

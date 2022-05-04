@@ -79,6 +79,7 @@ import { WidgetListComponent } from './edit-widget-dialog/widgetlist.component';
 import { MapComponent } from './widget/map/map.component';
 import { HTMLComponent } from './widget/html/html.component';
 import { IconSelectComponent } from './edit-widget-dialog/icon-select.component';
+import { CodeEditorComponent } from './edit-widget-dialog/codeeditor.component';
 
 export const __DJ_TYPES = [
   DJBaseComponent,
@@ -132,6 +133,7 @@ export const __DJ_TYPES = [
     ConfirmationDialogComponent,
     WidgetListComponent,
     IconSelectComponent,
+    CodeEditorComponent,
     ...__DJ_TYPES,
     HTMLComponent,
   ],
