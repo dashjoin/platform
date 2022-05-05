@@ -341,7 +341,7 @@ export class EditWidgetDialogComponent {
               },
               layout: 'vertical',
               static: true,
-              title: 'CSS / chart styles applied to child elements',
+              title: 'Icons to be used for a given key',
               case: this.generateCase('icons')
             },
             context: {
