@@ -607,6 +607,9 @@ public class SQLEditor implements QueryEditorInternal {
       sql.append("\n" + body.getLimit().toString().substring(1));
       limit = Integer.parseInt(body.getLimit().getRowCount() + "");
     }
+    if (body.getOffset() != null) {
+      sql.append("\n" + body.getOffset().toString().substring(1));
+    }
 
     // make sure we can parse the query again
     Statement pretty = CCJSqlParserUtil.parse(sql.toString());
