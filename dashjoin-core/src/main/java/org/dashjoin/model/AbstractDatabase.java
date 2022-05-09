@@ -340,7 +340,7 @@ public abstract class AbstractDatabase implements Database {
       if (!object.isEmpty())
         if (!update(t, search, object))
           // update did not happen, so the assumption of a PK violation was false
-          throw new Exception("merge failed");
+          throw new Exception("merge failed: " + assumePkViolation);
     }
   }
 
