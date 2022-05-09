@@ -160,7 +160,7 @@ export class EditWidgetDialogComponent {
               static: true,
               widget: 'custom',
               widgetType: 'codeeditor',
-              widgetOptions: { language: 'markdown' },
+              widgetOptions: { language: 'markdown', wordWrap: 'on' },
               title: 'Markdown text',
               type: 'string',
               case: this.generateCase('markdown')
