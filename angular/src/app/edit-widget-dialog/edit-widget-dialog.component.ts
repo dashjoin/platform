@@ -158,12 +158,9 @@ export class EditWidgetDialogComponent {
             },
             markdown: {
               static: true,
-              widget: 'textarea',
-              style: {
-                width: '600px',
-                height: '300px',
-                'font-family': 'courier'
-              },
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'markdown' },
               title: 'Markdown text',
               type: 'string',
               case: this.generateCase('markdown')
