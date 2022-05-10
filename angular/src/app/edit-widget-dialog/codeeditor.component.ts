@@ -68,9 +68,13 @@ export class CodeEditorComponent implements WidgetComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.value = result;
-                this.valueChange.emit(result);
+                this.onChange(result);
             }
         });
+    }
+
+    onChange(value) {
+        this.value = value;
+        this.valueChange.emit(this.value);
     }
 }
