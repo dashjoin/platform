@@ -4,6 +4,7 @@ import { Schema } from '@dashjoin/json-schema-form';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
 import { baseColors } from 'ng2-charts';
+import 'chartjs-adapter-date-fns';
 
 /**
  * chart (Pie, Line, or Bar charts)
@@ -36,16 +37,8 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       const arr = key.split('.');
       const last = arr.pop();
       for (const k of arr) {
-        if (k === 'xAxes') {
-          if (!ctx.xAxes) ctx.xAxes = [{}];
-          ctx = ctx.xAxes[0];
-        } else if (k === 'yAxes') {
-          if (!ctx.yAxes) ctx.yAxes = [{}];
-          ctx = ctx.yAxes[0];
-        } else {
-          if (!ctx[k]) ctx[k] = {};
-          ctx = ctx[k];
-        }
+        if (!ctx[k]) ctx[k] = {};
+        ctx = ctx[k];
       }
       if (value === 'true')
         value = true;
