@@ -24,4 +24,9 @@ public class LoaderTest {
       om.readTree(Loader.open("upload/src/test/resources/data/json.json"));
     });
   }
+
+  // @Test
+  public void testUrl() throws Exception {
+    Loader.open("https://github.com/dashjoin/dbpedia/blob/main/dbpedia.n3");
+  }
 }
