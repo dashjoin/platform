@@ -172,7 +172,10 @@ public class Metadata {
     String schema = getSchema(con, url);
     try (ResultSet res = md.getTables(null, schema, null, null)) {
       while (res.next()) {
-        if ("TABLE".equals(res.getString("TABLE_TYPE"))) {
+        String tableType = res.getString("TABLE_TYPE");
+        // Note - H2 2.x introduced "BASE TABLE" as default table type:
+        // https://h2database.com/html/systemtables.html#information_schema_tables
+        if ("TABLE".equals(tableType) || "BASE TABLE".equals(tableType)) {
           String name = res.getString("TABLE_NAME");
             tables.put(name, new MdTable(name));
         }
