@@ -80,6 +80,7 @@ public class SQLRESTDBTest {
     Property id = new Property();
     id.pkpos = 0;
     id.name = "id";
+    id.readOnly = true; // Mark auto-increment fields (otherwise constraint violation)
     Property name = new Property();
     m.properties = of("id", id, "name", name);
     Map<String, Object> object = Maps.newHashMap(of("name", "test"));
