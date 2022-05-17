@@ -23,7 +23,7 @@ CREATE TABLE city (
 	state_id smallint
 );
 
-insert into city values (null, 'Los Angeles', 5);
+insert into city values (default, 'Los Angeles', 5);
 
 --
 -- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
