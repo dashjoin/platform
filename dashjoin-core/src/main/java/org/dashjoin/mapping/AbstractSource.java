@@ -157,7 +157,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
           }
         } else {
           if ("Delete All".equals(oldData))
-            db.delete(Table.ofName(table.getKey()));
+            db.delete(db.tables.get(table.getKey()));
         }
       }
     } finally {
