@@ -28,11 +28,26 @@ export class DisplayComponent extends TextComponent implements OnInit {
   displayData: any;
 
   /**
+   * table columns
+   */
+  columns: string[] = [];
+
+  /**
    * compute expressions
    */
   async initWidget() {
     if (this.layout.display) {
       this.displayData = await this.evaluateExpression(this.layout.display);
+
+      if (this.displayType() === 'object[]') {
+        for (const row of this.displayData) {
+          for (const field of Object.keys(row)) {
+            if (!this.columns.includes(field)) {
+              this.columns.push(field);
+            }
+          }
+        }
+      }
     }
   }
 
