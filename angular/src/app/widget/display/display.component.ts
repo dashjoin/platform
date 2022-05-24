@@ -100,12 +100,17 @@ export class DisplayComponent extends TextComponent implements OnInit {
   /**
    * detects the type of displayData such that the UI can select the appropriate visualization
    */
-  displayType(): 'link' | 'string' | 'string[]' | 'object' | 'object[]' | 'img' {
+  displayType(): 'link' | 'link[]' | 'string' | 'string[]' | 'object' | 'object[]' | 'img' {
     if (!this.displayData) {
       return 'string';
     }
     if (Array.isArray(this.displayData)) {
       if (this.displayData.length > 0) {
+        if (typeof this.displayData[0] === 'object') {
+          if (Object.keys(this.displayData[0]).length === 3 && this.displayData[0].database && this.displayData[0].table && this.displayData[0].pk1) {
+            return 'link[]';
+          }
+        }
         return typeof this.displayData[0] === 'object' ? 'object[]' : 'string[]';
       } else {
         return 'string[]';
