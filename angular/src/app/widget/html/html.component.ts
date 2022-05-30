@@ -158,7 +158,11 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
     w.dj = w.dj || {};
     w.dj.root = root;
     w.dj.run = this.runExpression.bind(this);
+    w.dj.context = this.context;
+    w.context = this.context.context;
   }
+
+  context: any;
 
   /**
    * template string replacement based on context + value + additionalContext
@@ -167,6 +171,7 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
     const ctx = this.context();
     ctx.value = this.value;
     ctx.context = this.additionalContext;
+    this.context = ctx;
     return Expression.template(name, ctx, null);
   }
 }
