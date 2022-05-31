@@ -1030,8 +1030,14 @@ public class Manage {
     Properties props = new Properties();
     try {
       props.load(Manage.class.getClassLoader().getResourceAsStream(name));
-    } catch (IOException e) {
+    } catch (Throwable e) {
       // intentionally ignored
+      // Exception in thread "main" java.lang.NullPointerException: inStream parameter is null
+      // at java.util.Objects.requireNonNull(Objects.java:233)
+      // at java.util.Properties.load(Properties.java:407)
+      // at org.dashjoin.service.Manage.getGitBuildInfo(Manage.java:1032)
+      // at org.dashjoin.service.Manage.getVersion(Manage.java:883)
+      // at com.dashjoin.launch.Start.main(Start.java:36)
     }
     return props;
   }
