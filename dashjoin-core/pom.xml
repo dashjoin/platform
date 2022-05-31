@@ -44,7 +44,7 @@
 		    <groupId>org.reflections</groupId>
 		    <artifactId>reflections</artifactId>
 		    <!-- version not provided by Quarkus 1.13 -->
-		    <version>0.9.12</version>
+		    <version>0.9.11</version>
 		</dependency>
 
 		<!-- jdbc / SQL stuff -->
