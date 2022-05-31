@@ -44,7 +44,7 @@
 		    <groupId>org.reflections</groupId>
 		    <artifactId>reflections</artifactId>
 		    <!-- version not provided by Quarkus 1.13 -->
-		    <version>0.9.11</version>
+		    <version>0.10.2</version>
 		</dependency>
 
 		<!-- jdbc / SQL stuff -->
@@ -81,11 +81,17 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		</dependency-->
 
-		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc10 -->
+		<!-- Oracle still has a conflict in native mode
+		https://github.com/quarkusio/quarkus/issues/1658#issuecomment-523618130
 		<dependency>
-		    <groupId>com.oracle.database.jdbc</groupId>
-		    <artifactId>ojdbc10</artifactId>
-		    <version>19.6.0.0</version>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-jdbc-oracle</artifactId>
+		</dependency-->
+		<!-- https://mvnrepository.com/artifact/io.helidon.integrations.db/ojdbc -->
+		<dependency>
+			<groupId>io.helidon.integrations.db</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
@@ -93,7 +99,7 @@
 		    <groupId>org.mariadb.jdbc</groupId>
 		    <artifactId>mariadb-java-client</artifactId>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
 		<dependency>
 		    <groupId>org.xerial</groupId>
@@ -101,10 +107,9 @@
 		    <version>3.31.1</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.ibm.db2/jcc -->
 		<dependency>
-		    <groupId>com.ibm.db2</groupId>
-		    <artifactId>jcc</artifactId>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-jdbc-db2</artifactId>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc 
