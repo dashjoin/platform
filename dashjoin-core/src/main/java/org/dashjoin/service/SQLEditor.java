@@ -678,7 +678,7 @@ public class SQLEditor implements QueryEditorInternal {
                 String colname = rsmd.getColumnName(c);
                 if (!contains(res.metadata, t.getKey().name, colname)) {
                   AddColumnRequest e = new AddColumnRequest();
-                  e.preview = SQLDatabase.serialize(rsmd, rs, c);
+                  e.preview = db.serialize(rsmd, rs, c);
                   e.add = Col.col(t.getKey().name, colname);
                   e.col = t.getValue();
                   res.joinOptions.add(e);

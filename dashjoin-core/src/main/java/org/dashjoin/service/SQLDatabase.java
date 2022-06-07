@@ -307,7 +307,7 @@ public class SQLDatabase extends AbstractDatabase {
    * @throws SQLException
    */
   @SuppressWarnings("unused")
-  static Object serialize(ResultSetMetaData rsmd, ResultSet res, int c) throws SQLException {
+  Object serialize(ResultSetMetaData rsmd, ResultSet res, int c) throws SQLException {
 
     final long MAX_BLOB_SIZE = 256 * 1024L;
     final long MAX_CLOB_SIZE = 64 * 1024L;
@@ -342,7 +342,17 @@ public class SQLDatabase extends AbstractDatabase {
         return null;
       obj = clob.getString();
     } else {
-      obj = res.getObject(c);
+      if (url.startsWith("jdbc:sqlite:"))
+        if (ty == Types.DATE)
+          obj = res.getDate(c);
+        else if (ty == Types.TIME)
+          obj = res.getTime(c);
+        else if (ty == Types.TIMESTAMP)
+          obj = res.getTimestamp(c);
+        else
+          obj = res.getObject(c);
+      else
+        obj = res.getObject(c);
       if (obj instanceof PGobject) {
         PGobject pg = (PGobject) obj;
         if ("json".equals(pg.getType()) || "jsonb".equals(pg.getType()))
