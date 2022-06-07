@@ -177,7 +177,7 @@ public class Metadata {
         // https://h2database.com/html/systemtables.html#information_schema_tables
         if ("TABLE".equals(tableType) || "BASE TABLE".equals(tableType)) {
           String name = res.getString("TABLE_NAME");
-            tables.put(name, new MdTable(name));
+          tables.put(name, new MdTable(name));
         }
       }
     }
@@ -368,11 +368,14 @@ public class Metadata {
     switch (typeName) {
       case "CHAR":
         return "string";
+      case "CHARACTER VARYING": // H2
       case "VARCHAR2": // ORCL
       case "VARCHAR":
         return "string";
+      case "CHARACTER LARGE OBJECT": // H2
       case "CLOB":
         return "string";
+      case "BINARY VARYING": // H2
       case "BLOB":
         return "string";
       case "LONGVARCHAR":
