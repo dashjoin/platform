@@ -821,7 +821,7 @@ Chart for visualizing query results.
 
 Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
-* [chart-timeline](https://demo.my.dashjoin.com/#/chart-timeline)
+* [chart-timeline](https://demo.my.dashjoin.com/#/page/chart-timeline)
 
 ##### create
 

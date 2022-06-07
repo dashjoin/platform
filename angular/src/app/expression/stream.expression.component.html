@@ -1,19 +1,23 @@
-<mat-form-field style="width: 600px">
-    <mat-label>foreach</mat-label>
-    <textarea style="font-family: monospace" matInput [formControl]="foreach" autocomplete="off"
-        matTooltip="optional expression that must end with a function writing to the stream context"></textarea>
-</mat-form-field>
-<button *ngIf="ide()" mat-button (click)="editorForeach()">
-    <mat-icon>edit</mat-icon>
-</button>
-<mat-form-field style="width: 600px">
-    <mat-label>expression</mat-label>
-    <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"
-        matTooltip="expression that gathers the data - if foreach is specified, $ is set to the respective value"></textarea>
-</mat-form-field>
-<button *ngIf="ide()" mat-button (click)="editor()">
-    <mat-icon>edit</mat-icon>
-</button>
+<div style="white-space: nowrap">
+    <mat-form-field style="width: 600px">
+        <mat-label>foreach</mat-label>
+        <textarea style="font-family: monospace" matInput [formControl]="foreach" autocomplete="off"
+            matTooltip="optional expression that must end with a function writing to the stream context"></textarea>
+    </mat-form-field>
+    <button *ngIf="ide()" mat-button (click)="editorForeach()">
+        <mat-icon>edit</mat-icon>
+    </button>
+</div>
+<div style="white-space: nowrap">
+    <mat-form-field style="width: 600px">
+        <mat-label>expression</mat-label>
+        <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"
+            matTooltip="expression that gathers the data - if foreach is specified, $ is set to the respective value"></textarea>
+    </mat-form-field>
+    <button *ngIf="ide()" mat-button (click)="editor()">
+        <mat-icon>edit</mat-icon>
+    </button>
+</div>
 <p *ngIf="rootSchema.required?.includes(label) && !value" style="color: red;" class="mat-typography">required</p>
 <br>
 <pre>{{message}}</pre>
