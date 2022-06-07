@@ -106,7 +106,7 @@ The visit the first request. You will notice that the browser window title now d
 
 Go back to the requests table and enter the letter 'a' in the customer field of the create form. You will see the autocomplete options with the customer IDs starting with 'a'.
 The customer IDs are five letter strings. This is better than a plain number, but let's also choose a display name for customers.
-Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label ${COMPANY_NAME}.
+Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label `${COMPANY_NAME}`.
 Reload the browser and go back to the requests table. If you type 'a' into the customers create field, you will see the list of customer display names that start with 'a'.
 Note that the tooltip shows the underlying five letter primary key. This feature is very useful if tables use unreadable keys.
 
@@ -176,7 +176,7 @@ WHERE
   REQUESTS.user = 'user'
 ```
 
-Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with ${user}. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
+Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with `${user}`. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
 
 Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. Press the context menu under the text "New page" and select edit. This widget currently is a text widget displaying a static text. Instead we'd like a table showing our query result. Select the following:
 
@@ -190,7 +190,7 @@ arguments: {"user": $.user}
 
 Press ok and the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
 
-We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, $.user reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
+We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
 
 Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and select add from the table widget's context menu. A new widget appears which we edit. Select the following values:
 
@@ -225,15 +225,15 @@ $create(
 )
 ```
 
-Let's break down what is happening here. $create is a function which creates the record (3rd parameter) in the database (1st parameter) and the table (2nd parameter) specified. Database and table are static strings. The record consists of four dynamic fields:
+Let's break down what is happening here. `$create` is a function which creates the record (3rd parameter) in the database (1st parameter) and the table (2nd parameter) specified. Database and table are static strings. The record consists of four dynamic fields:
 
 The ID is computed by taking a random number (between 0 and 1), multiplying it with 1 million and rounding it up. Thus the ID is a random number between 1 and 1 million, providing reasonable protection from duplicate IDs.
 
-The user is computed using the same construct ($.user) as for the table widget above.
+The user is computed using the same construct (`$.user`) as for the table widget above.
 
-The name is specified as $.form.name. The rationale is the following: The user entries are stored in a JSON object form which hangs under the context $. In this object, we choose the name specified as the button argument.
+The name is specified as `$.form.name`. The rationale is the following: The user entries are stored in a JSON object form which hangs under the context $. In this object, we choose the name specified as the button argument.
 
-Finally, the submitted field is the current timestamp computed with $now().
+Finally, the submitted field is the current timestamp computed with `$now()`.
 
 After saving the layout, you can test the functionality. Note that you need to refresh the page after a value is submitted.
 
@@ -283,7 +283,7 @@ $update(database, table, object.ID, {\"createdBy\": $djUser(), \"createdOn\": $n
 
 Note that triggers can invoke each other recursively. If this expression would be the update trigger, 
 we might end up with an endless recursion resulting in a stack overflow. This can be avoided by performing the 
-update only if $isRecursiveTrigger() is false.
+update only if `$isRecursiveTrigger()` is false.
 
 ## Concepts
 
@@ -508,7 +508,7 @@ The label defines how the system should display a record in the following scenar
 * in the autocomplete dropdown when editing a foreign key field
 * when displaying the label of a hyperlink pointing to the record
 
-This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label "${LAST_NAME}" or even "${LAST_NAME}, ${FIRST_NAME}" in order to display meaningful and user readable information rather than numbers or UUIDs.
+This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label `${LAST_NAME}` or even `${LAST_NAME}, ${FIRST_NAME}` in order to display meaningful and user readable information rather than numbers or UUIDs.
 
 Note that the user interface loads these template values in a lazy fashion whenever you visit a record page.
 
@@ -571,7 +571,7 @@ Use the limit text field to set an explicit query limit. Once, the limit is set,
 
 The query catalog page allows defining query parameters. Each parameter consists of the following information:
 
-* key: this is the parameter name that allows the query to reference the parameter using ${key}
+* key: this is the parameter name that allows the query to reference the parameter using `${key}`
 * type: defines the datatype of the parameter
 * sample: this is the value that will be used in the query editor
 
@@ -889,7 +889,7 @@ Displays custom HTML
 * html: HTML to display, can include [Embedded JavaScript templating](https://ejs.co/) 
 * css: CSS code to apply to the HTML
 * hideframe: Remove mat-card class from parent tag
-* context: an expression that allows setting additional context variables that can be referenced via ${context.VARIABLE}
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
 
 Note that by default, the CSS styles are only applied to the component.
 This feature can be turned off by adding the following comment to the HTML:
@@ -923,7 +923,7 @@ Displays a map for a given location.
 Displays markdown
 
 * markdown: markdown to display
-* context: an expression that allows setting additional context variables that can be referenced via ${context.VARIABLE}
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
 
 Note that the HTML generated by the markdown engine is sanitized in order to avoid XSS vulnerabilities.
 Specifically, if you are using HTML tags, style attributes are filtered. A common task is to add margins to images.
@@ -1042,7 +1042,7 @@ Calls an external REST service.
 
 Configuration
 
-* url: the URL of the REST service to call (the URL may contain template variables ${var} which are replaced with the respective argument field)
+* url: the URL of the REST service to call (the URL may contain template variables `${var}` which are replaced with the respective argument field)
 * username: optional HTTP basic authentication user name
 * password: optional HTTP basic authentication password
 
@@ -1115,7 +1115,7 @@ transforms the gathered set of tables into another set of tables. The mapping st
 * rename column: renames a column in a table
 * add table: a table can be added by providing the name of an initial table
 * add column: a column can be added to a table
-* modify column: sets the column to a new expression (the default simply copies the original value 1:1 using $.columnname; please see the next section for more details on expressions)
+* modify column: sets the column to a new expression (the default simply copies the original value 1:1 using `$.columnname`; please see the next section for more details on expressions)
 * extract table: if an input table contains a column with array values, extracts the union of these arrays into a new table
 
 ##### The Save Step
@@ -1139,8 +1139,8 @@ the ETL function wraps this in a default table called "table".
 
 If you want to load a large amount of data, you can use the "foreach" expression to specify
 how to split the loading process into smaller parts. Assume you have a directory with
-thousands of files to load. The foreach expression can list the files using $ls("url").
-The expression then specifies how each file is handled. Its $ context is set to
+thousands of files to load. The foreach expression can list the files using `$ls("url")`.
+The expression then specifies how each file is handled. Its `$` context is set to
 each individual URL and the expression and subsequent ETL are called for each URL individually.
 
 Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
@@ -1197,7 +1197,7 @@ If you delete the closing curly bracket, the system will tell you that the expre
 $read()
 ```
 
-The system will tell you about missing parameters: Arguments required: $read(database, table, pk1). Now change the expression to:
+The system will tell you about missing parameters: Arguments required: `$read(database, table, pk1)`. Now change the expression to:
 
 ```text
 $read("northwind", "EMPLOYEES", 2)
