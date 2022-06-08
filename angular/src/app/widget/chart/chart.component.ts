@@ -5,6 +5,8 @@ import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
 import { baseColors } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
+import { Util } from '../../util';
+import { Property } from '../../model';
 
 /**
  * chart (Pie, Line, or Bar charts)
@@ -186,5 +188,27 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       }
     }
     return res;
+  }
+
+  /**
+   * chart click handler
+   */
+  async chartClicked(event) {
+    // lazy get metadata
+    if (!this.meta) {
+      this.meta = await this.getData().getMeta();
+    }
+
+    for (const p of Object.values(this.meta.schema.properties)) {
+      const t = p as Property;
+      if (t.ref) {
+        const idarr = Util.parseColumnID(t.ref as string);
+        idarr[0] = 'resource';
+        idarr[3] = this.columns[event.active[0].index];
+        if (idarr[3]) {
+          this.router.navigate(idarr);
+        }
+      }
+    }
   }
 }
