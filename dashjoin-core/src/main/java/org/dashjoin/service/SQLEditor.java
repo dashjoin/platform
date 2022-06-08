@@ -777,10 +777,11 @@ public class SQLEditor implements QueryEditorInternal {
           return;
 
       Column left = (Column) o.getLeftExpression();
-      res.put(
-          colNoQuotes(SQLDatabase.s(left.getTable().getName()),
-              SQLDatabase.s(left.getColumnName())),
-          o.getStringExpression() + " " + o.getRightExpression().toString());
+      if (left.getTable() != null)
+        res.put(
+            colNoQuotes(SQLDatabase.s(left.getTable().getName()),
+                SQLDatabase.s(left.getColumnName())),
+            o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
     }
     if (expr instanceof LikeExpression) {
