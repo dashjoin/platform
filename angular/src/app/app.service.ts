@@ -40,11 +40,6 @@ export class AppService implements CanActivate {
   sidenavOpen = window.innerWidth > 700;
 
   /**
-   * layout clipboard
-   */
-  clipboard: any;
-
-  /**
    * http cache for REST request on config/Table (i.e. schema requests)
    */
   cache: { [key: string]: Observable<any> } = {};

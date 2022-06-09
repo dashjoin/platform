@@ -741,7 +741,7 @@ export class InstanceComponent implements OnInit {
    * can we paste here
    */
   canPaste(): boolean {
-    return this.canAdd() && this.app.clipboard;
+    return this.canAdd() && localStorage.getItem('djClipboard') !== null;
   }
 
   /**
@@ -781,10 +781,10 @@ export class InstanceComponent implements OnInit {
    */
   paste() {
     if (this.comp.children) {
-      this.comp.children.unshift(JSON.parse(JSON.stringify(this.app.clipboard)));
+      this.comp.children.unshift(JSON.parse(localStorage.getItem('djClipboard')));
     } else {
       const idx = this.parentComp.children.indexOf(this.comp);
-      this.parentComp.children.splice(idx + 1, 0, JSON.parse(JSON.stringify(this.app.clipboard)));
+      this.parentComp.children.splice(idx + 1, 0, JSON.parse(localStorage.getItem('djClipboard')));
     }
     this.root ? this.onEvent({ type: 'redraw' }) : this.eventChange.emit({ type: 'redraw' });
     this.dirty();
@@ -794,14 +794,14 @@ export class InstanceComponent implements OnInit {
    * copy clipboard
    */
   copy() {
-    this.app.clipboard = JSON.parse(JSON.stringify(this.comp));
+    localStorage.setItem('djClipboard', JSON.stringify(this.comp));
   }
 
   /**
    * cut to clipboard
    */
   cut() {
-    this.app.clipboard = JSON.parse(JSON.stringify(this.comp));
+    localStorage.setItem('djClipboard', JSON.stringify(this.comp));
     this.parentComp.children.splice(this.parentComp.children.indexOf(this.comp), 1);
     this.root ? this.onEvent({ type: 'redraw' }) : this.eventChange.emit({ type: 'redraw' });
     this.dirty();
