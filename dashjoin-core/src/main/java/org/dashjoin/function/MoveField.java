@@ -19,6 +19,9 @@ public class MoveField extends AbstractVarArgFunction<Object> {
     Map object = (Map) arg.get(0);
     String from = (String) arg.get(1);
     String to = (String) arg.get(2);
+    String newname = (String) arg.get(3);
+    if (newname == null || newname.isEmpty())
+      newname = from;
 
     if (object == null || from == null || to == null)
       throw new IllegalArgumentException("Syntax: $moveField(object, 'from', 'to')");
@@ -29,11 +32,11 @@ public class MoveField extends AbstractVarArgFunction<Object> {
       List l = (List) t;
       for (Object i : l)
         if (i instanceof Map)
-          ((Map) i).put(from, f);
+          ((Map) i).put(newname, f);
     }
     if (t instanceof Map) {
       Map m = (Map) t;
-      m.put(from, f);
+      m.put(newname, f);
     }
     return object;
   }
@@ -50,6 +53,6 @@ public class MoveField extends AbstractVarArgFunction<Object> {
 
   @Override
   public List<Class> getArgumentClassList() {
-    return Arrays.asList(Object.class, String.class, String.class);
+    return Arrays.asList(Object.class, String.class, String.class, String.class);
   }
 }
