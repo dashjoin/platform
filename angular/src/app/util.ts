@@ -93,6 +93,9 @@ export class Util {
         if (!s) {
             return s;
         }
+        if (s.includes('\nIf the above error is not helpful, you may want to try EJS-Lint:')) {
+            s = s.split('\n')[0];
+        }
         const maxCharsPerLine = 40;
         let res = '';
         for (const line of s.split(/\s+/)) {

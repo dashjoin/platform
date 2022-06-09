@@ -4,6 +4,7 @@ import { Expression } from '../../expression/expression';
 import { DashjoinWidget } from '../widget-registry';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Util } from '../../util';
 
 @DashjoinWidget({
   name: 'html',
@@ -172,6 +173,11 @@ export class HTMLComponent extends DJBaseComponent implements OnInit {
     ctx.value = this.value;
     ctx.context = this.additionalContext;
     this.context = ctx;
-    return Expression.template(name, ctx, null);
+    try {
+      return Expression.template(name, ctx, null);
+    }
+    catch (error) {
+      this.errorHandler(error);
+    }
   }
 }
