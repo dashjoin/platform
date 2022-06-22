@@ -400,7 +400,7 @@ public class ExpressionService {
 
     @Override
     public int getMaxArgs() {
-      return 2;
+      return 7;
     }
 
     @Override
@@ -421,9 +421,24 @@ public class ExpressionService {
         throw new RuntimeException("Database name cannot be null");
       if (getValuesListExpression(v, ctx, 1) == null)
         throw new RuntimeException("Table name cannot be null");
+
+      Integer offset =
+          getArgumentCount(ctx) < 3 || getValuesListExpression(v, ctx, 2) == null ? null
+              : getValuesListExpression(v, ctx, 2).asInt();
+      Integer limit = getArgumentCount(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
+          : getValuesListExpression(v, ctx, 3).asInt();
+      String sort = getArgumentCount(ctx) < 5 || getValuesListExpression(v, ctx, 4) == null ? null
+          : getValuesListExpression(v, ctx, 4).asText();
+      boolean descending =
+          getArgumentCount(ctx) < 6 ? false : getValuesListExpression(v, ctx, 5).asBoolean();
+      @SuppressWarnings("unchecked")
+      Map<String, Object> arguments = getArgumentCount(ctx) < 7 ? null
+          : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 6));
+
       try {
         return o2j(data.all(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), null, null, null, false, null));
+            getValuesListExpression(v, ctx, 1).asText(), offset, limit, sort, descending,
+            arguments));
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
