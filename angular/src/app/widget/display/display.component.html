@@ -1,12 +1,14 @@
 <div *ngIf="displayType() === 'link'">
     <a [routerLink]="['/resource', displayData.database, displayData.table, displayData.pk1]"
-        [queryParams]="displayData.page?{page: displayData.page} : null">{{displayData.pk1}}</a>
+        [queryParams]="displayData.page?{page: displayData.page} : null">{{labelId(['/resource', displayData.database,
+        displayData.table, displayData.pk1])|async}}</a>
 </div>
 <div *ngIf="displayType() === 'link[]'">
     <span *ngFor="let i of displayData; let idx=index">
         <span *ngIf="idx>0">, </span>
         <a [routerLink]="['/resource', i.database, i.table, i.pk1]"
-            [queryParams]="i.page?{page: i.page} : null">{{i.pk1}}</a>
+            [queryParams]="i.page?{page: i.page} : null">{{labelId(['/resource', i.database, i.table,
+            i.pk1])|async}}</a>
     </span>
 </div>
 <div *ngIf="displayType() === 'img'">

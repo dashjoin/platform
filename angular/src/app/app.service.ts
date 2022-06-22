@@ -435,11 +435,14 @@ export class AppService implements CanActivate {
   runtime: DJRuntimeService;
   setRuntime(runtime) { this.runtime = runtime; }
 
-  getIdLabelNG(link: string[], resolve = false, ownType?: string): Observable<string> {
+  getIdLabelNG(_link: string[], resolve = false, ownType?: string): Observable<string> {
 
-    if (!link) {
+    if (!_link) {
       return undefined;
     }
+
+    // shallow copy _link to make sure we do not change the caller's original
+    var link = [..._link];
 
     // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
     if (link[0] === '') {
