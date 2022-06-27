@@ -76,15 +76,10 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
    */
   allSort: Sort;
 
-  // constructor(protected runtime: DJRuntimeService,
-  //   protected elRef: ElementRef, protected cdRef: ChangeDetectorRef,
-  //   protected snackBar: MatSnackBar, protected route: ActivatedRoute, public router: Router,
-  //   protected httpI: HttpClient, public app: AppService, protected titleService: Title,
-  //   protected location: Location, public formService: JsonSchemaFormService, protected dialog: MatDialog,
-  //   public editor: QueryEditorService) {
-  //   super(elRef, cdRef, snackBar, route, router, httpI, app, titleService, location, formService, dialog, editor);
-  //   this.dataSnapshot = this.getData();
-  // }
+  /**
+   * Redraw counter
+   */
+  redrawCount = 0;
 
   /**
    * TODO

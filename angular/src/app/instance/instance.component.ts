@@ -1158,4 +1158,13 @@ export class InstanceComponent implements OnInit {
       // value: this.value,
     };
   }
+
+  /**
+   * Default implementation of redraw.
+   * Might be overridden by components
+   */
+  redraw() {
+    //console.log('redraw ' + window['djNoCache'], this);
+    this.ngOnInit();
+  }
 }

@@ -245,4 +245,9 @@ export interface Widget {
      * Switch to hide the widget card's frame
      */
     hideframe: boolean;
+
+    /**
+     * Redraw interval in ms
+     */
+    redrawInterval: number;
 }

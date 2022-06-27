@@ -156,6 +156,12 @@ export class EditWidgetDialogComponent {
               ref: 'dj/config/dj-database/ID',
               case: this.generateCase('database')
             },
+            redrawInterval: {
+              static: true,
+              title: 'Redraw interval (sec)',
+              type: 'number',
+              case: this.generateCase('redrawInterval')
+            },
             markdown: {
               static: true,
               widget: 'custom',
