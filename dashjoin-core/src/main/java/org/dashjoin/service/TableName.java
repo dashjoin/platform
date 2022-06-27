@@ -2,9 +2,12 @@ package org.dashjoin.service;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import org.postgresql.jdbc.PgResultSetMetaData;
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
@@ -44,6 +47,13 @@ public class TableName {
    */
   public String getColumnLabel(ResultSetMetaData meta, int column) throws SQLException {
     return meta.getColumnLabel(column);
+  }
+
+  /**
+   * simply delegate to meta.getColumnName()
+   */
+  public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+    return meta.getColumnName(column);
   }
 
   /**
@@ -117,6 +127,14 @@ public class TableName {
       }
       return label;
     }
+
+    @Override
+    public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+      if (meta instanceof PgResultSetMetaData)
+        return ((PgResultSetMetaData) meta).getBaseColumnName(column);
+      else
+        return super.getColumnName(meta, column);
+    }
   }
 
   /**
@@ -148,6 +166,22 @@ public class TableName {
             tablename = SQLDatabase.s(((Table) body.getFromItem()).getName());
         }
       return tablename;
+    }
+
+    @Override
+    public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+      if (body != null && column - 1 < body.getSelectItems().size()) {
+        SelectItem i = body.getSelectItems().get(column - 1);
+        if (i instanceof SelectExpressionItem) {
+          if (((SelectExpressionItem) i).getAlias() != null) {
+            Expression e = ((SelectExpressionItem) i).getExpression();
+            if (e instanceof Column) {
+              return SQLDatabase.s(((Column) e).getColumnName());
+            }
+          }
+        }
+      }
+      return super.getColumnName(meta, column);
     }
   }
 }

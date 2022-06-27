@@ -61,7 +61,6 @@ import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
 import org.jboss.logmanager.Level;
 import org.postgresql.jdbc.PgArray;
-import org.postgresql.jdbc.PgResultSetMetaData;
 import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -510,7 +509,7 @@ public class SQLDatabase extends AbstractDatabase {
               Map<String, Object> row = new LinkedHashMap<>();
               for (int c = 1; c <= m.getColumnCount(); c++) {
                 String display = tn.getColumnLabel(m, c);
-                String column = getResultSetColumnName(m, c);
+                String column = tn.getColumnName(m, c);
                 String table = tn.getTableName(m, c);
                 if (!column.equals(display))
                   row.put(display, serialize(m, res, c));
@@ -551,7 +550,7 @@ public class SQLDatabase extends AbstractDatabase {
           Map<String, Property> row = new LinkedHashMap<>();
           for (int c = 1; c <= m.getColumnCount(); c++) {
             String display = tn.getColumnLabel(m, c);
-            String column = m.getColumnName(c);
+            String column = tn.getColumnName(m, c);
             String table = tn.getTableName(m, c);
             String type = m.getColumnTypeName(c);
             if (!column.equals(display))
@@ -946,26 +945,6 @@ public class SQLDatabase extends AbstractDatabase {
     return res;
   }
 
-  /**
-   * Returns the column name.
-   * 
-   * Fixes Postgres semantic error when columns are renamed.
-   * 
-   * @param meta
-   * @param col
-   * @return
-   * @throws SQLException
-   */
-  String getResultSetColumnName(ResultSetMetaData meta, int col) throws SQLException {
-    // Fix for Postgres metadata -
-    // when a column is renamed "column as NAME", metadata returned
-    // is not correct, need to use Postgres's getBaseColumnName
-    if (meta instanceof PgResultSetMetaData) {
-      return ((PgResultSetMetaData) meta).getBaseColumnName(col);
-    }
-    return meta.getColumnName(col);
-  }
-
   List<QueryColumn> getMetadata(String query) throws Exception {
 
     Select select = (Select) CCJSqlParserUtil.parse(query);
@@ -986,7 +965,7 @@ public class SQLDatabase extends AbstractDatabase {
 
             // Set default metadata for col (column/table) and displayName
             // Might be updated from query metadata below
-            c.col = col(tn.getTableName(meta, i), getResultSetColumnName(meta, i));
+            c.col = col(tn.getTableName(meta, i), tn.getColumnName(meta, i));
             c.displayName = tn.getColumnLabel(meta, i);
 
             if (i - 1 < body.getSelectItems().size()) {
