@@ -1310,9 +1310,9 @@ moveField | $moveField(object, 'from', 'to') | Moves the object's from key into 
 ls | $ls(url) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt)
 streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
-streamCsv | $streamCsv(url) | Parses CSV at the url and splits it at the record boundaries
+streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openJson | $openJson(url) | Parses JSON at the url
-openCsv | $openCsv(url) | Parses CSV at the url and converts it to JSON
+openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openXml | $openXml(url) | Parses XML at the url and converts it to JSON
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
