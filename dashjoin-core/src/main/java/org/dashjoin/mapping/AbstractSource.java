@@ -127,7 +127,25 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
         if (createSchema != null && createSchema) {
 
           Mapping mapping = mappings == null ? null : mappings.get(table.getKey());
-          if (mapping == null || mapping.pk == null)
+          String mappingpk = null;
+          if (mapping == null || mapping.pk == null) {
+            for (Map<String, Object> row : table.getValue()) {
+              if (row.containsKey("ID")) {
+                mappingpk = "ID";
+                break;
+              }
+              if (row.containsKey("id")) {
+                mappingpk = "id";
+                break;
+              }
+              if (row.containsKey("_id")) {
+                mappingpk = "_id";
+                break;
+              }
+            }
+          }
+
+          if (mappingpk == null)
             throw new Exception("No primary key specified for table " + table.getKey());
 
           if ("Delete All".equals(oldData)) {
@@ -143,9 +161,9 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
               || db.tables.get(table.getKey()).name == null) {
             // table does not exist of only contains some bootstrapped metadata like dj-label
             dirty = true;
-            ddl.createTable(table.getKey(), mapping.pk, type(mapping.pk, table.getValue()));
+            ddl.createTable(table.getKey(), mappingpk, type(mappingpk, table.getValue()));
             for (String col : cols(table.getValue(), true))
-              if (!col.equals(mapping.pk)) {
+              if (!col.equals(mappingpk)) {
                 ddl.createColumn(table.getKey(), col, type(col, table.getValue()));
               }
           } else {
