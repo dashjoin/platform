@@ -143,7 +143,8 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
                 break;
               }
             }
-          }
+          } else
+            mappingpk = mapping.pk;
 
           if (mappingpk == null)
             throw new Exception("No primary key specified for table " + table.getKey());
