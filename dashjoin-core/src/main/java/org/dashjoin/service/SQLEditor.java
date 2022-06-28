@@ -153,6 +153,11 @@ public class SQLEditor implements QueryEditorInternal {
       order.setAsc(false);
     else
       order = null;
+
+    // avoid NPE when the column name could not be matched to ac.col
+    if (order != null && order.getExpression() == null)
+      order = null;
+
     body.setOrderByElements(order == null ? null : Arrays.asList(order));
 
     return prettyPrint(ac.database, body, ac.limit);
