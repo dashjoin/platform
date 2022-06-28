@@ -46,10 +46,7 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
       }, this.errorHandler);
 
     if (this.value?.djClassName === 'com.dashjoin.function.ETL' || this.value?.djClassName === 'org.dashjoin.mapping.ETL' || this.value?.djClassName === 'org.dashjoin.mapping.ETLStream') {
-      this.snackBar.open('ETL started. Reload the page to get the current status', 'Ok', { duration: 3000 });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      this.snackBar.open('ETL started', 'Ok', { duration: 3000 });
     }
   }
 
