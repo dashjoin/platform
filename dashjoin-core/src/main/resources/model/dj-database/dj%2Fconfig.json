@@ -750,11 +750,15 @@
       "tableLayout": {
         "widget": "page",
         "children": [
-          {
-            "widget": "table",
-            "database": "config",
-            "query": "dj-functions",
-            "title": "Available Functions"
+            {
+              "widget": "container",
+              "redrawInterval": 10,
+              "title": "Available Functions",
+              "children": [{
+                  "widget": "table",
+                  "database": "config",
+                  "query": "dj-functions"
+                  }]
           },
           {
             "widget": "create",
@@ -788,7 +792,8 @@
                 }
               }
             ],
-            "layout": "vertical"
+            "layout": "vertical",
+            "redrawInterval": 5
           }
         ]
       }
