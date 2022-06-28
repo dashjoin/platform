@@ -155,7 +155,8 @@ public class ModelTest {
           "query", "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",
           "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
           "layout", "style", "class", /* schema info in config.json */ "name", "parent",
-          /* gridster stuff */ "x", "y", "rows", "cols").contains(e.getKey()));
+          /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval")
+          .contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
