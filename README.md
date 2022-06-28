@@ -769,6 +769,7 @@ Container with a plain layout
 * foreach: show the single child for each result, using the result as the context
 * class: CSS classes to apply to the container
 * style: CSS styles to apply to the container
+* redrawInterval: redraw interval (seconds). Periodically refreshes the container and all contained content.
 
 ##### expansion
 
