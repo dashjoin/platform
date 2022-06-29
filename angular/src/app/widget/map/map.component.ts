@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
 import Map from 'ol/Map';
@@ -38,6 +38,11 @@ export class MapComponent extends DJBaseComponent implements OnInit {
   error: string;
 
   style: any;
+
+  /**
+   * Ref to the map element
+   */
+  @ViewChild('map_widget') mapDiv: ElementRef;
 
   countries = {
     "CN": "China",
@@ -223,7 +228,7 @@ export class MapComponent extends DJBaseComponent implements OnInit {
 
       if (!error || features.length > 0) {
         this.map = new Map({
-          target: 'map_widget',
+          target: this.mapDiv.nativeElement,
           layers: [
             new TileLayer({
               source: new OSM()
