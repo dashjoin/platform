@@ -1456,6 +1456,29 @@ When everything was build successfully, you can use the Dashjoin.launch configur
 The Quarkus launcher supports hot loading of resources, i.e. any changes made will be adjusted at runtime without having to restart the platform.
 (Note: you will have to adjust the absolute folder references in the launch file to you own workspace settings)
 
+### Version History
+
+#### 1.0 (May 2021)
+
+* Launch of the platform
+
+#### 2.0 (Jan 2022)
+
+* Extended support for databases: MongoDB, ArangoDB, RDF
+* Support for graph queries: database drivers can implement graph / path queries, widgets can display graph query results and the platform has basic support for OpenCypher
+* Chart improvements: support for stacked bar charts, ability to configure charts with all ChartJS options
+* New Function: the "receive" function supports streaming data / IoT use cases
+* App development / lifecycle: apps can be written collaboratively on GitHub, auto-installed upon platform launch
+* Functions and databases can be deployed as micro-services using the RemoteDatabase driver
+
+#### 2.1 (April 2022)
+
+* UI: HTML component, icons editor and display icon specification, run write queries from catalog, JSONata editor, MAP widget, PDF export
+* ETL: streaming XML, YAML, transparent HTTP caching
+* JSONata: 100% compatibility to JSONataJS, functions with multiple parameters
+* Graph Search: PathQL integration
+* Data Model: JSONb arrays can be foreign keys, allow specifying external ontology
+
 ## Administration
 
 This section describes administration and operating procedures for the Dashjoin platform.
