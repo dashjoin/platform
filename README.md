@@ -42,6 +42,7 @@ Features
 * [Security](#security)
 * [Supported Databases](#supported-databases)
 * [API](#api)
+* [FAQ](#faq)
 * [Contribute](#contribute)
 
 ## Getting Started: 15 Minute Tour
@@ -1801,6 +1802,16 @@ curl -X POST https://europe-west1-djfire-1946d.cloudfunctions.net/exportPdf --ou
 
 Alternatively, you can use a bearer token in the "authentication" field instead of user name and password.
 
+
+## FAQ
+
+* **How can I edit a fullscreen page?** Usually, you toggle the edit mode via the widget in the toolbar. If you're creating a page without the toolbar, you have two options: 1) If you're working with docker or the installer, you can edit the dashboard page in the respective file on the file system. 2) You can navigate to any "normal" page, enter edit mode, navigate to the fullscreen page, make changes via the edit context menu, navigate back to the "normal" page and save there.
+
+* **The [Dashjoin Demo Application](https://github.com/dashjoin/dashjoin-demo) contains some interesting examples. How can I apply them to my application?** You can either locate your application on the file system and copy an example page there or you can look at the page in order to see which settings to add in the layout editor dialogs (e.g. a JSONata expression).
+
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in JSONata?** In [JSONata](https://docs.jsonata.org/simple#navigating-json-objects), field names can be escaped using back-ticks (`)
+
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`
 
 ## Contribute
 
