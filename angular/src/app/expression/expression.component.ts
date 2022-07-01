@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Schema, WidgetComponent } from '@dashjoin/json-schema-form';
 import { of } from 'rxjs';
@@ -70,7 +70,7 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
   /**
    * entry form control (throttle evaluation while typing)
    */
-  text = new FormControl();
+  text = new UntypedFormControl();
 
   /**
    * setup form and handlers
@@ -87,7 +87,7 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
     })
   }
 
-  setup(value: any, text: FormControl, expAndData: Function, onValueChange: any, onData?: any) {
+  setup(value: any, text: UntypedFormControl, expAndData: Function, onValueChange: any, onData?: any) {
     if (!value) {
       // value if not set, do nothing
     } else {

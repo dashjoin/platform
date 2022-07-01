@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { map, Observable, of } from 'rxjs';
 import { ExpressionComponent } from './expression.component';
 
@@ -21,7 +21,7 @@ export class StreamExpressionComponent extends ExpressionComponent implements On
   /**
    * entry form control (throttle evaluation while typing)
    */
-  foreach = new FormControl();
+  foreach = new UntypedFormControl();
 
   /**
    * setup form and handlers
