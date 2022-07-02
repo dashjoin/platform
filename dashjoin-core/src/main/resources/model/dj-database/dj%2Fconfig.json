@@ -213,6 +213,7 @@
       "type": "object",
       "tableLayout": {
         "widget": "page",
+        "pageLayout": "1 column",
         "children": [
           {
             "widget": "table",
@@ -749,6 +750,7 @@
       },
       "tableLayout": {
         "widget": "page",
+        "pageLayout": "1 column",
         "children": [
             {
               "widget": "container",
@@ -784,7 +786,7 @@
               },
               {
                 "widget": "display",
-                "display": "{\"start\": value.start, \"end\": value.end, \"status\": value.status}",
+                "display": "{\"start\": value.start, \"end\": value.end, \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status}",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",

@@ -660,7 +660,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         if (start instanceof String) {
           try {
             Date s = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) start)));
-            Date e = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) end)));
+            Date e = end == null ? new Date()
+                : Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) end)));
             tm.put("runtime (s)", (e.getTime() - s.getTime()) / 1000);
           } catch (Exception e) {
             // ignore
