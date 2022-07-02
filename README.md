@@ -1813,6 +1813,8 @@ Alternatively, you can use a bearer token in the "authentication" field instead 
 
 * **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`. Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
 
+* **How can I customize the forms in the edit, button and variable widgets?** These widgets use the JSON Schema Form component. This [online playground]() lets you experiment with the various features. This component comes with a WYSIWYG editor which is available in edit mode by clicking the three vertical dot icon. Note that not all features of the component are exposed in the WYSIWYG editor. You can leverage the advanced features by editing the underlying JSON directly. The demo application shows two examples. The "createSchema" of the [customer page](https://github.com/dashjoin/dashjoin-demo/blob/main/model/dj-database/dj%252Fnorthwind.json) section shows the form of the email button, which displays the email body input field with a larger text box. The city instance page shows a similar layout for the edit widget. The [variable example](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/variable.json) shows how a select widget with display names and values can be rendered.
+
 ## Contribute
 
 We welcome contributions. If you are interested in contributing to Dashjoin, let us know!
