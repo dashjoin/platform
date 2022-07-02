@@ -1809,9 +1809,9 @@ Alternatively, you can use a bearer token in the "authentication" field instead 
 
 * **The [Dashjoin Demo Application](https://github.com/dashjoin/dashjoin-demo) contains some interesting examples. How can I apply them to my application?** You can either locate your application on the file system and copy an example page there or you can look at the page in order to see which settings to add in the layout editor dialogs (e.g. a JSONata expression).
 
-* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in JSONata?** In [JSONata](https://docs.jsonata.org/simple#navigating-json-objects), field names can be escaped using back-ticks (`)
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in JSONata?** In [JSONata](https://docs.jsonata.org/simple#navigating-json-objects), field names can be escaped using back-ticks (`). Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
 
-* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`. Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
 
 ## Contribute
 
