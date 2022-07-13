@@ -1309,7 +1309,7 @@ djUser | $djUser() | Returns the current user's name
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
 jobStatus | $jobStatus() | if evaluated within a function, start and stop timestamps (millis since 1970) and job status
 moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
-ls | $ls(url) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt)
+ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
 streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
