@@ -57,7 +57,8 @@ public class ExpressionPreviewService {
           // no queue, use result directly
           Object o = ExpressionService.j2o(node);
           @SuppressWarnings("unchecked")
-          List<Object> list = o instanceof List ? (List<Object>) o : Arrays.asList(o);
+          List<Object> list =
+              o == null ? Arrays.asList() : o instanceof List ? (List<Object>) o : Arrays.asList(o);
           if (list.size() > 10)
             return list.subList(0, 10);
           else
