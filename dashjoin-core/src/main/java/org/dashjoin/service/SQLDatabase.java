@@ -122,6 +122,11 @@ public class SQLDatabase extends AbstractDatabase {
   public List<String> initScripts;
 
   /**
+   * JSON config field
+   */
+  public List<String> excludeTables;
+
+  /**
    * DB connection pool
    */
   BasicDataSource _cp;
@@ -227,7 +232,7 @@ public class SQLDatabase extends AbstractDatabase {
           InputStream ddl = Loader.open(s);
           RunScript.execute(con, new InputStreamReader(ddl, StandardCharsets.UTF_8));
         }
-      Metadata meta = new Metadata(con, url);
+      Metadata meta = new Metadata(con, url, excludeTables);
       Map<String, Object> res = meta.getTables(ID);
       _cp = ds;
       return res;

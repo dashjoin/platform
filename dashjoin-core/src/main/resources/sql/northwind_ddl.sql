@@ -1,5 +1,6 @@
 -- https://docs.yugabyte.com/latest/sample-data/northwind/
 
+DROP VIEW IF EXISTS us_customers;
 DROP TABLE IF EXISTS customer_customer_demo;
 DROP TABLE IF EXISTS customer_demographics;
 DROP TABLE IF EXISTS employee_territories;
@@ -64,6 +65,8 @@ CREATE TABLE customers (
     phone character varying(24),
     fax character varying(24)
 );
+
+CREATE VIEW us_customers as select * from customers where country = 'USA';
 
 --
 -- Name: customer_customer_demo; Type: TABLE; Schema: public; Owner: -; Tablespace: 

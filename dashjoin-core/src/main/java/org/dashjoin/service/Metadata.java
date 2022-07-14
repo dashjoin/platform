@@ -167,7 +167,7 @@ public class Metadata {
   /**
    * read the schema from con
    */
-  public Metadata(Connection con, String url) throws SQLException {
+  public Metadata(Connection con, String url, List<String> excludeTables) throws SQLException {
     DatabaseMetaData md = con.getMetaData();
     String schema = getSchema(con, url);
     try (ResultSet res = md.getTables(null, schema, null, null)) {
@@ -175,8 +175,11 @@ public class Metadata {
         String tableType = res.getString("TABLE_TYPE");
         // Note - H2 2.x introduced "BASE TABLE" as default table type:
         // https://h2database.com/html/systemtables.html#information_schema_tables
-        if ("TABLE".equals(tableType) || "BASE TABLE".equals(tableType)) {
+        if ("TABLE".equals(tableType) || "BASE TABLE".equals(tableType)
+            || "VIEW".equals(tableType)) {
           String name = res.getString("TABLE_NAME");
+          if (excludeTables != null && excludeTables.contains(name))
+            continue;
           tables.put(name, new MdTable(name));
         }
       }

@@ -48,7 +48,7 @@ public class MetadataTest {
         s.execute(
             "create table s(i int primary key, x int, y int, foreign key (x,y) references t(a,b))");
         Assertions.assertEquals("{S=Table S {pk=[I], fk={T=[X, Y]}}, T=Table T {pk=[A, B], fk={}}}",
-            new Metadata(con, url).toString());
+            new Metadata(con, url, null).toString());
       }
     }
   }
