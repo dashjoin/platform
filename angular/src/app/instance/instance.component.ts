@@ -490,6 +490,22 @@ export class InstanceComponent implements OnInit {
       this.url = this.url + '/' + encodeURIComponent(this.pk4);
     }
     this.app.log('init url', this.url);
+
+    // allow setting currently unset variable keys via query parameters 
+    if (this.root) {
+      let variable = JSON.parse(sessionStorage.getItem('variable'));
+      let dirty = false;
+      for (let key of this.route.snapshot.queryParamMap.keys) {
+        if (!variable) {
+          variable = {};
+        }
+        variable[key] = this.route.snapshot.queryParamMap.get(key);
+        dirty = true;
+      }
+      if (dirty) {
+        sessionStorage.setItem('variable', JSON.stringify(variable));
+      }
+    }
   }
 
   /**

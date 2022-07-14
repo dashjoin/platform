@@ -961,6 +961,8 @@ Displays a tree based on a recursive query
 ##### [variable](https://demo.my.dashjoin.com/#/page/variable)
 
 Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x".
+A variable can be set via a URL query parameter. Appending ?a=1&b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only
+string variables can be set this way, so you might have to use $number(variable.a) when using the variable.
 
 * properties: an object where the fields are variable names and the values the respective types
 

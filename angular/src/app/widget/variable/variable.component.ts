@@ -23,8 +23,18 @@ export class VariableComponent extends ButtonComponent implements OnInit {
    * update user settings event handler
    */
   setVariable() {
-    sessionStorage.setItem('variable', JSON.stringify(this.createValue));
-    this.eventChange.emit({ type: 'update' });
+    if (this.route.snapshot.queryParamMap.keys.length > 0) {
+      // the URL contains query parameters which set variables
+      // we need to remove them in order to avoid overriding the user selection
+      this.router.navigate(['.'], { relativeTo: this.route })
+      setTimeout(() => {
+        sessionStorage.setItem('variable', JSON.stringify(this.createValue));
+        this.eventChange.emit({ type: 'update' });
+      }, 0);
+    } else {
+      sessionStorage.setItem('variable', JSON.stringify(this.createValue));
+      this.eventChange.emit({ type: 'update' });
+    }
   }
 
   /**
