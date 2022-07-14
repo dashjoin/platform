@@ -183,5 +183,17 @@ public class TableName {
       }
       return super.getColumnName(meta, column);
     }
+
+    @Override
+    public String getColumnLabel(ResultSetMetaData meta, int column) throws SQLException {
+      String res = super.getColumnLabel(meta, column);
+      if (res == null || res.isEmpty())
+        if (body != null && column - 1 < body.getSelectItems().size()) {
+          SelectItem i = body.getSelectItems().get(column - 1);
+          if (i instanceof SelectExpressionItem)
+            return i.toString();
+        }
+      return res;
+    }
   }
 }
