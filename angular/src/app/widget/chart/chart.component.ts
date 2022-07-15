@@ -84,7 +84,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     // this.all = [{ name: 'bus', count: 3, other: 6 }, { name: 'car', count: 2, other: 5 }, { name: null, count: 4 }]
 
     const types = this.checkColumns(this.all);
-    if (!(Object.values(types)[0] === 'string' && Object.values(types)[1] !== 'string')) {
+    if (!(Object.values(types)[0] === 'string' && Object.values(types)[1] !== 'string') && Object.values(types).length > 2) {
       this.prepareDataForMultiDimChart();
       return;
     }
