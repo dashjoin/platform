@@ -26,8 +26,8 @@ import { Property } from '../../model';
 export class ChartComponent extends DJBaseComponent implements OnInit {
 
   /**
-   * is this a multi dimensional chart
-   */
+  * is this a multi dimensional chart
+  */
   multiDim = false;
 
   /**
@@ -209,6 +209,8 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       this.meta = await this.getData().getMeta();
     }
 
+    let count = 0;
+    let pk: Property;
     for (const p of Object.values(this.meta.schema.properties)) {
       const t = p as Property;
       if (t.ref) {
@@ -218,6 +220,18 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
         if (idarr[3]) {
           this.router.navigate(idarr);
         }
+      }
+      if (t.pkpos != null && t.pkpos >= 0) {
+        pk = t;
+        count++;
+      }
+    }
+    if (pk && count === 1) {
+      const idarr = Util.parseColumnID(pk.ID as string);
+      idarr[0] = 'resource';
+      idarr[3] = this.columns[event.active[0].index];
+      if (idarr[3]) {
+        this.router.navigate(idarr);
       }
     }
   }
