@@ -26,6 +26,11 @@ import { Property } from '../../model';
 export class ChartComponent extends DJBaseComponent implements OnInit {
 
   /**
+   * is this a multi dimensional chart
+   */
+  multiDim = false;
+
+  /**
    * see https://www.chartjs.org/docs/2.9.4/configuration/
    */
   chartoptions: any = {}
@@ -121,6 +126,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    * interpret the first col as the series, the second as the labels
    */
   prepareDataForMultiDimChart() {
+    this.multiDim = true;
     const types = this.checkColumns(this.all);
     const series = {};
     const labels = [];
@@ -194,6 +200,10 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    * chart click handler
    */
   async chartClicked(event) {
+    // navigation not supported for multi dim charts
+    if (this.multiDim)
+      return;
+
     // lazy get metadata
     if (!this.meta) {
       this.meta = await this.getData().getMeta();
