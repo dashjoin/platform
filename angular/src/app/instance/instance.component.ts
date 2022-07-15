@@ -277,8 +277,14 @@ export class InstanceComponent implements OnInit {
   static eq(i: object, item: object) {
     for (const f of Object.keys(i)) {
       if (f !== 'x' && f !== 'y' && f !== 'rows' && f !== 'cols') {
-        if (i[f] !== item[f]) {
-          return false;
+        if (typeof i[f] === 'object' && typeof item[f] === 'object') {
+          if (JSON.stringify(i[f]) !== JSON.stringify(item[f])) {
+            return false;
+          }
+        } else {
+          if (i[f] !== item[f]) {
+            return false;
+          }
         }
       }
     }
