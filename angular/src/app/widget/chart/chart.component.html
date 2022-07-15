@@ -1,6 +1,6 @@
 <div *ngIf="all">
     <div>
-        <canvas baseChart [datasets]="all" [labels]="columns" [options]="chartoptions" [legend]="true"
+        <canvas baseChart [datasets]="all" [labels]="colLabels" [options]="chartoptions" [legend]="true"
             [type]="layout.chart" [ngStyle]="layout.style" (chartClick)="chartClicked($event)">
         </canvas>
     </div>

@@ -26,8 +26,13 @@ import { Property } from '../../model';
 export class ChartComponent extends DJBaseComponent implements OnInit {
 
   /**
-  * is this a multi dimensional chart
-  */
+   * like columns, but dj-label
+   */
+  colLabels: string[] = [];
+
+  /**
+ * is this a multi dimensional chart
+ */
   multiDim = false;
 
   /**
@@ -70,7 +75,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       this.setOptions();
     try {
       await this.page({ pageIndex: 0, pageSize: 50, length: null });
-      this.prepareDataForChart();
+      await this.prepareDataForChart();
     } catch (e) {
       this.errorHandler(e);
     }
@@ -79,7 +84,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
   /**
    * generate data / label objects for chart
    */
-  prepareDataForChart() {
+  async prepareDataForChart() {
 
     // this.all = [{ name: 'bus', count: 3, other: 6 }, { name: 'car', count: 2, other: 5 }, { name: null, count: 4 }]
 
@@ -94,6 +99,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     // select type, min(weight), max(weight) group by type
     const res = this.all;
     this.columns = [];
+    this.colLabels = [];
     this.all = [];
 
     const cols = {};
@@ -114,6 +120,13 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       }
     }
     this.columns = cols[first];
+
+    // lazy get metadata (only required in single dim case, since dj-label / clicks are not supported otherwise)
+    if (!this.meta) {
+      this.meta = await this.getData().getMeta();
+    }
+
+    await this.setColumnLabels();
     this.all = [];
 
     delete cols[first];
@@ -166,6 +179,7 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
 
     // generate structure
     this.columns = labels;
+    this.colLabels = labels;
     this.all = [];
     for (const [k, v] of Object.entries(series)) {
       // make sure d has the order of labels
@@ -204,11 +218,38 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     if (this.multiDim)
       return;
 
-    // lazy get metadata
-    if (!this.meta) {
-      this.meta = await this.getData().getMeta();
-    }
+    if (event.active[0] === undefined)
+      return;
 
+    const idarr = this.getIdArr(event.active[0].index);
+    if (idarr)
+      this.router.navigate(idarr);
+  }
+
+  /**
+   * given this.columns, looks up the labels and writen them to this.colLabels
+   */
+  async setColumnLabels() {
+    let idx = 0;
+    for (const c of this.columns) {
+      const idarr = this.getIdArr(idx);
+      idx++;
+      // is this column linkable?
+      if (idarr) {
+        const l = await this.labelId(idarr).toPromise();
+        this.colLabels.push(l);
+      } else {
+        this.colLabels.push(c);
+      }
+    }
+  }
+
+  /**
+   * checks if one of the columns contains a key, 
+   * if so, returns a link to the record using the columnIndex-th label as the key value
+   * undefined otherwise
+   */
+  getIdArr(columnIndex: number): string[] {
     let count = 0;
     let pk: Property;
     for (const p of Object.values(this.meta.schema.properties)) {
@@ -216,9 +257,9 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
       if (t.ref) {
         const idarr = Util.parseColumnID(t.ref as string);
         idarr[0] = 'resource';
-        idarr[3] = this.columns[event.active[0].index];
+        idarr[3] = this.columns[columnIndex];
         if (idarr[3]) {
-          this.router.navigate(idarr);
+          return idarr;
         }
       }
       if (t.pkpos != null && t.pkpos >= 0) {
@@ -229,9 +270,9 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     if (pk && count === 1) {
       const idarr = Util.parseColumnID(pk.ID as string);
       idarr[0] = 'resource';
-      idarr[3] = this.columns[event.active[0].index];
+      idarr[3] = this.columns[columnIndex];
       if (idarr[3]) {
-        this.router.navigate(idarr);
+        return idarr;
       }
     }
   }
