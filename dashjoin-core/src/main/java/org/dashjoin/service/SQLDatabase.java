@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ws.rs.NotAuthorizedException;
@@ -588,7 +589,7 @@ public class SQLDatabase extends AbstractDatabase {
         if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
           continue;
         insert = insert + "?,";
-        args.add(object.get(k));
+        args.add(castPreparedStatementArg(m.properties.get(k), object.get(k)));
       }
       insert = insert.substring(0, insert.length() - 1);
       insert = insert + ")";
@@ -688,7 +689,7 @@ public class SQLDatabase extends AbstractDatabase {
             args.add(((List<?>) search.get(k)).get(0));
           } else {
             select = select + q(k) + "=? and ";
-            args.add(search.get(k));
+            args.add(castPreparedStatementArg(s.properties.get(k), search.get(k)));
           }
         }
         select = select.substring(0, select.length() - "and ".length());
@@ -769,7 +770,7 @@ public class SQLDatabase extends AbstractDatabase {
         set = true;
 
         Object val = object.get(k);
-        args.add(val);
+        args.add(castPreparedStatementArg(schema.properties.get(k), val));
       }
 
       if (!set)
@@ -780,7 +781,7 @@ public class SQLDatabase extends AbstractDatabase {
       update = update + " where ";
       for (String k : search.keySet()) {
         update = update + q(k) + "=? and ";
-        args.add(search.get(k));
+        args.add(castPreparedStatementArg(schema.properties.get(k), search.get(k)));
       }
       update = update.substring(0, update.length() - "and ".length());
 
@@ -805,7 +806,7 @@ public class SQLDatabase extends AbstractDatabase {
         Property prop = s.properties.get(k);
         if (prop != null && prop.pkpos != null) {
           select = select + q(k) + "=? and ";
-          args.add(search.get(k));
+          args.add(castPreparedStatementArg(prop, search.get(k)));
         }
       }
       select = select.substring(0, select.length() - "and ".length());
@@ -1211,5 +1212,9 @@ public class SQLDatabase extends AbstractDatabase {
         return;
       }
     pstmt.setObject(i, o);
+  }
+
+  Object castPreparedStatementArg(Property p, Object value) {
+    return p != null && "uuid".equals(p.dbType) ? UUID.fromString((String) value) : value;
   }
 }
