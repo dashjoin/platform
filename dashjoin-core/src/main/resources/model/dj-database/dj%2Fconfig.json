@@ -601,6 +601,12 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string"
         },
+        "comment": {
+          "ID": "dj/config/dj-query-catalog/comment",
+          "name": "comment",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "string"
+        },
         "roles": {
           "ID": "dj/config/dj-query-catalog/roles",
           "name": "roles",

@@ -649,6 +649,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
         tm.put("class", simple(r.get("djClassName")));
         tm.put("database", r.get("database"));
       }
+      tm.put("comment", r.get("comment"));
       tm.put("type", r.get("type"));
       tm.put("roles", roles(r.get("roles")));
       if (!database) {

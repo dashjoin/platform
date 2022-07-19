@@ -8,7 +8,8 @@ import org.dashjoin.service.PojoDatabase;
 /**
  * Base class for all configurable functions. Provides the primary key and polimorphism class name
  */
-@JsonSchema(layout = "vertical", required = {"ID"}, order = {"djClassName", "ID", "roles", "type"})
+@JsonSchema(layout = "vertical", required = {"ID"},
+    order = {"djClassName", "ID", "roles", "type", "comment"})
 public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFunction<ARG, RET> {
 
   /**
@@ -37,6 +38,11 @@ public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFun
    */
   @JsonSchema(enums = {"read", "write"})
   public String type;
+
+  /**
+   * optional function comment
+   */
+  public String comment;
 
   @Override
   public String getType() {
