@@ -9,7 +9,7 @@ import org.dashjoin.service.PojoDatabase;
  * Base class for all configurable functions. Provides the primary key and polimorphism class name
  */
 @JsonSchema(layout = "vertical", required = {"ID"},
-    order = {"djClassName", "ID", "roles", "type", "comment"})
+    order = {"djClassName", "ID", "comment", "roles", "type"})
 public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFunction<ARG, RET> {
 
   /**
