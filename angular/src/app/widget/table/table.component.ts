@@ -91,4 +91,13 @@ export class TableComponent extends LinksComponent implements OnInit {
           }
     return false;
   }
+
+  /**
+   * use the property title if present
+   */
+  localName(s: string): string {
+    if (this.queryMeta?.properties?.[s]?.title)
+      return this.queryMeta.properties[s].title;
+    return super.localName(s);
+  }
 }
