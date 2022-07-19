@@ -237,7 +237,6 @@
       "name": "dj-database",
       "parent": "dj/config",
       "type": "object",
-      "dj-label": "${title}",
       "tableLayout": {
         "widget": "page",
         "pageLayout": "1 column",
