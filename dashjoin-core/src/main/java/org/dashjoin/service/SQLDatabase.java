@@ -753,6 +753,7 @@ public class SQLDatabase extends AbstractDatabase {
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws SQLException {
     try (Connection con = getConnection()) {
+      boolean set = false;
       List<Object> args = new ArrayList<>();
       String update = "update " + schema() + q(schema.name) + " set ";
 
@@ -765,10 +766,15 @@ public class SQLDatabase extends AbstractDatabase {
           continue;
 
         update = update + q(k) + "=?,";
+        set = true;
 
         Object val = object.get(k);
         args.add(val);
       }
+
+      if (!set)
+        // nothing to set - noop
+        return true;
 
       update = update.substring(0, update.length() - 1);
       update = update + " where ";
