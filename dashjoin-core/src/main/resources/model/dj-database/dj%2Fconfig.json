@@ -12,6 +12,7 @@
       "name": "Property",
       "parent": "dj/config",
       "type": "object",
+      "dj-label": "${title}",
       "before-create": "$alterColumnTrigger()",
       "before-update": "$alterColumnTrigger()",
       "before-delete": "$alterColumnTrigger()",
@@ -48,6 +49,18 @@
           ],
           "title": "Datatype"
         },
+        "comment": {
+          "ID": "dj/config/Property/comment",
+          "name": "comment",
+          "parent": "dj/config/Property",
+          "type": "string"
+        },
+        "title": {
+          "ID": "dj/config/Property/title",
+          "name": "title",
+          "parent": "dj/config/Property",
+          "type": "string"
+        },
         "ref": {
           "ID": "dj/config/Property/ref",
           "name": "ref",
@@ -83,6 +96,7 @@
       "name": "Table",
       "parent": "dj/config",
       "type": "object",
+      "dj-label": "${title}",
       "before-create": "$alterTableTrigger()",
       "before-update": "$alterTableTrigger()",
       "before-delete": "$alterTableTrigger()",
@@ -123,6 +137,18 @@
         "dj-label": {
           "ID": "dj/config/Table/dj-label",
           "name": "dj-label",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "comment": {
+          "ID": "dj/config/Table/comment",
+          "name": "comment",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "title": {
+          "ID": "dj/config/Table/title",
+          "name": "title",
           "parent": "dj/config/Table",
           "type": "string"
         },
@@ -211,6 +237,7 @@
       "name": "dj-database",
       "parent": "dj/config",
       "type": "object",
+      "dj-label": "${title}",
       "tableLayout": {
         "widget": "page",
         "pageLayout": "1 column",
@@ -291,6 +318,7 @@
                 "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!",
                 "columns": [
                   "ID",
+                  "comment",
                   "dj-label"
                 ],
                 "createSchema": {

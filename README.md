@@ -511,6 +511,11 @@ The label defines how the system should display a record in the following scenar
 
 This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label `${LAST_NAME}` or even `${LAST_NAME}, ${FIRST_NAME}` in order to display meaningful and user readable information rather than numbers or UUIDs.
 
+In case of an M:N relationship, the label can be shown depending on where the link is being displayed.
+I.e. the page for M looks at the M:N and will only display N, and N looking at M:N will see M (this works as intuitively expected).
+The syntax for labels that need dereferencing is to prepend '*'. To render a M:N you could use: {*M} {*N}
+where M and N are attributes (columns) in the relationship (table).
+
 Note that the user interface loads these template values in a lazy fashion whenever you visit a record page.
 
 #### Table Triggers
@@ -525,6 +530,11 @@ A trigger is an expression that is evaluated in the respective case. This follow
 * object: the record to the created or the fields to be updated
 
 Please see the section on expressions for more details.
+
+##### Table and Column Comment and Title
+
+Dashjoin extracts the technical metadata from the databases. The editor allows you to add a comment for tables and columns in order to document the data model.
+The table title is used when displaying a link to the table. Likewise, column titles are used in CRUD forms and the show all records table columns.
 
 ### Query Catalog and Editor
 

@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableMap;
  * abstract base class for all database implementations
  */
 @JsonSchema(required = {"name"}, layout = "vertical",
-    order = {"djClassName", "name", "readRoles", "writeRoles"},
+    order = {"djClassName", "name", "comment", "title", "readRoles", "writeRoles"},
     computed = "{ \"ID\": \"\\\"dj/\\\" & name\" }")
 public abstract class AbstractDatabase implements Database {
 
@@ -44,6 +44,10 @@ public abstract class AbstractDatabase implements Database {
    */
   @JsonSchema(createOnly = true)
   public String name;
+
+  public String comment;
+
+  public String title;
 
   /**
    * parent pk

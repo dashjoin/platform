@@ -50,6 +50,11 @@ public class Table {
   public Map<String, Object> tableLayout;
 
   /**
+   * table display name
+   */
+  public String title;
+
+  /**
    * roles that are allowed to read the table
    */
   public List<String> readRoles;

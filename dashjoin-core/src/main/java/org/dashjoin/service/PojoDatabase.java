@@ -312,7 +312,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       MapUtil.keyWhitelist(object,
           Arrays.asList("dj-label", "before-create", "after-create", "before-update",
               "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout",
-              "writeRoles", "readRoles"));
+              "writeRoles", "readRoles", "comment", "title"));
 
       String[] parts = Escape.parseTableID((String) search.get("ID"));
 
@@ -363,7 +363,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
     if (schema.name.equals("Property")) {
 
       // on Table, we only edit these props, ignore all others
-      MapUtil.keyWhitelist(object, Arrays.asList("pkpos", "ref", "displayWith", "createOnly"));
+      MapUtil.keyWhitelist(object,
+          Arrays.asList("pkpos", "ref", "displayWith", "createOnly", "comment", "title"));
 
       String[] parts = Escape.parseColumnID((String) search.get("ID"));
 
@@ -753,10 +754,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
       });
       for (Table i : sortedTables)
         if (i.name != null)
-          tabs.add(ImmutableMap.of("name", i.name, "children", Arrays.asList(), "href",
-              Arrays.asList("/table", r.name, i.name)));
+          tabs.add(ImmutableMap.of("name", i.title != null ? i.title : i.name, "children",
+              Arrays.asList(), "href", Arrays.asList("/table", r.name, i.name)));
       Map<String, Object> tm = new LinkedHashMap<>();
-      tm.put("ID", ImmutableMap.of("name", r.name, "href",
+      tm.put("ID", ImmutableMap.of("name", r.title != null ? r.title : r.name, "href",
           Arrays.asList("/resource", "config", "dj-database", r.ID), "children", tabs));
       projected.add(tm);
     }

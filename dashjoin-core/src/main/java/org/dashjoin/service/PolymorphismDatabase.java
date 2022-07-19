@@ -95,8 +95,12 @@ public class PolymorphismDatabase extends JSONDatabase {
       int djClassName = distinct.indexOf("djClassName");
       if (djClassName >= 0) {
         String nameOrID = tableName.equals("dj-database") ? "name" : "ID";
-        distinct.set(djClassName, Arrays.asList("djClassName", nameOrID));
+        distinct.set(djClassName,
+            distinct.remove("title")
+                ? Arrays.asList("djClassName", nameOrID, "comment", "title")
+                : Arrays.asList("djClassName", nameOrID, "comment"));
         distinct.remove(nameOrID);
+        distinct.remove("comment");
       }
       int roles = distinct.indexOf("roles");
       if (roles >= 0) {
