@@ -273,7 +273,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         if (tables != null)
           for (Map<String, Object> e : tables.values())
             if (all || name.equals(e.get("name")))
-              res.add(e);
+              if (e.get("ID") != null)
+                res.add(e);
       }
     }
     if (qi.query.equals("Property") || qi.query.startsWith("Property/")) {
@@ -291,7 +292,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
             if (properties != null)
               for (Map<String, Object> p : properties.values())
                 if (all || name.equals(p.get("name")))
-                  res.add(p);
+                  if (p.get("ID") != null)
+                    res.add(p);
           }
       }
     }
