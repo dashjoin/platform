@@ -50,6 +50,8 @@ export class TableComponent extends LinksComponent implements OnInit {
       this.pagination ||= this.meta?.paging;
       this.sortable ||= this.meta?.sortCaps?.sortableFields != null;
 
+      if (this.meta.size)
+        this.allLength = this.meta.size;
     } catch (e) {
       this.errorHandler(e);
     }
