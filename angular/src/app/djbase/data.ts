@@ -570,7 +570,13 @@ export class DJDataDashjoinQuery<T> extends DJDataBase<T> {
     }
 
     async getMeta(): Promise<DJDataMeta> {
-        if (!this.meta && !this.graph) {
+        if (this.graph) {
+            return Promise.resolve({
+                dataId: this.id,
+                schema: { properties: {} }
+            });
+        }
+        if (!this.meta) {
             const props = await this.http.post<any>(this.getMetaUri(), null,
                 {
                     headers: new HttpHeaders({
@@ -649,6 +655,75 @@ export class DJDataConst<T> extends DJDataBase<T> {
         const sz = options && options.pageSize || 100;
 
         const dret = this.data.slice(offset, offset + sz);
+
+        return Promise.resolve({
+            data: dret,
+            paging: {
+                totalSize: this.data.length,
+                next: { cursor: offset + sz < this.data.length ? (offset + sz) : null },
+                prev: { cursor: offset > 0 ? Math.max(offset - sz, 0) : null },
+                rangeTruncated: offset + sz >= this.data.length
+            }
+        });
+    }
+}
+
+/**
+ * wrapped datasource that enables in memory paging
+ */
+export class DJWrappedData<T> extends DJDataBase<T> {
+
+    data: T[];
+    delegate: DJData<T>;
+
+    constructor(delegate: DJData<T>, id?: string) {
+        super(id);
+        this.delegate = delegate;
+    }
+
+    /**
+     * called from getMeta() / getInternal()
+     * make sure data and metadata is loaded
+     */
+    async load() {
+        if (!this.data) {
+            this.data = await (await this.delegate.get()).data;
+            this.meta = await this.delegate.getMeta();
+
+            // enable paging, total size, sorting
+            this.meta.paging = true;
+            this.meta.size = this.data.length;
+            this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
+        }
+    }
+
+    async getMeta(): Promise<DJDataMeta> {
+        await this.load();
+        return this.meta;
+    }
+
+    protected async getInternal(options?: DJDataGetOptions): Promise<DJDataPage<T>> {
+        await this.load();
+
+        // sorting
+        // TODO: currently only support sorting one col
+        const tmp = this.data.slice()
+        if (options.sort?.length === 1) {
+            tmp.sort((a, b) => {
+                let aa = a?.[options.sort[0].field];
+                let bb = b?.[options.sort[0].field];
+                if (aa === undefined || aa === null)
+                    aa = '';
+                if (bb === undefined || bb === null)
+                    bb = '';
+                return (aa === bb ? 0 : (aa < bb ? -1 : 1)) * (options.sort[0].order === 'asc' ? 1 : -1);
+            });
+        }
+
+        // pagination
+        const offset: number = options && options.cursor && options.cursor.cursor as number || 0;
+        const sz = options && options.pageSize || 100;
+        const dret = tmp.slice(offset, offset + sz);
 
         return Promise.resolve({
             data: dret,
