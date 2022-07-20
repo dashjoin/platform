@@ -42,7 +42,7 @@ export class TableComponent extends LinksComponent implements OnInit {
     try {
       super.ngOnInit();
 
-      this.meta = await this.getData().getMeta();
+      this.meta = await this.dataSnapshot.getMeta();
       this.queryMeta = this.meta?.schema as Table;
 
       // Set pagination and sorting capabilities from meta data

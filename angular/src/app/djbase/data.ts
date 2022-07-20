@@ -675,6 +675,7 @@ export class DJWrappedData<T> extends DJDataBase<T> {
 
     data: T[];
     delegate: DJData<T>;
+    loading: Promise<void>;
 
     constructor(delegate: DJData<T>, id?: string) {
         super(id);
@@ -686,15 +687,22 @@ export class DJWrappedData<T> extends DJDataBase<T> {
      * make sure data and metadata is loaded
      */
     async load() {
-        if (!this.data) {
-            this.data = await (await this.delegate.get()).data;
-            this.meta = await this.delegate.getMeta();
+        if (!this.loading)
+            this.loading = this.go();
+        await this.loading;
+    }
 
-            // enable paging, total size, sorting
-            this.meta.paging = true;
-            this.meta.size = this.data.length;
-            this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
-        }
+    /**
+     * loading promise
+     */
+    async go() {
+        this.data = await (await this.delegate.get()).data;
+        this.meta = await this.delegate.getMeta();
+
+        // enable paging, total size, sorting
+        this.meta.paging = true;
+        this.meta.size = this.data.length;
+        this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
     }
 
     async getMeta(): Promise<DJDataMeta> {
