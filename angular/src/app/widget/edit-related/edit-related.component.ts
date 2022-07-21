@@ -1,8 +1,5 @@
-import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { EditWidgetDialogComponent } from '../../edit-widget-dialog/edit-widget-dialog.component';
-import { DJBaseComponent } from '../../djbase/djbase.component';
 import { LinksComponent } from '../links/links.component';
 import { DashjoinWidget } from '../widget-registry';
 import { DeleteConfirmDialogComponent } from '../../delete-confirm-dialog/delete-confirm-dialog.component';
@@ -46,23 +43,14 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
       this.database = encodeURIComponent(parts[1]);
       this.table = encodeURIComponent(parts[2]);
       // Note: getData() has special handling for config/Table, which we don't want here...
-      // This we set data manually:
+      // Thus we set data manually:
       this.data = 'dj/' + this.database + '/' + Util.encodeTableOrColumnName(this.table);
 
       // search key (where FK = this)
       const arg = {};
       arg[parts[3]] = (this.pk1);
 
-      console.log('all', '/rest/database/all/' + encodeURIComponent(parts[1]) + '/' + encodeURIComponent(parts[2]), arg);
-
       this.getData().get({ arguments: arg }).then(res => {
-        console.log('res', res.data)
-        // this.http.post<object[]>('/rest/database/all/' + encodeURIComponent(parts[1]) + '/' + encodeURIComponent(parts[2]), arg, {
-        //   headers: new HttpHeaders({
-        //     'Content-Type': 'application/json',
-        //     'x-dj-cache': encodeURIComponent(parts[1]) + '/' + encodeURIComponent(parts[2])
-        //   })
-        // }).subscribe(res => {
         this.all = res.data;
         if (this.layout.columns) {
           this.columns = this.layout.columns;
@@ -76,21 +64,10 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
   }
 
   /**
-   * computes the CRUD URL for the related entity (using the selected table row)
+   * Returns the key of the related entity (using the selected table row)
+   * @returns key
    */
-  _relatedUrl(): string {
-    let res = '/rest/database/crud/' + Util.parseTableID(this.queryMeta.ID)[1] + '/' + Util.parseTableID(this.queryMeta.ID)[2];
-    for (const p of Object.values(this.queryMeta.properties)) {
-      if (p.pkpos === 0) {
-        res = res + '/' + encodeURIComponent(this.selected[p.name]);
-      }
-    }
-    console.log('relatedUrl', res, this.queryMeta);
-    return res;
-  }
-
   relatedKey(): string {
-    console.log('meta', this.queryMeta)
     for (const p of Object.values(this.queryMeta.properties)) {
       if (p.pkpos === 0) {
         return encodeURIComponent(this.selected[p.name]);
@@ -111,9 +88,6 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
       if (!data) { return; }
       this.getData().update(key, data).then(res => {
-        // this.http.post(this.relatedUrl(), data, {
-        //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-        // }).subscribe(res => {
         if (dbTable === 'config/Property/') {
           delete this.app.cache[decodeURIComponent(key)];
         }
@@ -130,9 +104,6 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
     const parts = Util.parseTableOrColumnID(onTable);
     console.log('create', parts)
     this.getData().create(this.createValue).then(res => {
-    // this.http.put('/rest/database/crud/' + encodeURIComponent(parts[1]) + '/' + encodeURIComponent(parts[2]), this.createValue, {
-    //   headers: new HttpHeaders({ 'Content-Type': 'application/json' }), responseType: 'text'
-    // }).subscribe(res => {
       this.snackBar.open('Done', 'Ok', { duration: 3000 });
       if (res.startsWith('dj/config/Property/')) {
         res = decodeURIComponent(res.substr('dj/config/Property/'.length));
@@ -164,7 +135,6 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
       }).afterClosed().subscribe(res => {
         if (res === confirm) {
           this.getData().delete(key).then(res2 => {
-            //          this.http.delete(url).subscribe(res2 => {
             if (dbTable === 'config/Property/') {
               delete this.app.cache[decodeURIComponent(key)];
             }
@@ -175,7 +145,6 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
       });
     } else {
       this.getData().delete(key).then(res => {
-//        this.http.delete(url).subscribe(res => {
         this.snackBar.open('Done', 'Ok', { duration: 3000 });
         this.eventChange.emit({ type });
       }, this.errorHandler);
