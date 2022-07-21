@@ -244,7 +244,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
       else
         cat = 'expression';
     }
-    const res = await this.http.post<any>('/rest/expression/', { expression: expr, data: ctx }, {
+    const res = await this.http.post<any>('/rest/expression', { expression: expr, data: ctx }, {
       headers: new HttpHeaders({ 'x-dj-cache': cat, 'Content-Type': 'application/json' })
     }).toPromise();
     return res;
