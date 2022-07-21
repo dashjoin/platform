@@ -102,11 +102,20 @@ public abstract class AbstractDatabase implements Database {
   }
 
   @Override
-  public List<SearchResult> search(@Context SecurityContext sc, String search, Integer limit)
+  public List<SearchResult> search(SecurityContext sc, String search, Integer limit)
+      throws Exception {
+    return search(sc, null, search, limit);
+  }
+
+  @Override
+  public List<SearchResult> search(SecurityContext sc, Table filter, String search, Integer limit)
       throws Exception {
     // TODO: only brute force search for now
     List<SearchResult> ret = new ArrayList<>();
     for (Table t : services.getConfig().searchTables(this)) {
+
+      if (filter != null && !filter.name.equals(t.name))
+        continue;
 
       try {
         ACLContainerRequestFilter.check(sc, this, t);
