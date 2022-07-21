@@ -143,6 +143,14 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<SearchResult> res = db.search(sc, "mike", null);
+    check(res);
+    res = db.search(sc, "junit", "mike", null);
+    check(res);
+    res = db.search(sc, "junit", "EMP", "mike", null);
+    check(res);
+  }
+
+  void check(List<SearchResult> res) {
     int count = 0;
     for (SearchResult i : res)
       if (i.id.database.equals("junit"))

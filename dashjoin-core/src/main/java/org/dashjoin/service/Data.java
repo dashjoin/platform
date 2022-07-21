@@ -113,6 +113,52 @@ public class Data {
     return res;
   }
 
+  /**
+   * searches single databases
+   */
+  @GET
+  @Path("/search/{database}/{search}")
+  @Operation(summary = "performs a full text search on all databases")
+  @APIResponse(description = "Tabular query result (list of JSON objects)")
+  public List<SearchResult> search(@Context SecurityContext sc,
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database,
+      @PathParam("search") String search, @QueryParam("limit") Integer limit) throws Exception {
+
+    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+    if (db instanceof PojoDatabase)
+      if (!sc.isUserInRole("admin"))
+        return Arrays.asList();
+    ACLContainerRequestFilter.check(sc, db, null);
+
+    if (services.getConfig().excludeFromSearch(db))
+      return Arrays.asList();
+    String searchQuery = services.getConfig().databaseSearchQuery(db);
+
+    return searchQuery == null ? db.search(sc, search, limit == null ? null : limit)
+        : searchQuery(sc, db, searchQuery, search);
+  }
+
+  /**
+   * searches single table
+   */
+  @GET
+  @Path("/search/{database}/{table}/{search}")
+  @Operation(summary = "performs a full text search on all databases")
+  @APIResponse(description = "Tabular query result (list of JSON objects)")
+  public List<SearchResult> search(@Context SecurityContext sc,
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database,
+      @Parameter(description = "table name to run the operation on",
+          example = "EMPLOYEES") @PathParam("table") String table,
+      @PathParam("search") String search, @QueryParam("limit") Integer limit) throws Exception {
+
+    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+    Table m = db.tables.get(table);
+    ACLContainerRequestFilter.check(sc, db, m);
+    return db.search(sc, m, search, limit);
+  }
+
   List<SearchResult> searchQuery(SecurityContext sc, AbstractDatabase db, String searchQuery,
       String search) throws Exception {
 

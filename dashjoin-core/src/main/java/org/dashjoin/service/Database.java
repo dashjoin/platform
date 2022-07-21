@@ -27,6 +27,14 @@ public interface Database {
   };
 
   /**
+   * like search but for a single table
+   */
+  default public List<SearchResult> search(@Context SecurityContext sc, Table t, String search,
+      Integer limit) throws Exception {
+    return null;
+  };
+
+  /**
    * runs that query defined in info using the arguments. Returns the query result
    */
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)

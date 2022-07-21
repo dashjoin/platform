@@ -392,6 +392,12 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public List<SearchResult> search(SecurityContext sc, String search, Integer limit)
       throws Exception {
+    return search(sc, null, search, limit);
+  }
+
+  @Override
+  public List<SearchResult> search(SecurityContext sc, Table filter, String search, Integer limit)
+      throws Exception {
 
     long start = System.currentTimeMillis();
     Integer timeout = services.getConfig().getSearchTimeoutMs();
@@ -416,6 +422,8 @@ public class SQLDatabase extends AbstractDatabase {
     }
 
     for (Entry<Table, List<String>> e : tables.entrySet()) {
+      if (filter != null && !filter.name.equals(e.getKey().name))
+        continue;
       try {
         ACLContainerRequestFilter.check(sc, this, e.getKey());
       } catch (NotAuthorizedException ex) {
