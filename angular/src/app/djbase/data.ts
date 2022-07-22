@@ -748,3 +748,22 @@ export class DJWrappedData<T> extends DJDataBase<T> {
         });
     }
 }
+
+/**
+ * can be used if the caller has a promise to a JSON table (array of objects)
+ */
+export class DJDataJson<T> extends DJDataBase<T> {
+
+    data: Promise<T[]>;
+
+    constructor(data: Promise<T[]>, id?: string) {
+        super(id);
+        this.data = data;
+    }
+
+    protected async getInternal(options?: DJDataGetOptions): Promise<DJDataPage<T>> {
+        return Promise.resolve({
+            data: await this.data
+        });
+    }
+}

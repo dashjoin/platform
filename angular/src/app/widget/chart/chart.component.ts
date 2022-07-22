@@ -16,7 +16,7 @@ import { Property } from '../../model';
   category: 'Default',
   description: 'Component that draws a chart (Pie, Line, or Bar charts)',
   htmlTag: 'dj-chart',
-  fields: ['title', 'database', 'query', 'arguments', 'chart', 'style', 'graph']
+  fields: ['title', 'database', 'query', 'arguments', 'chart', 'style', 'graph', 'expression']
 })
 @Component({
   selector: 'app-chart',

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jsonata from 'jsonata';
 import { AppService } from './app.service';
-import { DJData, DJDataConst, DJDataDashjoin, DJDataDashjoinQuery, DJDataREST, DJWrappedData } from './djbase/data';
+import { DJData, DJDataConst, DJDataDashjoin, DJDataDashjoinQuery, DJDataJson, DJDataREST, DJWrappedData } from './djbase/data';
 import sampleData from './djbase/data.json';
 
 @Injectable({
@@ -41,7 +41,7 @@ export class DJRuntimeService {
 
   getContainerData() { return this.containerData; }
 
-  getData(name): DJData<any> {
+  getData(name, ctx?): DJData<any> {
     if (name.startsWith('/'))
       return new DJDataConst<any>([this.getLocalData(name)]);
 
@@ -55,6 +55,9 @@ export class DJRuntimeService {
 
       if (name.startsWith('dj/search/'))
         return new DJWrappedData(new DJDataREST(name, this.http, '/rest/database/search/' + name.substring('dj/search/'.length) + '?limit=100'))
+
+      if (name.startsWith('dj/expression/'))
+        return new DJWrappedData(new DJDataJson(ctx));
 
       return new DJDataDashjoin<any>(name, this.http, this.app);
     }

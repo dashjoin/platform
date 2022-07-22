@@ -96,6 +96,11 @@ export interface Widget {
     arguments: any;
 
     /**
+     * table / chart / tree expression
+     */
+    expression: any;
+
+    /**
      * like "a href" attribute
      */
     href: string;

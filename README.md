@@ -830,6 +830,7 @@ Chart for visualizing query results.
 * chart: chart type
 * style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/latest/configuration/) - for instance, scales.yAxes.ticks.min = 0 makes sure the y-axis starts at 0
 * graph: specifies whether the query is a graph query
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
@@ -951,6 +952,7 @@ Displays query results as a table
 * query: query to run
 * arguments: optional expression resulting in query arguments
 * graph: specifies whether the query is a graph query
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 ##### text
 
@@ -967,6 +969,7 @@ Displays a tree based on a recursive query
 * database: database to run the query on
 * query: query that projects a single column with the keys of the current node's children
 * arguments: expression that passes the current node's primary key as a query argument
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 ##### [variable](https://demo.my.dashjoin.com/#/page/variable)
 

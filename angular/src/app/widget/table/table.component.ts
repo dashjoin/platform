@@ -11,7 +11,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that displays a table',
   htmlTag: 'dj-table',
-  fields: ['title', 'database', 'query', 'arguments', 'graph']
+  fields: ['title', 'database', 'query', 'arguments', 'graph', 'expression']
 })
 @Component({
   selector: 'app-table',

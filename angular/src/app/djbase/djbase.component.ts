@@ -143,6 +143,13 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
 
     let data = this.data;
 
+    // allow passing some context data to runtime
+    let ctx = undefined;
+    if (!data && this.layout?.expression) {
+      ctx = this.evaluateExpression(this.layout.expression);
+      data = 'dj/expression/' + this.layout.expression;
+    }
+
     if (!data && this.layout?.query) {
       if (this.layout.graph)
         data = 'dj/queryGraph/' + this.layout.database + '/' + this.layout.query;
@@ -170,7 +177,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     }
 
     this.app.log('data', data);
-    return data ? this.runtime.getData(data) : this.runtime.getCurrentData();
+    return data ? this.runtime.getData(data, ctx) : this.runtime.getCurrentData();
   }
 
   /**

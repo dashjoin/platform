@@ -262,6 +262,14 @@ export class EditWidgetDialogComponent {
               type: 'boolean',
               case: this.generateCase('graph')
             },
+            expression: {
+              static: true,
+              title: 'Data gathering expression',
+              type: 'string',
+              widget: 'custom',
+              widgetType: 'expression',
+              case: this.generateCase('expression')
+            },
             roles: {
               static: true,
               title: 'Show only for roles',

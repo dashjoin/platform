@@ -90,7 +90,7 @@ export class MyDataSource extends MatTreeNestedDataSource<TreeNode> {
   category: 'Default',
   description: 'Component that displays a tree',
   htmlTag: 'dj-tree',
-  fields: ['title', 'database', 'query', 'arguments']
+  fields: ['title', 'database', 'query', 'arguments', 'expression']
 })
 @Component({
   selector: 'app-tree',
