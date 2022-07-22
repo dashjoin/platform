@@ -36,7 +36,7 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
   stringHashCode(str: string) {
     let hash = 0
     for (let i = 0; i < str.length; ++i)
-      hash = hash << 5 - hash + str.charCodeAt(i)
+      hash = Math.imul(hash, 31) + str.charCodeAt(i)
     return (hash | 0) + 2147483647 + 1;
   }
 
