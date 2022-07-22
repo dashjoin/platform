@@ -50,7 +50,10 @@ export class EditRelatedComponent extends LinksComponent implements OnInit {
       const arg = {};
       arg[parts[3]] = (this.pk1);
 
-      this.getData().get({ arguments: arg }).then(res => {
+      this.getData().get({ arguments: arg, pageSize: 100_000 }).then(res => {
+        // Warn if there is more data
+        if (res.paging?.next.cursor)
+          this.snackBar.open('Ignored records for editRelated widget (more than 100_000): ' + this.data, 'Ok');
         this.all = res.data;
         if (this.layout.columns) {
           this.columns = this.layout.columns;
