@@ -22,9 +22,14 @@ import { Util } from '../../util';
 export class SearchComponent extends DJBaseComponent implements OnInit {
 
   /**
-   * show popup containing db and table dropdowns
-   */
+  * show popup containing db and table dropdowns
+  */
   show = false;
+
+  /**
+   * avoid reopening of popup after close
+   */
+  justClosed = false;
 
   /**
    * data structure for the db and table dropdowns
@@ -78,6 +83,10 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
    * show the popup and load the data if necessary
    */
   doShow() {
+    if (this.justClosed) {
+      this.justClosed = false;
+      return;
+    }
     if (!this.db2table) {
       this.db2table = {};
       this.http.get<string[]>('/rest/database/tables').subscribe((res) => {
@@ -95,11 +104,11 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
     }
   };
 
-  focus() {
-    console.log('focus')
-  }
-
-  blur() {
-    console.log('blur')
+  /**
+   * close the popup, this causes the input to get focus, avoid reopening via justClosed flag
+   */
+  close() {
+    this.justClosed = true;
+    this.show = false;
   }
 }
