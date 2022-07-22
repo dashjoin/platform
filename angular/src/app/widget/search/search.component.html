@@ -1,7 +1,34 @@
 <mat-form-field class="search-box">
-    <input matInput type="text" [(ngModel)]="search" autocomplete="off" (keyup.enter)="navigate()">
-    <button [disabled]="!search" mat-button matSuffix mat-icon-button aria-label="Search"
-        [routerLink]="['/search', search]">
+    <input matInput type="text" [(ngModel)]="search" autocomplete="off" (keyup.enter)="navigate()" (focus)="doShow()"
+        (blur)="blur()">
+    <button [disabled]="!search" mat-button matSuffix mat-icon-button aria-label="Search" (click)="navigate()">
         <mat-icon>search</mat-icon>
     </button>
+    <div *ngIf="show" class="popup">
+        <mat-card>
+            <form>
+                <mat-form-field>
+                    <mat-label>Search database</mat-label>
+                    <mat-select [value]="searchdatabase"
+                        (selectionChange)="searchdatabase=$event.value; searchtable='*'" (blur)="blur()"
+                        (focus)="focus()">
+                        <mat-option value="*">*</mat-option>
+                        <mat-option *ngFor="let db of db2table | keyvalue" [value]="db.key">
+                            {{db.key}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                &nbsp;
+                <mat-form-field>
+                    <mat-label>Search table</mat-label>
+                    <mat-select [(value)]="searchtable" (blur)="blur()" (focus)="focus()">
+                        <mat-option value="*">*</mat-option>
+                        <mat-option *ngFor="let t of db2table[searchdatabase]" [value]="t">
+                            {{t}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </mat-card>
+    </div>
 </mat-form-field>

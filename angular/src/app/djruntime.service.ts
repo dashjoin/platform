@@ -54,7 +54,7 @@ export class DJRuntimeService {
         return new DJWrappedData(new DJDataDashjoinQuery<any>(name, this.http, true));
 
       if (name.startsWith('dj/search/'))
-        return new DJWrappedData(new DJDataREST(name, this.http, '/rest/database/search/' + encodeURIComponent(name.substring('dj/search/'.length)) + '?limit=100'))
+        return new DJWrappedData(new DJDataREST(name, this.http, '/rest/database/search/' + name.substring('dj/search/'.length) + '?limit=100'))
 
       return new DJDataDashjoin<any>(name, this.http, this.app);
     }

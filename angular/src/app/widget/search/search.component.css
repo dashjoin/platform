@@ -3,4 +3,12 @@
     padding: 0px 14px;
     font-size: medium;
     width: 160px;
+    position: relative;
+}
+
+.popup {
+    position: absolute;
+    top: 40px;
+    right: -30px;
+    z-index: 999;
 }
