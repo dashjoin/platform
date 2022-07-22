@@ -185,7 +185,10 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     }
 
     if (!data && this.search) {
-      data = 'dj/search/' + this.search;
+      const searchdatabase = this.route.snapshot.paramMap.get('sdatabase');
+      const searchtable = this.route.snapshot.paramMap.get('stable');
+      data = 'dj/search/' + (searchdatabase ? searchdatabase + '/' : '') +
+        (searchtable ? Util.encodeTableOrColumnName(searchtable) + '/' : '') + encodeURIComponent(this.search);
     }
 
     this.app.log('data', data);
