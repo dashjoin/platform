@@ -65,18 +65,18 @@
                 }
             },
             {
-                "widget": "display",
-                "display": "$djGetDatabases()",
+                "widget": "table",
+                "expression": "$djGetDatabases()",
                 "title": "Database Drivers"
             },
             {
-                "widget": "display",
-                "display": "$djGetDrivers()",
+                "widget": "table",
+                "expression": "$djGetDrivers()",
                 "title": "JDBC Drivers"
             },
             {
-                "widget": "display",
-                "display": "$djGetFunctions()",
+                "widget": "table",
+                "expression": "$djGetFunctions()",
                 "title": "Functions"
             }
         ],
