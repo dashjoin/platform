@@ -1495,6 +1495,24 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 * Graph Search: PathQL integration
 * Data Model: JSONb arrays can be foreign keys, allow specifying external ontology
 
+#### 2.5 (July 2022)
+
+* UI
+  * Components can be scheduled to redraw live data
+  * Chart, table and tree widget support JSONata in addition to DB queries
+  * Page variables can be set via the URL
+  * Charts are clickable and navigate to the respective instance page
+  * Forms support document upload
+* Search: Results can be restricted per database and table
+* Data Model
+  * Databases, tables and properties can be assigned a "title" that is used in forms and hyperlinks
+  * A description can be set for databases, tables and properties, enhancing the technical metadata with semantics
+  * Support for SQL views
+* SDK
+  * Monaco editor integrated for editing SQL, HTML, and CSS
+  * Introduced CSV parsing options
+  * New openText function allows web scaping
+
 ## Administration
 
 This section describes administration and operating procedures for the Dashjoin platform.
