@@ -690,17 +690,17 @@ export class DJWrappedData<T> extends DJDataBase<T> {
      * called from getMeta() / getInternal()
      * make sure data and metadata is loaded
      */
-    async load() {
+    async load(options?: DJDataGetOptions) {
         if (!this.loading)
-            this.loading = this.go();
+            this.loading = this.go(options);
         await this.loading;
     }
 
     /**
      * loading promise
      */
-    async go() {
-        this.data = await (await this.delegate.get()).data;
+    async go(options?: DJDataGetOptions) {
+        this.data = await (await this.delegate.get(options)).data;
         this.meta = await this.delegate.getMeta();
 
         // enable paging, total size, sorting
@@ -715,7 +715,7 @@ export class DJWrappedData<T> extends DJDataBase<T> {
     }
 
     protected async getInternal(options?: DJDataGetOptions): Promise<DJDataPage<T>> {
-        await this.load();
+        await this.load(options);
 
         // sorting
         // TODO: currently only support sorting one col
