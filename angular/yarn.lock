@@ -1423,10 +1423,10 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@dashjoin/json-schema-form@^0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@dashjoin/json-schema-form/-/json-schema-form-0.9.2.tgz#df91ac6ab0539ed82fea0a232b0ea3163395707f"
-  integrity sha512-8UzljefzypLQxHk7+SEx1SqaUOyQq4lfEYBEnGHfy+yo3fH4w9Oxw7L5JZpqVzee7K+f4wjJyXEmxRZG/ey8Fw==
+"@dashjoin/json-schema-form@^0.9.3":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@dashjoin/json-schema-form/-/json-schema-form-0.9.3.tgz#d7b2290620dfefec921d488a8a77e0139eb30247"
+  integrity sha512-WDgalAj245GYtoyLcMA2KdRUf8TTnh9MiqXdoOvPD3eIwzyYDpqOxRuq2vFMaV0t/9QczJYc+ghVFobEMQVdjQ==
   dependencies:
     tslib "^2.4.0"
 
