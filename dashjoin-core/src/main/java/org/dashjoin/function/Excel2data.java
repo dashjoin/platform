@@ -1,6 +1,6 @@
 package org.dashjoin.function;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,32 +14,20 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.dashjoin.util.FileSystem;
 
 /**
- * like Doc2data, but load an excel sheet from a json structure (map of sheetname to table). we
- * interpret the first row as the table field names
+ * Loads an excel sheet into a json structure (map of sheetname to table). we interpret the first
+ * row as the table field names
  */
-public class Excel2data extends AbstractFunction<String, Object> {
-
-  @Override
-  public String getID() {
-    return "excel2data";
-  }
+public abstract class Excel2data extends AbstractFunction<String, Object> {
 
   @Override
   public String getType() {
     return "read";
   }
-
-  @Override
-  public Object run(String arg) throws Exception {
-    URL url = FileSystem.getUploadURL(arg);
-    return parse(url);
-  }
-
-  Object parse(URL url) throws Exception {
-    Workbook wb = WorkbookFactory.create(url.openStream());
+  
+  protected Object parse(InputStream in) throws Exception {
+    Workbook wb = WorkbookFactory.create(in);
     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
     Map<String, List<Map<String, Object>>> res = new LinkedHashMap<>();
     for (Sheet sheet : wb) {

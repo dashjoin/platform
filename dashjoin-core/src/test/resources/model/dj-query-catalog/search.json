@@ -1,6 +1,6 @@
 {
 	"ID": "search",
-	"query": "select ID, NAME from EMP where NAME=${search}",
+	"query": "select \"ID\", \"NAME\" from \"EMP\" where \"NAME\"=${search}",
 	"type": "read",
 	"roles": ["user"],
   "arguments" : {

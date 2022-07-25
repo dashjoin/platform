@@ -42,6 +42,7 @@ Features
 * [Security](#security)
 * [Supported Databases](#supported-databases)
 * [API](#api)
+* [FAQ](#faq)
 * [Contribute](#contribute)
 
 ## Getting Started: 15 Minute Tour
@@ -99,14 +100,14 @@ Since we made a change to the database metadata and the application caches this 
 
 After the reload, you will notice that the customer column in the table now shows a hyperlink to the related record in the customer table. Likewise, if you navigate onto a request or onto a customer, the related records are displayed even though they reside in a different database. In addition, if you start typing in the request creation's customer field, you will notice that the matching northwind customer IDs are showing up.
 
-Navigate to the customer ALFKI (northwind/CUSTOMERS/ALFKI). The list of requests made by this customer shows up as a list of hyperlinks (1, 2, and 3). As a default, Dashjoin uses the primary key value as a link label, however we can customize this. Go to the REQUESTS table page, open the table metadata control and enter ${name} in the dj-label field. This string is a template syntax where constant strings can be mixed with template variables referencing columns. So a person template could be ${LAST_NAME}, ${FIRST_NAME}.
+Navigate to the customer ALFKI (northwind/CUSTOMERS/ALFKI). The list of requests made by this customer shows up as a list of hyperlinks (1, 2, and 3). As a default, Dashjoin uses the primary key value as a link label, however we can customize this. Go to the REQUESTS table page, open the table metadata control and enter `${name}` in the dj-label field. This string is a template syntax where constant strings can be mixed with template variables referencing columns. So a person template could be `${LAST_NAME}, ${FIRST_NAME}`.
 
 Save this change and reload the browser.
 The visit the first request. You will notice that the browser window title now displays the new label. Going back to the requests table you will see that any request that was visited, now shows a nice name. Likewise, if you go back to customer ALFKI, the list also shows the readable link labels (assuming they all have been visited).
 
 Go back to the requests table and enter the letter 'a' in the customer field of the create form. You will see the autocomplete options with the customer IDs starting with 'a'.
 The customer IDs are five letter strings. This is better than a plain number, but let's also choose a display name for customers.
-Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label ${COMPANY_NAME}.
+Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label `${COMPANY_NAME}`.
 Reload the browser and go back to the requests table. If you type 'a' into the customers create field, you will see the list of customer display names that start with 'a'.
 Note that the tooltip shows the underlying five letter primary key. This feature is very useful if tables use unreadable keys.
 
@@ -176,7 +177,7 @@ WHERE
   REQUESTS.user = 'user'
 ```
 
-Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with ${user}. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
+Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with `${user}`. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
 
 Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. Press the context menu under the text "New page" and select edit. This widget currently is a text widget displaying a static text. Instead we'd like a table showing our query result. Select the following:
 
@@ -190,7 +191,7 @@ arguments: {"user": $.user}
 
 Press ok and the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
 
-We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, $.user reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
+We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
 
 Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and select add from the table widget's context menu. A new widget appears which we edit. Select the following values:
 
@@ -225,15 +226,15 @@ $create(
 )
 ```
 
-Let's break down what is happening here. $create is a function which creates the record (3rd parameter) in the database (1st parameter) and the table (2nd parameter) specified. Database and table are static strings. The record consists of four dynamic fields:
+Let's break down what is happening here. `$create` is a function which creates the record (3rd parameter) in the database (1st parameter) and the table (2nd parameter) specified. Database and table are static strings. The record consists of four dynamic fields:
 
 The ID is computed by taking a random number (between 0 and 1), multiplying it with 1 million and rounding it up. Thus the ID is a random number between 1 and 1 million, providing reasonable protection from duplicate IDs.
 
-The user is computed using the same construct ($.user) as for the table widget above.
+The user is computed using the same construct (`$.user`) as for the table widget above.
 
-The name is specified as $.form.name. The rationale is the following: The user entries are stored in a JSON object form which hangs under the context $. In this object, we choose the name specified as the button argument.
+The name is specified as `$.form.name`. The rationale is the following: The user entries are stored in a JSON object form which hangs under the context $. In this object, we choose the name specified as the button argument.
 
-Finally, the submitted field is the current timestamp computed with $now().
+Finally, the submitted field is the current timestamp computed with `$now()`.
 
 After saving the layout, you can test the functionality. Note that you need to refresh the page after a value is submitted.
 
@@ -283,7 +284,7 @@ $update(database, table, object.ID, {\"createdBy\": $djUser(), \"createdOn\": $n
 
 Note that triggers can invoke each other recursively. If this expression would be the update trigger, 
 we might end up with an endless recursion resulting in a stack overflow. This can be avoided by performing the 
-update only if $isRecursiveTrigger() is false.
+update only if `$isRecursiveTrigger()` is false.
 
 ## Concepts
 
@@ -508,7 +509,12 @@ The label defines how the system should display a record in the following scenar
 * in the autocomplete dropdown when editing a foreign key field
 * when displaying the label of a hyperlink pointing to the record
 
-This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label "${LAST_NAME}" or even "${LAST_NAME}, ${FIRST_NAME}" in order to display meaningful and user readable information rather than numbers or UUIDs.
+This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label `${LAST_NAME}` or even `${LAST_NAME}, ${FIRST_NAME}` in order to display meaningful and user readable information rather than numbers or UUIDs.
+
+In case of an M:N relationship, the label can be shown depending on where the link is being displayed.
+I.e. the page for M looks at the M:N and will only display N, and N looking at M:N will see M (this works as intuitively expected).
+The syntax for labels that need dereferencing is to prepend '*'. To render a M:N you could use: {*M} {*N}
+where M and N are attributes (columns) in the relationship (table).
 
 Note that the user interface loads these template values in a lazy fashion whenever you visit a record page.
 
@@ -524,6 +530,11 @@ A trigger is an expression that is evaluated in the respective case. This follow
 * object: the record to the created or the fields to be updated
 
 Please see the section on expressions for more details.
+
+##### Table and Column Comment and Title
+
+Dashjoin extracts the technical metadata from the databases. The editor allows you to add a comment for tables and columns in order to document the data model.
+The table title is used when displaying a link to the table. Likewise, column titles are used in CRUD forms and the show all records table columns.
 
 ### Query Catalog and Editor
 
@@ -571,7 +582,7 @@ Use the limit text field to set an explicit query limit. Once, the limit is set,
 
 The query catalog page allows defining query parameters. Each parameter consists of the following information:
 
-* key: this is the parameter name that allows the query to reference the parameter using ${key}
+* key: this is the parameter name that allows the query to reference the parameter using `${key}`
 * type: defines the datatype of the parameter
 * sample: this is the value that will be used in the query editor
 
@@ -741,7 +752,11 @@ Widgets can be grouped into the following three categories.
 
 #### Container Widgets
 
-Container widgets can contain other widgets.
+Container widgets can contain other widgets. All container widgets have features that control under which
+conditions content is shown or hidden. Please note that these features are enforced on the client and thus
+can be manipulated by malicious users. Specifically, do not rely on these features to implement security
+and data privacy. You can safely restrict access on the server side by applying access control to
+functions, databases, tables, and queries.
 
 ##### [card](https://demo.my.dashjoin.com/#/page/card)
 
@@ -765,6 +780,7 @@ Container with a plain layout
 * foreach: show the single child for each result, using the result as the context
 * class: CSS classes to apply to the container
 * style: CSS styles to apply to the container
+* redrawInterval: redraw interval (seconds). Periodically refreshes the container and all contained content.
 
 ##### expansion
 
@@ -814,10 +830,11 @@ Chart for visualizing query results.
 * chart: chart type
 * style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/latest/configuration/) - for instance, scales.yAxes.ticks.min = 0 makes sure the y-axis starts at 0
 * graph: specifies whether the query is a graph query
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
-* [chart-timeline](https://demo.my.dashjoin.com/#/chart-timeline)
+* [chart-timeline](https://demo.my.dashjoin.com/#/page/chart-timeline)
 
 ##### create
 
@@ -832,6 +849,7 @@ Creates new database records:
 Displays the result of an expression:
 
 * display: expression to display
+* icons: if display evaluates to an object, icons maps the object keys to [material icons]([https://fonts.google.com/icons])
 
 Depending on the result of the evaluation, one of the following cases applies:
 
@@ -841,6 +859,26 @@ Depending on the result of the evaluation, one of the following cases applies:
 * if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record
 * an array of objects is displayed as a table
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
+
+Example:
+```
+  "display": {
+    "item one": "this item's value",
+    "item two": "another value",
+    "item three": "last value",
+  },
+  "icons": {
+    "item one": "traffic",
+    "item two": "turn_left"
+  }
+```
+
+<img width="166" alt="image" src="https://user-images.githubusercontent.com/62463897/162797294-32c5a7b0-ebc9-4ae5-8e7a-ef056c1a644d.png">
+
+Item one will be displayed with the "traffic" icon, item two with the "turn_left" icon.
+When no item is specified for a key, the default item is used. In the above example, "item three" will display the default icon.
+
+When icons is "*": "icon", all icons will be mapped to that same specified icon.
 
 ##### edit
 
@@ -856,6 +894,24 @@ Allows editing related records of a database record:
 * prop: foreign key column on the related table
 * columns: columns to display in the editRelated table display
 * deleteConfirmation: optional confirmation message before deleting a related record
+
+##### [html](https://demo.my.dashjoin.com/#/page/html)
+
+Displays custom HTML
+
+* html: HTML to display, can include [Embedded JavaScript templating](https://ejs.co/) 
+* css: CSS code to apply to the HTML
+* hideframe: Remove mat-card class from parent tag
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
+
+Note that by default, the CSS styles are only applied to the component.
+This feature can be turned off by adding the following comment to the HTML:
+
+```html
+<!-- encapsulation:off -->
+```
+
+With this setting, Dashjoin does not apply any sort of view encapsulation meaning that any styles specified for the component are actually globally applied and can affect any HTML element present within the application. This mode is essentially the same as including the styles into the HTML itself.
 
 ##### icon
 
@@ -880,7 +936,7 @@ Displays a map for a given location.
 Displays markdown
 
 * markdown: markdown to display
-* context: an expression that allows setting additional context variables that can be referenced via ${context.VARIABLE}
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
 
 Note that the HTML generated by the markdown engine is sanitized in order to avoid XSS vulnerabilities.
 Specifically, if you are using HTML tags, style attributes are filtered. A common task is to add margins to images.
@@ -896,6 +952,7 @@ Displays query results as a table
 * query: query to run
 * arguments: optional expression resulting in query arguments
 * graph: specifies whether the query is a graph query
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 ##### text
 
@@ -912,10 +969,13 @@ Displays a tree based on a recursive query
 * database: database to run the query on
 * query: query that projects a single column with the keys of the current node's children
 * arguments: expression that passes the current node's primary key as a query argument
+* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
 ##### [variable](https://demo.my.dashjoin.com/#/page/variable)
 
 Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x".
+A variable can be set via a URL query parameter. Appending ?a=1&b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only
+string variables can be set this way, so you might have to use $number(variable.a) when using the variable.
 
 * properties: an object where the fields are variable names and the values the respective types
 
@@ -999,7 +1059,7 @@ Calls an external REST service.
 
 Configuration
 
-* url: the URL of the REST service to call (the URL may contain template variables ${var} which are replaced with the respective argument field)
+* url: the URL of the REST service to call (the URL may contain template variables `${var}` which are replaced with the respective argument field)
 * username: optional HTTP basic authentication user name
 * password: optional HTTP basic authentication password
 
@@ -1072,7 +1132,7 @@ transforms the gathered set of tables into another set of tables. The mapping st
 * rename column: renames a column in a table
 * add table: a table can be added by providing the name of an initial table
 * add column: a column can be added to a table
-* modify column: sets the column to a new expression (the default simply copies the original value 1:1 using $.columnname; please see the next section for more details on expressions)
+* modify column: sets the column to a new expression (the default simply copies the original value 1:1 using `$.columnname`; please see the next section for more details on expressions)
 * extract table: if an input table contains a column with array values, extracts the union of these arrays into a new table
 
 ##### The Save Step
@@ -1094,15 +1154,15 @@ The expression result can be a map of table names to an array of rows (JSON obje
 If the expression result has a simpler structure (for instance only a single table),
 the ETL function wraps this in a default table called "table".
 
-##### ETLStream
+If you want to load a large amount of data, you can use the "foreach" expression to specify
+how to split the loading process into smaller parts. Assume you have a directory with
+thousands of files to load. The foreach expression can list the files using `$ls("url")`.
+The expression then specifies how each file is handled. Its `$` context is set to
+each individual URL and the expression and subsequent ETL are called for each URL individually.
 
-Like ETL but supports stream processing of very large JSON documents.
-
-Configuration
-
-* workerThreads: ETL worker threads (defaults to 4)
-* preSweepData: Pre-sweep all data to gather schema and metadata
-* limitRecords: if set, enforces an ETL import records limit to the specified value
+Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
+functions. In this case, these functions split a large file into smaller chunks which are then
+passed to the mapping expression.
 
 ##### Receive
 
@@ -1148,15 +1208,13 @@ As an example, you can navigate to the info page, enter the page edit mode and e
 {"user": user}
 ```
 
-Note that any expression must be prefixed with =. If you omit this, the system treats the value as a constant string and the expression editor will show the message: "Constant, prefix expressions with =".
-
 If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:
 
 ```text
 $read()
 ```
 
-The system will tell you about missing parameters: Arguments required: $read(database, table, pk1). Now change the expression to:
+The system will tell you about missing parameters: Arguments required: `$read(database, table, pk1)`. Now change the expression to:
 
 ```text
 $read("northwind", "EMPLOYEES", 2)
@@ -1169,6 +1227,21 @@ $
 ```
 
 displays the entire page context.
+
+Apart from the inline editor, you also have the ability to compose and debug JSONata expressions by opening the
+drag and drop editor with the edit icon:
+
+![Drag and Drop JSONata Editor](angular/src/assets/jsonata.png)
+
+* Drag and drop fuctions and operators onto the canvas from the left palette
+* Edit the parameters and re-arrange the steps using drag and drop
+* You can run the expression step by step; the data context is shown on the left
+
+The screenshot shows the following expression just before the final filter is applied.
+
+```
+$openJson("https://filesamples.com/samples/code/json/sample4.json").people.$[age > 30]
+```
 
 #### JSONata in Widgets
 
@@ -1234,6 +1307,7 @@ Function | Syntax |  Returns
 ---|---|---
 create| $create(database, table, pk1) | ID of the new record
 all| $all(database, table) | array of all table records
+all| $all(database, table, offset, limit, sort, descending, filter) | array of all table records whose columns match the filter key's values
 read|  $read(database, table, pk1) | The record
 traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
 update| $update(database, table, pk1, object)
@@ -1243,19 +1317,23 @@ query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 echo | $echo(any) | Prints the parameter to the log
-crawl | $crawl(url) | Crawls the URL and returns all URLs listed there
-doc2data | $doc2data(url) | Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing CSV, JSON, or XML
-excel2data | $excel2data(url) | Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing Excel
-load | $load(url) | Reads the URL (or list of URLs) and returns its content as text
-flatten | $flatten(table) | If a table (array of objects) contains a column with nested tables, flatten appends all these tables and appends the outer table's fields to each row
 index | $index() | Generates a unique row index ID
-streamdata | $streamdata(args) | Streaming equivalent is crawl that can be used in conjunction with ETLStream. Args is an object with the following keys: url specifies the source, streaming is a boolean indicating whether streaming is turned on or off, jsonpath is a JSON path expression that selects the field in a large JSON document that contains an array to be streamed, jsondepth is an alternative to jsonpath that specifies at with tree depth the streaming content can be found, match is a Java regular expression that can be used to select URLs
-table2object | $table2object(table) | Given a table with two columns, returns an object by interpreting the first column as keys and the second as values
-download | $download() | Like $load, but downloads the file into the upload folder, if the download is present, uses that copy
 djVersion | $djVersion() | Returns the platform version information
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
+jobStatus | $jobStatus() | if evaluated within a function, start and stop timestamps (millis since 1970) and job status
+moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
+ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
+streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
+openJson | $openJson(url) | Parses JSON at the url
+openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
+openXml | $openXml(url) | Parses XML at the url and converts it to JSON
+openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
+openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
+openText | $openText(url) | Parses the url and converts it to a string
 
 ### Access Control
 
@@ -1394,6 +1472,47 @@ When everything was build successfully, you can use the Dashjoin.launch configur
 The Quarkus launcher supports hot loading of resources, i.e. any changes made will be adjusted at runtime without having to restart the platform.
 (Note: you will have to adjust the absolute folder references in the launch file to you own workspace settings)
 
+### Version History
+
+#### 1.0 (May 2021)
+
+* Launch of the platform
+
+#### 2.0 (Jan 2022)
+
+* Extended support for databases: MongoDB, ArangoDB, RDF
+* Support for graph queries: database drivers can implement graph / path queries, widgets can display graph query results and the platform has basic support for OpenCypher
+* Chart improvements: support for stacked bar charts, ability to configure charts with all ChartJS options
+* New Function: the "receive" function supports streaming data / IoT use cases
+* App development / lifecycle: apps can be written collaboratively on GitHub, auto-installed upon platform launch
+* Functions and databases can be deployed as micro-services using the RemoteDatabase driver
+
+#### 2.1 (April 2022)
+
+* UI: HTML component, icons editor and display icon specification, run write queries from catalog, JSONata editor, MAP widget, PDF export
+* ETL: streaming XML, YAML, transparent HTTP caching
+* JSONata: 100% compatibility to JSONataJS, functions with multiple parameters
+* Graph Search: PathQL integration
+* Data Model: JSONb arrays can be foreign keys, allow specifying external ontology
+
+#### 2.5 (July 2022)
+
+* UI
+  * Components can be scheduled to redraw live data
+  * Chart, table and tree widget support JSONata in addition to DB queries
+  * Page variables can be set via the URL
+  * Charts are clickable and navigate to the respective instance page
+  * Forms support document upload
+* Search: Results can be restricted per database and table
+* Data Model
+  * Databases, tables and properties can be assigned a "title" that is used in forms and hyperlinks
+  * A description can be set for databases, tables and properties, enhancing the technical metadata with semantics
+  * Support for SQL views
+* SDK
+  * Monaco editor integrated for editing SQL, HTML, and CSS
+  * Introduced CSV parsing options
+  * New openText function allows web scaping
+
 ## Administration
 
 This section describes administration and operating procedures for the Dashjoin platform.
@@ -1404,6 +1523,91 @@ A system is defined by the following configurations: Dashboards, layout pages, u
 These settings are stored in the configuration database. For the open source version, this data is kept on the file system
 in the model folder. In the docker container, this folder is located under /deployments/model. For locally installed
 systems, this folder can be found under USER_HOME/.dashjoin/model.
+
+### Configuring OpenID
+
+The Dashjoin platform can be setup to delegate identity management to an OpenID provider such as Google, Microsoft Azure AD, Okta, or Keycloak.
+
+#### Registering the Dashjoin Application
+
+The first step is to register the Dashjoin application in your OpenID management console.
+This [example](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) explains the process
+for Azure AD. Note that you will have to have a redirect URL such as "https://dashjoin-app.example.com/login" available.
+
+#### Configuring the OpenID Provider in Dashjoin
+
+The Dashjoin login page can be configured via a configuration file located at /assets/logincfg.json. The default config is:
+
+```json
+{
+    "signInTabText": "My Dashjoin",
+    "signInCardTitleText": "Sign In",
+    "emailText": "E-Mail or Username",
+    "registerTabText": "New User",
+    "resetPasswordTabText": "Reset My Password",
+    "resetPasswordInputText": "Enter your E-Mail. Password reset instructions will be sent",
+    "emailLoginEnabled": true,
+    "registrationEnabled": true,
+    "guestEnabled": false,
+    "guestLoginEnabled": true,
+    "providers": "google",
+    "openIdConfigs": []
+}
+```
+
+The information you gathered from registering your application in the previous step can be added in the openIdConfigs array as shown in the 
+following Azure AD example:
+
+```json
+{
+    ...
+    "openIdConfigs": [
+        { 
+            "domain": "dashjoin.com", 
+            "name": "Dashjoin Example.com", 
+            "logo": "/favicon.ico", 
+            "config": { 
+                "issuer": "https://login.microsoftonline.com/.../v2.0", 
+                "clientId": "...", 
+                "redirectUri": "https://dashjoin-app.example.com/login", 
+                "scope": "openid profile email", 
+                "requestAccessToken": false, 
+                "strictDiscoveryDocumentValidation": false 
+            } 
+        }
+    ]
+}
+```
+
+This config fields are defined as follows:
+
+* Domain: the domain the application is running on
+* Name: Application name in the IDM
+* Logo: Absolute or relative URL to the IDM logo to be displayed on teh login screen
+* Issuer: URL / UUID of the IDM issuing authorizations
+* Client ID: ID of the registered application in the IDM
+* Redirect URI: URL of the Dashjoin login page
+* Scopes: scopes are used by an application during authentication to authorize access to a user's details
+* Request Access Token: obtain an Access Token, an ID Token, and optionally a Refresh Token
+* Strict Discovery Document Validation: ensure that all of the endpoints provided via the ID Provider discovery document share the same base URL as the issuer parameter
+
+You can configure multiple OpenID providers:
+
+![Features of the Query Editor](angular/src/assets/openid.png)
+
+#### Creating and Assigning Application Roles
+
+* After the application is registered within the IDM and the IDM made known to the application, you need to define
+the roles an IDM user has within the application. On Azure AD, this is the "App roles" dialog. Note that these roles must match
+the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.
+
+#### Adding the Open ID Config to the Platfrom
+
+The Open ID configuration can be changed as follows:
+
+* On premise installer: create the file /target/quarkus-app/classes/META-INF/resources/assets/logincfg.json in your installation
+* Docker: Use the Docker -v option to mount logincfg.json to /deployments/classes/META-INF/resources/assets/logincfg.json
+* PaaS: [Send an email](https://dashjoin.com/#contact) to request the change.
 
 ### Query Performance
 
@@ -1449,6 +1653,15 @@ In this case, you can define the following query:
 select ID, NAME 
 from EMP 
 where NAME like concat(${search}, '%')
+```
+
+You can also use union queries to search over multiple tables. Note that in this case,
+the query needs to project table, id, match:
+
+```sql
+select 'EMP', ID, NAME from EMP where NAME=${search}
+union 
+select 'PRJ', ID, NAME from PRJ where NAME=${search}
 ```
 
 Note that the query must have a single parameter "search" in order to be used this way.
@@ -1582,6 +1795,8 @@ The Dashjoin architecture features an Angular Single Page Application (SPA) that
 The OpenAPI description is available at <https://demo.my.dashjoin.com/openapi>. Dashjoin also ships the Swagger GUI at <https://demo.my.dashjoin.com/swagger-ui>.
 Please note that the API is subject to change.
 
+### Authentication
+
 The API requires any request using a local admin user to be authenticated with HTTP basic authentication:
 
 ```bash
@@ -1599,6 +1814,39 @@ Depending on your OpenID provider, a bearer token can also be obtained via a sep
 
 In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
 RemoteDatabase clients. For more information, please refer to the [dashjoin-sdk](https://github.com/dashjoin/platform/tree/master/dashjoin-sdk) module documentation.
+
+### PDF Export
+
+Any platform page can be exported to PDF using the puppeteer framework. For your convenience, we deployed a cloud function to do this for any
+installation available on the web. Please note that your credentials and the PDF content are sent via this third party if you use this function:
+
+```bash
+curl -X POST https://europe-west1-djfire-1946d.cloudfunctions.net/exportPdf --output cloudfunction.pdf -H "Content-Type:application/json" -d '{
+    "url": "https://demo.my.dashjoin.com/#/page/html-Dashboard2",
+    "username": "...",
+    "password": "...",
+    "pdfOptions": {
+        "format": "a4",
+        "landscape": true
+    },
+    "toggleNavBar": true
+}'
+```
+
+Alternatively, you can use a bearer token in the "authentication" field instead of user name and password.
+
+
+## FAQ
+
+* **How can I edit a fullscreen page?** Usually, you toggle the edit mode via the widget in the toolbar. If you're creating a page without the toolbar, you have two options: 1) If you're working with docker or the installer, you can edit the dashboard page in the respective file on the file system. 2) You can navigate to any "normal" page, enter edit mode, navigate to the fullscreen page, make changes via the edit context menu, navigate back to the "normal" page and save there.
+
+* **The [Dashjoin Demo Application](https://github.com/dashjoin/dashjoin-demo) contains some interesting examples. How can I apply them to my application?** You can either locate your application on the file system and copy an example page there or you can look at the page in order to see which settings to add in the layout editor dialogs (e.g. a JSONata expression).
+
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in JSONata?** In [JSONata](https://docs.jsonata.org/simple#navigating-json-objects), field names can be escaped using back-ticks (`). Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
+
+* **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`. Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
+
+* **How can I customize the forms in the edit, button and variable widgets?** These widgets use the JSON Schema Form component. This [online playground]() lets you experiment with the various features. This component comes with a WYSIWYG editor which is available in edit mode by clicking the three vertical dot icon. Note that not all features of the component are exposed in the WYSIWYG editor. You can leverage the advanced features by editing the underlying JSON directly. The demo application shows two examples. The "createSchema" of the [customer page](https://github.com/dashjoin/dashjoin-demo/blob/main/model/dj-database/dj%252Fnorthwind.json) section shows the form of the email button, which displays the email body input field with a larger text box. The city instance page shows a similar layout for the edit widget. The [variable example](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/variable.json) shows how a select widget with display names and values can be rendered.
 
 ## Contribute
 

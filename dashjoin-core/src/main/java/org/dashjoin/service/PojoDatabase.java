@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -272,7 +273,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         if (tables != null)
           for (Map<String, Object> e : tables.values())
             if (all || name.equals(e.get("name")))
-              res.add(e);
+              if (e.get("ID") != null)
+                res.add(e);
       }
     }
     if (qi.query.equals("Property") || qi.query.startsWith("Property/")) {
@@ -290,7 +292,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
             if (properties != null)
               for (Map<String, Object> p : properties.values())
                 if (all || name.equals(p.get("name")))
-                  res.add(p);
+                  if (p.get("ID") != null)
+                    res.add(p);
           }
       }
     }
@@ -311,7 +314,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       MapUtil.keyWhitelist(object,
           Arrays.asList("dj-label", "before-create", "after-create", "before-update",
               "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout",
-              "writeRoles", "readRoles"));
+              "writeRoles", "readRoles", "comment", "title"));
 
       String[] parts = Escape.parseTableID((String) search.get("ID"));
 
@@ -362,7 +365,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
     if (schema.name.equals("Property")) {
 
       // on Table, we only edit these props, ignore all others
-      MapUtil.keyWhitelist(object, Arrays.asList("pkpos", "ref", "displayWith", "createOnly"));
+      MapUtil.keyWhitelist(object,
+          Arrays.asList("pkpos", "ref", "displayWith", "createOnly", "comment", "title"));
 
       String[] parts = Escape.parseColumnID((String) search.get("ID"));
 
@@ -446,6 +450,15 @@ public class PojoDatabase extends UnionDatabase implements Config {
       String name = (String) object.get("name");
       if (name != null && !name.equals(URLEncoder.encode(name, StandardCharsets.UTF_8)))
         throw new Exception("Database name must not contain special characters");
+      String djClassName = (String) object.get("djClassName");
+      String url = (String) object.get("url");
+      if (!(services.persistantDB instanceof JSONFileDatabase))
+        if ("org.dashjoin.service.SQLDatabase".equals(djClassName))
+          if (url != null)
+            if (url.startsWith("jdbc:sqlite:"))
+              if (!url.contains("/tmp/"))
+                throw new Exception(
+                    "In the cloud, only non-persistent SQLite databases in the /tmp folder are supported");
     }
     if (m.name.equals("Dashjoin")) {
       String name = (String) object.get("ID");
@@ -639,6 +652,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
         tm.put("class", simple(r.get("djClassName")));
         tm.put("database", r.get("database"));
       }
+      tm.put("comment", r.get("comment"));
       tm.put("type", r.get("type"));
       tm.put("roles", roles(r.get("roles")));
       if (!database) {
@@ -650,7 +664,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         if (start instanceof String) {
           try {
             Date s = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) start)));
-            Date e = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) end)));
+            Date e = end == null ? new Date()
+                : Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) end)));
             tm.put("runtime (s)", (e.getTime() - s.getTime()) / 1000);
           } catch (Exception e) {
             // ignore
@@ -669,6 +684,16 @@ public class PojoDatabase extends UnionDatabase implements Config {
   public List<Map<String, Object>> queryNavigation(QueryMeta qi, Map<String, Object> arguments)
       throws Exception {
     List<AbstractDatabase> objects = this.getDatabases();
+    objects.sort(new Comparator<AbstractDatabase>() {
+      @Override
+      public int compare(AbstractDatabase o1, AbstractDatabase o2) {
+        try {
+          return o1.name.toLowerCase().compareTo(o2.name.toLowerCase());
+        } catch (Exception e) {
+          return 0;
+        }
+      }
+    });
     List<Map<String, Object>> projected = new ArrayList<>();
 
     List<Map<String, Object>> configs = new ArrayList<>();
@@ -686,6 +711,17 @@ public class PojoDatabase extends UnionDatabase implements Config {
     QueryMeta db = new QueryMeta();
     db.query = "page";
     List<Map<String, Object>> pages = this.query(db, null);
+    pages.sort(new Comparator<Map<String, Object>>() {
+      @Override
+      public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+        try {
+          return ((String) o1.get("ID")).toLowerCase()
+              .compareTo(((String) o2.get("ID")).toLowerCase());
+        } catch (Exception e) {
+          return 0;
+        }
+      }
+    });
     List<Map<String, Object>> dashboards = new ArrayList<>();
     for (Map<String, Object> page : pages) {
       if ("Home".equals(page.get("ID")))
@@ -707,12 +743,23 @@ public class PojoDatabase extends UnionDatabase implements Config {
       if ("dj/config".equals(r.ID))
         continue;
       List<Map<String, Object>> tabs = new ArrayList<>();
-      for (Table i : r.tables.values())
+      List<Table> sortedTables = new ArrayList<>(r.tables.values());
+      sortedTables.sort(new Comparator<Table>() {
+        @Override
+        public int compare(Table o1, Table o2) {
+          try {
+            return o1.name.toLowerCase().compareTo(o2.name.toLowerCase());
+          } catch (Exception e) {
+            return 0;
+          }
+        }
+      });
+      for (Table i : sortedTables)
         if (i.name != null)
-          tabs.add(ImmutableMap.of("name", i.name, "children", Arrays.asList(), "href",
-              Arrays.asList("/table", r.name, i.name)));
+          tabs.add(ImmutableMap.of("name", i.title != null ? i.title : i.name, "children",
+              Arrays.asList(), "href", Arrays.asList("/table", r.name, i.name)));
       Map<String, Object> tm = new LinkedHashMap<>();
-      tm.put("ID", ImmutableMap.of("name", r.name, "href",
+      tm.put("ID", ImmutableMap.of("name", r.title != null ? r.title : r.name, "href",
           Arrays.asList("/resource", "config", "dj-database", r.ID), "children", tabs));
       projected.add(tm);
     }

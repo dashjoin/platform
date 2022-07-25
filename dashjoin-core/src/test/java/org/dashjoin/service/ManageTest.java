@@ -231,7 +231,7 @@ public class ManageTest {
             manage.append(sc, "junit", input);
           else
             // table does not exist in junit
-            Assertions.assertThrows(NullPointerException.class, () -> {
+            Assertions.assertThrows(IllegalArgumentException.class, () -> {
               manage.append(sc, "junit", input);
             });
         if (i == 2)

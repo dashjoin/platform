@@ -29,6 +29,11 @@ public class QueryMeta {
   public String database;
 
   /**
+   * optional query comment
+   */
+  public String comment;
+
+  /**
    * the query type. This is a hint for the database implementation as to which native API to use.
    * An example are the values read, write, proc telling a SQL DB to use query, update or stored
    * procedures

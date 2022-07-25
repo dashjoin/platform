@@ -40,11 +40,6 @@ export class AppService implements CanActivate {
   sidenavOpen = window.innerWidth > 700;
 
   /**
-   * layout clipboard
-   */
-  clipboard: any;
-
-  /**
    * http cache for REST request on config/Table (i.e. schema requests)
    */
   cache: { [key: string]: Observable<any> } = {};
@@ -348,12 +343,18 @@ export class AppService implements CanActivate {
       // console.log('labelDef', label);
       if (!object)
         label = this.defaultLabel(ids);
-      else
+      else {
+        let allUndefined = true;
+        let hasVariable = false;
         label = label.replace(/\${([^{}]*)}/g, (x) => {
           x = x.substring(2);
           x = x.substring(0, x.length - 1);
-          if (!x.startsWith('*'))
+          if (!x.startsWith('*')) {
+            hasVariable = true;
+            if (object[x])
+              allUndefined = false;
             return object[x];
+          }
 
           // Resolve ${*property}
           // Replace with __<num>__ which will later be replaced with the real value
@@ -377,6 +378,9 @@ export class AppService implements CanActivate {
           }
           return res;
         });
+        if (hasVariable && allUndefined)
+          label = this.defaultLabel(ids);
+      }
     } else {
       label = this.defaultLabel(ids);
     }
@@ -440,11 +444,14 @@ export class AppService implements CanActivate {
   runtime: DJRuntimeService;
   setRuntime(runtime) { this.runtime = runtime; }
 
-  getIdLabelNG(link: string[], resolve = false, ownType?: string): Observable<string> {
+  getIdLabelNG(_link: string[], resolve = false, ownType?: string): Observable<string> {
 
-    if (!link) {
+    if (!_link) {
       return undefined;
     }
+
+    // shallow copy _link to make sure we do not change the caller's original
+    var link = [..._link];
 
     // sometimes, the link part array is ['', 'resource', ...] instead of ['/resource', ...] throwing off the indices
     if (link[0] === '') {

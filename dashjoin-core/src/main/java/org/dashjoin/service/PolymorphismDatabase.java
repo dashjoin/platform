@@ -95,8 +95,12 @@ public class PolymorphismDatabase extends JSONDatabase {
       int djClassName = distinct.indexOf("djClassName");
       if (djClassName >= 0) {
         String nameOrID = tableName.equals("dj-database") ? "name" : "ID";
-        distinct.set(djClassName, Arrays.asList("djClassName", nameOrID));
+        distinct.set(djClassName,
+            distinct.remove("title")
+                ? Arrays.asList("djClassName", nameOrID, "comment", "title")
+                : Arrays.asList("djClassName", nameOrID, "comment"));
         distinct.remove(nameOrID);
+        distinct.remove("comment");
       }
       int roles = distinct.indexOf("roles");
       if (roles >= 0) {
@@ -118,6 +122,13 @@ public class PolymorphismDatabase extends JSONDatabase {
       if (username >= 0 && password >= 0) {
         distinct.set(username, Arrays.asList("username", "password"));
         distinct.remove("password");
+      }
+      int expression = distinct.indexOf("expression");
+      int expressions = distinct.indexOf("expressions");
+      if (expression >= 0 && expressions >= 0) {
+        distinct.remove("expressions");
+        expression = distinct.indexOf("expression");
+        distinct.add(expression, "expressions");
       }
       res.put("order", distinct);
     }

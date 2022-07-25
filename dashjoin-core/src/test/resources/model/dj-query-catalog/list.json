@@ -1,6 +1,6 @@
 {
 	"ID": "list",
-	"query": "select ID, NAME from EMP order by NAME desc",
+	"query": "select \"ID\", \"NAME\" from \"EMP\" order by \"NAME\" desc",
 	"type": "read",
 	"roles": ["user"]
 }

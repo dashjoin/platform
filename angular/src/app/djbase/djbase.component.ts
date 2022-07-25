@@ -33,6 +33,28 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     this.getConfigFromAttribute();
   }
 
+  stringHashCode(str: string) {
+    let hash = 0
+    for (let i = 0; i < str.length; ++i)
+      hash = Math.imul(hash, 31) + str.charCodeAt(i)
+    return (hash | 0) + 2147483647 + 1;
+  }
+
+  /**
+   * Returns a "constant" ID for this component.
+   * Should survive page reloads.
+   * 
+   * @returns Component ID
+   */
+  getComponentId() {
+    if (!this.layout) return 'unknown';
+
+    // Calculate the component ID as hash from its JSON definition
+    const state = JSON.stringify(this.layout) + ' ' + this.layoutPos;
+
+    return this.layout.widget + '-' + this.stringHashCode(state);
+  }
+
   /**
    * TODO
    */
@@ -76,15 +98,10 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
    */
   allSort: Sort;
 
-  // constructor(protected runtime: DJRuntimeService,
-  //   protected elRef: ElementRef, protected cdRef: ChangeDetectorRef,
-  //   protected snackBar: MatSnackBar, protected route: ActivatedRoute, public router: Router,
-  //   protected httpI: HttpClient, public app: AppService, protected titleService: Title,
-  //   protected location: Location, public formService: JsonSchemaFormService, protected dialog: MatDialog,
-  //   public editor: QueryEditorService) {
-  //   super(elRef, cdRef, snackBar, route, router, httpI, app, titleService, location, formService, dialog, editor);
-  //   this.dataSnapshot = this.getData();
-  // }
+  /**
+   * Redraw counter
+   */
+  redrawCount = 0;
 
   /**
    * TODO
@@ -148,6 +165,13 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
 
     let data = this.data;
 
+    // allow passing some context data to runtime
+    let ctx = undefined;
+    if (!data && this.layout?.expression) {
+      ctx = this.evaluateExpression(this.layout.expression);
+      data = 'dj/expression/' + this.layout.expression;
+    }
+
     if (!data && this.layout?.query) {
       if (this.layout.graph)
         data = 'dj/queryGraph/' + this.layout.database + '/' + this.layout.query;
@@ -168,11 +192,14 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     }
 
     if (!data && this.search) {
-      data = 'dj/search/' + this.search;
+      const searchdatabase = this.route.snapshot.paramMap.get('sdatabase');
+      const searchtable = this.route.snapshot.paramMap.get('stable');
+      data = 'dj/search/' + (searchdatabase ? searchdatabase + '/' : '') +
+        (searchtable ? Util.encodeTableOrColumnName(searchtable) + '/' : '') + encodeURIComponent(this.search);
     }
 
     this.app.log('data', data);
-    return data ? this.runtime.getData(data) : this.runtime.getCurrentData();
+    return data ? this.runtime.getData(data, ctx) : this.runtime.getCurrentData();
   }
 
   /**
@@ -249,9 +276,9 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
       else
         cat = 'expression';
     }
-    const res = await this.http.get<any>('/rest/expression/' + encodeURIComponent(JSON.stringify(
-      { expression: expr, data: ctx })),
-      { headers: new HttpHeaders({ 'x-dj-cache': cat }) }).toPromise();
+    const res = await this.http.post<any>('/rest/expression', { expression: expr, data: ctx }, {
+      headers: new HttpHeaders({ 'x-dj-cache': cat, 'Content-Type': 'application/json' })
+    }).toPromise();
     return res;
   }
 

@@ -254,7 +254,9 @@ public class MongoDBEditor implements QueryEditorInternal {
         qc.columnID = prop.ID;
         qc.keyTable = prop.pkpos == null ? null : parse.collection;
         if (prop.ref != null)
-          qc.keyTable = prop.ref.split("/")[2];
+          // only include ref if it is inside the same DB (cannot join to other DBs)
+          if (prop.ref.split("/")[1].equals(db.name))
+            qc.keyTable = prop.ref.split("/")[2];
       }
       for (Entry<String, BsonValue> w : parse.match.entrySet())
         if (w.getKey().equals(f))

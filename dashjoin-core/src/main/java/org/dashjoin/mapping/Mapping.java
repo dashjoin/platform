@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
+import org.dashjoin.expression.ExpressionService.ParsedExpression;
 import org.dashjoin.function.Index;
 import org.dashjoin.util.MapUtil;
 import com.api.jsonata4java.expressions.EvaluateException;
-import com.api.jsonata4java.expressions.Expressions;
 import io.quarkus.logging.Log;
 
 /**
@@ -88,8 +88,9 @@ public class Mapping {
    * apply the row mapping expression to a source row. return null if the result is not included
    */
   @SuppressWarnings("unchecked")
-  public static Map<String, Object> apply(ExpressionService expressionService, Expressions filter,
-      Expressions rowMapping, Map<String, Object> row) throws Exception {
+  public static Map<String, Object> apply(ExpressionService expressionService,
+      ParsedExpression filter, ParsedExpression rowMapping, Map<String, Object> row)
+      throws Exception {
     if (filter != null) {
       Object include = expressionService.resolve(filter, row);
       if (include instanceof Boolean)
@@ -146,20 +147,31 @@ public class Mapping {
         }
 
         List<Map<String, Object>> mapped = new ArrayList<>();
-        Expressions filter = mapping.getValue().rowFilter == null ? null
+        ParsedExpression filter = mapping.getValue().rowFilter == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowFilter);
-        Expressions rowMapping = mapping.getValue().rowMapping() == null ? null
+        ParsedExpression rowMapping = mapping.getValue().rowMapping() == null ? null
             : expressionService.prepare(sc, mapping.getValue().rowMapping());
+
+        long t0 = System.currentTimeMillis();
+        Log.debug("Mapping started #records=" + source.size());
 
         int counter = 0;
         for (Map<String, Object> row : source) {
+          long ix = Index.increment();
+          Index.setReturnValue(ix);
+
           Map<String, Object> mappedRow = apply(expressionService, filter, rowMapping, row);
           if (mappedRow != null)
             mapped.add(mappedRow);
-          Index.increment();
-          if (counter++ % 1000 == 0)
-            Log.info(counter-1);
+          if (counter++ % 1000 == 0) {
+            long t = System.currentTimeMillis();
+            if (t - t0 >= 1000) {
+              Log.info("Mapping in progress #records=" + (counter - 1));
+              t0 = t;
+            }
+          }
         }
+        Log.debug("Mapping done #records=" + counter);
         res.put(mapping.getKey(), mapped);
       }
     }

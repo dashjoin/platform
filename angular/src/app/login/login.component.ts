@@ -103,6 +103,8 @@ export const routes: Routes = [
   { path: 'queryeditor', component: MainComponent, canActivate: [AppService] },
   { path: 'page/:database', component: InstanceComponent, canActivate: [AppService] },
   { path: 'search/:search', component: InstanceComponent, canActivate: [AppService] },
+  { path: 'search/:sdatabase/:search', component: InstanceComponent, canActivate: [AppService] },
+  { path: 'search/:sdatabase/:stable/:search', component: InstanceComponent, canActivate: [AppService] },
   { path: 'table/:tdatabase/:ttable', component: InstanceComponent, canActivate: [AppService] },
   { path: 'resource/:database/:table/:pk1', component: InstanceComponent, canActivate: [AppService] },
   { path: 'resource/:database/:table/:pk1/:pk2', component: InstanceComponent, canActivate: [AppService] },

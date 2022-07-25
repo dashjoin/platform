@@ -21,6 +21,11 @@ import { DashjoinWidget } from '../widget-registry';
 export class EditComponent extends DJBaseComponent implements OnInit {
 
   /**
+   * warn user before renaming a table
+   */
+  tableName: string;
+
+  /**
    * init with special handling for config/Table
    */
   ngOnInit(): void {
@@ -30,6 +35,7 @@ export class EditComponent extends DJBaseComponent implements OnInit {
     // TODO: this should not be hardcoded but come from widget/page config !
     if (this.database === 'config' && this.table === 'Table') {
       this.data = 'dj/config/Table';
+      this.tableName = this.value.name;
     }
   }
 
@@ -51,6 +57,13 @@ export class EditComponent extends DJBaseComponent implements OnInit {
    * update instance event handler
    */
   async update() {
+
+    if (this.tableName && this.tableName !== this.value.name) {
+      if (!confirm('You are about the rename the database table and reset any table / instance layouts. Are you sure?')) {
+        return;
+      }
+    }
+
     try {
       // clone and remove keys that are not part of the form
       const clone = JSON.parse(JSON.stringify(this.value));

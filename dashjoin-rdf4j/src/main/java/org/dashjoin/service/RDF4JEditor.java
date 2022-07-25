@@ -283,6 +283,7 @@ public class RDF4JEditor implements QueryEditorInternal {
       qc.col = new Col();
       qc.col.column = f;
       if (x != null)
+        // TODO: make sure we're within the same DB
         qc.keyTable = x.get(f).pkpos == null ? null : Escape.parseTableID(x.get(f).parent)[2];
       for (Cond w : parse.filter)
         if (w.left.name.equals(f))

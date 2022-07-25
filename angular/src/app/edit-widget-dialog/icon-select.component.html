@@ -1,0 +1,13 @@
+<mat-form-field>
+    <mat-label>Icon</mat-label>
+    <input matInput [value]="value" (keyup)="filter = $event.target.value" (change)="select($event.target.value)"
+        autocomplete="off">
+</mat-form-field>
+
+<div style="min-width: 400px; max-width: 400px">
+    <span *ngFor="let i of getIcons()">
+        <button (click)="select(split(i))" mat-icon-button color="accent">
+            <mat-icon [matTooltip]="i">{{split(i)}}</mat-icon>
+        </button>
+    </span>
+</div>

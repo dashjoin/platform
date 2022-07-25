@@ -96,6 +96,11 @@ export interface Widget {
     arguments: any;
 
     /**
+     * table / chart / tree expression
+     */
+    expression: any;
+
+    /**
      * like "a href" attribute
      */
     href: string;
@@ -144,6 +149,11 @@ export interface Widget {
      * material icon
      */
     icon: string;
+
+    /**
+     * display data key to icon map
+     */
+    icons: object;
 
     /**
      * widget tooltip
@@ -219,4 +229,30 @@ export interface Widget {
      * additional context expression
      */
     context: string;
+
+
+    /**
+     * HTML for HTMLComponent
+     */
+    html: string;
+
+    /**
+     * CSS for HTMLComponent
+     */
+    css: string;
+
+    /**
+     * JavaScript for HTMLComponent
+     */
+    script: string;
+
+    /**
+     * Switch to hide the widget card's frame
+     */
+    hideframe: boolean;
+
+    /**
+     * Redraw interval in ms
+     */
+    redrawInterval: number;
 }

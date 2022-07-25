@@ -46,7 +46,12 @@ public class SQLSchemaChange implements SchemaChange {
   public void renameTable(String table, String newName) throws SQLException {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
-        stmt.execute("ALTER TABLE " + db.q(table) + " RENAME TO " + db.q(newName));
+        if (db.url.startsWith("jdbc:db2:"))
+          stmt.execute("RENAME TABLE " + db.q(table) + " TO " + db.q(newName));
+        else if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
+          stmt.execute("EXEC sp_rename " + db.q(table) + ", " + db.q(newName));
+        else
+          stmt.execute("ALTER TABLE " + db.q(table) + " RENAME TO " + db.q(newName));
       }
     }
   }
@@ -65,8 +70,12 @@ public class SQLSchemaChange implements SchemaChange {
   public void renameColumn(String table, String column, String newName) throws SQLException {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
-        stmt.execute("ALTER TABLE " + db.q(table) + " RENAME COLUMN " + db.q(column) + " TO "
-            + db.q(newName));
+        if (db.url.startsWith("jdbc:sqlserver") || db.url.startsWith("jdbc:jtds"))
+          stmt.execute(
+              "EXEC sp_rename '" + db.q(table) + "." + db.q(column) + "', '" + db.q(newName) + "'");
+        else
+          stmt.execute("ALTER TABLE " + db.q(table) + " RENAME COLUMN " + db.q(column) + " TO "
+              + db.q(newName));
       }
     }
   }
@@ -76,8 +85,13 @@ public class SQLSchemaChange implements SchemaChange {
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
         String typeKeyword = db.url.startsWith("jdbc:postgres") ? "TYPE " : "";
-        stmt.execute("ALTER TABLE " + db.q(table) + " ALTER COLUMN " + db.q(column) + " "
-            + typeKeyword + t(table, column, newType));
+        if (db.url.startsWith("jdbc:db2:"))
+          typeKeyword = " SET DATA TYPE ";
+        String alterColumn =
+            db.url.startsWith("jdbc:mysql") || db.url.startsWith("jdbc:mariadb") ? " MODIFY "
+                : " ALTER COLUMN ";
+        stmt.execute("ALTER TABLE " + db.q(table) + alterColumn + db.q(column) + " " + typeKeyword
+            + t(table, column, newType));
       }
     }
   }
@@ -106,13 +120,14 @@ public class SQLSchemaChange implements SchemaChange {
     if ("integer".equals(s))
       return "INTEGER";
     if ("boolean".equals(s))
-      return "BOOLEAN";
+      return db.url.startsWith("jdbc:sqlserver") ? "BIT" : "BOOLEAN";
     if ("number".equals(s))
       return db.url.startsWith("jdbc:postgres") ? "DOUBLE PRECISION" : "DOUBLE";
     if ("date".equals(s))
       return db.url.startsWith("jdbc:postgres") ? "TIMESTAMP" : "DATETIME";
     if ("string".equals(s))
-      return db.url.startsWith("jdbc:postgres") ? "TEXT" : "VARCHAR(255)";
+      return db.url.startsWith("jdbc:postgres") ? "TEXT"
+          : (db.url.startsWith("jdbc:sqlserver") ? "NVARCHAR(1023)" : "VARCHAR(1023)");
     throw new RuntimeException("unknown type for column " + t + "." + c + ": " + s);
   }
 }

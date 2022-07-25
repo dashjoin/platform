@@ -2,9 +2,13 @@ package org.dashjoin.service;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import org.postgresql.jdbc.PgResultSetMetaData;
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.schema.Column;
+import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
@@ -23,7 +27,8 @@ public class TableName {
    * create the right instance for computing the table name
    */
   public static TableName create(String url, String query) throws SQLException {
-    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:oracle:"))
+    if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
+        || url.startsWith("jdbc:oracle:"))
       return new JTDSTableName(query);
     if (url.startsWith("jdbc:postgresql"))
       return new PostgresTableName(query);
@@ -42,6 +47,13 @@ public class TableName {
    */
   public String getColumnLabel(ResultSetMetaData meta, int column) throws SQLException {
     return meta.getColumnLabel(column);
+  }
+
+  /**
+   * simply delegate to meta.getColumnName()
+   */
+  public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+    return meta.getColumnName(column);
   }
 
   /**
@@ -77,6 +89,8 @@ public class TableName {
         if (!(parsed instanceof Select))
           return;
         Select select = (Select) parsed;
+        if (!(select.getSelectBody() instanceof PlainSelect))
+          return;
         body = (PlainSelect) select.getSelectBody();
         try {
           if (body.getLimit() != null)
@@ -101,7 +115,7 @@ public class TableName {
     @Override
     public String getColumnLabel(ResultSetMetaData meta, int i) throws SQLException {
       String label = meta.getColumnLabel(i);
-      if (i - 1 < body.getSelectItems().size()) {
+      if (body != null && i - 1 < body.getSelectItems().size()) {
         SelectItem selex = body.getSelectItems().get(i - 1);
         if (selex instanceof SelectExpressionItem)
           if (((SelectExpressionItem) selex).getExpression() instanceof Function) {
@@ -112,6 +126,14 @@ public class TableName {
           }
       }
       return label;
+    }
+
+    @Override
+    public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+      if (meta instanceof PgResultSetMetaData)
+        return ((PgResultSetMetaData) meta).getBaseColumnName(column);
+      else
+        return super.getColumnName(meta, column);
     }
   }
 
@@ -132,7 +154,7 @@ public class TableName {
     public String getTableName(ResultSetMetaData meta, int i) throws SQLException {
       String tablename = meta.getTableName(i);
       if ("".equals(tablename))
-        if (i - 1 < body.getSelectItems().size()) {
+        if (body != null && i - 1 < body.getSelectItems().size()) {
           SelectItem selex = body.getSelectItems().get(i - 1);
           if (selex instanceof SelectExpressionItem)
             if (((SelectExpressionItem) selex).getExpression() instanceof Function)
@@ -140,8 +162,38 @@ public class TableName {
           String sel = "" + selex;
           if (sel.split("\\.").length == 2)
             tablename = SQLDatabase.s(sel.split("\\.")[0]);
+          else
+            tablename = SQLDatabase.s(((Table) body.getFromItem()).getName());
         }
       return tablename;
+    }
+
+    @Override
+    public String getColumnName(ResultSetMetaData meta, int column) throws SQLException {
+      if (body != null && column - 1 < body.getSelectItems().size()) {
+        SelectItem i = body.getSelectItems().get(column - 1);
+        if (i instanceof SelectExpressionItem) {
+          if (((SelectExpressionItem) i).getAlias() != null) {
+            Expression e = ((SelectExpressionItem) i).getExpression();
+            if (e instanceof Column) {
+              return SQLDatabase.s(((Column) e).getColumnName());
+            }
+          }
+        }
+      }
+      return super.getColumnName(meta, column);
+    }
+
+    @Override
+    public String getColumnLabel(ResultSetMetaData meta, int column) throws SQLException {
+      String res = super.getColumnLabel(meta, column);
+      if (res == null || res.isEmpty())
+        if (body != null && column - 1 < body.getSelectItems().size()) {
+          SelectItem i = body.getSelectItems().get(column - 1);
+          if (i instanceof SelectExpressionItem)
+            return i.toString();
+        }
+      return res;
     }
   }
 }

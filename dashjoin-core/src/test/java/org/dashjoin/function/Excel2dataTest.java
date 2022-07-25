@@ -12,10 +12,20 @@ public class Excel2dataTest {
 
   @Test
   public void xlsx() throws Exception {
-    Excel2data f = new Excel2data();
+    Excel2data f = new Excel2data() {
+      @Override
+      public Object run(String arg) throws Exception {
+        return null;
+      }
+
+      @Override
+      public String getID() {
+        return null;
+      }
+    };
     @SuppressWarnings("unchecked")
     Map<String, List<Map<String, Object>>> res = (Map<String, List<Map<String, Object>>>) f
-        .parse(new URL("file:src/test/resources/data/import.xlsx"));
+        .parse(new URL("file:src/test/resources/data/import.xlsx").openStream());
     Assertions.assertEquals("mike", res.get("Tabelle1").get(1).get("name"));
   }
 }

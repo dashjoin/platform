@@ -1,7 +1,7 @@
 <div [ngClass]="app.sidenavOpen ? 'table-container-sidebar' : 'table-container'">
-    <table mat-table [dataSource]="all" matSort="sortable?true:null" (matSortChange)="sortData($event)">
+    <table mat-table [dataSource]="all" matSort="sortable?true:null" djPersistSorting (matSortChange)="sortData($event)">
         <ng-container [matColumnDef]="column" *ngFor="let column of columns">
-            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortable?column:null"
+            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortable?column:null" 
                 [disabled]="sortable?false:true">{{localName(column)}}</th>
             <td mat-cell *matCellDef="let element">
                 <a *ngIf="externalLink(queryMeta, column, element)"
@@ -25,7 +25,8 @@
                     </span>
                     <ng-template #nopath_content>
                         <a [routerLink]="toRouterLink(element[column])"
-                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{element[column]}}</a>
+                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{search
+                            ? element.id : element[column]}}</a>
                         <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
                     </ng-template>
                 </span>
@@ -37,7 +38,7 @@
     </table>
 
     <mat-paginator *ngIf="pagination" [length]="allLength" [pageSize]="rows" [pageSizeOptions]="[5, 10, 25, 100]"
-        (page)="page($event)">
+        (page)="page($event)" djPersistPaging>
     </mat-paginator>
 
 </div>

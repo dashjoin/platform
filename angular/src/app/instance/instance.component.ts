@@ -19,6 +19,7 @@ import { DatabaseNameChoiceHandler, ForeignKeyChoiceHandler, LocalNameChoiceHand
 import { GridsterConfig } from 'angular-gridster2';
 import { Widget } from './widget';
 import { ExpressionComponent } from '../expression/expression.component';
+import { StreamExpressionComponent } from '../expression/stream.expression.component';
 import { Expression } from '../expression/expression';
 import { MappingComponent } from '../mapping/mapping.component';
 import { DepInjectorService } from '../dep-injector.service';
@@ -30,6 +31,8 @@ import { Util } from '../util';
 import { Table } from '../model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { WidgetListComponent } from '../edit-widget-dialog/widgetlist.component';
+import { IconSelectComponent } from '../edit-widget-dialog/icon-select.component';
+import { CodeEditorComponent } from '../edit-widget-dialog/codeeditor.component';
 import { DJRuntimeService } from '../djruntime.service';
 
 /**
@@ -274,8 +277,14 @@ export class InstanceComponent implements OnInit {
   static eq(i: object, item: object) {
     for (const f of Object.keys(i)) {
       if (f !== 'x' && f !== 'y' && f !== 'rows' && f !== 'cols') {
-        if (i[f] !== item[f]) {
-          return false;
+        if (typeof i[f] === 'object' && typeof item[f] === 'object') {
+          if (JSON.stringify(i[f]) !== JSON.stringify(item[f])) {
+            return false;
+          }
+        } else {
+          if (i[f] !== item[f]) {
+            return false;
+          }
         }
       }
     }
@@ -446,10 +455,13 @@ export class InstanceComponent implements OnInit {
       this.formService.registerComponent('query', QueryComponent);
     }
     this.formService.registerComponent('expression', ExpressionComponent);
+    this.formService.registerComponent('stream-expressions', StreamExpressionComponent);
     if (!((this.formService.registry as any).mapping)) {
       this.formService.registerComponent('mapping', MappingComponent);
     }
     this.formService.registerComponent('imagelist', WidgetListComponent);
+    this.formService.registerComponent('icon', IconSelectComponent);
+    this.formService.registerComponent('codeeditor', CodeEditorComponent);
 
     this.formService.registerDisplayWith('fk', new ForeignKeyChoiceHandler(this.http, this.app));
     this.formService.registerDisplayWith('fkdb', new DatabaseNameChoiceHandler(this.http, this.app));
@@ -484,6 +496,22 @@ export class InstanceComponent implements OnInit {
       this.url = this.url + '/' + encodeURIComponent(this.pk4);
     }
     this.app.log('init url', this.url);
+
+    // allow setting currently unset variable keys via query parameters 
+    if (this.root) {
+      let variable = JSON.parse(sessionStorage.getItem('variable'));
+      let dirty = false;
+      for (let key of this.route.snapshot.queryParamMap.keys) {
+        if (!variable) {
+          variable = {};
+        }
+        variable[key] = this.route.snapshot.queryParamMap.get(key);
+        dirty = true;
+      }
+      if (dirty) {
+        sessionStorage.setItem('variable', JSON.stringify(variable));
+      }
+    }
   }
 
   /**
@@ -735,7 +763,7 @@ export class InstanceComponent implements OnInit {
    * can we paste here
    */
   canPaste(): boolean {
-    return this.canAdd() && this.app.clipboard;
+    return this.canAdd() && localStorage.getItem('djClipboard') !== null;
   }
 
   /**
@@ -775,10 +803,10 @@ export class InstanceComponent implements OnInit {
    */
   paste() {
     if (this.comp.children) {
-      this.comp.children.unshift(JSON.parse(JSON.stringify(this.app.clipboard)));
+      this.comp.children.unshift(JSON.parse(localStorage.getItem('djClipboard')));
     } else {
       const idx = this.parentComp.children.indexOf(this.comp);
-      this.parentComp.children.splice(idx + 1, 0, JSON.parse(JSON.stringify(this.app.clipboard)));
+      this.parentComp.children.splice(idx + 1, 0, JSON.parse(localStorage.getItem('djClipboard')));
     }
     this.root ? this.onEvent({ type: 'redraw' }) : this.eventChange.emit({ type: 'redraw' });
     this.dirty();
@@ -788,14 +816,14 @@ export class InstanceComponent implements OnInit {
    * copy clipboard
    */
   copy() {
-    this.app.clipboard = JSON.parse(JSON.stringify(this.comp));
+    localStorage.setItem('djClipboard', JSON.stringify(this.comp));
   }
 
   /**
    * cut to clipboard
    */
   cut() {
-    this.app.clipboard = JSON.parse(JSON.stringify(this.comp));
+    localStorage.setItem('djClipboard', JSON.stringify(this.comp));
     this.parentComp.children.splice(this.parentComp.children.indexOf(this.comp), 1);
     this.root ? this.onEvent({ type: 'redraw' }) : this.eventChange.emit({ type: 'redraw' });
     this.dirty();
@@ -1151,5 +1179,14 @@ export class InstanceComponent implements OnInit {
       // date: new Date(),
       // value: this.value,
     };
+  }
+
+  /**
+   * Default implementation of redraw.
+   * Might be overridden by components
+   */
+  redraw() {
+    //console.log('redraw ' + window['djNoCache'], this);
+    this.ngOnInit();
   }
 }

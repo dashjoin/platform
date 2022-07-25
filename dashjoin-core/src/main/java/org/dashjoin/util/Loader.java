@@ -18,6 +18,8 @@ public class Loader {
     InputStream res = Loader.class.getResourceAsStream(location);
     if (res != null)
       return res;
+    if (location.startsWith("http://") || location.startsWith("https://"))
+      return new URL(location).openStream();
     File file = FileSystem.getUploadFile(location);
     if (file.exists())
       if (!file.isDirectory())

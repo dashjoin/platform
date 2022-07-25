@@ -11,7 +11,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that displays a table',
   htmlTag: 'dj-table',
-  fields: ['title', 'database', 'query', 'arguments', 'graph']
+  fields: ['title', 'database', 'query', 'arguments', 'graph', 'expression']
 })
 @Component({
   selector: 'app-table',
@@ -42,15 +42,30 @@ export class TableComponent extends LinksComponent implements OnInit {
     try {
       super.ngOnInit();
 
-      this.meta = await this.getData().getMeta();
+      this.meta = await this.dataSnapshot.getMeta();
       this.queryMeta = this.meta?.schema as Table;
 
       // Set pagination and sorting capabilities from meta data
       // (preset @Input values have priority)
       this.pagination ||= this.meta?.paging;
       this.sortable ||= this.meta?.sortCaps?.sortableFields != null;
+
+      if (this.meta.size)
+        this.allLength = this.meta.size;
     } catch (e) {
       this.errorHandler(e);
+    }
+  }
+
+  /**
+   * on the search page, combine link and id column into one
+   */
+  computeColumnsFromAll() {
+    super.computeColumnsFromAll();
+
+    if (this.search) {
+      // remove id column from the display; it is used as the href label for url
+      this.columns.shift();
     }
   }
 
@@ -77,5 +92,14 @@ export class TableComponent extends LinksComponent implements OnInit {
               return true;
           }
     return false;
+  }
+
+  /**
+   * use the property title if present
+   */
+  localName(s: string): string {
+    if (this.queryMeta?.properties?.[s]?.title)
+      return this.queryMeta.properties[s].title;
+    return super.localName(s);
   }
 }

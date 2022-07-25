@@ -161,6 +161,7 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
    * @preferPk  there can be cases, where a field is both a PK and a FK. 
    * If that is the case, we could generate two legal links here. The UI may give us a hint as to 
    * what kind is preferred (on the table select * view, we prefer PKs, otherwise we take the FK first)
+   * an exception are composite keys where a single key is insufficient for navigation
    */
   link(table: Table, column: string, data: object, preferPk?: boolean): string[] {
 
@@ -193,13 +194,15 @@ export class LinksComponent extends DJBaseComponent implements OnInit {
       if (parts[1] === 'config' && parts[2] === 'Table') {
         return ['/table', Util.parseTableID(value)[1], Util.parseTableID(value)[2]];
       } else {
+        let isCompositeKey = false;
         for (const p of Object.values(table.properties)) {
           if (p.pkpos > 0) {
             // table does not yet support linking to composite keys
-            return null;
+            isCompositeKey = true;
           }
         }
-        return ['/resource', parts[1], parts[2], value];
+        if (!isCompositeKey)
+          return ['/resource', parts[1], parts[2], value];
       }
     }
     // we tried PK, now try FK (if it was not already handled)

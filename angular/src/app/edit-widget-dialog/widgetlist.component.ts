@@ -95,6 +95,7 @@ export class WidgetListComponent implements WidgetComponent, OnInit, OnDestroy {
         'edit': 'edit', //
         'editRelated': 'share', //
         'expansion': 'expand', //
+        'html': 'html',
         'icon': 'insert_emoticon', //
         'links': 'links', //
         'markdown': 'text_snippet', //

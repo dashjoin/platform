@@ -73,6 +73,7 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.db2.jcc.DB2Driver;
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
 /**
  * REST API for management tasks
@@ -830,7 +831,7 @@ public class Manage {
       res.add(v);
     }
     for (String f : new String[] {"$read", "$create", "$update", "$traverse", "$delete", "$query",
-        "$call", "$incoming"}) {
+        "$call", "$incoming", "$all", "$queryGraph"}) {
       FunctionVersion v = (FunctionVersion) metaInf(getClass(), null, new FunctionVersion());
       v.function = f;
       if (f.equals("$create") || f.equals("$update") || f.equals("$delete"))
@@ -986,6 +987,8 @@ public class Manage {
       jar = "db2";
     if (c.equals(JDBC.class))
       jar = "sqlite";
+    if (c.equals(SQLServerDriver.class))
+      jar = "sqlserver";
 
     if (jar != null)
       try {
@@ -1001,6 +1004,8 @@ public class Manage {
               v.version = p.getProperty("Bundle-Version");
             if (v.title == null)
               v.title = p.getProperty("Bundle-Name");
+            if (v.vendor == null)
+              v.vendor = p.getProperty("Bundle-Vendor");
           }
         }
       } catch (IOException ignore) {
@@ -1025,8 +1030,14 @@ public class Manage {
     Properties props = new Properties();
     try {
       props.load(Manage.class.getClassLoader().getResourceAsStream(name));
-    } catch (IOException e) {
+    } catch (Throwable e) {
       // intentionally ignored
+      // Exception in thread "main" java.lang.NullPointerException: inStream parameter is null
+      // at java.util.Objects.requireNonNull(Objects.java:233)
+      // at java.util.Properties.load(Properties.java:407)
+      // at org.dashjoin.service.Manage.getGitBuildInfo(Manage.java:1032)
+      // at org.dashjoin.service.Manage.getVersion(Manage.java:883)
+      // at com.dashjoin.launch.Start.main(Start.java:36)
     }
     return props;
   }

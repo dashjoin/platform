@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableMap;
  * abstract base class for all database implementations
  */
 @JsonSchema(required = {"name"}, layout = "vertical",
-    order = {"djClassName", "name", "readRoles", "writeRoles"},
+    order = {"djClassName", "name", "comment", "title", "readRoles", "writeRoles"},
     computed = "{ \"ID\": \"\\\"dj/\\\" & name\" }")
 public abstract class AbstractDatabase implements Database {
 
@@ -44,6 +44,10 @@ public abstract class AbstractDatabase implements Database {
    */
   @JsonSchema(createOnly = true)
   public String name;
+
+  public String comment;
+
+  public String title;
 
   /**
    * parent pk
@@ -98,11 +102,20 @@ public abstract class AbstractDatabase implements Database {
   }
 
   @Override
-  public List<SearchResult> search(@Context SecurityContext sc, String search, Integer limit)
+  public List<SearchResult> search(SecurityContext sc, String search, Integer limit)
+      throws Exception {
+    return search(sc, null, search, limit);
+  }
+
+  @Override
+  public List<SearchResult> search(SecurityContext sc, Table filter, String search, Integer limit)
       throws Exception {
     // TODO: only brute force search for now
     List<SearchResult> ret = new ArrayList<>();
     for (Table t : services.getConfig().searchTables(this)) {
+
+      if (filter != null && !filter.name.equals(t.name))
+        continue;
 
       try {
         ACLContainerRequestFilter.check(sc, this, t);
@@ -189,6 +202,8 @@ public abstract class AbstractDatabase implements Database {
    * @param object pk search, create or update map
    */
   public void cast(Table m, Map<String, Object> object) {
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table");
     if (m.properties != null && object != null)
       for (Entry<String, Property> p : m.properties.entrySet()) {
         Object obj = object.get(p.getKey());
@@ -241,7 +256,11 @@ public abstract class AbstractDatabase implements Database {
 
       if ("array".equals(p.type) || "object".equals(p.type)) {
         try {
-          return objectMapper.readValue(s, Object.class);
+          Object tmp = objectMapper.readValue(s, Object.class);
+          // make sure tmp really is an array or object
+          if (!(tmp instanceof List<?> || tmp instanceof Map<?, ?>))
+            throw new Exception();
+          return tmp;
         } catch (Exception fallback) {
           if ("array".equals(p.type)) {
             List<Object> res = new ArrayList<>();
@@ -334,7 +353,7 @@ public abstract class AbstractDatabase implements Database {
       if (!object.isEmpty())
         if (!update(t, search, object))
           // update did not happen, so the assumption of a PK violation was false
-          throw new Exception("merge failed");
+          throw new Exception("merge failed: " + assumePkViolation);
     }
   }
 

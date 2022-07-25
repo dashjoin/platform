@@ -89,7 +89,6 @@
 					},
 					{
 						"readOnly": true,
-						"fxHide": "lt-md",
 						"widget": "layout-edit-switch",
 						"roles": [
 							"admin"

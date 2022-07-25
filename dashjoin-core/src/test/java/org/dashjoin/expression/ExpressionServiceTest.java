@@ -1,7 +1,6 @@
 package org.dashjoin.expression;
 
 import javax.inject.Inject;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
@@ -53,7 +52,8 @@ public class ExpressionServiceTest {
       s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
       Assertions.fail();
     } catch (RuntimeException wrapped404) {
-      Assertions.assertTrue(wrapped404.getCause() instanceof NotFoundException);
+      // Note: exception loses cause from Javascript to Java world...
+      Assertions.assertTrue(wrapped404.toString().indexOf("NotFoundException") > 0);
     }
   }
 
@@ -112,6 +112,17 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[\"mike\",\"joe\"]",
         "" + s.jsonata(sc, "$query(\"junit\", \"list\").$echo($.\"EMP.NAME\")", null, false));
+  }
+
+  @Test
+  public void vararg() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertEquals(0, ExpressionService.j2o(s.jsonata(sc, "$add()", null, false)));
+    Assertions.assertEquals(1, ExpressionService.j2o(s.jsonata(sc, "$add(1)", null, false)));
+    Assertions.assertEquals(2, ExpressionService.j2o(s.jsonata(sc, "$add(null, 2)", null, false)));
+    Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2)", null, false)));
+    Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2,3)", null, false)));
   }
 
   @Test

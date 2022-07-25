@@ -2,6 +2,7 @@ package org.dashjoin.service;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.Property;
@@ -18,6 +19,7 @@ public abstract class AbstractDatabaseTest {
     Database db = db();
     Table s = new Table();
     s.name = "EMP";
+    s.properties = new HashMap<>();
     Map<String, Object> res = db.read(s, Collections.singletonMap("ID", 1));
     Assertions.assertEquals("mike", res.get("NAME"));
     Assertions.assertEquals(1000, res.get("WORKSON"));

@@ -35,6 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DeleteConfirmDialogComponent } from './delete-confirm-dialog/delete-confirm-dialog.component';
 import { ExpressionComponent } from './expression/expression.component';
+import { StreamExpressionComponent } from './expression/stream.expression.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HoverClassDirective } from './instance/hover-class.directive';
@@ -76,6 +77,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { WidgetListComponent } from './edit-widget-dialog/widgetlist.component';
 import { MapComponent } from './widget/map/map.component';
+import { HTMLComponent } from './widget/html/html.component';
+import { IconSelectComponent } from './edit-widget-dialog/icon-select.component';
+import { CodeEditorComponent } from './edit-widget-dialog/codeeditor.component';
 
 export const __DJ_TYPES = [
   DJBaseComponent,
@@ -104,6 +108,7 @@ export const __DJ_TYPES = [
   TreeComponent,
   SidenavSwitchComponent,
   MapComponent,
+  HTMLComponent,
 ];
 // Decouple access to avoid circular deps:
 (window as any).__DJ_TYPES = __DJ_TYPES;
@@ -122,11 +127,15 @@ export const __DJ_TYPES = [
     DeleteConfirmDialogComponent,
     JsonCellDialogCopyComponent,
     ExpressionComponent,
+    StreamExpressionComponent,
     HoverClassDirective,
     MappingComponent,
     ConfirmationDialogComponent,
     WidgetListComponent,
-    ...__DJ_TYPES
+    IconSelectComponent,
+    CodeEditorComponent,
+    ...__DJ_TYPES,
+    HTMLComponent,
   ],
   imports: [
     AppRoutingModule,

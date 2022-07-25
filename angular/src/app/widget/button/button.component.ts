@@ -45,11 +45,8 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
         }
       }, this.errorHandler);
 
-    if (this.value.djClassName === 'org.dashjoin.mapping.ETL' || this.value.djClassName === 'org.dashjoin.mapping.ETLStream') {
-      this.snackBar.open('ETL started. Reload the page to get the current status', 'Ok', { duration: 3000 });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+    if (this.value?.djClassName === 'com.dashjoin.function.ETL' || this.value?.djClassName === 'org.dashjoin.mapping.ETL' || this.value?.djClassName === 'org.dashjoin.mapping.ETLStream') {
+      this.snackBar.open('ETL started', 'Ok', { duration: 3000 });
     }
   }
 
@@ -63,6 +60,8 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
       for (const [k, v] of Object.entries(this.layout.properties)) {
         if (v === 'date') {
           tmp[k] = { type: 'string', widget: 'date' };
+        } else if (v === 'upload') {
+          tmp[k] = { type: 'string', widget: 'upload' };
         } else {
           tmp[k] = { type: v };
         }

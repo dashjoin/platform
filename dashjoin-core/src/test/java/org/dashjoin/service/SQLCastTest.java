@@ -115,7 +115,7 @@ public class SQLCastTest extends JsonCastTest {
     con.createStatement().executeUpdate("insert into test (b,c) values('bbbb', 'cccc')");
     ResultSet res = con.createStatement().executeQuery("select * from test");
     res.next();
-    SQLDatabase.serialize(res.getMetaData(), res, 1);
-    SQLDatabase.serialize(res.getMetaData(), res, 2);
+    new SQLDatabase().serialize(res.getMetaData(), res, 1);
+    new SQLDatabase().serialize(res.getMetaData(), res, 2);
   }
 }

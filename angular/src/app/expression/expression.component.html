@@ -1,10 +1,12 @@
-<mat-form-field style="width: 600px">
-    <mat-label>{{label}}</mat-label>
-    <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"></textarea>
-</mat-form-field>
-<button *ngIf="ide()" mat-button (click)="editor()">
-    <mat-icon>edit</mat-icon>
-</button>
+<div style="white-space: nowrap">
+    <mat-form-field style="width: 600px">
+        <mat-label>{{label}}</mat-label>
+        <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"></textarea>
+    </mat-form-field>
+    <button *ngIf="ide()" mat-button (click)="editor()">
+        <mat-icon>edit</mat-icon>
+    </button>
+</div>
 <p *ngIf="rootSchema.required?.includes(label) && !value" style="color: red;" class="mat-typography">required</p>
 <br>
 <pre>{{message}}</pre>

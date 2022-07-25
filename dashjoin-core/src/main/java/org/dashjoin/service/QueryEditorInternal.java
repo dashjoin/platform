@@ -75,9 +75,10 @@ public interface QueryEditorInternal {
           ac.col = qc.col;
           ac.add = new Col();
           ac.add.table = qc.keyTable;
-          for (Property p : db.tables.get(qc.keyTable).properties.values())
-            if (p.pkpos != null)
-              ac.add.column = p.name;
+          if (db.tables.get(qc.keyTable) != null)
+            for (Property p : db.tables.get(qc.keyTable).properties.values())
+              if (p.pkpos != null)
+                ac.add.column = p.name;
           // TODO: get preview data
           ac.preview = "TODO";
 

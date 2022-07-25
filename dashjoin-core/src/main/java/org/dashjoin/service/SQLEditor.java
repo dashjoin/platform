@@ -153,6 +153,11 @@ public class SQLEditor implements QueryEditorInternal {
       order.setAsc(false);
     else
       order = null;
+
+    // avoid NPE when the column name could not be matched to ac.col
+    if (order != null && order.getExpression() == null)
+      order = null;
+
     body.setOrderByElements(order == null ? null : Arrays.asList(order));
 
     return prettyPrint(ac.database, body, ac.limit);
@@ -607,6 +612,9 @@ public class SQLEditor implements QueryEditorInternal {
       sql.append("\n" + body.getLimit().toString().substring(1));
       limit = Integer.parseInt(body.getLimit().getRowCount() + "");
     }
+    if (body.getOffset() != null) {
+      sql.append("\n" + body.getOffset().toString().substring(1));
+    }
 
     // make sure we can parse the query again
     Statement pretty = CCJSqlParserUtil.parse(sql.toString());
@@ -675,7 +683,7 @@ public class SQLEditor implements QueryEditorInternal {
                 String colname = rsmd.getColumnName(c);
                 if (!contains(res.metadata, t.getKey().name, colname)) {
                   AddColumnRequest e = new AddColumnRequest();
-                  e.preview = SQLDatabase.serialize(rsmd, rs, c);
+                  e.preview = db.serialize(rsmd, rs, c);
                   e.add = Col.col(t.getKey().name, colname);
                   e.col = t.getValue();
                   res.joinOptions.add(e);
@@ -774,15 +782,18 @@ public class SQLEditor implements QueryEditorInternal {
           return;
 
       Column left = (Column) o.getLeftExpression();
-      res.put(
-          colNoQuotes(SQLDatabase.s(left.getTable().getName()),
-              SQLDatabase.s(left.getColumnName())),
-          o.getStringExpression() + " " + o.getRightExpression().toString());
+      if (left.getTable() != null)
+        res.put(
+            colNoQuotes(SQLDatabase.s(left.getTable().getName()),
+                SQLDatabase.s(left.getColumnName())),
+            o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
     }
     if (expr instanceof LikeExpression) {
       LikeExpression o = (LikeExpression) expr;
       Column left = (Column) o.getLeftExpression();
+      if (left.getTable() == null)
+        throw new IllegalArgumentException(left + " has no table information");
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;

@@ -58,7 +58,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
   /**
    * Max size of a single document/file to load + parse
    */
-  long MAX_SIZE = 100 * 1024 * 1024;
+  public static long MAX_SIZE = 100 * 1024 * 1024;
 
   // Cache settings
   static long CACHE_SIZE = 1024L * 1024 * 1024;
@@ -77,6 +77,9 @@ public class Doc2data extends AbstractFunction<String, Object> {
 
   @Override
   public Object run(String arg) throws Exception {
+
+    if (readOnly)
+      throw new Exception("$doc2data is deprecated. Please use $openJson, $openXml, etl. instead.");
 
     try {
       // url?
@@ -153,12 +156,19 @@ public class Doc2data extends AbstractFunction<String, Object> {
   }
 
   @SuppressWarnings("unchecked")
-  Object xml(Element node) {
+  public static Object xml(Element node) {
     Map<String, Object> res = new LinkedHashMap<>();
     NamedNodeMap att = node.getAttributes();
     for (int i = 0; i < att.getLength(); i++)
       res.put(att.item(i).getNodeName(), att.item(i).getNodeValue());
     NodeList list = node.getChildNodes();
+
+    // special case where the element has attributes and a text child
+    if (!res.isEmpty() && list.getLength() == 1 && list.item(0) instanceof Text) {
+      res.put("_content", list.item(0).getNodeValue());
+      return res;
+    }
+
     for (int i = 0; i < list.getLength(); i++)
       if (list.item(i) instanceof Element) {
         Element kid = (Element) list.item(i);
@@ -191,7 +201,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
    * be converted to an array)
    */
   @SuppressWarnings("unchecked")
-  Object cleanArrays(Map<String, Object> res) {
+  static Object cleanArrays(Map<String, Object> res) {
     for (String field : arrayFields(res)) {
       Set<String> arrayFields = new HashSet<>();
 
@@ -215,7 +225,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
     return res;
   }
 
-  Set<String> arrayFields(Map<String, Object> res) {
+  static Set<String> arrayFields(Map<String, Object> res) {
     Set<String> arrayFields = new HashSet<>();
     for (Entry<String, Object> e : res.entrySet())
       if (e.getValue() instanceof List<?>)

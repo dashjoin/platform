@@ -66,6 +66,11 @@ public class JDBC {
     // Calcite
     db.url = "jdbc:calcite:model=model.json";
 
+    // SQL Server - new Microsoft JDBC driver (not JTDS)
+    db.url = "jdbc:sqlserver://hostname:1433;databaseName=testdb;";
+    db.username = "sqlserver";
+    db.password = "...";
+
     Map<String, Object> res = db.connectAndCollectMetadata();
     for (Object e : res.values())
       System.out.println(e);

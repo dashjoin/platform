@@ -80,12 +80,12 @@ public class SQLRESTDBTest {
     Property id = new Property();
     id.pkpos = 0;
     id.name = "id";
+    id.readOnly = true; // Mark auto-increment fields (otherwise constraint violation)
     Property name = new Property();
     m.properties = of("id", id, "name", name);
     Map<String, Object> object = Maps.newHashMap(of("name", "test"));
     db.create(m, object);
-    // stmt.getGeneratedKeys() no longer works after H2 upgrade 1.4.196 => 1.4.200
-    // Assertions.assertEquals("{name=test, id=1}", "" + object);
+    Assertions.assertEquals("{name=test, id=1}", "" + object);
   }
 
   @Test

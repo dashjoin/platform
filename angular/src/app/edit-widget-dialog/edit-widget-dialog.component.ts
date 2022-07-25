@@ -117,13 +117,15 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Icon',
               type: 'string',
+              widget: 'custom',
+              widgetType: 'icon',
               case: this.generateCase('icon')
             },
             tooltip: {
               static: true,
               title: 'Tooltip',
               type: 'string',
-              case: this.generateCase('icon')
+              case: this.generateCase('tooltip')
             },
             href: {
               static: true,
@@ -154,17 +156,53 @@ export class EditWidgetDialogComponent {
               ref: 'dj/config/dj-database/ID',
               case: this.generateCase('database')
             },
+            redrawInterval: {
+              static: true,
+              title: 'Redraw interval (sec)',
+              type: 'number',
+              case: this.generateCase('redrawInterval')
+            },
             markdown: {
               static: true,
-              widget: 'textarea',
-              style: {
-                width: '600px',
-                height: '300px',
-                'font-family': 'courier'
-              },
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'markdown', wordWrap: 'on' },
               title: 'Markdown text',
               type: 'string',
               case: this.generateCase('markdown')
+            },
+            html: {
+              static: true,
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'html' },
+              title: 'HTML Source',
+              type: 'string',
+              case: this.generateCase('html')
+            },
+            css: {
+              static: true,
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'css' },
+              title: 'CSS Source',
+              type: 'string',
+              case: this.generateCase('css')
+            },
+            script: {
+              static: true,
+              widget: 'custom',
+              widgetType: 'codeeditor',
+              widgetOptions: { language: 'javascript' },
+              title: 'JavaScript Source',
+              type: 'string',
+              case: this.generateCase('script')
+            },
+            hideframe: {
+              static: true,
+              title: 'Hide the widget\'s card frame',
+              type: 'boolean',
+              case: this.generateCase('hideframe')
             },
             text: {
               static: true,
@@ -224,9 +262,17 @@ export class EditWidgetDialogComponent {
               type: 'boolean',
               case: this.generateCase('graph')
             },
+            expression: {
+              static: true,
+              title: 'Data gathering expression',
+              type: 'string',
+              widget: 'custom',
+              widgetType: 'expression',
+              case: this.generateCase('expression')
+            },
             roles: {
               static: true,
-              title: 'Restrict access to these roles',
+              title: 'Show only for roles',
               layout: 'select',
               type: 'array',
               choicesUrl: '/rest/database/all/config/dj-role',
@@ -297,6 +343,18 @@ export class EditWidgetDialogComponent {
               title: 'CSS / chart styles applied to child elements',
               case: this.generateCase('style')
             },
+            icons: {
+              type: 'object',
+              additionalProperties: {
+                type: 'string',
+                widget: 'custom',
+                widgetType: 'icon',
+              },
+              layout: 'vertical',
+              static: true,
+              title: 'Icons to be used for a given key',
+              case: this.generateCase('icons')
+            },
             context: {
               static: true,
               title: 'Expression',
@@ -308,7 +366,7 @@ export class EditWidgetDialogComponent {
             properties: {
               type: 'object',
               additionalProperties: {
-                type: 'string', enum: ['boolean', 'integer', 'number', 'string', 'date']
+                type: 'string', enum: ['boolean', 'integer', 'number', 'string', 'date', 'upload']
               },
               layout: 'vertical',
               static: true,

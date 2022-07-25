@@ -1,6 +1,7 @@
 package org.dashjoin.function;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class Crawl extends AbstractFunction<String, List<String>> {
   @Override
   public List<String> run(String arg) throws Exception {
 
+    if (readOnly)
+      throw new Exception("$crawl is deprecated. Please use $ls instead.");
+
     List<String> res = new ArrayList<>();
     URL url = FileSystem.getUploadURL(arg);
 
@@ -28,7 +32,10 @@ public class Crawl extends AbstractFunction<String, List<String>> {
         if (!arg.endsWith("/"))
           url = new URL(arg + "/");
         for (String line : s.split("\n")) {
-          res.add(new URL(url, line).toString());
+          try {
+            res.add(new URL(url, line).toString());
+          } catch (MalformedURLException ignore) {
+          }
           if (readOnly && res.size() == 10)
             break;
         }

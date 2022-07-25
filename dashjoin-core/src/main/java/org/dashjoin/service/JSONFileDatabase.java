@@ -3,12 +3,14 @@ package org.dashjoin.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.DJRuntime;
@@ -43,13 +45,17 @@ public class JSONFileDatabase extends JSONDatabase {
     if (parts.length == 1) {
       String path = "model/" + parts[0];
       File[] files = home.getFile(path).listFiles();
-      if (files != null)
+      if (files != null) {
+        // Use the same order independent of file system or OS
+        Arrays.sort(files, NameFileComparator.NAME_INSENSITIVE_COMPARATOR);
+
         for (File f : files) {
           if (f.getName().endsWith(".deleted"))
             continue;
           Map<String, Object> object = objectMapper.readValue(f, tr);
           res.put("" + object.get("ID"), object);
         }
+      }
     } else {
       Table s = new Table();
       s.name = parts[0];

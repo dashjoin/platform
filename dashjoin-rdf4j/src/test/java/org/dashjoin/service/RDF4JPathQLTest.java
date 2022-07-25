@@ -17,6 +17,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.quarkus.test.junit.QuarkusTest;
 
+@Disabled
 @QuarkusTest
 public class RDF4JPathQLTest extends DBTest {
 

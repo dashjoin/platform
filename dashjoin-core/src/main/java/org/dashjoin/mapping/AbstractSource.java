@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import org.dashjoin.function.Index;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.DeleteBatch;
@@ -58,6 +60,25 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
 
   public Boolean logStatusOnly;
 
+  public static ThreadLocal<Context> context = new ThreadLocal<>();
+
+  public static class Context {
+    // default queue size 1000 - producers have to assure that object size is reasonable
+    public BlockingQueue<Object> queue = new LinkedBlockingQueue<>(1000);
+    boolean producerDone;
+
+    public void producerDone() {
+      producerDone = true;
+    }
+
+    public boolean hasNext() {
+      if (producerDone)
+        if (queue.isEmpty())
+          return false;
+      return true;
+    }
+  }
+
   /**
    * contains the main merge logic
    */
@@ -74,39 +95,31 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
     }
   }
 
-  void info(String s) throws Exception {
+  protected void info(String s) throws Exception {
     set(of("status", s));
   }
 
-  void set(Map<String, Object> update) throws Exception {
+  // Global lock for ConfigDB workaround
+  protected static Object lock = new Object();
+
+  protected void set(Map<String, Object> update) throws Exception {
     if (ID == null)
       return;
     log.info("" + update);
     if (Boolean.TRUE.equals(logStatusOnly))
       return;
-    services.getConfig().getDatabase(services.getDashjoinID() + "/config")
-        .update(Table.ofName("dj-function"), of("ID", ID), update);
+
+    // FIXME: workaround for ConfigDB multi threading issue
+    // Remove this once fixed
+    synchronized (lock) {
+      services.getConfig().getDatabase(services.getDashjoinID() + "/config")
+          .update(Table.ofName("dj-function"), of("ID", ID), update);
+    }
   }
 
-  Void runInternal(Void arg) throws Exception {
-    if (database == null)
-      throw new Exception("Please provide a database");
-
-    AbstractDatabase db =
-        services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+  AbstractDatabase ddl(AbstractDatabase db, Map<String, List<Map<String, Object>>> tables)
+      throws Exception {
     SchemaChange ddl = db.getSchemaChange();
-
-    info("running " + ID);
-    PerfTimer timer = new PerfTimer();
-    Map<String, List<Map<String, Object>>> tables = gather(sc);
-    info("gather: " + timer.seconds());
-    for (Entry<String, List<Map<String, Object>>> e : tables.entrySet())
-      info(e.getKey() + ": " + e.getValue().size() + " rows");
-
-    Index.reset();
-    tables = Mapping.apply(expressionService, sc, tables, mappings);
-    info("apply mapping: " + timer.seconds());
-
     boolean dirty = false;
 
     try {
@@ -114,7 +127,26 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
         if (createSchema != null && createSchema) {
 
           Mapping mapping = mappings == null ? null : mappings.get(table.getKey());
-          if (mapping == null || mapping.pk == null)
+          String mappingpk = null;
+          if (mapping == null || mapping.pk == null) {
+            for (Map<String, Object> row : table.getValue()) {
+              if (row.containsKey("ID")) {
+                mappingpk = "ID";
+                break;
+              }
+              if (row.containsKey("id")) {
+                mappingpk = "id";
+                break;
+              }
+              if (row.containsKey("_id")) {
+                mappingpk = "_id";
+                break;
+              }
+            }
+          } else
+            mappingpk = mapping.pk;
+
+          if (mappingpk == null)
             throw new Exception("No primary key specified for table " + table.getKey());
 
           if ("Delete All".equals(oldData)) {
@@ -130,9 +162,9 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
               || db.tables.get(table.getKey()).name == null) {
             // table does not exist of only contains some bootstrapped metadata like dj-label
             dirty = true;
-            ddl.createTable(table.getKey(), mapping.pk, type(mapping.pk, table.getValue()));
+            ddl.createTable(table.getKey(), mappingpk, type(mappingpk, table.getValue()));
             for (String col : cols(table.getValue(), true))
-              if (!col.equals(mapping.pk)) {
+              if (!col.equals(mappingpk)) {
                 ddl.createColumn(table.getKey(), col, type(col, table.getValue()));
               }
           } else {
@@ -144,7 +176,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
           }
         } else {
           if ("Delete All".equals(oldData))
-            db.delete(Table.ofName(table.getKey()));
+            db.delete(db.tables.get(table.getKey()));
         }
       }
     } finally {
@@ -154,7 +186,35 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
         db = services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
       }
     }
-    info("ddl: " + timer.seconds());
+    return db;
+  }
+
+  protected Void runInternal(Void arg) throws Exception {
+    return runInternal(arg, true);
+  }
+
+  protected Void runInternal(Void arg, boolean first) throws Exception {
+    if (database == null)
+      throw new Exception("Please provide a database");
+
+    AbstractDatabase db =
+        services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+
+    info("running " + ID);
+    PerfTimer timer = new PerfTimer();
+    Map<String, List<Map<String, Object>>> tables = gather(sc);
+    info("gather: " + timer.seconds());
+    for (Entry<String, List<Map<String, Object>>> e : tables.entrySet())
+      info(e.getKey() + ": " + e.getValue().size() + " rows");
+
+    Index.reset();
+    tables = Mapping.apply(expressionService, sc, tables, mappings);
+    info("apply mapping: " + timer.seconds());
+
+    if (first) {
+      db = ddl(db, tables);
+      info("ddl: " + timer.seconds());
+    }
 
     for (Entry<String, List<Map<String, Object>>> table : tables.entrySet()) {
       Table t = db.tables.get(table.getKey());

@@ -17,12 +17,12 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
 
   @Override
   String getQuery() {
-    return "select * from EMP";
+    return "select * from \"EMP\"";
   }
 
   @Override
   String getQuery2() {
-    return "select * from EMP where ID=1";
+    return "select * from \"EMP\" where \"ID\"=1";
   }
 
   @Override

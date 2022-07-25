@@ -56,9 +56,11 @@ public class JsonCastTest {
   public void testArray() throws Exception {
     Property p = p("array", null);
     p.items = p("string", null);
+    Assertions.assertEquals(Arrays.asList("a"), db().cast(p, "a"));
     Assertions.assertEquals(Arrays.asList("a", "b"), db().cast(p, "a,b"));
     Assertions.assertEquals(Arrays.asList("a", "b"), db().cast(p, "[\"a\", \"b\"]"));
     p.items.type = "integer";
+    Assertions.assertEquals(Arrays.asList(1), db().cast(p, "1"));
     Assertions.assertEquals(Arrays.asList(1, 2), db().cast(p, "[1,2]"));
     Assertions.assertEquals(Arrays.asList(1, 2), db().cast(p, "1,2"));
   }

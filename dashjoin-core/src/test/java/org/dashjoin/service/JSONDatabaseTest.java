@@ -134,14 +134,14 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
   public void pojo() throws Exception {
     PojoDatabase db = db();
     Database d = db.getDatabase("dj/junit");
-    Assertions.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d).url);
+    Assertions.assertEquals("/sql/junit.sql", ((SQLDatabase) d).initScripts.get(0));
   }
 
   @Test
   public void pojoAll() throws Exception {
     PojoDatabase db = db();
     List<AbstractDatabase> d = db.getDatabases();
-    Assertions.assertEquals("jdbc:h2:mem:test", ((SQLDatabase) d.get(0)).url);
+    Assertions.assertEquals("/sql/junit.sql", ((SQLDatabase) d.get(0)).initScripts.get(0));
   }
 
   @Test

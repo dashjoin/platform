@@ -12,6 +12,7 @@
       "name": "Property",
       "parent": "dj/config",
       "type": "object",
+      "dj-label": "${title}",
       "before-create": "$alterColumnTrigger()",
       "before-update": "$alterColumnTrigger()",
       "before-delete": "$alterColumnTrigger()",
@@ -48,6 +49,18 @@
           ],
           "title": "Datatype"
         },
+        "comment": {
+          "ID": "dj/config/Property/comment",
+          "name": "comment",
+          "parent": "dj/config/Property",
+          "type": "string"
+        },
+        "title": {
+          "ID": "dj/config/Property/title",
+          "name": "title",
+          "parent": "dj/config/Property",
+          "type": "string"
+        },
         "ref": {
           "ID": "dj/config/Property/ref",
           "name": "ref",
@@ -83,6 +96,7 @@
       "name": "Table",
       "parent": "dj/config",
       "type": "object",
+      "dj-label": "${title}",
       "before-create": "$alterTableTrigger()",
       "before-update": "$alterTableTrigger()",
       "before-delete": "$alterTableTrigger()",
@@ -90,7 +104,7 @@
         "widget": "page",
         "children": [
           {
-            "title": "Table Data",
+            "title": "Table: ${value.name}",
             "widget": "table"
           },
           {
@@ -123,6 +137,18 @@
         "dj-label": {
           "ID": "dj/config/Table/dj-label",
           "name": "dj-label",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "comment": {
+          "ID": "dj/config/Table/comment",
+          "name": "comment",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "title": {
+          "ID": "dj/config/Table/title",
+          "name": "title",
           "parent": "dj/config/Table",
           "type": "string"
         },
@@ -213,6 +239,7 @@
       "type": "object",
       "tableLayout": {
         "widget": "page",
+        "pageLayout": "1 column",
         "children": [
           {
             "widget": "table",
@@ -267,7 +294,11 @@
           {
             "widget": "display",
             "title": "Database Information",
-            "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}"
+            "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}",
+            "icons": {
+              "status": "error_outline",
+              "tables": "table_view"
+            }
           },
           {
             "widget": "expansion",
@@ -286,6 +317,7 @@
                 "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!",
                 "columns": [
                   "ID",
+                  "comment",
                   "dj-label"
                 ],
                 "createSchema": {
@@ -596,6 +628,12 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string"
         },
+        "comment": {
+          "ID": "dj/config/dj-query-catalog/comment",
+          "name": "comment",
+          "parent": "dj/config/dj-query-catalog",
+          "type": "string"
+        },
         "roles": {
           "ID": "dj/config/dj-query-catalog/roles",
           "name": "roles",
@@ -745,12 +783,17 @@
       },
       "tableLayout": {
         "widget": "page",
+        "pageLayout": "1 column",
         "children": [
-          {
-            "widget": "table",
-            "database": "config",
-            "query": "dj-functions",
-            "title": "Available Functions"
+            {
+              "widget": "container",
+              "redrawInterval": 10,
+              "title": "Available Functions",
+              "children": [{
+                  "widget": "table",
+                  "database": "config",
+                  "query": "dj-functions"
+                  }]
           },
           {
             "widget": "create",
@@ -776,10 +819,16 @@
               },
               {
                 "widget": "display",
-                "display": "{\"start\": value.start, \"end\": value.end, \"status\": value.status}"
+                "display": "{\"start\": value.start, \"end\": value.end, \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status}",
+                "icons": {
+                  "status": "error_outline",
+                  "end": "flag",
+                  "start": "start"
+                }
               }
             ],
-            "layout": "vertical"
+            "layout": "vertical",
+            "redrawInterval": 5
           }
         ]
       }

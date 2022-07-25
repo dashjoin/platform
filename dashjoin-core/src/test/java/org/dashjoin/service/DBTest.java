@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.SecurityContext;
+import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Choice;
@@ -142,7 +143,19 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<SearchResult> res = db.search(sc, "mike", null);
-    Assertions.assertEquals(1, res.size());
+    check(res);
+    res = db.search(sc, "junit", "mike", null);
+    check(res);
+    res = db.search(sc, "junit", "EMP", "mike", null);
+    check(res);
+  }
+
+  void check(List<SearchResult> res) {
+    int count = 0;
+    for (SearchResult i : res)
+      if (i.id.database.equals("junit"))
+        count++;
+    Assertions.assertEquals(1, count);
     Assertions.assertEquals("junit", res.get(0).id.database);
     name("EMP", res.get(0).id.table);
     number(1, res.get(0).id.pk.get(0));
@@ -180,6 +193,23 @@ public class DBTest {
     number(1, res.get(0).id.pk.get(0));
     Assertions.assertTrue("EMP.NAME".equals(res.get(0).column) || "NAME".equals(res.get(0).column));
     Assertions.assertEquals("mike", res.get(0).match);
+  }
+
+  @Test
+  public void testSearchQuery2() throws Exception {
+    AbstractDatabase database = services.getConfig().getDatabase("dj/junit");
+    if (database instanceof SQLDatabase) {
+      SecurityContext sc = Mockito.mock(SecurityContext.class);
+      Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+      List<SearchResult> res = db.searchQuery(sc, database, "search2", "mike");
+      Assertions.assertEquals(1, res.size());
+      Assertions.assertEquals("junit", res.get(0).id.database);
+      name("EMP", res.get(0).id.table);
+      number(1, res.get(0).id.pk.get(0));
+      Assertions
+          .assertTrue("EMP.NAME".equals(res.get(0).column) || "NAME".equals(res.get(0).column));
+      Assertions.assertEquals("mike", res.get(0).match);
+    }
   }
 
   @Test
