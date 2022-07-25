@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Table;
-import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -60,6 +60,7 @@ public class RDF4JTest extends DBTest {
     Assertions.assertTrue(db.tables().contains("dj/junit/http:%2F%2Fex.org%2FU"));
   }
 
+  @Disabled
   @Override
   @Test
   public void testPath() throws Exception {
@@ -67,8 +68,8 @@ public class RDF4JTest extends DBTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     // need a non null starting point
     List<Map<String, Object>> res =
-   //   db.queryGraph(sc, "junit", "path", MapUtil.of("subject", "http://ex.org/1"));
-   		 db.queryGraph(sc, "junit", "path", null);
+        // db.queryGraph(sc, "junit", "path", MapUtil.of("subject", "http://ex.org/1"));
+        db.queryGraph(sc, "junit", "path", null);
     // we have one path
     Assertions.assertEquals(1, res.size());
     Map<String, Object> first = getMap(res.get(0), "path");

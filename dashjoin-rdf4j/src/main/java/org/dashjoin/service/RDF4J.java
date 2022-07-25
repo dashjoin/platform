@@ -61,9 +61,6 @@ import com.inova8.intelligentgraph.dashjoin.PathSteps;
 import com.inova8.intelligentgraph.model.Thing;
 import com.inova8.intelligentgraph.path.Path;
 import com.inova8.intelligentgraph.results.PathResults;
-import com.inova8.intelligentgraph.sail.IntelligentGraphConfig;
-import com.inova8.intelligentgraph.sail.IntelligentGraphFactory;
-import com.inova8.intelligentgraph.sail.IntelligentGraphSail;
 import com.inova8.intelligentgraph.vocabulary.PATHQL;
 import lombok.extern.java.Log;
 
@@ -559,25 +556,26 @@ public class RDF4J extends AbstractDatabase {
   @Override
   @SuppressWarnings("unchecked")
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
-    IntelligentGraphConfig intelligentGraphConfig = null;
-    IntelligentGraphFactory intelligentGraphFactory;
-    IntelligentGraphSail intelligentGraphSail;
+    // IntelligentGraphConfig intelligentGraphConfig = null;
+    // IntelligentGraphFactory intelligentGraphFactory;
+    // IntelligentGraphSail intelligentGraphSail;
     if ("memory".equals(mode)) {
-      intelligentGraphConfig = new IntelligentGraphConfig();
-      intelligentGraphFactory = new IntelligentGraphFactory();
-      intelligentGraphSail =
-          (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
-      intelligentGraphSail.setBaseSail(new MemoryStore());
-      _cp = new SailRepository(intelligentGraphSail);
+      // intelligentGraphConfig = new IntelligentGraphConfig();
+      // intelligentGraphFactory = new IntelligentGraphFactory();
+      // intelligentGraphSail =
+      // (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
+      // intelligentGraphSail.setBaseSail(new MemoryStore());
+      // _cp = new SailRepository(intelligentGraphSail);
+      _cp = new SailRepository(new MemoryStore());
     }
     if ("local".equals(mode)) {
-      // _cp = new SailRepository(new NativeStore(new File(folder)));
-      intelligentGraphConfig = new IntelligentGraphConfig();
-      intelligentGraphFactory = new IntelligentGraphFactory();
-      intelligentGraphSail =
-          (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
-      intelligentGraphSail.setBaseSail(new NativeStore(new File(folder)));
-      _cp = new SailRepository(intelligentGraphSail);
+      // intelligentGraphConfig = new IntelligentGraphConfig();
+      // intelligentGraphFactory = new IntelligentGraphFactory();
+      // intelligentGraphSail =
+      // (IntelligentGraphSail) intelligentGraphFactory.getSail(intelligentGraphConfig);
+      // intelligentGraphSail.setBaseSail(new NativeStore(new File(folder)));
+      // _cp = new SailRepository(intelligentGraphSail);
+      _cp = new SailRepository(new NativeStore(new File(folder)));
     }
     if ("sesame".equals(mode)) {
       _cp = new HTTPRepository(endpoint);
