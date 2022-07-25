@@ -231,15 +231,17 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
    */
   async setColumnLabels() {
     let idx = 0;
-    for (const c of this.columns) {
-      const idarr = this.getIdArr(idx);
-      idx++;
-      // is this column linkable?
-      if (idarr) {
-        const l = await this.labelId(idarr).toPromise();
-        this.colLabels.push(l);
-      } else {
-        this.colLabels.push(c);
+    if (this.columns) {
+      for (const c of this.columns) {
+        const idarr = this.getIdArr(idx);
+        idx++;
+        // is this column linkable?
+        if (idarr) {
+          const l = await this.labelId(idarr).toPromise();
+          this.colLabels.push(l);
+        } else {
+          this.colLabels.push(c);
+        }
       }
     }
   }
