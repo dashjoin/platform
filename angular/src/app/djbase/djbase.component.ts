@@ -251,6 +251,12 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     if (this.layout.arguments) {
       // Evaluate the expression
       opts.arguments = await this.evaluateExpression(this.layout.arguments);
+      if (opts.arguments) {
+        if (typeof (opts.arguments) !== 'object')
+          throw new Error('If specified, the query arguments must be an object');
+        if (Array.isArray(opts.arguments))
+          throw new Error('If specified, the query arguments must be an object');
+      }
     }
 
     const page = await this.dataSnapshot.get(opts);
