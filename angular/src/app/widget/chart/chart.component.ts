@@ -74,7 +74,8 @@ export class ChartComponent extends DJBaseComponent implements OnInit {
     if (this.layout.style)
       this.setOptions();
     try {
-      await this.page({ pageIndex: 0, pageSize: 50, length: null });
+      const limit = (this.layout.style as any)?.limit ? (this.layout.style as any)?.limit : 1000;
+      await this.page({ pageIndex: 0, pageSize: limit, length: null });
       await this.prepareDataForChart();
     } catch (e) {
       this.errorHandler(e);
