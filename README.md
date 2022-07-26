@@ -828,7 +828,7 @@ Chart for visualizing query results.
     * two label columns followed by a value column: in this case, a chart with a multiple series is shown. The first column identifies which series the row belongs to. From there, the process described above is repeated
 * arguments: optional expression resulting in query arguments
 * chart: chart type
-* style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/latest/configuration/) - for instance, scales.yAxes.ticks.min = 0 makes sure the y-axis starts at 0
+* style: key value pairs that construct [chart option object](https://www.chartjs.org/docs/latest/configuration/) - for instance, scales.y.min = 0 makes sure the y-axis starts at 0
 * graph: specifies whether the query is a graph query
 * expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
 
