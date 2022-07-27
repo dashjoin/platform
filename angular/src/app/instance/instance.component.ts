@@ -637,7 +637,7 @@ export class InstanceComponent implements OnInit {
    */
   errorHandler = (error: any) => {
     if (error.status === 404 && !this.layout) {
-      this.snackBar.open(Util.errorMsg(error), 'Open Home').onAction().subscribe(() => this.router.navigate(['/']));
+      this.snackBar.open(Util.errorMsg(error), 'Open Home', { duration: 3000 }).onAction().subscribe(() => this.router.navigate(['/']));
     } else {
       this.snackBar.open(Util.errorMsg(error), 'OK');
     }
