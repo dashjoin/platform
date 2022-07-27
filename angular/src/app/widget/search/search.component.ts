@@ -32,6 +32,11 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
   justClosed = false;
 
   /**
+   * do not initSearchContext when user makes changes
+   */
+  popupUsed = false;
+
+  /**
    * data structure for the db and table dropdowns
    */
   db2table: { [key: string]: string[] };
@@ -84,7 +89,8 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
    */
   doShow() {
 
-    this.initSearchContext();
+    if (!this.popupUsed)
+      this.initSearchContext();
 
     if (this.justClosed) {
       this.justClosed = false;
@@ -113,5 +119,6 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
   close() {
     this.justClosed = true;
     this.show = false;
+    this.popupUsed = false;
   }
 }
