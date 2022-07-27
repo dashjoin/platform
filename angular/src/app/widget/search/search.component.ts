@@ -49,11 +49,11 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
   /**
    * init searchtable and db from URL parameters
    */
-  async initWidget() {
-    if (this.database === 'config' && this.table === 'Table') {
+  initSearchContext() {
+    if (this.route.snapshot.paramMap.get('tdatabase') && this.route.snapshot.paramMap.get('ttable')) {
       // if we are on a table page, search defaults to searching this table only
-      this.searchdatabase = Util.parseTableID(this.pk1)[1];
-      this.searchtable = Util.parseTableID(this.pk1)[2];
+      this.searchdatabase = this.route.snapshot.paramMap.get('tdatabase');
+      this.searchtable = this.route.snapshot.paramMap.get('ttable');
     }
     else {
       // if present, get search scope from URL
@@ -83,6 +83,9 @@ export class SearchComponent extends DJBaseComponent implements OnInit {
    * show the popup and load the data if necessary
    */
   doShow() {
+
+    this.initSearchContext();
+
     if (this.justClosed) {
       this.justClosed = false;
       return;
