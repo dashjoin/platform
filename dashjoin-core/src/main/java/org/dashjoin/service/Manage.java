@@ -582,6 +582,8 @@ public class Manage {
     Map<String, List<Map<String, Object>>> tables = new LinkedHashMap<>();
     for (InputPart inputPartM : inputParts) {
       MultivaluedMap<String, String> headerM = inputPartM.getHeaders();
+      if ("model/.secrets.id".equals(getFileNameInternal(headerM)))
+        continue;
       InputStream inputStream = inputPartM.getBody(InputStream.class, null);
       Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
       String[] parts = getFileName(headerM).split("/");
