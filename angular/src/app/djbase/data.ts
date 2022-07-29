@@ -726,6 +726,9 @@ export class DJWrappedData<T> extends DJDataBase<T> {
      */
     async getMeta(): Promise<DJDataMeta> {
         await this.loadMeta();
+        // make sure sorting and paging are active in widgets
+        this.meta.paging = true;
+        this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
         return this.meta;
     }
 
@@ -733,10 +736,8 @@ export class DJWrappedData<T> extends DJDataBase<T> {
         await this.load(options);
         await this.loadMeta();
 
-        // enable paging, total size, sorting
-        this.meta.paging = true;
+        // once data is available, set the total size
         this.meta.size = this.data.length;
-        this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
 
         // sorting
         // TODO: currently only support sorting one col
