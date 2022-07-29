@@ -680,6 +680,7 @@ export class DJWrappedData<T> extends DJDataBase<T> {
     data: T[];
     delegate: DJData<T>;
     loading: Promise<void>;
+    loadingMeta: Promise<void>;
 
     constructor(delegate: DJData<T>, id?: string) {
         super(id);
@@ -690,10 +691,20 @@ export class DJWrappedData<T> extends DJDataBase<T> {
      * called from getMeta() / getInternal()
      * make sure data and metadata is loaded
      */
-    async load(options?: DJDataGetOptions) {
+    async load(options: DJDataGetOptions) {
         if (!this.loading)
             this.loading = this.go(options);
         await this.loading;
+    }
+
+    /**
+     * called from getMeta() / getInternal()
+     * make sure data and metadata is loaded
+     */
+    async loadMeta() {
+        if (!this.loadingMeta)
+            this.loadingMeta = this.goMeta();
+        await this.loadingMeta;
     }
 
     /**
@@ -701,21 +712,31 @@ export class DJWrappedData<T> extends DJDataBase<T> {
      */
     async go(options?: DJDataGetOptions) {
         this.data = await (await this.delegate.get(options)).data;
-        this.meta = await this.delegate.getMeta();
-
-        // enable paging, total size, sorting
-        this.meta.paging = true;
-        this.meta.size = this.data.length;
-        this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
     }
 
+    /**
+     * loading promise
+     */
+    async goMeta() {
+        this.meta = await this.delegate.getMeta();
+    }
+
+    /**
+     * loading promise
+     */
     async getMeta(): Promise<DJDataMeta> {
-        await this.load();
+        await this.loadMeta();
         return this.meta;
     }
 
     protected async getInternal(options?: DJDataGetOptions): Promise<DJDataPage<T>> {
         await this.load(options);
+        await this.loadMeta();
+
+        // enable paging, total size, sorting
+        this.meta.paging = true;
+        this.meta.size = this.data.length;
+        this.meta.sortCaps = { sortableFields: Object.keys(this.meta.schema.properties) };
 
         // sorting
         // TODO: currently only support sorting one col
