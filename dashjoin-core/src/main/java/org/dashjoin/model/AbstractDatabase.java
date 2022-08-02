@@ -161,8 +161,11 @@ public abstract class AbstractDatabase implements Database {
       if (p.pkpos != null)
         for (Map<String, Object> res : all(s, null, null, null, false, null))
           if (res.get(p.name) != null) {
-            String match = s.djLabel == null ? res.get(p.name).toString()
-                : "" + Template.replace(s.djLabel, res);
+            // ignore dj-label for config/Property
+            String match =
+                s.djLabel == null || ("dj/config".equals(s.parent) && "Property".equals(s.name))
+                    ? res.get(p.name).toString()
+                    : "" + Template.replace(s.djLabel, res);
             if (match.toLowerCase().contains(prefix.toLowerCase())) {
               if (s.djLabel == null) {
                 Choice choice = new Choice();
