@@ -262,6 +262,9 @@ export class DJBaseComponent extends InstanceComponent implements OnInit {
     const page = await this.dataSnapshot.get(opts);
     this.app.log(page);
     this.all = page.data;
+    if (this.meta?.size) {
+      this.allLength = this.meta.size;
+    }
     if (page.data.length < limit) {
       this.allLength = offset + page.data.length;
     }
