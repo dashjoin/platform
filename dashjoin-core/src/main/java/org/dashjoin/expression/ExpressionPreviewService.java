@@ -36,6 +36,13 @@ public class ExpressionPreviewService {
   ExpressionService expression;
 
   @POST
+  @Path("/parse")
+  @Operation(summary = "Parses an expression")
+  public void parseExpression(@Context SecurityContext sc, String exp) throws Exception {
+    expression.prepare(sc, exp);
+  }
+
+  @POST
   @Path("/")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
