@@ -1,0 +1,21 @@
+site_name: Dashjoin Platform Documentation
+theme:
+  name: material
+  custom_dir: overrides
+
+#
+# Use version management
+# see: https://squidfunk.github.io/mkdocs-material/setup/setting-up-versioning/
+extra:
+  version:
+    provider: mike
+
+#
+# Enable code highlighting
+#
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
