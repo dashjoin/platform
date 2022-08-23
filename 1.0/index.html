@@ -1,0 +1,3520 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.1">
+    
+    
+      
+        <title>Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dashjoin-open-source-cloud-native-low-code-development-platform" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Dashjoin Open Source & Cloud Native Low Code Development Platform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Dashjoin Open Source & Cloud Native Low Code Development Platform
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Dashjoin Open Source & Cloud Native Low Code Development Platform
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-15-minute-tour" class="md-nav__link">
+    Getting Started: 15 Minute Tour
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Started: 15 Minute Tour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-management" class="md-nav__link">
+    Database Management
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricting-access" class="md-nav__link">
+    Restricting Access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-layouts" class="md-nav__link">
+    User Layouts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-layout" class="md-nav__link">
+    Admin Layout
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    Concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-model" class="md-nav__link">
+    Data Model
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-coordinates" class="md-nav__link">
+    Record Coordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tables-and-columns" class="md-nav__link">
+    Tables and Columns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-and-foreign-keys" class="md-nav__link">
+    Primary and Foreign Keys
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-and-instance-layout-and-navigation" class="md-nav__link">
+    Table and Instance Layout and Navigation
+  </a>
+  
+    <nav class="md-nav" aria-label="Table and Instance Layout and Navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-table-layout" class="md-nav__link">
+    Default Table Layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-record-layout" class="md-nav__link">
+    Default Record Layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widgets-and-custom-layouts" class="md-nav__link">
+    Widgets and Custom Layouts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-metadata" class="md-nav__link">
+    Schema Metadata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-the-system" class="md-nav__link">
+    Interacting with the System
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-read-update-delete-crud" class="md-nav__link">
+    Create, Read, Update, Delete (CRUD)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-queries" class="md-nav__link">
+    Running Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-functions" class="md-nav__link">
+    Executing Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluating-expressions" class="md-nav__link">
+    Evaluating Expressions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-reference" class="md-nav__link">
+    Developer Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Developer Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universal-database-frontend" class="md-nav__link">
+    Universal Database Frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Database Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-tables" class="md-nav__link">
+    Default Visualization of Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-records" class="md-nav__link">
+    Default Visualization of Records
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-page" class="md-nav__link">
+    Search Page
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-and-database-management" class="md-nav__link">
+    Data and Database Management
+  </a>
+  
+    <nav class="md-nav" aria-label="Data and Database Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-dashboard" class="md-nav__link">
+    Database Dashboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-definition-operations" class="md-nav__link">
+    Data Definition Operations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload" class="md-nav__link">
+    Upload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-operations" class="md-nav__link">
+    Column Operations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-label" class="md-nav__link">
+    Table Label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-triggers" class="md-nav__link">
+    Table Triggers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-and-editor" class="md-nav__link">
+    Query Catalog and Editor
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Catalog and Editor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-page" class="md-nav__link">
+    Query Catalog Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-query-constructs" class="md-nav__link">
+    Supported Query Constructs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-size" class="md-nav__link">
+    Result Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    Query Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-interface-layout" class="md-nav__link">
+    User Interface Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="User Interface Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pages-dashboard" class="md-nav__link">
+    Pages Dashboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-pages-and-layouts" class="md-nav__link">
+    System Pages and Layouts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-editor" class="md-nav__link">
+    Layout Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-editor" class="md-nav__link">
+    Form Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-widgets" class="md-nav__link">
+    Custom Widgets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dj-toolbar" class="md-nav__link">
+    dj-toolbar
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-reference" class="md-nav__link">
+    Widget Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Widget Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-widgets" class="md-nav__link">
+    Container Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#card" class="md-nav__link">
+    card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion" class="md-nav__link">
+    expansion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grid" class="md-nav__link">
+    grid
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regular-widgets" class="md-nav__link">
+    Regular Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#button" class="md-nav__link">
+    button
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart" class="md-nav__link">
+    chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display" class="md-nav__link">
+    display
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit" class="md-nav__link">
+    edit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editrelated" class="md-nav__link">
+    editRelated
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon" class="md-nav__link">
+    icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    markdown
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    tree
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable" class="md-nav__link">
+    variable
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-widgets" class="md-nav__link">
+    Special Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toolbar" class="md-nav__link">
+    toolbar
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-status" class="md-nav__link">
+    activity-status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-edit-switch" class="md-nav__link">
+    layout-edit-switch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queryeditor" class="md-nav__link">
+    queryeditor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    search
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-result" class="md-nav__link">
+    search-result
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spacer" class="md-nav__link">
+    spacer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload_1" class="md-nav__link">
+    upload
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-page" class="md-nav__link">
+    Function Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    Function Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    RestJson
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    Email
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    Invoke
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    Mapping Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    Gathering Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    The Mapping Step
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    The Save Step
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    Mapping Function Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    ETL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    Expressions
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jsonata" class="md-nav__link">
+    JSONata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expression-editor" class="md-nav__link">
+    Expression Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-widgets" class="md-nav__link">
+    JSONata in Widgets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-invoke-functions" class="md-nav__link">
+    JSONata in Invoke Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-triggers" class="md-nav__link">
+    JSONata in Triggers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-expression-reference" class="md-nav__link">
+    Dashjoin Expression Reference
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    Access Control
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info-page" class="md-nav__link">
+    Info Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-dashboard" class="md-nav__link">
+    Roles Dashboard
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-as-a-service" class="md-nav__link">
+    Platform as a Service
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform as a Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tenant-user-dashboard" class="md-nav__link">
+    Tenant User Dashboard
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-local-admin-user" class="md-nav__link">
+    Creating a local Admin User
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-dashjoin-application" class="md-nav__link">
+    Opening the Dashjoin application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installers" class="md-nav__link">
+    Installers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build Locally
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eclipse" class="md-nav__link">
+    Eclipse
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#administration" class="md-nav__link">
+    Administration
+  </a>
+  
+    <nav class="md-nav" aria-label="Administration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    Configuration Changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-performance" class="md-nav__link">
+    Query Performance
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-database-indices" class="md-nav__link">
+    Creating Database Indices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specific-search-queries" class="md-nav__link">
+    Specific Search Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-timeout-settings" class="md-nav__link">
+    Global Timeout Settings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-production" class="md-nav__link">
+    Development / Production
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-databases" class="md-nav__link">
+    Supported Databases
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribute" class="md-nav__link">
+    Contribute
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-15-minute-tour" class="md-nav__link">
+    Getting Started: 15 Minute Tour
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Started: 15 Minute Tour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-management" class="md-nav__link">
+    Database Management
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricting-access" class="md-nav__link">
+    Restricting Access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-layouts" class="md-nav__link">
+    User Layouts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-layout" class="md-nav__link">
+    Admin Layout
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    Concepts
+  </a>
+  
+    <nav class="md-nav" aria-label="Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-model" class="md-nav__link">
+    Data Model
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-coordinates" class="md-nav__link">
+    Record Coordinates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tables-and-columns" class="md-nav__link">
+    Tables and Columns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-and-foreign-keys" class="md-nav__link">
+    Primary and Foreign Keys
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-and-instance-layout-and-navigation" class="md-nav__link">
+    Table and Instance Layout and Navigation
+  </a>
+  
+    <nav class="md-nav" aria-label="Table and Instance Layout and Navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-table-layout" class="md-nav__link">
+    Default Table Layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-record-layout" class="md-nav__link">
+    Default Record Layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widgets-and-custom-layouts" class="md-nav__link">
+    Widgets and Custom Layouts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schema-metadata" class="md-nav__link">
+    Schema Metadata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-the-system" class="md-nav__link">
+    Interacting with the System
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-read-update-delete-crud" class="md-nav__link">
+    Create, Read, Update, Delete (CRUD)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-queries" class="md-nav__link">
+    Running Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-functions" class="md-nav__link">
+    Executing Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluating-expressions" class="md-nav__link">
+    Evaluating Expressions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-reference" class="md-nav__link">
+    Developer Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Developer Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universal-database-frontend" class="md-nav__link">
+    Universal Database Frontend
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Database Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-tables" class="md-nav__link">
+    Default Visualization of Tables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-records" class="md-nav__link">
+    Default Visualization of Records
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-page" class="md-nav__link">
+    Search Page
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-and-database-management" class="md-nav__link">
+    Data and Database Management
+  </a>
+  
+    <nav class="md-nav" aria-label="Data and Database Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-dashboard" class="md-nav__link">
+    Database Dashboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-definition-operations" class="md-nav__link">
+    Data Definition Operations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload" class="md-nav__link">
+    Upload
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-operations" class="md-nav__link">
+    Column Operations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-label" class="md-nav__link">
+    Table Label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-triggers" class="md-nav__link">
+    Table Triggers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-and-editor" class="md-nav__link">
+    Query Catalog and Editor
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Catalog and Editor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-page" class="md-nav__link">
+    Query Catalog Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-query-constructs" class="md-nav__link">
+    Supported Query Constructs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-size" class="md-nav__link">
+    Result Size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    Query Parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-interface-layout" class="md-nav__link">
+    User Interface Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="User Interface Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pages-dashboard" class="md-nav__link">
+    Pages Dashboard
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-pages-and-layouts" class="md-nav__link">
+    System Pages and Layouts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-editor" class="md-nav__link">
+    Layout Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-editor" class="md-nav__link">
+    Form Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-widgets" class="md-nav__link">
+    Custom Widgets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dj-toolbar" class="md-nav__link">
+    dj-toolbar
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-reference" class="md-nav__link">
+    Widget Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Widget Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-widgets" class="md-nav__link">
+    Container Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#card" class="md-nav__link">
+    card
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion" class="md-nav__link">
+    expansion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grid" class="md-nav__link">
+    grid
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regular-widgets" class="md-nav__link">
+    Regular Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    all
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#button" class="md-nav__link">
+    button
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart" class="md-nav__link">
+    chart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    create
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display" class="md-nav__link">
+    display
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit" class="md-nav__link">
+    edit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editrelated" class="md-nav__link">
+    editRelated
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon" class="md-nav__link">
+    icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    markdown
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    table
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    tree
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable" class="md-nav__link">
+    variable
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-widgets" class="md-nav__link">
+    Special Widgets
+  </a>
+  
+    <nav class="md-nav" aria-label="Special Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toolbar" class="md-nav__link">
+    toolbar
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-status" class="md-nav__link">
+    activity-status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-edit-switch" class="md-nav__link">
+    layout-edit-switch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queryeditor" class="md-nav__link">
+    queryeditor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    search
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-result" class="md-nav__link">
+    search-result
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spacer" class="md-nav__link">
+    spacer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload_1" class="md-nav__link">
+    upload
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-page" class="md-nav__link">
+    Function Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    Function Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    RestJson
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    Email
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    Invoke
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    Mapping Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    Gathering Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    The Mapping Step
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    The Save Step
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    Mapping Function Reference
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    ETL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    Expressions
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jsonata" class="md-nav__link">
+    JSONata
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expression-editor" class="md-nav__link">
+    Expression Editor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-widgets" class="md-nav__link">
+    JSONata in Widgets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-invoke-functions" class="md-nav__link">
+    JSONata in Invoke Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-triggers" class="md-nav__link">
+    JSONata in Triggers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-expression-reference" class="md-nav__link">
+    Dashjoin Expression Reference
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    Access Control
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info-page" class="md-nav__link">
+    Info Page
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roles-dashboard" class="md-nav__link">
+    Roles Dashboard
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-as-a-service" class="md-nav__link">
+    Platform as a Service
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform as a Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tenant-user-dashboard" class="md-nav__link">
+    Tenant User Dashboard
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-local-admin-user" class="md-nav__link">
+    Creating a local Admin User
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-dashjoin-application" class="md-nav__link">
+    Opening the Dashjoin application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installers" class="md-nav__link">
+    Installers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build Locally
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eclipse" class="md-nav__link">
+    Eclipse
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#administration" class="md-nav__link">
+    Administration
+  </a>
+  
+    <nav class="md-nav" aria-label="Administration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    Configuration Changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-performance" class="md-nav__link">
+    Query Performance
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-database-indices" class="md-nav__link">
+    Creating Database Indices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specific-search-queries" class="md-nav__link">
+    Specific Search Queries
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-timeout-settings" class="md-nav__link">
+    Global Timeout Settings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development-production" class="md-nav__link">
+    Development / Production
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    Security
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-databases" class="md-nav__link">
+    Supported Databases
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contribute" class="md-nav__link">
+    Contribute
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="dashjoin-open-source-cloud-native-low-code-development-platform">Dashjoin Open Source &amp; Cloud Native Low Code Development Platform</h1>
+<p><a href="https://github.com/dashjoin/platform/actions"><img alt="Dashjoin Angular and Java build" src="https://github.com/dashjoin/platform/workflows/Dashjoin%20CI%20build/badge.svg" /></a>
+<a href="https://github.com/dashjoin/platform/tree/master/dashjoin-core/src/test/java/org/dashjoin/service"><img alt="junit-coverage" src="https://img.shields.io/badge/junit_coverage-84%25-brightgreen" /></a></p>
+<p>For anyone who is planning a development project, faces a tight schedule, needs to present results quickly, or has limited development resources available. Dashjoin taps into and integrates your existing data sources and allows you to intuitively browse, search, edit, and visualize your integrated information. Add business logic to enable users and automation to act on the information. Unlike other Low Code Development Platforms, Dashjoin offers a free open source version with a commercial PaaS and bases on a unique, linked-data inspired approach to scalable data integration.</p>
+<p>Live demo: <a href="https://demo.my.dashjoin.com/">https://demo.my.dashjoin.com/</a> (log in as guest, or with your registered user)</p>
+<p>Webpage: <a href="https://dashjoin.com/">https://dashjoin.com/</a></p>
+<p>Blog: <a href="https://medium.com/@dashjoin">https://medium.com/@dashjoin</a></p>
+<p>Video tutorials:</p>
+<p><a href="https://www.youtube.com/channel/UCcXpJB1GzQN_opSGqegCgoA"><img alt="Video tutorial" src="https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg" /></a></p>
+<p>Features</p>
+<ol>
+<li>Universal DB Frontend: Connect to any SQL or NoSQL database, browse, search, and edit its contents. Extend the schema on the fly.</li>
+<li>Query Editor: Automatically collect schema information that powers an intuitive graphical query editor.</li>
+<li>Layout Designer: Graphically customize the layout for different types found in the database. Leverage the query editor to include meaningful charts.</li>
+<li>Data Integration and Federation: Visually map external data sources to your model. Load the data into a warehouse or federate the source into a virtual linked-data graph.</li>
+<li>Processes: Seamlessly start and integrate REST services from the application and monitor progress.</li>
+<li>Cloud Deployment: Deploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks.</li>
+<li>Everything JSON: Dashjoin leverages popular JSON standards like JSON Schema and JSONata and for all aspects of the system</li>
+<li>Open Source: Join the Dashjoin community and avoid vendor lock-in.</li>
+</ol>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#getting-started-15-minute-tour">Getting Started: 15 Minute Tour</a></li>
+<li><a href="#concepts">Concepts</a></li>
+<li><a href="#developer-reference">Developer Reference</a></li>
+<li><a href="#platform-as-a-service">Platform as a Service</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#administration">Administration</a></li>
+<li><a href="#development--production">Development / Production</a></li>
+<li><a href="#security">Security</a></li>
+<li><a href="#supported-databases">Supported Databases</a></li>
+<li><a href="#api">API</a></li>
+<li><a href="#contribute">Contribute</a></li>
+</ul>
+<h2 id="getting-started-15-minute-tour">Getting Started: 15 Minute Tour</h2>
+<p>This section guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the <a href="https://github.com/dashjoin/platform/tree/master/dashjoin-demo">demo application</a> installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.</p>
+<p>We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.</p>
+<h3 id="database-management">Database Management</h3>
+<p>To get to the data management page, click on the gear symbol in the toolbar. The table shows the databases that are available to the system so far. You should see the northwind database there.</p>
+<p>Since northwind is a non-persistent in memory database, we will create a new database. This can be done with the create widget on the page. Select the following values and press "create":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>type: SQLDatabase
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>name: sqlite
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>url:  jdbc:sqlite:your_database.db
+</code></pre></div>
+<p>From the database page, click on the sqlite database you just created. This brings you to the database details page. The connection information section allows you to make changes to the connection. Note that you can also simply click update in order to recollect the database metadata in case the schema was changed using another application.</p>
+<p>If you are in the admin role, you can expand the database management section. Using the form, create a table called "REQUESTS". This operation creates the table with two columns: ID is the numeric primary key and name is a string column describing the record.</p>
+<p>Go to the table by following the REQUESTS link in the database management table.
+On the page you can start entering some test data. Note that the SQL database enforces the uniqueness constraint on the ID column. If you try to create a record with an existing ID, you will get an error message: [SQLITE_CONSTRAINT] Abort due to constraint violation (UNIQUE constraint failed: <code>REQUESTS.ID</code>).
+By inspecting the created table, the system also automatically picks up the datatypes of the columns and requires you to provide an ID.</p>
+<p>Open the column metadata control and add three more columns:</p>
+<ul>
+<li>submitted: date</li>
+<li>customer: string</li>
+<li>user: string</li>
+</ul>
+<p>We can enter, edit and delete records via the user interface. Another option is to upload data. To do this, create a file called REQUESTS.csv (note that the file name must match the case sensitive table name):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ID,name,submitted,customer,user
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>1,Can you please send me an offer,2021-01-01 10:20,ALFKI,user
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2,Delivery arrived,2021-01-01 10:20,ALFKI,user
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>3,Delivery delayed,2021-01-07 11:32,ALFKI,user
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>4,Are you out of crackers,2021-01-04 08:21,BLAUS,other
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>5,Need more crackers,2021-11-06 05:20,,admin
+</code></pre></div>
+<p>To upload this file, navigate back to the sqlite database page, expand the database management control and select "Upload Data". In the dialog, select "choose files" and select the file REQUESTS.csv you just created.
+This brings up a table with a preview (the first 10 rows) of the table. Since the requests table already exists, you cannot select a primary key or the column data type. These options are available if the target table does not yet exist in the database.</p>
+<p>You have the choice of appending to or replacing the existing data. Choose "replace" in order to avoid further primary key clashes. Since we are permanently deleting existing data, we need to confirm this operation by entering "delete tables". Note that tables is plural since we can also upload multiple tables at once by selecting a Excel spreadsheet or multiple csv files.</p>
+<p>Since our application should not change the northwind ERP database, we created the new table in a new database. Nevertheless, there is a logical connection between the two databases, since the customer field in the requests table references the CUSTOMERS table in the northwind database. Dashjoin allows you to express this relationship even tough it links columns and records in different databases.</p>
+<p>Navigate to the REQUESTS table and open the column metadata control. In the table, select the customers column and click edit. In the popup, type "CUSTOMER_ID" in the foreign key reference field. The system suggests all known columns that contain this substring. Select "dj/northwind/CUSTOMERS/CUSTOMER_ID" and press ok.
+Since we made a change to the database metadata and the application caches this data, we need to clear the browser application cache by reloading the page.</p>
+<p>After the reload, you will notice that the customer column in the table now shows a hyperlink to the related record in the customer table. Likewise, if you navigate onto a request or onto a customer, the related records are displayed even though they reside in a different database. In addition, if you start typing in the request creation's customer field, you will notice that the matching northwind customer IDs are showing up.</p>
+<p>Navigate to the customer ALFKI (northwind/CUSTOMERS/ALFKI). The list of requests made by this customer shows up as a list of hyperlinks (1, 2, and 3). As a default, Dashjoin uses the primary key value as a link label, however we can customize this. Go to the REQUESTS table page, open the table metadata control and enter ${name} in the dj-label field. This string is a template syntax where constant strings can be mixed with template variables referencing columns. So a person template could be ${LAST_NAME}, ${FIRST_NAME}.</p>
+<p>Save this change and reload the browser.
+The visit the first request. You will notice that the browser window title now displays the new label. Going back to the requests table you will see that any request that was visited, now shows a nice name. Likewise, if you go back to customer ALFKI, the list also shows the readable link labels (assuming they all have been visited).</p>
+<p>Go back to the requests table and enter the letter 'a' in the customer field of the create form. You will see the autocomplete options with the customer IDs starting with 'a'.
+The customer IDs are five letter strings. This is better than a plain number, but let's also choose a display name for customers.
+Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label ${COMPANY_NAME}.
+Reload the browser and go back to the requests table. If you type 'a' into the customers create field, you will see the list of customer display names that start with 'a'.
+Note that the tooltip shows the underlying five letter primary key. This feature is very useful if tables use unreadable keys.</p>
+<h3 id="restricting-access">Restricting Access</h3>
+<p>Dashjoin makes it very easy to secure data based on user roles. To view the roles know to the system, go to the info page linked in the toolbar.
+The top left widget display the following information:</p>
+<ul>
+<li>The name of the current user (should be user name 'admin')</li>
+<li>The roles the current user is in (should be the user role 'admin')</li>
+<li>A link to the role management page</li>
+</ul>
+<p>Follow the link to the roles page. On there, you can define new roles and define the home page for users in this role.
+In the system there are several places where you will be able to select the roles defined here.
+The role IDs you choose depend on the identity management system that is configured.
+In the Dashjoin PaaS, this is OpenID. If you are using the open source default installation,
+the roles are defined in the djroles.properties file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>admin: dj,admin
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>user: dj,authenticated
+</code></pre></div>
+<p>This file defines the users admin and user with roles admin and authenticated and both having the password dj.
+Therefore, the default system roles are admin and authenticated.
+If your identity management system defines other roles, you can define them on the roles management page in order
+to make them usable in the system.
+We will leave this unchanged for now.</p>
+<p>In the next step, use a different browser or an incognito window and login user user with password dj.
+Except for the toolbar, the system looks pretty much the same. Navigate to the info page. You will need
+to type /page/Info into the browser, since the toolbar icon is not displayed.
+Verify that the page shows user in role authenticated.
+Click on "system roles" and "admin" and press delete. You will get the error message:
+"User does not have the role required to delete table dj-role in database config". The authenticated role
+has read access to the config database, but cannot create, delete or update any records.</p>
+<p>By default, new databases are only accessible for the admin. We can demonstrate this by searching for the term "cracker". In the admin browser, you get a total of seven results from both the northwind and sqlite databases.</p>
+<p>If you preform the same search in the user browser, you only get the five northwind results.</p>
+<p>The northwind database grants read only access to the authenticated role. You can check this on the page /config/dj-database/dj%2Fnorthwind.</p>
+<p>Now let's grant access to the sqlite database. Go to the page /config/dj-database/dj%2Fsqlite, select the authenticated role for both the read and write roles and save your change. Note that the admin role already has implicit access, therefore it is not listed in the options.</p>
+<p>Go back to the user browser and repeat the search. Now you'll get the same result as in the admin window. You can also navigate to a request and make a change since write access has been granted.</p>
+<h3 id="user-layouts">User Layouts</h3>
+<p>This section explains how we can customize the layouts and how we can display different user interfaces depending on which role the user is in.</p>
+<p>For our application, we'd like the users to have a page where they can see their past requests and where they can issue a new request. A request should only consist of the text. The fields ID, submitted and user should be determined by the system.</p>
+<p>We start with the admin browser and navigate to the "dashboard pages" via the toolbar. Using the "Create a new page" control, create a new page called "Start". We will use this as the homepage for authenticated users. This can be setup on the authenticated role page (config/dj-role/authenticated). Enter "/page/Start" to specify the start page as the homepage for users in this role.
+We need to logout and back in using the user browser to pick up this setting. Clicking the home icon will now get you to the start page which at this point only shows a single tile with the text "New page".</p>
+<p>In order to create this page, we need to use the admin browser. Before we add widgets to this page, we need to create a query that filters the user's requests and that projects the request columns in a suitable way.</p>
+<p>This can be done using the query catalog and query editor. Navigate to the query catalog via the toolbar and in the create form, press the editor button. In the popup, select the sqlite database and the requests table. Using the dropdown, you can add the field user to the query. In the filter field, enter "user". Now we just need to hide the user column (select remove column from the column context menu) and drag &amp; drop the name column to the first position. The query should be:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"></span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="ss">&quot;REQUESTS&quot;</span><span class="p">.</span><span class="ss">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;REQUESTS&quot;</span><span class="p">.</span><span class="ss">&quot;submitted&quot;</span><span class="w"></span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">FROM</span><span class="w"></span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="ss">&quot;REQUESTS&quot;</span><span class="w"></span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">WHERE</span><span class="w"></span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">REQUESTS</span><span class="p">.</span><span class="k">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;user&#39;</span><span class="w"></span>
+</code></pre></div>
+<p>Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with ${user}. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).</p>
+<p>Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. Press the context menu under the text "New page" and select edit. This widget currently is a text widget displaying a static text. Instead we'd like a table showing our query result. Select the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>widget: table
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>query: requests
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>database: sqlite
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>title: My Requests
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>arguments: {&quot;user&quot;: $.user}
+</code></pre></div>
+<p>Press ok and the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.</p>
+<p>We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, $.user reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.</p>
+<p>Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and select add from the table widget's context menu. A new widget appears which we edit. Select the following values:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>widget: button
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>text: Submit
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>title: New Requests
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>argument: name / string
+</code></pre></div>
+<p>This adds a form and a button to the page. There are three context menus, the top one for the widget, the middle one for the form, and the lower one for the name form element. Edit the last one and select these values:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>widget: textarea
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>title: Your message
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>CSS styles: width / 400px, height / 200px
+</code></pre></div>
+<p>These settings change the default text field to a larger multi line text area.
+Finally, let's edit the button widget again to define what happens when the button is pressed. Enter the following expression in the field "run this when clicked and display the result":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$create(
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  &quot;sqlite&quot;, 
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  &quot;REQUESTS&quot;, 
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  {
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    &quot;ID&quot;: $ceil($random()*1000000), 
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    &quot;user&quot;: $.user, 
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    &quot;name&quot;: $.form.name, 
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    &quot;submitted&quot;: $now()
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  }
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>)
+</code></pre></div>
+<p>Let's break down what is happening here. $create is a function which creates the record (3rd parameter) in the database (1st parameter) and the table (2nd parameter) specified. Database and table are static strings. The record consists of four dynamic fields:</p>
+<p>The ID is computed by taking a random number (between 0 and 1), multiplying it with 1 million and rounding it up. Thus the ID is a random number between 1 and 1 million, providing reasonable protection from duplicate IDs.</p>
+<p>The user is computed using the same construct ($.user) as for the table widget above.</p>
+<p>The name is specified as $.form.name. The rationale is the following: The user entries are stored in a JSON object form which hangs under the context $. In this object, we choose the name specified as the button argument.</p>
+<p>Finally, the submitted field is the current timestamp computed with $now().</p>
+<p>After saving the layout, you can test the functionality. Note that you need to refresh the page after a value is submitted.</p>
+<h3 id="admin-layout">Admin Layout</h3>
+<p>The application administrator already has the ability to browse and search the data. However, it would be nice to add a chart to the system. To do this we first need to create another query.</p>
+<p>Follow the steps as before and project the columns user and name. Next, select the column user and group by this column. The resulting query should be:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"></span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="ss">&quot;REQUESTS&quot;</span><span class="p">.</span><span class="ss">&quot;user&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="ss">&quot;REQUESTS&quot;</span><span class="p">.</span><span class="ss">&quot;name&quot;</span><span class="p">)</span><span class="w"></span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">FROM</span><span class="w"></span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="ss">&quot;REQUESTS&quot;</span><span class="w"></span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"></span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">   </span><span class="ss">&quot;REQUESTS&quot;</span><span class="p">.</span><span class="ss">&quot;user&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>Save the query under the name "requestsPerUser". Next, navigate to the REQUESTS table and enter the layout editor. Add a widget to the page and choose these settings:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>widget: chart
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>title: Requests Per User
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>query: requestsPerUser
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>database: sqlite
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>chart: doughnut
+</code></pre></div>
+<p>Finally, let's assume we'd like a notification when a new request is submitted. We can do this by creating a trigger on the request table. Open the table metadata section and enter the following expression for the field "Trigger to call before a new record is created":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$echo($)
+</code></pre></div>
+<p>This trigger is a simple expression that calls the echo function. Echo takes an object which is written to the system console. In this case the entire context is written. Once you save and submit another request, you should see a line like this in the console:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>{database=sqlite, search=null, command=create, table=REQUESTS, object={ID=762613, user=user, name=My test entry, submitted=2020-12-31T15:50:35.755459500Z}}
+</code></pre></div>
+<p>Instead of calling the echo function, we can of course send an email or perform any other kind of action.</p>
+<h2 id="concepts">Concepts</h2>
+<p>Before we dive into the user guide for the platform, this section explains a couple of key concepts.</p>
+<h3 id="data-model">Data Model</h3>
+<p>The Dashjoin low code platform sits on top of one or more databases. These databases can be empty, ready to store application data,
+or they can contain an existing schema and data, possibly under the control of other software and systems.
+Dashjoin connects to these databases and maps the data using for coordinates for each data record:</p>
+<h4 id="record-coordinates">Record Coordinates</h4>
+<ol>
+<li>Dashjoin: The first coordinate is the ID of the Dashjoin installation that accesses the database.</li>
+<li>Database: The unique name of the database containing the record.</li>
+<li>Table: The table name (unique within the database) of the table containing the record.</li>
+<li>Record key(s): The unique ID of the record within its table. This might be a list of keys if we are dealing with composite keys, for instance in a relational database.</li>
+</ol>
+<p>These coordinates (DJ, DB, TABLE, PK) translate to RESTful URLs:</p>
+<ul>
+<li>Visualizing a record: <code>https://dashjoin.host.name/#/resource/DB/TABLE/PK</code></li>
+<li>API access to the record: <code>https://dashjoin.host.name/rest/database/crud/DB/TABLE/PK</code></li>
+</ul>
+<h4 id="tables-and-columns">Tables and Columns</h4>
+<p>Dashjoin organizes data in tables and columns. Columns can be of simple types such as strings, integers, etc., but they can also be complex
+JSON documents. Therefore, Dashjoin is able to connect to multiple kinds of databases. Each of these drivers aligns the database specific nomenclature
+to the common data model. Therefore a document database's collections become tables, the documents become records and the document fields become columns.</p>
+<h4 id="primary-and-foreign-keys">Primary and Foreign Keys</h4>
+<p>Each table usually defines one or more primary key columns that uniquely define each record in the table.
+In addition, there can be foreign keys in a table that reference another table. This information is crucial for Dashjoin, since it is used to
+automatically display hyperlinks between records.</p>
+<p>Usually the key information is extracted from the databases by the drivers. However, some databases do not allow
+for expressing foreign key information. In this case, the information can be added to the Dashjoin metadata by the user.
+This mechanism even allows setting foreign key relationships between databases and even from one Dashjoin system to another.
+This does not enable you to run a federated query like you would within a single SQL database. However, Dashjoin
+uses this metadata to hyperlink records between databases and logical Dashjoin installations.</p>
+<h3 id="table-and-instance-layout-and-navigation">Table and Instance Layout and Navigation</h3>
+<p>The Dashjoin user interface concept is inspired by the Semantic MediaWiki. The database is thought of as a large linked data cloud. Dashjoin user interface pages can be one of the following types:</p>
+<ol>
+<li>Record page: Assume the user navigates to the page /resource/DB/TABLE/PK. The system displays a page that corresponds to this record.</li>
+<li>Table page: Assume the user navigates to the page /table/DB/TABLE. The system displays a page that corresponds to this concept / table.</li>
+<li>Dashboard page: Assume the user navigates to the page /page/Page. The system displays this page which has no direct related context in the database.</li>
+</ol>
+<p>Unless the low code developer specifies otherwise, table and record pages are displayed as follows:</p>
+<h4 id="default-table-layout">Default Table Layout</h4>
+<p>Table pages show</p>
+<ul>
+<li>a pageable and sortable data table</li>
+<li>a form to create a new record</li>
+<li>if you are in the admin role, controls to edit the table schema and metadata</li>
+</ul>
+<p>Within the data table, any primary or foreign key field links to the corresponding record page,</p>
+<h4 id="default-record-layout">Default Record Layout</h4>
+<p>Record pages show</p>
+<ul>
+<li>a form to edit the record</li>
+<li>a delete button</li>
+<li>a link back to the table page</li>
+<li>links to any related record (this can either a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)</li>
+</ul>
+<p>The default layout allows the user to easily navigate the data regardless of which specific database it is located in.</p>
+<h4 id="widgets-and-custom-layouts">Widgets and Custom Layouts</h4>
+<p>For each table, the default table and instance layout can be adapted.
+A layout is a hierarchy of widgets. Widgets that contain other widgets are called containers.
+Every widget has a couple of properties. The chart widget for example, defines which query to visualize.</p>
+<h3 id="schema-metadata">Schema Metadata</h3>
+<p>We already mentioned that a developer can define foreign key relationships, even if the underlying database does not support this concept.
+Dashjoin allows a number of information to be entered about databases, tables, and columns. This data is usually called metadata.
+Dashjoin stores this metadata in the built-in configuration database, but this database behaves just like any other database.
+Therefore, each database and table are records and their pages behave just like any other page in the system.</p>
+<h3 id="interacting-with-the-system">Interacting with the System</h3>
+<p>So far, we mostly looked at the way Dashjoin organizes and especially how it visualizes information.
+This section describes how an application interacts and changes the underlying systems in other ways.</p>
+<h4 id="create-read-update-delete-crud">Create, Read, Update, Delete (CRUD)</h4>
+<p>A database driver usually exposes CRUD operations to the platform. These operations are used to display data but also
+to make changes from the forms displayed in the default layout. Note that, unless configured otherwise, the form shows
+an edit element for all columns.</p>
+<h4 id="running-queries">Running Queries</h4>
+<p>Besides simple read and browse operations, the underlying databases usually have the ability to run powerful
+queries. Dashjoin allows the developer to design such queries and save them in the query catalog consumption.
+These queries usually drive table and chart displays on customized layout pages and dashboards.
+Note that queries can also be used to run delete or update operations nd that they can also be parameterized.</p>
+<h4 id="executing-functions">Executing Functions</h4>
+<p>Apart from changing data in databases, Dashjoin can call functions on the backend. You can think of a function
+as a small pre-built and configurable service. Examples for function types are sending email or making a REST call.
+These can be instantiated in a system as "sendGmail" and "getStockPrice" by using the function type and providing the required configuration.
+These functions can then be used by active page elements such as buttons.</p>
+<h4 id="evaluating-expressions">Evaluating Expressions</h4>
+<p>Expressions are small programs that can be used to configure widgets on a page.
+The display widget for instance can display texts on the UI. The text to display is computed
+by an expression. This expression can for instance call the stock market function on the backend, and do some additional
+JSON transformation on the results before displaying the data.</p>
+<p>You can think of the expressions being the glue between widgets on the top and queries, CRUD and functions on the backend:</p>
+<table>
+<tbody>
+  <tr><td colspan="3">Widget</td></tr>
+  <tr><td colspan="3">Expression</td></tr>
+  <tr><td>CRUD</td><td>Function</td><td>Query</td></tr>
+</tbody>
+</table>
+
+<h2 id="developer-reference">Developer Reference</h2>
+<p>This section explains all Dashjoin features in more detail and serves as a reference guide.</p>
+<h3 id="universal-database-frontend">Universal Database Frontend</h3>
+<p>Dashjoin offers an intuitive default visualization for any kind of data. It features the following building blocks:</p>
+<h4 id="default-visualization-of-tables">Default Visualization of Tables</h4>
+<p>Unless specified otherwise using the layout editor, all table pages show two elements. First, we have a sortable and pageable table showing the database table contents. Any primary or foreign key displays a link to the corresponding record page. Secord, the page shows a form for creating a new table record. The form is configured using the table metadata the system collected from the database.
+In case you are a system administrator, you will see two more widgets which are explained in the section on data definition operations below.</p>
+<h4 id="default-visualization-of-records">Default Visualization of Records</h4>
+<p>The record page also has two elements. First, there is a form allowing to update and delete the record. The form is almost identical to the create form on the table page. The only exception is that it is not allowed to change primary key columns. If you would like to do this, you need to delete and re-create the record using the new key. Second, the page has a widget showing links to the table page and all related records. Note that records are related if a key in the record points to another record or vice versa.</p>
+<h4 id="search-page">Search Page</h4>
+<p>Dashjoin offers a powerful search capability of the underlying databases. When you enter a search term in the toolbar, the search is federated to all registered databases and the result page shows the combined result using the following columns:</p>
+<ul>
+<li>a link to the actual record matching the search</li>
+<li>the name of the table the record is located in</li>
+<li>the name of the column that matched the search</li>
+<li>the matching column value</li>
+</ul>
+<p>TODO: define the exact search semantics (lower / upper case, startswith, contains, etc.)</p>
+<h3 id="data-and-database-management">Data and Database Management</h3>
+<p>In Dashjoin, it is possible to register multiple databases. This section lists the supported management operations for these databases.</p>
+<h4 id="database-dashboard">Database Dashboard</h4>
+<p>The database dashboard shows the databases known to the system and allows registering new databases. The table displays some core information about each database, the connection status as well as the number of tables detected.
+To register a new database, first select the database type. Depending on your choice, the respective connection options appear. Once you connect, Dashjoin will collect the database metadata and immediately make the new database ready for searches, queries, and browsing. The table also provides a link to the individual database. Use this page to change connection parameters. You can also simply press update to recollect the metadata. This is useful if the underlying schema was changed by another application. Deleting the database disconnects from the database and deletes the connection information. No data is deleted in the database.
+The page also contains a link to the system's configuration database. Every role defined in the system must have read-only
+access to the configuration database. You can use this page to grant that access. In the PaaS version, you can also use the upload functionality
+to bulk-register tenant users.</p>
+<p>You can also specify the roles that are allowed to read and write to the database. Note that by default, the admin role has access to all tables.
+Finally, you can specify search queries for a database. Please see the performance tuning section below.</p>
+<h4 id="data-definition-operations">Data Definition Operations</h4>
+<p>The database page also offer a database management section. You can create a new table there. The new table will contain two columns:</p>
+<ul>
+<li>ID: a numeric primary key</li>
+<li>name: a generic string describing the record</li>
+</ul>
+<p>The display table shows all database tables. You can delete tables there.
+Attention: this is a permanent operation that you have to confirm by typing "delete" into the dialog. Editing a table offers several options which are explained in the following sections. You can change the table name. This change is performed on the underlying database (e.g. a rename table operation on an SQL database).</p>
+<p>Following the link to an individual table offers two sections in addition to the normal table display. The table metadata section simply makes the table operations (e.g. renaming a table) available from this page also. The column metadata allows creating, renaming, and deleting columns. Attention: deleting columns is a permanent operation and needs to be confirmed by typing "delete" in the dialog.
+Besides renaming columns, other options are available which are explained in the below.</p>
+<h4 id="upload">Upload</h4>
+<p>The database management section also allows to upload data from multiple files to the current database. The following file extensions are supported:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Extension</th>
+<th>Table Name</th>
+<th>Column Name</th>
+<th>Suggested Data Type</th>
+<th>Suggested Primary Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comma separated UFT-8 format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></td>
+<td>.csv</td>
+<td>File name before extension</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>Microsoft Excel</td>
+<td>.xlsx</td>
+<td>Sheet name</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>SQLite database</td>
+<td>.sqlite</td>
+<td>From database</td>
+<td>From database</td>
+<td>From database</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>JSON table</td>
+<td>.json</td>
+<td>File name before extension</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>Model folder upload to config DB</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The system allows you to choose multiple files and collects all tables and columns from them and displays a preview of all tables in tabs. The table above shows how the system determines table and column names as well as the primary key and column types. You cannot change the table and column names in this display. If you would like to change them, abort the process, change the source file, and repeat the upload process.</p>
+<p>Depending on the tables to be uploaded, there are two modes. If one of the tables exists already, we enter the append / replace mode. This mode requires the structure of all tables to match the existing tables. You cannot pick column types or primary keys in this mode. You can then decide to append the data to the existing data or to replace the existing data. Attention, replacing the data will delete the data currently stored in these tables permanently. You therefore have to confirm this operation by entering "delete contents".</p>
+<p>If none of the tables exist, we enter the create mode.
+The preview does allow changing the primary key and column types. The suggested values are guesses based on the data and must be double checked by the user.</p>
+<h4 id="column-operations">Column Operations</h4>
+<p>The operations on columns can be grouped into two categories. First, changing the name and / or datatype results in the underlying database to be changed (i.e. using an alter column command on SQL databases).</p>
+<p>Second, editing primary and foreign keys are changes on the metadata level only, since not all databases support these concepts. You can specify a column to be the primary key of the table. Note that the user interface does not support composite primary keys. A column can also be defined to be a foreign key by entering the corresponding linked primary key. Note that it is possible to define references not only within the same database but also to other databases. Setting foreign key references causes the foreign key column to display links to the related record and vice versa.</p>
+<h4 id="table-label">Table Label</h4>
+<p>Besides changing the table name, you can enter a label and triggers.
+The label defines how the system should display a record in the following scenarios:</p>
+<ul>
+<li>the browser page title when we are on a record of that table</li>
+<li>in the autocomplete dropdown when editing a foreign key field</li>
+<li>when displaying the label of a hyperlink pointing to the record</li>
+</ul>
+<p>This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label "${LAST_NAME}" or even "${LAST_NAME}, ${FIRST_NAME}" in order to display meaningful and user readable information rather than numbers or UUIDs.</p>
+<p>Note that the user interface loads these template values in a lazy fashion whenever you visit a record page.</p>
+<h4 id="table-triggers">Table Triggers</h4>
+<p>Dashjoin offers create, update, and delete operations for each table. A trigger can be installed on each table that reacts before or after these operations, resulting is six trigger configurations.
+A trigger is an expression that is evaluated in the respective case. This following context is passed to the expression:</p>
+<ul>
+<li>command: one of create, update, or delete</li>
+<li>database: the database being modified</li>
+<li>table: the table being modified</li>
+<li>search: a map with the record's primary keys</li>
+<li>object: the record to the created or the fields to be updated</li>
+</ul>
+<p>Please see the section on expressions for more details.</p>
+<h3 id="query-catalog-and-editor">Query Catalog and Editor</h3>
+<p>The query catalog allows you to save queries that are used by other parts of the application. Usually, these are chart and table widgets that display query results. The catalog allows you to manage queries in a central place, reuse them across the application and define important metadata about parameters and access control.</p>
+<h4 id="query-catalog-page">Query Catalog Page</h4>
+<p>The query catalog page show a list of all defined queries as well as a form for entering a new query. The form has the following fields:</p>
+<ul>
+<li>ID: this is a unique identifier to reference the query (e.g. from a chart widget)</li>
+<li>type: queries can have type read and write indicating whether the running the query will make changes to the underlying database</li>
+<li>roles: defines which roles are allowed to run the query</li>
+<li>database: this field can only be written from the editor as shown below and defines which database is used in the query editor (note that the application can later run a query on other database with the same schema)</li>
+<li>arguments: queries can be parameterized using arguments (see the section below for more details)</li>
+<li>query: allows making manual edits to the query and offers to open the query editor dialog</li>
+</ul>
+<p><img alt="Features of the Query Editor" src="angular/src/assets/features.png" /></p>
+<h4 id="features">Features</h4>
+<ul>
+<li>Graphically build queries in an Excel-like fashion</li>
+<li>Add columns and join tables via point and click</li>
+<li>Reorder columns using drag &amp; drop</li>
+<li>Apply where filters by simply adding them to the query result table</li>
+<li>Aggregate / group results right in the data table</li>
+<li>Rename columns</li>
+<li>Manual query edits are possible as well</li>
+<li>Download results as CSV</li>
+</ul>
+<h4 id="supported-query-constructs">Supported Query Constructs</h4>
+<p>The editor supports a wide range of features of the query language, namely any kind of table join, aggregation and filter.
+It is possible to add advanced constructs such as a subquery to the query by making changes in the lower text field.
+In this case, the query editor displays the query result but no longer allows making changes to the query via the UI controls.
+The reason for the controls being disabled is shown in a tool tip.
+You can return to the last supported query via the undo button.</p>
+<h4 id="result-size">Result Size</h4>
+<p>During the process of writing the query, we limit the results to 1000 rows.
+Use the limit text field to set an explicit query limit. Once, the limit is set, it overrides the default of 1000 result rows.</p>
+<h4 id="query-parameters">Query Parameters</h4>
+<p>The query catalog page allows defining query parameters. Each parameter consists of the following information:</p>
+<ul>
+<li>key: this is the parameter name that allows the query to reference the parameter using ${key}</li>
+<li>type: defines the datatype of the parameter</li>
+<li>sample: this is the value that will be used in the query editor</li>
+</ul>
+<p>Consider the following example that searches for persons with a certain name older than a given age:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PERSON</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="n">p_name</span><span class="err">}</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">AGE</span><span class="o">&gt;</span><span class="err">${</span><span class="n">p_age</span><span class="err">}</span><span class="w"></span>
+</code></pre></div>
+<p>This query has the string parameter p_name and the integer parameter p_age. In order to edit the query and display a result preview, we need to pluck in sample data. So we can define the samples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>p_name: Mike
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>p_age: 20
+</code></pre></div>
+<p>This results in the following query that is used when editing the query. So in the edit dialog, the following query is used (note that the system automatically handles quotation of strings and dates):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PERSON</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;Mike&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">AGE</span><span class="o">&gt;</span><span class="mi">20</span><span class="w"></span>
+</code></pre></div>
+<p>Once the editor is closed, the samples are replaced with the template variables again. Note that this replacement is string based, so you should choose parameter names that do not "collide" with other parts of the query. Hence, we choose the prefix p_.</p>
+<h3 id="user-interface-layout">User Interface Layout</h3>
+<p>While Dashjoin has a rich default page layout that is suitable for many use cases, every aspects of the display can be configured using the functionality described in this section.</p>
+<h4 id="pages-dashboard">Pages Dashboard</h4>
+<p>The pages dashboard provides you with an overview of the available pages in the system. The first table shows the dashboards available in the system. This is a mix of system pages, which are explained in more detail in the next section, and pages created by the user via the "create a new page" form.</p>
+<p>The page contains a link to widgets, which are introduced further down. Finally, the layouts table provides an overview of all tables and whether the default layout is used or whether the user has customized the layout using the layout editor.</p>
+<h4 id="system-pages-and-layouts">System Pages and Layouts</h4>
+<p>The system comes with two system pages (Home and Info) and some layouts for databases, tables, queries, etc. These layouts contain much of the functionality described in this reference guide.</p>
+<p>System pages can be changed using the editor introduced below, however, a delete operation does not delete them altogether, but rather resets them to the "factory" state. This ensures that you cannot accidentally damage a system permanently using the editor.</p>
+<h4 id="layout-editor">Layout Editor</h4>
+<p>To activate the layout and form editor, press the pen symbol in the toolbar. You will remain on the page, but several controls will pop up on the screen.</p>
+<p>All widgets show a context menu with the following options:</p>
+<ul>
+<li>The top line and tooltip tell you which part of the user interface you are editing. The options are:</li>
+<li>Page "pagename": You are editing a dashboard page such as /page/Home</li>
+<li>"tablename" table: You are editing a table layout such as /table/config/dj-database</li>
+<li>"tablename" record: You are editing a table's record layout such as /resource/config/dj-database/dj%2Fnorthwind</li>
+<li>default record / table: this is the default layout (note that the default table cannot be modified and any attempted change will display an error message)</li>
+<li>Edit: opens a dialog to edit the widget</li>
+<li>You can change the widget type using the dropdown element on the top of the form</li>
+<li>Depending on your choice, different fields show up allowing you to configure the widget</li>
+<li>Please refer to the widget reference section below for a complete documentation of the various options</li>
+<li>Add: adds a new widget to the container or next to the widget</li>
+<li>Delete: removes the widget (not available on the page root)</li>
+<li>Cut: like delete but remembers the widget for paste operations</li>
+<li>Copy: Remembers the widget for paste operations</li>
+<li>Paste: Like add but uses the cut or copied widget</li>
+<li>Top: moves the widget to the top or left of the container depending on the layout</li>
+<li>Up: moves the widget one position up or left depending on the layout</li>
+<li>Down: moves the widget one position down or right depending on the layout</li>
+<li>Bottom: moves the widget to the bottom or right of the container depending on the layout</li>
+<li>The last entry is one of the following:</li>
+<li>Delete page: deletes a dashboard page</li>
+<li>Customize: if you are on a default table or record, creates a customized version of the page for this table</li>
+<li>Delete custom layout: if you are on a custom table or record layout, goes back to the default layout for this table</li>
+</ul>
+<p>The top of the page shows a number of layout options that can be chose for the page. The options are explained in the widget reference section below. Note that the layout is responsive and will switch to a one column layout for mobile devices.</p>
+<p>Any changes to the layout or kept in the browser memory only. You can reload the page if you would like to abandon any changes and leave the edit mode. Your changes are saved once you click the save symbol in the toolbar.</p>
+<h4 id="form-editor">Form Editor</h4>
+<p>The button, create, and edit widgets display a nested form. Unless specified otherwise, the form elements are initialized from the table metadata. Each element display another context menu with the following options:</p>
+<ul>
+<li>Edit: opens a dialog to edit the form element giving you the following choices</li>
+<li>Form widget: allows you to pick the input control such as a date picker or a password field</li>
+<li>Title: the title of the form element (defaults to the column name)</li>
+<li>Description / tooltip: an optional longer description</li>
+<li>Example data: shows valid example input once the user clicks in the element</li>
+<li>Read only: disables fields that should be shown not not changed</li>
+<li>Format: contains pre-defined input formats for email addresses, websites, etc.</li>
+<li>Validation error message: the error message to show if the user enters illegal values</li>
+<li>Input choices: allows you to specify predefined input options</li>
+<li>CSS classes and CSS styles: allows you to change the default styling of the component. You can attach CSS classes used in the <a href="https://material.angular.io/guide/elevation#predefined-css-classes">material design</a> (e.g. mat-elevation-z8) or use CSS style attributes directly (e.g. width: 400px or color: green).</li>
+<li>Show: allows to re-add form elements that were previously hidden</li>
+<li>Show inline: like show, but forms a subgroup of elements (for instance address form fields can be grouped together)</li>
+<li>Hide: hides a form element</li>
+<li>Up / Left: moves the form element up or left depending on the layout</li>
+<li>Down / Right: moves the form element down or right depending on the layout</li>
+</ul>
+<h4 id="custom-widgets">Custom Widgets</h4>
+<p>The system ships with a number of built-in widget such as charts or buttons. When building an application, you might find it useful to create reusable layouts. These are called custom widgets. To create a widget, navigate to the pages dashboard and follow the link to widgets.</p>
+<p>Let's do a walkthrough of a small example. Create a widget called "tooltip-icon", navigate to the widget's page, and enter the edit mode.
+On the "Widget preview" element, open the second context menu with the tooltip Widget "tooltip-icon" in order to define the widget.
+In the editor, select the widget "icon", remove the element text and enter "reusable" in the tooltip, and save the layout.
+You now created a custom widget called tooltip-icon that carries a reusable configuration.</p>
+<p>Next, you need to do a browser reload, since the editor caches custom widgets and needs to pick up the new widget.
+Navigate to the home page and add two widgets.
+Edit both widgets, select "tooltip-icon" as the widget type, and use icon home and search respectively.
+Note that the different icons show up, but both show the tooltip "reusable".
+The layout editor also shows two context menus. The left menu with tooltip "Page Home" edits how the the tooltip-icon widget is embedded.
+The right menu with tooltip "Widget tooltip-icon" edits the widget itself. If you open the editor there and select a different tooltip, the next value is applied to both home and search.</p>
+<p>Obviously this example is very simplistic, however it demonstrates how you can create reusable sub layouts.
+Note that the custom widget can also be a container with nested widgets. You can test this by changing the tooltip-icon widget to "expansion" for instance.</p>
+<h4 id="dj-toolbar">dj-toolbar</h4>
+<p>The system ship with two predefined widgets. The widget dj-toolbar is included by default by the page widget.
+You can edit the toolbar by visiting the page /resource/config/widget/dj-toolbar.
+Once you enter the edit mode, you can make changes to the toolbar.
+A typical use case would be to edit the roles that are required for an icon to appear.
+You can also add an icon pointing to your custom dashboard page.
+Since the dj-toolbar is shipped with the system, you can revert back to the original version by clicking delete on this page.
+Do not forget to reload the browser since the widgets are cached.</p>
+<h3 id="widget-reference">Widget Reference</h3>
+<p>The following sections describe the platform widgets and which configuration options are available for them.
+Note that all widgets have the title option:</p>
+<ul>
+<li>title: when the widget is a direct child of the page container, the widget is placed in a card with this title</li>
+</ul>
+<p>Widgets can be grouped into the following three categories.</p>
+<h4 id="container-widgets">Container Widgets</h4>
+<p>Container widgets can contain other widgets.</p>
+<h5 id="card"><a href="https://demo.my.dashjoin.com/#/page/card">card</a></h5>
+<p>Layout card with a title and nested widgets:</p>
+<ul>
+<li>text: card title</li>
+<li>roles: show container only if user is in one of these roles</li>
+<li>layout: chooses a horizontal (default) or vertical layout for the child widgets</li>
+<li>if: show the widget if the expression is true</li>
+<li>foreach: show the single child for each result, using the result as the context</li>
+<li>class: CSS classes to apply to the container</li>
+<li>style: CSS styles to apply to the container</li>
+</ul>
+<h5 id="container">container</h5>
+<p>Container with a plain layout</p>
+<ul>
+<li>roles: show container only if user is in one of these roles</li>
+<li>layout: chooses a horizontal (default) or vertical layout for the child widgets</li>
+<li>if: show the widget if the expression is true</li>
+<li>foreach: show the single child for each result, using the result as the context</li>
+<li>class: CSS classes to apply to the container</li>
+<li>style: CSS styles to apply to the container</li>
+</ul>
+<h5 id="expansion">expansion</h5>
+<p>Collapsible container with nested widgets</p>
+<ul>
+<li>text: card title</li>
+<li>roles: show container only if user is in one of these roles</li>
+<li>layout: chooses a horizontal (default) or vertical layout for the child widgets</li>
+<li>if: show the widget if the expression is true</li>
+<li>foreach: show the single child for each result, using the result as the context</li>
+<li>class: CSS classes to apply to the container</li>
+<li>style: CSS styles to apply to the container</li>
+</ul>
+<h5 id="grid">grid</h5>
+<p>Container with a grid layout</p>
+<ul>
+<li>roles: show container only if user is in one of these roles</li>
+<li>if: show the widget if the expression is true</li>
+<li>foreach: show the single child for each result, using the result as the context</li>
+</ul>
+<h4 id="regular-widgets">Regular Widgets</h4>
+<p>All non-container widgets are called regular widgets.</p>
+<h5 id="all">all</h5>
+<p>Shows all instances of a table. This widget can only be used on table pages and has no other configuration options.</p>
+<h5 id="button"><a href="https://demo.my.dashjoin.com/#/page/button">button</a></h5>
+<p>Runs / evaluates an expression when clicked.</p>
+<ul>
+<li>text: text shown for the run button (default is "Run")</li>
+<li>onClick: expression to evaluate when clicked</li>
+<li>properties: optional properties the user needs to enter before clicking</li>
+</ul>
+<h5 id="chart">chart</h5>
+<p>Chart for visualizing query results.</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query to run</li>
+<li>arguments: optional expression resulting in query arguments</li>
+<li>chart: chart type</li>
+</ul>
+<h5 id="create">create</h5>
+<p>Creates new database records:</p>
+<ul>
+<li>text: text shown for the create button (default is "Create")</li>
+<li>database: optional database to create the record in (defaults to the database of the table you are currently displaying)</li>
+<li>table: optional table to create the record in (defaults to the table you are currently displaying)</li>
+</ul>
+<h5 id="display"><a href="https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown">display</a></h5>
+<p>Displays the result of an expression:</p>
+<ul>
+<li>display: expression to display</li>
+</ul>
+<p>Depending on the result of the evaluation, one of the following four cases applies:</p>
+<ul>
+<li>a single result value is displayed as is</li>
+<li>an object is displayed as a key-value list</li>
+<li>if the object has exactly the keys "database", "table", and "pk1", the result is displayed as a link to the record identified by these values</li>
+<li>if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record</li>
+<li>an array of objects is displayed as a table</li>
+</ul>
+<h5 id="edit">edit</h5>
+<p>allows editing a database record</p>
+<ul>
+<li>deleteConfirmation: optional confirmation message before deleting the record</li>
+</ul>
+<h5 id="editrelated">editRelated</h5>
+<p>Allows editing related records of a database record:</p>
+<ul>
+<li>text: text shown for the create button (default is "Create")</li>
+<li>prop: foreign key column on the related table</li>
+<li>columns: columns to display in the editRelated table display</li>
+<li>deleteConfirmation: optional confirmation message before deleting a related record</li>
+</ul>
+<h5 id="icon">icon</h5>
+<p>Displays a hyperlink icon with tooltip</p>
+<ul>
+<li>href: optional link target</li>
+<li>icon: icon to display (see https://material.io/resources/icons/?style=baseline)</li>
+<li>tooltip: icon tooltip</li>
+</ul>
+<h5 id="links">links</h5>
+<p>Displays links to related records</p>
+<h5 id="markdown"><a href="https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown">markdown</a></h5>
+<p>Displays markdown</p>
+<ul>
+<li>markdown: markdown to display</li>
+<li>context: an expression that allows setting additional context variables that can be referenced via ${context.VARIABLE}</li>
+</ul>
+<h5 id="table">table</h5>
+<p>Displays query results as a table</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query to run</li>
+<li>arguments: optional expression resulting in query arguments</li>
+</ul>
+<h5 id="text">text</h5>
+<p>Displays a simple text</p>
+<ul>
+<li>href: optional link target</li>
+<li>text: text to display</li>
+<li>icon: optional icon to display in front of the text</li>
+</ul>
+<h5 id="tree">tree</h5>
+<p>Displays a tree based on a recursive query</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query that projects a single column with the keys of the current node's children</li>
+<li>arguments: expression that passes the current node's primary key as a query argument</li>
+</ul>
+<h5 id="variable"><a href="https://demo.my.dashjoin.com/#/page/variable">variable</a></h5>
+<p>Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x".</p>
+<ul>
+<li>properties: an object where the fields are variable names and the values the respective types</li>
+</ul>
+<h4 id="special-widgets">Special Widgets</h4>
+<p>The platform defines a couple of special widgets that are not offered in the layout editor.</p>
+<h5 id="page">page</h5>
+<p>The page container is a special container which usually is placed at the page's layout root. Compared to a regular container, it has the following additional layout features:</p>
+<ul>
+<li>it always shows the dj-toolbar widget</li>
+<li>all of its children are displayed in cards with the widget's title field used as the card title (the title is ignored if the widget is placed elsewhere)</li>
+</ul>
+<p>The page defines a single option called pageLayout. It has the following value range that defines how the page's children are arranged:</p>
+<ul>
+<li>1 column: single column layout</li>
+<li>2 column: a two column layout</li>
+<li>3 column: a three column layout</li>
+<li>T 2 column: the first widget is placed at the top with full width, followed by the other children in a two column layout</li>
+<li>T 3 column: the first widget is placed at the top with full width, followed by the other children in a three column layout</li>
+<li>horizontal: all children are arranged left to right, possibly wrapping into the next row</li>
+<li>grid: all children are arranged on a table grid</li>
+</ul>
+<h5 id="toolbar">toolbar</h5>
+<p>(container with child widgets in a toolbar layout)| show container only if user is in one of these roles</p>
+<h5 id="activity-status">activity-status</h5>
+<p>Progress bar that indicates whether the UI is loading data.</p>
+<h5 id="layout-edit-switch">layout-edit-switch</h5>
+<p>Toggles layout edit mode and allows saving layouts.</p>
+<h5 id="queryeditor">queryeditor</h5>
+<p>The query editor widget:</p>
+<ul>
+<li>database: optional database preselection</li>
+<li>query: optional query preselection</li>
+</ul>
+<h5 id="search">search</h5>
+<p>Text box for entering global search terms</p>
+<h5 id="search-result">search-result</h5>
+<p>Table display for search results.</p>
+<h5 id="spacer">spacer</h5>
+<p>Spacer between left and right aligned container items.</p>
+<h5 id="upload_1">upload</h5>
+<p>Button that uploads data to a database.</p>
+<h3 id="functions">Functions</h3>
+<p>Apart from changing data in databases, Dashjoin can call functions on the backend. Functions come in two flavors: First, there are functions that simply extend
+the functionality you can use in expressions. An example would be a simple toUpperCase function that transforms a string to upper case.
+These functions are introduced further later in the section on expressions. Second, there are configurable functions. These work very much like their counterpart,
+however, they require additional configuration parameters. An example would be a function to send an email. The actual function call requires you to specify subject, sender, receiver, and the body. But you would not want to have to repeat the email server address and credentials every time. So you can
+register an instance of email service with specific parameters and call it email-service-1. This section describes the latter configurable functions.</p>
+<h4 id="function-page">Function Page</h4>
+<p>The function page works a lot like the database page. It shows a table of the functions that have been created on the system. To create a new function, you first need to select the function type. Depending on your choice, you can enter the respective configuration parameters. The function type specifies whether the function is read only or whether it has side effects like sending email or writing data. Finally, the roles specify which user role is allowed to run the function.</p>
+<h4 id="function-reference">Function Reference</h4>
+<p>The system supports the following functions. Each section lists the function configuration parameters that are constant any time this function is called as well as the parameters that are specific for each invocation.</p>
+<h5 id="restjson">RestJson</h5>
+<p>Calls an external REST service.</p>
+<p>Configuration</p>
+<ul>
+<li>url: the URL of the REST service to call</li>
+<li>username: optional HTTP basic authentication user name</li>
+<li>password: optional HTTP basic authentication password</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: If object is specified, POSTs the object serialized as JSON. If object is null, GETs the result</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>JSON result returned by the service</li>
+</ul>
+<h5 id="email">Email</h5>
+<p>Sends an email.</p>
+<p>Configuration</p>
+<ul>
+<li>username: username to log into the email service</li>
+<li>password: password to log into the email service</li>
+<li>properties: <a href="https://www.tutorialspoint.com/javamail_api/javamail_api_smtp_servers.htm">SMTP server configuration</a></li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>from: email sender in RFC822 syntax</li>
+<li>to: email recipient in RFC822 syntax</li>
+<li>subject: email subject line</li>
+<li>text: email text</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>none</li>
+</ul>
+<h5 id="invoke">Invoke</h5>
+<p>Allows saving an expression on the server. When run, we evaluate / apply the expression with the data context passed as an argument.</p>
+<p>Configuration</p>
+<ul>
+<li>expression: The expression to save and run when invoked</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: the expression evaluation context (see next chapter)</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>expression result</li>
+</ul>
+<h4 id="mapping-functions">Mapping Functions</h4>
+<p>Mapping functions are specialized functions that have no invocation parameters and outputs.
+They are used to write data into a database and can be run in a scheduled fashion.
+All mapping functions perform the following three steps:</p>
+<h5 id="gathering-data">Gathering Data</h5>
+<p>It is up to the mapping function how this task is achieved. The only requirement is that the function
+gathers a set of tables. </p>
+<h5 id="the-mapping-step">The Mapping Step</h5>
+<p>This step is common to all mapping functions and is supported by a specialized mapping editor. The mapping step
+transforms the gathered set of tables into another set of tables. The mapping step supports the following operations:</p>
+<ul>
+<li>remove table: a table from the initial step can be removed / ignored</li>
+<li>remove column: drops a column from a table</li>
+<li>rename table: a table from the initial step can be renamed</li>
+<li>rename column: renames a column in a table</li>
+<li>add table: a table can be added by providing the name of an initial table</li>
+<li>add column: a column can be added to a table</li>
+<li>modify column: sets the column to a new expression (the default simply copies the original value 1:1 using $.columnname; please see the next section for more details on expressions)</li>
+<li>extract table: if an input table contains a column with array values, extracts the union of these arrays into a new table</li>
+</ul>
+<h5 id="the-save-step">The Save Step</h5>
+<p>The save step writes the output of the mapping step into the database. The following modes are supported:</p>
+<ul>
+<li>
+<p>Ignore: simply add the data (update in case the record already is in the DB, insert if not). We follow the "normal" update semantics meaning that key=null actually deletes the value in the DB, whereas missing keys remain untouched.</p>
+</li>
+<li>
+<p>Refresh: all records from the target tables that have the _dj_source column matching the ID of this function are updated. If a key is no longer present in the new data, the record is deleted.</p>
+</li>
+<li>
+<p>Delete All: all records from the target tables are deleted, if createSchema is true, the tables are also dropped in case columns are no longer needed or previously had another datatype.</p>
+</li>
+</ul>
+<h4 id="mapping-function-reference">Mapping Function Reference</h4>
+<h5 id="etl">ETL</h5>
+<p>The ETL function uses an expression as input into the mapping process.
+The expression result can be a map of table names to an array of rows (JSON objects).
+If the expression result has a simpler structure (for instance only a single table),
+the ETL function wraps this in a default table called "table".</p>
+<h3 id="expressions">Expressions</h3>
+<p>Expressions are small programs that can be used to:</p>
+<ul>
+<li>configure widgets on a page (the most common case)</li>
+<li>save an expression with an Invoke function</li>
+<li>attach triggers to database tables</li>
+</ul>
+<p>This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.</p>
+<h4 id="jsonata">JSONata</h4>
+<p>Expressions use the well established JSON query and transformation language <a href="https://jsonata.org/">JSONata</a>.
+The <a href="https://try.jsonata.org/">JSONata exerciser</a> shows three sections:</p>
+<ul>
+<li>the context data (this usually is the record you are browsing on the user interface)</li>
+<li>the expression</li>
+<li>the expression result</li>
+</ul>
+<p>The <a href="https://docs.jsonata.org/overview.html">JSONata documentation</a> explains the language, the operators, as well as which built-ins are available.</p>
+<h4 id="expression-editor">Expression Editor</h4>
+<p>Expressions are used in various places throughout the platform. The next sections describe the different usage scenarios in more detail. Whenever an expression is to be edited on a form, Dashjoin allows you to do this via the expression editor component which is explained in this section.</p>
+<p>The expression editor is a simple text field that shows context sensitive help and a result preview once you start typing.</p>
+<p>As an example, you can navigate to the info page, enter the page edit mode and edit the user display widget. The widget displays the result of the following expression which projects the user field from the page context (the composition of the context is explained in the next section):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>{&quot;user&quot;: user}
+</code></pre></div>
+<p>Note that any expression must be prefixed with =. If you omit this, the system treats the value as a constant string and the expression editor will show the message: "Constant, prefix expressions with =".</p>
+<p>If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$read()
+</code></pre></div>
+<p>The system will tell you about missing parameters: Arguments required: $read(database, table, pk1). Now change the expression to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$read(&quot;northwind&quot;, &quot;EMPLOYEES&quot;, 2)
+</code></pre></div>
+<p>Assuming you have the demo application installed, this will show the first 10 lines of JSON that contain the respective record in the employees table of the northwind database. Finally, setting the expression to</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>$
+</code></pre></div>
+<p>displays the entire page context.</p>
+<h4 id="jsonata-in-widgets">JSONata in Widgets</h4>
+<p>When expressions are used in widgets, the context is the following JSON object:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>{
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>  database: name of the the database we are on
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>  search: the search term (only set if we are on the search result page)
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>  table: name of the table we are on
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  pk1: value of the first primary key column
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>  pk2: value of the second primary key column
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>  pk3: value of the third primary key column
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>  pk4: value of the forth primary key column
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>  user: the name of the user logged in
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>  email: the email of the user logged in (PaaS only)
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>  roles: the array of roles the user is in
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>  form: value entered in the custom form of the button widget
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>}
+</code></pre></div>
+<p>The expression is provided as the widget parameter via the layout editor.</p>
+<p>The result is used depending on the widget and the expression field. The if parameter, for instance, expects a Boolean value in order to determine whether to show the widget or not. The display widget simply displays the expression result.
+Consult the widget reference for information about your use case.</p>
+<h4 id="jsonata-in-invoke-functions">JSONata in Invoke Functions</h4>
+<p>The Invoke function allows you to wrap an expression as a function.</p>
+<p>The context is passed as the function parameter.</p>
+<p>The expression is a configuration parameter of the function.</p>
+<p>The result is returned to the function caller.</p>
+<h4 id="jsonata-in-triggers">JSONata in Triggers</h4>
+<p>Triggers allow evaluating expression before or after a write operation on a table.</p>
+<p>In this case, the context is defined as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>{
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>  command: create, update or delete
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  database: CRUD on this DB
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>  table: CRUD on this table
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>  search: primary keys of the record, set for delete and update
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>  object: object to create or fields to update, set for update and create
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>}
+</code></pre></div>
+<p>The expression is defined with the table.</p>
+<p>The result is ignored, unless the trigger function extends the AbstractDatabaseTrigger Java interface. In this case, we expect a Boolean value that aborts the write operation in case the value false is returned.</p>
+<h4 id="dashjoin-expression-reference">Dashjoin Expression Reference</h4>
+<p>In addition to the default JSONata builtin functions (<a href="https://docs.jsonata.org/overview.html">see Function Library</a>), the following Dashjoin functions are added
+(some internal functions are omitted - you can refer to the platform's info page for a full list):</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Syntax</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create</td>
+<td>$create(database, table, pk1)</td>
+<td>ID of the new record</td>
+</tr>
+<tr>
+<td>read</td>
+<td>$read(database, table, pk1)</td>
+<td>The record</td>
+</tr>
+<tr>
+<td>traverse</td>
+<td>$traverse(database, table, pk1, fk)</td>
+<td>Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned</td>
+</tr>
+<tr>
+<td>update</td>
+<td>$update(database, table, pk1, object)</td>
+<td></td>
+</tr>
+<tr>
+<td>delete</td>
+<td>$delete(database, table, pk1)</td>
+<td></td>
+</tr>
+<tr>
+<td>call</td>
+<td>$call(function, argument)</td>
+<td>Dashjoin function result</td>
+</tr>
+<tr>
+<td>query</td>
+<td>$query(database, queryId, arguments)</td>
+<td>Query result table</td>
+</tr>
+<tr>
+<td>incoming</td>
+<td>$incoming(database, table, pk1)</td>
+<td>[{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]</td>
+</tr>
+<tr>
+<td>echo</td>
+<td>$echo(any)</td>
+<td>Prints the parameter to the log</td>
+</tr>
+<tr>
+<td>crawl</td>
+<td>$crawl(url)</td>
+<td>Crawls the URL and returns all URLs listed there</td>
+</tr>
+<tr>
+<td>doc2data</td>
+<td>$doc2data(url)</td>
+<td>Reads the URL (or list of URLs) and returns its content as structured JSON data by parsing CSV, JSON, or XML</td>
+</tr>
+<tr>
+<td>load</td>
+<td>$load(url)</td>
+<td>Reads the URL (or list of URLs) and returns its content as text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="access-control">Access Control</h3>
+<p>Several other sections already touched on access control and how certain functionality is only allowed for certain roles. This section explains how roles are defined and how users are assigned to be in a role.</p>
+<h4 id="info-page">Info Page</h4>
+<p>The info page shows various system data. At the top of the page you find the username of the current user as well as the roles he or she is in. From there you also find a link to the roles dashboard and, on the PaaS offering, a link to the tenant users.</p>
+<h4 id="roles-dashboard">Roles Dashboard</h4>
+<p>The roles dashboard allows the administrator to define system roles along with the homepage for users in this role. You cannot pick arbitrary role names here. Unless you are using the Dashjoin Cloud, the names depend on the roles defined in the identity management system (IDM) you are using.
+If you change your container configuration to use windows authentication, your role names will be "Users", "Power Users", "Guests", etc.
+If you are using the Dashjoin Cloud, you can choose arbitrary role names and assign users to these roles using the tenant user dashboard.</p>
+<h2 id="platform-as-a-service">Platform as a Service</h2>
+<p>Dashjoin offers a fully managed Platform as a Service available at <a href="https://my.dashjoin.com/">https://my.dashjoin.com/</a>.</p>
+<h3 id="tenant-user-dashboard">Tenant User Dashboard</h3>
+<p>In the Dashjoin cloud, users can authenticate via OpenID. The tenant user dashboard allows you to control who has access to your Dashjoin tenant. Once a user requests access, his or her record shows up on this page. Once you set the active flag, they are allowed to login. Using this page, you can also assign which roles a user should be in. Specifically, it is possible to promote users to be co-administrators of the tenant.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="creating-a-local-admin-user">Creating a local Admin User</h3>
+<p>After installing Dashjoin, no user is set up in the system.
+To set up the local development admin user, navigate to http://localhost:8080/#/setup.</p>
+<p>Choose a name, a username, and the password.
+Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'</p>
+<p>Note: this only works the very first time! After a development admin is created, no more local users can be created from the UI. To change or disable the local user, please edit or delete the files djroles.properties and djusers.properties in the application root directory.</p>
+<p>The Dashjoin authentication is configured to allow log in using social Google or Github accounts, or to allow registration of users by e-mail and password (authentication via e-mail uses the Google Firebase authentication).</p>
+<h3 id="opening-the-dashjoin-application">Opening the Dashjoin application</h3>
+<p>To access the application, navigate to http://localhost:8080</p>
+<h3 id="installers">Installers</h3>
+<p>Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.</p>
+<h3 id="docker">Docker</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>docker pull dashjoin/platform
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>docker run -p <span class="m">8080</span>:8080 dashjoin/platform
+</code></pre></div>
+<p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+<p>If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>docker run -p <span class="m">8080</span>:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
+</code></pre></div>
+<h3 id="build-locally">Build Locally</h3>
+<p>Prerequisites:</p>
+<ul>
+<li><a href="https://openjdk.java.net/">Java</a> (11 or later)</li>
+<li><a href="https://nodejs.org/">Node</a> (12 or later)</li>
+<li><a href="https://maven.apache.org/">Maven</a> (3.6 or later)</li>
+<li><a href="https://angular.io/cli">Angular CLI</a> (11 or later)</li>
+<li>For Windows users: you need to create the symbolic link in "platform\dashjoin\src\main\resources\META-INF": <code>mklink /D resources ..\..\..\..\..\angular\dist\angular</code></li>
+</ul>
+<p>Dashjoin uses Quarkus as runtime framework (<a href="https://quarkus.io">https://quarkus.io</a>).
+You can run your application in dev mode using:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>platform/angular$ ng build
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>platform$ mvn install
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>platform/dashjoin$ mvn compile quarkus:dev
+</code></pre></div>
+<p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+<p>You can use the provided launch file to directly run from within Eclipse (right-click on the launch file, "Run as" or "Debug as" -&gt; "Dashjoin", 
+note that you need to adjust your jdk, mvn, and working directory location in the file "Dashjoin.launch").
+This requires the Eclipse Quarkus plugin (<a href="https://quarkus.io/blog/eclipse-got-quarkused/">https://quarkus.io/blog/eclipse-got-quarkused/</a>) and the Lombok
+plugin (<a href="https://projectlombok.org/setup/eclipse">https://projectlombok.org/setup/eclipse</a>) to be installed.
+Launching with "Debug as" will also enable live coding mode.</p>
+<p>The application can be packaged and installed locally using:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>platform/dashjoin$ mvn package install
+</code></pre></div></p>
+<p>It produces the <code>dashjoin-0.0.1-SNAPSHOT-runner.jar</code> file in the <code>/target</code> directory.
+Be aware that it’s not an <em>uber-jar</em> as the dependencies are copied into the <code>target/lib</code> directory.</p>
+<p>If you want to build an <em>uber-jar</em>, execute the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
+</code></pre></div>
+<p>The application is now runnable using <code>java -jar target/dashjoin-0.0.1-SNAPSHOT-runner.jar</code>.</p>
+<h4 id="eclipse">Eclipse</h4>
+<p>The Eclipse IDE can be used to develop and debug locally.
+First install the <a href="https://marketplace.eclipse.org/content/quarkus-tools">Eclipse Quarkus tools</a>.</p>
+<p>After cloning the Github repository, you need to import at least the following Maven projects into the Eclipse workspace:</p>
+<ul>
+<li>dashjoin</li>
+<li>dashjoin-core</li>
+</ul>
+<p>Optional additional modules:
+* dashjoin-demo
+* dashjoin-kafka
+* dashjoin-mongodb</p>
+<p>The Maven dependencies need to be initialized with (right click dashjoin project folder) -&gt; Maven -&gt; Update Project.
+The Angular UI must be built using the CLI, please refer to the previous section.</p>
+<p>When everything was build successfully, you can use the Dashjoin.launch configuration to run or debug the platform.
+The Quarkus launcher supports hot loading of resources, i.e. any changes made will be adjusted at runtime without having to restart the platform.
+(Note: you will have to adjust the absolute folder references in the launch file to you own workspace settings)</p>
+<h2 id="administration">Administration</h2>
+<p>This section describes administration and operating procedures for the Dashjoin platform.</p>
+<h3 id="configuration-changes">Configuration Changes</h3>
+<p>A system is defined by the following configurations: Dashboards, layout pages, user roles, registered databases, and functions.
+These settings are stored in the configuration database. For the open source version, this data is kept on the file system
+in the model folder. In the docker container, this folder is located under /deployments/model. For locally installed
+systems, this folder can be found under USER_HOME/.dashjoin/model.</p>
+<h3 id="query-performance">Query Performance</h3>
+<p>When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
+The query performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
+with this task. It shows recent query statistics in a table. The columns are defined as follows:</p>
+<ul>
+<li>query: shows the query that was run along with the database prefixed</li>
+<li>type: </li>
+<li>key: determining possible foreign key autocomplete values</li>
+<li>search: the toolbar search </li>
+<li>query: the query editor, tables or charts</li>
+<li>all: the all records table view</li>
+<li>read: read from an instance page</li>
+<li>update: update from an instance page </li>
+<li>create: create from a table page or the upload feature</li>
+<li>delete: delete from an instance page or the upload feature</li>
+<li>lastRun: the time the query was last run</li>
+<li>count: how often was the query run</li>
+<li>errorCount: of these, how often did an error occur (e.g. a timeout)</li>
+<li>lastError: the last error message</li>
+<li>totalTimeMs: the runtime in milliseconds all query runs took combined</li>
+<li>lastTimeoutMs: optional timeout set for the last run</li>
+<li>lastLimit: optional limit set for the last run (does not include limits in the query)</li>
+<li>averageTimeMs: the average time a query evaluation took in milliseconds</li>
+</ul>
+<p>The table helps you to identify queries with long runtimes. Possible remedies are:</p>
+<h4 id="creating-database-indices">Creating Database Indices</h4>
+<p>All key columns should be indexed in the database in order to avoid full table sweeps
+when a record is accessed by its key.</p>
+<h4 id="specific-search-queries">Specific Search Queries</h4>
+<p>By default, Dashjoin will perform searches on all database tables which can be a very costly
+operation. If a database contains more data, you can either opt out of it being searched, or
+you can associate a query from the catalog to be used. For instance, you might want employees
+to be searchable by firstname or lastname, but other tables are not relevant for searches.
+In this case, you can define the following query:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Note that the query must have a single parameter "search" in order to be used this way.
+The platform will run this query by replacing the search parameter with the contents of the search field.</p>
+<h4 id="global-timeout-settings">Global Timeout Settings</h4>
+<p>Finally, the system configuration page allows setting some global contraints that prevent
+"rogue" queries to deteriorate the overall system and database performance.</p>
+<h2 id="development-production">Development / Production</h2>
+<p>If you use a Dashjoin system in production, we do not recommend making configuration changes
+like defining new queries or registering new user roles using the editors on the production
+system. Instead, you can setup multiple development systems where these changes are
+developed and tested.</p>
+<p>You can put the model folder under version control by following these steps:</p>
+<ul>
+<li>create a repository, for instance on GitHub</li>
+<li>install Dashjoin locally</li>
+<li>clone the repository into your Dashjoib user home directory:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>USER_HOME&gt; git clone https://github.com/ORG/PROJECT.git .dashjoin
+</code></pre></div>
+<ul>
+<li>start Dashjoin and start developing</li>
+<li>pull changes from others</li>
+<li>review and commit changes:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>USER_HOME/.dashjoin&gt; git status
+</code></pre></div>
+<p>On the production system, you can pull the changes using the same setup.
+If you are using containers, you can mount the model folder under /deployments/model.</p>
+<h2 id="security">Security</h2>
+<p>We strongly advise to:</p>
+<ul>
+<li>Consider using read-only database credentials when registering a database with data that is managed by another application</li>
+<li>When adding a new database, make sure the access control settings are setup correctly</li>
+<li>Restrict access to the system in case you store confidential data in any of the registered databases</li>
+<li>All credentials that are entered into the system are encrypted using strong SHA-256 encryption. The master key resides in the file model/.secrets.id on the web server. Keep this file secured</li>
+<li>Add a OpenID provider in order to authenticate organization users</li>
+</ul>
+<p>In order to register new databases, the user must be in the "admin" role.</p>
+<h2 id="supported-databases">Supported Databases</h2>
+<p>In addition to the PaaS Firestore DB, we support all of the SQL databases out of the <a href="https://db-engines.com/en/ranking">top 10 database engines</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Database</th>
+<th>Driver class</th>
+<th>Driver version</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oracle</td>
+<td>oracle.jdbc.OracleDriver</td>
+<td>19.6.0.0.0</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>com.mysql.cj.jdbc.Driver</td>
+<td>8.0.20</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>net.sourceforge.jtds.jdbc.Driver</td>
+<td>1.3.1</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>org.postgresql.Driver</td>
+<td>42.2.12</td>
+<td></td>
+</tr>
+<tr>
+<td>SQLite</td>
+<td>org.sqlite.JDBC</td>
+<td>3.31.1</td>
+<td></td>
+</tr>
+<tr>
+<td>DB2</td>
+<td>com.ibm.db2.jcc.DB2Driver</td>
+<td>1.4.0</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>MS Access</td>
+<td>net.ucanaccess.jdbc.UcanaccessDriver</td>
+<td>4.0.1</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>MariaDB</td>
+<td>org.mariadb.jdbc.Driver</td>
+<td>2.6.0</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>H2</td>
+<td>org.h2.Driver</td>
+<td>1.4.196</td>
+<td></td>
+</tr>
+<tr>
+<td>Amazon RDS Aurora PostgreSQL</td>
+<td>org.postgresql.Driver</td>
+<td>42.2.12</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>Amazon RDS Aurora MySQL</td>
+<td>com.mysql.cj.jdbc.Driver</td>
+<td>8.0.20</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>Sybase (SAP) ASE 16.2</td>
+<td>net.sourceforge.jtds.jdbc.Driver</td>
+<td>1.3.1</td>
+<td>beta</td>
+</tr>
+<tr>
+<td>SAP HANA</td>
+<td>com.sap.db.jdbc.Driver</td>
+<td>2.5.49</td>
+<td>beta</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api">API</h2>
+<p>The Dashjoin architecture features an Angular Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
+The OpenAPI description is available at <a href="https://demo.my.dashjoin.com/openapi">https://demo.my.dashjoin.com/openapi</a>. Dashjoin also ships the Swagger GUI at <a href="https://demo.my.dashjoin.com/swagger-ui">https://demo.my.dashjoin.com/swagger-ui</a>.
+Please note that the API is subject to change.</p>
+<p>The API requires any request using a local admin user to be authenticated with HTTP basic authentication:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>curl -u admin:djdjdj http://localhost:8080/rest/manage/version
+</code></pre></div>
+<p>In order to login using an OpenID user, you need to specify a bearer token as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>curl -H <span class="s2">&quot;Authorization: Bearer ...&quot;</span> https://demo.my.dashjoin.com/rest/manage/version
+</code></pre></div>
+<p>The easiest way to obtain a bearer token is to login using a browser and copying the token via the browser development tools.
+Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.</p>
+<h2 id="contribute">Contribute</h2>
+<p>We welcome contributions. If you are interested in contributing to Dashjoin, let us know!
+You'll get to know an open-minded and motivated team working together to build the next generation platform.</p>
+<ul>
+<li><a href="https://join.slack.com/t/dashjoin/shared_invite/zt-s3cdbu8n-M4lOlER_VlSHKwcjBYUOHA">Join our Slack</a> and say hello</li>
+<li><a href="https://twitter.com/dashjoin">Follow us</a> on Twitter</li>
+<li><a href="https://github.com/dashjoin/platform/issues">Submit</a> your ideas by opening an issue with the enhancement label</li>
+<li><a href="https://github.com/dashjoin/platform/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22">Help out</a> by fixing "a good first issue"</li>
+</ul>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>
