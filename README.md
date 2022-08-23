@@ -294,7 +294,7 @@ Before we dive into the user guide for the platform, this section explains a cou
 
 The Dashjoin low code platform sits on top of one or more databases. These databases can be empty, ready to store application data,
 or they can contain an existing schema and data, possibly under the control of other software and systems.
-Dashjoin connects to these databases and maps the data using for coordinates for each data record:
+Dashjoin connects to these databases and maps the data using coordinates for each data record:
 
 #### Record Coordinates
 
@@ -1383,7 +1383,7 @@ Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.
 
 ### Docker
 
-```shell script
+```bash
 docker pull dashjoin/platform
 docker run -p 8080:8080 dashjoin/platform
 ```
@@ -1419,7 +1419,7 @@ Prerequisites:
 Dashjoin uses Quarkus as runtime framework (<https://quarkus.io>).
 You can run your application in dev mode using:
 
-```shell script
+```bash
 platform/angular$ npm install [--legacy-peer-deps # required if nvm -version > 7.0!)
 platform/angular$ ng build
 platform$ mvn install
@@ -1435,7 +1435,7 @@ plugin (<https://projectlombok.org/setup/eclipse>) to be installed.
 Launching with "Debug as" will also enable live coding mode.
 
 The application can be packaged and installed locally using:
-```shell script
+```bash
 platform/dashjoin$ mvn package install
 ```
 
@@ -1444,7 +1444,7 @@ Be aware that it’s not an _uber-jar_ as the dependencies are copied into the `
 
 If you want to build an _uber-jar_, execute the following command:
 
-```shell script
+```bash
 platform/dashjoin$ mvn package -Dquarkus.package.type=uber-jar
 ```
 
