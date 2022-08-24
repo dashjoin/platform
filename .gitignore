@@ -4,3 +4,5 @@
 /target
 /.flattened-pom.xml
 /temp
+/dashjoin-docs/.venv
+/dashjoin-docs/site
