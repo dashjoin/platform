@@ -19,3 +19,18 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+
+nav:
+  - Overview: 'index.md'
+  - 'getting-started.md'
+  - 'concepts.md'
+  - 'developer-reference.md'
+  - 'platform-as-a-service.md'
+  - 'installation.md'
+  - 'administration.md'
+  - 'development-production.md'
+  - 'security.md'
+  - 'support-matrix.md'
+  - 'api.md'
+  - 'faq.md'
+  - 'contribute.md'
