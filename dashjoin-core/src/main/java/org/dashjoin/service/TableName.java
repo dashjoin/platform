@@ -98,7 +98,8 @@ public class TableName {
         } catch (Exception ignore) {
         }
       } catch (JSQLParserException e) {
-        throw new SQLException(e);
+        // ignore exception since SQL might work on the DB (parser does not cover all dialects)
+        return;
       }
     }
   }
