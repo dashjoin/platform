@@ -58,6 +58,7 @@ import org.dashjoin.service.ddl.SQLSchemaChange;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.FileSystem;
 import org.dashjoin.util.Loader;
+import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import org.h2.tools.RunScript;
 import org.jboss.logmanager.Level;
@@ -494,6 +495,7 @@ public class SQLDatabase extends AbstractDatabase {
     PreparedStmt ps = prepareStatement(info.query, arguments);
 
     List<Map<String, Object>> data = new ArrayList<>();
+    List<Map<String, Object>> multidata = null;
     try (Connection con = getConnection()) {
       try (PreparedStatement pstmt = con.prepareStatement(ps.query)) {
         if (limit != null)
@@ -517,28 +519,44 @@ public class SQLDatabase extends AbstractDatabase {
               limit = 1000;
             }
           }
-          try (ResultSet res = pstmt.executeQuery()) {
-            ResultSetMetaData m = res.getMetaData();
-            while (res.next()) {
-              Map<String, Object> row = new LinkedHashMap<>();
-              for (int c = 1; c <= m.getColumnCount(); c++) {
-                String display = tn.getColumnLabel(m, c);
-                String column = tn.getColumnName(m, c);
-                String table = tn.getTableName(m, c);
-                if (!column.equals(display))
-                  row.put(display, serialize(m, res, c));
-                else if (table == null || table.isEmpty())
-                  row.put(column, serialize(m, res, c));
-                else
-                  row.put(table + "." + column, serialize(m, res, c));
+          try (ResultSet _res = pstmt.executeQuery()) {
+            ResultSet res = _res;
+            for (;;) {
+              ResultSetMetaData m = res.getMetaData();
+              while (res.next()) {
+                Map<String, Object> row = new LinkedHashMap<>();
+                for (int c = 1; c <= m.getColumnCount(); c++) {
+                  String display = tn.getColumnLabel(m, c);
+                  String column = tn.getColumnName(m, c);
+                  String table = tn.getTableName(m, c);
+                  if (!column.equals(display))
+                    row.put(display, serialize(m, res, c));
+                  else if (table == null || table.isEmpty())
+                    row.put(column, serialize(m, res, c));
+                  else
+                    row.put(table + "." + column, serialize(m, res, c));
+                }
+                data.add(row);
               }
-              data.add(row);
+              if (pstmt.getMoreResults()) {
+                // we have multiple result sets
+                if (multidata == null)
+                  multidata = new ArrayList<>();
+                multidata.add(MapUtil.of("table", data));
+                data = new ArrayList<>();
+                res = pstmt.getResultSet();
+              } else {
+                if (multidata != null)
+                  // add the last table if we are in multi result set mode
+                  multidata.add(MapUtil.of("table", data));
+                break;
+              }
             }
           }
         }
       }
     }
-    return data;
+    return multidata == null ? data : multidata;
   }
 
   @Override
