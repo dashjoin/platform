@@ -372,6 +372,7 @@ public class Metadata {
       case "CHAR":
         return "string";
       case "CHARACTER VARYING": // H2
+      case "STRING": // H2
       case "VARCHAR2": // ORCL
       case "VARCHAR":
         return "string";

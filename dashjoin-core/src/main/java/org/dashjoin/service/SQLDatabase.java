@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -247,6 +248,23 @@ public class SQLDatabase extends AbstractDatabase {
   public static class PreparedStmt {
     public String query;
     public Object[] arguments;
+
+    /**
+     * handle common casting issues when JSON parameters are fed into SQL
+     */
+    public void cast(ParameterMetaData pmd) throws SQLException {
+      for (int i = 0; i < pmd.getParameterCount(); i++) {
+        int parType = pmd.getParameterType(i + 1);
+        if (i < arguments.length) {
+          if (parType == Types.INTEGER)
+            if (arguments[i] instanceof Long)
+              arguments[i] = ((Long) arguments[i]).intValue();
+          if (parType == Types.SMALLINT || parType == Types.TINYINT)
+            if (arguments[i] instanceof Long)
+              arguments[i] = (short) ((long) arguments[i]);
+        }
+      }
+    }
   }
 
   /**
@@ -498,6 +516,7 @@ public class SQLDatabase extends AbstractDatabase {
     List<Map<String, Object>> multidata = null;
     try (Connection con = getConnection()) {
       try (PreparedStatement pstmt = con.prepareStatement(ps.query)) {
+        ps.cast(pstmt.getParameterMetaData());
         if (limit != null)
           pstmt.setMaxRows(limit);
         int idx = 1;
