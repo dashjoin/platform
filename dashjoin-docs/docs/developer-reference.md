@@ -154,7 +154,7 @@ The query catalog page show a list of all defined queries as well as a form for 
 ### Supported Query Constructs
 
 The editor supports a wide range of features of the query language, namely any kind of table join, aggregation and filter.
-It is possible to add advanced constructs such as a subquery to the query by making changes in the lower text field.
+It is possible to add advanced constructs such as a subquery or a call to a user defined function or stored procedure to the query by making changes in the lower text field.
 In this case, the query editor displays the query result but no longer allows making changes to the query via the UI controls.
 The reason for the controls being disabled is shown in a tool tip.
 You can return to the last supported query via the undo button.
