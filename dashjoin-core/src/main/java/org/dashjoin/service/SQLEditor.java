@@ -26,6 +26,7 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.Expression;
@@ -400,13 +401,45 @@ public class SQLEditor implements QueryEditorInternal {
 
   @Override
   public QueryResponse noop(QueryDatabase query) throws Exception {
-    Statement s = CCJSqlParserUtil.parse(query.query);
-    if (!(s instanceof Select)) {
-      throw new Exception("The query editor only supports select queries");
+    try {
+      Statement s = CCJSqlParserUtil.parse(query.query);
+      if (!(s instanceof Select)) {
+        throw new Exception("The query editor only supports select queries");
+      }
+      Select stmt = (Select) s;
+      PlainSelect body = (PlainSelect) stmt.getSelectBody();
+      return prettyPrint(query.database, body, query.limit);
+    } catch (JSQLParserException e) {
+      QueryResponse res = new QueryResponse();
+      res.database = query.database;
+      res.limit = query.limit;
+      res.query = query.query;
+
+      // call "new" query method to get the data (create a tmp catalog entry)
+      QueryMeta value = new QueryMeta();
+      value.query = res.query;
+      value.type = "read";
+
+      res.data = db.query(value, null, res.limit == null ? 10 : res.limit);
+      res.compatibilityError = "Query could not be parsed";
+      res.metadata = new ArrayList<>();
+      res.fieldNames = new ArrayList<>();
+      res.joinOptions = Arrays.asList();
+      for (Map<String, Object> row : res.data) {
+        for (Entry<String, Object> en : row.entrySet()) {
+          if (!res.fieldNames.contains(en.getKey())) {
+            res.fieldNames.add(en.getKey());
+            QueryColumn qc = new QueryColumn();
+            qc.displayName = en.getKey();
+            qc.col = new Col();
+            qc.col.column = en.getKey();
+            res.metadata.add(qc);
+          }
+        }
+      }
+
+      return res;
     }
-    Select stmt = (Select) s;
-    PlainSelect body = (PlainSelect) stmt.getSelectBody();
-    return prettyPrint(query.database, body, query.limit);
   }
 
   /**
@@ -580,7 +613,8 @@ public class SQLEditor implements QueryEditorInternal {
 
     FromItem fromItem = body.getFromItem();
     List<Join> joins = body.getJoins();
-    sql.append("\nFROM\n  ").append(fromItem);
+    if (fromItem != null)
+      sql.append("\nFROM\n  ").append(fromItem);
     if (joins != null) {
       Iterator<Join> it = joins.iterator();
       while (it.hasNext()) {
