@@ -620,7 +620,8 @@
           "name": "database",
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
-          "readOnly": true
+          "ref": "dj/config/dj-database/ID",
+          "displayWith": "fk"
         },
         "query": {
           "ID": "dj/config/dj-query-catalog/query",
