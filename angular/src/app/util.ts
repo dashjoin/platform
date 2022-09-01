@@ -130,6 +130,11 @@ export class Util {
             const i2 = msg.indexOf('</title>');
             msg = msg.substring(i1 + '<title>'.length, i2);
         }
+
+        if (msg === 'Unknown database: dj') {
+            msg = 'No database is defined to run the query on. Select a database on the main form or select an intial table in this popup.'
+        }
+
         return Util.limitTextForSnackBar(msg);
     }
 
