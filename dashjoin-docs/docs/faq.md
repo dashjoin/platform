@@ -19,3 +19,5 @@ DECLARE @res INT;
 exec dbo.sp @res output;
 select @res;
 ```
+
+* **Why am I getting the error: "User does not have the role required to read table page in database config" after logging in?** When the UI renders a page, it needs to get the page layout from the backend. Like with any other call, the user's credentials are checked. This error indicates, that the user is known to the system, but gets assigned insufficient roles to access this information in the config DB. To fix this, you can either assign the user the correct role in the IDM or you can provide read access to the config DB to the user's role (this is done on the System Configuration page).
