@@ -52,7 +52,9 @@ public abstract class Excel2data extends AbstractFunction<String, Object> {
   }
 
   Object o(CellValue cellValue) {
-    if (cellValue.getCellType() == CellType.BOOLEAN)
+    if (cellValue == null)
+      return null;
+    else if (cellValue.getCellType() == CellType.BOOLEAN)
       return cellValue.getBooleanValue();
     else if (cellValue.getCellType() == CellType.NUMERIC)
       return cellValue.getNumberValue();

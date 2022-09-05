@@ -168,7 +168,9 @@ public class Manage {
           this.record.add("");
         }
         CellValue cellValue = evaluator.evaluate(c);
-        if (cellValue.getCellType() == CellType.BOOLEAN)
+        if (cellValue == null)
+          this.record.add("");
+        else if (cellValue.getCellType() == CellType.BOOLEAN)
           this.record.add("" + cellValue.getBooleanValue());
         else if (cellValue.getCellType() == CellType.NUMERIC)
           this.record.add("" + cellValue.getNumberValue());
