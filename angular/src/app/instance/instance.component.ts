@@ -1189,4 +1189,31 @@ export class InstanceComponent implements OnInit {
     //console.log('redraw ' + window['djNoCache'], this);
     this.ngOnInit();
   }
+
+  /**
+   * Hash code (for getComponentId)
+   * @param str 
+   * @returns 
+   */
+  stringHashCode(str: string) {
+    let hash = 0
+    for (let i = 0; i < str.length; ++i)
+      hash = Math.imul(hash, 31) + str.charCodeAt(i)
+    return (hash | 0) + 2147483647 + 1;
+  }
+
+  /**
+   * Returns a "constant" ID for this component.
+   * Should survive page reloads.
+   * 
+   * @returns Component ID
+   */
+  getComponentId() {
+    if (!this.layout) return 'unknown';
+
+    // Calculate the component ID as hash from its JSON definition
+    const state = JSON.stringify(this.layout) + ' ' + this.layoutPos;
+
+    return this.layout.widget + '-' + this.stringHashCode(state);
+  }
 }
