@@ -1,5 +1,6 @@
 <div
-    [ngClass]="app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav') ? 'main-edit' : 'main'">
+    [ngClass]="app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav') ? 'main-edit' : 'main'"
+    [attr.id]="getComponentId()">
     <div
         *ngIf="layout && app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav')">
         <mat-icon *ngFor="let i of layoutWidget" [matMenuTriggerFor]="menu" style="cursor: pointer"
@@ -74,13 +75,13 @@
     </div>
 
     <div *ngIf=" layout?.widget === 'page'" fxLayout="column">
-        <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)"></app-instance>
+        <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)" role="banner"></app-instance>
         <mat-sidenav-container>
-            <mat-sidenav [opened]="app.sidenavOpen" mode="side" style="width: 200px">
+            <mat-sidenav [opened]="app.sidenavOpen" mode="side" style="width: 200px" role="navigation">
                 <app-instance [layout]="{widget: 'dj-sidenav'}" (eventChange)="onEvent($event)">
                 </app-instance>
             </mat-sidenav>
-            <mat-sidenav-content style="padding-left: 7px;">
+            <mat-sidenav-content style="padding-left: 7px;" role="main">
                 <gridster [options]="options" *ngIf="layout.pageLayout==='grid'">
                     <gridster-item [item]="child" *ngFor="let child of layout.children; let i=index">
                         <mat-card style="height: 100%;" *ngIf="isInRole(child)">
