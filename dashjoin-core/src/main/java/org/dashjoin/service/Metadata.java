@@ -392,6 +392,8 @@ public class Metadata {
         return "boolean";
       case "BOOL":
         return "boolean";
+      case "BOOLEAN":
+        return "boolean";
       case "TINYINT":
         return "number";
       case "SMALLINT":
@@ -453,6 +455,10 @@ public class Metadata {
       case "NUMBER": // ORCL
         return "number";
     }
+
+    if (typeName.startsWith("VARCHAR(") && typeName.endsWith(")"))
+      return "string";
+
     logger.severe("Type unknown: " + typeName);
     return "string";
   }
