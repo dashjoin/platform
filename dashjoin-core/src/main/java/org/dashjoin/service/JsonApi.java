@@ -123,11 +123,10 @@ public class JsonApi {
   public Map<String, Object> discover(@Context UriInfo uriInfo, @Context SecurityContext sc,
       @PathParam("database") String database) throws Exception {
 
-    AbstractDatabase db = services.getConfig().getDatabase(data.dj(database));
     List<String> res = new ArrayList<>();
-    for (Table table : db.tables.values())
-      if (table.ID != null)
-        res.add(uriInfo.getBaseUri() + "rest/jsonapi/" + table.name);
+    for (String d : data.tables())
+      if (d.startsWith("dj/" + database + "/"))
+        res.add(uriInfo.getBaseUri() + "rest/jsonapi/" + d.substring("dj/".length()));
     return MapUtil.of("links", MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/"), "meta",
         MapUtil.of("types", res));
   }
