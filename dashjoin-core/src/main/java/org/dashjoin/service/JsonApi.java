@@ -1,10 +1,13 @@
 package org.dashjoin.service;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -79,11 +82,43 @@ public class JsonApi {
      * generate a link object (https://jsonapi.org/format/#document-links)
      */
     Map<String, Object> self(String id) {
-      if (id == null)
-        return MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/" + database + "/" + type);
-      else
-        return MapUtil.of("self",
-            uriInfo.getBaseUri() + "rest/jsonapi/" + database + "/" + type + "/" + id);
+      String pars = fields();
+      return MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/" + database + "/" + type + "/"
+          + id + (pars.isEmpty() ? "" : "?") + pars);
+    }
+
+    /**
+     * generate a link object (https://jsonapi.org/format/#document-links)
+     */
+    public Object self(Integer offset, Integer limit, String filter, String sort) {
+      String o = offset == null ? "" : "page%5Boffset%5D=" + offset + "&";
+      String l = limit == null ? "" : "page%5Blimit%5D=" + limit + "&";
+      String s = sort == null ? "" : "sort=" + e(sort) + "&";
+      String f = filter == null ? "" : "filter=" + e(filter) + "&";
+      String pars = o + l + f + s + fields();
+      if (pars.endsWith("&"))
+        pars = pars.substring(0, pars.length() - 1);
+      return MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/" + database + "/" + type
+          + (pars.isEmpty() ? "" : "?") + pars);
+    }
+
+    /**
+     * generate the fields[type]=a,b query parameters
+     */
+    String fields() {
+      List<String> fs = new ArrayList<>();
+      for (Entry<String, List<String>> x : uriInfo.getQueryParameters().entrySet())
+        if (x.getKey().startsWith("fields["))
+          if (x.getValue() != null)
+            fs.add(e(x.getKey()) + "=" + x.getValue().get(0));
+      return String.join("&", fs);
+    }
+
+    /**
+     * URLencode
+     */
+    String e(String s) {
+      return URLEncoder.encode(s, Charset.defaultCharset());
     }
 
     /**
@@ -127,7 +162,8 @@ public class JsonApi {
     for (String d : data.tables())
       if (d.startsWith("dj/" + database + "/"))
         res.add(uriInfo.getBaseUri() + "rest/jsonapi/" + d.substring("dj/".length()));
-    return MapUtil.of("links", MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/"), "meta",
+    return MapUtil.of("links",
+        MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/" + database), "meta",
         MapUtil.of("types", res));
   }
 
@@ -168,20 +204,21 @@ public class JsonApi {
 
     // sort
     boolean descending = false;
+    String s = sort;
     if (sort != null) {
       if (sort.contains(","))
         throw new Exception("Sorting by multiple fields is not supported");
       if (sort.startsWith("-")) {
         descending = true;
-        sort = sort.substring(1);
+        s = sort.substring(1);
       }
     }
 
     Call call = new Call(uriInfo, database, type);
     List<Map<String, Object>> res = new ArrayList<>();
-    for (Map<String, Object> i : data.all(sc, database, type, offset, limit, sort, descending,
+    for (Map<String, Object> i : data.all(sc, database, type, offset, limit, s, descending,
         arguments))
       res.add(call.convert(i));
-    return MapUtil.of("links", call.self(null), "data", res);
+    return MapUtil.of("links", call.self(offset, limit, filter, sort), "data", res);
   }
 }
