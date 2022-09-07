@@ -1,3 +1,7 @@
+### discover
+GET http://localhost:8080/rest/jsonapi/northwind
+Authorization: Basic admin:djdjdj
+
 ### read record
 GET http://localhost:8080/rest/jsonapi/northwind/ORDERS/10248
 Authorization: Basic admin:djdjdj
