@@ -10,3 +10,11 @@ Authorization: Basic admin:djdjdj
 GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS
 Authorization: Basic admin:djdjdj
 
+### read table / sort (error)
+GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS?sort=COUNTRY,CITY
+Authorization: Basic admin:djdjdj
+
+### read table / sort (error)
+GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS?sort=-COUNTRY
+Authorization: Basic admin:djdjdj
+

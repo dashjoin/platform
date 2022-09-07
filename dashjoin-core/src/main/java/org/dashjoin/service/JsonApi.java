@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
@@ -124,10 +125,20 @@ public class JsonApi {
   @GET
   @Path("/{database}/{type}")
   public Map<String, Object> getTable(@Context SecurityContext sc,
-      @PathParam("database") String database, @PathParam("type") String type) throws Exception {
+      @PathParam("database") String database, @PathParam("type") String type,
+      @QueryParam("sort") String sort) throws Exception {
+    boolean descending = false;
+    if (sort != null) {
+      if (sort.contains(","))
+        throw new Exception("Sorting by multiple fields is not supported");
+      if (sort.startsWith("-")) {
+        descending = true;
+        sort = sort.substring(1);
+      }
+    }
     Call call = new Call(database, type);
     List<Map<String, Object>> res = new ArrayList<>();
-    for (Map<String, Object> i : data.all(sc, database, type, null, null, null, false, null))
+    for (Map<String, Object> i : data.all(sc, database, type, null, null, sort, descending, null))
       res.add(call.convert(i));
     return MapUtil.of("links", call.self(null), "data", res);
   }
