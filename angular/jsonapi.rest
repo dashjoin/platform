@@ -2,10 +2,6 @@
 GET http://localhost:8080/rest/jsonapi/northwind/ORDERS/10248
 Authorization: Basic admin:djdjdj
 
-### TEST
-GET http://localhost:8080/rest/jsonapi/northwind/EMPLOYEES/5
-Authorization: Basic admin:djdjdj
-
 ### read table
 GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS
 Authorization: Basic admin:djdjdj
@@ -20,5 +16,9 @@ Authorization: Basic admin:djdjdj
 
 ### read table
 GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS?filter={"CITY":"Berlin"}
+Authorization: Basic admin:djdjdj
+
+### read record / fields
+GET http://localhost:8080/rest/jsonapi/northwind/ORDERS/10248?fields[ORDERS]=ORDER_DATE,REQUIRED_DATE
 Authorization: Basic admin:djdjdj
 

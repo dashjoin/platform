@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +32,6 @@ public class JsonApi {
 
   private static final ObjectMapper om = new ObjectMapper();
 
-  /**
-   * inject base URI so we can generate absolute URLs
-   */
-  @Context
-  UriInfo uriInfo;
-
   @Inject
   Data data;
 
@@ -47,6 +42,11 @@ public class JsonApi {
    * wraps common functionality for generating json:api links etc.
    */
   class Call {
+
+    /**
+     * base URI so we can generate absolute URLs
+     */
+    UriInfo uriInfo;
 
     /**
      * database we operate on
@@ -61,7 +61,8 @@ public class JsonApi {
     /**
      * init type and database
      */
-    public Call(String database, String type) {
+    public Call(UriInfo uriInfo, String database, String type) {
+      this.uriInfo = uriInfo;
       this.database = database;
       this.type = type;
     }
@@ -96,8 +97,12 @@ public class JsonApi {
       for (Property p : t.properties.values()) {
         if (p.pkpos != null && p.pkpos == 0)
           id = "" + o.remove(p.name);
+        List<String> fields = uriInfo.getQueryParameters().get("fields[" + type + "]");
+        if (fields != null && fields.size() > 0
+            && !Arrays.asList(fields.get(0).split(",")).contains(p.name))
+          o.remove(p.name);
         if (p.ref != null && o.get(p.name) != null) {
-          Call x = new Call(p.ref.split("/")[1], p.ref.split("/")[2]);
+          Call x = new Call(uriInfo, p.ref.split("/")[1], p.ref.split("/")[2]);
           ref.put(p.name,
               MapUtil.of("links", MapUtil.of("related", x.self("" + o.get(p.name)).get("self"))));
         }
@@ -115,10 +120,11 @@ public class JsonApi {
    */
   @GET
   @Path("/{database}/{type}/{id}")
-  public Map<String, Object> getRecord(@Context SecurityContext sc,
+  public Map<String, Object> getRecord(@Context UriInfo uriInfo, @Context SecurityContext sc,
       @PathParam("database") String database, @PathParam("type") String type,
       @PathParam("id") String id) throws Exception {
-    Call call = new Call(database, type);
+
+    Call call = new Call(uriInfo, database, type);
     Map<String, Object> res = data.read(sc, database, type, id);
     return MapUtil.of("links", call.self(id), "data", call.convert(res));
   }
@@ -128,7 +134,7 @@ public class JsonApi {
    */
   @GET
   @Path("/{database}/{type}")
-  public Map<String, Object> getTable(@Context SecurityContext sc,
+  public Map<String, Object> getTable(@Context UriInfo uriInfo, @Context SecurityContext sc,
       @PathParam("database") String database, @PathParam("type") String type,
       @QueryParam("sort") String sort, @QueryParam("filter") String filter) throws Exception {
 
@@ -153,7 +159,7 @@ public class JsonApi {
       }
     }
 
-    Call call = new Call(database, type);
+    Call call = new Call(uriInfo, database, type);
     List<Map<String, Object>> res = new ArrayList<>();
     for (Map<String, Object> i : data.all(sc, database, type, null, null, sort, descending,
         arguments))
