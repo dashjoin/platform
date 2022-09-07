@@ -7,7 +7,7 @@ GET http://localhost:8080/rest/jsonapi/northwind/ORDERS/10248
 Authorization: Basic admin:djdjdj
 
 ### read table
-GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS
+GET http://localhost:8080/rest/jsonapi/northwind/ORDER_DETAILS
 Authorization: Basic admin:djdjdj
 
 ### read table / sort (error)

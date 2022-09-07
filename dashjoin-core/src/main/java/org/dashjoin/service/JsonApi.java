@@ -90,7 +90,8 @@ public class JsonApi {
     /**
      * generate a link object (https://jsonapi.org/format/#document-links)
      */
-    public Object self(Integer offset, Integer limit, String filter, String sort) {
+    Map<String, String> self(Integer offset, Integer limit, String filter, String sort,
+        Integer size) {
       String o = offset == null ? "" : "page%5Boffset%5D=" + offset + "&";
       String l = limit == null ? "" : "page%5Blimit%5D=" + limit + "&";
       String s = sort == null ? "" : "sort=" + e(sort) + "&";
@@ -98,8 +99,14 @@ public class JsonApi {
       String pars = o + l + f + s + fields();
       if (pars.endsWith("&"))
         pars = pars.substring(0, pars.length() - 1);
-      return MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/" + database + "/" + type
-          + (pars.isEmpty() ? "" : "?") + pars);
+      Map<String, String> self = MapUtil.of("self", uriInfo.getBaseUri() + "rest/jsonapi/"
+          + database + "/" + type + (pars.isEmpty() ? "" : "?") + pars);
+
+      if (size != null && size >= limit)
+        self.put("next",
+            self(offset == null ? limit : offset + limit, limit, filter, sort, null).get("self"));
+
+      return self;
     }
 
     /**
@@ -214,11 +221,15 @@ public class JsonApi {
       }
     }
 
+    // limit
+    limit = limit == null ? 1000 : limit;
+
     Call call = new Call(uriInfo, database, type);
     List<Map<String, Object>> res = new ArrayList<>();
-    for (Map<String, Object> i : data.all(sc, database, type, offset, limit, s, descending,
-        arguments))
+    List<Map<String, Object>> all =
+        data.all(sc, database, type, offset, limit, s, descending, arguments);
+    for (Map<String, Object> i : all)
       res.add(call.convert(i));
-    return MapUtil.of("links", call.self(offset, limit, filter, sort), "data", res);
+    return MapUtil.of("links", call.self(offset, limit, filter, sort, all.size()), "data", res);
   }
 }
