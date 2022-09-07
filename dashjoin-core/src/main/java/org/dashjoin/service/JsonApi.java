@@ -18,6 +18,8 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Endpoint that exposes the dashjoin API as JSON:API (https://jsonapi.org/)
@@ -26,6 +28,8 @@ import org.dashjoin.util.MapUtil;
 @Produces({"application/vnd.api+json"})
 @Consumes({"application/vnd.api+json"})
 public class JsonApi {
+
+  private static final ObjectMapper om = new ObjectMapper();
 
   /**
    * inject base URI so we can generate absolute URLs
@@ -126,7 +130,19 @@ public class JsonApi {
   @Path("/{database}/{type}")
   public Map<String, Object> getTable(@Context SecurityContext sc,
       @PathParam("database") String database, @PathParam("type") String type,
-      @QueryParam("sort") String sort) throws Exception {
+      @QueryParam("sort") String sort, @QueryParam("filter") String filter) throws Exception {
+
+    // filter
+    Map<String, Object> arguments = null;
+    if (filter != null)
+      try {
+        arguments = om.readValue(filter, JSONDatabase.tr);
+      } catch (JsonProcessingException e) {
+        throw new Exception(
+            "Error parsing filter: " + filter + ". Please provide a valid JSON filter object.");
+      }
+
+    // sort
     boolean descending = false;
     if (sort != null) {
       if (sort.contains(","))
@@ -136,9 +152,11 @@ public class JsonApi {
         sort = sort.substring(1);
       }
     }
+
     Call call = new Call(database, type);
     List<Map<String, Object>> res = new ArrayList<>();
-    for (Map<String, Object> i : data.all(sc, database, type, null, null, sort, descending, null))
+    for (Map<String, Object> i : data.all(sc, database, type, null, null, sort, descending,
+        arguments))
       res.add(call.convert(i));
     return MapUtil.of("links", call.self(null), "data", res);
   }

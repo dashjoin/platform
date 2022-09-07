@@ -18,3 +18,7 @@ Authorization: Basic admin:djdjdj
 GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS?sort=-COUNTRY
 Authorization: Basic admin:djdjdj
 
+### read table
+GET http://localhost:8080/rest/jsonapi/northwind/CUSTOMERS?filter={"CITY":"Berlin"}
+Authorization: Basic admin:djdjdj
+
