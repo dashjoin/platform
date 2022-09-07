@@ -136,7 +136,9 @@ public class JsonApi {
   @Path("/{database}/{type}")
   public Map<String, Object> getTable(@Context UriInfo uriInfo, @Context SecurityContext sc,
       @PathParam("database") String database, @PathParam("type") String type,
-      @QueryParam("sort") String sort, @QueryParam("filter") String filter) throws Exception {
+      @QueryParam("sort") String sort, @QueryParam("filter") String filter,
+      @QueryParam("page[offset]") Integer offset, @QueryParam("page[limit]") Integer limit)
+      throws Exception {
 
     // filter
     Map<String, Object> arguments = null;
@@ -161,7 +163,7 @@ public class JsonApi {
 
     Call call = new Call(uriInfo, database, type);
     List<Map<String, Object>> res = new ArrayList<>();
-    for (Map<String, Object> i : data.all(sc, database, type, null, null, sort, descending,
+    for (Map<String, Object> i : data.all(sc, database, type, offset, limit, sort, descending,
         arguments))
       res.add(call.convert(i));
     return MapUtil.of("links", call.self(null), "data", res);

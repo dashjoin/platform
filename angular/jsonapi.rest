@@ -22,3 +22,7 @@ Authorization: Basic admin:djdjdj
 GET http://localhost:8080/rest/jsonapi/northwind/ORDERS/10248?fields[ORDERS]=ORDER_DATE,REQUIRED_DATE
 Authorization: Basic admin:djdjdj
 
+### read record / limit / offset
+GET http://localhost:8080/rest/jsonapi/northwind/ORDERS?page[limit]=2&page[offset]=1
+Authorization: Basic admin:djdjdj
+
