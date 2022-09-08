@@ -1,0 +1,62 @@
+### Requesting EntitySet
+GET https://services.odata.org/TripPinRESTierService/People
+
+### Requesting EntitySet
+GET http://localhost:8080/rest/odata/northwind/CUSTOMERS
+Authorization: Basic admin:djdjdj
+
+
+### Requesting Single Entity by ID
+GET https://services.odata.org/TripPinRESTierService/People('russellwhyte')
+
+### Requesting Single Entity by ID
+GET http://localhost:8080/rest/odata/northwind/CUSTOMERS('ALFKI')
+Authorization: Basic admin:djdjdj
+
+
+### Requesting Single Property Value
+GET https://services.odata.org/TripPinRESTierService/Airports('KSFO')/Name 
+
+### Requesting Single Property Value
+GET http://localhost:8080/rest/odata/northwind/CUSTOMERS('ALFKI')/CITY
+Authorization: Basic admin:djdjdj
+
+
+### Requesting a Single Primitive or Enum Type Property Raw Value
+GET https://services.odata.org/TripPinRESTierService/Airports('KSFO')/Name/$value
+
+### Requesting a Single Primitive or Enum Type Property Raw Value
+GET http://localhost:8080/rest/odata/northwind/CUSTOMERS('ALFKI')/CITY/$value
+Authorization: Basic admin:djdjdj
+
+
+### System Query Option $filter
+GET https://services.odata.org/TripPinRESTierService/People?$filter=FirstName eq 'Scott'
+
+### System Query Option $filter
+GET http://localhost:8080/rest/odata/northwind/EMPLOYEES?$filter=REPORTS_TO eq 5
+Authorization: Basic admin:djdjdj
+
+
+### Filter on Collection
+GET https://services.odata.org/TripPinRESTierService/Airports?$select=Name, IcaoCode
+
+### Filter on Collection
+GET http://localhost:8080/rest/odata/northwind/EMPLOYEES?$select=REPORTS_TO, LAST_NAME
+Authorization: Basic admin:djdjdj
+
+
+### System Query Option $orderby
+GET https://services.odata.org/TripPinRESTierService/People('scottketchum')/Trips?$orderby=EndsAt desc
+
+### System Query Option $orderby
+GET http://localhost:8080/rest/odata/northwind/EMPLOYEES?$orderby=EMPLOYEE_ID desc
+Authorization: Basic admin:djdjdj
+
+
+### System Query Option $top and $skip
+GET https://services.odata.org/TripPinRESTierService/People?$top=2 
+
+### System Query Option $top and $skip
+GET http://localhost:8080/rest/odata/northwind/EMPLOYEES?$skip=1&$top=1
+Authorization: Basic admin:djdjdj
