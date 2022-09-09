@@ -826,10 +826,11 @@ public class Manage {
     List<FunctionVersion> res = new ArrayList<>();
     for (Function<?, ?> inst : SafeServiceLoader.load(Function.class)) {
       FunctionVersion v = (FunctionVersion) metaInf(inst.getClass(), null, new FunctionVersion());
-      v.name = inst.getClass().getName();
-      if (inst instanceof AbstractConfigurableFunction)
+      if (inst instanceof AbstractConfigurableFunction) {
         v.function = "$call(...)";
-      else
+        // class name only needed for config functions
+        v.name = inst.getClass().getName();
+      } else
         v.function = "$" + inst.getID();
       v.type = inst.getType();
       res.add(v);
@@ -983,6 +984,13 @@ public class Manage {
     v.version = c.getPackage().getImplementationVersion();
     v.title = c.getPackage().getImplementationTitle();
     v.vendor = c.getPackage().getImplementationVendor();
+
+    if (v.version == null && v.title == null && v.vendor == null) {
+      // use default class if data not retrievable
+      v.version = Manage.class.getPackage().getImplementationVersion();
+      v.title = Manage.class.getPackage().getImplementationTitle();
+      v.vendor = Manage.class.getPackage().getImplementationVendor();
+    }
 
     String jar = null;
     if (c.equals(org.mariadb.jdbc.Driver.class))
