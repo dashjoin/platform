@@ -29,7 +29,7 @@ public class RESTTest {
   @Test
   public void testManage3() {
     for (Version d : new Manage().getFunctions())
-      if (d.name.equals("org.dashjoin.function.AlterTableTrigger"))
+      if ("org.dashjoin.function.Email".equals(d.name))
         return;
     Assertions.fail();
   }
