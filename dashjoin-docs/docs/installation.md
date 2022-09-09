@@ -1,5 +1,58 @@
 # Installation
 
+The easiest and recommended way to run Dashjoin as a production service is to use the [container image.](#docker)
+
+## Download and local developer setup
+
+Installers and binaries for Windows, MacOS, and Linux are available at <https://download.dashjoin.com/>
+
+Important: These binaries run Dashjoin as a developer application, [not as a service.](#run-local-dashjoin-installation-as-service)
+
+- windows/dashjoin-exe.zip
+
+Portable Dashjoin Platform Executable including Java Runtime.
+Unzip and start dashjoin.exe in a command prompt.
+
+- windows/dashjoin-version.msi
+
+Dashjoin Windows Installer.
+
+Same contents as windows/dashjoin-exe.zip plus start menu icon.
+
+- macos/dashjoin-exe.zip
+
+Portable Dashjoin Platform Executable including Runtime.
+
+Unzip and start ```MacOS/Dashjoin``` in a command prompt 
+
+Note: if you get an error saying "This Application is broken", [Apple Quarantine](https://developer.apple.com/forums/thread/666452#answers-list) needs to be cleared with this command:
+```
+xattr -cr Contents
+```
+
+- macos/Dashjoin-version.dmg
+
+Dashjoin MacOS Installer
+
+Note: if you get an error saying "This Application is broken", [Apple Quarantine](https://developer.apple.com/forums/thread/666452#answers-list) needs to be cleared with this command:
+```
+xattr -cr Dashjoin-*.dmg
+```
+
+- linux/dashjoin-exe.zip
+
+Portable Dashjoin Platform Executable including Java Runtime.
+
+Unzip and start ```bin/Dashjoin``` in a command prompt
+
+- linux/dashjoin-version.deb
+
+Dashjoin Linux Installer. Same contents as linux/dashjoin-exe.zip
+
+- dashjoin-jar.zip
+
+Generic Java Archive (JAR) for all platforms
+
 ## Creating a local Admin User
 
 After installing Dashjoin, no user is set up in the system (a user can be defined via the environment variables - see below for more information).
@@ -18,11 +71,9 @@ The Dashjoin authentication is configured to allow log in using social Google or
 
 To access the application, navigate to http://localhost:8080
 
-## Installers
-
-Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.
-
 ## Docker
+
+The official container image ```dashjoin/platform``` is hosted on [dockerhub](https://hub.docker.com/r/dashjoin/platform)
 
 ```bash
 docker pull dashjoin/platform
@@ -36,6 +87,14 @@ If you would like to make the registered databases and credentials persistent, y
 ```bash
 docker run -p 8080:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
 ```
+
+## Run local Dashjoin installation as service
+
+If you have installed Dashjoin locally and want to run the application as a service,
+here are links on how to set up the service (not supported for production):
+
+- [Windows](https://download.dashjoin.com/dashjoin/support/windows/)
+- [Linux](https://automationrhapsody.com/install-java-application-linux-service/) (link to external site)
 
 ## Environment
 
