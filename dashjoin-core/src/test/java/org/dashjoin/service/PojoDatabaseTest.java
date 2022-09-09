@@ -2,6 +2,7 @@ package org.dashjoin.service;
 
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Maps.newHashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -268,5 +269,32 @@ public class PojoDatabaseTest {
     config.update(table, newHashMap(of("ID", "dj/junit/T")),
         of("instanceLayout", of("widget", "test")));
     config.update(table, newHashMap(of("ID", "dj/junit/T")), MapUtil.of("instanceLayout", null));
+  }
+
+  @Test
+  public void testContainsExpression() {
+    Assertions.assertTrue(
+        PojoDatabase.containsFunction("$query(\"northwind\", \"list\", {})", "query", "list"));
+    Assertions.assertFalse(
+        PojoDatabase.containsFunction("$query(\"northwind\", \"list\", {})", "query", "query"));
+    Assertions.assertTrue(PojoDatabase.containsFunction("$call(\"invoke\", 3)", "call", "invoke"));
+    Assertions.assertFalse(
+        PojoDatabase.containsFunction("$other(\"invoke\", $call(\"x\"))", "call", "invoke"));
+  }
+
+  @Test
+  public void testContainsExpressionTree() {
+    Assertions.assertTrue(PojoDatabase.containsFunction(
+        MapUtil.of("children",
+            Arrays.asList(
+                MapUtil.of("widget", "button", "print", "$query(\"northwind\", \"list\", {})"))),
+        "query", "list"));
+  }
+
+  @Test
+  public void testContainsQuery() {
+    Assertions.assertTrue(PojoDatabase.containsQuery(
+        MapUtil.of("children", Arrays.asList(MapUtil.of("widget", "chart", "query", "list"))),
+        "list"));
   }
 }

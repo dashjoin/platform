@@ -172,9 +172,7 @@ public class ModelTest {
       if (kid.getKey().equals("object"))
         Assertions.assertTrue(kid.getValue() instanceof ArrayNode);
       checkExpressions(kid.getValue());
-      for (String field : new String[] {"if", "context", "display", "expression", "onClick",
-          "before-create", "after-create", "before-update", "after-update", "before-delete",
-          "after-delete"})
+      for (String field : PojoDatabase.EXPRESSION_FIELDS)
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
           if (!(kid.getValue() instanceof ObjectNode)) {

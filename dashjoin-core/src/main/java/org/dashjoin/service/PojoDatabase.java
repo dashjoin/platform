@@ -640,6 +640,12 @@ public class PojoDatabase extends UnionDatabase implements Config {
   }
 
   List<Map<String, Object>> q(QueryMeta db, boolean database) throws Exception {
+
+    Map<String, List<Map<String, Object>>> lookup =
+        MapUtil.of("page ", this.query(QueryMeta.ofQuery("page"), null), "layout ",
+            this.query(QueryMeta.ofQuery("dj-database"), null), "function ",
+            this.query(QueryMeta.ofQuery("dj-function"), null));
+
     List<Map<String, Object>> res = this.query(db, null);
     List<Map<String, Object>> projected = new ArrayList<>();
     for (Map<String, Object> r : res) {
@@ -672,6 +678,26 @@ public class PojoDatabase extends UnionDatabase implements Config {
           }
         }
       }
+
+      try {
+        List<String> usedBy = new ArrayList<>();
+        for (Entry<String, List<Map<String, Object>>> e : lookup.entrySet())
+          for (Map<String, Object> page : e.getValue())
+            if (database) {
+              if (containsQuery(page, (String) r.get("ID")))
+                usedBy.add(e.getKey() + page.get("ID"));
+              else if (containsFunction(page, "query", (String) r.get("ID")))
+                usedBy.add(e.getKey() + page.get("ID"));
+            } else {
+              if (containsFunction(page, "call", (String) r.get("ID")))
+                usedBy.add(e.getKey() + page.get("ID"));
+            }
+        tm.put("usedBy", String.join(", ", usedBy).replaceAll("dj/", ""));
+      } catch (Exception e) {
+        logger.warning("Error computing usedBy: " + e);
+        logger.log(Level.FINE, "Error computing usedBy: ", e);
+      }
+
       projected.add(tm);
     }
     return projected;
@@ -1061,5 +1087,72 @@ public class PojoDatabase extends UnionDatabase implements Config {
   @Override
   public String password(String table, String id) throws Exception {
     return user().password(table, id);
+  }
+
+  /**
+   * returns true if this tree contains query="$query"
+   */
+  @SuppressWarnings("unchecked")
+  static boolean containsQuery(Map<String, Object> node, String query) {
+    if (query.equals(node.get("query")))
+      return true;
+    for (Entry<String, Object> e : node.entrySet()) {
+      if (e.getValue() instanceof Map)
+        if (containsQuery((Map<String, Object>) e.getValue(), query))
+          return true;
+      if (e.getValue() instanceof List)
+        for (Object o : (List<Object>) e.getValue())
+          if (o instanceof Map)
+            if (containsQuery((Map<String, Object>) o, query))
+              return true;
+    }
+    return false;
+  }
+
+  /**
+   * JSON fields that contain JSONata expressions
+   */
+  public static final String[] EXPRESSION_FIELDS =
+      {"if", "context", "display", "expression", "onClick", "before-create", "after-create",
+          "before-update", "after-update", "before-delete", "after-delete", "print", "navigate"};
+
+  /**
+   * returns true if this tree contains expression / display / ... ="...$fn(.."arg"..)"
+   */
+  @SuppressWarnings("unchecked")
+  static boolean containsFunction(Map<String, Object> node, String fn, String arg) {
+    for (String field : EXPRESSION_FIELDS) {
+      if (node.get(field) instanceof String)
+        if (containsFunction((String) node.get(field), fn, arg))
+          return true;
+    }
+    for (Entry<String, Object> e : node.entrySet()) {
+      if (e.getValue() instanceof Map)
+        if (containsFunction((Map<String, Object>) e.getValue(), fn, arg))
+          return true;
+      if (e.getValue() instanceof List)
+        for (Object o : (List<Object>) e.getValue())
+          if (o instanceof Map)
+            if (containsFunction((Map<String, Object>) o, fn, arg))
+              return true;
+    }
+    return false;
+  }
+
+  /**
+   * returns true if this expression string contains "...$fn(.."arg"..)"
+   */
+  static boolean containsFunction(String e, String fn, String arg) {
+    if (e != null) {
+      int argIdx = e.indexOf("\"" + arg + "\"");
+      if (argIdx >= 0) {
+        e = e.substring(0, argIdx);
+        int fnIdx = e.lastIndexOf("$" + fn + "(");
+        if (fnIdx >= 0)
+          if (argIdx - fnIdx < 50)
+            return true;
+      }
+    }
+    return false;
   }
 }
