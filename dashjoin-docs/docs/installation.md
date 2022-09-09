@@ -56,7 +56,7 @@ Generic Java Archive (JAR) for all platforms
 ## Creating a local Admin User
 
 After installing Dashjoin, no user is set up in the system (a user can be defined via the environment variables - see below for more information).
-To set up the local development admin user, navigate to http://localhost:8080/#/setup.
+To set up the local development admin user, navigate to <http://localhost:8080/#/setup>.
 
 Choose a name, a username, and the password.
 Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'
@@ -69,7 +69,7 @@ The Dashjoin authentication is configured to allow log in using social Google or
 
 ## Opening the Dashjoin application
 
-To access the application, navigate to http://localhost:8080
+To access the application, navigate to <http://localhost:8080>
 
 ## Docker
 
