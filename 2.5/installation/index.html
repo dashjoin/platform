@@ -304,6 +304,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#download-and-local-developer-setup" class="md-nav__link">
+    Download and local developer setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#creating-a-local-admin-user" class="md-nav__link">
     Creating a local Admin User
   </a>
@@ -318,15 +325,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installers" class="md-nav__link">
-    Installers
+  <a href="#docker" class="md-nav__link">
+    Docker
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    Docker
+  <a href="#run-local-dashjoin-installation-as-service" class="md-nav__link">
+    Run local Dashjoin installation as service
   </a>
   
 </li>
@@ -539,6 +546,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#download-and-local-developer-setup" class="md-nav__link">
+    Download and local developer setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#creating-a-local-admin-user" class="md-nav__link">
     Creating a local Admin User
   </a>
@@ -553,15 +567,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#installers" class="md-nav__link">
-    Installers
+  <a href="#docker" class="md-nav__link">
+    Docker
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    Docker
+  <a href="#run-local-dashjoin-installation-as-service" class="md-nav__link">
+    Run local Dashjoin installation as service
   </a>
   
 </li>
@@ -649,6 +663,48 @@
 
 
 <h1 id="installation">Installation</h1>
+<p>The easiest and recommended way to run Dashjoin as a production service is to use the <a href="#docker">container image.</a></p>
+<h2 id="download-and-local-developer-setup">Download and local developer setup</h2>
+<p>Installers and binaries for Windows, MacOS, and Linux are available at <a href="https://download.dashjoin.com/">https://download.dashjoin.com/</a></p>
+<p>Important: These binaries run Dashjoin as a developer application, <a href="#run-local-dashjoin-installation-as-service">not as a service.</a></p>
+<ul>
+<li>windows/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Java Runtime.
+Unzip and start dashjoin.exe in a command prompt.</p>
+<ul>
+<li>windows/dashjoin-version.msi</li>
+</ul>
+<p>Dashjoin Windows Installer.</p>
+<p>Same contents as windows/dashjoin-exe.zip plus start menu icon.</p>
+<ul>
+<li>macos/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Runtime.</p>
+<p>Unzip and start <code>MacOS/Dashjoin</code> in a command prompt </p>
+<p>Note: if you get an error saying "This Application is broken", <a href="https://developer.apple.com/forums/thread/666452#answers-list">Apple Quarantine</a> needs to be cleared with this command:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>xattr -cr Contents
+</code></pre></div></p>
+<ul>
+<li>macos/Dashjoin-version.dmg</li>
+</ul>
+<p>Dashjoin MacOS Installer</p>
+<p>Note: if you get an error saying "This Application is broken", <a href="https://developer.apple.com/forums/thread/666452#answers-list">Apple Quarantine</a> needs to be cleared with this command:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>xattr -cr Dashjoin-*.dmg
+</code></pre></div></p>
+<ul>
+<li>linux/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Java Runtime.</p>
+<p>Unzip and start <code>bin/Dashjoin</code> in a command prompt</p>
+<ul>
+<li>linux/dashjoin-version.deb</li>
+</ul>
+<p>Dashjoin Linux Installer. Same contents as linux/dashjoin-exe.zip</p>
+<ul>
+<li>dashjoin-jar.zip</li>
+</ul>
+<p>Generic Java Archive (JAR) for all platforms</p>
 <h2 id="creating-a-local-admin-user">Creating a local Admin User</h2>
 <p>After installing Dashjoin, no user is set up in the system (a user can be defined via the environment variables - see below for more information).
 To set up the local development admin user, navigate to http://localhost:8080/#/setup.</p>
@@ -659,16 +715,22 @@ Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'</p>
 <p><a href="https://www.youtube.com/watch?v=_xmFRwhbAFA">Click here</a> for a demo video.</p>
 <h2 id="opening-the-dashjoin-application">Opening the Dashjoin application</h2>
 <p>To access the application, navigate to http://localhost:8080</p>
-<h2 id="installers">Installers</h2>
-<p>Installers for Windows, MacOS, and Linux are available at https://dashjoin.com/.</p>
 <h2 id="docker">Docker</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker pull dashjoin/platform
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>docker run -p <span class="m">8080</span>:8080 dashjoin/platform
+<p>The official container image <code>dashjoin/platform</code> is hosted on <a href="https://hub.docker.com/r/dashjoin/platform">dockerhub</a></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>docker pull dashjoin/platform
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>docker run -p <span class="m">8080</span>:8080 dashjoin/platform
 </code></pre></div>
 <p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
 <p>If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker run -p <span class="m">8080</span>:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker run -p <span class="m">8080</span>:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
 </code></pre></div>
+<h2 id="run-local-dashjoin-installation-as-service">Run local Dashjoin installation as service</h2>
+<p>If you have installed Dashjoin locally and want to run the application as a service,
+here are links on how to set up the service (not supported for production):</p>
+<ul>
+<li><a href="https://download.dashjoin.com/dashjoin/support/windows/">Windows</a></li>
+<li><a href="https://automationrhapsody.com/install-java-application-linux-service/">Linux</a> (link to external site)</li>
+</ul>
 <h2 id="environment">Environment</h2>
 <p>A Dashjoin instance can be configured using the following environment variables:</p>
 <ul>
@@ -689,10 +751,10 @@ Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'</p>
 </ul>
 <p>Dashjoin uses Quarkus as runtime framework (<a href="https://quarkus.io">https://quarkus.io</a>).
 You can run your application in dev mode using:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>platform/angular$ ng build
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>platform$ mvn install
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>platform/dashjoin$ mvn compile quarkus:dev
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>platform/angular$ ng build
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>platform$ mvn install
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>platform/dashjoin$ mvn compile quarkus:dev
 </code></pre></div>
 <p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
 <p>You can use the provided launch file to directly run from within Eclipse (right-click on the launch file, "Run as" or "Debug as" -&gt; "Dashjoin", 
@@ -701,12 +763,12 @@ This requires the Eclipse Quarkus plugin (<a href="https://quarkus.io/blog/eclip
 plugin (<a href="https://projectlombok.org/setup/eclipse">https://projectlombok.org/setup/eclipse</a>) to be installed.
 Launching with "Debug as" will also enable live coding mode.</p>
 <p>The application can be packaged and installed locally using:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>platform/dashjoin$ mvn package install
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>platform/dashjoin$ mvn package install
 </code></pre></div></p>
 <p>It produces the <code>dashjoin-0.0.1-SNAPSHOT-runner.jar</code> file in the <code>/target</code> directory.
 Be aware that it’s not an <em>uber-jar</em> as the dependencies are copied into the <code>target/lib</code> directory.</p>
 <p>If you want to build an <em>uber-jar</em>, execute the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
 </code></pre></div>
 <p>The application is now runnable using <code>java -jar target/dashjoin-0.0.1-SNAPSHOT-runner.jar</code>.</p>
 <h3 id="eclipse">Eclipse</h3>

@@ -441,6 +441,24 @@
 <li>
 <p><strong>How can I customize the forms in the edit, button and variable widgets?</strong> These widgets use the JSON Schema Form component. This <a href="">online playground</a> lets you experiment with the various features. This component comes with a WYSIWYG editor which is available in edit mode by clicking the three vertical dot icon. Note that not all features of the component are exposed in the WYSIWYG editor. You can leverage the advanced features by editing the underlying JSON directly. The demo application shows two examples. The "createSchema" of the <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/model/dj-database/dj%252Fnorthwind.json">customer page</a> section shows the form of the email button, which displays the email body input field with a larger text box. The city instance page shows a similar layout for the edit widget. The <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/variable.json">variable example</a> shows how a select widget with display names and values can be rendered.</p>
 </li>
+<li>
+<p><strong>Are SQL stored procedures supported?</strong> Yes, simply use 'exec proc' or 'call proc(par)' as the query, depending on the SQL dialect used by your DB. In case a stored procedure has multiple result tables, the $query function returns them by wrapping them in a top level object.</p>
+</li>
+<li>
+<p><strong>How can I access a SQL Server stored procedure output variable?</strong> This can be done on the query level as follows:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">DECLARE</span><span class="w"> </span><span class="o">@</span><span class="n">res</span><span class="w"> </span><span class="nb">INT</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">exec</span><span class="w"> </span><span class="n">dbo</span><span class="p">.</span><span class="n">sp</span><span class="w"> </span><span class="o">@</span><span class="n">res</span><span class="w"> </span><span class="k">output</span><span class="p">;</span><span class="w"></span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">select</span><span class="w"> </span><span class="o">@</span><span class="n">res</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<ul>
+<li>
+<p><strong>Why am I getting the error: "User does not have the role required to read table page in database config" after logging in?</strong> When the UI renders a page, it needs to get the page layout from the backend. Like with any other call, the user's credentials are checked. This error indicates, that the user is known to the system, but gets assigned insufficient roles to access this information in the config DB. To fix this, you can either assign the user the correct role in the IDM or you can provide read access to the config DB to the user's role (this is done on the System Configuration page).</p>
+</li>
+<li>
+<p><strong>Does the platform cache results?</strong> Yes, all HTTP GET requests are cached by the browser UI. The cache is purged if 1) five minutes have passed since the last time the data was retrieved, 2) the data is changed in via the UI (e.g. by saving / updating a value), or 3) SHIFT F5 / reload is pressed.</p>
+</li>
 </ul>
 
 
