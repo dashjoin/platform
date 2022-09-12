@@ -725,11 +725,140 @@ transforms the gathered set of tables into another set of tables. The mapping st
 
 The save step writes the output of the mapping step into the database. The following modes are supported:
 
-* Ignore: simply add the data (update in case the record already is in the DB, insert if not). We follow the "normal" update semantics meaning that key=null actually deletes the value in the DB, whereas missing keys remain untouched.
-   
-* Refresh: all records from the target tables that have the _dj_source column matching the ID of this function are updated. If a key is no longer present in the new data, the record is deleted.
+**Ignore**
 
-* Delete All: all records from the target tables are deleted, if createSchema is true, the tables are also dropped in case columns are no longer needed or previously had another datatype.
+Simply add the data (update in case the record already is in the DB, insert if not). We follow the "normal" update semantics meaning that key=null actually deletes the value in the DB, whereas missing keys remain untouched.
+
+Database
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | Joe  |
+| 2  |            | Mike |
+
+Extracted Data from ETL "ignore"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 3  | Nate |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | John |
+| 2  |            | Mike |
+| 3  | ignore     | Nate |
+
+Row 1 is updated. Row 2 remains unchanged. Row 3 is added and thus gets marked as having source e.
+
+Extracted Data from ETL "ignore"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 4  | Jane |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | John |
+| 2  |            | Mike |
+| 3  | ignore     | Nate |
+| 4  | ignore     | Jane |
+
+Row 4 gets added. Row 3 remains even though it is no longer in the extraction result.
+
+**Refresh**
+
+All records from the target tables that have the _dj_source column matching the ID of this function are updated. If a key is no longer present in the new data, the record is deleted.
+
+Database
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | Joe  |
+| 2  |            | Mike |
+
+Extracted Data from ETL "refresh"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 3  | Nate |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | John |
+| 2  |            | Mike |
+| 3  | refresh    | Nate |
+
+The first run of "refresh" has the same effect as "ignore".
+
+Extracted Data from ETL "refresh"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 4  | Jane |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  |            | John |
+| 2  |            | Mike |
+| 4  | refresh    | Jane |
+
+The third row, which was added by "refresh" previously, is deleted and row 4 is added.
+
+**Delete All**
+
+All records from the target tables are deleted, if createSchema is true, the tables are also dropped in case columns are no longer needed or previously had another datatype.
+
+Database
+
+| id | _dj_source | name | age |
+|----|------------|------|-----|
+| 1  |            | Joe  | 33  |
+| 2  |            | Mike | 44  |
+
+Extracted Data from ETL "delete-all"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 3  | Nate |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  | delete-all | John |
+| 3  | delete-all | Nate |
+
+The table content is deleted. If create schema is specified, the age column is also deleted.
+Rows 1 and 3 get added with the respective source.
+
+Extracted Data from ETL "delete-all"
+
+| id | name |
+|----|------|
+| 1  | John |
+| 4  | Jane |
+
+Result
+
+| id | _dj_source | name |
+|----|------------|------|
+| 1  | delete-all | John |
+| 4  | delete-all | Jane |
+
+The table content is deleted and rows 1 and 4 are added.
 
 ### Mapping Function Reference
 
