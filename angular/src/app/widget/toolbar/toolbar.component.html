@@ -1,7 +1,8 @@
 <div *ngIf="layout?.widget === 'toolbar' && ifDisplay && !foreachResult">
     <mat-toolbar color="primary" style="height: 3rem;">
         <div *ngFor="let child of layout.children; let i = index"
-            [ngStyle]="child.widget === 'spacer' ? {'flex':'1 1 auto'}:{}" [fxHide.lt-md]="child.fxHide==='lt-md'">
+            [ngStyle]="child.widget === 'spacer' ? {'flex':'1 1 auto'}:{}" [fxHide.lt-md]="child.fxHide==='lt-md'"
+            [fxHide.lt-sm]="child.fxHide==='lt-sm' || child.fxHide==='lt-md'">
             <app-instance #children [value]="value" [layout]="child" [layoutMode]="layoutMode" [layoutName]="layoutName"
                 [layoutPos]="layoutPos + ',' + i" (eventChange)="onEvent($event)">
             </app-instance>
