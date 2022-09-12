@@ -58,6 +58,7 @@ Upon startup, the system will perform a git clone if the model folder is empty o
 Note that you can specify credentials via the URL (http://user:password@domain.com/).
 Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) for an example of how to run
 Dashjoin with the demo application installed.
+If the git operation fails (e.g. due to incorrect credentials or illegal filenames), the platform will log the error and resume the startup process.
 
 ## Manual App Installation
 
