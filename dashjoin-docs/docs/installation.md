@@ -67,6 +67,27 @@ The Dashjoin authentication is configured to allow log in using social Google or
 
 [Click here](https://www.youtube.com/watch?v=_xmFRwhbAFA) for a demo video.
 
+Local users are maintained in the files djusers.properties / djroles.properties.
+As the purpose for local users is for setup + dev, there is no management UI.
+To create / update users, or change the pwd, the corresponding entries have to be changed there.
+
+Passwords can be specified as plain text (should be avoided) or hashed as MD5 of
+username:Dashjoin:password
+I.e. the hash for user "admin" with password "mypass" is:
+
+```bash
+> echo -n admin:Dashjoin:mypass | md5sum
+> bf3a93d38d7317cd6fd2170ca71a3522
+```
+
+Thus the entry in djusers.properties would be
+
+```bash
+admin=bf3a93d38d7317cd6fd2170ca71a3522
+```
+
+djroles.properties maps the user to a comma separated list of roles the user is in.
+
 ## Opening the Dashjoin application
 
 To access the application, navigate to <http://localhost:8080>
