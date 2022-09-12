@@ -98,6 +98,7 @@ here are links on how to set up the service (not supported for production):
 
 ## Environment
 
+Dashjoin uses the [Quarkus configuration framework](https://quarkus.io/guides/config-reference).
 A Dashjoin instance can be configured using the following environment variables:
 
 * DJ_ADMIN_USER: admin user name (defaults to "admin")
@@ -105,6 +106,14 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
 * DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from
+
+For configuring HTTP ports, keystores etc. please refer to the [Quarkus HTTP reference](https://quarkus.io/guides/http-reference).
+The following example shows how to change the HTTP port using the windows executable:
+
+```bash
+> set QUARKUS_HTTP_PORT=3333
+> Dashjoin.exe
+```
 
 ## Build Locally
 
