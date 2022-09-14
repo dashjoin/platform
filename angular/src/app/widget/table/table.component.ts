@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ValueComponent } from '../../value/value.component';
 import { Table } from '../../model';
 import { LinksComponent } from '../links/links.component';
 import { DashjoinWidget } from '../widget-registry';
@@ -92,6 +93,29 @@ export class TableComponent extends LinksComponent implements OnInit {
               return true;
           }
     return false;
+  }
+
+  /**
+   * compute switch case for table cells
+   */
+  cellType(value: any): 'regular' | 'path' | 'link' | 'value' {
+    if (this.isPath(value))
+      return 'path';
+    if (this.typeof(value, 'string') && (value.startsWith('/page/') || value.startsWith('/resource/')))
+      return 'link';
+    const type = ValueComponent.objectTypeS(value);
+    if (type === 'href' || type === 'link' || type === 'img')
+      return 'value';
+    if (type === 'array') {
+      for (const i of value) {
+        const it = ValueComponent.objectTypeS(i);
+        if (!(it === 'href' || it === 'link' || it === 'img')) {
+          return 'regular';
+        }
+      }
+      return 'value';
+    }
+    return 'regular';
   }
 
   /**

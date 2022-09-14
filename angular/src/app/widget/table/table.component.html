@@ -1,7 +1,8 @@
 <div [ngClass]="app.sidenavOpen ? 'table-container-sidebar' : 'table-container'">
-    <table mat-table [dataSource]="all" matSort="sortable?true:null" djPersistSorting (matSortChange)="sortData($event)">
+    <table mat-table [dataSource]="all" matSort="sortable?true:null" djPersistSorting
+        (matSortChange)="sortData($event)">
         <ng-container [matColumnDef]="column" *ngFor="let column of columns">
-            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortable?column:null" 
+            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="sortable?column:null"
                 [disabled]="sortable?false:true">{{localName(column)}}</th>
             <td mat-cell *matCellDef="let element">
                 <a *ngIf="externalLink(queryMeta, column, element)"
@@ -11,9 +12,8 @@
                     [routerLink]="link(queryMeta, column, element, true)">{{labelId(link(queryMeta, column,
                     element))|async}}
                 </a>
-                <span *ngIf="noLink(queryMeta, column, element)" [matTooltip]="matTooltip(element[column])"
-                    (click)="jsonDialog(element[column])">
-                    <span *ngIf="isPath(element[column]); else nopath_content">
+                <span *ngIf="noLink(queryMeta, column, element)">
+                    <span *ngIf="cellType(element[column]) === 'path'">
                         <a
                             [routerLink]="['/resource', element[column].start._dj_resource.database, element[column].start._dj_resource.table, element[column].start._dj_resource.pk[0]]">{{element[column].start._dj_resource.pk[0]}}</a>
                         <span *ngFor="let step of element[column].steps">
@@ -23,12 +23,13 @@
                                 [routerLink]="['/resource', step.end._dj_resource.database, step.end._dj_resource.table, step.end._dj_resource.pk[0]]">{{step.end._dj_resource.pk[0]}}</a>
                         </span>
                     </span>
-                    <ng-template #nopath_content>
-                        <a [routerLink]="toRouterLink(element[column])"
-                            *ngIf="typeof(element[column], 'string') && (element[column].startsWith('/page/') || element[column].startsWith('/resource/')); else else_content">{{search
-                            ? element.id : element[column]}}</a>
-                        <ng-template #else_content>{{matTooltip(element[column], true)}}</ng-template>
-                    </ng-template>
+                    <app-value *ngIf="cellType(element[column]) === 'value'" [displayData]="element[column]"
+                        [parent]="this"></app-value>
+                    <a *ngIf="cellType(element[column]) === 'link'"
+                        [routerLink]="toRouterLink(element[column])">{{search
+                        ? element.id : element[column]}}</a>
+                    <span *ngIf="cellType(element[column]) === 'regular'" [matTooltip]="matTooltip(element[column])"
+                        (click)="jsonDialog(element[column])">{{matTooltip(element[column], true)}}</span>
                 </span>
             </td>
         </ng-container>

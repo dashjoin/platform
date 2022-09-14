@@ -59,6 +59,13 @@ export class ValueComponent {
    * return the type of data
    */
   objectType(data: any): 'img' | 'link' | 'href' | 'object' | 'array' | 'simple' {
+    return ValueComponent.objectTypeS(data);
+  }
+
+  /**
+   * return the type of data
+   */
+  static objectTypeS(data: any): 'img' | 'link' | 'href' | 'object' | 'array' | 'simple' {
     if (!data) {
       return 'simple';
     }
