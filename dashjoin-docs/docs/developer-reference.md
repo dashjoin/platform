@@ -392,10 +392,6 @@ Container with a grid layout
 
 All non-container widgets are called regular widgets.
 
-#### all
-
-Shows all instances of a table. This widget can only be used on table pages and has no other configuration options.
-
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
 Runs / evaluates an expression when clicked.
@@ -539,6 +535,8 @@ Displays query results as a table
 * arguments: optional expression resulting in query arguments
 * graph: specifies whether the query is a graph query
 * expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
+
+Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
 #### text
 
