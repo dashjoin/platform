@@ -535,7 +535,7 @@ Displays query results as a table
 * query: query to run
 * arguments: optional expression resulting in query arguments
 * graph: specifies whether the query is a graph query
-* expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)
+* expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 
 Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
