@@ -59,6 +59,9 @@ export class ValueComponent {
    * return the type of data
    */
   objectType(data: any): 'img' | 'link' | 'href' | 'object' | 'array' | 'simple' {
+    if (!data) {
+      return 'simple';
+    }
     if (Array.isArray(data)) {
       return 'array';
     } else if (typeof data === 'object') {
