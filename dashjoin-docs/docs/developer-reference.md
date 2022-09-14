@@ -441,6 +441,7 @@ Depending on the result of the evaluation, one of the following cases applies:
 * if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record
 * an array of objects is displayed as a table
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
+* if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink 
 
 Example:
 ```
