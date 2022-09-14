@@ -30,17 +30,17 @@ export class IconComponent extends TextComponent implements OnInit {
       if (href.startsWith('https://github.com/dashjoin/platform')) {
         if (this.app.editLayout || this.pk1 === 'dj/config/page' || this.table === 'page' ||
           this.pk1 === 'dj/config/widget' || this.table === 'widget') {
-          window.open('https://github.com/dashjoin/platform#user-interface-layout', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#user-interface-layout', '_blank');
         } else if (this.pk1 === 'dj/config/dj-query-catalog' || this.table === 'dj-query-catalog') {
-          window.open('https://github.com/dashjoin/platform#query-catalog-and-editor', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#query-catalog-and-editor', '_blank');
         } else if (this.pk1 === 'dj/config/dj-function' || this.table === 'dj-function') {
-          window.open('https://github.com/dashjoin/platform#functions', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#functions', '_blank');
         } else if (this.pk1 === 'dj/config/dj-database' || this.table === 'dj-database') {
-          window.open('https://github.com/dashjoin/platform#data-and-database-management', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#data-and-database-management', '_blank');
         } else if (this.pk1 === 'dj/config/dj-role' || this.table === 'dj-role') {
-          window.open('https://github.com/dashjoin/platform#access-control', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#access-control', '_blank');
         } else if (this.search) {
-          window.open('https://github.com/dashjoin/platform#search-page', '_blank');
+          window.open('https://dashjoin.github.io/platform/latest/developer-reference/#search-page', '_blank');
         } else {
           window.open(href, '_blank');
         }
