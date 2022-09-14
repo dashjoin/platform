@@ -52,7 +52,7 @@
             },
             {
                 "widget": "display",
-                "display": "( $f:=function($x){ $merge( [$x, {\"Third party licenses\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}]) }; $f($djVersion()) )",
+                "display": "( $f:=function($x){ $merge( [$x, {\"Third party licenses\": {\"href\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}}]) }; $f($djVersion()) )",
                 "title": "Software",
                 "icons": {
                     "version": "content_copy",
