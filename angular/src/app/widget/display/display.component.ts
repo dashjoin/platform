@@ -28,26 +28,11 @@ export class DisplayComponent extends TextComponent implements OnInit {
   displayData: any;
 
   /**
-   * table columns
-   */
-  columns: string[] = [];
-
-  /**
    * compute expressions
    */
   async initWidget() {
     if (this.layout.display) {
       this.displayData = await this.evaluateExpression(this.layout.display);
-
-      if (this.displayType() === 'object[]') {
-        for (const row of this.displayData) {
-          for (const field of Object.keys(row)) {
-            if (!this.columns.includes(field)) {
-              this.columns.push(field);
-            }
-          }
-        }
-      }
     }
   }
 
@@ -84,60 +69,5 @@ export class DisplayComponent extends TextComponent implements OnInit {
   // Preserve original property order
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
-  }
-
-  /**
-   * is the data to be displayed a URL?
-   */
-  isUrl(x: any): boolean {
-    if (typeof x === 'string') {
-      return x.startsWith('http://') || x.startsWith('https://');
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * detects the type of displayData such that the UI can select the appropriate visualization
-   */
-  displayType(): 'link' | 'link[]' | 'string' | 'string[]' | 'object' | 'object[]' | 'img' {
-    if (!this.displayData) {
-      return 'string';
-    }
-    if (Array.isArray(this.displayData)) {
-      if (this.displayData.length > 0) {
-        if (typeof this.displayData[0] === 'object') {
-          if (Object.keys(this.displayData[0]).length === 3 && this.displayData[0].database && this.displayData[0].table && this.displayData[0].pk1) {
-            return 'link[]';
-          }
-        }
-        return typeof this.displayData[0] === 'object' ? 'object[]' : 'string[]';
-      } else {
-        return 'string[]';
-      }
-    } else {
-      if (typeof this.displayData === 'object') {
-        if (Object.keys(this.displayData).length === 3 && this.displayData.database && this.displayData.table && this.displayData.pk1) {
-          return 'link';
-        }
-        if (Object.keys(this.displayData).length === 4 && this.displayData.database &&
-          this.displayData.table && this.displayData.pk1 && this.displayData.page) {
-          return 'link';
-        }
-        if (Object.keys(this.displayData).length === 1 && this.displayData.img) {
-          return 'img';
-        }
-        if (Object.keys(this.displayData).length === 2 && this.displayData.img && this.displayData.width) {
-          return 'img';
-        }
-        if (Object.keys(this.displayData).length === 2 && this.displayData.img && this.displayData.height) {
-          return 'img';
-        }
-        if (Object.keys(this.displayData).length === 3 && this.displayData.img && this.displayData.width && this.displayData.height) {
-          return 'img';
-        }
-      }
-      return typeof this.displayData === 'object' ? 'object' : 'string';
-    }
   }
 }

@@ -1,0 +1,42 @@
+<ng-container *ngIf="getLayout() === 'single'">
+    <span *ngIf="objectType(displayData) === 'img'">
+        <img [src]="displayData.img" [style.width]="displayData.width" [style.height]="displayData.height">
+    </span>
+    <span *ngIf="objectType(displayData) === 'link'">
+        <a [routerLink]="['/resource', displayData.database, displayData.table, displayData.pk1]"
+            [queryParams]="displayData.page?{page: displayData.page} : null">{{parent.labelId(['/resource',
+            displayData.database, displayData.table, displayData.pk1])|async}}</a>
+    </span>
+    <span *ngIf="objectType(displayData) === 'href'">
+        <a [href]="displayData.href">{{displayData.label ? displayData.label : displayData.href}}</a>
+    </span>
+    <span *ngIf="objectType(displayData) === 'simple'">{{displayData}}</span>
+</ng-container>
+<ng-container *ngIf="getLayout() === 'list'">
+    <span *ngFor="let i of displayData; let idx=index">
+        <span *ngIf="idx>0">, </span>
+        <app-value [displayData]="i" [parent]="parent"></app-value>
+    </span>
+</ng-container>
+<mat-list *ngIf="getLayout() === 'keyvalue'">
+    <mat-list-item *ngFor="let e of displayData | keyvalue: parent.originalOrder">
+        <mat-icon mat-list-icon color="accent">{{parent.iconKey(e.key)}}</mat-icon>
+        <div mat-line>{{parent.camelCase2display(e.key)}}</div>
+        <div mat-line class="list-value">
+            <app-value [displayData]="e.value" [parent]="parent"></app-value>
+        </div>
+    </mat-list-item>
+</mat-list>
+<div *ngIf="getLayout() === 'table'" [ngClass]="parent.app.sidenavOpen ? 'table-container-sidebar' : 'table-container'">
+    <table class="mat-table">
+        <tr class="mat-header-row">
+            <th *ngFor="let e of columns" class="mat-header-cell">{{parent.camelCase2display(e)}}
+            </th>
+        </tr>
+        <tr *ngFor="let r of displayData" class="mat-row">
+            <td *ngFor="let e of columns" class="mat-cell">
+                <app-value [displayData]="r[e]" [parent]="parent"></app-value>
+            </td>
+        </tr>
+    </table>
+</div>
