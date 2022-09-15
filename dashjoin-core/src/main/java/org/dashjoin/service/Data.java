@@ -382,8 +382,8 @@ public class Data {
       @Parameter(description = "table name to run the operation on",
           example = "EMPLOYEES") @PathParam("table") String table,
       @QueryParam("prefix") String prefix, @QueryParam("limit") Integer limit) throws Exception {
-    Database db = services.getConfig().getDatabase(dj(database));
-    Table m = ((AbstractDatabase) db).tables.get(table);
+    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+    Table m = db.tables.get(table);
     ACLContainerRequestFilter.check(sc, db, m);
 
     if (m.properties != null) {
@@ -812,8 +812,8 @@ public class Data {
     long start = System.currentTimeMillis();
     Integer timeout = services.getConfig().getAllTimeoutMs();
 
-    Database db = services.getConfig().getDatabase(dj(database));
-    Table m = ((AbstractDatabase) db).tables.get(table);
+    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+    Table m = db.tables.get(table);
     ACLContainerRequestFilter.check(sc, db, m);
     String objectId = objectIds.get(0);
 

@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Table;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -32,7 +33,7 @@ public interface QueryEditor {
     Services services;
 
     QueryEditorInternal q(SecurityContext sc, QueryDatabase ac) throws Exception {
-      Database db = services.getConfig().getDatabase(ac.database);
+      AbstractDatabase db = services.getConfig().getDatabase(ac.database);
       ACLContainerRequestFilter.check(sc, db, null);
       if (db == null)
         throw new Exception("Database does not exist. Please select a different table.");
@@ -96,7 +97,7 @@ public interface QueryEditor {
     public QueryResponse getInitialQuery(SecurityContext sc, InitialQueryRequest ac)
         throws Exception {
       Table s = services.getConfig().getSchema(ac.table);
-      Database db = services.getConfig().getDatabase(s.parent);
+      AbstractDatabase db = services.getConfig().getDatabase(s.parent);
       ACLContainerRequestFilter.check(sc, db, s);
       return limit(db.getQueryEditor().getInitialQuery(ac));
     }

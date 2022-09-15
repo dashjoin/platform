@@ -470,7 +470,8 @@ public class Manage {
     Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
     List<InputPart> inputParts = uploadForm.get("file");
 
-    Database db = services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+    AbstractDatabase db =
+        services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
     ACLContainerRequestFilter.check(sc, db, null);
 
@@ -482,13 +483,12 @@ public class Manage {
         res.createMode = false;
         Map<String, List<Map<String, Object>>> tables = handleModel(inputParts);
         for (Entry<String, List<Map<String, Object>>> t : tables.entrySet())
-          handleJson(res, database, database, ((AbstractDatabase) db).tables.get(t.getKey()),
-              t.getKey(), t.getValue());
+          handleJson(res, database, database, db.tables.get(t.getKey()), t.getKey(), t.getValue());
         return res;
       }
 
       if (getFileExt(header).toLowerCase().equals("csv")) {
-        Table m = ((AbstractDatabase) db).tables.get(getFileName(header));
+        Table m = db.tables.get(getFileName(header));
         createMode(res, database, getFileName(header), m);
 
         // convert the uploaded file to input stream
@@ -509,7 +509,7 @@ public class Manage {
         Workbook wb = WorkbookFactory.create(inputPart.getBody(InputStream.class, null));
         FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
         for (Sheet sheet : wb) {
-          Table m = ((AbstractDatabase) db).tables.get(sheet.getSheetName());
+          Table m = db.tables.get(sheet.getSheetName());
           createMode(res, database, getFileName(header), m);
 
           Iterator<Row> iter = sheet.iterator();
@@ -528,7 +528,7 @@ public class Manage {
           try (ResultSet rs = con.getMetaData().getTables(null, null, null, null)) {
             while (rs.next()) {
               String tablename = rs.getString("TABLE_NAME");
-              Table m = ((AbstractDatabase) db).tables.get(tablename);
+              Table m = db.tables.get(tablename);
               createMode(res, database, getFileName(header), m);
 
               List<String> headers = new ArrayList<>();
@@ -561,7 +561,7 @@ public class Manage {
         try {
           List<Map<String, Object>> parsed =
               objectMapper.readValue(inputStream, JSONDatabase.trTable);
-          Table m = ((AbstractDatabase) db).tables.get(getFileName(header));
+          Table m = db.tables.get(getFileName(header));
           createMode(res, database, getFileName(header), m);
 
           handleJson(res, database, database, m, getFileName(header), parsed);
