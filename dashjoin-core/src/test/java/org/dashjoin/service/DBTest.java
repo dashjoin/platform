@@ -169,6 +169,7 @@ public class DBTest {
     Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
     Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
 
+    // global
     List<SearchResult> res = db.search(sc, "dev-project", null);
     Assertions.assertEquals(1, res.size());
     Assertions.assertEquals("junit", res.get(0).id.database);
@@ -179,6 +180,32 @@ public class DBTest {
 
     res = db.search(sc, "mike", null);
     Assertions.assertEquals(0, res.size());
+
+    // db junit
+    res = db.search(sc, "junit", "dev-project", null);
+    Assertions.assertEquals(1, res.size());
+    Assertions.assertEquals("junit", res.get(0).id.database);
+    name("PRJ", res.get(0).id.table);
+    number(1000, res.get(0).id.pk.get(0));
+    name("NAME", res.get(0).column);
+    Assertions.assertEquals("dev-project", res.get(0).match);
+
+    res = db.search(sc, "junit", "mike", null);
+    Assertions.assertEquals(0, res.size());
+
+    // db junit + table
+    res = db.search(sc, "junit", "PRJ", "dev-project", null);
+    Assertions.assertEquals(1, res.size());
+    Assertions.assertEquals("junit", res.get(0).id.database);
+    name("PRJ", res.get(0).id.table);
+    number(1000, res.get(0).id.pk.get(0));
+    name("NAME", res.get(0).column);
+    Assertions.assertEquals("dev-project", res.get(0).match);
+
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      // emp table is restricted
+      db.search(sc, "junit", "EMP", "mike", null);
+    });
   }
 
   @Test

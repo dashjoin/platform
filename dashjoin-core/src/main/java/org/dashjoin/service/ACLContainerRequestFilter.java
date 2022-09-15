@@ -87,6 +87,13 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   }
 
   /**
+   * checks whether read is allowed on db and all of its tables
+   */
+  static void check(SecurityContext sc, AbstractDatabase db) {
+    check(sc, db, null, Operation.READ);
+  }
+
+  /**
    * checks whether read is allowed on db and table
    */
   public static void check(SecurityContext sc, AbstractDatabase db, Table m) {
@@ -94,31 +101,37 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   }
 
   /**
-   * checks whether create, read, delete, update is allowed on db and table
+   * checks whether create, read, delete, update is allowed on db and table. If table is null, we
+   * check all tables
    */
   static void check(SecurityContext sc, AbstractDatabase db, Table m, Operation operation) {
     if (sc.isUserInRole("admin"))
       return;
+
+    if (m == null) {
+      for (Table t : db.tables.values())
+        check(sc, db, t, operation);
+      return;
+    }
+
     if (operation.equals(Operation.READ)) {
-      List<String> readRoles = m != null && m.readRoles != null ? m.readRoles : db.readRoles;
+      List<String> readRoles = m.readRoles != null ? m.readRoles : db.readRoles;
       if (readRoles != null)
         for (String role : readRoles) {
           if (sc.isUserInRole(role))
             return;
         }
-      throwNotAuthorizedException(
-          "User does not have the role required to " + operation.toString().toLowerCase()
-              + " table " + (m == null ? "" : m.name) + " in database " + db.name);
+      throwNotAuthorizedException("User does not have the role required to "
+          + operation.toString().toLowerCase() + " table " + (m.name) + " in database " + db.name);
     } else {
-      List<String> writeRoles = m != null && m.writeRoles != null ? m.writeRoles : db.writeRoles;
+      List<String> writeRoles = m.writeRoles != null ? m.writeRoles : db.writeRoles;
       if (writeRoles != null)
         for (String role : writeRoles) {
           if (sc.isUserInRole(role))
             return;
         }
-      throwNotAuthorizedException(
-          "User does not have the role required to " + operation.toString().toLowerCase()
-              + " table " + (m == null ? "" : m.name) + " in database " + db.name);
+      throwNotAuthorizedException("User does not have the role required to "
+          + operation.toString().toLowerCase() + " table " + (m.name) + " in database " + db.name);
     }
   }
 

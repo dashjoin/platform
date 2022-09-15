@@ -93,7 +93,6 @@ public class Data {
             // DB (otherwise he could not read any pages or query definitions)
             // however, only admins should be able to search the config DB during development
             continue;
-        ACLContainerRequestFilter.check(sc, db, null);
 
         if (services.getConfig().excludeFromSearch(db))
           continue;
@@ -129,7 +128,6 @@ public class Data {
     if (db instanceof PojoDatabase)
       if (!sc.isUserInRole("admin"))
         return Arrays.asList();
-    ACLContainerRequestFilter.check(sc, db, null);
 
     if (services.getConfig().excludeFromSearch(db))
       return Arrays.asList();

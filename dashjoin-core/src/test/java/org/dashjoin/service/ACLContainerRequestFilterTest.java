@@ -76,6 +76,7 @@ public class ACLContainerRequestFilterTest {
 
   @Test
   public void testDatabaseAcl() {
+    // sc only in role "authenticated"
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("admin"))).thenReturn(false);
@@ -89,9 +90,16 @@ public class ACLContainerRequestFilterTest {
     // this table inherits the DB roles
     Table authenticated = Table.ofName("authenticated");
 
+    db.tables.put("admin", admin);
+    db.tables.put("authenticated", authenticated);
+
     ACLContainerRequestFilter.check(sc, db, authenticated);
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
       ACLContainerRequestFilter.check(sc, db, admin);
+    });
+
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      ACLContainerRequestFilter.check(sc, db);
     });
   }
 

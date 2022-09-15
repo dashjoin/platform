@@ -473,7 +473,7 @@ public class Manage {
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
-    ACLContainerRequestFilter.check(sc, db, null);
+    ACLContainerRequestFilter.check(sc, db);
 
     for (InputPart inputPart : inputParts) {
       MultivaluedMap<String, String> header = inputPart.getHeaders();
