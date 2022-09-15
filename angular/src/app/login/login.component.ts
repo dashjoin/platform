@@ -54,7 +54,7 @@ export class LoginComponent implements AfterViewInit {
     sessionStorage.token = btoa(this.user + ':' + this.password);
     this.http.get<string[]>('/rest/manage/roles').subscribe(res => {
       sessionStorage.user = this.user;
-      sessionStorage.roles = res;
+      sessionStorage.roles = JSON.stringify(res);
       this.snackBar.dismiss();
       this.http.post<any[]>('/rest/database/all/config/dj-role', {}).subscribe(roles => {
         for (const role of roles) {

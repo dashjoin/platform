@@ -1119,11 +1119,12 @@ export class InstanceComponent implements OnInit {
    */
   isInRole(w: Widget): boolean {
     if (w.roles) {
+      const sr = sessionStorage.roles ? JSON.parse(sessionStorage.roles) : undefined;
       for (const role of w.roles) {
-        if (sessionStorage.roles.includes(role)) {
+        if (sr?.includes(role)) {
           return true;
         }
-        if (this.app.editLayout && sessionStorage.roles.includes('admin')) {
+        if (this.app.editLayout && sr?.includes('admin')) {
           return true;
         }
       }
@@ -1172,7 +1173,7 @@ export class InstanceComponent implements OnInit {
       pk4: this.pk4,
       user: sessionStorage.user,
       email: sessionStorage.email,
-      roles: sessionStorage.roles,
+      roles: sessionStorage.roles ? JSON.parse(sessionStorage.roles) : undefined,
       form: this.createValue,
       href: window.location.href,
       variable: JSON.parse(sessionStorage.getItem('variable'))
