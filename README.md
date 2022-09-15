@@ -13,6 +13,8 @@ Webpage: <https://dashjoin.com/>
 
 Blog: <https://medium.com/@dashjoin>
 
+GitHub: <https://github.com/dashjoin/platform>
+
 Training course slides: <https://download.dashjoin.com/training/platform.pdf>
 
 Video tutorials:

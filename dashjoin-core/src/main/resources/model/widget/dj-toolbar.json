@@ -101,7 +101,7 @@
 						"tooltip": "Open help pages",
 						"icon": "help_outline",
 						"readOnly": true,
-						"href": "https://github.com/dashjoin/platform",
+						"href": "https://dashjoin.github.io/platform/latest",
 						"roles": [
 							"admin"
 						]

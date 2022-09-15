@@ -27,7 +27,7 @@ export class IconComponent extends TextComponent implements OnInit {
   icon() {
     const href = this.id(this.layout.href);
     if (href) {
-      if (href.startsWith('https://github.com/dashjoin/platform')) {
+      if (href.startsWith('https://dashjoin.github.io/platform/latest')) {
         if (this.app.editLayout || this.pk1 === 'dj/config/page' || this.table === 'page' ||
           this.pk1 === 'dj/config/widget' || this.table === 'widget') {
           window.open('https://dashjoin.github.io/platform/latest/developer-reference/#user-interface-layout', '_blank');
