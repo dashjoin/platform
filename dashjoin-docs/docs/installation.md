@@ -59,34 +59,69 @@ After installing Dashjoin, no user is set up in the system (a user can be define
 To set up the local development admin user, navigate to <http://localhost:8080/#/setup>.
 
 Choose a name, a username, and the password.
-Example: Name 'Local Admin', username 'admin', password 'My.secure.pass!'
 
-Note: this only works the very first time! After a development admin is created, no more local users can be created from the UI. To change or disable the local user, please edit or delete the files djroles.properties and djusers.properties in the application root directory.
+Example: Name `Local Admin`, username `admin`, password `My.secure.pass!`
+
+Note:
+
+this only works the very first time! After a development admin is created, no more local users can be created from the UI.
+
+To change or disable the local user, please edit or delete the files `djroles.properties` and `djusers.properties` in the application root directory. [Here are more details on local users](#local-users)
 
 The Dashjoin authentication is configured to allow log in using social Google or Github accounts, or to allow registration of users by e-mail and password (authentication via e-mail uses the Google Firebase authentication).
 
 [Click here](https://www.youtube.com/watch?v=_xmFRwhbAFA) for a demo video.
 
-Local users are maintained in the files djusers.properties / djroles.properties.
+## Local users
+
+Local users are maintained in the files `djusers.properties` and `djroles.properties`.
+
 As the purpose for local users is for setup + dev, there is no management UI.
 To create / update users, or change the pwd, the corresponding entries have to be changed there.
 
-Passwords can be specified as plain text (should be avoided) or hashed as MD5 of
-username:Dashjoin:password
-I.e. the hash for user "admin" with password "mypass" is:
+Passwords need to be [specified as hash of](#how-to-calculate-the-password-hash)
+`username:Dashjoin:password`
 
-```bash
-> echo -n admin:Dashjoin:mypass | md5sum
-> bf3a93d38d7317cd6fd2170ca71a3522
+Follow these steps to add/change a local user:
+### 1. Add the user's password to `djusers.properties`
+
+Important - hash the password salted with username + realm "Dashjoin":
+For user "myuser" and password "mypass", need hash of `myuser:Dashjoin:mypass`
+
+For this example the result is `a3f1c2e80af79503cef46f9e198919d3` (see [how to calculate below](#how-to-calculate-the-password-hash))
+
+So we need to add this line to `djusers.properties`:
+```
+myuser=a3f1c2e80af79503cef46f9e198919d3
 ```
 
-Thus the entry in djusers.properties would be
+### 2. Add the user's role(s) to `djroles.properties`
+To give "myuser" the "authenticated" role, add this line to `djroles.properties`:
+```
+myuser=authenticated
+```
+Multiple roles can be added with comma separation
 
-```bash
-admin=bf3a93d38d7317cd6fd2170ca71a3522
+### How to calculate the password hash
+
+* Linux/MacOS:
+```
+echo -n "myuser:Dashjoin:mypass" | md5sum -
 ```
 
-djroles.properties maps the user to a comma separated list of roles the user is in.
+* Windows:
+```
+powershell Write-Host -NoNewline "myuser:Dashjoin:mypass" >temp.txt
+powershell (Get-FileHash -algorithm md5 temp.txt).Hash.ToLower()
+del temp.txt
+```
+need to store the string in a file temp.txt first (please delete after). Make sure there are no additional spaces and newlines
+
+* Online:
+
+For test/dev purposes you can also use an online service like <https://emn178.github.io/online-tools/md5.html>
+
+Note this might be insecure if the online service stores or re-publishes the entered strings!
 
 ## Opening the Dashjoin application
 
