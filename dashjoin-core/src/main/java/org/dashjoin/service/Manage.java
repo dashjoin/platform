@@ -915,7 +915,7 @@ public class Manage {
   @Path("/export/{database}")
   @Operation(summary = "exports the contents of the database")
   @APIResponse(description = "map of db tables")
-  public Map<String, List<Map<String, Object>>> export(
+  public Map<String, List<Map<String, Object>>> export(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database)
       throws Exception {
@@ -926,6 +926,8 @@ public class Manage {
     Map<String, List<Map<String, Object>>> res = new LinkedHashMap<>();
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+
+    ACLContainerRequestFilter.check(sc, db);
 
     Database data = db instanceof PojoDatabase ? ((PojoDatabase) db).user() : db;
 

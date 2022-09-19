@@ -34,6 +34,23 @@ public class ManageTest {
   Manage manage;
 
   @Test
+  public void testVersion() {
+    Assertions.assertTrue(manage.getFunctions().size() > 0);
+    Assertions.assertTrue(manage.getDatabases().size() > 0);
+    Assertions.assertTrue(manage.getDrivers().size() > 0);
+    Assertions.assertEquals("Dashjoin Low Code Development and Integration Platform",
+        manage.version().name);
+  }
+
+  @Test
+  public void testExport() throws Exception {
+    SecurityContext sc = mock(SecurityContext.class);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Assertions.assertEquals("[{ID=1000, NAME=dev-project}]",
+        manage.export(sc, "junit").get("PRJ").toString());
+  }
+
+  @Test
   public void testConfigFunctions() {
     Assertions.assertTrue(manage.getConfigurableFunctions().size() > 0);
   }
