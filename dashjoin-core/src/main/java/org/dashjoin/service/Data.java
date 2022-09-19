@@ -359,12 +359,8 @@ public class Data {
       @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
       @QueryParam("sort") String sort, @QueryParam("descending") boolean descending,
       @QueryParam("arguments") String argStr) throws Exception {
-    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
-    ACLContainerRequestFilter.check(sc, db, m);
     Map<String, Object> arguments = argStr == null ? null : JSONDatabase.fromJsonString(argStr);
-    db.cast(m, arguments);
-    return db.all(m, offset, limit, sort, descending, arguments);
+    return all(sc, database, table, offset, limit, sort, descending, arguments);
   }
 
   /**
@@ -841,19 +837,15 @@ public class Data {
   @Path("/list/{database}/{table}")
   @Operation(summary = "like read, but returns all keys posted")
   @APIResponse(description = "Map of objectId to JSON object representing the record")
-  public Map<String, Map<String, Object>> list(
+  public Map<String, Map<String, Object>> list(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
           example = "EMPLOYEES") @PathParam("table") String table,
       List<String> objectIds) throws Exception {
-    AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
     Map<String, Map<String, Object>> res = new HashMap<>();
     for (String objectId : objectIds) {
-      Map<String, Object> search = key(m, Arrays.asList(objectId));
-      db.cast(m, search);
-      res.put(objectId, db.read(m, search));
+      res.put(objectId, read(sc, database, table, objectId));
     }
     return res;
   }

@@ -390,7 +390,10 @@ public class DBTest {
 
   @Test
   public void testList() throws Exception {
-    Map<String, Map<String, Object>> res = db.list("junit", toID("EMP"), Arrays.asList(toID("1")));
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Map<String, Map<String, Object>> res =
+        db.list(sc, "junit", toID("EMP"), Arrays.asList(toID("1")));
     map("{WORKSON=1000, ID=1, NAME=mike}", res.get(toID("1")));
   }
 
