@@ -55,6 +55,11 @@ public class Table {
   public String title;
 
   /**
+   * table comment
+   */
+  public String comment;
+
+  /**
    * roles that are allowed to read the table
    */
   public List<String> readRoles;

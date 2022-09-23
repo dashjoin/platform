@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Maps.newHashMap;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
@@ -158,15 +159,22 @@ public class DDLTest {
     Assertions.assertEquals("${name}", "" + db.tables.get("T2").djLabel);
 
     // rename and set dj-label
-    update("Table", "dj/ddl/T2", newHashMap(of("name", "T", "dj-label", "display ${name}")));
+    update("Table", "dj/ddl/T2", newHashMap(of("name", "T", "dj-label", "display ${name}", "title",
+        "t", "readRoles", Arrays.asList("r"), "tenantColumn", "c")));
     db = services.getConfig().getDatabase("dj/ddl");
     Assertions.assertEquals(1, db.tables.size());
-    Assertions.assertEquals("display ${name}", "" + db.tables.get("T").djLabel);
+    Assertions.assertEquals("display ${name}", db.tables.get("T").djLabel);
+    Assertions.assertEquals("t", db.tables.get("T").title);
+    Assertions.assertEquals(Arrays.asList("r"), db.tables.get("T").readRoles);
+    Assertions.assertEquals("c", db.tables.get("T").tenantColumn);
 
     // rename make sure label stays
     update("Table", "dj/ddl/T", newHashMap(of("name", "T2")));
     db = services.getConfig().getDatabase("dj/ddl");
-    Assertions.assertEquals("display ${name}", "" + db.tables.get("T2").djLabel);
+    Assertions.assertEquals("display ${name}", db.tables.get("T2").djLabel);
+    Assertions.assertEquals("t", db.tables.get("T2").title);
+    Assertions.assertEquals(Arrays.asList("r"), db.tables.get("T2").readRoles);
+    Assertions.assertEquals("c", db.tables.get("T2").tenantColumn);
 
     // name back twice, second is ignored
     update("Table", "dj/ddl/T2", newHashMap(of("name", "T")));

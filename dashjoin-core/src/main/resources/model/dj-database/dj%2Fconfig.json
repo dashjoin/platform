@@ -176,6 +176,21 @@
             "type": "string"
           }
         },
+        "tenantColumn": {
+          "ID": "dj/config/Table/tenantColumn",
+          "name": "tenantColumn",
+          "parent": "dj/config/Table",
+          "type": "string"
+        },
+        "roleMappings": {
+          "ID": "dj/config/Table/roleMappings",
+          "name": "roleMappings",
+          "parent": "dj/config/Table",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "before-create": {
           "ID": "dj/config/Table/before-create",
           "name": "before-create",

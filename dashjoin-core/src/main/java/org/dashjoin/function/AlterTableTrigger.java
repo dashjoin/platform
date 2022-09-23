@@ -70,10 +70,18 @@ public class AlterTableTrigger extends AbstractDatabaseTrigger {
           arg.object.put("before-delete", old.beforeDelete);
         if (old.afterDelete != null && !arg.object.containsKey("after-delete"))
           arg.object.put("after-delete", old.afterDelete);
-        if (old.afterDelete != null && !arg.object.containsKey("readRoles"))
-          arg.object.put("readRoles", old.afterDelete);
-        if (old.afterDelete != null && !arg.object.containsKey("writeRoles"))
-          arg.object.put("writeRoles", old.afterDelete);
+        if (old.readRoles != null && !arg.object.containsKey("readRoles"))
+          arg.object.put("readRoles", old.readRoles);
+        if (old.writeRoles != null && !arg.object.containsKey("writeRoles"))
+          arg.object.put("writeRoles", old.writeRoles);
+        if (old.title != null && !arg.object.containsKey("title"))
+          arg.object.put("title", old.title);
+        if (old.comment != null && !arg.object.containsKey("comment"))
+          arg.object.put("comment", old.comment);
+        if (old.tenantColumn != null && !arg.object.containsKey("tenantColumn"))
+          arg.object.put("tenantColumn", old.tenantColumn);
+        if (old.roleMappings != null && !arg.object.containsKey("roleMappings"))
+          arg.object.put("roleMappings", old.roleMappings);
 
         // before we continue, we need to change the update ID
         arg.search.put("ID", x.database + "/" + Escape.encodeTableOrColumnName(x.newName));

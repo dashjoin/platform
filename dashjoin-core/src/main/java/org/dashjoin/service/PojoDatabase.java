@@ -314,7 +314,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       MapUtil.keyWhitelist(object,
           Arrays.asList("dj-label", "before-create", "after-create", "before-update",
               "after-update", "before-delete", "after-delete", "instanceLayout", "tableLayout",
-              "writeRoles", "readRoles", "comment", "title"));
+              "writeRoles", "readRoles", "tenantColumn", "roleMappings", "comment", "title"));
 
       String[] parts = Escape.parseTableID((String) search.get("ID"));
 
