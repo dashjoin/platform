@@ -2,6 +2,8 @@ package org.dashjoin.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -15,6 +17,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.tenant.TenantManager;
+import org.dashjoin.util.MapUtil;
 
 /**
  * REST Filter that enforces query catalog level RBAC
@@ -83,7 +86,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   }
 
   static enum Operation {
-    CREATE, READ, UPDATE, DELETE
+    CREATE, READ, UPDATE, DELETE, UPDATE_ROW, DELETE_ROW
   }
 
   /**
@@ -115,6 +118,10 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     }
 
     if (operation.equals(Operation.READ)) {
+
+      if (hasTenantFilter(sc, m))
+        tenantValue(sc, m);
+
       List<String> readRoles = m.readRoles != null ? m.readRoles : db.readRoles;
       if (readRoles != null)
         for (String role : readRoles) {
@@ -124,6 +131,13 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       throwNotAuthorizedException("User does not have the role required to "
           + operation.toString().toLowerCase() + " table " + (m.name) + " in database " + db.name);
     } else {
+
+      if (operation.equals(Operation.UPDATE) || operation.equals(Operation.DELETE))
+        if (hasTenantFilter(sc, m))
+          throwNotAuthorizedException(
+              "User does not have the role required to " + operation.toString().toLowerCase()
+                  + " table " + (m.name) + " in database " + db.name);
+
       List<String> writeRoles = m.writeRoles != null ? m.writeRoles : db.writeRoles;
       if (writeRoles != null)
         for (String role : writeRoles) {
@@ -135,8 +149,70 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     }
   }
 
-  static void throwNotAuthorizedException(String msg) {
+  public static void throwNotAuthorizedException(String msg) {
     throw new NotAuthorizedException(
         Response.status(Response.Status.UNAUTHORIZED).entity(msg).build());
+  }
+
+  /**
+   * is a tenant row level security filter defined on this table / user
+   */
+  static boolean hasTenantFilter(SecurityContext sc, Table table) {
+    if (table.tenantColumn == null)
+      return false;
+    if (sc.isUserInRole("admin"))
+      return false;
+    return true;
+  }
+
+  /**
+   * checks the row level acl
+   */
+  static void checkRow(SecurityContext sc, Table table, Map<String, Object> row) {
+    if (hasTenantFilter(sc, table))
+      if (!tenantValue(sc, table).equals(row.get(table.tenantColumn)))
+        ACLContainerRequestFilter
+            .throwNotAuthorizedException("User does not have access to this record");
+  }
+
+  /**
+   * row level security: given the table, get the value role mapping value / username to compare to
+   */
+  static Object tenantValue(SecurityContext sc, Table table) {
+    Object v = null;
+    if (table.roleMappings != null && table.roleMappings.size() > 0) {
+      for (Entry<String, String> r : table.roleMappings.entrySet()) {
+        if (sc.isUserInRole(r.getKey())) {
+          v = r.getValue();
+          break;
+        }
+      }
+    } else {
+      v = sc.getUserPrincipal().getName();
+    }
+
+    if (v == null)
+      ACLContainerRequestFilter.throwNotAuthorizedException(
+          "User role does not map to a tenant filter on table " + table.name);
+    return v;
+  }
+
+  /**
+   * adds the tenant filter condition to arguments
+   */
+  public static Map<String, Object> tenantFilter(SecurityContext sc, Table table,
+      Map<String, Object> arguments) {
+    if (!hasTenantFilter(sc, table))
+      return arguments;
+    if (arguments != null && arguments.containsKey(table.tenantColumn))
+      throw new RuntimeException("Row level ACL is defined on " + table.tenantColumn
+          + ". Cannot define an additional filter on this column.");
+
+    if (arguments == null)
+      arguments = MapUtil.of(table.tenantColumn, tenantValue(sc, table));
+    else
+      arguments.put(table.tenantColumn, tenantValue(sc, table));
+
+    return arguments;
   }
 }

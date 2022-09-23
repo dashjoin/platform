@@ -448,17 +448,22 @@ public class SQLDatabase extends AbstractDatabase {
       } catch (NotAuthorizedException ex) {
         continue;
       }
-      String sql =
-          "SELECT * FROM " + q(e.getKey().name) + " WHERE " + String.join(" or ", e.getValue());
+      String sql = "SELECT * FROM " + q(e.getKey().name) + " WHERE "
+          + (ACLContainerRequestFilter.hasTenantFilter(sc, e.getKey())
+              ? q(e.getKey().tenantColumn) + "=? and (" + String.join(" or ", e.getValue()) + ")"
+              : String.join(" or ", e.getValue()));
       try (Connection con = getConnection()) {
-        try (java.sql.Statement pstmt = con.createStatement()) {
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
           if (limit != null)
             pstmt.setMaxRows(limit - ret.size());
+
+          if (ACLContainerRequestFilter.hasTenantFilter(sc, e.getKey()))
+            pstmt.setObject(1, ACLContainerRequestFilter.tenantValue(sc, e.getKey()));
 
           if (timeout != null)
             pstmt.setQueryTimeout(timeout / 1000);
 
-          try (ResultSet res = pstmt.executeQuery(sql)) {
+          try (ResultSet res = pstmt.executeQuery()) {
             ResultSetMetaData md = res.getMetaData();
             while (res.next()) {
               for (int i = 1; i <= md.getColumnCount(); i++) {
@@ -1131,7 +1136,8 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  public List<Choice> keys(Table s, String prefix, Integer limit) throws Exception {
+  public List<Choice> keys(Table s, String prefix, Integer limit, Map<String, Object> arguments)
+      throws Exception {
     Integer timeout = services.getConfig().getAutocompleteTimeoutMs();
     List<Choice> ret = new ArrayList<>();
     for (Property p : s.properties.values())
@@ -1145,7 +1151,13 @@ public class SQLDatabase extends AbstractDatabase {
               select = select + " where " + label + " ILIKE ?";
             else
               select = select + " where " + label + " LIKE ?";
+
+          if (arguments != null && !arguments.isEmpty())
+            select = select + " and " + q(arguments.keySet().iterator().next()) + "=?";
+
           try (PreparedStatement stmt = con.prepareStatement(select)) {
+            if (arguments != null && !arguments.isEmpty())
+              stmt.setObject(2, arguments.values().iterator().next());
             if (prefix != null)
               stmt.setString(1, prefix + "%");
             if (limit != null)

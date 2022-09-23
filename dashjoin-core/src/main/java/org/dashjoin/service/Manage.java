@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -927,18 +928,21 @@ public class Manage {
     AbstractDatabase db =
         services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
 
-    ACLContainerRequestFilter.check(sc, db);
-
     Database data = db instanceof PojoDatabase ? ((PojoDatabase) db).user() : db;
 
     for (Table table : db.tables.values()) {
-      List<Map<String, Object>> values = data.all(table, null, limit, null, false, null);
-      if (values.isEmpty())
-        continue;
-      res.put(table.name, values);
-      count = count + values.size();
-      if (count > limit)
-        throw new Exception("Export limit (" + limit + " records) exceeded");
+      try {
+        ACLContainerRequestFilter.check(sc, db, table);
+        List<Map<String, Object>> values = data.all(table, null, limit, null, false,
+            ACLContainerRequestFilter.tenantFilter(sc, table, null));
+        if (values.isEmpty())
+          continue;
+        res.put(table.name, values);
+        count = count + values.size();
+        if (count > limit)
+          throw new Exception("Export limit (" + limit + " records) exceeded");
+      } catch (NotAuthorizedException skip) {
+      }
     }
     return res;
   }

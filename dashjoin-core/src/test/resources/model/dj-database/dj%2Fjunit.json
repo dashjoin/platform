@@ -47,6 +47,13 @@
 		"EMP": {
 			"readRoles": ["admin"],
 			"after-create": "$echo(\"done \" & command)"
+		},
+		"PRJ": {
+			"writeRoles": ["authenticated"],
+			"tenantColumn": "NAME",
+			"roleMappings": {
+				"authenticated": "dev-project"
+			}
 		}
 	}
 }

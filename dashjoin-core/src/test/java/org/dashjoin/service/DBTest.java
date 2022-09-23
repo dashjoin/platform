@@ -38,7 +38,7 @@ public class DBTest {
   Services services;
 
   @Inject
-  Data db;
+  public Data db;
 
   @Test
   public void testMetadata() throws Exception {
@@ -67,7 +67,6 @@ public class DBTest {
   public void testGet() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    Assertions.assertEquals(2, db.read(sc, "junit", toID("PRJ"), toID("1000")).size());
     Assertions.assertEquals(toID(1000),
         db.read(sc, "junit", toID("PRJ"), toID("1000")).get(idRead()));
     Assertions.assertEquals("dev-project",
@@ -170,6 +169,7 @@ public class DBTest {
     Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
 
     // global
+    Assertions.assertEquals(0, db.search(sc, "other", null).size());
     List<SearchResult> res = db.search(sc, "dev-project", null);
     Assertions.assertEquals(1, res.size());
     Assertions.assertEquals("junit", res.get(0).id.database);
@@ -182,6 +182,7 @@ public class DBTest {
     Assertions.assertEquals(0, res.size());
 
     // db junit
+    Assertions.assertEquals(0, db.search(sc, "junit", "other", null).size());
     res = db.search(sc, "junit", "dev-project", null);
     Assertions.assertEquals(1, res.size());
     Assertions.assertEquals("junit", res.get(0).id.database);
@@ -194,7 +195,8 @@ public class DBTest {
     Assertions.assertEquals(0, res.size());
 
     // db junit + table
-    res = db.search(sc, "junit", "PRJ", "dev-project", null);
+    Assertions.assertEquals(0, db.search(sc, "junit", toID("PRJ"), "other", null).size());
+    res = db.search(sc, "junit", toID("PRJ"), "dev-project", null);
     Assertions.assertEquals(1, res.size());
     Assertions.assertEquals("junit", res.get(0).id.database);
     name("PRJ", res.get(0).id.table);
@@ -270,6 +272,44 @@ public class DBTest {
   }
 
   @Test
+  public void testAllTenant() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+    // we have access but no record matches the row level ACL
+    Assertions.assertEquals(1, db.all(sc, "junit", toID("PRJ"), 0, 10, null, false, null).size());
+    Assertions.assertEquals("dev-project",
+        db.all(sc, "junit", toID("PRJ"), 0, 10, null, false, null).get(0).get(toID("NAME")));
+  }
+
+  @Test
+  public void testCrudTenant() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      db.read(sc, "junit", toID("PRJ"), toID("1001"));
+    });
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      db.update(sc, "junit", toID("PRJ"), toID("1001"), MapUtil.of("NAME", "change"));
+    });
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      db.delete(sc, "junit", toID("PRJ"), toID("1001"));
+    });
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      db.create(sc, "junit", toID("PRJ"), MapUtil.of("ID", 77, "NAME", "change"));
+    });
+
+    db.read(sc, "junit", toID("PRJ"), toID("1000"));
+    db.update(sc, "junit", toID("PRJ"), toID("1000"), MapUtil.of(toID("BUDGET"), 100));
+    db.update(sc, "junit", toID("PRJ"), toID("1000"), MapUtil.of(toID("BUDGET"), null));
+    db.create(sc, "junit", toID("PRJ"),
+        MapUtil.of(idRead(), toID(77), toID("NAME"), "dev-project"));
+    db.delete(sc, "junit", toID("PRJ"), toID("77"));
+  }
+
+  @Test
   public void testAllWhere() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
@@ -283,7 +323,8 @@ public class DBTest {
   public void testAllOffset() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    db.all(sc, "junit", toID("EMP"), 0, 1, null, false, null);
+    List<Map<String, Object>> first = db.all(sc, "junit", toID("EMP"), 0, 1, null, false, null);
+    map("{ID=1, NAME=mike, WORKSON=1000}", first.get(0));
     List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 1, 10, null, false, null);
     map("{ID=2, NAME=joe, WORKSON=1000}", x.get(0));
   }
@@ -402,6 +443,15 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Choice> complete = db.keys(sc, "junit", toID("EMP"), "1", 10);
+    Assertions.assertEquals(1, complete.size());
+  }
+
+  @Test
+  public void testKeysAcl() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
+    Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+    List<Choice> complete = db.keys(sc, "junit", toID("PRJ"), "1", 10);
     Assertions.assertEquals(1, complete.size());
   }
 

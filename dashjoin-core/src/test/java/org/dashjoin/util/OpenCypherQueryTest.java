@@ -132,7 +132,7 @@ public class OpenCypherQueryTest {
         run("MATCH (p:`dj/junit/EMP`)-[e:WORKSON]->(project) RETURN p, e, project");
     Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("e"));
     Assertions.assertEquals(
-        "{ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
+        "{ID=1000, NAME=dev-project, BUDGET=null, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
         "" + res.get(0).get("project"));
   }
 
@@ -154,7 +154,7 @@ public class OpenCypherQueryTest {
         "{ID=1, NAME=mike, WORKSON=1000, _dj_resource={database=junit, table=EMP, pk=[1]}}",
         "" + x.get("start"));
     Assertions.assertEquals(
-        "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}}]",
+        "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project, BUDGET=null, _dj_resource={database=junit, table=PRJ, pk=[1000]}}}]",
         "" + x.get("steps"));
   }
 
@@ -193,7 +193,7 @@ public class OpenCypherQueryTest {
         run("MATCH (p:`dj/junit/EMP`)-[e]->(project) RETURN p, e, project");
     Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("e"));
     Assertions.assertEquals(
-        "{ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
+        "{ID=1000, NAME=dev-project, BUDGET=null, _dj_resource={database=junit, table=PRJ, pk=[1000]}}",
         "" + res.get(0).get("project"));
   }
 
@@ -214,7 +214,7 @@ public class OpenCypherQueryTest {
         "{ID=1, NAME=mike, WORKSON=1000, _dj_resource={database=junit, table=EMP, pk=[1]}}",
         "" + x.get("start"));
     Assertions.assertEquals(
-        "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project, _dj_resource={database=junit, table=PRJ, pk=[1000]}}}]",
+        "[{edge={_dj_edge=WORKSON, _dj_outbound=true}, end={ID=1000, NAME=dev-project, BUDGET=null, _dj_resource={database=junit, table=PRJ, pk=[1000]}}}]",
         "" + x.get("steps"));
   }
 

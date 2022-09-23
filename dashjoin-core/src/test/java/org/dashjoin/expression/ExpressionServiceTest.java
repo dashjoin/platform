@@ -97,7 +97,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Assertions.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\"}",
+    Assertions.assertEquals("{\"ID\":1000,\"NAME\":\"dev-project\",\"BUDGET\":null}",
         s.jsonata(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
 
     Assertions.assertEquals(

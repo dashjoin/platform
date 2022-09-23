@@ -6,6 +6,8 @@
 <http://ex.org/2> <http://ex.org/WORKSON> <http://ex.org/1000> .
 <http://ex.org/1000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/PRJ> .
 <http://ex.org/1000> <http://ex.org/NAME> "dev-project" .
+<http://ex.org/1001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/PRJ> .
+<http://ex.org/1001> <http://ex.org/NAME> "other" .
 
 <http://ex.org/T> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
 <http://ex.org/U> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Class> .
@@ -17,6 +19,10 @@
 <http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/PRJ> .
 <http://ex.org/NAME> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#string> .
 <http://ex.org/NAME> <http://www.w3.org/2002/07/owl#maxCardinality> 1 .
+
+<http://ex.org/BUDGET> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/PRJ> .
+<http://ex.org/BUDGET> <http://www.w3.org/2000/01/rdf-schema#range> <http://www.w3.org/2001/XMLSchema#int> .
+<http://ex.org/BUDGET> <http://www.w3.org/2002/07/owl#maxCardinality> 1 .
 
 <http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#domain> <http://ex.org/EMP> .
 <http://ex.org/WORKSON> <http://www.w3.org/2000/01/rdf-schema#range> <http://ex.org/PRJ> .

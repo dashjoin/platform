@@ -105,7 +105,8 @@ public interface Database {
   /**
    * return limit keys whose string representation begin with prefix
    */
-  default public List<Choice> keys(Table schema, String prefix, Integer limit) throws Exception {
+  default public List<Choice> keys(Table schema, String prefix, Integer limit,
+      Map<String, Object> arguments) throws Exception {
     return null;
   }
 

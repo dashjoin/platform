@@ -22,6 +22,11 @@
 					"type": "number",
 					"pkpos": 0
 				}
+			},
+			"writeRoles": ["authenticated"],
+			"tenantColumn": "NAME",
+			"roleMappings": {
+				"authenticated": "dev-project"
 			}
 		},
 		"EMP": {

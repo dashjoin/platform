@@ -16,6 +16,11 @@
 			"parent": "dj/junit",
 			"name": "PRJ",
 			"type": "object",
+			"writeRoles": ["authenticated"],
+			"tenantColumn": "NAME",
+			"roleMappings": {
+				"authenticated": "dev-project"
+			},
 			"properties": {
 				"_id": {
 					"ID": "dj/junit/PRJ/_id",

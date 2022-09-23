@@ -82,6 +82,8 @@ public class ModelTest {
           continue;
         if (e.getKey().equals("EMP"))
           continue;
+        if (e.getKey().equals("http://ex.org/PRJ"))
+          continue;
         if (e.getKey().equals("http://ex.org/EMP"))
           continue;
 

@@ -46,7 +46,17 @@ public class ManageTest {
   public void testExport() throws Exception {
     SecurityContext sc = mock(SecurityContext.class);
     when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    Assertions.assertEquals("[{ID=1000, NAME=dev-project}]",
+    Assertions.assertEquals(
+        "[{ID=1000, NAME=dev-project, BUDGET=null}, {ID=1001, NAME=other, BUDGET=null}]",
+        manage.export(sc, "junit").get("PRJ").toString());
+  }
+
+  @Test
+  public void testExportAcl() throws Exception {
+    SecurityContext sc = mock(SecurityContext.class);
+    when(sc.isUserInRole("admin")).thenReturn(false);
+    when(sc.isUserInRole("authenticated")).thenReturn(true);
+    Assertions.assertEquals("[{ID=1000, NAME=dev-project, BUDGET=null}]",
         manage.export(sc, "junit").get("PRJ").toString());
   }
 
@@ -86,7 +96,7 @@ public class ManageTest {
 
   @Test
   public void detectExisting() throws Exception {
-    DetectResult dr = detect("PRJ.csv", "ID,NAME\n17,import");
+    DetectResult dr = detect("PRJ.csv", "ID,NAME,BUDGET\n17,import,1");
     Assertions.assertEquals(false, dr.createMode);
     Assertions.assertEquals(true, dr.schema.get("PRJ").get(0).pk);
     Assertions.assertEquals("ID", dr.schema.get("PRJ").get(0).name);

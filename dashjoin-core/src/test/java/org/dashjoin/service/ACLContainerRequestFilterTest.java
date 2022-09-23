@@ -12,6 +12,7 @@ import org.dashjoin.function.Email;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.ACLContainerRequestFilter.Operation;
+import org.dashjoin.util.MapUtil;
 import org.jboss.resteasy.core.interception.jaxrs.ResponseContainerRequestContext;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.specimpl.ResteasyUriInfo;
@@ -80,6 +81,9 @@ public class ACLContainerRequestFilterTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("admin"))).thenReturn(false);
+    Principal user = Mockito.mock(Principal.class);
+    Mockito.when(user.getName()).thenReturn("user");
+    Mockito.when(sc.getUserPrincipal()).thenReturn(user);
 
     SQLDatabase db = new SQLDatabase();
     db.readRoles = Arrays.asList("authenticated");
@@ -90,8 +94,13 @@ public class ACLContainerRequestFilterTest {
     // this table inherits the DB roles
     Table authenticated = Table.ofName("authenticated");
 
+    Table rowacl = Table.ofName("rowacl");
+    rowacl.tenantColumn = "col";
+    rowacl.roleMappings = MapUtil.of("other", "tenant");
+
     db.tables.put("admin", admin);
     db.tables.put("authenticated", authenticated);
+    db.tables.put("rowacl", rowacl);
 
     ACLContainerRequestFilter.check(sc, db, authenticated);
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
@@ -100,6 +109,21 @@ public class ACLContainerRequestFilterTest {
 
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
       ACLContainerRequestFilter.check(sc, db);
+    });
+
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      // authenticated has no access to table
+      ACLContainerRequestFilter.check(sc, db, rowacl);
+    });
+
+    // user has a role mapping on table
+    rowacl.roleMappings = MapUtil.of("authenticated", "tenant");
+    ACLContainerRequestFilter.check(sc, db, rowacl);
+
+    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+      // authenticated has no access to entire table
+      rowacl.writeRoles = Arrays.asList("authenticated");
+      ACLContainerRequestFilter.check(sc, db, rowacl, Operation.UPDATE);
     });
   }
 

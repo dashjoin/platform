@@ -7,6 +7,13 @@
 	"readRoles": ["authenticated"],
 	"datasets": ["/data/junit.n3"],
 	"tables": {
+		"http://ex.org/PRJ": {
+			"writeRoles": ["authenticated"],
+			"tenantColumn": "http://ex.org/NAME",
+			"roleMappings": {
+				"authenticated": "dev-project"
+			}
+		},
 		"http://ex.org/EMP": {
 			"readRoles": ["admin"]
 		}

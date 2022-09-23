@@ -65,6 +65,16 @@ public class Table {
   public List<String> writeRoles;
 
   /**
+   * row level ACLs: name of the column that contains the tenant id
+   */
+  public String tenantColumn;
+
+  /**
+   * row level ACLs: maps the user's role to the column value if the value is ROLE
+   */
+  public Map<String, String> roleMappings;
+
+  /**
    * json schema form switch
    */
   @JsonProperty("switch")

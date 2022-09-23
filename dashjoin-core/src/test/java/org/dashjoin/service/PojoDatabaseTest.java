@@ -256,7 +256,7 @@ public class PojoDatabaseTest {
     PojoDatabase config = services.pojoDatabase();
     Table table = new Table();
     table.name = "Table";
-    List<Choice> keys = config.keys(table, "T", 1);
+    List<Choice> keys = config.keys(table, "T", 1, null);
     Assertions.assertEquals(1, keys.size());
     Assertions.assertEquals("dj/junit/T", keys.get(0).value);
   }

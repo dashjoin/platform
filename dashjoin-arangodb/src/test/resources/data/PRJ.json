@@ -1,6 +1,12 @@
 [
 	{
 		"_key": "1000",
-		"NAME": "dev-project"
+		"NAME": "dev-project",
+		"BUDGET": null
+	},
+	{
+		"_key": "1001",
+		"NAME": "other",
+		"BUDGET": null
 	}
 ]

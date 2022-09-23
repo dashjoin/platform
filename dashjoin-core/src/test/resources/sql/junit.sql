@@ -7,8 +7,9 @@ drop table if exists "NOKEY";
 
 create table "T"("ID" int, "FK" int, "A" int, "B" int, "C" int);
 create table "U"("ID" int, "C" int);
-create table "PRJ"("ID" int not null primary key, "NAME" varchar(255));
-insert into "PRJ" values(1000, 'dev-project');
+create table "PRJ"("ID" int not null primary key, "NAME" varchar(255), "BUDGET" int);
+insert into "PRJ" values(1000, 'dev-project', null);
+insert into "PRJ" values(1001, 'other', null);
 create table "EMP"("ID" int not null primary key, "NAME" varchar(255), "WORKSON" int references "PRJ"("ID"));
 insert into "EMP" values(1, 'mike', 1000);
 insert into "EMP" values(2, 'joe', 1000);

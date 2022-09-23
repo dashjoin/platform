@@ -127,7 +127,8 @@ public abstract class AbstractDatabase implements Database {
       if ("dj-query-performance".equals(t.name))
         continue;
 
-      for (Map<String, Object> res : all(t, null, null, null, false, null)) {
+      for (Map<String, Object> res : all(t, null, null, null, false,
+          ACLContainerRequestFilter.tenantFilter(sc, t, null))) {
         for (Entry<String, Object> e : res.entrySet()) {
           if (e.getValue() != null
               && e.getValue().toString().toLowerCase().contains(search.toLowerCase())) {
@@ -148,7 +149,8 @@ public abstract class AbstractDatabase implements Database {
   }
 
   @Override
-  public List<Choice> keys(Table s, String prefix, Integer limit) throws Exception {
+  public List<Choice> keys(Table s, String prefix, Integer limit, Map<String, Object> arguments)
+      throws Exception {
     List<Choice> ret = new ArrayList<>();
 
     // special case for config/Table
@@ -159,7 +161,7 @@ public abstract class AbstractDatabase implements Database {
 
     for (Property p : props.values())
       if (p.pkpos != null)
-        for (Map<String, Object> res : all(s, null, null, null, false, null))
+        for (Map<String, Object> res : all(s, null, null, null, false, arguments))
           if (res.get(p.name) != null) {
             // ignore dj-label for config/Property
             String match =
@@ -472,7 +474,8 @@ public abstract class AbstractDatabase implements Database {
               Map<String, Object> search = new HashMap<>();
               search.put(p.name, objectId);
               d.cast(s, search);
-              for (Map<String, Object> match : d.all(s, offset, limit, null, false, search)) {
+              for (Map<String, Object> match : d.all(s, offset, limit, null, false,
+                  ACLContainerRequestFilter.tenantFilter(sc, s, search))) {
                 Origin o = new Origin();
                 o.id = Resource.of(d, s, match);
                 o.fk = p.ID;

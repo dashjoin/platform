@@ -1,8 +1,8 @@
 package org.dashjoin.service;
 
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.CREATE;
-import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE;
-import static org.dashjoin.service.ACLContainerRequestFilter.Operation.UPDATE;
+import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE_ROW;
+import static org.dashjoin.service.ACLContainerRequestFilter.Operation.UPDATE_ROW;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -342,7 +342,8 @@ public class Data {
     Table m = db.tables.get(table);
     ACLContainerRequestFilter.check(sc, db, m);
     db.cast(m, arguments);
-    return db.all(m, offset, limit, sort, descending, arguments);
+    return db.all(m, offset, limit, sort, descending,
+        ACLContainerRequestFilter.tenantFilter(sc, m, arguments));
   }
 
   // "Get all" as GET method. Enables browser cache.
@@ -390,7 +391,7 @@ public class Data {
         return Arrays.asList();
     }
 
-    return db.keys(m, prefix, limit);
+    return db.keys(m, prefix, limit, ACLContainerRequestFilter.tenantFilter(sc, m, null));
   }
 
   /**
@@ -428,6 +429,7 @@ public class Data {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
     ACLContainerRequestFilter.check(sc, db, m, CREATE);
+    ACLContainerRequestFilter.checkRow(sc, m, object);
 
     // make sure PKs are present (unless this is a DDL create)
     if (!"config".equals(database))
@@ -621,6 +623,7 @@ public class Data {
         return MapUtil.of("map", MapUtil.of());
       else
         throw new NotFoundException();
+    ACLContainerRequestFilter.checkRow(sc, m, res);
     return res;
   }
 
@@ -934,7 +937,11 @@ public class Data {
     MapUtil.clean(object);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
-    ACLContainerRequestFilter.check(sc, db, m, UPDATE);
+
+    if (m.tenantColumn != null)
+      read(sc, database, table, objectId);
+
+    ACLContainerRequestFilter.check(sc, db, m, UPDATE_ROW);
     Map<String, Object> search = key(m, objectId);
 
     // make sure we do not change a PK
@@ -1030,7 +1037,11 @@ public class Data {
       throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
-    ACLContainerRequestFilter.check(sc, db, m, DELETE);
+
+    if (m.tenantColumn != null)
+      read(sc, database, table, objectId);
+
+    ACLContainerRequestFilter.check(sc, db, m, DELETE_ROW);
     Map<String, Object> search = key(m, objectId);
     db.cast(m, search);
     if (!dbTriggers(sc, "delete", database, table, search, null, m.beforeDelete))
