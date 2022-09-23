@@ -34,7 +34,7 @@ public interface QueryEditor {
 
     QueryEditorInternal q(SecurityContext sc, QueryDatabase ac) throws Exception {
       AbstractDatabase db = services.getConfig().getDatabase(ac.database);
-      ACLContainerRequestFilter.check(sc, db);
+      ACLContainerRequestFilter.allowQueryEditor(sc, db);
       if (db == null)
         throw new Exception("Database does not exist. Please select a different table.");
       return db.getQueryEditor();
@@ -100,7 +100,7 @@ public interface QueryEditor {
       AbstractDatabase db = services.getConfig().getDatabase(s.parent);
 
       // we require access to the entire DB since we can join tables
-      ACLContainerRequestFilter.check(sc, db);
+      ACLContainerRequestFilter.allowQueryEditor(sc, db);
 
       return limit(db.getQueryEditor().getInitialQuery(ac));
     }

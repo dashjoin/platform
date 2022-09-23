@@ -90,6 +90,17 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   }
 
   /**
+   * like check(sc, db) but also disallow if there's row level restriction
+   */
+  static void allowQueryEditor(SecurityContext sc, AbstractDatabase db) {
+    check(sc, db);
+    for (Table m : db.tables.values())
+      if (hasTenantFilter(sc, m))
+        throwNotAuthorizedException("User does not have the role required to query table "
+            + (m.name) + " in database " + db.name);
+  }
+
+  /**
    * checks whether read is allowed on db and all of its tables
    */
   static void check(SecurityContext sc, AbstractDatabase db) {
