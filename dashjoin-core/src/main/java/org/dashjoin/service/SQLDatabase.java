@@ -726,8 +726,6 @@ public class SQLDatabase extends AbstractDatabase {
     List<Map<String, Object>> ret = new ArrayList<>();
     try (Connection con = getConnection()) {
       String select = "select * from " + schema() + q(s.name);
-      if (sort != null)
-        select = select + " order by " + q(sort) + (descending ? " desc" : "");
       List<Object> args = new ArrayList<>();
       if (search != null && !search.isEmpty()) {
         select = select + " where ";
@@ -744,6 +742,8 @@ public class SQLDatabase extends AbstractDatabase {
         }
         select = select.substring(0, select.length() - "and ".length());
       }
+      if (sort != null)
+        select = select + " order by " + q(sort) + (descending ? " desc" : "");
       if (url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")) {
         // SQL server uses "select * from table order by x offset 5 rows fetch next 5 rows only
         if (offset != null) {
