@@ -11,6 +11,7 @@ import org.dashjoin.function.Index;
 import org.dashjoin.mapping.Mapping;
 import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -26,6 +27,11 @@ public class MappingTest {
   Mapping newMapping() {
     Mapping m = new Mapping();
     return m;
+  }
+
+  @BeforeAll
+  public static void init() {
+    Index.reset();
   }
 
   @Test
