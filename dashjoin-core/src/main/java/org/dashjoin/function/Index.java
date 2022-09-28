@@ -54,7 +54,11 @@ public class Index extends AbstractFunction<Void, Long> {
       return counterMap.get(id);
 
     Long val = counter.get();
-    return val != null ? val : 0L;
+
+    if (val == null)
+      throw new RuntimeException("$index() can only be used in the mapping editor");
+
+    return val;
   }
 
   /**
