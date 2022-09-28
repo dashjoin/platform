@@ -136,6 +136,29 @@ public class ManageTest {
   }
 
   @Test
+  public void detectVaryingType() throws Exception {
+    // float and int
+    DetectResult dr = detect("NEW.csv", "number\n1\n2.2\n3\n");
+    Assertions.assertEquals("number", dr.schema.get("NEW").get(0).type);
+
+    // empty
+    dr = detect("NEW.csv", "string\n");
+    Assertions.assertEquals("string", dr.schema.get("NEW").get(0).type);
+
+    // string bool
+    dr = detect("NEW.csv", "string\ntrue\nstring");
+    Assertions.assertEquals("string", dr.schema.get("NEW").get(0).type);
+
+    // bool only
+    dr = detect("NEW.csv", "boolean\ntrue\nfalse");
+    Assertions.assertEquals("boolean", dr.schema.get("NEW").get(0).type);
+
+    // bool and int
+    dr = detect("NEW.csv", "string\ntrue\n4");
+    Assertions.assertEquals("string", dr.schema.get("NEW").get(0).type);
+  }
+
+  @Test
   public void detectColMismatch() throws Exception {
     Assertions.assertThrows(Exception.class, () -> {
       detect("PRJ.csv", "NAME\nimport");

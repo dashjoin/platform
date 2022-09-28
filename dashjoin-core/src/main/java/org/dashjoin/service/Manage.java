@@ -641,6 +641,12 @@ public class Manage {
       boolean pkFound = false;
       for (Object cell : first) {
         TypeSample ts = new TypeSample();
+
+        boolean hasInt = false;
+        boolean hasBool = false;
+        boolean hasNum = false;
+        boolean hasString = false;
+
         ts.sample = new ArrayList<>();
         for (List<String> second : _second)
           if (second == null)
@@ -652,18 +658,18 @@ public class Manage {
               if (value != null)
                 try {
                   ts.sample.add(Integer.parseInt(value));
-                  ts.type = "integer";
+                  hasInt = true;
                 } catch (NumberFormatException e) {
                   try {
                     ts.sample.add(Double.parseDouble(value));
-                    ts.type = "number";
+                    hasNum = true;
                   } catch (NumberFormatException e2) {
                     if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
                       ts.sample.add(Boolean.parseBoolean(value));
-                      ts.type = "boolean";
+                      hasBool = true;
                     } else {
                       ts.sample.add(value);
-                      ts.type = "string";
+                      hasString = true;
                     }
                   }
                 }
@@ -671,6 +677,33 @@ public class Manage {
               value = null;
             }
           }
+
+        int types = 0;
+        if (hasString)
+          types++;
+        if (hasInt)
+          types++;
+        if (hasBool)
+          types++;
+        if (hasNum)
+          types++;
+
+        if (types == 2 && hasInt && hasNum)
+          // only mixed type that is not string
+          ts.type = "number";
+        else if (types == 1) {
+          // column has no mixed type
+          if (hasString)
+            ts.type = "string";
+          if (hasInt)
+            ts.type = "integer";
+          if (hasBool)
+            ts.type = "boolean";
+          if (hasNum)
+            ts.type = "number";
+        } else
+          // no data or mixed type
+          ts.type = "string";
 
         if (!pkFound) {
           Set<Object> index = new HashSet<>();
