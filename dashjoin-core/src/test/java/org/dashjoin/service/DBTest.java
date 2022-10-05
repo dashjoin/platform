@@ -259,7 +259,7 @@ public class DBTest {
     x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike}", x.get(0));
     Assertions.assertEquals(2, x.size());
-    x = db.all(sc, "junit", toID("EMP"), 0, 10, "NAME", true, MapUtil.of(idRead(), toID(1)));
+    x = db.all(sc, "junit", toID("EMP"), 0, 10, toID("NAME"), true, MapUtil.of(idRead(), toID(1)));
     Assertions.assertEquals(1, x.size());
   }
 

@@ -390,6 +390,10 @@ public class RDF4J extends AbstractDatabase {
         }
         Property prop = s.properties.get(a.getKey());
         String ref = prop.items == null ? prop.ref : prop.items.ref;
+        if ("ID".equals(a.getKey())) {
+          w = w + " . filter (?s = <" + iri(a.getValue() + ">)");
+          continue;
+        }
         if (ref == null)
           w = w + " . ?s <" + iri(a.getKey()) + "> " + literal(a.getValue());
         else
