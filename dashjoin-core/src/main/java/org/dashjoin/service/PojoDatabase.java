@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -218,8 +219,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
             (Map<String, Map<String, Object>>) i.get("tables");
         if (tables != null)
           for (Map<String, Object> e : tables.values())
-            if (search.get("ID").equals(e.get("ID")))
+            if (search.get("ID").equals(e.get("ID"))) {
+              cleanTable(e);
               return e;
+            }
       }
     }
     if (s.name.equals("Property")) {
@@ -241,7 +244,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
           }
       }
     }
-    return super.read(s, search);
+    Map<String, Object> res = super.read(s, search);
+    if (s.name.equals("dj-database"))
+      cleanDatabase(res);
+    return res;
   }
 
   @SuppressWarnings("unchecked")
@@ -298,7 +304,59 @@ public class PojoDatabase extends UnionDatabase implements Config {
       }
     }
     res.addAll(super.query(qi, arguments));
+    if (qi.query.equals("dj-database") || qi.query.startsWith("dj-database/"))
+      for (Map<String, Object> o : res)
+        cleanDatabase(o);
+    if (qi.query.equals("Table") || qi.query.startsWith("Table/"))
+      for (Map<String, Object> o : res)
+        cleanTable(o);
     return res;
+  }
+
+  /**
+   * remove tables that might exist in user data but no longer in the DB and on the remaining tables
+   * call cleanTable()
+   */
+  static void cleanDatabase(Map<String, Object> db) {
+    if (db == null)
+      return;
+    cleanMap(db, "tables");
+    Object properties = db.get("tables");
+    if (properties instanceof Map)
+      for (Object t : map(properties).values())
+        cleanTable(map(t));
+  }
+
+  /**
+   * remove columns that might exist in user data but no longer in the DB
+   */
+  static void cleanTable(Map<String, Object> t) {
+    if (t == null)
+      return;
+    cleanMap(t, "properties");
+  }
+
+  /**
+   * in the map, get "key" (tables or properties) and remove any entry that does not have an ID
+   */
+  static void cleanMap(Map<String, Object> t, String key) {
+    Object properties = t.get(key);
+    if (properties instanceof Map) {
+      Set<String> toDelete = new HashSet<>();
+      for (Entry<String, Object> e : map(properties).entrySet())
+        if (!map(e.getValue()).containsKey("ID"))
+          toDelete.add(e.getKey());
+      for (String s : toDelete)
+        map(properties).remove(s);
+    }
+  }
+
+  /**
+   * shorthand cast
+   */
+  @SuppressWarnings("unchecked")
+  static Map<String, Object> map(Object o) {
+    return (Map<String, Object>) o;
   }
 
   /**
