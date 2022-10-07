@@ -20,3 +20,4 @@ org.dashjoin.function.Index
 org.dashjoin.function.JobStatus
 org.dashjoin.function.IsRecursiveTrigger
 org.dashjoin.function.MoveField
+org.dashjoin.function.UUID
