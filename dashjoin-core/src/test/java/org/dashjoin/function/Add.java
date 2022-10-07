@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Add extends AbstractVarArgFunction<Integer> {
 
+  // this property must not show up in the Polymorphism data
+  public String noProperty;
+
   @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
   public Integer run(List arg) throws Exception {

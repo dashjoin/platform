@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static com.google.common.collect.ImmutableMap.of;
 import static com.google.common.collect.Maps.newHashMap;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -63,6 +64,12 @@ public class PolymorphismDatabase extends JSONDatabase {
     Map<String, Object> res = null;
     Set<Class<?>> inheritance = new HashSet<>();
     for (Object db : SafeServiceLoader.load(clazz)) {
+
+      // skip functions that are not configurable functions
+      if (clazz.equals(Function.class))
+        if (!(db instanceof AbstractConfigurableFunction))
+          continue;
+
       // merge arrays (to preserve case array if field appears in multiple implementations)
       Map<String, Object> map = jsonSchema(db.getClass());
 
@@ -174,6 +181,8 @@ public class PolymorphismDatabase extends JSONDatabase {
       res.put("switch", "djClassName");
 
     for (Field f : c.getFields()) {
+      if (Modifier.isStatic(f.getModifiers()))
+        continue;
       if (f.getAnnotation(JsonIgnore.class) != null)
         continue;
       Map<String, Object> x =
@@ -181,6 +190,10 @@ public class PolymorphismDatabase extends JSONDatabase {
       if ((!f.getDeclaringClass().equals(AbstractDatabase.class))
           && (!f.getDeclaringClass().equals(AbstractConfigurableFunction.class)))
         x.put("case", Lists.newArrayList(c.getName()));
+      if (AbstractDatabase.class.isAssignableFrom(c))
+        x.put("ID", "dj/config/dj-database/" + f.getName());
+      if (AbstractConfigurableFunction.class.isAssignableFrom(c))
+        x.put("ID", "dj/config/dj-function/" + f.getName());
       properties.put(f.getName(), x);
     }
     return res;

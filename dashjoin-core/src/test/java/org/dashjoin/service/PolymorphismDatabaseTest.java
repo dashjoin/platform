@@ -23,7 +23,7 @@ public class PolymorphismDatabaseTest {
   @Test
   public void jsonSchemaAnnotation() {
     Assertions.assertEquals(
-        "{widget=password, type=string, case=[org.dashjoin.service.SQLDatabase]}",
+        "{widget=password, type=string, case=[org.dashjoin.service.SQLDatabase], ID=dj/config/dj-database/password}",
         "" + ((Map<String, Object>) PolymorphismDatabase.jsonSchema(SQLDatabase.class)
             .get("properties")).get("password"));
   }
@@ -118,6 +118,9 @@ public class PolymorphismDatabaseTest {
     s.query = "dj-database";
     Object res = p.queryMap(s, of("ID", "dj/config"));
     Assertions.assertNotNull(res);
+    Assertions.assertFalse(res.toString().contains("MAX_SIZE"));
+    Assertions.assertFalse(res.toString().contains("EXPRESSION_FIELDS"));
+    Assertions.assertFalse(res.toString().contains("noProperty"));
   }
 
   @JsonSchema(style = {"color", "red"})
