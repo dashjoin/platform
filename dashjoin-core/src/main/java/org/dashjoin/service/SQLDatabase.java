@@ -24,6 +24,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -1205,8 +1206,11 @@ public class SQLDatabase extends AbstractDatabase {
       if ("time".equalsIgnoreCase(p.dbType))
         return LocalTime.from(DateTimeFormatter.ISO_LOCAL_TIME.parse(s));
 
+      if ("timetz".equalsIgnoreCase(p.dbType))
+        return OffsetTime.from(DateTimeFormatter.ISO_TIME.parse(s));
+
       if ("date".equalsIgnoreCase(p.dbType) || "datetime".equalsIgnoreCase(p.dbType)
-          || "timestamp".equalsIgnoreCase(p.dbType) || "timestampz".equalsIgnoreCase(p.dbType)) {
+          || "timestamp".equalsIgnoreCase(p.dbType) || "timestamptz".equalsIgnoreCase(p.dbType)) {
 
         for (DateTimeFormatter f : new DateTimeFormatter[] {
             // 2011-12-03T10:15:30+01:00
@@ -1249,7 +1253,7 @@ public class SQLDatabase extends AbstractDatabase {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       if ("timestamp".equalsIgnoreCase(p.dbType))
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-      if ("timestampz".equalsIgnoreCase(p.dbType))
+      if ("timestamptz".equalsIgnoreCase(p.dbType))
         return date.toInstant().atOffset(ZoneOffset.UTC);
     }
     return date;

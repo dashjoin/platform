@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.Arrays;
 import java.util.Date;
 import org.dashjoin.model.AbstractDatabase;
@@ -28,6 +29,8 @@ public class SQLCastTest extends JsonCastTest {
   @Test
   public void testDate() throws Exception {
     Assertions.assertTrue(db().cast(p("date", "time"), "10:33:26") instanceof LocalTime);
+    Assertions.assertTrue(db().cast(p("date", "timetz"), "10:33:26Z") instanceof OffsetTime);
+    Assertions.assertTrue(db().cast(p("date", "timetz"), "10:33:26+00:00") instanceof OffsetTime);
     Assertions.assertTrue(db().cast(p("date", "DATE"), "2020-02-12") instanceof Date);
     Assertions
         .assertTrue(db().cast(p("date", "DATE"), "2021-01-19T10:33:26+00:00") instanceof Date);
@@ -46,7 +49,7 @@ public class SQLCastTest extends JsonCastTest {
     Assertions.assertTrue(
         db.cast(p("date", "timestamp"), "2021-01-19T10:33:26Z") instanceof LocalDateTime);
     Assertions.assertTrue(
-        db.cast(p("date", "timestampz"), "2021-01-19T10:33:26Z") instanceof OffsetDateTime);
+        db.cast(p("date", "timestamptz"), "2021-01-19T10:33:26Z") instanceof OffsetDateTime);
   }
 
   @Test
