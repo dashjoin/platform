@@ -626,31 +626,10 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public void create(Table m, Map<String, Object> object) throws SQLException {
     try (Connection con = getConnection()) {
-      String insert = "insert into " + schema() + q(m.name) + " (";
-      for (String k : m.properties.keySet()) {
-        // ignore autoinc cols
-        if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
-          continue;
-        insert = insert + q(k) + ",";
-      }
-      insert = insert.substring(0, insert.length() - 1);
-      insert = insert + ") values (";
-      List<Object> args = new ArrayList<>();
-      for (String k : m.properties.keySet()) {
-        if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
-          continue;
-        insert = insert + "?,";
-        args.add(object.get(k));
-      }
-      insert = insert.substring(0, insert.length() - 1);
-      insert = insert + ")";
-
-      if (log.isLoggable(Level.DEBUG))
-        log.fine("insert=" + insert);
       try (PreparedStatement stmt =
-          con.prepareStatement(insert, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+          con.prepareStatement(getInsertSQL(m), java.sql.Statement.RETURN_GENERATED_KEYS)) {
         int i = 1;
-        for (Object o : args)
+        for (Object o : getArgs(m, object))
           stmt.setObject(i++, o);
         stmt.executeUpdate();
 
@@ -675,31 +654,50 @@ public class SQLDatabase extends AbstractDatabase {
   @SuppressWarnings("unused")
   public void create(Table m, List<Map<String, Object>> objects) throws Exception {
     try (Connection con = getConnection()) {
-      String insert = "insert into " + schema() + q(m.name) + " (";
-      for (String k : m.properties.keySet())
-        insert = insert + q(k) + ",";
-      insert = insert.substring(0, insert.length() - 1);
-      insert = insert + ") values (";
-      for (String k : m.properties.keySet()) {
-        insert = insert + "?,";
-      }
-      insert = insert.substring(0, insert.length() - 1);
-      insert = insert + ")";
-      try (PreparedStatement stmt = con.prepareStatement(insert)) {
+      try (PreparedStatement stmt = con.prepareStatement(getInsertSQL(m))) {
         for (Map<String, Object> object : objects) {
           int i = 1;
-          List<Object> args = new ArrayList<>();
-          for (String k : m.properties.keySet()) {
-            insert = insert + "?,";
-            args.add(object.get(k));
-          }
-          for (Object o : args)
+          for (Object o : getArgs(m, object))
             stmt.setObject(i++, o);
           stmt.addBatch();
         }
         stmt.executeBatch();
       }
     }
+  }
+
+  String getInsertSQL(Table m) {
+    String insert = "insert into " + schema() + q(m.name) + " (";
+    for (String k : m.properties.keySet()) {
+      // ignore autoinc cols
+      if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
+        continue;
+      insert = insert + q(k) + ",";
+    }
+    insert = insert.substring(0, insert.length() - 1);
+    insert = insert + ") values (";
+    for (String k : m.properties.keySet()) {
+      if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
+        continue;
+      insert = insert + "?,";
+    }
+    insert = insert.substring(0, insert.length() - 1);
+    insert = insert + ")";
+
+    if (log.isLoggable(Level.DEBUG))
+      log.fine("insert=" + insert);
+
+    return insert;
+  }
+
+  List<Object> getArgs(Table m, Map<String, Object> object) {
+    List<Object> args = new ArrayList<>();
+    for (String k : m.properties.keySet()) {
+      if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
+        continue;
+      args.add(object.get(k));
+    }
+    return args;
   }
 
   @Override
