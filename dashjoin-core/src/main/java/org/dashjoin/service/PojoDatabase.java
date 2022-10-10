@@ -509,8 +509,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
     }
 
     if (schema.name.equals("dj-database")) {
-      // when DB is updated, ignore tables
+      // when DB is updated, ignore tables and status
       object.remove("tables");
+      object.remove("status");
     }
 
     if (super.update(schema, search, object)) {
