@@ -19,6 +19,7 @@ import org.dashjoin.service.Database;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
 import org.dashjoin.util.Template;
+import org.eclipse.microprofile.config.ConfigProvider;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
@@ -449,6 +450,12 @@ public abstract class AbstractDatabase implements Database {
   }
 
   public String password() throws Exception {
+
+    String envpwd = ConfigProvider.getConfig()
+        .getConfigValue("dashjoin.database." + name + ".password").getValue();
+    if (envpwd != null)
+      return envpwd;
+
     PojoDatabase db = (PojoDatabase) this.services.getConfig();
     String password = db.password("dj-database", ID);
     try (CredentialManager.Credential c = new CredentialManager.Credential(password)) {

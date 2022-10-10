@@ -4,6 +4,7 @@ import java.util.List;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.PojoDatabase;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  * Base class for all configurable functions. Provides the primary key and polimorphism class name
@@ -60,6 +61,12 @@ public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFun
   }
 
   public String password() throws Exception {
+
+    String envpwd = ConfigProvider.getConfig()
+        .getConfigValue("dashjoin.function." + ID + ".password").getValue();
+    if (envpwd != null)
+      return envpwd;
+
     PojoDatabase db = (PojoDatabase) this.services.getConfig();
     String password = db.password("dj-function", ID);
     try (CredentialManager.Credential c = new CredentialManager.Credential(password)) {

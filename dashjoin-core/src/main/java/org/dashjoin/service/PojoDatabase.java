@@ -2,6 +2,7 @@ package org.dashjoin.service;
 
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.Arrays.asList;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -28,6 +30,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
+import org.eclipse.microprofile.config.ConfigProvider;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -198,6 +201,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
 
       if (pojo instanceof AbstractDatabase) {
         ((AbstractDatabase) pojo).init(services);
+        setEnv(pojo, "database", ((AbstractDatabase) pojo).name);
+      }
+      if (pojo instanceof AbstractConfigurableFunction) {
+        setEnv(pojo, "function", ((AbstractConfigurableFunction<?, ?>) pojo).ID);
       }
 
       return pojo;
@@ -205,6 +212,21 @@ public class PojoDatabase extends UnionDatabase implements Config {
       // Hard errors, like ClassNotFound etc.
       System.err.println("Error in convert: " + t);
       return null;
+    }
+  }
+
+  void setEnv(Object pojo, String type, String name) {
+    for (String field : new String[] {"url", "username", "port", "database", "hostname"}) {
+      String env = ConfigProvider.getConfig()
+          .getConfigValue("dashjoin." + type + "." + name + "." + field).getValue();
+      if (env != null) {
+        try {
+          Field uf = pojo.getClass().getField(field);
+          uf.set(pojo, env);
+        } catch (Exception ignore) {
+          // pojo has no field: do nothing
+        }
+      }
     }
   }
 

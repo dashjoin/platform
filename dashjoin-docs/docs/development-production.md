@@ -65,3 +65,17 @@ If the git operation fails (e.g. due to incorrect credentials or illegal filenam
 Last but not least, you can also copy the app into the Dashoin working directory using other means
 before starting the platform. 
 If you are using containers, you can mount the model folder under /deployments/model.
+
+## Specifying Development Resources
+
+Resources like databases and REST endpoints are critical resources when working with Dashjoin.
+Therefore, it is quite common to use different sets of resources for development and production.
+As described in the section on automatic GIT checkout above, the production credentials are usually
+checked into the code repository. During development, you can use [environment](installation/#environment)
+variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
+
+* dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
+* dashjoin.function.NAME OF THE FUNCTION.url: URL to use to connect to the REST service (overrides the url field in the function's json file)
+
+To change the username, simply replace url with username in the examples above.
+Note that the development passwords are provided in plain text.
