@@ -527,7 +527,7 @@ public class SQLDatabase extends AbstractDatabase {
           pstmt.setMaxRows(limit);
         int idx = 1;
         for (Object x : ps.arguments)
-          setObject(pstmt, idx++, x);
+          pstmt.setObject(idx++, x);
 
         if ("write".equals(info.type)) {
           Map<String, Object> row = new HashMap<>();
@@ -600,7 +600,7 @@ public class SQLDatabase extends AbstractDatabase {
         pstmt.setMaxRows(1);
         int idx = 1;
         for (Object x : ps.arguments)
-          setObject(pstmt, idx++, x);
+          pstmt.setObject(idx++, x);
 
         try (ResultSet res = pstmt.executeQuery()) {
           ResultSetMetaData m = res.getMetaData();
@@ -640,7 +640,7 @@ public class SQLDatabase extends AbstractDatabase {
         if (Boolean.TRUE.equals(m.properties.get(k).readOnly))
           continue;
         insert = insert + "?,";
-        args.add(castPreparedStatementArg(m.properties.get(k), object.get(k)));
+        args.add(object.get(k));
       }
       insert = insert.substring(0, insert.length() - 1);
       insert = insert + ")";
@@ -651,7 +651,7 @@ public class SQLDatabase extends AbstractDatabase {
           con.prepareStatement(insert, java.sql.Statement.RETURN_GENERATED_KEYS)) {
         int i = 1;
         for (Object o : args)
-          setObject(stmt, i++, o);
+          stmt.setObject(i++, o);
         stmt.executeUpdate();
 
         int idx = 0;
@@ -694,7 +694,7 @@ public class SQLDatabase extends AbstractDatabase {
             args.add(object.get(k));
           }
           for (Object o : args)
-            setObject(stmt, i++, o);
+            stmt.setObject(i++, o);
           stmt.addBatch();
         }
         stmt.executeBatch();
@@ -738,7 +738,7 @@ public class SQLDatabase extends AbstractDatabase {
             args.add(((List<?>) search.get(k)).get(0));
           } else {
             select = select + q(k) + "=? and ";
-            args.add(castPreparedStatementArg(s.properties.get(k), search.get(k)));
+            args.add(search.get(k));
           }
         }
         select = select.substring(0, select.length() - "and ".length());
@@ -783,7 +783,7 @@ public class SQLDatabase extends AbstractDatabase {
 
         int i = 1, rows = 0;
         for (Object o : args)
-          setObject(stmt, i++, o);
+          stmt.setObject(i++, o);
         try (ResultSet res = stmt.executeQuery()) {
           ResultSetMetaData m = res.getMetaData();
           while (res.next()) {
@@ -821,7 +821,7 @@ public class SQLDatabase extends AbstractDatabase {
         set = true;
 
         Object val = object.get(k);
-        args.add(castPreparedStatementArg(schema.properties.get(k), val));
+        args.add(val);
       }
 
       if (!set)
@@ -832,14 +832,14 @@ public class SQLDatabase extends AbstractDatabase {
       update = update + " where ";
       for (String k : search.keySet()) {
         update = update + q(k) + "=? and ";
-        args.add(castPreparedStatementArg(schema.properties.get(k), search.get(k)));
+        args.add(search.get(k));
       }
       update = update.substring(0, update.length() - "and ".length());
 
       try (PreparedStatement stmt = con.prepareStatement(update)) {
         int i = 1;
         for (Object o : args)
-          setObject(stmt, i++, o);
+          stmt.setObject(i++, o);
         int count = stmt.executeUpdate();
         if (count == 0)
           return false;
@@ -857,7 +857,7 @@ public class SQLDatabase extends AbstractDatabase {
         Property prop = s.properties.get(k);
         if (prop != null && prop.pkpos != null) {
           select = select + q(k) + "=? and ";
-          args.add(castPreparedStatementArg(prop, search.get(k)));
+          args.add(search.get(k));
         }
       }
       select = select.substring(0, select.length() - "and ".length());
@@ -868,7 +868,7 @@ public class SQLDatabase extends AbstractDatabase {
       try (PreparedStatement stmt = con.prepareStatement(select)) {
         int i = 1;
         for (Object o : args)
-          setObject(stmt, i++, o);
+          stmt.setObject(i++, o);
         int count = stmt.executeUpdate();
         if (count == 0)
           return false;
@@ -1200,8 +1200,23 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public Object cast(Property p, Object object) {
 
+    if (object instanceof Map<?, ?> || object instanceof List<?>)
+      if (url.startsWith("jdbc:postgresql:")) {
+        PGobject jsonObject = new PGobject();
+        jsonObject.setType("json");
+        try {
+          jsonObject.setValue(om.writeValueAsString(object));
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+        return jsonObject;
+      }
+
     if (object instanceof String) {
       String s = (String) object;
+
+      if ("uuid".equals(p.dbType))
+        return UUID.fromString((String) object);
 
       if ("time".equalsIgnoreCase(p.dbType))
         return LocalTime.from(DateTimeFormatter.ISO_LOCAL_TIME.parse(s));
@@ -1257,25 +1272,5 @@ public class SQLDatabase extends AbstractDatabase {
         return date.toInstant().atOffset(ZoneOffset.UTC);
     }
     return date;
-  }
-
-  void setObject(PreparedStatement pstmt, int i, Object o) throws SQLException {
-    if (o instanceof Map<?, ?> || o instanceof List<?>)
-      if (url.startsWith("jdbc:postgresql:")) {
-        PGobject jsonObject = new PGobject();
-        jsonObject.setType("json");
-        try {
-          jsonObject.setValue(om.writeValueAsString(o));
-        } catch (JsonProcessingException e) {
-          throw new SQLException(e);
-        }
-        pstmt.setObject(i, jsonObject);
-        return;
-      }
-    pstmt.setObject(i, o);
-  }
-
-  Object castPreparedStatementArg(Property p, Object value) {
-    return p != null && "uuid".equals(p.dbType) ? UUID.fromString((String) value) : value;
   }
 }

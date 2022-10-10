@@ -11,6 +11,7 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.UUID;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
@@ -18,6 +19,7 @@ import org.dashjoin.util.MapUtil;
 import org.h2.Driver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PGobject;
 
 public class SQLCastTest extends JsonCastTest {
 
@@ -53,13 +55,18 @@ public class SQLCastTest extends JsonCastTest {
   }
 
   @Test
+  public void testUUID() throws Exception {
+    SQLDatabase db = (SQLDatabase) db();
+    db.url = "jdbc:postgresql:blabla";
+    Assertions.assertTrue(
+        db.cast(p("uuid", "uuid"), "d0a334cf-ae1a-43b6-8bd5-eb01389d9d4d") instanceof UUID);
+  }
+
   public void testSetObject() throws Exception {
     SQLDatabase db = (SQLDatabase) db();
     db.url = "jdbc:postgresql:blabla";
-    Assertions.assertThrows(NullPointerException.class,
-        () -> db.setObject(null, 0, Arrays.asList(1, 2, 3)));
-    Assertions.assertThrows(NullPointerException.class,
-        () -> db.setObject(null, 0, MapUtil.of("id", 1)));
+    Assertions.assertTrue(db.cast(null, Arrays.asList(1, 2, 3)) instanceof PGobject);
+    Assertions.assertTrue(db.cast((Property) null, MapUtil.of("id", 1)) instanceof PGobject);
   }
 
   @Test
