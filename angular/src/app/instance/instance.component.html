@@ -1,5 +1,4 @@
-<div
-    [ngClass]="app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav') ? 'main-edit' : 'main'"
+<div [ngClass]="app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav') ? 'main-edit' : 'main'"
     [attr.id]="getComponentId()">
     <div
         *ngIf="layout && app.editLayout && (layout?.readOnly !== true || value?.ID === 'dj-toolbar' || value?.ID === 'dj-sidenav')">
@@ -75,9 +74,11 @@
     </div>
 
     <div *ngIf=" layout?.widget === 'page'" fxLayout="column">
-        <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)" role="banner"></app-instance>
+        <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)" role="banner">
+        </app-instance>
         <mat-sidenav-container>
-            <mat-sidenav [opened]="app.sidenavOpen" mode="side" style="width: 200px" role="navigation">
+            <mat-sidenav [opened]="app.sidenavOpen" mode="side" [style.width]="app.djsettings['sidenav-width-px']"
+                role="navigation">
                 <app-instance [layout]="{widget: 'dj-sidenav'}" (eventChange)="onEvent($event)">
                 </app-instance>
             </mat-sidenav>

@@ -68,6 +68,14 @@ export class AppService implements CanActivate {
   widgetsLoaded = false;
 
   /**
+   * set after login, backend sends some UI configs for the session
+   */
+  djsettings = sessionStorage.djsettings ? JSON.parse(sessionStorage.djsettings) : {
+    // should never be necessary, see sidenav-width-px.json
+    'sidenav-width-px': '200px'
+  };
+
+  /**
    * the first time we access widgets, make sure they are loaded from the backend
    */
   private initWidgets() {
