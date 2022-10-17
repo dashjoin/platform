@@ -706,6 +706,22 @@ All mapping functions perform the following three steps.
 It is up to the mapping function how this task is achieved. The only requirement is that the function
 gathers a set of tables. 
 
+Example:
+```
+$openExcel("https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial%20Sample.xlsx")
+```
+
+Note that you have the full power of JSONata available for this operation. Consider the following example.
+We'd like to incrementally load files that are placed in an upload folder. Only files that have been
+added since the last run should be considered:
+```
+$ls("file:upload/delta")[modified > $jobStatus().start].url.$openJson($);
+```
+
+The ls function returns an array containing objects with the modified file timestamp as well as the url
+of the file. The jobStatus function returns information about the last job run. Therefore, we can
+filter the files to only include the ones that have a modified timestamp after the job ran last.
+
 #### The Mapping Step
 
 This step is common to all mapping functions and is supported by a specialized mapping editor. The mapping step
