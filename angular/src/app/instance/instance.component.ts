@@ -444,6 +444,28 @@ export class InstanceComponent implements OnInit {
       });
       this.route.paramMap.subscribe(handler);
       this.route.queryParamMap.pipe(filter(p => p.get('page') !== this.lastpage)).subscribe(handler);
+      this.route.queryParamMap.pipe(filter(p => {
+        // subscribe to query param changes
+        let variable = JSON.parse(sessionStorage.getItem('variable'));
+        let dirty = false;
+        for (let key of p.keys) {
+          if (key === 'page')
+            // ignore page parameter
+            continue;
+          if (!variable) {
+            variable = {};
+          }
+          if (variable[key] !== p.get(key)) {
+            variable[key] = p.get(key);
+            dirty = true;
+          }
+        }
+        if (dirty) {
+          sessionStorage.setItem('variable', JSON.stringify(variable));
+        }
+        // if "dirty", then redraw (i.e. query param was written to the session)
+        return dirty;
+      })).subscribe(handler);
     }
   }
 
@@ -496,22 +518,6 @@ export class InstanceComponent implements OnInit {
       this.url = this.url + '/' + encodeURIComponent(this.pk4);
     }
     this.app.log('init url', this.url);
-
-    // allow setting currently unset variable keys via query parameters 
-    if (this.root) {
-      let variable = JSON.parse(sessionStorage.getItem('variable'));
-      let dirty = false;
-      for (let key of this.route.snapshot.queryParamMap.keys) {
-        if (!variable) {
-          variable = {};
-        }
-        variable[key] = this.route.snapshot.queryParamMap.get(key);
-        dirty = true;
-      }
-      if (dirty) {
-        sessionStorage.setItem('variable', JSON.stringify(variable));
-      }
-    }
   }
 
   /**
