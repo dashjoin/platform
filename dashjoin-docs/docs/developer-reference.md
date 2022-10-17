@@ -1042,6 +1042,7 @@ ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also con
 streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
+streamDb | $streamDb(database, table) | Streams records from the database table specified
 openJson | $openJson(url) | Parses JSON at the url
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openXml | $openXml(url) | Parses XML at the url and converts it to JSON
