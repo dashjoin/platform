@@ -706,22 +706,6 @@ All mapping functions perform the following three steps.
 It is up to the mapping function how this task is achieved. The only requirement is that the function
 gathers a set of tables. 
 
-Example:
-```
-$openExcel("https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial%20Sample.xlsx")
-```
-
-Note that you have the full power of JSONata available for this operation. Consider the following example.
-We'd like to incrementally load files that are placed in an upload folder. Only files that have been
-added since the last run should be considered:
-```
-$ls("file:upload/delta")[modified > $jobStatus().start].url.$openJson($);
-```
-
-The ls function returns an array containing objects with the modified file timestamp as well as the url
-of the file. The jobStatus function returns information about the last job run. Therefore, we can
-filter the files to only include the ones that have a modified timestamp after the job ran last.
-
 #### The Mapping Step
 
 This step is common to all mapping functions and is supported by a specialized mapping editor. The mapping step
@@ -893,6 +877,29 @@ each individual URL and the expression and subsequent ETL are called for each UR
 Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
 functions. In this case, these functions split a large file into smaller chunks which are then
 passed to the mapping expression.
+
+Consider the following example expressions:
+```
+$openExcel("https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial%20Sample.xlsx")
+```
+
+Note that you have the full power of JSONata available for this operation. Consider the following example.
+We'd like to incrementally load files that are placed in an upload folder. Only files that have been
+added since the last run should be considered:
+```
+$ls("file:upload/delta")[modified > $jobStatus().start].url.$openJson($);
+```
+
+The ls function returns an array containing objects with the modified file timestamp as well as the url
+of the file. The jobStatus function returns information about the last job run. Therefore, we can
+filter the files to only include the ones that have a modified timestamp after the job ran last.
+
+The setting "ETL worker threads" can be used to achieve parallel writes to the database.
+This setting is only applicable if a foreach expression is specified.
+In this case, the setting "ignore ETL errors and continue process" specifies that any error
+that occurs when streaming a large file (e.g. a formatting error towards the end of the file)
+or when workers map and write the contents to the database (e.g. due a malformatted date string)
+are ignored and do not stop the other workers.
 
 #### Receive
 

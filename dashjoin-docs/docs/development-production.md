@@ -42,6 +42,9 @@ simply add a newline in the file. Note that quotes still need to be escaped:
 
 Important: if you edit the file via the query, expression, or layout editors, the file will be reverted back to the default single line
 representation.
+The ETL function saves its progress by writing start, stop, and the status. This also causes
+multi line expressions to be overwritten. This can be avoided by setting the field logStatusOnly=true in the
+function's JSON file.
 
 On the production system, there are three ways of deploying an application:
 
