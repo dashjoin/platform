@@ -277,3 +277,20 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Monaco editor integrated for editing SQL, HTML, and CSS
   * Introduced CSV parsing options
   * New openText function allows web scaping
+
+### 3.0 (Oct 2022)
+
+* UI
+  * Query editor preview enhanced for complex queries
+  * Query catalog improvements for scripts and write queries
+  * Display and table widgets support showing images, hyperlinks and lists
+* Query processing
+  * Support for multiple SQL result sets
+  * Streaming DB copy
+  * Better support for stored procedures
+* Access control
+  * Row level security
+* SDK
+  * Ability to provide alternative development DBs and REST services
+  * Platform helps in identifying missing / orphaned queries / functions
+  * Platform offers JSON:API and ODATA interfaces
