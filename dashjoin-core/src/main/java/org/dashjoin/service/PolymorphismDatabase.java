@@ -22,6 +22,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Sorter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,7 +64,7 @@ public class PolymorphismDatabase extends JSONDatabase {
   Map<String, Object> tableProperties(Class<?> clazz, String tableName) {
     Map<String, Object> res = null;
     Set<Class<?>> inheritance = new HashSet<>();
-    for (Object db : SafeServiceLoader.load(clazz)) {
+    for (Object db : Sorter.sortImplementations(SafeServiceLoader.load(clazz))) {
 
       // skip functions that are not configurable functions
       if (clazz.equals(Function.class))
@@ -103,8 +104,7 @@ public class PolymorphismDatabase extends JSONDatabase {
       if (djClassName >= 0) {
         String nameOrID = tableName.equals("dj-database") ? "name" : "ID";
         distinct.set(djClassName,
-            distinct.remove("title")
-                ? Arrays.asList("djClassName", nameOrID, "comment", "title")
+            distinct.remove("title") ? Arrays.asList("djClassName", nameOrID, "comment", "title")
                 : Arrays.asList("djClassName", nameOrID, "comment"));
         distinct.remove(nameOrID);
         distinct.remove("comment");
