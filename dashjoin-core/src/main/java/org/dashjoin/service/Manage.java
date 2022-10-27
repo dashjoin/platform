@@ -1024,13 +1024,6 @@ public class Manage {
     v.title = c.getPackage().getImplementationTitle();
     v.vendor = c.getPackage().getImplementationVendor();
 
-    if (v.version == null && v.title == null && v.vendor == null) {
-      // use default class if data not retrievable
-      v.version = Manage.class.getPackage().getImplementationVersion();
-      v.title = Manage.class.getPackage().getImplementationTitle();
-      v.vendor = Manage.class.getPackage().getImplementationVendor();
-    }
-
     String jar = null;
     if (c.equals(org.mariadb.jdbc.Driver.class))
       jar = "mariadb";
@@ -1062,12 +1055,21 @@ public class Manage {
       } catch (IOException ignore) {
       }
 
-    if (v.version == null)
-      v.version = def;
-    if (v.title == null)
-      v.title = def;
-    if (v.vendor == null)
-      v.vendor = def;
+    if (def == null) {
+      if (v.version == null && v.title == null && v.vendor == null) {
+        // use default class if data not retrievable
+        v.version = Manage.class.getPackage().getImplementationVersion();
+        v.title = Manage.class.getPackage().getImplementationTitle();
+        v.vendor = Manage.class.getPackage().getImplementationVendor();
+      }
+    } else {
+      if (v.version == null)
+        v.version = def;
+      if (v.title == null)
+        v.title = def;
+      if (v.vendor == null)
+        v.vendor = def;
+    }
     return v;
   }
 
