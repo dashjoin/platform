@@ -24,6 +24,18 @@ Depending on your OpenID provider, a bearer token can also be obtained via a sep
 In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
 RemoteDatabase clients. For more information, please refer to the [dashjoin-sdk](https://github.com/dashjoin/platform/tree/master/dashjoin-sdk) module documentation.
 
+## JSON:API
+
+Dashjoin supports [JSON:API](https://jsonapi.org/) for read operations. 
+JSON:API describes how clients should request or edit data from a server, and how the server should respond to said requests.
+The endpoint is available under /rest/jsonapi.
+
+## OData
+
+Dashjoin also supports [OData](https://www.odata.org/) for read operations. 
+OData (Open Data Protocol) is an ISO/IEC approved, OASIS standard that defines a set of best practices for building and consuming RESTful APIs.
+The endpoint is available under /rest/odata.
+
 ## PDF Export
 
 Any platform page can be exported to PDF using the puppeteer framework. For your convenience, we deployed a cloud function to do this for any
