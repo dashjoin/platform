@@ -62,6 +62,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.CreateBatch;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Sorter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -845,7 +846,8 @@ public class Manage {
         res.add(v);
       }
     }
-    return res;
+    return Sorter.sortByPackageName(res,
+        (java.util.function.Function<Version, String>) x -> x.name);
   }
 
   /**
@@ -902,7 +904,8 @@ public class Manage {
         res.add(v);
       }
     }
-    return res;
+    return Sorter.sortByPackageName(res,
+        (java.util.function.Function<FunctionVersion, String>) x -> x.name);
   }
 
   /**
