@@ -409,7 +409,10 @@ public class SQLEditor implements QueryEditorInternal {
       Select stmt = (Select) s;
       PlainSelect body = (PlainSelect) stmt.getSelectBody();
       return prettyPrint(query.database, body, query.limit);
-    } catch (JSQLParserException e) {
+    } catch (JSQLParserException | ClassCastException e) {
+      // JSQLParserException: sometimes the parser fails but the query works on the DB
+      // ClassCastException: query might be of type WithItem, ValuesStatement or SetOperationList
+      // (union)
       QueryResponse res = new QueryResponse();
       res.database = query.database;
       res.limit = query.limit;

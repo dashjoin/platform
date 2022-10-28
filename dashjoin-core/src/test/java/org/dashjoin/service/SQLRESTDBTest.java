@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.SQLDatabase.PreparedStmt;
 import org.h2.Driver;
 import org.junit.jupiter.api.Assertions;
@@ -112,5 +113,15 @@ public class SQLRESTDBTest {
         parse("select t.a from t where t.a = 3 and (t.b like '%test' or t.b < 5)")));
     Assertions.assertEquals("Unsupported expression: count(*)",
         compatibilityError(parse("select count(*) from t")));
+  }
+
+  @Test
+  public void testUnion() throws Exception {
+    QueryDatabase query = new QueryDatabase();
+    query.query = "select * from t union select * from s";
+
+    // union query is pushed to DB, i.e. we then get an NPE and not a class cast ex.
+    Assertions.assertThrows(NullPointerException.class,
+        () -> new SQLEditor(null, null).noop(query));
   }
 }
