@@ -35,17 +35,9 @@
         <type>pom</type>
         <scope>import</scope>
 	  </dependency>
+	</dependencies>
+ </dependencyManagement>
 
-      <dependency>
-	    <groupId>org.junit.jupiter</groupId>
-    	<artifactId>junit-jupiter-api</artifactId>
-    	<version>5.8.2</version>
-    	<scope>test</scope>
-	  </dependency>
-
-      </dependencies>
-      </dependencyManagement>
-      
 	<!-- we feed the actual revision from the CI server -->
 	<version>${revision}</version>
 
@@ -104,7 +96,7 @@
 	</dependency>
 	
 	
-	    <dependency>
+	<dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
         <scope>test</scope>
