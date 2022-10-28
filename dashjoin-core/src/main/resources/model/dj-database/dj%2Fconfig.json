@@ -834,7 +834,7 @@
               },
               {
                 "widget": "display",
-                "display": "{\"start\": value.start, \"end\": value.end, \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status}",
+                "display": "{\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis(value.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status}",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",
