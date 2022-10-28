@@ -27,22 +27,16 @@ describe('ExpressionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('traverse test', () => {
-    expect(Expression.traverse('x', { x: 1 })).toBe(1);
-    expect(Expression.traverse('"x"', { x: 1 })).toBe(1);
-    expect(Expression.traverse('x.y', { x: { y: 1 } })).toBe(1);
-    expect(Expression.traverse('x."y"', { x: { y: 1 } })).toBe(1);
-    expect(Expression.traverse('x.y.z', { x: { y: { z: 1 } } })).toBe(1);
-    expect(Expression.traverse('x."y".z', { x: { y: { z: 1 } } })).toBe(1);
-  });
-
   it('expression test', () => {
     expect(Expression.template('const', {}, null)).toBe('const');
     expect(Expression.template('${ID}', { ID: 'test' }, null)).toBe('test');
     expect(Expression.template(null, { ID: 'test' }, 'def')).toBe('def');
     expect(Expression.template('${a.b}', { a: { b: 'x' } }, 'def')).toBe('x');
-    expect(Expression.template('${a.b other}', { a: { b: 'x' } }, 'def')).toBe('undefined');
-    expect(Expression.template('${a.b other}', { a: { 'b other': 'x' } }, 'def')).toBe('x');
+    expect(Expression.template('${a.b other}', { a: { b: 'x' } }, 'def')).toBe('${a.b other}'); // jsonata syntax error
     expect(Expression.template('${a."b other"}', { a: { 'b other': 'x' } }, 'def')).toBe('x');
+    expect(Expression.template('${a.b} - ${a.b}', { a: { b: 'x' } }, 'def')).toBe('x - x');
+    expect(Expression.template('${1+2}', { a: { b: 'x' } }, 'def')).toBe('3');
+    expect(Expression.template('<%= 1+2 %>', { a: { b: 'x' } }, 'def')).toBe('3');
+    expect(Expression.template('<%= a.b %>aa', { a: { b: 'x' } }, 'def')).toBe('xaa');
   });
 });
