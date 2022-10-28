@@ -33,9 +33,9 @@ describe('ChartComponent', () => {
   });
 
   it('test prepareDataForChart', () => {
-    component.all = [{ gender: 'male', age: 11 }, { gender: 'female', age: 9 }];
+    component.all = [{ dept: 'sales', gender: 'male', age: 11 }, { dept: 'sales', gender: 'female', age: 9 }];
     component.prepareDataForChart();
     expect(component.columns).toEqual(['male', 'female']);
-    expect(component.all).toEqual([{ data: [11, 9], label: 'age' }]);
+    expect(component.all).toEqual([{ data: [11, 9], label: 'sales', stack: 'a' }]);
   })
 });

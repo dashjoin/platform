@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Widget } from 'src/app/instance/widget';
 
 import { HTMLComponent } from './html.component';
 
@@ -8,14 +10,16 @@ describe('HTMLComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HTMLComponent ]
+      imports: [RouterTestingModule],
+      declarations: [HTMLComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HTMLComponent);
     component = fixture.componentInstance;
+    component.layout = {} as Widget;
     fixture.detectChanges();
   });
 
