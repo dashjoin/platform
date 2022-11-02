@@ -82,3 +82,43 @@ variables to specify alternative values for url, username, hostname, port, datab
 
 To change the username, simply replace url with username in the examples above.
 Note that the development passwords are provided in plain text.
+
+## Unit Testing
+
+Unit tests are an important asset to ensure the quality of your app. Dashjoin leverages the [JUnit framework](https://junit.org/) and allows you to perform the following default tests to make sure that
+
+* all JSON files can be parsed
+* layout uses legal widget names
+* all JSONata expressions are syntactically correct
+
+In addition to these syntactical checks, it is possible to run JSONata expressions and provide desired outputs. 
+
+To setup unit tests in your app, follow these steps:
+
+* Install [Maven](https://maven.apache.org/)
+* Copy this [maven project file](https://github.com/dashjoin/dashjoin-demo/blob/main/pom.xml) to your app's root directory
+* Copy this [JUnit test file](https://github.com/dashjoin/dashjoin-demo/blob/main/src/test/java/org/dashjoin/app/AppTest.java) to "src/test/java/org/dashjoin/app"
+* If you would like to test a JSONata expression, create a [JSON test file](https://github.com/dashjoin/dashjoin-demo/blob/main/test.json) that describes the file containing the expression, where the expression is located, which test cases should be run, and which outputs are to be expected. The file is structured as follows:
+
+```
+{
+    "test": {
+        "file": path to the file containing the expression to be checked
+        "expression": JSONata expression that selects the expression to be checked
+    },
+    "basedata": optional common test data for the test cases
+    "cases": {
+        "name": {
+            "data": test data (will be merged with the base data)
+            "expected": expected JSONata output
+        }
+        ...
+    }
+}
+```
+
+To run the unit test:
+
+```
+dashjoin-demo>mvn test
+```

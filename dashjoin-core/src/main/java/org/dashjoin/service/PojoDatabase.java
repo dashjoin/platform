@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -746,8 +747,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         tm.put("status", r.get("status"));
         Object start = r.get("start");
         Object end = r.get("end");
-        tm.put("start", start);
-        tm.put("end", end);
+        tm.put("start", parse(start));
+        tm.put("end", parse(end));
         if (start instanceof String) {
           try {
             Date s = Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) start)));
@@ -782,6 +783,17 @@ public class PojoDatabase extends UnionDatabase implements Config {
       projected.add(tm);
     }
     return projected;
+  }
+
+  static Object parse(Object s) {
+    if (s == null)
+      return s;
+    try {
+      return new SimpleDateFormat("yyyy-MM-dd HH:mm")
+          .format(Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) s))));
+    } catch (Exception e) {
+      return s;
+    }
   }
 
   /**

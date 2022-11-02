@@ -26,6 +26,7 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import lombok.extern.java.Log;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.BinaryExpression;
@@ -61,6 +62,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 /**
  * SQL implementation of the query editor backend
  */
+@Log
 public class SQLEditor implements QueryEditorInternal {
 
   SQLDatabase db;
@@ -729,6 +731,10 @@ public class SQLEditor implements QueryEditorInternal {
               break;
             }
           }
+        } catch (SQLException ignore) {
+          // might be caused by a permissions issue - ignore, since otherwise the entire editor
+          // breaks
+          log.warning("Error retrieving sample: " + ignore.toString());
         }
     }
   }

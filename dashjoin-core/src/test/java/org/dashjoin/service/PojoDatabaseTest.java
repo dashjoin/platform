@@ -297,4 +297,17 @@ public class PojoDatabaseTest {
         MapUtil.of("children", Arrays.asList(MapUtil.of("widget", "chart", "query", "list"))),
         "list"));
   }
+
+  @Test
+  public void testParse() {
+    Assertions.assertEquals(null, PojoDatabase.parse(null));
+    Assertions.assertEquals("", PojoDatabase.parse(""));
+    Assertions.assertEquals("022-10-20T11:01:15.070+00:00",
+        PojoDatabase.parse("022-10-20T11:01:15.070+00:00"));
+    // ignore hour timezone
+    Assertions.assertTrue(
+        PojoDatabase.parse("2022-10-20T11:01:15.070+00:00").toString().startsWith("2022-10-20 "));
+    Assertions
+        .assertTrue(PojoDatabase.parse("2022-10-20T11:01:15.070+00:00").toString().endsWith(":01"));
+  }
 }
