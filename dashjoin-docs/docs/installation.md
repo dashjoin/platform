@@ -163,12 +163,42 @@ A Dashjoin instance can be configured using the following environment variables:
 * DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from
 
+By default, the service will be bound to 0.0.0.0 (all IP addresses) and serve HTTP on port 8080.
+
 For configuring HTTP ports, keystores etc. please refer to the [Quarkus HTTP reference](https://quarkus.io/guides/http-reference).
 The following example shows how to change the HTTP port using the windows executable:
 
 ```bash
 > set QUARKUS_HTTP_PORT=3333
 > Dashjoin.exe
+```
+
+## How to enable HTTPS
+
+Note:
+in a production environment, very often a global load balancer (or other edge device) that serves HTTPS to the outside and connects
+to the Dashjoin service using HTTP is used.
+
+To enable HTTPS for the platform, the certificate file and the key file are required (usually called ```cert.pem``` and ```key.pem```).
+
+Alternatively you can use a Java keystore, and you can also disable HTTP completely. Please refer to the [Quarkus HTTP reference](https://quarkus.io/guides/http-reference) for all configuration options.
+
+Configure the service with the following settings:
+```
+QUARKUS_HTTP_SSL_CERTIFICATE_FILE=/path/to/cert.pem
+QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILE=/path/to/key.pem
+```
+
+By default, the HTTPS port is 8443. To change it use:
+```
+QUARKUS_HTTP_SSL_PORT=58443
+```
+
+### Self-signed certificate
+
+For test + dev, you can create a self-signed certificate with the following command
+```
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 ```
 
 ## Build Locally
