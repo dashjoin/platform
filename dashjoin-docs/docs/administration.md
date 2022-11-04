@@ -90,19 +90,39 @@ the role names defined in the Dashjoin platform. The IDM must be configured to e
 
 ### Adding the Open ID Config to the Platform
 
-The Open ID configuration can be changed as follows:
+The Open ID configuration must be stored as 
+```
+META-INF/resources/assets/logincfg.json
+```
+relative to the current working directory of the platform.
 
-* Installed Dashjoin application
+Note that the current working directory depends on the OS and the way the platform is installed / started.
 
-Store the file ```META-INF/resources/assets/logincfg.json``` in your installation folder
+The next sections list the locations on different operating systems.
 
-On Windows, the default location is
+#### Installed Dashjoin application
+
+
+- On Windows, the default location is
 ```
 C:\Users\<username>\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
 ```
 
-* Dashjoin container
+- On Linux and MacOS, store the file relative to the location Dashjoin is launched (current working directory).
+I.e. if the platform is launched from ```/home/dashjoin```, store the config at
+```
+/home/dashjoin/META-INF/resources/assets/logincfg.json
+```
 
+- On MacOS, you need to launch the application manually from a terminal, otherwise the working directory is ```/``` which does not allow to store the config.
+The executable of the application is by default located at
+```
+/Applications/Dashjoin.app/Contents/MacOS/Dashjoin
+```
+
+#### Dashjoin container
+
+The current working directory in the container is ```/deployments```.
 Use the Docker -v option to mount logincfg.json to ```/deployments/META-INF/resources/assets/logincfg.json```
 
 Command Line Example:
