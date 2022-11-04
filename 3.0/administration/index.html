@@ -355,8 +355,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adding-the-open-id-config-to-the-platfrom" class="md-nav__link">
-    Adding the Open ID Config to the Platfrom
+  <a href="#adding-the-open-id-config-to-the-platform" class="md-nav__link">
+    Adding the Open ID Config to the Platform
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalistic-logincfgjson-customization-example" class="md-nav__link">
+    Minimalistic logincfg.json customization example
   </a>
   
 </li>
@@ -561,8 +568,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#adding-the-open-id-config-to-the-platfrom" class="md-nav__link">
-    Adding the Open ID Config to the Platfrom
+  <a href="#adding-the-open-id-config-to-the-platform" class="md-nav__link">
+    Adding the Open ID Config to the Platform
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalistic-logincfgjson-customization-example" class="md-nav__link">
+    Minimalistic logincfg.json customization example
   </a>
   
 </li>
@@ -634,7 +648,8 @@ systems, this folder can be found under USER_HOME/.dashjoin/model.</p>
 This <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app">example</a> explains the process
 for Azure AD. Note that you will have to have a redirect URL such as "https://dashjoin-app.example.com/login" available.</p>
 <h3 id="configuring-the-openid-provider-in-dashjoin">Configuring the OpenID Provider in Dashjoin</h3>
-<p>The Dashjoin login page can be configured via a configuration file located at /assets/logincfg.json. The default config is:</p>
+<p>The Dashjoin login page can be configured via a configuration file named <code>/assets/logincfg.json</code>.</p>
+<p>The default config is:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"></span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My Dashjoin&quot;</span><span class="p">,</span><span class="w"></span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sign In&quot;</span><span class="p">,</span><span class="w"></span>
@@ -684,20 +699,47 @@ following Azure AD example:</p>
 <li>Strict Discovery Document Validation: ensure that all of the endpoints provided via the ID Provider discovery document share the same base URL as the issuer parameter</li>
 </ul>
 <p>You can configure multiple OpenID providers:</p>
-<p><img alt="Features of the Query Editor" src="../assets/openid.png" /></p>
+<p><img alt="Login with multiple OpenID providers" src="../assets/openid.png" /></p>
 <h3 id="creating-and-assigning-application-roles">Creating and Assigning Application Roles</h3>
 <ul>
 <li>After the application is registered within the IDM and the IDM made known to the application, you need to define
 the roles an IDM user has within the application. On Azure AD, this is the "App roles" dialog. Note that these roles must match
 the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.</li>
 </ul>
-<h3 id="adding-the-open-id-config-to-the-platfrom">Adding the Open ID Config to the Platfrom</h3>
+<h3 id="adding-the-open-id-config-to-the-platform">Adding the Open ID Config to the Platform</h3>
 <p>The Open ID configuration can be changed as follows:</p>
 <ul>
-<li>On premise installer: create the file /target/quarkus-app/classes/META-INF/resources/assets/logincfg.json in your installation</li>
-<li>Docker: Use the Docker -v option to mount logincfg.json to /deployments/classes/META-INF/resources/assets/logincfg.json</li>
-<li>PaaS: <a href="https://dashjoin.com/#contact">Send an email</a> to request the change.</li>
+<li>Installed Dashjoin application</li>
 </ul>
+<p>Store the file <code>META-INF/resources/assets/logincfg.json</code> in your installation folder</p>
+<p>On Windows, the default location is
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>C:\Users\&lt;username&gt;\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
+</code></pre></div></p>
+<ul>
+<li>Dashjoin container</li>
+</ul>
+<p>Use the Docker -v option to mount logincfg.json to <code>/deployments/META-INF/resources/assets/logincfg.json</code></p>
+<p>Command Line Example:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json:ro dashjoin/platform
+</code></pre></div></p>
+<ul>
+<li>Dashjoin PaaS Cloud</li>
+</ul>
+<p><a href="https://dashjoin.com/#contact">please send an email</a> to request the change.</p>
+<h3 id="minimalistic-logincfgjson-customization-example">Minimalistic logincfg.json customization example</h3>
+<p>The following example disables all OpenID providers, disables password reset, and disables user registration.
+Also it re-defines the displayed texts.</p>
+<p>Note: all settings not specified will use their defaults (see above).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Demo App&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter Your Credentials&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">&quot;registrationEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">&quot;resetPasswordEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>With this config the login dialog will look similar to this:</p>
+<p><img alt="Login with minimalistic config" src="../assets/logincfg_mini.png" /></p>
 <h2 id="query-performance">Query Performance</h2>
 <p>When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
 The query performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
@@ -732,15 +774,15 @@ operation. If a database contains more data, you can either opt out of it being 
 you can associate a query from the catalog to be used. For instance, you might want employees
 to be searchable by firstname or lastname, but other tables are not relevant for searches.
 In this case, you can define the following query:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <p>You can also use union queries to search over multiple tables. Note that in this case,
 the query needs to project table, id, match:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">union</span><span class="w"> </span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;PRJ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PRJ</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">union</span><span class="w"> </span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;PRJ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PRJ</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
 </code></pre></div>
 <p>Note that the query must have a single parameter "search" in order to be used this way.
 The platform will run this query by replacing the search parameter with the contents of the search field.</p>

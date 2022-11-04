@@ -386,6 +386,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#jsonapi" class="md-nav__link">
+    JSON:API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#odata" class="md-nav__link">
+    OData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pdf-export" class="md-nav__link">
     PDF Export
   </a>
@@ -464,6 +478,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#jsonapi" class="md-nav__link">
+    JSON:API
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#odata" class="md-nav__link">
+    OData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pdf-export" class="md-nav__link">
     PDF Export
   </a>
@@ -499,6 +527,14 @@ Please note that the API is subject to change.</p>
 Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.</p>
 <p>In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
 RemoteDatabase clients. For more information, please refer to the <a href="https://github.com/dashjoin/platform/tree/master/dashjoin-sdk">dashjoin-sdk</a> module documentation.</p>
+<h2 id="jsonapi">JSON:API</h2>
+<p>Dashjoin supports <a href="https://jsonapi.org/">JSON:API</a> for read operations. 
+JSON:API describes how clients should request or edit data from a server, and how the server should respond to said requests.
+The endpoint is available under /rest/jsonapi.</p>
+<h2 id="odata">OData</h2>
+<p>Dashjoin also supports <a href="https://www.odata.org/">OData</a> for read operations. 
+OData (Open Data Protocol) is an ISO/IEC approved, OASIS standard that defines a set of best practices for building and consuming RESTful APIs.
+The endpoint is available under /rest/odata.</p>
 <h2 id="pdf-export">PDF Export</h2>
 <p>Any platform page can be exported to PDF using the puppeteer framework. For your convenience, we deployed a cloud function to do this for any
 installation available on the web. Please note that your credentials and the PDF content are sent via this third party if you use this function:</p>

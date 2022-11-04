@@ -380,6 +380,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-to-enable-https" class="md-nav__link">
+    How to enable HTTPS
+  </a>
+  
+    <nav class="md-nav" aria-label="How to enable HTTPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-signed-certificate" class="md-nav__link">
+    Self-signed certificate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-locally" class="md-nav__link">
     Build Locally
   </a>
@@ -663,6 +683,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-to-enable-https" class="md-nav__link">
+    How to enable HTTPS
+  </a>
+  
+    <nav class="md-nav" aria-label="How to enable HTTPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-signed-certificate" class="md-nav__link">
+    Self-signed certificate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#build-locally" class="md-nav__link">
     Build Locally
   </a>
@@ -865,11 +905,29 @@ A Dashjoin instance can be configured using the following environment variables:
 <li>DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified</li>
 <li>DASHJOIN_APPURL: optional git url where an app is cloned / pulled from</li>
 </ul>
+<p>By default, the service will be bound to 0.0.0.0 (all IP addresses) and serve HTTP on port 8080.</p>
 <p>For configuring HTTP ports, keystores etc. please refer to the <a href="https://quarkus.io/guides/http-reference">Quarkus HTTP reference</a>.
 The following example shows how to change the HTTP port using the windows executable:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&gt; <span class="nb">set</span> <span class="nv">QUARKUS_HTTP_PORT</span><span class="o">=</span><span class="m">3333</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>&gt; Dashjoin.exe
 </code></pre></div>
+<h2 id="how-to-enable-https">How to enable HTTPS</h2>
+<p>Note:
+in a production environment, very often a global load balancer (or other edge device) that serves HTTPS to the outside and connects
+to the Dashjoin service using HTTP is used.</p>
+<p>To enable HTTPS for the platform, the certificate file and the key file are required (usually called <code>cert.pem</code> and <code>key.pem</code>).</p>
+<p>Alternatively you can use a Java keystore, and you can also disable HTTP completely. Please refer to the <a href="https://quarkus.io/guides/http-reference">Quarkus HTTP reference</a> for all configuration options.</p>
+<p>Configure the service with the following settings:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>QUARKUS_HTTP_SSL_CERTIFICATE_FILE=/path/to/cert.pem
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILE=/path/to/key.pem
+</code></pre></div></p>
+<p>By default, the HTTPS port is 8443. To change it use:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>QUARKUS_HTTP_SSL_PORT=58443
+</code></pre></div></p>
+<h3 id="self-signed-certificate">Self-signed certificate</h3>
+<p>For test + dev, you can create a self-signed certificate with the following command
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+</code></pre></div></p>
 <h2 id="build-locally">Build Locally</h2>
 <p>Prerequisites:</p>
 <ul>
@@ -881,10 +939,10 @@ The following example shows how to change the HTTP port using the windows execut
 </ul>
 <p>Dashjoin uses Quarkus as runtime framework (<a href="https://quarkus.io">https://quarkus.io</a>).
 You can run your application in dev mode using:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>platform/angular$ ng build
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>platform$ mvn install
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>platform/dashjoin$ mvn compile quarkus:dev
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>platform/angular$ ng build
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>platform$ mvn install
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>platform/dashjoin$ mvn compile quarkus:dev
 </code></pre></div>
 <p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
 <p>You can use the provided launch file to directly run from within Eclipse (right-click on the launch file, "Run as" or "Debug as" -&gt; "Dashjoin", 
@@ -893,12 +951,12 @@ This requires the Eclipse Quarkus plugin (<a href="https://quarkus.io/blog/eclip
 plugin (<a href="https://projectlombok.org/setup/eclipse">https://projectlombok.org/setup/eclipse</a>) to be installed.
 Launching with "Debug as" will also enable live coding mode.</p>
 <p>The application can be packaged and installed locally using:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>platform/dashjoin$ mvn package install
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>platform/dashjoin$ mvn package install
 </code></pre></div></p>
 <p>It produces the <code>dashjoin-0.0.1-SNAPSHOT-runner.jar</code> file in the <code>/target</code> directory.
 Be aware that it’s not an <em>uber-jar</em> as the dependencies are copied into the <code>target/lib</code> directory.</p>
 <p>If you want to build an <em>uber-jar</em>, execute the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
 </code></pre></div>
 <p>The application is now runnable using <code>java -jar target/dashjoin-0.0.1-SNAPSHOT-runner.jar</code>.</p>
 <h3 id="eclipse">Eclipse</h3>

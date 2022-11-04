@@ -368,6 +368,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    Unit Testing
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -512,6 +519,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    Unit Testing
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -591,6 +605,39 @@ variables to specify alternative values for url, username, hostname, port, datab
 </ul>
 <p>To change the username, simply replace url with username in the examples above.
 Note that the development passwords are provided in plain text.</p>
+<h2 id="unit-testing">Unit Testing</h2>
+<p>Unit tests are an important asset to ensure the quality of your app. Dashjoin leverages the <a href="https://junit.org/">JUnit framework</a> and allows you to perform the following default tests to make sure that</p>
+<ul>
+<li>all JSON files can be parsed</li>
+<li>layout uses legal widget names</li>
+<li>all JSONata expressions are syntactically correct</li>
+</ul>
+<p>In addition to these syntactical checks, it is possible to run JSONata expressions and provide desired outputs. </p>
+<p>To setup unit tests in your app, follow these steps:</p>
+<ul>
+<li>Install <a href="https://maven.apache.org/">Maven</a></li>
+<li>Copy this <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/pom.xml">maven project file</a> to your app's root directory</li>
+<li>Copy this <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/src/test/java/org/dashjoin/app/AppTest.java">JUnit test file</a> to "src/test/java/org/dashjoin/app"</li>
+<li>If you would like to test a JSONata expression, create a <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/test.json">JSON test file</a> that describes the file containing the expression, where the expression is located, which test cases should be run, and which outputs are to be expected. The file is structured as follows:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    &quot;test&quot;: {
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        &quot;file&quot;: path to the file containing the expression to be checked
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        &quot;expression&quot;: JSONata expression that selects the expression to be checked
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    },
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    &quot;basedata&quot;: optional common test data for the test cases
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    &quot;cases&quot;: {
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        &quot;name&quot;: {
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>            &quot;data&quot;: test data (will be merged with the base data)
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>            &quot;expected&quot;: expected JSONata output
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        }
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        ...
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    }
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>}
+</code></pre></div>
+<p>To run the unit test:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dashjoin-demo&gt;mvn test
+</code></pre></div>
 
 
 
