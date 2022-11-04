@@ -359,6 +359,26 @@
     Adding the Open ID Config to the Platform
   </a>
   
+    <nav class="md-nav" aria-label="Adding the Open ID Config to the Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installed-dashjoin-application" class="md-nav__link">
+    Installed Dashjoin application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-container" class="md-nav__link">
+    Dashjoin container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -572,6 +592,26 @@
     Adding the Open ID Config to the Platform
   </a>
   
+    <nav class="md-nav" aria-label="Adding the Open ID Config to the Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installed-dashjoin-application" class="md-nav__link">
+    Installed Dashjoin application
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-container" class="md-nav__link">
+    Dashjoin container
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -707,20 +747,37 @@ the roles an IDM user has within the application. On Azure AD, this is the "App 
 the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.</li>
 </ul>
 <h3 id="adding-the-open-id-config-to-the-platform">Adding the Open ID Config to the Platform</h3>
-<p>The Open ID configuration can be changed as follows:</p>
+<p>The Open ID configuration must be stored as 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>META-INF/resources/assets/logincfg.json
+</code></pre></div>
+relative to the current working directory of the platform.</p>
+<p>Note that the current working directory depends on the OS and the way the platform is installed / started.</p>
+<p>The next sections list the locations on different operating systems.</p>
+<h4 id="installed-dashjoin-application">Installed Dashjoin application</h4>
 <ul>
-<li>Installed Dashjoin application</li>
-</ul>
-<p>Store the file <code>META-INF/resources/assets/logincfg.json</code> in your installation folder</p>
+<li>
 <p>On Windows, the default location is
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>C:\Users\&lt;username&gt;\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>C:\Users\&lt;username&gt;\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
 </code></pre></div></p>
-<ul>
-<li>Dashjoin container</li>
+</li>
+<li>
+<p>On Linux and MacOS, store the file relative to the location Dashjoin is launched (current working directory).
+I.e. if the platform is launched from <code>/home/dashjoin</code>, store the config at
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/home/dashjoin/META-INF/resources/assets/logincfg.json
+</code></pre></div></p>
+</li>
+<li>
+<p>On MacOS, you need to launch the application manually from a terminal, otherwise the working directory is <code>/</code> which does not allow to store the config.
+The executable of the application is by default located at
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/Applications/Dashjoin.app/Contents/MacOS/Dashjoin
+</code></pre></div></p>
+</li>
 </ul>
-<p>Use the Docker -v option to mount logincfg.json to <code>/deployments/META-INF/resources/assets/logincfg.json</code></p>
+<h4 id="dashjoin-container">Dashjoin container</h4>
+<p>The current working directory in the container is <code>/deployments</code>.
+Use the Docker -v option to mount logincfg.json to <code>/deployments/META-INF/resources/assets/logincfg.json</code></p>
 <p>Command Line Example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json:ro dashjoin/platform
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json:ro dashjoin/platform
 </code></pre></div></p>
 <ul>
 <li>Dashjoin PaaS Cloud</li>
@@ -730,13 +787,13 @@ the role names defined in the Dashjoin platform. The IDM must be configured to e
 <p>The following example disables all OpenID providers, disables password reset, and disables user registration.
 Also it re-defines the displayed texts.</p>
 <p>Note: all settings not specified will use their defaults (see above).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Demo App&quot;</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter Your Credentials&quot;</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">&quot;registrationEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">&quot;resetPasswordEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Demo App&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter Your Credentials&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">&quot;registrationEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">&quot;resetPasswordEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p>With this config the login dialog will look similar to this:</p>
 <p><img alt="Login with minimalistic config" src="../assets/logincfg_mini.png" /></p>
@@ -774,15 +831,15 @@ operation. If a database contains more data, you can either opt out of it being 
 you can associate a query from the catalog to be used. For instance, you might want employees
 to be searchable by firstname or lastname, but other tables are not relevant for searches.
 In this case, you can define the following query:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <p>You can also use union queries to search over multiple tables. Note that in this case,
 the query needs to project table, id, match:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">union</span><span class="w"> </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;PRJ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PRJ</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">union</span><span class="w"> </span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;PRJ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PRJ</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="w"></span>
 </code></pre></div>
 <p>Note that the query must have a single parameter "search" in order to be used this way.
 The platform will run this query by replacing the search parameter with the contents of the search field.</p>
