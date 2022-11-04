@@ -21,7 +21,9 @@ for Azure AD. Note that you will have to have a redirect URL such as "https://da
 
 ### Configuring the OpenID Provider in Dashjoin
 
-The Dashjoin login page can be configured via a configuration file located at /assets/logincfg.json. The default config is:
+The Dashjoin login page can be configured via a configuration file named ```/assets/logincfg.json```.
+
+The default config is:
 
 ```json
 {
@@ -78,7 +80,7 @@ This config fields are defined as follows:
 
 You can configure multiple OpenID providers:
 
-![Features of the Query Editor](assets/openid.png)
+![Login with multiple OpenID providers](assets/openid.png)
 
 ### Creating and Assigning Application Roles
 
@@ -86,14 +88,53 @@ You can configure multiple OpenID providers:
 the roles an IDM user has within the application. On Azure AD, this is the "App roles" dialog. Note that these roles must match
 the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.
 
-### Adding the Open ID Config to the Platfrom
+### Adding the Open ID Config to the Platform
 
 The Open ID configuration can be changed as follows:
 
-* On premise installer: create the file /target/quarkus-app/classes/META-INF/resources/assets/logincfg.json in your installation
-* Docker: Use the Docker -v option to mount logincfg.json to /deployments/classes/META-INF/resources/assets/logincfg.json
-* PaaS: [Send an email](https://dashjoin.com/#contact) to request the change.
+* Installed Dashjoin application
 
+Store the file ```META-INF/resources/assets/logincfg.json``` in your installation folder
+
+On Windows, the default location is
+```
+C:\Users\<username>\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
+```
+
+* Dashjoin container
+
+Use the Docker -v option to mount logincfg.json to ```/deployments/META-INF/resources/assets/logincfg.json```
+
+Command Line Example:
+```
+docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json:ro dashjoin/platform
+```
+
+* Dashjoin PaaS Cloud
+
+[please send an email](https://dashjoin.com/#contact) to request the change.
+
+
+### Minimalistic logincfg.json customization example
+
+The following example disables all OpenID providers, disables password reset, and disables user registration.
+Also it re-defines the displayed texts.
+
+Note: all settings not specified will use their defaults (see above).
+
+```json
+{
+    "signInTabText": "My New Demo App",
+    "signInCardTitleText": "Enter Your Credentials",
+    "registrationEnabled": false,
+    "resetPasswordEnabled": false,
+    "providers": ""
+}
+```
+
+With this config the login dialog will look similar to this:
+
+![Login with minimalistic config](assets/logincfg_mini.png)
 ## Query Performance
 
 When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
