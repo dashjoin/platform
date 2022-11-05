@@ -253,17 +253,21 @@ public class SQLDatabase extends AbstractDatabase {
     /**
      * handle common casting issues when JSON parameters are fed into SQL
      */
-    public void cast(ParameterMetaData pmd) throws SQLException {
-      for (int i = 0; i < pmd.getParameterCount(); i++) {
-        int parType = pmd.getParameterType(i + 1);
-        if (i < arguments.length) {
-          if (parType == Types.INTEGER)
-            if (arguments[i] instanceof Long)
-              arguments[i] = ((Long) arguments[i]).intValue();
-          if (parType == Types.SMALLINT || parType == Types.TINYINT)
-            if (arguments[i] instanceof Long)
-              arguments[i] = (short) ((long) arguments[i]);
+    public void cast(ParameterMetaData pmd) {
+      try {
+        for (int i = 0; i < pmd.getParameterCount(); i++) {
+          int parType = pmd.getParameterType(i + 1);
+          if (i < arguments.length) {
+            if (parType == Types.INTEGER)
+              if (arguments[i] instanceof Long)
+                arguments[i] = ((Long) arguments[i]).intValue();
+            if (parType == Types.SMALLINT || parType == Types.TINYINT)
+              if (arguments[i] instanceof Long)
+                arguments[i] = (short) ((long) arguments[i]);
+          }
         }
+      } catch (SQLException e) {
+        // not supported for all DBs
       }
     }
   }
