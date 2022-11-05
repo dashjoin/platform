@@ -170,7 +170,7 @@ public class Metadata {
   public Metadata(Connection con, String url, List<String> excludeTables) throws SQLException {
     DatabaseMetaData md = con.getMetaData();
     String schema = getSchema(con, url);
-    try (ResultSet res = md.getTables(null, schema, null, null)) {
+    try (ResultSet res = md.getTables(url.startsWith("jdbc:mariadb") ? con.getCatalog() : null, schema, null, null)) {
       while (res.next()) {
         String tableType = res.getString("TABLE_TYPE");
         // Note - H2 2.x introduced "BASE TABLE" as default table type:
