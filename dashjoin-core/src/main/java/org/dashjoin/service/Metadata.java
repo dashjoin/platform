@@ -368,6 +368,9 @@ public class Metadata {
     // Postgres returns lower case types
     typeName = typeName.toUpperCase();
 
+    if (typeName.endsWith(" UNSIGNED"))
+      typeName = typeName.substring(0, typeName.length() - " UNSIGNED".length());
+
     switch (typeName) {
       case "CHAR":
         return "string";
@@ -380,6 +383,7 @@ public class Metadata {
       case "CLOB":
         return "string";
       case "BINARY VARYING": // H2
+      case "LONGBLOB": // MySQL
       case "BLOB":
         return "string";
       case "LONGVARCHAR":
@@ -431,6 +435,9 @@ public class Metadata {
       case "FLOAT4": // Postgres
       case "FLOAT8": // Postgres
         return "number";
+      case "ENUM": // MySQL
+      case "LONGTEXT": // MySQL
+      case "MEDIUMTEXT": // MySQL
       case "TEXT": // Postgres
         return "string";
       case "SERIAL": // Postgres
