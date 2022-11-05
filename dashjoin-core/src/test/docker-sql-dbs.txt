@@ -5,7 +5,15 @@ docker run -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
 
 
 docker run --detach -p 3306:3306 --name some-mariadb --env MARIADB_USER=mariadb --env MARIADB_PASSWORD=password --env MARIADB_ROOT_PASSWORD=password mariadb:latest
-	"url": "jdbc:mysql://localhost:3306/junit",
+create database junit
+	"url": "jdbc:mariadb://localhost:3306/junit",
+	"username": "root",
+	"password": "password",
+
+
+docker run --detach -p 3306:3306 --name some-mysql -e MYSQL_ROOT_PASSWORD=password mysql
+create database junit
+	"url": "jdbc:mariadb://localhost:3306/junit",
 	"username": "root",
 	"password": "password",
 

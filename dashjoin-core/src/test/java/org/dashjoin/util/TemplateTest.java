@@ -35,8 +35,8 @@ public class TemplateTest {
 
   @Test
   public void sql() {
-    Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql("x", null));
-    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql("x", "${col}"));
-    Assertions.assertEquals("concat('Hi ', col, '')", Template.sql("x", "Hi ${col}"));
+    Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql("", "x", null));
+    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql("", "x", "${col}"));
+    Assertions.assertEquals("concat('Hi ', col, '')", Template.sql("", "x", "Hi ${col}"));
   }
 }

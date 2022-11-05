@@ -71,16 +71,19 @@ public class Template {
   /**
    * translates the template to a SQL expression
    */
-  public static String sql(String key, String template) {
+  public static String sql(String url, String key, String template) {
+
+    String asType =
+        url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:") ? "CHAR" : "VARCHAR(255)";
 
     if (template == null)
-      return "cast(" + key + " as VARCHAR(255))";
+      return "cast(" + key + " as " + asType + ")";
 
     List<String> vars = getVariables(template);
 
     // special case where template is a single var
     if (vars.size() == 1 && ("${" + vars.get(0) + "}").equals(template))
-      return "cast(" + vars.get(0) + " as VARCHAR(255))";
+      return "cast(" + vars.get(0) + " as " + asType + ")";
 
     Map<String, Object> values = new HashMap<>();
     for (String var : vars)
