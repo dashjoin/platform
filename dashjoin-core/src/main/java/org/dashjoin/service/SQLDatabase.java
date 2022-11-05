@@ -226,11 +226,10 @@ public class SQLDatabase extends AbstractDatabase {
     }
 
     ds.setPassword(password() == null && name.equals("junit") ? password : password());
+    if (url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
+      ds.setConnectionProperties(
+          "sessionVariables=sql_mode=ANSI_QUOTES;allowPublicKeyRetrieval=true");
     try (Connection con = ds.getConnection()) {
-      if (url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
-        try (java.sql.Statement stmt = con.createStatement()) {
-          stmt.execute("SET sql_mode='ANSI_QUOTES';");
-        }
       if (initScripts != null)
         for (String s : initScripts) {
           InputStream ddl = Loader.open(s);
