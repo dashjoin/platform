@@ -29,7 +29,7 @@ public class JDBC {
     db.password = "...";
 
     // MySQL
-    db.url = "jdbc:mysql://...:3306/northwind";
+    db.url = "jdbc:mariadb://...:3306/northwind";
     db.username = "admin";
     db.password = "...";
 

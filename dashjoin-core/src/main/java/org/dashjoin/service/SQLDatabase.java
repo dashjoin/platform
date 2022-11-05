@@ -102,10 +102,10 @@ public class SQLDatabase extends AbstractDatabase {
       "jdbc:h2:tcp:your_host:9092/path/your_database", "jdbc:sqlite:path/your_database.db"
       /*
        * "jdbc:jtds:sqlserver://your_host:1433/your_database;SCHEMA=your_schema",
-       * "jdbc:mysql://your_host:3306/your_database", "jdbc:oracle:thin:@your_host:1521/ORCL",
-       * "jdbc:mariadb://your_host:3306/your_database", "jdbc:db2://your_host:50000/your_database",
-       * "jdbc:sap://your_host:39015/", "jdbc:ucanaccess://path/your_database.accdb",
-       * "jdbc:excel:url_to_your_csv_or_xls", "jdbc:hsqldb:hsql://your_host/your_database",
+       * "jdbc:oracle:thin:@your_host:1521/ORCL", "jdbc:mariadb://your_host:3306/your_database",
+       * "jdbc:db2://your_host:50000/your_database", "jdbc:sap://your_host:39015/",
+       * "jdbc:ucanaccess://path/your_database.accdb", "jdbc:excel:url_to_your_csv_or_xls",
+       * "jdbc:hsqldb:hsql://your_host/your_database",
        */}, style = {"width", "600px"})
   public String url;
 
@@ -211,6 +211,9 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public Map<String, Object> connectAndCollectMetadata() throws Exception {
 
+    if (url.startsWith("jdbc:mysql"))
+      throw new Exception("Please use jdbc:mariadb when connecting to MariaDB or MySQL");
+
     // there are several places that check url.startsWith(), make sure there are no leading spaces
     url = url.trim();
 
@@ -226,7 +229,7 @@ public class SQLDatabase extends AbstractDatabase {
     }
 
     ds.setPassword(password() == null && name.equals("junit") ? password : password());
-    if (url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
+    if (url.startsWith("jdbc:mariadb"))
       ds.setConnectionProperties(
           "sessionVariables=sql_mode=ANSI_QUOTES;allowPublicKeyRetrieval=true");
     try (Connection con = ds.getConnection()) {
@@ -403,10 +406,9 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   boolean supportsIlike() {
-    if (url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:")
-        || url.startsWith("jdbc:jtds:") || url.startsWith("jdbc:sqlserver")
-        || url.startsWith("jdbc:sqlite") || url.startsWith("jdbc:db2:")
-        || url.startsWith("jdbc:oracle:thin:"))
+    if (url.startsWith("jdbc:mariadb:") || url.startsWith("jdbc:jtds:")
+        || url.startsWith("jdbc:sqlserver") || url.startsWith("jdbc:sqlite")
+        || url.startsWith("jdbc:db2:") || url.startsWith("jdbc:oracle:thin:"))
       return false;
     else
       return true;
@@ -765,7 +767,7 @@ public class SQLDatabase extends AbstractDatabase {
         }
       } else {
         if (url.startsWith("jdbc:db2:") || url.startsWith("jdbc:sqlite")
-            || url.startsWith("jdbc:mysql") || url.startsWith("jdbc:mariadb"))
+            || url.startsWith("jdbc:mariadb"))
           // DB2 offset only works with limit
           select = select + " limit " + (limit == null ? Integer.MAX_VALUE : limit);
         if (offset != null)

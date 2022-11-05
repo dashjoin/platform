@@ -16,6 +16,12 @@ create database junit
 	"url": "jdbc:mariadb://localhost:3306/junit",
 	"username": "root",
 	"password": "password",
+also need to add to table EMP in dj/junit.json since FKs not supported in MySQL MyISAM mode: https://bugs.mysql.com/bug.php?id=31483
+"properties": {
+	"WORKSON": {
+		"ref": "dj/junit/PRJ/ID"
+	}
+}
 
 
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest

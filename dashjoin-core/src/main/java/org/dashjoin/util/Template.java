@@ -73,8 +73,7 @@ public class Template {
    */
   public static String sql(String url, String key, String template) {
 
-    String asType =
-        url.startsWith("jdbc:mysql:") || url.startsWith("jdbc:mariadb:") ? "CHAR" : "VARCHAR(255)";
+    String asType = url.startsWith("jdbc:mariadb:") ? "CHAR" : "VARCHAR(255)";
 
     if (template == null)
       return "cast(" + key + " as " + asType + ")";
