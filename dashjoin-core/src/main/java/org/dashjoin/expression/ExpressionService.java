@@ -27,7 +27,6 @@ import org.dashjoin.service.Manage;
 import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.graalvm.polyglot.Value;
 import org.jboss.logmanager.Level;
@@ -86,9 +85,7 @@ public class ExpressionService {
   @Path("/")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
-  public JsonNode resolve(@Context SecurityContext sc,
-      @Parameter(description = "expression and context to evaluate") ExpressionAndData e)
-      throws Exception {
+  public JsonNode resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
     return jsonata(sc, e.expression, o2j(e.data), false);
   }
 

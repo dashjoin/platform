@@ -16,7 +16,6 @@ import org.dashjoin.expression.ExpressionService.ExpressionAndData;
 import org.dashjoin.mapping.ETL;
 import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -46,9 +45,7 @@ public class ExpressionPreviewService {
   @Path("/")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
-  public Object resolve(@Context SecurityContext sc,
-      @Parameter(description = "expression and context to evaluate") ExpressionCursorData e)
-      throws Exception {
+  public Object resolve(@Context SecurityContext sc, ExpressionCursorData e) throws Exception {
     if (e.foreach) {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
