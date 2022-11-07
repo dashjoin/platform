@@ -411,7 +411,8 @@ public class SQLEditor implements QueryEditorInternal {
       Select stmt = (Select) s;
       PlainSelect body = (PlainSelect) stmt.getSelectBody();
       return prettyPrint(query.database, body, query.limit);
-    } catch (JSQLParserException | ClassCastException e) {
+    } catch (JSQLParserException | ClassCastException | IllegalArgumentException e) {
+      // IllegalArgumentException: might be thrown when parsing the where clause
       // JSQLParserException: sometimes the parser fails but the query works on the DB
       // ClassCastException: query might be of type WithItem, ValuesStatement or SetOperationList
       // (union)

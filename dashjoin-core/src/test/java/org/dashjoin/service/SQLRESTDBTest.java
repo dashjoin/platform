@@ -124,4 +124,16 @@ public class SQLRESTDBTest {
     Assertions.assertThrows(NullPointerException.class,
         () -> new SQLEditor(null, null).noop(query));
   }
+
+  @Test
+  public void testTableMetadata() throws Exception {
+    QueryDatabase query = new QueryDatabase();
+    query.query = "select * from t where id like 'x%'";
+    SQLDatabase db = new SQLDatabase();
+    db.tables.put("t", new Table());
+    db.tables.get("t").properties = new HashMap<>();
+
+    // like where clause cannot be parsed (we require t.id): push down to DB
+    Assertions.assertThrows(SQLException.class, () -> new SQLEditor(null, db).noop(query));
+  }
 }
