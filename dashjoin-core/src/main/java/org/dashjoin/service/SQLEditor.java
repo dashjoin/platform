@@ -799,6 +799,14 @@ public class SQLEditor implements QueryEditorInternal {
     return false;
   }
 
+  /**
+   * parses the where clause of a SQL query
+   * 
+   * @param ignoreUnknown when called in the editor, throw exceptions, if called to get the metadata
+   *        for display, ignore errors and gather as much as you can
+   * @param res collect the where clause metadata here
+   * @param expr the SQL expression tree
+   */
   static void parseWhere(boolean ignoreUnknown, Map<Col, String> res, Expression expr) {
     if (expr instanceof AndExpression) {
       BinaryExpression b = (BinaryExpression) expr;
@@ -818,14 +826,9 @@ public class SQLEditor implements QueryEditorInternal {
     }
     if (expr instanceof ComparisonOperator) {
       ComparisonOperator o = (ComparisonOperator) expr;
-
-      if (!(o.getLeftExpression() instanceof Column))
-        if (!ignoreUnknown)
-          throw new IllegalArgumentException("Left side of where expressions must be a column");
-        else
-          return;
-
-      Column left = (Column) o.getLeftExpression();
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      if (left == null)
+        return;
       if (left.getTable() != null)
         res.put(
             colNoQuotes(SQLDatabase.s(left.getTable().getName()),
@@ -835,30 +838,27 @@ public class SQLEditor implements QueryEditorInternal {
     }
     if (expr instanceof LikeExpression) {
       LikeExpression o = (LikeExpression) expr;
-      Column left = (Column) o.getLeftExpression();
-      if (left.getTable() == null)
-        throw new IllegalArgumentException(left + " has no table information");
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      if (left == null)
+        return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
     }
     if (expr instanceof Between) {
       Between o = (Between) expr;
-
-      if (!(o.getLeftExpression() instanceof Column))
-        if (!ignoreUnknown)
-          throw new IllegalArgumentException("Left side of where expressions must be a column");
-        else
-          return;
-
-      Column left = (Column) o.getLeftExpression();
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      if (left == null)
+        return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           "BETWEEN " + o.getBetweenExpressionStart() + " AND " + o.getBetweenExpressionEnd());
       return;
     }
     if (expr instanceof IsNullExpression) {
       IsNullExpression o = (IsNullExpression) expr;
-      Column left = (Column) o.getLeftExpression();
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      if (left == null)
+        return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           "IS " + (o.isNot() ? "NOT " : "") + "NULL");
       return;
@@ -868,6 +868,21 @@ public class SQLEditor implements QueryEditorInternal {
 
     if (!ignoreUnknown)
       throw new IllegalArgumentException("Unsupported expression: " + expr + " " + expr.getClass());
+  }
+
+  static Column getColumnFromExpression(boolean ignoreUnknown, Expression o) {
+    if (!(o instanceof Column))
+      if (!ignoreUnknown)
+        throw new IllegalArgumentException("Left side of where expressions must be a column");
+      else
+        return null;
+    Column left = (Column) o;
+    if (left.getTable() == null)
+      if (!ignoreUnknown)
+        throw new IllegalArgumentException(left + " has no table information");
+      else
+        return null;
+    return left;
   }
 
   static Col colNoQuotes(String table, String column) {
