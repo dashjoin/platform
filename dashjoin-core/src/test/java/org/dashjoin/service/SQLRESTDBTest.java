@@ -139,6 +139,13 @@ public class SQLRESTDBTest {
         () -> new SQLEditor(null, db()).noop(query));
   }
 
+  @Test
+  public void testInferTable() throws Exception {
+    Assertions.assertNull(compatibilityError(parse("select id from t where id = 3")));
+    Assertions.assertEquals("id has no table information",
+        compatibilityError(parse("select id from t1, t2 where id = 3")));
+  }
+
   SQLDatabase db() {
     SQLDatabase db = new SQLDatabase() {
       @Override

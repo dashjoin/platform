@@ -1016,7 +1016,7 @@ public class SQLDatabase extends AbstractDatabase {
     Select select = (Select) CCJSqlParserUtil.parse(query);
     PlainSelect body = (PlainSelect) select.getSelectBody();
     Map<Col, String> map = new HashMap<>();
-    SQLEditor.parseWhere(true, map, body.getWhere());
+    SQLEditor.parseWhere(true, map, body.getWhere(), body);
 
     TableName tn = TableName.create(url, query);
     List<QueryColumn> table = new ArrayList<>();

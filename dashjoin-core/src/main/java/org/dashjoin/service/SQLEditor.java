@@ -783,7 +783,7 @@ public class SQLEditor implements QueryEditorInternal {
     }
 
     try {
-      SQLEditor.parseWhere(false, new HashMap<>(), select.getWhere());
+      SQLEditor.parseWhere(false, new HashMap<>(), select.getWhere(), select);
     } catch (IllegalArgumentException e) {
       return e.getMessage();
     }
@@ -807,26 +807,27 @@ public class SQLEditor implements QueryEditorInternal {
    * @param res collect the where clause metadata here
    * @param expr the SQL expression tree
    */
-  static void parseWhere(boolean ignoreUnknown, Map<Col, String> res, Expression expr) {
+  static void parseWhere(boolean ignoreUnknown, Map<Col, String> res, Expression expr,
+      PlainSelect from) {
     if (expr instanceof AndExpression) {
       BinaryExpression b = (BinaryExpression) expr;
-      parseWhere(ignoreUnknown, res, b.getLeftExpression());
-      parseWhere(ignoreUnknown, res, b.getRightExpression());
+      parseWhere(ignoreUnknown, res, b.getLeftExpression(), from);
+      parseWhere(ignoreUnknown, res, b.getRightExpression(), from);
       return;
     }
     if (expr instanceof Parenthesis) {
-      parseWhere(ignoreUnknown, res, ((Parenthesis) expr).getExpression());
+      parseWhere(ignoreUnknown, res, ((Parenthesis) expr).getExpression(), from);
       return;
     }
     if (expr instanceof OrExpression) {
       BinaryExpression b = (BinaryExpression) expr;
-      parseWhere(ignoreUnknown, res, b.getLeftExpression());
-      parseWhere(ignoreUnknown, res, b.getRightExpression());
+      parseWhere(ignoreUnknown, res, b.getLeftExpression(), from);
+      parseWhere(ignoreUnknown, res, b.getRightExpression(), from);
       return;
     }
     if (expr instanceof ComparisonOperator) {
       ComparisonOperator o = (ComparisonOperator) expr;
-      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression(), from);
       if (left == null)
         return;
       if (left.getTable() != null)
@@ -838,7 +839,7 @@ public class SQLEditor implements QueryEditorInternal {
     }
     if (expr instanceof LikeExpression) {
       LikeExpression o = (LikeExpression) expr;
-      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression(), from);
       if (left == null)
         return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
@@ -847,7 +848,7 @@ public class SQLEditor implements QueryEditorInternal {
     }
     if (expr instanceof Between) {
       Between o = (Between) expr;
-      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression(), from);
       if (left == null)
         return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
@@ -856,7 +857,7 @@ public class SQLEditor implements QueryEditorInternal {
     }
     if (expr instanceof IsNullExpression) {
       IsNullExpression o = (IsNullExpression) expr;
-      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression());
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression(), from);
       if (left == null)
         return;
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
@@ -870,18 +871,23 @@ public class SQLEditor implements QueryEditorInternal {
       throw new IllegalArgumentException("Unsupported expression: " + expr + " " + expr.getClass());
   }
 
-  static Column getColumnFromExpression(boolean ignoreUnknown, Expression o) {
+  static Column getColumnFromExpression(boolean ignoreUnknown, Expression o, PlainSelect from) {
     if (!(o instanceof Column))
       if (!ignoreUnknown)
         throw new IllegalArgumentException("Left side of where expressions must be a column");
       else
         return null;
     Column left = (Column) o;
-    if (left.getTable() == null)
+    if (left.getTable() == null) {
+      if (from.getJoins() == null && from.getFromItem() instanceof net.sf.jsqlparser.schema.Table) {
+        left.setTable((net.sf.jsqlparser.schema.Table) from.getFromItem());
+        return left;
+      }
       if (!ignoreUnknown)
         throw new IllegalArgumentException(left + " has no table information");
       else
         return null;
+    }
     return left;
   }
 
