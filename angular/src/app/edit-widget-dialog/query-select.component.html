@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <td>
+            <lib-json-schema-form [value]="value" (valueChange)="onChange($event)" [schema]="myschema"
+                [label]="schema.title">
+            </lib-json-schema-form>
+        </td>
+        <td valign="top" style="padding-top: 10px">
+            <button *ngIf="!isnew()" mat-button (click)="edit()">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button *ngIf="isnew()" mat-button (click)="add()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </td>
+    </tr>
+</table>

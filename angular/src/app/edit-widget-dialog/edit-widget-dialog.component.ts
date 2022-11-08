@@ -137,7 +137,8 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Query ID from the catalog',
               type: 'string',
-              displayWith: 'fk',
+              widget: 'custom',
+              widgetType: 'query-link',
               ref: 'dj/config/dj-query-catalog/ID',
               case: this.generateCase('query')
             },
