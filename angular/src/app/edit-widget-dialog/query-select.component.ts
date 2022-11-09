@@ -150,7 +150,7 @@ export class QuerySelectComponent implements WidgetComponent {
 
         this.http.put('/rest/database/crud/config/dj-query-catalog', query, { headers: { 'Content-Type': 'application/json' }, responseType: 'text' }).subscribe((res) => {
             this.queryNames.push(this.value);
-            window.open('/#/resource/config/dj-query-catalog/' + this.value, "query-catalog");
+            window.open('/#/resource/config/dj-query-catalog/' + this.value, '_blank');
         }, (error) => {
             this.snackBar.open('Error creating query "' + this.value + '"', 'Ok');
         });
@@ -160,7 +160,7 @@ export class QuerySelectComponent implements WidgetComponent {
      * open in new tab
      */
     edit() {
-        window.open('/#/resource/config/dj-query-catalog/' + this.value, "query-catalog");
+        window.open('/#/resource/config/dj-query-catalog/' + this.value, '_blank');
     }
 
     /**
