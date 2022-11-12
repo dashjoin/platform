@@ -85,9 +85,15 @@ public class Template {
       return "cast(" + vars.get(0) + " as " + asType + ")";
 
     Map<String, Object> values = new HashMap<>();
-    for (String var : vars)
-      values.put(var, "', " + var + ", '");
-    return "concat('" + replace(template, values) + "')";
+    if (url.startsWith("jdbc:sqlite:")) {
+      for (String var : vars)
+        values.put(var, "' || " + var + " || '");
+      return "'" + replace(template, values) + "'";
+    } else {
+      for (String var : vars)
+        values.put(var, "', " + var + ", '");
+      return "concat('" + replace(template, values) + "')";
+    }
   }
 
   /**
