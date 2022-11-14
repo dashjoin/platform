@@ -102,6 +102,9 @@ export class MapComponent extends DJBaseComponent implements OnInit {
     DO: 'Dominican Republic',
     RS: 'Serbia',
     KW: 'Kuwait',
+    NZ: 'New Zealand',
+    RO: 'Romania',
+    MY: 'Malaysia',
   };
 
   cache = {
@@ -160,6 +163,9 @@ export class MapComponent extends DJBaseComponent implements OnInit {
     Egypt: [{ "lat": "26.2540493", "lon": "29.2675469", "boundingbox": ["21.9936506", "31.8330854", "24.6499112", "37.1153517"] }],
     Bangladesh: [{ "lat": "24.4769288", "lon": "90.2934413", "boundingbox": ["20.3679092", "26.6382534", "88.007915", "92.6804979"] }],
     Cambodia: [{ "lat": "13.5066394", "lon": "104.869423", "boundingbox": ["9.4552664", "14.6904224", "102.3338282", "107.6276788"] }],
+    "New Zealand": [{ "lat": "-41.5000831", "lon": "172.8344077", "boundingbox": ["-52.8213687", "-29.0303303", "-179.059153", "179.3643594"] }],
+    Romania: [{ "lat": "45.9852129", "lon": "24.6859225", "boundingbox": ["43.618682", "48.2654738", "20.2619955", "30.0454257"] }],
+    Malaysia: [{ "lat": "4.5693754", "lon": "102.2656823", "boundingbox": ["0.8538205", "7.6667327", "98.7375747", "119.5833462"] }],
   }
 
   async initWidget() {
