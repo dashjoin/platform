@@ -91,7 +91,10 @@ public class Template {
       return "'" + replace(template, values) + "'";
     } else {
       for (String var : vars)
-        values.put(var, "', " + var + ", '");
+        if (url.startsWith("jdbc:mariadb:"))
+          values.put(var, "', COALESCE(" + var + ", 'null'), '");
+        else
+          values.put(var, "', " + var + ", '");
       return "concat('" + replace(template, values) + "')";
     }
   }
