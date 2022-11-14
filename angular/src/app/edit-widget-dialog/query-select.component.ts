@@ -118,7 +118,7 @@ export class QuerySelectComponent implements WidgetComponent {
             }
 
             // strip spaces
-            suggest = suggest.replace(' ', '');
+            suggest = suggest.replaceAll(' ', '-');
 
             // append number until unique
             if (this.queryNames.includes(suggest)) {
