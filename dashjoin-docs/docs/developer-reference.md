@@ -48,6 +48,12 @@ to bulk-register tenant users.
 You can also specify the roles that are allowed to read and write to the database. Note that by default, the admin role has access to all tables.
 Finally, you can specify search queries for a database. Please see the performance tuning section below.
 
+If you would like to exclude certain tables from being accessible via the platform, you can add their names in the excludeTables field in the database's JSON file in the model folder as follows:
+
+```json
+  "excludeTables": ["table1", "table2"],
+```
+
 ### Data Definition Operations
 
 The database page also offer a database management section. You can create a new table there. The new table will contain two columns:
