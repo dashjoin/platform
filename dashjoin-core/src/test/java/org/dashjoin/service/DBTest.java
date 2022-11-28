@@ -370,7 +370,7 @@ public class DBTest {
   public void testCRUD() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    Resource id = db.create(sc, "junit", toID("PRJ"), of(idRead(), toID(2000)));
+    Resource id = db.createInternal(sc, "junit", toID("PRJ"), of(idRead(), toID(2000)));
     id("dj/junit/PRJ/2000", "dj/" + id.database + '/' + Escape.encodeTableOrColumnName(id.table)
         + '/' + Escape.encodeTableOrColumnName("" + id.pk.get(0)));
     Assertions.assertNotNull(db.read(sc, "junit", toID("PRJ"), toID("2000")));
@@ -389,7 +389,7 @@ public class DBTest {
   public void testCRUD2() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    Resource id = db.create(sc, "junit", toID("EMP"), of(idRead(), toID(3)));
+    Resource id = db.createInternal(sc, "junit", toID("EMP"), of(idRead(), toID(3)));
     id("dj/junit/EMP/3", "dj/" + id.database + '/' + Escape.encodeTableOrColumnName(id.table) + '/'
         + Escape.encodeTableOrColumnName("" + id.pk.get(0)));
     Assertions.assertNotNull(db.read(sc, "junit", toID("EMP"), toID("3")));

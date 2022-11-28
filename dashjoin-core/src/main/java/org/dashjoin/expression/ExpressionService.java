@@ -512,7 +512,7 @@ public class ExpressionService {
       try {
         if (readOnly)
           return null;
-        return o2j(data.create(sc, getValuesListExpression(v, ctx, 0).asText(),
+        return o2j(data.createInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
             getValuesListExpression(v, ctx, 1).asText(),
             (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2))));
       } catch (Exception e) {

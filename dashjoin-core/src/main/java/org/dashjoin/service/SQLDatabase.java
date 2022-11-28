@@ -656,7 +656,6 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  @SuppressWarnings("unused")
   public void create(Table m, List<Map<String, Object>> objects) throws Exception {
     try (Connection con = getConnection()) {
       try (PreparedStatement stmt = con.prepareStatement(getInsertSQL(m))) {

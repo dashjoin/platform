@@ -434,7 +434,7 @@ public class Data {
   /**
    * creates a new instance in the table associated with the table
    */
-  Resource createInternal(@Context SecurityContext sc,
+  public Resource createInternal(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
