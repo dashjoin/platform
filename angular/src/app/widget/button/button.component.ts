@@ -10,9 +10,9 @@ import { DashjoinWidget } from '../widget-registry';
 @DashjoinWidget({
   name: 'button',
   category: 'Default',
-  description: 'Component that draws a an action button',
+  description: 'Component that draws an action button',
   htmlTag: 'dj-button',
-  fields: ['title', 'text', 'print', 'navigate', 'properties']
+  fields: ['title', 'text', 'print', 'navigate', 'properties', 'clearCache']
 })
 @Component({
   selector: 'app-button',
@@ -32,7 +32,7 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
    * button widget action (navigate or print)
    */
   call() {
-    this.runExpression(this.layout.print ? this.layout.print : this.layout.navigate)
+    this.runExpression(this.layout.print ? this.layout.print : this.layout.navigate, this.layout.clearCache)
       .then(res => {
         if (this.layout.print) {
           this.snackBar.open(res as string, 'Ok', { duration: 3000 });
