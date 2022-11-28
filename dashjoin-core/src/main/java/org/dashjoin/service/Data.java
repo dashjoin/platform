@@ -414,18 +414,17 @@ public class Data {
    * creates a new instance in the table associated with the table
    */
   @PUT
-  @Path("/put/{database}/{table}")
+  @Path("/crud/{database}/{table}")
   @Operation(summary = "creates a new instance in the table associated with the table")
   @APIResponse(
       description = "Returns the global identifier of the new record (dj/database/table/ID). The segments are URL encoded. ID is the primary key. For composite primary keys, ID is pk1/../pkn where pki is URL encoded again.")
-  @Produces({MediaType.TEXT_PLAIN})
-  public String create2(@Context SecurityContext sc,
+  public String create(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
           example = "EMPLOYEES") @PathParam("table") String table,
       Map<String, Object> object) throws Exception {
-    Resource res = create(sc, database, table, object);
+    Resource res = createInternal(sc, database, table, object);
     String s = "dj/" + res.database + "/" + Escape.encodeTableOrColumnName(res.table);
     for (Object k : res.pk)
       s = s + "/" + Escape.encodeTableOrColumnName("" + k);
@@ -435,12 +434,7 @@ public class Data {
   /**
    * creates a new instance in the table associated with the table
    */
-  @PUT
-  @Path("/crud/{database}/{table}")
-  @Operation(summary = "creates a new instance in the table associated with the table")
-  @APIResponse(
-      description = "Returns the global identifier of the new record as an object containing database, table and primary key(s)")
-  public Resource create(@Context SecurityContext sc,
+  Resource createInternal(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
