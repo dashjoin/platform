@@ -403,8 +403,10 @@ All non-container widgets are called regular widgets.
 Runs / evaluates an expression when clicked.
 
 * text: text shown for the run button (default is "Run")
-* onClick: expression to evaluate when clicked
+* print: evaluate expression and print result at the bottom of the screen when clicked
+* navigate: evaluate expression and navigate to result URL when clicked
 * properties: optional properties the user needs to enter before clicking
+* clearCache: if checked, clears the browser cache (use this option if the expression performs side effects on the database)
 
 #### chart
 

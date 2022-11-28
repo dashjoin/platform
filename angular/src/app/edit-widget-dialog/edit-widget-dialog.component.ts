@@ -378,6 +378,7 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Clear the cache',
               type: 'boolean',
+              description: 'Check if your expression makes changes to the database',
               case: this.generateCase('clearCache')
             }
           }
