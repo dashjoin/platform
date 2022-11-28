@@ -373,6 +373,12 @@ export class EditWidgetDialogComponent {
               static: true,
               title: 'Optional input for button action',
               case: this.generateCase('properties')
+            },
+            clearCache: {
+              static: true,
+              title: 'Clear the cache',
+              type: 'boolean',
+              case: this.generateCase('clearCache')
             }
           }
         };

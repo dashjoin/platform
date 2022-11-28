@@ -255,4 +255,9 @@ export interface Widget {
      * Redraw interval in ms
      */
     redrawInterval: number;
+
+    /**
+     * Clears the client cache
+     */
+    clearCache: boolean;
 }
