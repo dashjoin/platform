@@ -418,6 +418,7 @@ public class Data {
   @Operation(summary = "creates a new instance in the table associated with the table")
   @APIResponse(
       description = "Returns the global identifier of the new record (dj/database/table/ID). The segments are URL encoded. ID is the primary key. For composite primary keys, ID is pk1/../pkn where pki is URL encoded again.")
+  @Produces({MediaType.TEXT_PLAIN})
   public String create(@Context SecurityContext sc,
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
