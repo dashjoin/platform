@@ -1130,9 +1130,16 @@ export class InstanceComponent implements OnInit {
    * checks whether the session role is contained in the roles defined in the layout
    */
   isInRole(w: Widget): boolean {
-    if (w.roles) {
+    return this.isInRoles(w.roles);
+  }
+
+  /**
+   * checks whether the session role is contained in the roles defined given
+   */
+  isInRoles(roles: string[]): boolean {
+    if (roles) {
       const sr = sessionStorage.roles ? JSON.parse(sessionStorage.roles) : undefined;
-      for (const role of w.roles) {
+      for (const role of roles) {
         if (sr?.includes(role)) {
           return true;
         }

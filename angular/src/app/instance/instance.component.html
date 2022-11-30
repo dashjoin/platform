@@ -77,8 +77,8 @@
         <app-instance #djToolbar [layout]="{widget: 'dj-toolbar'}" (eventChange)="onEvent($event)" role="banner">
         </app-instance>
         <mat-sidenav-container>
-            <mat-sidenav [opened]="app.sidenavOpen" mode="side" [style.width]="app.djsettings['sidenav-width-px']"
-                role="navigation">
+            <mat-sidenav [opened]="app.sidenavOpen && isInRoles(app.djsettings['sidenav-roles'])" mode="side"
+                [style.width]="app.djsettings['sidenav-width-px']" role="navigation">
                 <app-instance [layout]="{widget: 'dj-sidenav'}" (eventChange)="onEvent($event)">
                 </app-instance>
             </mat-sidenav>

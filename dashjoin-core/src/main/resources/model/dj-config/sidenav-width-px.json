@@ -1,6 +1,6 @@
 {
 	"ID": "sidenav-width-px",
-	"description": "Width of the side navigation bar",
+	"description": "Width of the side navigation bar (changes applied after next login)",
 	"type": "integer",
 	"integer": 200
 }

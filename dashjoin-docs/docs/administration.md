@@ -213,7 +213,19 @@ select 'PRJ', ID, NAME from PRJ where NAME=${search}
 Note that the query must have a single parameter "search" in order to be used this way.
 The platform will run this query by replacing the search parameter with the contents of the search field.
 
+### Excluding Tables and Databases from Searches
+
+Besides custom queries, you can also entirely exclude databases and tables from
+searches using the system configuration page (/table/config/dj-config).
+
 ### Global Timeout Settings
 
 Finally, the system configuration page allows setting some global contraints that prevent
 "rogue" queries to deteriorate the overall system and database performance.
+Please see the descriptions on the system configuration page (/table/config/dj-config) for more details.
+
+## UI Customizations
+
+The system configuration page (/table/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:
+
+* Sidebar: settings allow defining the width of the side bar and the roles for which it is visible
