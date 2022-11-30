@@ -10,7 +10,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that shows the layout edit switch',
   htmlTag: 'dj-layout-edit-switch',
-  fields: null
+  fields: ['roles']
 })
 @Component({
   selector: 'app-layout-edit-switch',

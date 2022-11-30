@@ -1,6 +1,6 @@
 <mat-form-field>
     <mat-label>{{label}}</mat-label>
-    <mat-select panelClass="select-panel" [value]=value (selectionChange)="onChange($event)">
+    <mat-select panelClass="select-panel" [value]=value (selectionChange)="onChange($event)" [matTooltip]="value">
         <mat-select-trigger>
             <div class="v-align">
                 <mat-icon>{{item(value)?.icon}}</mat-icon>&nbsp;&nbsp;{{item(value)?.text}}

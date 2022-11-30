@@ -1,9 +1,13 @@
-<mat-icon *ngIf="!app.editLayout" matTooltip="Edit layout" class="example-icon"
-    (click)="app.editLayout=true;formService.editMode=true;eventChange.emit({type: 'layout', busy: true})">
-    edit</mat-icon>
-<mat-icon *ngIf="app.editLayout && isDirty()" [matTooltip]="saveTooltip()" class="example-icon" (click)="saveConfirm()">
-    save</mat-icon>
-<mat-icon *ngIf="app.editLayout && isDirty()" matTooltip="Leave edit mode and discard changes" class="example-icon" (click)="reloadConfirm()">
-    cancel</mat-icon>
-<mat-icon *ngIf="app.editLayout && !isDirty()" matTooltip="Leave edit mode" class="example-icon" (click)="save()">
-    cancel</mat-icon>
+<ng-container *ngIf="isInRole(layout)">
+    <mat-icon *ngIf="!app.editLayout" matTooltip="Edit layout" class="example-icon"
+        (click)="app.editLayout=true;formService.editMode=true;eventChange.emit({type: 'layout', busy: true})">
+        edit</mat-icon>
+    <mat-icon *ngIf="app.editLayout && isDirty()" [matTooltip]="saveTooltip()" class="example-icon"
+        (click)="saveConfirm()">
+        save</mat-icon>
+    <mat-icon *ngIf="app.editLayout && isDirty()" matTooltip="Leave edit mode and discard changes" class="example-icon"
+        (click)="reloadConfirm()">
+        cancel</mat-icon>
+    <mat-icon *ngIf="app.editLayout && !isDirty()" matTooltip="Leave edit mode" class="example-icon" (click)="save()">
+        cancel</mat-icon>
+</ng-container>

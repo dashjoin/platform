@@ -564,6 +564,10 @@ export class InstanceComponent implements OnInit {
    */
   doLayout() {
     if (this.layout.widget === 'page') {
+      if (!this.isInRole(this.layout)) {
+        this.snackBar.open('You are not allowed to view this page', 'OK');
+        return;
+      }
       this.options = {
         draggable: {
           enabled: this.app.editLayout,

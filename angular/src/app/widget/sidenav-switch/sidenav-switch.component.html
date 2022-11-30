@@ -1,3 +1,5 @@
-<mat-icon *ngIf="!app.editLayout" matTooltip="Toggle Navigation" class="example-icon"
-    (click)="app.sidenavOpen = !app.sidenavOpen">menu
-</mat-icon>
+<ng-container *ngIf="isInRole(layout)">
+    <mat-icon *ngIf="!app.editLayout" matTooltip="Toggle Navigation" class="example-icon"
+        (click)="app.sidenavOpen = !app.sidenavOpen">menu
+    </mat-icon>
+</ng-container>

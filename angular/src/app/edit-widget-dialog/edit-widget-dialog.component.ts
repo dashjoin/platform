@@ -28,6 +28,7 @@ export class EditWidgetDialogComponent {
    * list of "public" widgets and the options they offer
    */
   widgets = {
+    page: ['roles']
     // all: ['title'],
     // button: ['title', 'text', 'print', 'navigate', 'properties'],
     // card: ['title', 'text', 'roles', 'layout', 'if', 'foreach', 'class', 'style'],
@@ -111,7 +112,11 @@ export class EditWidgetDialogComponent {
               type: 'string',
               widget: 'custom',
               widgetType: 'imagelist',
-              enum: Object.keys(this.widgets).sort(),
+              // page, search, sidenav-switch, layout-edit-switch do have
+              // the option to edit roles, so we display a form,
+              // but we filter them from this widget selection enum
+              // since we usually do not use them (only root / toolbar)
+              enum: Object.keys(this.widgets).filter((i) => i !== 'page' && i !== 'search' && i !== 'sidenav-switch' && i !== 'layout-edit-switch').sort(),
             },
             icon: {
               static: true,

@@ -15,7 +15,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that shows the sidenav switch',
   htmlTag: 'dj-sidenav-switch',
-  fields: null
+  fields: ['roles']
 })
 export class SidenavSwitchComponent extends DJBaseComponent {
 

@@ -12,7 +12,7 @@ import { Util } from '../../util';
   category: 'Default',
   description: 'Component that displays a search input box',
   htmlTag: 'dj-search',
-  fields: null
+  fields: ['roles']
 })
 @Component({
   selector: 'app-search',

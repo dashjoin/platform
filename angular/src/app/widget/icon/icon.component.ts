@@ -12,7 +12,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that displays an icon with tooltip and hyperlink',
   htmlTag: 'dj-icon',
-  fields: ['title', 'href', 'icon', 'tooltip']
+  fields: ['title', 'roles', 'href', 'icon', 'tooltip']
 })
 @Component({
   selector: 'app-icon',

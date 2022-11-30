@@ -1,4 +1,4 @@
-<mat-form-field class="search-box">
+<mat-form-field class="search-box" *ngIf="isInRole(layout)">
     <input matInput type="text" [(ngModel)]="search" autocomplete="off" (keyup.enter)="navigate()" (focus)="doShow()"
         (keyup.esc)="show=false; popupUsed=false">
     <button [disabled]="!search" mat-button matSuffix mat-icon-button aria-label="Search" (click)="navigate()">

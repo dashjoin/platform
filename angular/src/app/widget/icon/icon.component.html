@@ -1,4 +1,6 @@
-<mat-icon *ngIf="!(layout.href === '/page/Account' && isBaseVersion())" class="example-icon"
-    [matTooltip]="layout.tooltip" (click)="icon()">{{layout.icon}}</mat-icon>
-<mat-icon *ngIf="layout.href === '/page/Account' && isBaseVersion()" class="example-icon" matTooltip="Logout"
-    (click)="router.navigate(['/logout'])">logout</mat-icon>
+<ng-container *ngIf="isInRole(layout)">
+    <mat-icon *ngIf="!(layout.href === '/page/Account' && isBaseVersion())" class="example-icon"
+        [matTooltip]="layout.tooltip" (click)="icon()">{{layout.icon}}</mat-icon>
+    <mat-icon *ngIf="layout.href === '/page/Account' && isBaseVersion()" class="example-icon" matTooltip="Logout"
+        (click)="router.navigate(['/logout'])">logout</mat-icon>
+</ng-container>
