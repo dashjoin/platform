@@ -21,7 +21,6 @@ export class AppService implements CanActivate {
    * need routing and communication
    */
   constructor(private http: HttpClient, private router: Router) {
-    this.initWidgets();
   }
 
   /**
@@ -78,7 +77,7 @@ export class AppService implements CanActivate {
   /**
    * the first time we access widgets, make sure they are loaded from the backend
    */
-  private initWidgets() {
+  initWidgets() {
     if (this.widgetsLoaded) {
       return;
     }
