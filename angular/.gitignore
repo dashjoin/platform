@@ -49,3 +49,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/.pnp.cjs
+/.pnp.loader.mjs
