@@ -324,3 +324,12 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Ability to provide alternative development DBs and REST services
   * Platform helps in identifying missing / orphaned queries / functions
   * Platform offers JSON:API and ODATA interfaces
+  
+### 3.1 (Dec 2022)
+
+* UI
+  * Create and edit queries directly from layout editor
+  * Ability to block entire pages for certain user roles
+  * Easy customization of the toolbar for different user roles
+* Query processing
+  * Support union queries in query preview
