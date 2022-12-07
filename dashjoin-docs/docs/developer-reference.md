@@ -1079,7 +1079,7 @@ openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON
 openXml | $openXml(url) | Parses XML at the url and converts it to JSON
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
-openText | $openText(url) | Parses the url and converts it to a string
+openText | $openText(url, encoding) | Parses the url and converts it to a string
 uuid | $uuid() | Generates a random UUID
 
 ## Access Control

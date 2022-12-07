@@ -26,6 +26,21 @@ select @res;
 
 * **How can I download data from the platform?** This can be achieved via the HTML widget. And example can be found [here](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/html.json). The download happens via a JavaScript function that calls saveAs(new Blob([data]), filename).
 
+* **How can I download binary data such as PDFs or images?** This works like the regular download. You usually have a JSONata expression that loads the data in the backend. You can use $openText(url, "BASE_64") to get a base64 encoded representation. In the HTML widget, you can use this code to have the browser download the data:
+
+```javascript
+function go() {
+  const byteCharacters = atob(context);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], {type: "application/pdf"});
+  saveAs(blob, 'download.pdf')
+}
+```
+
 * **On the table page, my primary key column is not on the very left and I need to scroll right to get to the instance page link. How can I change this?** The default layout uses the native column order defined in the database. This order is used for the overview table as well as for the forms on the instance pages. For the table, simply define a query with your desired column projection order. Note that you can also omit columns if you'd like. Enter the layout editor and use this query for the table widget. On the edit form, you can enter the layout editor and open the form element's context menu via the three dots and change the positioning there.
 
 * **How can I format dates or currency in tables?** This can be done on the database query level. If you're using PostgreSQL for instance, this query will format the "born" and "salary" columns accordingly (assuming their database type is date and int): select to_char(born, 'DD-MON-YYYY'), cast(salary as money) from employee.

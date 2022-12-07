@@ -333,3 +333,5 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Easy customization of the toolbar for different user roles
 * Query processing
   * Support union queries in query preview
+* SDK
+  * Support downloading binary data
