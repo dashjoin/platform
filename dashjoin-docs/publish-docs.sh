@@ -13,4 +13,5 @@ then
     exit 0
 fi
 
-mike deploy --push --verbose $(cat ../../VERSION) latest
+mike deploy --push $(cat ../../VERSION)
+mike alias -u $(cat ../../VERSION) latest
