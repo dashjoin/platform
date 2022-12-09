@@ -62,6 +62,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.CreateBatch;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Sorter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -70,6 +71,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.sqlite.JDBC;
+import org.yaml.snakeyaml.Yaml;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -981,6 +983,69 @@ public class Manage {
       }
     }
     return res;
+  }
+
+  /**
+   * Creates a table according to the given JSON schema
+   */
+  @SuppressWarnings("unchecked")
+  @POST
+  @Path("/createTable/{database}")
+  @Operation(summary = "Creates a table according to the given JSON schema")
+  @Consumes({MediaType.TEXT_PLAIN})
+  public void createTable(@Context SecurityContext sc,
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database,
+      String yaml) throws Exception {
+
+    // ACL check is performed on dj/config/Table
+    AbstractDatabase config = services.getConfig().getConfigDatabase();
+    Table m = config.tables.get("Table");
+    ACLContainerRequestFilter.check(sc, config, m, CREATE);
+
+    // parse OpenAPI YAML schema fragment
+    Object y = new Yaml().load(yaml);
+
+    // must be single schema with at least 1 property
+    if (y instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) y;
+      if (map.size() == 1) {
+        Entry<String, Object> entry = map.entrySet().iterator().next();
+        if (entry.getValue() instanceof Map) {
+          Object p = ((Map<String, Object>) entry.getValue()).get("properties");
+          if (p instanceof Map) {
+            Map<String, Object> properties = (Map<String, Object>) p;
+            if (properties.size() > 0) {
+              Iterator<Entry<String, Object>> iter = properties.entrySet().iterator();
+              Entry<String, Object> pk = iter.next();
+              if (pk.getValue() instanceof Map) {
+                String type = (String) ((Map<String, Object>) pk.getValue()).get("type");
+                AbstractDatabase db =
+                    services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+                SchemaChange ddl = db.getSchemaChange();
+                ddl.createTable(entry.getKey(), pk.getKey(), type);
+
+                while (iter.hasNext()) {
+                  Entry<String, Object> col = iter.next();
+
+                  // ignore unknown types
+                  String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
+                  if (coltype != null)
+                    ddl.createColumn(entry.getKey(), col.getKey(), coltype);
+                }
+
+                ((PojoDatabase) services.getConfig())
+                    .metadataCollection(services.getDashjoinID() + "/" + database);
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    throw new IllegalArgumentException(
+        "You must pass a single JSON schema with at least one property in YAML syntax");
   }
 
   /**
