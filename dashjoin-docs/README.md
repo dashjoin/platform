@@ -32,17 +32,24 @@ Also check the tool's output to see any errors (wrong links, missing assets etc.
 
 Version management is done through Mike <https://github.com/jimporter/mike>
 
-When the new version is ready, use
+To list the currently deployed versions, use
+```
+mike list
+```
 
+When the new version is ready, use
+```
 mike deploy VERSION
+```
 
 to deploy the currently edited version as VERSION (i.e. 2.5).
 
-The publish-docs.sh script will do the publishing to latest (basically: mike deploy --push VERSION latest)
+The publish-docs.sh script will do the publishing to latest (basically: ```mike deploy --push VERSION latest```)
 
 ## Legacy Documentation (versions before 2.5)
 
 Legacy Docs are scaffolded from the single README.md file
+
 See script make-legacy-docs.sh which does the work
 
 Publishing:
