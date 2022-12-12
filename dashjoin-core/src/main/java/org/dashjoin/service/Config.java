@@ -2,7 +2,7 @@ package org.dashjoin.service;
 
 import java.util.Collection;
 import java.util.List;
-import org.dashjoin.function.AbstractFunction;
+import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -38,7 +38,7 @@ public interface Config {
   /**
    * get database by id
    */
-  AbstractFunction<Object, Object> getFunction(String id) throws Exception;
+  AbstractConfigurableFunction<Object, Object> getFunction(String id) throws Exception;
 
   /**
    * get query from catalog

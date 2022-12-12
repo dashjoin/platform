@@ -102,8 +102,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
 
   @SuppressWarnings("unchecked")
   @Override
-  public AbstractFunction<Object, Object> getFunction(String id) throws Exception {
-    AbstractFunction<Object, Object> db = get("dj-function", id, AbstractFunction.class);
+  public AbstractConfigurableFunction<Object, Object> getFunction(String id) throws Exception {
+    AbstractConfigurableFunction<Object, Object> db =
+        get("dj-function", id, AbstractConfigurableFunction.class);
     if (db == null)
       throw new IllegalArgumentException("Unknown function: " + id);
     return db;
