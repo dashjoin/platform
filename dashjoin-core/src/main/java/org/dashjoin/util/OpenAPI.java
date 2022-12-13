@@ -65,10 +65,10 @@ public class OpenAPI {
     Map<String, Object> res = content(description);
     if (resultMeta != null) {
       Map<String, Object> x = getMap(getMap(getMap(res, "content"), "application/json"), "schema");
-      Map<String, Object> properites = of();
+      Map<String, Object> properties = of();
       for (Property p : resultMeta.values())
-        properites.put(p.name, property(p));
-      x.put("properites", properites);
+        properties.put(p.name, property(p));
+      x.put("properties", properties);
     }
     return res;
   }
@@ -80,11 +80,11 @@ public class OpenAPI {
     Map<String, Object> res = content();
     if (arguments != null) {
       Map<String, Object> x = getMap(getMap(getMap(res, "content"), "application/json"), "schema");
-      Map<String, Object> properites = of();
+      Map<String, Object> properties = of();
       for (String key : arguments.keySet())
-        properites.put(key, of("type", getMap(arguments, key).get("type"), "example",
+        properties.put(key, of("type", getMap(arguments, key).get("type"), "example",
             getMap(arguments, key).get("sample")));
-      x.put("properites", properites);
+      x.put("properties", properties);
     }
     return res;
   }
@@ -117,7 +117,7 @@ public class OpenAPI {
       properties.put(p.name, property(p));
     }
     if (!required.isEmpty())
-      table.put("required", required);
+      val.put("required", required);
     return table;
   }
 

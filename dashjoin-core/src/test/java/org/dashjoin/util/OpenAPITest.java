@@ -30,7 +30,9 @@ public class OpenAPITest {
     QueryMeta meta = new QueryMeta();
     meta.ID = "myquery";
     meta.database = "dj/db";
-    System.out.println(OpenAPI.path(meta, null));
+    Assertions.assertEquals(
+        "{/rest/database/query/db/myquery={post={operationId=myquery, requestBody={content={application/json={schema={type=object}}}}, responses={200={content={application/json={schema={type=object}}}, description=myquery response}}}}}",
+        OpenAPI.path(meta, null).toString());
     // System.out.println(om.writeValueAsString(OpenAPI.path(meta, null)));
   }
 
@@ -41,14 +43,14 @@ public class OpenAPITest {
     p.dbType = "VARCHAR";
     p.type = "string";
     Assertions.assertEquals(
-        "{content={application/json={schema={type=object, properites={col={type=string, x-dbType=VARCHAR}}}}}}",
+        "{content={application/json={schema={type=object, properties={col={type=string, x-dbType=VARCHAR}}}}}}",
         OpenAPI.resultMeta(of("p", p), null).toString());
   }
 
   @Test
   public void testParameters() {
     Assertions.assertEquals(
-        "{content={application/json={schema={type=object, properites={ID={type=string, example=joe}}}}}}",
+        "{content={application/json={schema={type=object, properties={ID={type=string, example=joe}}}}}}",
         OpenAPI.parameters(of("ID", of("type", "string", "sample", "joe"))).toString());
   }
 
@@ -92,7 +94,7 @@ public class OpenAPITest {
     Table table = Table.ofName("table");
     table.properties = MapUtil.of("ID", id, "name", name);
     Assertions.assertEquals(
-        "{table={type=object, properties={ID={type=number, x-dbType=INT, x-pkPos=0}, name={type=string, x-dbType=VARCHAR}}}, required=[ID]}",
+        "{table={type=object, properties={ID={type=number, x-dbType=INT, x-pkPos=0}, name={type=string, x-dbType=VARCHAR}}, required=[ID]}}",
         OpenAPI.table(table).toString());
   }
 }
