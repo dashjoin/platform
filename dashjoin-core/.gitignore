@@ -8,3 +8,4 @@
 /.flattened-pom.xml
 /local-maven-repo
 /http-cache/
+/.DS_Store

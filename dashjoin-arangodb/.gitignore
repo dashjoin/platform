@@ -6,3 +6,5 @@
 /doc
 /.flattened-pom.xml
 /.factorypath
+/.apt_generated/
+/.apt_generated_tests/

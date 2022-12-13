@@ -7,3 +7,5 @@
 /dashjoin-docs/.venv
 /dashjoin-docs/site
 angular/.yarn
+/.DS_Store
+/.java-version
