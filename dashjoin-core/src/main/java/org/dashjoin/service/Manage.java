@@ -1,9 +1,14 @@
 package org.dashjoin.service;
 
-import static com.google.common.collect.ImmutableMap.of;
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.CREATE;
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE;
+import static org.dashjoin.service.UnionDatabase.merge;
+import static org.dashjoin.util.MapUtil.getMap;
+import static org.dashjoin.util.MapUtil.of;
+import static org.dashjoin.util.OpenAPI.path;
+import static org.dashjoin.util.OpenAPI.table;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,8 +66,12 @@ import org.dashjoin.function.Function;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.CreateBatch;
 import org.dashjoin.model.Property;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.ddl.SchemaChange;
+import org.dashjoin.util.Escape;
+import org.dashjoin.util.FileSystem;
+import org.dashjoin.util.Home;
 import org.dashjoin.util.Sorter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -75,7 +84,9 @@ import org.yaml.snakeyaml.Yaml;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ibm.db2.jcc.DB2Driver;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 
@@ -86,6 +97,8 @@ import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 public class Manage {
+
+  private static ObjectMapper om = new ObjectMapper(new YAMLFactory());
 
   @Inject
   Services services;
@@ -1047,6 +1060,84 @@ public class Manage {
     throw new IllegalArgumentException(
         "You must pass a single JSON schema with at least one property in YAML syntax");
   }
+
+  @GET
+  @Path("/openapi")
+  @Operation(
+      summary = "Reads the openapi.yaml configured and merges functions, queries, and schemas into it")
+  @Produces({MediaType.TEXT_PLAIN})
+  public String openapi(@Context SecurityContext sc) throws Exception {
+
+    Map<String, Object> config = services.getConfig().getConfigDatabase()
+        .read(Table.ofName("dj-config"), of("ID", "openapi"));
+    if (config.get("map") == null)
+      return null;
+
+    String u = (String) getMap(config, "map").get("url");
+    if (u == null)
+      return null;
+
+    // make sure file: URLs are safe
+    URL url = new URL(u);
+    FileSystem.checkFileAccess(url);
+
+    // open URL, if file, take Home into account
+    InputStream in = null;
+    if ("file".equals(url.getProtocol())) {
+      File file = Home.get().getFile(url.getPath());
+      in = new FileInputStream(file);
+    } else {
+      in = url.openStream();
+    }
+
+    JsonNode spec = om.readTree(in);
+    @SuppressWarnings("unchecked")
+    Map<String, Object> external = om.treeToValue(spec, Map.class);
+
+    JsonNode dj = spec.get("x-dashjoin");
+    if (dj == null)
+      // nothing to add, return as is
+      return om.writeValueAsString(external);
+
+    JsonNode queries = dj.get("x-queries");
+    if (queries != null) {
+      for (JsonNode query : queries) {
+        QueryMeta meta = services.getConfig().getQueryMeta(query.asText());
+        String database = meta.database.split("/")[1];
+        Map<String, Property> md = null;
+        if (sc.getUserPrincipal() != null)
+          md = data.queryMeta(sc, database, meta.ID, null);
+        Map<String, Object> paths = getMap(external, "paths");
+        external.put("paths", merge(path(meta, md), paths));
+      }
+    }
+
+    JsonNode functions = dj.get("x-functions");
+    if (functions != null) {
+      for (JsonNode function : functions) {
+        AbstractConfigurableFunction<Object, Object> meta =
+            services.getConfig().getFunction(function.asText());
+        Map<String, Object> paths = getMap(external, "paths");
+        external.put("paths", merge(path(meta), paths));
+      }
+    }
+
+    JsonNode schemas = dj.get("x-schemas");
+    if (schemas != null) {
+      for (JsonNode schema : schemas) {
+        String _dj = Escape.parseTableID(schema.asText())[0];
+        String database = Escape.parseTableID(schema.asText())[1];
+        String name = Escape.parseTableID(schema.asText())[2];
+        Map<String, Object> components = getMap(external, "components");
+        components.put("schemas",
+            merge(table(services.getConfig().getDatabase(_dj + "/" + database).tables.get(name)),
+                getMap(components, "schemas")));
+      }
+    }
+
+    return om.writeValueAsString(external);
+  }
+
 
   /**
    * holds the version and vendor info from the jar's manifest

@@ -45,7 +45,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     if ("/openapi.json".equals(path))
       return;
 
-    if (path.startsWith("/_ah/") || path.startsWith("/rest/info/"))
+    if (path.startsWith("/_ah/") || path.startsWith("/rest/info/") || path.equals("/rest/manage/openapi"))
       return;
 
     SecurityContext sc = requestContext.getSecurityContext();
