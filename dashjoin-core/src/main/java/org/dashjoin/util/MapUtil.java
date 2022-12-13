@@ -36,6 +36,14 @@ public class MapUtil {
     }
   }
 
+  /**
+   * like map.get() but casts result to Map(string, object)
+   */
+  @SuppressWarnings("unchecked")
+  public static Map<String, Object> getMap(Map<String, Object> map, String key) {
+    return (Map<String, Object>) map.get(key);
+  }
+
   public static Map<String, Object> of() {
     return new LinkedHashMap<>();
   }

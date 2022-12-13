@@ -1,5 +1,6 @@
 package org.dashjoin.util;
 
+import static org.dashjoin.util.MapUtil.getMap;
 import static org.dashjoin.util.MapUtil.of;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,10 +132,5 @@ public class OpenAPI {
       if (f.get(key) == null)
         f.remove(key);
     }
-  }
-
-  @SuppressWarnings("unchecked")
-  static Map<String, Object> getMap(Map<String, Object> f, String key) {
-    return (Map<String, Object>) f.get(key);
   }
 }
