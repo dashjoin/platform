@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import org.dashjoin.function.AbstractConfigurableFunction;
-import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;

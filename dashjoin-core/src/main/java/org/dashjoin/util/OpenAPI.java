@@ -19,15 +19,21 @@ public class OpenAPI {
    * generate content - application/json - schema - type - object
    */
   public static Map<String, Object> content() {
-    return content(null);
+    return content(null, "object");
   }
 
   /**
    * generate content - application/json - schema - type - object
    */
-  public static Map<String, Object> content(String description) {
-    Map<String, Object> content =
-        of("content", of("application/json", of("schema", of("type", "object"))));
+  public static Map<String, Object> content(String description, String type) {
+    Map<String, Object> t;
+    if ("object".equals(type))
+      t = of("type", "object");
+    else if ("array".equals(type))
+      t = of("type", "array", "items", of("type", "object"));
+    else
+      t = of();
+    Map<String, Object> content = of("content", of("application/json", of("schema", t)));
     if (description != null)
       content.put("description", description);
     return content;
@@ -39,7 +45,7 @@ public class OpenAPI {
   public static Map<String, Object> path(AbstractConfigurableFunction<?, ?> function) {
     Map<String, Object> f = of("/rest/function/" + function.ID,
         of("post", of("summary", function.comment, "operationId", function.ID, "requestBody",
-            content(), "responses", of("200", content(function.ID + " response")))));
+            content(), "responses", of("200", content(function.ID + " response", null)))));
     clean(f);
     return f;
   }
@@ -63,9 +69,10 @@ public class OpenAPI {
    */
   public static Map<String, Object> resultMeta(Map<String, Property> resultMeta,
       String description) {
-    Map<String, Object> res = content(description);
+    Map<String, Object> res = content(description, "array");
     if (resultMeta != null) {
-      Map<String, Object> x = getMap(getMap(getMap(res, "content"), "application/json"), "schema");
+      Map<String, Object> x =
+          getMap(getMap(getMap(getMap(res, "content"), "application/json"), "schema"), "items");
       Map<String, Object> properties = of();
       for (Property p : resultMeta.values())
         properties.put(p.name, property(p));
