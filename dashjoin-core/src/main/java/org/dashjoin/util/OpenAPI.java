@@ -2,6 +2,10 @@ package org.dashjoin.util;
 
 import static org.dashjoin.util.MapUtil.getMap;
 import static org.dashjoin.util.MapUtil.of;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +13,17 @@ import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Services;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 /**
  * some utils for generating openapi fragments from dashjoin config metadata
  */
 public class OpenAPI {
+
+  private static ObjectMapper om = new ObjectMapper(new YAMLFactory());
 
   /**
    * generate content - application/json - schema - type - object
@@ -139,5 +149,34 @@ public class OpenAPI {
       if (f.get(key) == null)
         f.remove(key);
     }
+  }
+
+  /**
+   * read open api spec specified in the config db - returns null if none is configured
+   */
+  public static JsonNode open(Services services) throws Exception {
+    Map<String, Object> config = services.getConfig().getConfigDatabase()
+        .read(Table.ofName("dj-config"), of("ID", "openapi"));
+    if (config.get("map") == null)
+      return null;
+
+    String u = (String) getMap(config, "map").get("url");
+    if (u == null)
+      return null;
+
+    // make sure file: URLs are safe
+    URL url = new URL(u);
+    FileSystem.checkFileAccess(url);
+
+    // open URL, if file, take Home into account
+    InputStream in = null;
+    if ("file".equals(url.getProtocol())) {
+      File file = Home.get().getFile(url.getPath());
+      in = new FileInputStream(file);
+    } else {
+      in = url.openStream();
+    }
+
+    return om.readTree(in);
   }
 }

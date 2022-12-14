@@ -8,7 +8,6 @@ import static org.dashjoin.util.MapUtil.of;
 import static org.dashjoin.util.OpenAPI.path;
 import static org.dashjoin.util.OpenAPI.table;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,8 +69,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Escape;
-import org.dashjoin.util.FileSystem;
-import org.dashjoin.util.Home;
+import org.dashjoin.util.OpenAPI;
 import org.dashjoin.util.Sorter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -1068,29 +1066,10 @@ public class Manage {
   @Produces({MediaType.TEXT_PLAIN})
   public String openapi(@Context SecurityContext sc) throws Exception {
 
-    Map<String, Object> config = services.getConfig().getConfigDatabase()
-        .read(Table.ofName("dj-config"), of("ID", "openapi"));
-    if (config.get("map") == null)
+    JsonNode spec = OpenAPI.open(services);
+    if (spec == null)
       return null;
 
-    String u = (String) getMap(config, "map").get("url");
-    if (u == null)
-      return null;
-
-    // make sure file: URLs are safe
-    URL url = new URL(u);
-    FileSystem.checkFileAccess(url);
-
-    // open URL, if file, take Home into account
-    InputStream in = null;
-    if ("file".equals(url.getProtocol())) {
-      File file = Home.get().getFile(url.getPath());
-      in = new FileInputStream(file);
-    } else {
-      in = url.openStream();
-    }
-
-    JsonNode spec = om.readTree(in);
     @SuppressWarnings("unchecked")
     Map<String, Object> external = om.treeToValue(spec, Map.class);
 
@@ -1137,7 +1116,6 @@ public class Manage {
 
     return om.writeValueAsString(external);
   }
-
 
   /**
    * holds the version and vendor info from the jar's manifest
