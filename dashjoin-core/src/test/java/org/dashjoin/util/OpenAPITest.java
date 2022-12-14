@@ -97,4 +97,16 @@ public class OpenAPITest {
         "{table={type=object, properties={ID={type=number, x-dbType=INT, x-pkPos=0}, name={type=string, x-dbType=VARCHAR}}, required=[ID]}}",
         OpenAPI.table(table).toString());
   }
+
+  @Test
+  public void testMatchPath() {
+    Assertions.assertEquals(null, OpenAPI.matchPath("/a", "/b"));
+    Assertions.assertEquals(of(), OpenAPI.matchPath("/a", "/a"));
+    Assertions.assertEquals(of("a", "b"), OpenAPI.matchPath("/{a}", "/b"));
+    Assertions.assertEquals(of("a", "b"), OpenAPI.matchPath("/{a}/ccc", "/b/ccc"));
+    Assertions.assertEquals(null, OpenAPI.matchPath("/{a}/ccc", "/b/ddd"));
+    Assertions.assertEquals(of("a", "b"), OpenAPI.matchPath("/--{a}--/ccc", "/--b--/ccc"));
+    Assertions.assertEquals(null, OpenAPI.matchPath("/--{a}--/ccc", "/b/ccc"));
+    Assertions.assertEquals(of("a", "b", "c", "d"), OpenAPI.matchPath("/{a}/{c}", "/b/d"));
+  }
 }

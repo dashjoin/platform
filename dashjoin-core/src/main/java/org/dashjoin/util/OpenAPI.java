@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -178,5 +179,36 @@ public class OpenAPI {
     }
 
     return om.readTree(in);
+  }
+
+  /**
+   * matches an openapi path to a given URL
+   * 
+   * @return null if there is no match, a map with path parameters if there is a match
+   */
+  public static Map<String, Object> matchPath(String _path, String _url) {
+    Map<String, Object> res = of();
+    String[] p = _path.split("/");
+    String[] u = _url.split("/");
+    if (p.length != u.length)
+      return null;
+    for (int i = 0; i < p.length; i++) {
+      String path = p[i];
+      String url = u[i];
+      if (path.equals(url))
+        continue;
+      String prefix = StringUtils.getCommonPrefix(path, url);
+      path = path.substring(prefix.length());
+      url = url.substring(prefix.length());
+      String postfix = StringUtils.getCommonPrefix(new StringBuffer(path).reverse().toString(),
+          new StringBuffer(url).reverse().toString());
+      path = path.substring(0, path.length() - postfix.length());
+      url = url.substring(0, url.length() - postfix.length());
+      if (path.startsWith("{") && path.endsWith("}"))
+        res.put(path.substring(1, path.length() - 1), url);
+      else
+        return null;
+    }
+    return res;
   }
 }

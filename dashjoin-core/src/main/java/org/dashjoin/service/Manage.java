@@ -1060,6 +1060,34 @@ public class Manage {
   }
 
   @GET
+  @Path("/createStubs")
+  @Operation(summary = "Reads the openapi.yaml configured and creates function stubs")
+  public void createStubs(@Context SecurityContext sc) throws Exception {
+
+    JsonNode spec = OpenAPI.open(services);
+    if (spec == null)
+      return;
+
+    if (spec.get("paths") != null)
+      for (JsonNode path : spec.get("paths"))
+        for (JsonNode method : path)
+          if (method.get("operationId") != null) {
+            String fn = method.get("operationId").asText();
+
+            try {
+              services.getConfig().getFunction(fn);
+            } catch (IllegalArgumentException ok) {
+              Map<String, Object> x =
+                  of("ID", fn, "djClassName", "org.dashjoin.function.Invoke", "expression", "$");
+              if (method.get("description") != null)
+                x.put("comment", method.get("description").asText());
+
+              data.create(sc, "config", "dj-function", x);
+            }
+          }
+  }
+
+  @GET
   @Path("/openapi")
   @Operation(
       summary = "Reads the openapi.yaml configured and merges functions, queries, and schemas into it")

@@ -1,0 +1,73 @@
+### get app OpenAPI spec
+GET http://localhost:8080/rest/manage/openapi
+
+### create a table based on YAML schema (first prop is the PK)
+POST http://localhost:8080/rest/manage/createTable/sql
+Authorization: Basic admin:djdjdj
+content-type: text/plain
+
+    Pet:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+
+### bootstrap function stubs
+GET http://localhost:8080/rest/manage/createStubs HTTP/1.1
+Authorization: Basic admin:djdjdj
+
+
+
+
+### parses openapi.yaml and delegates to the function listed in operationId
+GET http://localhost:8080/rest/app/pet/findByStatus?status=available HTTP/1.1
+Authorization: Basic admin:djdjdj
+
+### parses openapi.yaml and delegates to the function listed in operationId
+GET http://localhost:8080/rest/app/pet/123 HTTP/1.1
+Authorization: Basic admin:djdjdj
+
+### parses openapi.yaml and delegates to the function listed in operationId
+PUT http://localhost:8080/rest/app/pet HTTP/1.1
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
+{
+    "x": 1
+}
+
+### test delete
+DELETE http://localhost:8080/rest/app/user/TEST
+Authorization: Basic admin:djdjdj
+
+### post without body
+POST http://localhost:8080/rest/app/pet/11?name=22&status=33
+Authorization: Basic admin:djdjdj
+
+### post with body
+POST http://localhost:8080/rest/app/pet/11?name=22&status=33
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
+{
+  "x": 1
+}
+
+### delegate query
+POST http://localhost:8080/rest/app/rest/database/query/sql/q1
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
+### delegate function
+POST http://localhost:8080/rest/app/rest/function/x
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
