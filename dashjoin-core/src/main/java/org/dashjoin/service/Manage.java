@@ -1033,20 +1033,22 @@ public class Manage {
                 String type = (String) ((Map<String, Object>) pk.getValue()).get("type");
                 AbstractDatabase db =
                     services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
-                SchemaChange ddl = db.getSchemaChange();
-                ddl.createTable(entry.getKey(), pk.getKey(), type);
+                try {
+                  SchemaChange ddl = db.getSchemaChange();
+                  ddl.createTable(entry.getKey(), pk.getKey(), type);
 
-                while (iter.hasNext()) {
-                  Entry<String, Object> col = iter.next();
+                  while (iter.hasNext()) {
+                    Entry<String, Object> col = iter.next();
 
-                  // ignore unknown types
-                  String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
-                  if (coltype != null)
-                    ddl.createColumn(entry.getKey(), col.getKey(), coltype);
+                    // ignore unknown types
+                    String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
+                    if (coltype != null)
+                      ddl.createColumn(entry.getKey(), col.getKey(), coltype);
+                  }
+                } finally {
+                  ((PojoDatabase) services.getConfig())
+                      .metadataCollection(services.getDashjoinID() + "/" + database);
                 }
-
-                ((PojoDatabase) services.getConfig())
-                    .metadataCollection(services.getDashjoinID() + "/" + database);
                 return;
               }
             }
@@ -1057,6 +1059,34 @@ public class Manage {
 
     throw new IllegalArgumentException(
         "You must pass a single JSON schema with at least one property in YAML syntax");
+  }
+
+  @GET
+  @Path("/createStubs")
+  @Operation(summary = "Reads the openapi.yaml configured and creates function stubs")
+  public void createStubs(@Context SecurityContext sc) throws Exception {
+
+    JsonNode spec = OpenAPI.open(services);
+    if (spec == null)
+      return;
+
+    if (spec.get("paths") != null)
+      for (JsonNode path : spec.get("paths"))
+        for (JsonNode method : path)
+          if (method.get("operationId") != null) {
+            String fn = method.get("operationId").asText();
+
+            try {
+              services.getConfig().getFunction(fn);
+            } catch (IllegalArgumentException ok) {
+              Map<String, Object> x = of("ID", fn, "djClassName", "org.dashjoin.function.Invoke",
+                  "expression", "(\n  $echo($);\n)\n");
+              if (method.get("description") != null)
+                x.put("comment", method.get("description").asText());
+
+              data.create(sc, "config", "dj-function", x);
+            }
+          }
   }
 
   @GET
