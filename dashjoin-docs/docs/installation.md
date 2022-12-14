@@ -201,6 +201,13 @@ For test + dev, you can create a self-signed certificate with the following comm
 openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 ```
 
+## Cross-origin resource sharing (CORS)
+
+CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
+CORS is enabled by default, with standard settings.
+
+All configuration options are described in the [CORS filter section.](https://quarkus.io/guides/http-reference#cors-filter)
+
 ## Build Locally
 
 Prerequisites:
