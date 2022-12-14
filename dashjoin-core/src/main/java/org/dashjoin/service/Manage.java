@@ -1033,20 +1033,22 @@ public class Manage {
                 String type = (String) ((Map<String, Object>) pk.getValue()).get("type");
                 AbstractDatabase db =
                     services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
-                SchemaChange ddl = db.getSchemaChange();
-                ddl.createTable(entry.getKey(), pk.getKey(), type);
+                try {
+                  SchemaChange ddl = db.getSchemaChange();
+                  ddl.createTable(entry.getKey(), pk.getKey(), type);
 
-                while (iter.hasNext()) {
-                  Entry<String, Object> col = iter.next();
+                  while (iter.hasNext()) {
+                    Entry<String, Object> col = iter.next();
 
-                  // ignore unknown types
-                  String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
-                  if (coltype != null)
-                    ddl.createColumn(entry.getKey(), col.getKey(), coltype);
+                    // ignore unknown types
+                    String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
+                    if (coltype != null)
+                      ddl.createColumn(entry.getKey(), col.getKey(), coltype);
+                  }
+                } finally {
+                  ((PojoDatabase) services.getConfig())
+                      .metadataCollection(services.getDashjoinID() + "/" + database);
                 }
-
-                ((PojoDatabase) services.getConfig())
-                    .metadataCollection(services.getDashjoinID() + "/" + database);
                 return;
               }
             }
@@ -1077,8 +1079,8 @@ public class Manage {
             try {
               services.getConfig().getFunction(fn);
             } catch (IllegalArgumentException ok) {
-              Map<String, Object> x =
-                  of("ID", fn, "djClassName", "org.dashjoin.function.Invoke", "expression", "$");
+              Map<String, Object> x = of("ID", fn, "djClassName", "org.dashjoin.function.Invoke",
+                  "expression", "(\n  $echo($);\n)\n");
               if (method.get("description") != null)
                 x.put("comment", method.get("description").asText());
 
