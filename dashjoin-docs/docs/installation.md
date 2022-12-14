@@ -208,6 +208,22 @@ CORS is enabled by default, with standard settings.
 
 All configuration options are described in the [CORS filter section.](https://quarkus.io/guides/http-reference#cors-filter)
 
+## Logging levels for diagnostics
+
+Verbosity of the Dashjoin Platform is minimized for production workloads.
+The default level for logging is ```INFO```.
+
+In order to increase verbosity for the whole platform, you can use
+```
+QUARKUS_LOG_LEVEL=DEBUG
+```
+
+You can also change the log level of a certain category (module or file),
+for example to change ```com.dashjoin.launch``` logging to ```DEBUG```:
+```
+QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
+```
+
 ## Build Locally
 
 Prerequisites:
