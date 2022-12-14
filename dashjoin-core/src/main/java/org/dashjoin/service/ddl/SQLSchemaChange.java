@@ -27,7 +27,7 @@ public class SQLSchemaChange implements SchemaChange {
               + t(null, null, "string") + ")");
         else {
           stmt.execute("create table " + db.q(table) + "(" + db.q(keyName) + " "
-              + t(table, keyName, keyType) + " primary key)");
+              + t(table, keyName, keyType) + " primary key not null)");
         }
       }
     }
