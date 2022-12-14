@@ -90,6 +90,23 @@ the role names defined in the Dashjoin platform. The IDM must be configured to e
 
 ### Adding the Open ID Config to the Platform
 
+* Option 1: 
+
+The login config can be stored in the app as
+```/assets/logincfg.json```
+
+This is the easiest and usually preferred method.
+
+But note that all app developers with write rights can make changes to this file.
+
+As the login config is highly relevant to security, make sure to validate its content and verify who has made changes.
+
+If this is not acceptable, you can also use the next option.
+
+* Option 2:
+
+Alternatively, you can store the file in the installed Dashjoin platform, outside of the app.
+
 The Open ID configuration must be stored as 
 ```
 META-INF/resources/assets/logincfg.json
