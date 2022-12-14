@@ -116,7 +116,7 @@ public class SQLSchemaChange implements SchemaChange {
         return "jsonb";
     }
     if ("integer".equals(s))
-      return "INTEGER";
+      return "INT";
     if ("boolean".equals(s))
       return db.url.startsWith("jdbc:sqlserver") ? "BIT" : "BOOLEAN";
     if ("number".equals(s))

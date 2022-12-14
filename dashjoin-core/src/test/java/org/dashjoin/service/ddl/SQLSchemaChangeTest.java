@@ -40,7 +40,7 @@ public class SQLSchemaChangeTest {
     SQLSchemaChange s = new SQLSchemaChange(db);
     Assertions.assertEquals("jsonb", s.t(null, null, "object"));
     Assertions.assertEquals("jsonb", s.t(null, null, "array"));
-    Assertions.assertEquals("INTEGER", s.t(null, null, "integer"));
+    Assertions.assertEquals("INT", s.t(null, null, "integer"));
     Assertions.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
     Assertions.assertEquals("DOUBLE PRECISION", s.t(null, null, "number"));
     Assertions.assertEquals("TIMESTAMP", s.t(null, null, "date"));
@@ -55,7 +55,7 @@ public class SQLSchemaChangeTest {
     SQLDatabase db = new SQLDatabase();
     db.url = "jdbc:other:...";
     SQLSchemaChange s = new SQLSchemaChange(db);
-    Assertions.assertEquals("INTEGER", s.t(null, null, "integer"));
+    Assertions.assertEquals("INT", s.t(null, null, "integer"));
     Assertions.assertEquals("BOOLEAN", s.t(null, null, "boolean"));
     Assertions.assertEquals("DOUBLE", s.t(null, null, "number"));
     Assertions.assertEquals("DATETIME", s.t(null, null, "date"));
