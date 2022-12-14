@@ -453,7 +453,8 @@ public class Data {
         if (m.properties != null)
           for (Property p : m.properties.values())
             if (p.pkpos != null)
-              if (!object.containsKey(p.name))
+              // checks both key missing and key=null
+              if (object.get(p.name) == null)
                 if (p.readOnly != null && p.readOnly)
                   // the key is an auto increment key, ok to omit it
                   ;
