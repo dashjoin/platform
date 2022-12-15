@@ -60,8 +60,9 @@ public class OpenAPI {
    */
   public static Map<String, Object> path(AbstractConfigurableFunction<?, ?> function) {
     Map<String, Object> f = of("/rest/function/" + function.ID,
-        of("post", of("summary", function.comment, "operationId", function.ID, "requestBody",
-            content(), "responses", of("200", content(function.ID + " response", null)))));
+        of("x-generated", true, "post",
+            of("summary", function.comment, "operationId", function.ID, "requestBody", content(),
+                "responses", of("200", content(function.ID + " response", null)))));
     clean(f);
     return f;
   }
@@ -72,7 +73,7 @@ public class OpenAPI {
   public static Map<String, Object> path(QueryMeta query, Map<String, Property> resultMeta) {
     String database = query.database.split("/")[1];
     Map<String, Object> f = of("/rest/database/query/" + database + "/" + query.ID,
-        of("post",
+        of("x-generated", true, "post",
             of("summary", query.comment, "operationId", query.ID, "requestBody",
                 parameters(query.arguments), "responses",
                 of("200", resultMeta(resultMeta, query.ID + " response")))));
@@ -132,7 +133,7 @@ public class OpenAPI {
    */
   public static Map<String, Object> table(Table t) {
     Map<String, Object> properties = of();
-    Map<String, Object> val = of("type", "object", "properties", properties);
+    Map<String, Object> val = of("x-generated", true, "type", "object", "properties", properties);
     Map<String, Object> table = of(t.name, val);
     List<String> required = new ArrayList<>();
     for (Property p : t.properties.values()) {
@@ -154,6 +155,20 @@ public class OpenAPI {
         clean(getMap(f, key));
       if (f.get(key) == null)
         f.remove(key);
+    }
+  }
+
+  /**
+   * clean objects marked x-generated: true
+   */
+  public static void cleanGenerated(Map<String, Object> f) {
+    for (String key : new ArrayList<>(f.keySet())) {
+      if (f.get(key) instanceof Map) {
+        cleanGenerated(getMap(f, key));
+        Map<String, Object> kid = getMap(f, key);
+        if (Boolean.TRUE.equals(kid.get("x-generated")))
+          f.remove(key);
+      }
     }
   }
 

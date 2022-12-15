@@ -20,7 +20,7 @@ public class OpenAPITest {
     x.ID = "name";
     x.comment = "description";
     Assertions.assertEquals(
-        "{/rest/function/name={post={summary=description, operationId=name, requestBody={content={application/json={schema={type=object}}}}, responses={200={content={application/json={schema={}}}, description=name response}}}}}",
+        "{/rest/function/name={x-generated=true, post={summary=description, operationId=name, requestBody={content={application/json={schema={type=object}}}}, responses={200={content={application/json={schema={}}}, description=name response}}}}}",
         OpenAPI.path(x).toString());
     // System.out.println(om.writeValueAsString(OpenAPI.path(x)));
   }
@@ -31,7 +31,7 @@ public class OpenAPITest {
     meta.ID = "myquery";
     meta.database = "dj/db";
     Assertions.assertEquals(
-        "{/rest/database/query/db/myquery={post={operationId=myquery, requestBody={content={application/json={schema={type=object}}}}, responses={200={content={application/json={schema={type=array, items={type=object}}}}, description=myquery response}}}}}",
+        "{/rest/database/query/db/myquery={x-generated=true, post={operationId=myquery, requestBody={content={application/json={schema={type=object}}}}, responses={200={content={application/json={schema={type=array, items={type=object}}}}, description=myquery response}}}}}",
         OpenAPI.path(meta, null).toString());
     // System.out.println(om.writeValueAsString(OpenAPI.path(meta, null)));
   }
@@ -94,7 +94,7 @@ public class OpenAPITest {
     Table table = Table.ofName("table");
     table.properties = MapUtil.of("ID", id, "name", name);
     Assertions.assertEquals(
-        "{table={type=object, properties={ID={type=number, x-dbType=INT, x-pkPos=0}, name={type=string, x-dbType=VARCHAR}}, required=[ID]}}",
+        "{table={x-generated=true, type=object, properties={ID={type=number, x-dbType=INT, x-pkPos=0}, name={type=string, x-dbType=VARCHAR}}, required=[ID]}}",
         OpenAPI.table(table).toString());
   }
 

@@ -1083,6 +1083,8 @@ public class Manage {
     @SuppressWarnings("unchecked")
     Map<String, Object> external = om.treeToValue(spec, Map.class);
 
+    OpenAPI.cleanGenerated(external);
+
     JsonNode dj = spec.get("x-dashjoin");
     if (dj == null)
       // nothing to add, return as is
@@ -1117,6 +1119,8 @@ public class Manage {
         String _dj = Escape.parseTableID(schema.asText())[0];
         String database = Escape.parseTableID(schema.asText())[1];
         String name = Escape.parseTableID(schema.asText())[2];
+        if (external.get("components") == null)
+          external.put("components", of());
         Map<String, Object> components = getMap(external, "components");
         components.put("schemas",
             merge(table(services.getConfig().getDatabase(_dj + "/" + database).tables.get(name)),
