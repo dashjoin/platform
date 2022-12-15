@@ -1070,6 +1070,15 @@ public class Manage {
   }
 
   @GET
+  @Path("/saveapi")
+  @Operation(summary = "Writes the output of /openapi back to the source")
+  @Produces({MediaType.TEXT_PLAIN})
+  public void saveapi(@Context SecurityContext sc) throws Exception {
+    String generate = openapi(sc);
+    OpenAPI.save(sc, services, generate);
+  }
+
+  @GET
   @Path("/openapi")
   @Operation(
       summary = "Reads the openapi.yaml configured and merges functions, queries, and schemas into it")

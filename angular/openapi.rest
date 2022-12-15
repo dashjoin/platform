@@ -1,6 +1,10 @@
 ### get app OpenAPI spec
 GET http://localhost:8080/rest/manage/openapi
 
+### write OpenAPI spec
+GET http://localhost:8080/rest/manage/saveapi
+Authorization: Basic admin:djdjdj
+
 ### create a table based on YAML schema (first prop is the PK)
 POST http://localhost:8080/rest/manage/createTable/sql
 Authorization: Basic admin:djdjdj

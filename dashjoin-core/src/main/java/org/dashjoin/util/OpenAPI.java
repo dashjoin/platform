@@ -6,11 +6,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.ws.rs.core.SecurityContext;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
@@ -173,9 +176,9 @@ public class OpenAPI {
   }
 
   /**
-   * read open api spec specified in the config db - returns null if none is configured
+   * get the openapi url
    */
-  public static JsonNode open(Services services) throws Exception {
+  static URL url(Services services) throws Exception {
     Map<String, Object> config = services.getConfig().getConfigDatabase()
         .read(Table.ofName("dj-config"), of("ID", "openapi"));
     if (config.get("map") == null)
@@ -189,6 +192,15 @@ public class OpenAPI {
     URL url = new URL(u);
     FileSystem.checkFileAccess(url);
 
+    return url;
+  }
+
+  /**
+   * read open api spec specified in the config db - returns null if none is configured
+   */
+  public static JsonNode open(Services services) throws Exception {
+    URL url = url(services);
+
     // open URL, if file, take Home into account
     InputStream in = null;
     if ("file".equals(url.getProtocol())) {
@@ -199,6 +211,23 @@ public class OpenAPI {
     }
 
     return om.readTree(in);
+  }
+
+  /**
+   * write openapi spec
+   * 
+   * @param sc
+   */
+  public static void save(SecurityContext sc, Services services, String generate) throws Exception {
+    URL url = url(services);
+    if ("file".equals(url.getProtocol())) {
+      if (!sc.isUserInRole("admin"))
+        throw new Exception("must be admin to write file url");
+      File file = Home.get().getFile(url.getPath());
+      FileUtils.writeStringToFile(file, generate, Charset.defaultCharset());
+    } else {
+      throw new IllegalArgumentException("openapi save only supported for file urls");
+    }
   }
 
   /**
