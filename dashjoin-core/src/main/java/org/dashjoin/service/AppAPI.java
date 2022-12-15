@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.collections4.IteratorUtils;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.util.OpenAPI;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -50,6 +51,7 @@ public class AppAPI {
   @PATCH
   @DELETE
   @Path("/{s:.*}")
+  @Operation(hidden = true)
   public Object get(@Context SecurityContext sc, @Context Request request, @Context UriInfo info,
       @Context HttpHeaders headers, @PathParam("s") String s) throws Exception {
     return handle(request.getMethod().toLowerCase(), sc, info, headers, s, null);
@@ -64,6 +66,7 @@ public class AppAPI {
   @DELETE
   @Path("/{s:.*}")
   @Consumes({MediaType.APPLICATION_JSON})
+  @Operation(hidden = true)
   public Object post(@Context SecurityContext sc, @Context Request request, @Context UriInfo info,
       @Context HttpHeaders headers, @PathParam("s") String s, Object body) throws Exception {
     return handle(request.getMethod().toLowerCase(), sc, info, headers, s, body);
@@ -130,6 +133,7 @@ public class AppAPI {
   @POST
   @Path("/rest/database/query/{database}/{queryId}")
   @Consumes({MediaType.APPLICATION_JSON})
+  @Operation(hidden = true)
   public List<Map<String, Object>> query(@Context SecurityContext sc,
       @PathParam("database") String database, @PathParam("queryId") String queryId,
       Map<String, Object> arguments) throws Exception {
@@ -142,6 +146,7 @@ public class AppAPI {
   @POST
   @Path("/rest/function/{function}")
   @Consumes({MediaType.APPLICATION_JSON})
+  @Operation(hidden = true)
   public Object call(@Context SecurityContext sc, @PathParam("function") String function,
       Object argument) throws Exception {
     return functionService.call(sc, function, argument);
