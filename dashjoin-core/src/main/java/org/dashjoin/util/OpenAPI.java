@@ -7,14 +7,19 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
+import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
+import org.dashjoin.service.ddl.SchemaChange;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -210,5 +215,67 @@ public class OpenAPI {
         return null;
     }
     return res;
+  }
+
+  /**
+   * creates a table in the db based on JSON schema spec
+   * 
+   * @param services main service
+   * @param database name of the db to create table in
+   * @param map json schema
+   * 
+   * @throws Exception something went wrong during DDL
+   */
+  public static void ddl(Services services, String database, JsonNode map, JsonNode root)
+      throws Exception {
+    if (map.size() == 1) {
+      Entry<String, JsonNode> entry = map.fields().next();
+      JsonNode properties = entry.getValue().get("properties");
+      if (properties != null) {
+        if (properties.size() > 0) {
+          Iterator<Entry<String, JsonNode>> iter = properties.fields();
+          Entry<String, JsonNode> pk = iter.next();
+          JsonNode type = pk.getValue().get("type");
+          if (type != null) {
+            AbstractDatabase db =
+                services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
+            try {
+              SchemaChange ddl = db.getSchemaChange();
+              ddl.createTable(entry.getKey(), pk.getKey(), type.asText());
+
+              while (iter.hasNext()) {
+                Entry<String, JsonNode> col = iter.next();
+
+                // handle $ref
+                JsonNode ref = col.getValue().get("$ref");
+                if (ref != null) {
+                  for (String part : ref.asText().split("/")) {
+                    if (part.equals("#"))
+                      continue;
+                    if (root == null)
+                      break;
+                    root = root.get(part);
+                  }
+                  if (root == null)
+                    continue;
+                  col.setValue(root);
+                }
+
+                // ignore unknown types
+                JsonNode coltype = col.getValue().get("type");
+                if (coltype != null)
+                  ddl.createColumn(entry.getKey(), col.getKey(), coltype.asText());
+              }
+            } finally {
+              ((PojoDatabase) services.getConfig())
+                  .metadataCollection(services.getDashjoinID() + "/" + database);
+            }
+            return;
+          }
+        }
+      }
+    }
+    throw new IllegalArgumentException(
+        "You must pass a single JSON schema with at least one property in YAML syntax");
   }
 }

@@ -67,7 +67,6 @@ import org.dashjoin.model.AbstractDatabase.CreateBatch;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.OpenAPI;
 import org.dashjoin.util.Sorter;
@@ -78,12 +77,13 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.sqlite.JDBC;
-import org.yaml.snakeyaml.Yaml;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ibm.db2.jcc.DB2Driver;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
@@ -999,7 +999,6 @@ public class Manage {
   /**
    * Creates a table according to the given JSON schema
    */
-  @SuppressWarnings("unchecked")
   @POST
   @Path("/createTable/{database}")
   @Operation(summary = "Creates a table according to the given JSON schema")
@@ -1015,50 +1014,31 @@ public class Manage {
     ACLContainerRequestFilter.check(sc, config, m, CREATE);
 
     // parse OpenAPI YAML schema fragment
-    Object y = new Yaml().load(yaml);
+    JsonNode table = om.readTree(yaml);
 
-    // must be single schema with at least 1 property
-    if (y instanceof Map) {
-      Map<String, Object> map = (Map<String, Object>) y;
-      if (map.size() == 1) {
-        Entry<String, Object> entry = map.entrySet().iterator().next();
-        if (entry.getValue() instanceof Map) {
-          Object p = ((Map<String, Object>) entry.getValue()).get("properties");
-          if (p instanceof Map) {
-            Map<String, Object> properties = (Map<String, Object>) p;
-            if (properties.size() > 0) {
-              Iterator<Entry<String, Object>> iter = properties.entrySet().iterator();
-              Entry<String, Object> pk = iter.next();
-              if (pk.getValue() instanceof Map) {
-                String type = (String) ((Map<String, Object>) pk.getValue()).get("type");
-                AbstractDatabase db =
-                    services.getConfig().getDatabase(services.getDashjoinID() + "/" + database);
-                try {
-                  SchemaChange ddl = db.getSchemaChange();
-                  ddl.createTable(entry.getKey(), pk.getKey(), type);
-
-                  while (iter.hasNext()) {
-                    Entry<String, Object> col = iter.next();
-
-                    // ignore unknown types
-                    String coltype = (String) ((Map<String, Object>) col.getValue()).get("type");
-                    if (coltype != null)
-                      ddl.createColumn(entry.getKey(), col.getKey(), coltype);
-                  }
-                } finally {
-                  ((PojoDatabase) services.getConfig())
-                      .metadataCollection(services.getDashjoinID() + "/" + database);
-                }
-                return;
-              }
+    if (table instanceof TextNode) {
+      JsonNode spec = OpenAPI.open(services);
+      if (spec != null) {
+        JsonNode components = spec.get("components");
+        if (components != null) {
+          JsonNode schemas = components.get("schemas");
+          if (schemas != null) {
+            JsonNode t = schemas.get(table.asText());
+            if (t != null) {
+              ObjectNode x = om.createObjectNode();
+              x.set(table.asText(), t);
+              OpenAPI.ddl(services, database, x, spec);
+              return;
             }
           }
         }
+        throw new IllegalArgumentException("Cannot find /components/schemas/" + table.asText());
+      } else {
+        throw new IllegalArgumentException("No openapi spec associated with this app");
       }
+    } else {
+      OpenAPI.ddl(services, database, table, null);
     }
-
-    throw new IllegalArgumentException(
-        "You must pass a single JSON schema with at least one property in YAML syntax");
   }
 
   @GET

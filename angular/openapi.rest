@@ -20,6 +20,13 @@ content-type: text/plain
         tag:
           type: string
 
+### create a table based on connected openapi spec - provide name of the schema in /components/schemas as a text
+POST http://localhost:8080/rest/manage/createTable/sql
+Authorization: Basic admin:djdjdj
+content-type: text/plain
+
+User
+
 ### bootstrap function stubs
 GET http://localhost:8080/rest/manage/createStubs HTTP/1.1
 Authorization: Basic admin:djdjdj
