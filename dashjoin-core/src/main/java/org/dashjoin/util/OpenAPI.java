@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,10 @@ import org.dashjoin.service.ddl.SchemaChange;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * some utils for generating openapi fragments from dashjoin config metadata
@@ -200,6 +205,8 @@ public class OpenAPI {
    */
   public static JsonNode open(Services services) throws Exception {
     URL url = url(services);
+    if (url == null)
+      return null;
 
     // open URL, if file, take Home into account
     InputStream in = null;
@@ -207,7 +214,16 @@ public class OpenAPI {
       File file = Home.get().getFile(url.getPath());
       in = new FileInputStream(file);
     } else {
-      in = url.openStream();
+      Map<String, Object> config = services.getConfig().getConfigDatabase()
+          .read(Table.ofName("dj-config"), of("ID", "openapi"));
+      String apiKey = (String) getMap(config, "map").get("apiKey");
+      if (apiKey == null)
+        in = url.openStream();
+      else {
+        URLConnection con = url.openConnection();
+        con.setRequestProperty("Authorization", apiKey);
+        in = con.getInputStream();
+      }
     }
 
     return om.readTree(in);
@@ -220,13 +236,34 @@ public class OpenAPI {
    */
   public static void save(SecurityContext sc, Services services, String generate) throws Exception {
     URL url = url(services);
+    if (url == null)
+      return;
     if ("file".equals(url.getProtocol())) {
       if (!sc.isUserInRole("admin"))
         throw new Exception("must be admin to write file url");
       File file = Home.get().getFile(url.getPath());
       FileUtils.writeStringToFile(file, generate, Charset.defaultCharset());
     } else {
-      throw new IllegalArgumentException("openapi save only supported for file urls");
+      Map<String, Object> config = services.getConfig().getConfigDatabase()
+          .read(Table.ofName("dj-config"), of("ID", "openapi"));
+      String apiKey = (String) getMap(config, "map").get("apiKey");
+      if (apiKey == null)
+        throw new IllegalArgumentException("openapi save apiKey required");
+      else {
+        String s = url.toString();
+        if (s.endsWith("/swagger.yaml")) {
+          s = s.substring(0, s.length() - "/swagger.yaml".length());
+          s = s.substring(0, s.lastIndexOf('/'));
+        }
+
+        Request request = new Request.Builder().url(s).addHeader("Authorization", apiKey)
+            .addHeader("content-type", "application/yaml").post(RequestBody.create(null, generate))
+            .build();
+
+        Response response = new OkHttpClient().newCall(request).execute();
+        if (!response.isSuccessful())
+          throw new Exception("save failed: " + response.code() + " - " + response.message());
+      }
     }
   }
 
