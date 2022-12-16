@@ -1131,9 +1131,11 @@ public class Manage {
         if (external.get("components") == null)
           external.put("components", of());
         Map<String, Object> components = getMap(external, "components");
-        components.put("schemas",
-            merge(table(services.getConfig().getDatabase(_dj + "/" + database).tables.get(name)),
-                getMap(components, "schemas")));
+        AbstractDatabase db = services.getConfig().getDatabase(_dj + "/" + database);
+        Table t = db.tables.get(name);
+        if (t == null)
+          throw new Exception("Table " + name + " not found");
+        components.put("schemas", merge(table(t), getMap(components, "schemas")));
       }
     }
 
