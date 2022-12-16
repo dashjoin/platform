@@ -245,8 +245,6 @@ public class Data {
     if (arguments == null)
       arguments = new HashMap<>();
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
-    if (info == null)
-      throw new Exception("Query " + queryId + " not found");
 
     ACLContainerRequestFilter.check(sc, info);
 
@@ -289,8 +287,6 @@ public class Data {
     if (arguments == null)
       arguments = new HashMap<>();
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
-    if (info == null)
-      throw new Exception("Query " + queryId + " not found");
 
     if (readOnly && "write".equals(info.type))
       return null;

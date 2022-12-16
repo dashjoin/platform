@@ -137,6 +137,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
           }
       }
 
+    if (res == null)
+      throw new IllegalArgumentException("Unknown query: " + id);
+    
     return res;
   }
 
