@@ -1,5 +1,15 @@
+/* tables do not wrap cells and show ... for long entries. also add some padding before the next col */
 th,
 td {
-    padding-left: 2px;
-    padding-right: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 20px !important;
+    max-width: 30vw;
+    /* make sure one column does not dominate the entire table */
+}
+
+/* reduce line spacing */
+tr.mat-row {
+    height: 1.5em !important;
 }
