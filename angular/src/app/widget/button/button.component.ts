@@ -34,6 +34,8 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
   call() {
     this.runExpression(this.layout.print ? this.layout.print : this.layout.navigate, this.layout.clearCache)
       .then(res => {
+        if (this.layout.clearCache)
+          this.eventChange.emit({ type: 'update' });
         if (this.layout.print) {
           this.snackBar.open(res as string, 'Ok', { duration: 3000 });
         } else {
