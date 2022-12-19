@@ -133,13 +133,22 @@ public class PojoDatabase extends UnionDatabase implements Config {
             res = new QueryMeta();
             res.ID = id;
             res.query = id;
-            res.roles = Arrays.asList("authenticated");
+
+            // pojo queries inherit table / db readRoles
+            AbstractDatabase c = services.getConfig().getConfigDatabase();
+            Table t = c.tables.get(cq.table());
+            if (t.readRoles != null && !t.readRoles.isEmpty())
+              res.roles = t.readRoles;
+            else if (c.readRoles != null && !c.readRoles.isEmpty())
+              res.roles = c.readRoles;
+            else
+              res.roles = Arrays.asList("authenticated");
           }
       }
 
     if (res == null)
       throw new IllegalArgumentException("Unknown query: " + id);
-    
+
     return res;
   }
 
