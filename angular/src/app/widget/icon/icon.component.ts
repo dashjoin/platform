@@ -62,4 +62,12 @@ export class IconComponent extends TextComponent implements OnInit {
   isBaseVersion(): boolean {
     return !(window.location.href.includes('my.dashjoin.org') || window.location.href.includes('my.dashjoin.com'));
   }
+
+  /**
+   * logout and then navigate to login page
+   */
+  async logout() {
+    await this.router.navigate(['/logout']);
+    this.router.navigate(['/login']);
+  }
 }
