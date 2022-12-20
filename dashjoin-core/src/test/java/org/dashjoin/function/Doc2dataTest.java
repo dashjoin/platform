@@ -1,11 +1,15 @@
 package org.dashjoin.function;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import javax.inject.Inject;
 import javax.ws.rs.core.SecurityContext;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.util.MapUtil;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.w3c.dom.Document;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -43,6 +48,17 @@ public class Doc2dataTest {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y></c>");
     Assertions.assertEquals("{c={x=1, y=2}}", res.toString());
+  }
+
+  @Test
+  public void xmlOneElementArray() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(
+        new ByteArrayInputStream("<?xml version=\"1.0\"?><c><y><list>1</list></y></c>".getBytes()));
+    Assertions.assertEquals("{y={list=[1]}}",
+        "" + Doc2data.xml(doc.getDocumentElement(), Arrays.asList("list")));
   }
 
   // @Test

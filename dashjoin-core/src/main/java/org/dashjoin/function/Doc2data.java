@@ -155,8 +155,12 @@ public class Doc2data extends AbstractFunction<String, Object> {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static Object xml(Element node) {
+    return xml(node, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Object xml(Element node, List<String> arrays) {
     Map<String, Object> res = new LinkedHashMap<>();
     NamedNodeMap att = node.getAttributes();
     for (int i = 0; i < att.getLength(); i++)
@@ -173,14 +177,17 @@ public class Doc2data extends AbstractFunction<String, Object> {
       if (list.item(i) instanceof Element) {
         Element kid = (Element) list.item(i);
         Object old = res.get(kid.getNodeName());
-        if (old == null)
-          res.put(kid.getNodeName(), xml(kid));
-        else if (old instanceof List)
-          ((List<Object>) old).add(xml(kid));
+        if (old == null) {
+          if (arrays != null && arrays.contains(kid.getNodeName()))
+            res.put(kid.getNodeName(), Arrays.asList(xml(kid, arrays)));
+          else
+            res.put(kid.getNodeName(), xml(kid, arrays));
+        } else if (old instanceof List)
+          ((List<Object>) old).add(xml(kid, arrays));
         else {
           List<Object> tmp = new ArrayList<>();
           tmp.add(old);
-          tmp.add(xml(kid));
+          tmp.add(xml(kid, arrays));
           res.put(kid.getNodeName(), tmp);
         }
       }

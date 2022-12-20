@@ -1076,7 +1076,7 @@ streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at th
 streamDb | $streamDb(database, table) | Streams records from the database table specified
 openJson | $openJson(url) | Parses JSON at the url
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
-openXml | $openXml(url) | Parses XML at the url and converts it to JSON
+openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openText | $openText(url, encoding) | Parses the url and converts it to a string
