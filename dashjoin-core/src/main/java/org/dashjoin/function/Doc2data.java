@@ -179,7 +179,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
         Object old = res.get(kid.getNodeName());
         if (old == null) {
           if (arrays != null && arrays.contains(kid.getNodeName()))
-            res.put(kid.getNodeName(), Arrays.asList(xml(kid, arrays)));
+            res.put(kid.getNodeName(), new ArrayList<>(Arrays.asList(xml(kid, arrays))));
           else
             res.put(kid.getNodeName(), xml(kid, arrays));
         } else if (old instanceof List)
