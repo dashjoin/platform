@@ -1143,3 +1143,14 @@ The role mappings on the customer are translated to a JSONata expression:
 
 * query: select * from customer where region = ${tenant}
 * query parameter expression: { "tenant": "sales-south" in roles ? "south" : ("sales-north" in roles ? "north") }
+
+## Adding static assets to the app
+
+Static assets like images, logos, movies, and other files required by your application can be placed in the ```/assets```folder.
+
+The assets are accessible in the running application as ```http(s)://<app url>/assets```
+
+By definition, access to static assets does not require login, so they are always readable / publically accessible.
+Do not place any confidential data in the assets folder.
+
+When working with version control tools (i.e. git), assets can be maintained along with all other app resources under revision control.
