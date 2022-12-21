@@ -201,6 +201,74 @@ For test + dev, you can create a self-signed certificate with the following comm
 openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 ```
 
+## Import an SSL certificate to the Java trust store
+
+When accessing a third party system via SSL or HTTPS, the SSL certificate of the destination system needs to be trusted.
+
+In most cases this works "automatically" when the certificate was created such that an already trusted root certificate is already part of the Java trustStore. The trust store contains all major root certificates and is maintained by the Java vendor.
+
+When you encounter an error similar to the following:
+
+```
+javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.
+SunCertPathBuilderException: unable to find valid certification path to requested target
+```
+
+this means that the SSL certificate of the host being contacted is not trusted, and access was denied.
+This means that the certificate is either self-signed (dev or test), or by a root certificate not trusted (for example a corporate internal root certificate).
+
+There are 2 options to solve this situation:
+
+- if the destination host is under your control, create and use a certificate that is trusted
+
+This is usually the preferred method, as it does not require to manually edit the trustStore.
+
+Remember that whenever the SSL certificate needs to be renewed (i.e. after expiry), the error will again show up, and another change to the trustStore is required, and the procedure needs to be repeated!
+
+- import the SSL certificate to the Java trustStore
+
+The import procedure involves several steps.
+Please follow this [detailed guide](https://confluence.atlassian.com/kb/how-to-import-a-public-ssl-certificate-into-a-jvm-867025849.html) that shows how to import the certificate to the existing Java trust store called ```cacerts```
+
+Let's call the new trust store including the imported certificate(s) ```my-cacerts```,
+now it needs to be made available to the running application in this location:
+
+```<java.home>/lib/security/cacerts```
+
+Note that the Java home is logged upon startup of the platform as ```java.home```:
+```
+Dashjoin Platform 3.1.38-e525ab3-6e8f7b6 (built 2022-12-20T17:31:57+0000)
+Linux 5.15.49-linuxkit aarch64 / OpenJDK 64-Bit Server VM 17.0.5+8-jvmci-22.3-b08 - GraalVM CE 22.3.0
+availableProcessors 4 / maxMemory (MB) 8192 / freeMemory (MB) 64 / totalMemory (MB) 80
+> cwd       = /deployments
+> java.home = /opt/graalvm-ce-java17-22.3.0
+
+ _________         ______   ____    ____     
+  ___/ __ \____ ______/ /_    (_)___  (_)___ 
+   _/ / / / __ `/ ___/ __ \  / / __ \/ / __ \
+   / /_/ / /_/ (__  ) / / / / / /_/ / / / / /
+  /_____/\__,_/____/_/ /_/_/ /\____/_/_/ /_/ 
+                        /___/                
+ 
+              Powered by Quarkus 2.14.3.Final
+```
+
+If you have access to the file system of the installed Dashjoin platform, you can replace the file with the new version (copy my-cacerts over cacerts).
+
+In the containerized application, we can mount the file in the cacerts location.
+When using the docker CLI, use a mount option like
+
+``` -v /path/to/my-cacerts:/opt/<java.home>/lib/security/cacerts ```
+
+A complete Docker command using a customized ```logincfg.json``` and ```my-cacerts``` in the current directory:
+
+```
+docker run -p 8080:8080 \
+  -v $(pwd)/logincfg.json:/deployments/assets/logincfg.json \
+  -v $(pwd)/my-cacerts:/opt/graalvm-ce-java17-22.3.0/lib/security/cacerts \
+  dashjoin/platform:latest
+```
+
 ## Cross-origin resource sharing (CORS)
 
 CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
