@@ -1137,7 +1137,7 @@ export class InstanceComponent implements OnInit {
    * checks whether the session role is contained in the roles defined given
    */
   isInRoles(roles: string[]): boolean {
-    if (roles) {
+    if (roles && roles.length > 0) {
       const sr = sessionStorage.roles ? JSON.parse(sessionStorage.roles) : undefined;
       for (const role of roles) {
         if (sr?.includes(role)) {
