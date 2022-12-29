@@ -396,9 +396,17 @@ public class SQLDatabase extends AbstractDatabase {
         PgArray arr = (PgArray) obj;
         obj = arr.getArray();
       } else if (obj instanceof BigDecimal) {
-        obj = ((BigDecimal) obj).longValue();
-        if (Integer.MIN_VALUE < (long) obj && (long) obj < Integer.MAX_VALUE)
-          obj = Math.toIntExact((long) obj);
+        // convert to double
+        obj = ((BigDecimal) obj).doubleValue();
+
+        if ((double) obj == Math.round((double) obj)) {
+          // natural number, convert to long
+          obj = Math.round((double) obj);
+
+          // small natural number, conver to int
+          if (Integer.MIN_VALUE < (long) obj && (long) obj < Integer.MAX_VALUE)
+            obj = Math.toIntExact((long) obj);
+        }
       }
     }
 
