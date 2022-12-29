@@ -12,6 +12,7 @@ import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
+import org.dashjoin.function.AbstractEveryoneFunction;
 import org.dashjoin.function.Function;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
@@ -45,7 +46,8 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     if ("/openapi.json".equals(path))
       return;
 
-    if (path.startsWith("/_ah/") || path.startsWith("/rest/info/") || path.equals("/rest/manage/openapi"))
+    if (path.startsWith("/_ah/") || path.startsWith("/rest/info/")
+        || path.equals("/rest/manage/openapi"))
       return;
 
     SecurityContext sc = requestContext.getSecurityContext();
@@ -58,6 +60,8 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
    */
   public static void check(SecurityContext sc, Function<?, ?> function) {
     if (sc.isUserInRole("admin"))
+      return;
+    if (function instanceof AbstractEveryoneFunction)
       return;
     if (function.getRoles() != null)
       for (String role : function.getRoles()) {
