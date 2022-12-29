@@ -11,7 +11,7 @@ import io.quarkus.test.junit.QuarkusTest;
 public class Excel2dataTest {
 
   @Test
-  public void xlsx() throws Exception {
+  public void testxlsx() throws Exception {
     Excel2data f = new Excel2data() {
       @Override
       public Object run(String arg) throws Exception {

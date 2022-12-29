@@ -9,7 +9,7 @@ import io.quarkus.test.junit.QuarkusTest;
 public class CrawlTest {
 
   @Test
-  public void crawl() throws Exception {
+  public void testcrawl() throws Exception {
     Crawl r = new Crawl();
     Assertions.assertThrows(FileNotFoundException.class, () -> {
       r.run("file:upload");

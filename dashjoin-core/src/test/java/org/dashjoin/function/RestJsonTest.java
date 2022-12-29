@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class RestJsonTest {
 
   @Test
-  public void rest() throws Exception {
+  public void testrest() throws Exception {
     RestJson r = new RestJson();
     Map<String, Object> arg = new HashMap<>();
     r.url = "file:rest";

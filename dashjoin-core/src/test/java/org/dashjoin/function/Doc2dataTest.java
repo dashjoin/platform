@@ -27,14 +27,14 @@ public class Doc2dataTest {
   ExpressionService expr;
 
   @Test
-  public void url() throws Exception {
+  public void testurl() throws Exception {
     Assertions.assertThrows(FileNotFoundException.class, () -> {
       new Doc2data().run("file:upload/notthere.txt");
     });
   }
 
   @Test
-  public void file() throws Exception {
+  public void testfile() throws Exception {
     Assertions.assertThrows(RuntimeException.class, () -> {
       new Doc2data().run("src/test/resources/data/json.json");
     });
@@ -44,14 +44,14 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void xml() throws Exception {
+  public void testxml() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y></c>");
     Assertions.assertEquals("{c={x=1, y=2}}", res.toString());
   }
 
   @Test
-  public void xmlOneElementArray() throws Exception {
+  public void testxmlOneElementArray() throws Exception {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
     DocumentBuilder db = dbf.newDocumentBuilder();
@@ -68,14 +68,14 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void xmlArr() throws Exception {
+  public void testxmlArr() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\"><y>2</y><y>3</y></c>");
     Assertions.assertEquals("{c={x=1, y=[2, 3]}}", res.toString());
   }
 
   @Test
-  public void xmlArr2() throws Exception {
+  public void testxmlArr2() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse(
         "<?xml version=\"1.0\"?><c x=\"1\"><list><y>2</y></list><list><y>2</y><y>2</y><y>2</y></list></c>");
@@ -83,7 +83,7 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void xmlTextWithAtt() throws Exception {
+  public void testxmlTextWithAtt() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\">test</c>");
     Assertions.assertEquals("{c={x=1, _content=test}}", res.toString());
@@ -103,32 +103,32 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void csv() throws Exception {
+  public void testcsv() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("id,name\n123,joe");
     Assertions.assertEquals("[{name=joe, id=123}]", res.toString());
   }
 
   @Test
-  public void single() throws Exception {
+  public void testsingle() throws Exception {
     Doc2data f = new Doc2data();
     Assertions.assertEquals("{x=1}", f.run("{\"x\":1}").toString());
   }
 
   @Test
-  public void list() throws Exception {
+  public void testlist() throws Exception {
     Doc2data f = new Doc2data();
     Assertions.assertEquals("[{x=1}]", f.run("[{\"x\":1}]").toString());
   }
 
   @Test
-  public void map() throws Exception {
+  public void testmap() throws Exception {
     Doc2data f = new Doc2data();
     Assertions.assertEquals("{x=1}", f.run("{\"x\":1}").toString());
   }
 
   @Test
-  public void json1() throws Exception {
+  public void testjson1() throws Exception {
 
     Doc2data f = new Doc2data();
 
@@ -147,7 +147,7 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void json2() throws Exception {
+  public void testjson2() throws Exception {
 
     Doc2data f = new Doc2data();
 
@@ -168,7 +168,7 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void jsonata() throws Exception {
+  public void testjsonata() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Object res = expr.resolve(sc, "[\"1\", \"2\"].$doc2data($&\"1\").{\"output\": $}", null);
