@@ -3,6 +3,7 @@
         <mat-label>{{label}}</mat-label>
         <textarea style="font-family: monospace" matInput [formControl]="text" autocomplete="off"></textarea>
     </mat-form-field>
+    &nbsp;
     <button *ngIf="ide()" mat-button (click)="editor()">
         <mat-icon>edit</mat-icon>
     </button>

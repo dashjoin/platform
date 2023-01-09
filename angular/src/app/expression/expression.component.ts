@@ -131,11 +131,8 @@ export class ExpressionComponent implements WidgetComponent, OnInit {
    */
   setMessage(message: string) {
     const lines = message.split('\n');
-    while (lines.length < 10) {
-      lines.push('');
-    }
     let res = '';
-    for (const l of lines.slice(0, 10)) {
+    for (const l of lines.slice(0, 1000)) {
       res += l + '\n';
     }
     this.message = res;
