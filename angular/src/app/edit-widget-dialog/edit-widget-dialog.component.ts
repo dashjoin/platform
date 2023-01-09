@@ -218,7 +218,7 @@ export class EditWidgetDialogComponent {
             },
             deleteConfirmation: {
               static: true,
-              title: 'Optional delete confirmation text',
+              title: 'Optional confirmation text',
               type: 'string',
               case: this.generateCase('deleteConfirmation')
             },

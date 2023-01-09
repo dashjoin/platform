@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Util } from '../../util';
 import { DJBaseComponent } from '../../djbase/djbase.component';
 import { DashjoinWidget } from '../widget-registry';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 
 /**
  * action button with an optional form to enter call parameters
@@ -12,7 +13,7 @@ import { DashjoinWidget } from '../widget-registry';
   category: 'Default',
   description: 'Component that draws an action button',
   htmlTag: 'dj-button',
-  fields: ['title', 'text', 'print', 'navigate', 'properties', 'clearCache']
+  fields: ['title', 'text', 'print', 'navigate', 'properties', 'clearCache', 'deleteConfirmation']
 })
 @Component({
   selector: 'app-button',
@@ -32,6 +33,26 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
    * button widget action (navigate or print)
    */
   call() {
+    if (this.layout.deleteConfirmation) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          message: this.layout.deleteConfirmation,
+          buttonText: {
+            ok: 'OK',
+            cancel: 'Cancel'
+          }
+        }
+      }).afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+          this.call2();
+        }
+      });
+    } else {
+      this.call2();
+    }
+  }
+
+  call2() {
     this.runExpression(this.layout.print ? this.layout.print : this.layout.navigate, this.layout.clearCache)
       .then(res => {
         if (this.layout.clearCache)

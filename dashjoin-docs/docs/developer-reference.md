@@ -407,6 +407,7 @@ Runs / evaluates an expression when clicked.
 * navigate: evaluate expression and navigate to result URL when clicked
 * properties: optional properties the user needs to enter before clicking (please refer to the FAQ for information on how to customize the input form)
 * clearCache: if checked, clears the browser cache (use this option if the expression performs side effects on the database)
+* deleteConfirmation: optional confirmation message before performing the action
 
 #### chart
 
