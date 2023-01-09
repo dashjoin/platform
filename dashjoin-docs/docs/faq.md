@@ -8,7 +8,29 @@
 
 * **I have an object with special characters in the field names (e.g. a SQL query result). How can I access this field in the HTML widget?** The HTML widget uses [EJS](https://ejs.co/), which allows embedding JavaScript templates in HTML. In Javascript, you can access non-alphanummeric field names as follows: `object["field.name"]`. Click [here](https://demo.my.dashjoin.com/#/page/html) for a live example.
 
-* **How can I customize the forms in the edit, button and variable widgets?** These widgets use the JSON Schema Form component. This [online playground]() lets you experiment with the various features. This component comes with a WYSIWYG editor which is available in edit mode by clicking the three vertical dot icon. Note that not all features of the component are exposed in the WYSIWYG editor. You can leverage the advanced features by editing the underlying JSON directly. The demo application shows two examples. The "createSchema" of the [customer page](https://github.com/dashjoin/dashjoin-demo/blob/main/model/dj-database/dj%252Fnorthwind.json) section shows the form of the email button, which displays the email body input field with a larger text box. The city instance page shows a similar layout for the edit widget. The [variable example](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/variable.json) shows how a select widget with display names and values can be rendered.
+* **How can I customize the forms in the edit, button and variable widgets?** These widgets use the JSON Schema Form component. This [online playground](https://dashjoin.github.io/) lets you experiment with the various features. This component comes with a WYSIWYG editor which is available in edit mode by clicking the three vertical dot icon. Note that not all features of the component are exposed in the WYSIWYG editor. You can leverage the advanced features by editing the underlying JSON directly. The demo application shows two examples. The "createSchema" of the [customer page](https://github.com/dashjoin/dashjoin-demo/blob/main/model/dj-database/dj%252Fnorthwind.json) section shows the form of the email button, which displays the email body input field with a larger text box. The city instance page shows a similar layout for the edit widget. The [variable example](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/variable.json) shows how a select widget with display names and values can be rendered.
+
+* **How can I use values from the database in the edit, button and variable widgets?** This can be achieved by combining the JSON Schema Form extension mechanism described in the section above with the [API](../api). In the example below, all values from the table test in the DB sql are retrieved. The jsonata expression projects the column id to be used as the auto-complete choices in the input field.
+
+```
+{
+    "widget": "button",
+    "properties": {
+        "test": "string"
+    },
+    "createSchema": {
+        "type": "object",
+        "properties": {
+            "test": {
+                "type": "string",
+                "choicesUrl": "/rest/database/all/sql/test",
+                "jsonata": "id",
+                "choicesVerb": "POST"
+            }
+        }
+    },
+},
+```
 
 * **Are SQL stored procedures supported?** Yes, simply use 'exec proc' or 'call proc(par)' as the query, depending on the SQL dialect used by your DB. In case a stored procedure has multiple result tables, the $query function returns them by wrapping them in a top level object.
 

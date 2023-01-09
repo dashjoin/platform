@@ -405,7 +405,7 @@ Runs / evaluates an expression when clicked.
 * text: text shown for the run button (default is "Run")
 * print: evaluate expression and print result at the bottom of the screen when clicked
 * navigate: evaluate expression and navigate to result URL when clicked
-* properties: optional properties the user needs to enter before clicking
+* properties: optional properties the user needs to enter before clicking (please refer to the FAQ for information on how to customize the input form)
 * clearCache: if checked, clears the browser cache (use this option if the expression performs side effects on the database)
 
 #### chart
@@ -473,7 +473,7 @@ When icons is "*": "icon", all icons will be mapped to that same specified icon.
 
 #### edit
 
-allows editing a database record
+allows editing a database record. Note that the form layout can be customized in the layout editor. Please also refer to the FAQ for information on how to further customize the input form.
 
 * deleteConfirmation: optional confirmation message before deleting the record
 
@@ -570,7 +570,7 @@ Displays a form that allows setting session variables. If a variable "x" is defi
 A variable can be set via a URL query parameter. Appending ?a=1&b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only
 string variables can be set this way, so you might have to use $number(variable.a) when using the variable.
 
-* properties: an object where the fields are variable names and the values the respective types
+* properties: an object where the fields are variable names and the values the respective types (please refer to the FAQ for information on how to customize the input form)
 
 ### Special Widgets
 
