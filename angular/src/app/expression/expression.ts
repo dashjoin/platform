@@ -16,15 +16,6 @@ export class Expression {
     static template(expression: string, context: any, def: string) {
         if (!expression) {
             return def;
-        } else if (expression.includes('${')) {
-            return expression.replace(/\${(.*?)}/g, (g) => {
-                try {
-                    return jsonata(g.substring(2, g.length - 1)).evaluate(context);
-                }
-                catch (evalError) {
-                    return g;
-                }
-            });
         } else if (expression.includes('<%') && expression.includes('%>')) {
             try {
                 // Compile the Embedded JavaScript (EJS) template
@@ -36,6 +27,15 @@ export class Expression {
             catch (evalError) {
                 return expression;
             }
+        } else if (expression.includes('${')) {
+            return expression.replace(/\${(.*?)}/g, (g) => {
+                try {
+                    return jsonata(g.substring(2, g.length - 1)).evaluate(context);
+                }
+                catch (evalError) {
+                    return g;
+                }
+            });
         } else {
             return expression;
         }

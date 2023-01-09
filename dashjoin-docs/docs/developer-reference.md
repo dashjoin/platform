@@ -493,7 +493,7 @@ Displays custom HTML
 * html: HTML to display, can include [Embedded JavaScript templating](https://ejs.co/) 
 * css: CSS code to apply to the HTML
 * hideframe: Remove mat-card class from parent tag
-* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}` or if Embedded JavaScript templating is used via `<%=context.VARIABLE}%>`
 
 Note that by default, the CSS styles are only applied to the component.
 This feature can be turned off by adding the following comment to the HTML:
