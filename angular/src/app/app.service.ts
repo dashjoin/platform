@@ -360,7 +360,7 @@ export class AppService implements CanActivate {
             hasVariable = true;
             if (object[x])
               allUndefined = false;
-            return object[x];
+            return object[x] ? object[x] : '';
           }
 
           // Resolve ${*property}
