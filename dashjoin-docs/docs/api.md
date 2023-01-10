@@ -164,4 +164,193 @@ the following OpenAPI path response is generated:
 
 ### Implementing an existing OpenAPI Specification
 
-TODO
+The second use case highlights a scenario where we work in an API centric fashion. This means that the OpenAPI spec is designed first instead
+of being generated from existing code.
+
+As an example, we will implement the Petstore example that is featured in the [Swagger Editor](https://editor.swagger.io/). Simply select "Save as YAML"
+and place the file in "upload/petstore.yaml". Then, change the openapi config (/#/resource/config/dj-config/openapi) to "url": "file:upload/petstore.yaml".
+
+#### Creating Tables
+
+The Petstore API defines several data structures such as Pet, User, etc. Not all of them necessarily need to be mapped to tables. The Address structure for example, merely defines a complex column in the table customer. Since OpenAPI schemas usually contain nested types and arrays, we should choose a
+database that supports these datatypes. For this example, we'll use a Postgres DB that is registered under the name "postgres".
+
+The platform offers an API that allows creating a table directly from the OpenAPI spec. Note that the first property is assumed to be the primary key.
+We'll create the Pet table using this curl command:
+
+```text
+curl -X 'POST' \
+  'http://localhost:8080/rest/manage/createTable/postgres' \
+  -H 'accept: */*' \
+  -H 'Authorization: Basic YWRtaW46ZGpkamRq' \
+  -H 'Content-Type: text/plain' \
+  -d 'Pet'
+```
+
+Once you update the database to trigger the table scan, the Pet table shows up.
+Note that nested types and arrays get converted to [jsonb columns](https://www.postgresql.org/docs/current/datatype-json.html).
+
+#### Creating Function Stubs
+
+Next, we'll create function stubs from the OpenAPI spec. This functionality is also available on the platform API:
+
+```text
+curl http://admin:djdjdj@localhost:8080/rest/manage/createStubs
+```
+
+This creates an invoke function that simply echos the input for each operation in the spec. The name of the function is the 
+value of the OpenAPI operationId.
+
+#### Testing a Stub
+
+Before we can test a generated function stub, we need to change the value of the server field. This field provides options for the 
+APIs to be tested from the Swagger UI. We set this value to:
+
+```yaml
+servers:
+  - url: /rest/app
+```
+
+The endpoint /rest/app is a generic API handler that delegates incoming calls to the appropriate function.
+
+The Petstore example comes with open authentication and API key authentication. For simplicity, we'll add basic authentication:
+
+```yaml
+  securitySchemes:
+    Basic_Auth:
+      type: "http"
+      scheme: "basic"
+```
+
+We'll implement the addPet and getPetById calls. So you'll have to allow basic authentication with these calls by adding:
+
+```yaml
+  /pet/{petId}:
+      ...
+      security:
+        - Basic_Auth: []
+        - api_key: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+```
+
+```yaml
+  /pet:
+    put:
+      ...
+    post:
+      ...
+      security:
+        - Basic_Auth: []
+        - petstore_auth:
+            - write:pets
+            - read:pets
+```
+
+Now you can reload the Swagger UI with the OpenAPI spec at /rest/manage/openapi, login using basic authentication, and test the find pet by ID call
+with petId 123. The resulting JSON is:
+
+```json
+{
+  "parameters": {
+    "petId": "123"
+  },
+  "body": null
+}
+```
+
+Likewise, the result of the addPet call - using the sample parameters provided - is:
+
+```json
+{
+  "parameters": null,
+  "body": {
+    "id": 10,
+    "name": "doggie",
+    "category": {
+      "id": 1,
+      "name": "Dogs"
+    },
+    "photoUrls": [
+      "string"
+    ],
+    "tags": [
+      {
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "status": "available"
+  }
+}
+```
+
+You can see that the generic API handler always passes an object to the function. This object contains the keys parameters and body.
+Parameters contains all path, query, cookie, and header parameters defined. The body optionally contains the JSON payload.
+
+#### Implementing the Functions
+
+Using the JSONata functions, we can now implement the functions. AddPet can be handled with this expression:
+
+```json
+(
+  $echo($);
+  $create("postgres", "Pet", body);
+  body;
+)
+```
+
+First we echo the object passed to the function so we can trace the call on the log. Since the structure
+of the body matches the JSON schema that was used to generate the table, we can pass it one to one.
+Finally, we return the body since that is expected by the OpenAPI specification.
+
+The find pet by ID call is also very simple:
+
+```json
+$read("postgres", "Pet", parameters.petId)
+```
+
+### Contributing to an existing OpenAPI Specification
+
+The third use case extends both the first and second use case. We assume you're working in an API centric fashion, however, 
+parts of the spec should be derived from existing systems. Typically, there's a strong correlation between schemas and
+existing databases, so we'll extend the petstore example with a schema generated from the northwind sample database.
+
+First, we'll need to indicate that a certain table should be added to the OpenAPI spec:
+
+```yaml
+x-dashjoin:
+  x-schemas:
+  - dj/northwind/US_STATES
+```
+
+This makes the schema for US_STATES appear in the spec. Note that the schema is marked with the flag x-generated=true.
+Currently, the extended spec is only available via the platform. Therefore, we can export it using another API call:
+
+```text
+http://admin:djdjdj@localhost:8080/rest/manage/saveapi
+```
+
+Since we configured the OpenAPI spec to be read from a file URL, the system updates the file to include the new schema, making
+it available for other tooling.
+In case the database schema is updated, e.g. another column is added, this process can be repeated. The x-generated flag
+makes sure that updates on the database are reflected, despite the schema already being present in the file.
+
+### SwaggerHub Integration
+
+SwaggerHub is a popular tool for authoring and managing your APIs. Consequently, instead of using a file URL, we allow
+using a SwaggerHub URL. In order to have the platform authenticate against the SwaggerHub API, you must generated an API
+key and provide it in the openapi system configuration:
+
+```json
+{
+    "ID": "openapi",
+    "map": {
+        "url": "https://api.swaggerhub.com/apis/[ORG-NAME]/[API-NAME]/[VERSION]/swagger.yaml",
+        "apiKey": "..."
+    }
+}
+```
+
+In this case the save operation adds generated fragments to this specific API version.
