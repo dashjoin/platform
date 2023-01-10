@@ -99,8 +99,9 @@ public class OpenAPI {
       Map<String, Object> x =
           getMap(getMap(getMap(getMap(res, "content"), "application/json"), "schema"), "items");
       Map<String, Object> properties = of();
-      for (Property p : resultMeta.values())
-        properties.put(p.name, property(p));
+      for (Entry<String, Property> p : resultMeta.entrySet())
+        properties.put(p.getValue().name != null ? p.getValue().name : p.getKey(),
+            property(p.getValue()));
       x.put("properties", properties);
     }
     return res;
