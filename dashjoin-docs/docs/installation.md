@@ -426,3 +426,17 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Support union queries in query preview
 * SDK
   * Support downloading binary data
+
+### 3.2 (Jan 2023)
+
+ * OpenAPI
+   * Dashjoin Apps can expose OpenAPI interface
+   * Implement existing OpenAPI specification via functions
+   * SwaggerHub integration
+ * Platform
+   * ARM support
+   * CORS configuration
+ * UI
+   * Optional confirmation dialog for button widget
+ * SDK
+   * Ability to include static assets in apps
