@@ -293,7 +293,7 @@ Parameters contains all path, query, cookie, and header parameters defined. The 
 
 Using the JSONata functions, we can now implement the functions. AddPet can be handled with this expression:
 
-```json
+```text
 (
   $echo($);
   $create("postgres", "Pet", body);
@@ -307,7 +307,7 @@ Finally, we return the body since that is expected by the OpenAPI specification.
 
 The find pet by ID call is also very simple:
 
-```json
+```text
 $read("postgres", "Pet", parameters.petId)
 ```
 
