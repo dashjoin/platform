@@ -239,9 +239,9 @@ public class OpenAPI {
     URL url = url(services);
     if (url == null)
       return;
+    if (!sc.isUserInRole("admin"))
+      throw new Exception("must be admin to save API spec");
     if ("file".equals(url.getProtocol())) {
-      if (!sc.isUserInRole("admin"))
-        throw new Exception("must be admin to write file url");
       File file = Home.get().getFile(url.getPath());
       FileUtils.writeStringToFile(file, generate, Charset.defaultCharset());
     } else {
