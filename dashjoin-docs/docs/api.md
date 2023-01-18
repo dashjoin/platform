@@ -97,6 +97,9 @@ components:
 
 This specification is written in YAML and contains some basic metadata about the API version and description. It also specifies that clients
 can connect using HTTP basic authentication. Please note that you can author these specifications using this [online editor](https://editor.swagger.io/).
+The SwaggerHub offering also allows you to save the specs in the cloud.
+See the [dashjoin repository](https://app.swaggerhub.com/apis/dashjoin/add/1.0.0) and the
+[raw YAML spec](https://api.swaggerhub.com/apis/dashjoin/add/1.0.0/swagger.yaml).
 
 In the "x-dashjoin" section, we specify that the function "add" is to be added to the API. Normally, the API path, schema, response types, etc. would have to be added. In our case, the Dashjoin platform generates that into this template.
 
