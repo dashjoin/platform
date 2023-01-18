@@ -1,0 +1,1278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+    
+    
+      
+        <title>Installation - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.975780f9.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="None" data-md-color-accent="None">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#installation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Installation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting Started: 15 Minute Tour
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        Concepts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        Developer Reference
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../platform-as-a-service/" class="md-nav__link">
+        Platform as a Service
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Installation
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#download-and-local-developer-setup" class="md-nav__link">
+    Download and local developer setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-local-admin-user" class="md-nav__link">
+    Creating a local Admin User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-users" class="md-nav__link">
+    Local users
+  </a>
+  
+    <nav class="md-nav" aria-label="Local users">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-the-users-password-to-djusersproperties" class="md-nav__link">
+    1. Add the user's password to djusers.properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-the-users-roles-to-djrolesproperties" class="md-nav__link">
+    2. Add the user's role(s) to djroles.properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-calculate-the-password-hash" class="md-nav__link">
+    How to calculate the password hash
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opening-the-dashjoin-application" class="md-nav__link">
+    Opening the Dashjoin application
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-local-dashjoin-installation-as-service" class="md-nav__link">
+    Run local Dashjoin installation as service
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    Environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-enable-https" class="md-nav__link">
+    How to enable HTTPS
+  </a>
+  
+    <nav class="md-nav" aria-label="How to enable HTTPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-signed-certificate" class="md-nav__link">
+    Self-signed certificate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-an-ssl-certificate-to-the-java-trust-store" class="md-nav__link">
+    Import an SSL certificate to the Java trust store
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-origin-resource-sharing-cors" class="md-nav__link">
+    Cross-origin resource sharing (CORS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging-levels-for-diagnostics" class="md-nav__link">
+    Logging levels for diagnostics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build Locally
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eclipse" class="md-nav__link">
+    Eclipse
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-history" class="md-nav__link">
+    Version History
+  </a>
+  
+    <nav class="md-nav" aria-label="Version History">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-may-2021" class="md-nav__link">
+    1.0 (May 2021)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-jan-2022" class="md-nav__link">
+    2.0 (Jan 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-april-2022" class="md-nav__link">
+    2.1 (April 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-july-2022" class="md-nav__link">
+    2.5 (July 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30-oct-2022" class="md-nav__link">
+    3.0 (Oct 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-dec-2022" class="md-nav__link">
+    3.1 (Dec 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-jan-2023" class="md-nav__link">
+    3.2 (Jan 2023)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        Administration
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        Development / Production
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        Supported Databases
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        API
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#download-and-local-developer-setup" class="md-nav__link">
+    Download and local developer setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-local-admin-user" class="md-nav__link">
+    Creating a local Admin User
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-users" class="md-nav__link">
+    Local users
+  </a>
+  
+    <nav class="md-nav" aria-label="Local users">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-the-users-password-to-djusersproperties" class="md-nav__link">
+    1. Add the user's password to djusers.properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-the-users-roles-to-djrolesproperties" class="md-nav__link">
+    2. Add the user's role(s) to djroles.properties
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-calculate-the-password-hash" class="md-nav__link">
+    How to calculate the password hash
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opening-the-dashjoin-application" class="md-nav__link">
+    Opening the Dashjoin application
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-local-dashjoin-installation-as-service" class="md-nav__link">
+    Run local Dashjoin installation as service
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment" class="md-nav__link">
+    Environment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-enable-https" class="md-nav__link">
+    How to enable HTTPS
+  </a>
+  
+    <nav class="md-nav" aria-label="How to enable HTTPS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#self-signed-certificate" class="md-nav__link">
+    Self-signed certificate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-an-ssl-certificate-to-the-java-trust-store" class="md-nav__link">
+    Import an SSL certificate to the Java trust store
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-origin-resource-sharing-cors" class="md-nav__link">
+    Cross-origin resource sharing (CORS)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging-levels-for-diagnostics" class="md-nav__link">
+    Logging levels for diagnostics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build Locally
+  </a>
+  
+    <nav class="md-nav" aria-label="Build Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eclipse" class="md-nav__link">
+    Eclipse
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-history" class="md-nav__link">
+    Version History
+  </a>
+  
+    <nav class="md-nav" aria-label="Version History">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-may-2021" class="md-nav__link">
+    1.0 (May 2021)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-jan-2022" class="md-nav__link">
+    2.0 (Jan 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#21-april-2022" class="md-nav__link">
+    2.1 (April 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-july-2022" class="md-nav__link">
+    2.5 (July 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30-oct-2022" class="md-nav__link">
+    3.0 (Oct 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31-dec-2022" class="md-nav__link">
+    3.1 (Dec 2022)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-jan-2023" class="md-nav__link">
+    3.2 (Jan 2023)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="installation">Installation</h1>
+<p>The easiest and recommended way to run Dashjoin as a production service is to use the <a href="#docker">container image.</a></p>
+<h2 id="download-and-local-developer-setup">Download and local developer setup</h2>
+<p>Installers and binaries for Windows, MacOS, and Linux are available at <a href="https://download.dashjoin.com/">https://download.dashjoin.com/</a></p>
+<p>Important: These binaries run Dashjoin as a developer application, <a href="#run-local-dashjoin-installation-as-service">not as a service.</a></p>
+<ul>
+<li>windows/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Java Runtime.
+Unzip and start dashjoin.exe in a command prompt.</p>
+<ul>
+<li>windows/dashjoin-version.msi</li>
+</ul>
+<p>Dashjoin Windows Installer.</p>
+<p>Same contents as windows/dashjoin-exe.zip plus start menu icon.</p>
+<ul>
+<li>macos/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Runtime.</p>
+<p>Unzip and start <code>MacOS/Dashjoin</code> in a command prompt </p>
+<p>Note: if you get an error saying "This Application is broken", <a href="https://developer.apple.com/forums/thread/666452#answers-list">Apple Quarantine</a> needs to be cleared with this command:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>xattr -cr Contents
+</code></pre></div></p>
+<ul>
+<li>macos/Dashjoin-version.dmg</li>
+</ul>
+<p>Dashjoin MacOS Installer</p>
+<p>Note: if you get an error saying "This Application is broken", <a href="https://developer.apple.com/forums/thread/666452#answers-list">Apple Quarantine</a> needs to be cleared with this command:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>xattr -cr Dashjoin-*.dmg
+</code></pre></div></p>
+<ul>
+<li>linux/dashjoin-exe.zip</li>
+</ul>
+<p>Portable Dashjoin Platform Executable including Java Runtime.</p>
+<p>Unzip and start <code>bin/Dashjoin</code> in a command prompt</p>
+<ul>
+<li>linux/dashjoin-version.deb</li>
+</ul>
+<p>Dashjoin Linux Installer. Same contents as linux/dashjoin-exe.zip</p>
+<ul>
+<li>dashjoin-jar.zip</li>
+</ul>
+<p>Generic Java Archive (JAR) for all platforms</p>
+<h2 id="creating-a-local-admin-user">Creating a local Admin User</h2>
+<p>After installing Dashjoin, no user is set up in the system (a user can be defined via the environment variables - see below for more information).
+To set up the local development admin user, navigate to <a href="http://localhost:8080/#/setup">http://localhost:8080/#/setup</a>.</p>
+<p>Choose a name, a username, and the password.</p>
+<p>Example: Name <code>Local Admin</code>, username <code>admin</code>, password <code>My.secure.pass!</code></p>
+<p>Note:</p>
+<p>this only works the very first time! After a development admin is created, no more local users can be created from the UI.</p>
+<p>To change or disable the local user, please edit or delete the files <code>djroles.properties</code> and <code>djusers.properties</code> in the application root directory. <a href="#local-users">Here are more details on local users</a></p>
+<p>The Dashjoin authentication is configured to allow log in using social Google or Github accounts, or to allow registration of users by e-mail and password (authentication via e-mail uses the Google Firebase authentication).</p>
+<p><a href="https://www.youtube.com/watch?v=_xmFRwhbAFA">Click here</a> for a demo video.</p>
+<h2 id="local-users">Local users</h2>
+<p>Local users are maintained in the files <code>djusers.properties</code> and <code>djroles.properties</code>.</p>
+<p>As the purpose for local users is for setup + dev, there is no management UI.
+To create / update users, or change the pwd, the corresponding entries have to be changed there.</p>
+<p>Passwords need to be <a href="#how-to-calculate-the-password-hash">specified as hash of</a>
+<code>username:Dashjoin:password</code></p>
+<p>Follow these steps to add/change a local user:</p>
+<h3 id="1-add-the-users-password-to-djusersproperties">1. Add the user's password to <code>djusers.properties</code></h3>
+<p>Important - hash the password salted with username + realm "Dashjoin":
+For user "myuser" and password "mypass", need hash of <code>myuser:Dashjoin:mypass</code></p>
+<p>For this example the result is <code>a3f1c2e80af79503cef46f9e198919d3</code> (see <a href="#how-to-calculate-the-password-hash">how to calculate below</a>)</p>
+<p>So we need to add this line to <code>djusers.properties</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>myuser=a3f1c2e80af79503cef46f9e198919d3
+</code></pre></div></p>
+<h3 id="2-add-the-users-roles-to-djrolesproperties">2. Add the user's role(s) to <code>djroles.properties</code></h3>
+<p>To give "myuser" the "authenticated" role, add this line to <code>djroles.properties</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>myuser=authenticated
+</code></pre></div>
+Multiple roles can be added with comma separation</p>
+<h3 id="how-to-calculate-the-password-hash">How to calculate the password hash</h3>
+<ul>
+<li>
+<p>Linux/MacOS:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>echo -n &quot;myuser:Dashjoin:mypass&quot; | md5sum -
+</code></pre></div></p>
+</li>
+<li>
+<p>Windows:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>powershell Write-Host -NoNewline &quot;myuser:Dashjoin:mypass&quot; &gt;temp.txt
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>powershell (Get-FileHash -algorithm md5 temp.txt).Hash.ToLower()
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>del temp.txt
+</code></pre></div>
+need to store the string in a file temp.txt first (please delete after). Make sure there are no additional spaces and newlines</p>
+</li>
+<li>
+<p>Online:</p>
+</li>
+</ul>
+<p>For test/dev purposes you can also use an online service like <a href="https://emn178.github.io/online-tools/md5.html">https://emn178.github.io/online-tools/md5.html</a></p>
+<p>Note this might be insecure if the online service stores or re-publishes the entered strings!</p>
+<h2 id="opening-the-dashjoin-application">Opening the Dashjoin application</h2>
+<p>To access the application, navigate to <a href="http://localhost:8080">http://localhost:8080</a></p>
+<h2 id="docker">Docker</h2>
+<p>The official container image <code>dashjoin/platform</code> is hosted on <a href="https://hub.docker.com/r/dashjoin/platform">dockerhub</a></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker pull dashjoin/platform
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>docker run -p <span class="m">8080</span>:8080 dashjoin/platform
+</code></pre></div>
+<p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+<p>If you would like to make the registered databases and credentials persistent, you can mount the "model" folder:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker run -p <span class="m">8080</span>:8080 -v PERSISTENT_FOLDER:/deployments/model dashjoin/platform
+</code></pre></div>
+<h2 id="run-local-dashjoin-installation-as-service">Run local Dashjoin installation as service</h2>
+<p>If you have installed Dashjoin locally and want to run the application as a service,
+here are links on how to set up the service (not supported for production):</p>
+<ul>
+<li><a href="https://download.dashjoin.com/dashjoin/support/windows/">Windows</a></li>
+<li><a href="https://automationrhapsody.com/install-java-application-linux-service/">Linux</a> (link to external site)</li>
+</ul>
+<h2 id="environment">Environment</h2>
+<p>Dashjoin uses the <a href="https://quarkus.io/guides/config-reference">Quarkus configuration framework</a>.
+A Dashjoin instance can be configured using the following environment variables:</p>
+<ul>
+<li>DJ_ADMIN_USER: admin user name (defaults to "admin")</li>
+<li>DJ_ADMIN_PASS: admin password (default is blank)</li>
+<li>DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)</li>
+<li>DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified</li>
+<li>DASHJOIN_APPURL: optional git url where an app is cloned / pulled from</li>
+</ul>
+<p>By default, the service will be bound to 0.0.0.0 (all IP addresses) and serve HTTP on port 8080.</p>
+<p>For configuring HTTP ports, keystores etc. please refer to the <a href="https://quarkus.io/guides/http-reference">Quarkus HTTP reference</a>.
+The following example shows how to change the HTTP port using the windows executable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&gt; <span class="nb">set</span> <span class="nv">QUARKUS_HTTP_PORT</span><span class="o">=</span><span class="m">3333</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>&gt; Dashjoin.exe
+</code></pre></div>
+<h2 id="how-to-enable-https">How to enable HTTPS</h2>
+<p>Note:
+in a production environment, very often a global load balancer (or other edge device) that serves HTTPS to the outside and connects
+to the Dashjoin service using HTTP is used.</p>
+<p>To enable HTTPS for the platform, the certificate file and the key file are required (usually called <code>cert.pem</code> and <code>key.pem</code>).</p>
+<p>Alternatively you can use a Java keystore, and you can also disable HTTP completely. Please refer to the <a href="https://quarkus.io/guides/http-reference">Quarkus HTTP reference</a> for all configuration options.</p>
+<p>Configure the service with the following settings:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>QUARKUS_HTTP_SSL_CERTIFICATE_FILE=/path/to/cert.pem
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILE=/path/to/key.pem
+</code></pre></div></p>
+<p>By default, the HTTPS port is 8443. To change it use:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>QUARKUS_HTTP_SSL_PORT=58443
+</code></pre></div></p>
+<h3 id="self-signed-certificate">Self-signed certificate</h3>
+<p>For test + dev, you can create a self-signed certificate with the following command
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+</code></pre></div></p>
+<h2 id="import-an-ssl-certificate-to-the-java-trust-store">Import an SSL certificate to the Java trust store</h2>
+<p>When accessing a third party system via SSL or HTTPS, the SSL certificate of the destination system needs to be trusted.</p>
+<p>In most cases this works "automatically" when the certificate was created such that an already trusted root certificate is already part of the Java trustStore. The trust store contains all major root certificates and is maintained by the Java vendor.</p>
+<p>When you encounter an error similar to the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>javax.net.ssl.SSLHandshakeException: PKIX path building failed: sun.security.provider.certpath.
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>SunCertPathBuilderException: unable to find valid certification path to requested target
+</code></pre></div>
+<p>this means that the SSL certificate of the host being contacted is not trusted, and access was denied.
+This means that the certificate is either self-signed (dev or test), or by a root certificate not trusted (for example a corporate internal root certificate).</p>
+<p>There are 2 options to solve this situation:</p>
+<ul>
+<li>if the destination host is under your control, create and use a certificate that is trusted</li>
+</ul>
+<p>This is usually the preferred method, as it does not require to manually edit the trustStore.</p>
+<p>Remember that whenever the SSL certificate needs to be renewed (i.e. after expiry), the error will again show up, and another change to the trustStore is required, and the procedure needs to be repeated!</p>
+<ul>
+<li>import the SSL certificate to the Java trustStore</li>
+</ul>
+<p>The import procedure involves several steps.
+Please follow this <a href="https://confluence.atlassian.com/kb/how-to-import-a-public-ssl-certificate-into-a-jvm-867025849.html">detailed guide</a> that shows how to import the certificate to the existing Java trust store called <code>cacerts</code></p>
+<p>Let's call the new trust store including the imported certificate(s) <code>my-cacerts</code>,
+now it needs to be made available to the running application in this location:</p>
+<p><code>&lt;java.home&gt;/lib/security/cacerts</code></p>
+<p>Note that the Java home is logged upon startup of the platform as <code>java.home</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Dashjoin Platform 3.1.38-e525ab3-6e8f7b6 (built 2022-12-20T17:31:57+0000)
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Linux 5.15.49-linuxkit aarch64 / OpenJDK 64-Bit Server VM 17.0.5+8-jvmci-22.3-b08 - GraalVM CE 22.3.0
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>availableProcessors 4 / maxMemory (MB) 8192 / freeMemory (MB) 64 / totalMemory (MB) 80
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>&gt; cwd       = /deployments
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>&gt; java.home = /opt/graalvm-ce-java17-22.3.0
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a> _________         ______   ____    ____     
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>  ___/ __ \____ ______/ /_    (_)___  (_)___ 
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>   _/ / / / __ `/ ___/ __ \  / / __ \/ / __ \
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>   / /_/ / /_/ (__  ) / / / / / /_/ / / / / /
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>  /_____/\__,_/____/_/ /_/_/ /\____/_/_/ /_/ 
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>                        /___/                
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>              Powered by Quarkus 2.14.3.Final
+</code></pre></div></p>
+<p>If you have access to the file system of the installed Dashjoin platform, you can replace the file with the new version (copy my-cacerts over cacerts).</p>
+<p>In the containerized application, we can mount the file in the cacerts location.
+When using the docker CLI, use a mount option like</p>
+<p><code>-v /path/to/my-cacerts:/opt/&lt;java.home&gt;/lib/security/cacerts</code></p>
+<p>A complete Docker command using a customized <code>logincfg.json</code> and <code>my-cacerts</code> in the current directory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>docker run -p 8080:8080 \
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  -v $(pwd)/logincfg.json:/deployments/assets/logincfg.json \
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  -v $(pwd)/my-cacerts:/opt/graalvm-ce-java17-22.3.0/lib/security/cacerts \
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  dashjoin/platform:latest
+</code></pre></div>
+<h2 id="cross-origin-resource-sharing-cors">Cross-origin resource sharing (CORS)</h2>
+<p>CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
+CORS is enabled by default, with standard settings.</p>
+<p>All configuration options are described in the <a href="https://quarkus.io/guides/http-reference#cors-filter">CORS filter section.</a></p>
+<h2 id="logging-levels-for-diagnostics">Logging levels for diagnostics</h2>
+<p>Verbosity of the Dashjoin Platform is minimized for production workloads.
+The default level for logging is <code>INFO</code>.</p>
+<p>In order to increase verbosity for the whole platform, you can use
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>QUARKUS_LOG_LEVEL=DEBUG
+</code></pre></div></p>
+<p>You can also change the log level of a certain category (module or file),
+for example to change <code>com.dashjoin.launch</code> logging to <code>DEBUG</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
+</code></pre></div></p>
+<h2 id="build-locally">Build Locally</h2>
+<p>Prerequisites:</p>
+<ul>
+<li><a href="https://openjdk.java.net/">Java</a> (11 or later)</li>
+<li><a href="https://nodejs.org/">Node</a> (12 or later)</li>
+<li><a href="https://maven.apache.org/">Maven</a> (3.6 or later)</li>
+<li><a href="https://angular.io/cli">Angular CLI</a> (11 or later)</li>
+<li>For Windows users: you need to create the symbolic link in "platform\dashjoin\src\main\resources\META-INF": <code>mklink /D resources ..\..\..\..\..\angular\dist\angular</code></li>
+</ul>
+<p>Dashjoin uses Quarkus as runtime framework (<a href="https://quarkus.io">https://quarkus.io</a>).
+You can run your application in dev mode using:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>platform/angular$ npm install <span class="o">[</span>--legacy-peer-deps <span class="c1"># required if nvm -version &gt; 7.0!)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>platform/angular$ ng build
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>platform$ mvn install
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>platform/dashjoin$ mvn compile quarkus:dev
+</code></pre></div>
+<p>Point your browser to <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+<p>You can use the provided launch file to directly run from within Eclipse (right-click on the launch file, "Run as" or "Debug as" -&gt; "Dashjoin", 
+note that you need to adjust your jdk, mvn, and working directory location in the file "Dashjoin.launch").
+This requires the Eclipse Quarkus plugin (<a href="https://quarkus.io/blog/eclipse-got-quarkused/">https://quarkus.io/blog/eclipse-got-quarkused/</a>) and the Lombok
+plugin (<a href="https://projectlombok.org/setup/eclipse">https://projectlombok.org/setup/eclipse</a>) to be installed.
+Launching with "Debug as" will also enable live coding mode.</p>
+<p>The application can be packaged and installed locally using:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>platform/dashjoin$ mvn package install
+</code></pre></div></p>
+<p>It produces the <code>dashjoin-0.0.1-SNAPSHOT-runner.jar</code> file in the <code>/target</code> directory.
+Be aware that it’s not an <em>uber-jar</em> as the dependencies are copied into the <code>target/lib</code> directory.</p>
+<p>If you want to build an <em>uber-jar</em>, execute the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>platform/dashjoin$ mvn package -Dquarkus.package.type<span class="o">=</span>uber-jar
+</code></pre></div>
+<p>The application is now runnable using <code>java -jar target/dashjoin-0.0.1-SNAPSHOT-runner.jar</code>.</p>
+<h3 id="eclipse">Eclipse</h3>
+<p>The Eclipse IDE can be used to develop and debug locally.
+First install the <a href="https://marketplace.eclipse.org/content/quarkus-tools">Eclipse Quarkus tools</a>.</p>
+<p>After cloning the Github repository, you need to import at least the following Maven projects into the Eclipse workspace:</p>
+<ul>
+<li>dashjoin</li>
+<li>dashjoin-core</li>
+</ul>
+<p>Optional additional modules:
+* dashjoin-demo
+* dashjoin-kafka
+* dashjoin-mongodb</p>
+<p>The Maven dependencies need to be initialized with (right click dashjoin project folder) -&gt; Maven -&gt; Update Project.
+The Angular UI must be built using the CLI, please refer to the previous section.</p>
+<p>When everything was build successfully, you can use the Dashjoin.launch configuration to run or debug the platform.
+The Quarkus launcher supports hot loading of resources, i.e. any changes made will be adjusted at runtime without having to restart the platform.
+(Note: you will have to adjust the absolute folder references in the launch file to you own workspace settings)</p>
+<h2 id="version-history">Version History</h2>
+<h3 id="10-may-2021">1.0 (May 2021)</h3>
+<ul>
+<li>Launch of the platform</li>
+</ul>
+<h3 id="20-jan-2022">2.0 (Jan 2022)</h3>
+<ul>
+<li>Extended support for databases: MongoDB, ArangoDB, RDF</li>
+<li>Support for graph queries: database drivers can implement graph / path queries, widgets can display graph query results and the platform has basic support for OpenCypher</li>
+<li>Chart improvements: support for stacked bar charts, ability to configure charts with all ChartJS options</li>
+<li>New Function: the "receive" function supports streaming data / IoT use cases</li>
+<li>App development / lifecycle: apps can be written collaboratively on GitHub, auto-installed upon platform launch</li>
+<li>Functions and databases can be deployed as micro-services using the RemoteDatabase driver</li>
+</ul>
+<h3 id="21-april-2022">2.1 (April 2022)</h3>
+<ul>
+<li>UI: HTML component, icons editor and display icon specification, run write queries from catalog, JSONata editor, MAP widget, PDF export</li>
+<li>ETL: streaming XML, YAML, transparent HTTP caching</li>
+<li>JSONata: 100% compatibility to JSONataJS, functions with multiple parameters</li>
+<li>Graph Search: PathQL integration</li>
+<li>Data Model: JSONb arrays can be foreign keys, allow specifying external ontology</li>
+</ul>
+<h3 id="25-july-2022">2.5 (July 2022)</h3>
+<ul>
+<li>UI</li>
+<li>Components can be scheduled to redraw live data</li>
+<li>Chart, table and tree widget support JSONata in addition to DB queries</li>
+<li>Page variables can be set via the URL</li>
+<li>Charts are clickable and navigate to the respective instance page</li>
+<li>Forms support document upload</li>
+<li>Search: Results can be restricted per database and table</li>
+<li>Data Model</li>
+<li>Databases, tables and properties can be assigned a "title" that is used in forms and hyperlinks</li>
+<li>A description can be set for databases, tables and properties, enhancing the technical metadata with semantics</li>
+<li>Support for SQL views</li>
+<li>SDK</li>
+<li>Monaco editor integrated for editing SQL, HTML, and CSS</li>
+<li>Introduced CSV parsing options</li>
+<li>New openText function allows web scaping</li>
+</ul>
+<h3 id="30-oct-2022">3.0 (Oct 2022)</h3>
+<ul>
+<li>UI</li>
+<li>Query editor preview enhanced for complex queries</li>
+<li>Query catalog improvements for scripts and write queries</li>
+<li>Display and table widgets support showing images, hyperlinks and lists</li>
+<li>Query processing</li>
+<li>Support for multiple SQL result sets</li>
+<li>Streaming DB copy</li>
+<li>Better support for stored procedures</li>
+<li>Access control</li>
+<li>Row level security</li>
+<li>SDK</li>
+<li>Ability to provide alternative development DBs and REST services</li>
+<li>Platform helps in identifying missing / orphaned queries / functions</li>
+<li>Platform offers JSON:API and ODATA interfaces</li>
+</ul>
+<h3 id="31-dec-2022">3.1 (Dec 2022)</h3>
+<ul>
+<li>UI</li>
+<li>Create and edit queries directly from layout editor</li>
+<li>Ability to block entire pages for certain user roles</li>
+<li>Easy customization of the toolbar for different user roles</li>
+<li>Query processing</li>
+<li>Support union queries in query preview</li>
+<li>SDK</li>
+<li>Support downloading binary data</li>
+</ul>
+<h3 id="32-jan-2023">3.2 (Jan 2023)</h3>
+<ul>
+<li>OpenAPI</li>
+<li>Dashjoin Apps can expose OpenAPI interface</li>
+<li>Implement existing OpenAPI specification via functions</li>
+<li>SwaggerHub integration</li>
+<li>Platform</li>
+<li>ARM support</li>
+<li>CORS configuration</li>
+<li>UI</li>
+<li>Optional confirmation dialog for button widget</li>
+<li>SDK</li>
+<li>Ability to include static assets in apps</li>
+</ul>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../platform-as-a-service/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Platform as a Service" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Platform as a Service
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../administration/" class="md-footer__link md-footer__link--next" aria-label="Next: Administration" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Administration
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      
+    
+    
+  </body>
+</html>
