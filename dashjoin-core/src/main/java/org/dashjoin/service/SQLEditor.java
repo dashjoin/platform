@@ -35,6 +35,7 @@ import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
 import net.sf.jsqlparser.expression.Parenthesis;
+import net.sf.jsqlparser.expression.StringValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.Between;
@@ -339,8 +340,13 @@ public class SQLEditor implements QueryEditorInternal {
             func.setDistinct(false);
           }
 
-          func.setName(x.condition);
-          func.setParameters(new ExpressionList(se.getExpression()));
+          if (db.url.startsWith("jdbc:postgresql:")) {
+            func.setName("string_agg");
+            func.setParameters(new ExpressionList(se.getExpression(), new StringValue(",")));
+          } else {
+            func.setName(x.condition);
+            func.setParameters(new ExpressionList(se.getExpression()));
+          }
           se.setExpression(func);
         }
       } else {
