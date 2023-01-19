@@ -1,5 +1,6 @@
-package org.dashjoin.service;
+package org.dashjoin.service.arangodb;
 
+import org.dashjoin.service.DBTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;

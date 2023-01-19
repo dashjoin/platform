@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.arangodb;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,10 +15,6 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.dashjoin.service.arangodb.QueryBaseListener;
-import org.dashjoin.service.arangodb.QueryLexer;
-import org.dashjoin.service.arangodb.QueryListener;
-import org.dashjoin.service.arangodb.QueryParser;
 
 public class ArangoDBQuery {
 

@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.arangodb;
 
 import static com.google.common.collect.ImmutableMap.of;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.dashjoin.service.ArangoDBQuery.Expression;
 import org.dashjoin.service.QueryEditor.AddColumnRequest;
 import org.dashjoin.service.QueryEditor.Col;
 import org.dashjoin.service.QueryEditor.ColCondition;
@@ -23,6 +22,9 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.Services;
+import org.dashjoin.service.arangodb.ArangoDBQuery.Expression;
 
 public class ArangoDBEditor implements QueryEditorInternal {
 

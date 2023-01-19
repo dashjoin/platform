@@ -1,6 +1,7 @@
-package org.dashjoin.service;
+package org.dashjoin.service.arangodb;
 
 import java.util.Map;
+import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.MapUtil;
 import com.arangodb.ArangoCollection;

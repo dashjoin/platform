@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.arangodb;
 
 import static org.dashjoin.service.QueryEditor.Col.col;
 import java.util.Arrays;
@@ -11,6 +11,8 @@ import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.QueryEditorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
