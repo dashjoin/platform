@@ -1,9 +1,13 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import static org.dashjoin.service.QueryEditor.Col.col;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import javax.ws.rs.core.SecurityContext;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.dashjoin.service.JSONClassloaderDatabase;
+import org.dashjoin.service.JSONFileDatabase;
+import org.dashjoin.service.QueryEditor;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
 import org.dashjoin.service.QueryEditor.InitialQueryRequest;
 import org.dashjoin.service.QueryEditor.MoveColumnRequest;
@@ -13,6 +17,8 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.QueryEditorTest;
 import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.parser.QueryParserUtil;
 import org.eclipse.rdf4j.queryrender.sparql.SPARQLQueryRenderer;
@@ -27,8 +33,10 @@ public class RDF4JEditorTest extends QueryEditorTest {
   @Override
   protected QueryEditorInternal getQueryEditor() {
     try {
-      services.persistantDB = new JSONFileDatabase();
-      services.readonlyDB = new JSONClassloaderDatabase();
+      // services.persistantDB = new JSONFileDatabase();
+      // services.readonlyDB = new JSONClassloaderDatabase();
+      FieldUtils.writeField(services, "persistantDB", new JSONFileDatabase(), true);
+      FieldUtils.writeField(services, "readonlyDB", new JSONClassloaderDatabase(), true);
 
       RDF4J db = services.getConfig().getCachedForce("dj/junit", RDF4J.class);
       return new RDF4JEditor(services, db);
@@ -287,7 +295,8 @@ public class RDF4JEditorTest extends QueryEditorTest {
     SecurityContext sc = mock(SecurityContext.class);
     when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     QueryEditor.Delegate d = new QueryEditor.Delegate();
-    d.services = services;
+    // d.services = services;
+    FieldUtils.writeField(d, "services", services, true);
     InitialQueryRequest r = new InitialQueryRequest();
     r.table = "dj/junit/http:%2F%2Fex.org%2FEMP";
     QueryResponse q = d.getInitialQuery(sc, r);

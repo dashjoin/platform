@@ -2,7 +2,7 @@
 "ID": "dj/pathql",
 "name": "pathql",
 "parent": "dj",
-"djClassName": "org.dashjoin.service.RDF4J",
+"djClassName": "org.dashjoin.service.rdf4j.RDF4J",
 "mode": "memory",
 "datasets": ["/data/junit.n3","/data/junit.additions.nt"]
 } 

@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import java.util.Arrays;
 import java.util.List;

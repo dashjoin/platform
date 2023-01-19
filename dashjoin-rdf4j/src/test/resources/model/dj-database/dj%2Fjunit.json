@@ -2,7 +2,7 @@
 	"ID": "dj/junit",
 	"name": "junit",
 	"parent": "dj",
-	"djClassName": "org.dashjoin.service.RDF4J",
+	"djClassName": "org.dashjoin.service.rdf4j.RDF4J",
 	"mode": "memory",
 	"readRoles": ["authenticated"],
 	"datasets": ["/data/junit.n3"],

@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import static org.eclipse.rdf4j.model.util.Values.iri;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
+import org.dashjoin.service.DBTest;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
@@ -55,10 +56,11 @@ public class RDF4JPathQLTest extends DBTest {
   public void testAll() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
+    List<Map<String, Object>> x =
+        db.all(sc, "junit", (String) toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
     Assertions.assertEquals(9, x.size());
-    x = db.getall(sc, "junit", toID("EMP"), 0, 10, null, false, null);
+    x = db.getall(sc, "junit", (String) toID("EMP"), 0, 10, null, false, null);
     map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
     Assertions.assertEquals(9, x.size());
   }
@@ -68,8 +70,8 @@ public class RDF4JPathQLTest extends DBTest {
   public void testAllWhere() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    List<Map<String, Object>> x =
-        db.all(sc, "junit", toID("EMP"), 0, 10, null, false, MapUtil.of(toID("NAME"), "mike"));
+    List<Map<String, Object>> x = db.all(sc, "junit", (String) toID("EMP"), 0, 10, null, false,
+        MapUtil.of((String) toID("NAME"), "mike"));
     map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", x.get(0));
     Assertions.assertEquals(1, x.size());
   }
@@ -80,7 +82,7 @@ public class RDF4JPathQLTest extends DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Map<String, Map<String, Object>> res =
-        db.list(sc, "junit", toID("EMP"), Arrays.asList(toID("1")));
+        db.list(sc, "junit", (String) toID("EMP"), Arrays.asList((String) toID("1")));
     map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", res.get(toID("1")));
   }
 
@@ -89,8 +91,9 @@ public class RDF4JPathQLTest extends DBTest {
   public void testAllOffset() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    db.all(sc, "junit", toID("EMP"), 0, 1, null, false, null);
-    List<Map<String, Object>> x = db.all(sc, "junit", toID("EMP"), 1, 10, null, false, null);
+    db.all(sc, "junit", (String) toID("EMP"), 0, 1, null, false, null);
+    List<Map<String, Object>> x =
+        db.all(sc, "junit", (String) toID("EMP"), 1, 10, null, false, null);
     map("{ID=2, NAME=joe, WORKSON=1000, REPORTSTO=6}", x.get(0));
   }
 

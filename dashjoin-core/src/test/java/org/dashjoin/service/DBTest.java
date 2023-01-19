@@ -35,7 +35,7 @@ import io.quarkus.test.junit.QuarkusTest;
 public class DBTest {
 
   @Inject
-  Services services;
+  protected Services services;
 
   @Inject
   public Data db;
@@ -128,12 +128,12 @@ public class DBTest {
   }
 
   @SuppressWarnings("unchecked")
-  Map<String, Object> getMap(Map<String, Object> map, String field) {
+  protected Map<String, Object> getMap(Map<String, Object> map, String field) {
     return (Map<String, Object>) map.get(field);
   }
 
   @SuppressWarnings("unchecked")
-  List<Map<String, Object>> getList(Map<String, Object> map, String field) {
+  protected List<Map<String, Object>> getList(Map<String, Object> map, String field) {
     return (List<Map<String, Object>>) map.get(field);
   }
 
@@ -331,7 +331,7 @@ public class DBTest {
     map("{ID=2, NAME=joe, WORKSON=1000}", x.get(0));
   }
 
-  void map(String string, Map<String, Object> map) {
+  protected void map(String string, Map<String, Object> map) {
     string = string.substring(1, string.length() - 1);
     string = string.replaceAll("ID=", idRead() + "=");
     String[] parts = string.split(",");
@@ -421,7 +421,7 @@ public class DBTest {
         id.replaceAll("http:%2F%2Fex.org%2F", "").replaceAll("PRJ%2F", ""));
   }
 
-  void name(String string, String id) {
+  protected void name(String string, String id) {
     Assertions.assertEquals(string, id.replaceAll("http://ex.org/", ""));
   }
 

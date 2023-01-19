@@ -1,6 +1,5 @@
 package org.dashjoin.service.rdf4j;
 
-import org.dashjoin.service.RDF4JEditorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

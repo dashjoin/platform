@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +21,8 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
-import org.dashjoin.service.rdf4j.Query;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.Services;
 import org.dashjoin.service.rdf4j.Query.Cond;
 import org.dashjoin.service.rdf4j.Query.GroupByVariable;
 import org.dashjoin.service.rdf4j.Query.Stmt;

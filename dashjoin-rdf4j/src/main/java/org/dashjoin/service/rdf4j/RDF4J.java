@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import java.io.File;
 import java.io.InputStream;
@@ -23,8 +23,8 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Origin;
+import org.dashjoin.service.QueryEditorInternal;
 import org.dashjoin.service.ddl.SchemaChange;
-import org.dashjoin.service.rdf4j.Query;
 import org.dashjoin.service.rdf4j.Query.Variable;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.Loader;

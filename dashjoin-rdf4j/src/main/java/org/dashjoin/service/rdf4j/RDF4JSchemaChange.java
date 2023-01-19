@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.rdf4j;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.service.ddl.SchemaChange;
