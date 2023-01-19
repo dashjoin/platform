@@ -2,7 +2,7 @@
 	"ID": "dj/junit",
 	"name": "junit",
 	"parent": "dj",
-	"djClassName": "org.dashjoin.service.MongoDB",
+	"djClassName": "org.dashjoin.service.mongodb.MongoDB",
 	"hostname": "localhost",
 	"database": "db",
 	"port": 27018,

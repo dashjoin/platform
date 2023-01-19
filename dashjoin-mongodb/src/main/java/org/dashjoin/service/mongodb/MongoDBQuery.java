@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;

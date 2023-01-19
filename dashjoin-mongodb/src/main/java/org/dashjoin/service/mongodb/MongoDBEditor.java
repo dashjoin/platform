@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import static com.google.common.collect.ImmutableMap.of;
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.Services;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**

@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -22,10 +22,13 @@ import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Metadata;
 import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.QueryEditor.QueryResponse;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.UnionDatabase;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.Loader;
 import org.dashjoin.util.Template;

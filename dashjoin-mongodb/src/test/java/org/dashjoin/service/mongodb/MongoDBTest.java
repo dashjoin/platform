@@ -1,5 +1,6 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
+import org.dashjoin.service.DBTest;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest

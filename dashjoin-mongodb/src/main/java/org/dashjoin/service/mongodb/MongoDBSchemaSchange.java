@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import static com.mongodb.client.model.Filters.eq;
 import java.util.Arrays;

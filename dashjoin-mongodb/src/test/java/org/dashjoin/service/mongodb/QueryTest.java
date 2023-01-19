@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

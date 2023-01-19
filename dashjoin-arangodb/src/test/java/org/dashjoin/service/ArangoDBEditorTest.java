@@ -182,7 +182,7 @@ public class ArangoDBEditorTest extends QueryEditorTest {
   }
 
   @Override
-  void eq(String expected, String actual) throws Exception {
+  public void eq(String expected, String actual) throws Exception {
     Assertions.assertEquals(expected, actual);
   }
 }

@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.mongodb;
 
 import static org.dashjoin.service.QueryEditor.Col.col;
 import org.dashjoin.service.QueryEditor.DistinctRequest;
@@ -10,6 +10,8 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.QueryEditorTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
@@ -180,7 +182,7 @@ public class MongoDBEditorTest extends QueryEditorTest {
   }
 
   @Override
-  void eq(String expected, String actual) throws Exception {
+  public void eq(String expected, String actual) throws Exception {
     Assertions.assertEquals(expected, actual);
   }
 }

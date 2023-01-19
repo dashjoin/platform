@@ -42,7 +42,7 @@ import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 public class QueryEditorTest {
 
   @Inject
-  Services services;
+  public Services services;
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -555,7 +555,7 @@ public class QueryEditorTest {
   /**
    * parse and toString queries before comparing then (gets rid of quotation / pretty printing)
    */
-  void eq(String expected, String actual) throws Exception {
+  public void eq(String expected, String actual) throws Exception {
     expected = expected.replace('"', '_');
     expected = expected.replaceAll("_", "");
     actual = actual.replace('"', '_');
@@ -567,7 +567,7 @@ public class QueryEditorTest {
     return CCJSqlParserUtil.parse(query).toString();
   }
 
-  <T> T json(String s, Class<T> c) {
+  public <T> T json(String s, Class<T> c) {
     s = s.replace('\'', '"');
     try {
       T t = objectMapper.readValue(s.getBytes(), c);
