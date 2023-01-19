@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.odata;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,6 +20,8 @@ import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Metadata;
+import org.dashjoin.service.QueryEditorInternal;
 import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.MdTable;
 
