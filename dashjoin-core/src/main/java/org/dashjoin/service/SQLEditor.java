@@ -66,8 +66,8 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 @Log
 public class SQLEditor implements QueryEditorInternal {
 
-  SQLDatabase db;
-  Services services;
+  protected SQLDatabase db;
+  protected Services services;
 
   public SQLEditor(Services services, SQLDatabase db) {
     this.db = db;
@@ -595,7 +595,8 @@ public class SQLEditor implements QueryEditorInternal {
   /**
    * simplified and slightly adjusted (indent + line breaks) version of PlainSelect.toString()
    */
-  QueryResponse prettyPrint(String database, PlainSelect body, Integer limit) throws Exception {
+  protected QueryResponse prettyPrint(String database, PlainSelect body, Integer limit)
+      throws Exception {
 
     // replace select *
     if (body.getSelectItems().size() == 1)
@@ -717,7 +718,7 @@ public class SQLEditor implements QueryEditorInternal {
     return res;
   }
 
-  void samplesAndMetadata(QueryResponse res, Map<Table, Col> tables) throws SQLException {
+  protected void samplesAndMetadata(QueryResponse res, Map<Table, Col> tables) throws SQLException {
     try (Connection con = db.getConnection()) {
       for (Entry<Table, Col> t : tables.entrySet())
         try (java.sql.Statement stmt = con.createStatement()) {
@@ -813,7 +814,7 @@ public class SQLEditor implements QueryEditorInternal {
    * @param res collect the where clause metadata here
    * @param expr the SQL expression tree
    */
-  static void parseWhere(boolean ignoreUnknown, Map<Col, String> res, Expression expr,
+  public static void parseWhere(boolean ignoreUnknown, Map<Col, String> res, Expression expr,
       PlainSelect from) {
     if (expr instanceof AndExpression) {
       BinaryExpression b = (BinaryExpression) expr;

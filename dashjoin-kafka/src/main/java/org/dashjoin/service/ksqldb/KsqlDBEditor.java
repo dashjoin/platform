@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.ksqldb;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -14,6 +14,8 @@ import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.QueryEditor.QueryResponse;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
+import org.dashjoin.service.SQLEditor;
+import org.dashjoin.service.Services;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
@@ -35,7 +37,7 @@ public class KsqlDBEditor extends SQLEditor {
   }
 
   @Override
-  void samplesAndMetadata(QueryResponse res, Map<Table, Col> tables) throws SQLException {
+  protected void samplesAndMetadata(QueryResponse res, Map<Table, Col> tables) throws SQLException {
     for (Entry<Table, Col> t : tables.entrySet())
       for (Property p : t.getKey().properties.values()) {
         boolean present = false;

@@ -527,8 +527,8 @@ public class SQLDatabase extends AbstractDatabase {
     return query(info, arguments, null);
   }
 
-  List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments, Integer limit)
-      throws SQLException {
+  protected List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments,
+      Integer limit) throws SQLException {
     PreparedStmt ps = prepareStatement(info.query, arguments);
 
     List<Map<String, Object>> data = new ArrayList<>();
@@ -1018,7 +1018,7 @@ public class SQLDatabase extends AbstractDatabase {
     return res;
   }
 
-  List<QueryColumn> getMetadata(String query) throws Exception {
+  protected List<QueryColumn> getMetadata(String query) throws Exception {
 
     Select select = (Select) CCJSqlParserUtil.parse(query);
     PlainSelect body = (PlainSelect) select.getSelectBody();

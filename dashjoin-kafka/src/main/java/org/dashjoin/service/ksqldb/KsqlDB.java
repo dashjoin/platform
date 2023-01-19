@@ -1,4 +1,4 @@
-package org.dashjoin.service;
+package org.dashjoin.service.ksqldb;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +14,15 @@ import java.util.Map;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Metadata;
 import org.dashjoin.service.Metadata.Column;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;
 import org.dashjoin.service.QueryEditor.Col;
 import org.dashjoin.service.QueryEditor.QueryColumn;
+import org.dashjoin.service.QueryEditorInternal;
+import org.dashjoin.service.SQLDatabase;
+import org.dashjoin.service.SQLEditor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -49,8 +53,8 @@ public class KsqlDB extends SQLDatabase {
   }
 
   @Override
-  List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments, Integer limit)
-      throws SQLException {
+  protected List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments,
+      Integer limit) throws SQLException {
     String tableName = "";
     try {
       Select select = (Select) CCJSqlParserUtil.parse(info.query);
@@ -83,7 +87,7 @@ public class KsqlDB extends SQLDatabase {
   }
 
   @Override
-  List<QueryColumn> getMetadata(String query) throws Exception {
+  protected List<QueryColumn> getMetadata(String query) throws Exception {
 
     Select select = (Select) CCJSqlParserUtil.parse(query);
     PlainSelect body = (PlainSelect) select.getSelectBody();
