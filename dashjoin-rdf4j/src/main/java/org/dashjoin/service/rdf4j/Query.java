@@ -24,6 +24,7 @@ import org.eclipse.rdf4j.query.algebra.Order;
 import org.eclipse.rdf4j.query.algebra.OrderElem;
 import org.eclipse.rdf4j.query.algebra.Projection;
 import org.eclipse.rdf4j.query.algebra.ProjectionElem;
+import org.eclipse.rdf4j.query.algebra.QueryRoot;
 import org.eclipse.rdf4j.query.algebra.Regex;
 import org.eclipse.rdf4j.query.algebra.Slice;
 import org.eclipse.rdf4j.query.algebra.StatementPattern;
@@ -189,6 +190,8 @@ public class Query {
   public Query(String query) {
     TupleExpr pt =
         QueryParserUtil.parseTupleQuery(QueryLanguage.SPARQL, query, null).getTupleExpr();
+    if (pt instanceof QueryRoot)
+      pt = ((QueryRoot) pt).getArg();
     if (pt instanceof Slice) {
       limit = ((Slice) pt).getLimit();
       pt = ((Slice) pt).getArg();
@@ -201,10 +204,10 @@ public class Query {
     for (ProjectionElem x : q.getProjectionElemList().getElements())
       if (x.getSourceExpression() != null
           && x.getSourceExpression().getExpr() instanceof UnaryValueOperator)
-        projection.add(newGroupByVariable(x.getSourceName(),
+        projection.add(newGroupByVariable(x.getName(),
             (AbstractAggregateOperator) x.getSourceExpression().getExpr()));
       else
-        projection.add(var(x.getSourceName()));
+        projection.add(var(x.getName()));
     parse(q.getArg());
   }
 

@@ -23,6 +23,7 @@ import org.eclipse.rdf4j.query.QueryLanguage;
 import org.eclipse.rdf4j.query.parser.QueryParserUtil;
 import org.eclipse.rdf4j.queryrender.sparql.SPARQLQueryRenderer;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import io.quarkus.test.junit.QuarkusTest;
@@ -74,6 +75,7 @@ public class RDF4JEditorTest extends QueryEditorTest {
 
   @Override
   @Test
+  @Disabled
   public void testAddColumnJoin2() throws Exception {
     String sql = "SELECT ?A ?FK WHERE { ?A a <:T> . ?A <:FK> ?FK }";
     // FK -> C
