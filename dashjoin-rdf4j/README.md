@@ -58,6 +58,7 @@ The RDF database can be configured via the following Quarkus config options:
 * dashjoin.database.password: the password for the sesame HTTP and SPARQL repositories
 * dashjoin.database.datasets: list of resources to load into the memory database
 * dashjoin.database.ontologies: list of resources that comprise the ontology (default is to inspect the database)
+* dashjoin.database.language: optional literal language. When specified, sets this language to string literals. When reading a single value string, prefers this language
 
 So for instance if you'd like to use a blank local RDF store, you can start the container by setting the dashjoin.database.mode and dashjoin.database.folder environment variables using the -e command line option:
 

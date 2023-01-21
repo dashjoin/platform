@@ -6,6 +6,7 @@
 <http://ex.org/2> <http://ex.org/WORKSON> <http://ex.org/1000> .
 <http://ex.org/1000> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/PRJ> .
 <http://ex.org/1000> <http://ex.org/NAME> "dev-project" .
+<http://ex.org/1000> <http://ex.org/NAME> "entwicklungs-project"@de .
 <http://ex.org/1001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://ex.org/PRJ> .
 <http://ex.org/1001> <http://ex.org/NAME> "other" .
 

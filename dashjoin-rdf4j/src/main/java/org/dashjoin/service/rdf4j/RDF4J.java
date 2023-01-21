@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
@@ -77,6 +78,11 @@ public class RDF4J extends AbstractDatabase {
   public String endpoint;
 
   public String folder;
+
+  /**
+   * if a literal property is defined to have a single value, prefer this language
+   */
+  public String language;
 
   public String username;
 
@@ -174,7 +180,10 @@ public class RDF4J extends AbstractDatabase {
     if (o instanceof List)
       throw new IllegalArgumentException("Literal cannot be a list");
     if (o instanceof String)
-      return vf.createLiteral((String) o);
+      if (language == null)
+        return vf.createLiteral((String) o);
+      else
+        return vf.createLiteral((String) o, language);
     if (o instanceof Integer)
       return vf.createLiteral((Integer) o);
     if (o instanceof Long)
@@ -457,6 +466,17 @@ public class RDF4J extends AbstractDatabase {
   }
 
   void add(Table table, Map<String, Object> res, IRI predicate, Value value, boolean addType) {
+
+    String lang = null;
+    if (value instanceof Literal) {
+      Optional<String> l = ((Literal) value).getLanguage();
+      lang = l.isPresent() ? l.get() : null;
+      if (language != null)
+        if (!language.equals(lang))
+          // db language specified and value lang do not match
+          return;
+    }
+
     if (!predicate.equals(RDF.TYPE)) {
       Property p = table.properties.get(predicate.stringValue());
       if (p != null && "array".equals(p.type)) {
@@ -467,8 +487,24 @@ public class RDF4J extends AbstractDatabase {
           res.put(string(predicate), list);
         }
         list.add(object(value));
-      } else
-        res.put(string(predicate), object(value));
+      } else {
+        String s = string(predicate);
+        Object o = object(value);
+
+        // check lang preference
+        if (value instanceof Literal && res.containsKey(s)) {
+          if (language == null) {
+            if (lang != null)
+              // key already set, prefer null lang literal
+              return;
+          } else {
+            if (lang == null)
+              // key already set, prefer matching lang literal
+              return;
+          }
+        }
+        res.put(s, o);
+      }
     } else {
       if (addType && !value.stringValue().equals(table.name)) {
         @SuppressWarnings("unchecked")
