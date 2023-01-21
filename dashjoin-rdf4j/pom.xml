@@ -62,7 +62,7 @@
 		<dependency>
 		    <groupId>org.eclipse.rdf4j</groupId>
 		    <artifactId>rdf4j-runtime</artifactId>
-		    <version>3.7.4</version>
+		    <version>4.2.2</version>
 		    <type>pom</type>
 		</dependency>
 
