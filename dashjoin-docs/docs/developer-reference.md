@@ -1082,6 +1082,7 @@ openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openText | $openText(url, encoding) | Parses the url and converts it to a string
 uuid | $uuid() | Generates a random UUID
+exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
 
 ## Access Control
 

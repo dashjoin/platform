@@ -21,3 +21,4 @@ org.dashjoin.function.JobStatus
 org.dashjoin.function.IsRecursiveTrigger
 org.dashjoin.function.MoveField
 org.dashjoin.function.UUID
+org.dashjoin.function.Exec

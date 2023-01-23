@@ -22,14 +22,21 @@ public class FileSystem {
    * checks file objects, . and .. are normalized
    */
   public static void checkFileAccess(File file) throws IOException {
+    checkFileAccess(file, "upload");
+  }
 
-    String upload = Home.get().getFile("upload").getCanonicalPath();
+  /**
+   * checks file objects, . and .. are normalized
+   */
+  public static void checkFileAccess(File file, String folder) throws IOException {
+
+    String upload = Home.get().getFile(folder).getCanonicalPath();
     // File("").getCanonicalPath() + File.separator + "upload";
     String test = file.getCanonicalPath();
 
     if (!test.startsWith(upload))
       throw new RuntimeException("You do not have access to the folder '" + file
-          + "'. Choose a file in the upload folder.");
+          + "'. Choose a file in the " + folder + " folder.");
   }
 
   /**
