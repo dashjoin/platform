@@ -13,6 +13,7 @@
     <!-- option to skip the long running Angular build -->
     <skipAngular>false</skipAngular>
           
+  	<node.version>v18.12.1</node.version>
   </properties>
   
   	<packaging>pom</packaging>
