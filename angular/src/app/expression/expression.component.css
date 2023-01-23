@@ -1,4 +1,6 @@
 pre {
     overflow-y: auto;
     max-height: 10em;
+    overflow-x: auto;
+    max-width: calc(100vw - 32px - 24px - 200px);
 }
