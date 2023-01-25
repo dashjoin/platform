@@ -21,6 +21,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.Services;
 import org.dashjoin.service.ddl.SchemaChange;
@@ -248,14 +249,24 @@ public class OpenAPI {
       Map<String, Object> config = services.getConfig().getConfigDatabase()
           .read(Table.ofName("dj-config"), of("ID", "openapi"));
       String apiKey = (String) getMap(config, "map").get("apiKey");
+      if (apiKey == null) {
+        apiKey = services.getConfig().password("dj-config", "openapi-authorization");
+        if (apiKey != null)
+          try (CredentialManager.Credential c = new CredentialManager.Credential(apiKey)) {
+            apiKey = apiKey != null ? new String(c.getSecret()) : null;
+          }
+      }
       if (apiKey == null)
         throw new IllegalArgumentException("openapi save apiKey required");
       else {
         String s = url.toString();
-        if (s.endsWith("/swagger.yaml")) {
+        if (s.endsWith("/swagger.yaml"))
           s = s.substring(0, s.length() - "/swagger.yaml".length());
-          s = s.substring(0, s.lastIndexOf('/'));
-        }
+        if (s.endsWith("/"))
+          s = s.substring(0, s.length() - "/".length());
+        
+        // trim version
+        s = s.substring(0, s.lastIndexOf('/'));
 
         Request request = new Request.Builder().url(s).addHeader("Authorization", apiKey)
             .addHeader("content-type", "application/yaml").post(RequestBody.create(null, generate))

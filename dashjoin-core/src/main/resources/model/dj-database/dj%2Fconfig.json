@@ -533,6 +533,16 @@
             "string"
           ]
         },
+        "password": {
+          "ID": "dj/config/dj-config/password",
+          "name": "string",
+          "parent": "dj/config/dj-config",
+          "type": "string",
+          "widget": "password",
+          "case": [
+            "password"
+          ]
+        },
         "map": {
           "ID": "dj/config/dj-config/map",
           "name": "map",
