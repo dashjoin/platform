@@ -666,6 +666,9 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public void create(Table m, List<Map<String, Object>> objects) throws Exception {
     try (Connection con = getConnection()) {
+      if (url.startsWith("jdbc:sqlite:"))
+        // despite using a batch, sqlite seems to do transactions for each row - turn off autocommit
+        con.setAutoCommit(false);
       try (PreparedStatement stmt = con.prepareStatement(getInsertSQL(m))) {
         for (Map<String, Object> object : objects) {
           int i = 1;
@@ -674,6 +677,10 @@ public class SQLDatabase extends AbstractDatabase {
           stmt.addBatch();
         }
         stmt.executeBatch();
+      }
+      if (url.startsWith("jdbc:sqlite:")) {
+        con.commit();
+        con.setAutoCommit(true);
       }
     }
   }
