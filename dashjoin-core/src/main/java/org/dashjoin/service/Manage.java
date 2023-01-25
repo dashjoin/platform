@@ -1101,6 +1101,8 @@ public class Manage {
         return om.writeValueAsString(external);
 
       JsonNode queries = dj.get("x-queries");
+      if (queries == null)
+        queries = dj.get("queries");
       if (queries != null) {
         for (JsonNode query : queries) {
           QueryMeta meta = services.getConfig().getQueryMeta(query.asText());
@@ -1114,6 +1116,8 @@ public class Manage {
       }
 
       JsonNode functions = dj.get("x-functions");
+      if (functions == null)
+        functions = dj.get("functions");
       if (functions != null) {
         for (JsonNode function : functions) {
           AbstractConfigurableFunction<Object, Object> meta =
@@ -1124,6 +1128,8 @@ public class Manage {
       }
 
       JsonNode schemas = dj.get("x-schemas");
+      if (schemas == null)
+        schemas = dj.get("schemas");
       if (schemas != null) {
         for (JsonNode schema : schemas) {
           String _dj = Escape.parseTableID(schema.asText())[0];

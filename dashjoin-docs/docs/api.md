@@ -84,7 +84,7 @@ info:
   version: "1"
   title: "test"
 x-dashjoin:
-  x-functions:
+  functions:
   - add
 security:
 - Basic_Auth: []
@@ -115,11 +115,11 @@ Apart from functions, you can also publish queries and schemas. Queries work jus
 
 ```yaml
 x-dashjoin:
-  x-functions:
+  functions:
   - add
-  x-queries:
+  queries:
   - group
-  x-schemas:
+  schemas:
   - dj/northwind/US_STATES
 ```
 
@@ -324,7 +324,7 @@ First, we'll need to indicate that a certain table should be added to the OpenAP
 
 ```yaml
 x-dashjoin:
-  x-schemas:
+  schemas:
   - dj/northwind/US_STATES
 ```
 
