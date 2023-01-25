@@ -78,6 +78,7 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.sqlite.JDBC;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1083,63 +1084,68 @@ public class Manage {
   @Operation(
       summary = "Reads the openapi.yaml configured and merges functions, queries, and schemas into it")
   @Produces({MediaType.TEXT_PLAIN})
-  public String openapi(@Context SecurityContext sc) throws Exception {
+  public String openapi(@Context SecurityContext sc) throws JsonProcessingException {
+    try {
+      JsonNode spec = OpenAPI.open(services);
+      if (spec == null)
+        return null;
 
-    JsonNode spec = OpenAPI.open(services);
-    if (spec == null)
-      return null;
+      @SuppressWarnings("unchecked")
+      Map<String, Object> external = om.treeToValue(spec, Map.class);
 
-    @SuppressWarnings("unchecked")
-    Map<String, Object> external = om.treeToValue(spec, Map.class);
+      OpenAPI.cleanGenerated(external);
 
-    OpenAPI.cleanGenerated(external);
+      JsonNode dj = spec.get("x-dashjoin");
+      if (dj == null)
+        // nothing to add, return as is
+        return om.writeValueAsString(external);
 
-    JsonNode dj = spec.get("x-dashjoin");
-    if (dj == null)
-      // nothing to add, return as is
+      JsonNode queries = dj.get("x-queries");
+      if (queries != null) {
+        for (JsonNode query : queries) {
+          QueryMeta meta = services.getConfig().getQueryMeta(query.asText());
+          String database = meta.database.split("/")[1];
+          Map<String, Property> md = null;
+          if (sc.getUserPrincipal() != null)
+            md = data.queryMeta(sc, database, meta.ID, null);
+          Map<String, Object> paths = getMap(external, "paths");
+          external.put("paths", merge(path(meta, md), paths));
+        }
+      }
+
+      JsonNode functions = dj.get("x-functions");
+      if (functions != null) {
+        for (JsonNode function : functions) {
+          AbstractConfigurableFunction<Object, Object> meta =
+              services.getConfig().getFunction(function.asText());
+          Map<String, Object> paths = getMap(external, "paths");
+          external.put("paths", merge(path(meta), paths));
+        }
+      }
+
+      JsonNode schemas = dj.get("x-schemas");
+      if (schemas != null) {
+        for (JsonNode schema : schemas) {
+          String _dj = Escape.parseTableID(schema.asText())[0];
+          String database = Escape.parseTableID(schema.asText())[1];
+          String name = Escape.parseTableID(schema.asText())[2];
+          if (external.get("components") == null)
+            external.put("components", of());
+          Map<String, Object> components = getMap(external, "components");
+          AbstractDatabase db = services.getConfig().getDatabase(_dj + "/" + database);
+          Table t = db.tables.get(name);
+          if (t == null)
+            throw new Exception("Table " + name + " not found");
+          components.put("schemas", merge(table(t), getMap(components, "schemas")));
+        }
+      }
+
       return om.writeValueAsString(external);
-
-    JsonNode queries = dj.get("x-queries");
-    if (queries != null) {
-      for (JsonNode query : queries) {
-        QueryMeta meta = services.getConfig().getQueryMeta(query.asText());
-        String database = meta.database.split("/")[1];
-        Map<String, Property> md = null;
-        if (sc.getUserPrincipal() != null)
-          md = data.queryMeta(sc, database, meta.ID, null);
-        Map<String, Object> paths = getMap(external, "paths");
-        external.put("paths", merge(path(meta, md), paths));
-      }
+    } catch (Exception e) {
+      // instead of an HTTP 500, we return a pseudo openapi spec with the error message embedded so
+      // it visible in swagger
+      return om.writeValueAsString(of("openapi", "3.0.3", "info", of("title", e.toString())));
     }
-
-    JsonNode functions = dj.get("x-functions");
-    if (functions != null) {
-      for (JsonNode function : functions) {
-        AbstractConfigurableFunction<Object, Object> meta =
-            services.getConfig().getFunction(function.asText());
-        Map<String, Object> paths = getMap(external, "paths");
-        external.put("paths", merge(path(meta), paths));
-      }
-    }
-
-    JsonNode schemas = dj.get("x-schemas");
-    if (schemas != null) {
-      for (JsonNode schema : schemas) {
-        String _dj = Escape.parseTableID(schema.asText())[0];
-        String database = Escape.parseTableID(schema.asText())[1];
-        String name = Escape.parseTableID(schema.asText())[2];
-        if (external.get("components") == null)
-          external.put("components", of());
-        Map<String, Object> components = getMap(external, "components");
-        AbstractDatabase db = services.getConfig().getDatabase(_dj + "/" + database);
-        Table t = db.tables.get(name);
-        if (t == null)
-          throw new Exception("Table " + name + " not found");
-        components.put("schemas", merge(table(t), getMap(components, "schemas")));
-      }
-    }
-
-    return om.writeValueAsString(external);
   }
 
   /**
