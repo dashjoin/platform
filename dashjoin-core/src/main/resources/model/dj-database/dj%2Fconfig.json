@@ -535,7 +535,7 @@
         },
         "password": {
           "ID": "dj/config/dj-config/password",
-          "name": "string",
+          "name": "password",
           "parent": "dj/config/dj-config",
           "type": "string",
           "widget": "password",
