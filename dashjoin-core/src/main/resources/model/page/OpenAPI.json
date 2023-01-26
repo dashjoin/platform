@@ -1,0 +1,175 @@
+{
+    "ID": "OpenAPI",
+    "layout": {
+        "widget": "page",
+        "pageLayout": "horizontal",
+        "children": [
+            {
+                "widget": "markdown",
+                "title": "App OpenAPI Specification",
+                "markdown": "You can associate an OpenAPI specification with your Dashjoin app. This allows you to:\n\n* use Dashjoin to implement an existing OpenAPI spec\n* publish schemas and paths to your OpenAPI spec\n* generate an OpenAPI spec for your Dashjoin app\n\nYou can use the [online editor](https://editor.swagger.io/) or the [SwaggerHub repository](https://app.swaggerhub.com/) to create your OpenAPI. Enter your SwaggerHub API key [here](/#/resource/config/dj-config/openapi-authorization). Use the x-dashjoin tag to export tables, functions, and queries to the referenced spec:\n\n```\nx-dashjoin:\n  schemas: [dj/postgres/Pet]\n  functions: [add]\n  queries: [list]\n```\n\nThe app's [OpenAPI spec is available here](/swagger-ui). Enter the path ```/rest/manage/openapi``` and click explore.\n"
+            },
+            {
+                "widget": "container",
+                "text": "New Widget",
+                "children": [
+                    {
+                        "widget": "display",
+                        "text": "New Widget",
+                        "display": "$read(\"config\", \"dj-config\", \"openapi\").map\n"
+                    },
+                    {
+                        "widget": "display",
+                        "text": "New Widget",
+                        "display": "(\n  $p := $split($read(\"config\", \"dj-config\", \"openapi\").map.url, \"/\");\n  $openJson($p[0] & \"//\" & $p[2] & \"/\" & $p[3] & \"/\" & $p[4]).apis.{\n    \"name\": $split(properties[type=\"Swagger\"].url, \"/\")[5],\n    \"versions\": properties[type=\"X-Versions\"].value,\n    \"default\": properties[type=\"X-Version\"].value\n  };\n)"
+                    },
+                    {
+                        "widget": "html",
+                        "text": "   ",
+                        "html": "&nbsp;",
+                        "hideframe": true
+                    },
+                    {
+                        "widget": "button",
+                        "properties": {
+                            "swaggerhub": "object",
+                            "openapi": "object"
+                        },
+                        "createSchema": {
+                            "type": "object",
+                            "layout": "vertical",
+                            "properties": {
+                                "swaggerhub": {
+                                    "title": "SwaggerHub",
+                                    "expanded": false,
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "type": "string",
+                                            "enum": [
+                                                "apis",
+                                                "domains"
+                                            ],
+                                            "default": "apis"
+                                        },
+                                        "owner": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "version": {
+                                            "type": "string",
+                                            "examples": [
+                                                "1.0.0"
+                                            ]
+                                        },
+                                        "url": {
+                                            "type": "string",
+                                            "readOnly": true
+                                        }
+                                    },
+                                    "computed": {
+                                        "url": "\"https://api.swaggerhub.com/\" & type & \"/\" & owner & \"/\" & name & (version ? \"/\" & version : \"\")"
+                                    },
+                                    "widget": "text",
+                                    "layout": "vertical",
+                                    "order": [
+                                        [
+                                            "type",
+                                            "owner",
+                                            "name",
+                                            "version"
+                                        ]
+                                    ]
+                                },
+                                "openapi": {
+                                    "expanded": false,
+                                    "title": "OpenAPI",
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string",
+                                            "widget": "text",
+                                            "layout": "horizontal",
+                                            "style": {
+                                                "width": "732px"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "title": null,
+                        "text": "Apply",
+                        "print": "( $url := (form.swaggerhub.owner ? form.swaggerhub.url : form.openapi.url); $update(\"config\", \"dj-config\", \"openapi\", {\"map\": {\"url\": $url}}) )",
+                        "clearCache": true
+                    }
+                ],
+                "title": "Attach OpenAPI",
+                "layout": "vertical"
+            },
+            {
+                "widget": "container",
+                "text": "New Widget",
+                "title": "Actions",
+                "children": [
+                    {
+                        "widget": "button",
+                        "text": "Create Table",
+                        "print": "$createTable(form.database, form.table)",
+                        "properties": {
+                            "database": "string",
+                            "table": "string"
+                        },
+                        "createSchema": {
+                            "type": "object",
+                            "layout": "vertical",
+                            "properties": {
+                                "database": {
+                                    "type": "string",
+                                    "ref": "dj/config/dj-database/ID",
+                                    "displayWith": "fkdb"
+                                },
+                                "table": {
+                                    "type": "string",
+                                    "description": "Copy & paste schema or type the name of the schema to create",
+                                    "widget": "textarea",
+                                    "style": {
+                                        "width": "400px",
+                                        "height": "100px"
+                                    }
+                                }
+                            }
+                        },
+                        "clearCache": true
+                    },
+                    {
+                        "widget": "html",
+                        "text": "   ",
+                        "html": "&nbsp;",
+                        "hideframe": true
+                    },
+                    {
+                        "widget": "button",
+                        "text": "Create Stubs",
+                        "print": "$createStubs() ",
+                        "clearCache": true
+                    },
+                    {
+                        "widget": "html",
+                        "text": "   ",
+                        "html": "&nbsp;",
+                        "hideframe": true
+                    },
+                    {
+                        "widget": "button",
+                        "text": "Publish API",
+                        "print": "$saveApi()"
+                    }
+                ],
+                "layout": "vertical"
+            }
+        ]
+    }
+}

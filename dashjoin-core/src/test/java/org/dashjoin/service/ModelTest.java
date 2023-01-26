@@ -141,26 +141,26 @@ public class ModelTest {
         checkLayout(i);
 
     if (tree.get("widget") != null) {
-      // System.out.println(tree.get("widget"));
+      System.out.println(tree.get("widget"));
       Assertions
           .assertTrue(Arrays
               .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
                   "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
                   "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch",
                   "search", "search-result", "toolbar", "table", "queryeditor", "editRelated",
-                  "markdown", "page", "tree", "variable", "sidenav-switch")
+                  "markdown", "page", "tree", "variable", "sidenav-switch", "html")
               .contains(tree.get("widget").asText()));
     }
 
     for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
-      // System.out.println(e);
+      System.out.println(e);
       Assertions.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
           "tooltip", "icon", "icons", "href", "children", "database", "table", "schema", "chart",
           "query", "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",
           "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
           "layout", "style", "class", /* schema info in config.json */ "name", "parent",
           /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
-          "expression").contains(e.getKey()));
+          "expression", "html", "hideframe", "clearCache").contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
@@ -201,7 +201,12 @@ public class ModelTest {
                                     if (!s.equals("Unknown function: $query"))
                                       if (!s.equals("Unknown function: $doc2data"))
                                         if (!s.equals("Unknown function: $djSubscription"))
-                                          throw e;
+                                          if (!s.equals("Unknown function: $saveApi"))
+                                            if (!s.equals("Unknown function: $createStubs"))
+                                              if (!s.equals("Unknown function: $createTable"))
+                                                if (!s.equals("Unknown function: $read"))
+                                                  if (!s.equals("Unknown function: $update"))
+                                                    throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");

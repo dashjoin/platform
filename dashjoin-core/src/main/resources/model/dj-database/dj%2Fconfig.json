@@ -289,6 +289,12 @@
                 "href": "/table/config/dj-query-performance",
                 "icon": "speed",
                 "text": "Query Performance"
+              },
+              {
+                "widget": "text",
+                "href": "/page/OpenAPI",
+                "icon": "webhook",
+                "text": "App API"
               }
             ]
           }
