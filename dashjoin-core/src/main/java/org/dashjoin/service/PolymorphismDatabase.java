@@ -197,10 +197,14 @@ public class PolymorphismDatabase extends JSONDatabase {
       if ((!f.getDeclaringClass().equals(AbstractDatabase.class))
           && (!f.getDeclaringClass().equals(AbstractConfigurableFunction.class)))
         x.put("case", Lists.newArrayList(c.getName()));
-      if (AbstractDatabase.class.isAssignableFrom(c))
+      if (AbstractDatabase.class.isAssignableFrom(c)) {
         x.put("ID", "dj/config/dj-database/" + f.getName());
-      if (AbstractConfigurableFunction.class.isAssignableFrom(c))
+        x.put("name", f.getName());
+      }
+      if (AbstractConfigurableFunction.class.isAssignableFrom(c)) {
         x.put("ID", "dj/config/dj-function/" + f.getName());
+        x.put("name", f.getName());
+      }
       properties.put(f.getName(), x);
     }
     return res;
