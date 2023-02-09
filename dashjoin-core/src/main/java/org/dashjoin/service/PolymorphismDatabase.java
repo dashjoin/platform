@@ -149,6 +149,13 @@ public class PolymorphismDatabase extends JSONDatabase {
       }
     }
 
+    // remove duplicates from "requred"
+    if (res.get("required") instanceof List<?>) {
+      Object s = new LinkedHashSet<>((List<String>) res.get("required"));
+      res.put("required", s);
+    }
+
+
     return res;
   }
 
