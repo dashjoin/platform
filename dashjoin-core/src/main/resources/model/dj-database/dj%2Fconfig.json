@@ -739,7 +739,8 @@
         "layout": {
           "ID": "dj/config/widget/layout",
           "name": "layout",
-          "parent": "dj/config/widget"
+          "parent": "dj/config/widget",
+          "type": "object"
         }
       }
     },
@@ -791,7 +792,8 @@
         "layout": {
           "ID": "dj/config/page/layout",
           "name": "layout",
-          "parent": "dj/config/page"
+          "parent": "dj/config/page",
+          "type": "object"
         }
       }
     },
