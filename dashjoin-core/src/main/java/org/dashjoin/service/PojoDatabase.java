@@ -1018,7 +1018,11 @@ public class PojoDatabase extends UnionDatabase implements Config {
     prop.ID = prop.parent + "/" + prop.name;
     prop.pkpos = 0;
     prop.type = "string";
-    return ImmutableMap.of("ID", prop);
+
+    if ("dj-page-urls".equals(info.query))
+      return ImmutableMap.of();
+    else
+      return ImmutableMap.of("ID", prop);
   }
 
   /**
