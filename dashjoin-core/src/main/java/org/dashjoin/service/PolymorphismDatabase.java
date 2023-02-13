@@ -278,7 +278,14 @@ public class PolymorphismDatabase extends JSONDatabase {
         res.putAll(array(String.class));
     } else if (Map.class.isAssignableFrom(c)) {
       res.put("type", "object");
-      res.put("additionalProperties", newHashMap(of("type", "string")));
+      String type = "string";
+      if (genericType instanceof ParameterizedType) {
+        ParameterizedType pt = (ParameterizedType) genericType;
+        if (pt.getActualTypeArguments().length == 2)
+          if (pt.getActualTypeArguments()[1].getTypeName().startsWith("org.dashjoin"))
+            type = "object";
+      }
+      res.put("additionalProperties", newHashMap(of("type", type)));
     } else if (Number.class.isAssignableFrom(c))
       res.put("type", "number");
     else if (Boolean.class.equals(c))
