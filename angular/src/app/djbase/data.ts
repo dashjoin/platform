@@ -261,7 +261,7 @@ export class DJDataBase<T> implements DJData<T> {
         for (const row of data) {
             for (const key of Object.keys(row)) {
                 const val = row[key];
-                if (val && !props[key]) {
+                if ((val || val === 0) && !props[key]) {
                     // console.log(key, val);
                     let type;
                     switch (typeof val) {
