@@ -409,7 +409,7 @@ public class UnionDatabase extends AbstractDatabase {
       });
 
     if (offset != null)
-      res = res.subList(offset, res.size());
+      res = res.subList(Math.min(res.size(), offset), res.size());
     if (limit != null)
       res = res.subList(0, Math.min(limit, res.size()));
 
