@@ -25,7 +25,7 @@ also need to add to table EMP in dj/junit.json since FKs not supported in MySQL 
 
 
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
-	"url": "jdbc:sqlserver://localhost:1433;databaseName=master",
+	"url": "jdbc:sqlserver://localhost:1433;encrypt=false;databaseName=master",
 	"username": "sa",
 	"password": "yourStrong(!)Password",
 
