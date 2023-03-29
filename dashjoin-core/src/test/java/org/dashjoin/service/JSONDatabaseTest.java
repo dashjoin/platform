@@ -8,6 +8,7 @@ import static org.dashjoin.model.Table.ofName;
 import static org.dashjoin.service.UnionDatabase.merge;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,10 +16,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.quarkus.test.junit.QuarkusTest;
+import io.smallrye.common.constraint.Assert;
 
 /**
  * tests various aspects of the config database (merging, handling of pojos etc...)
@@ -287,6 +292,83 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Assertions.assertEquals("{ID=x, coord={z=3}}", "" + db.read(ofName("crud"), of("ID", "x")));
 
     db.delete(ofName("crud"), of("ID", "x"));
+  }
+
+
+
+  @Test
+  public void crudQueryCatalogTest() throws Exception {
+    for (String id : new String[] {"id", "%"})
+      crudQueryCatalogTest(id);
+  }
+
+  void crudQueryCatalogTest(String id) throws Exception {
+    new File("model/dj-query-catalog/" + Escape.filename(id) + ".json").delete();
+    new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sql").delete();
+    new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").delete();
+    JSONDatabase db = JSONDatabaseFactory.getPersistantInstance();
+    FieldUtils.writeField(db, "services", services, true);
+
+    // create json and sql file
+    db.create(ofName("dj-query-catalog"), MapUtil.of("ID", id, "query", "select * from tbl"));
+    Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sql, query=select * from tbl}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+
+    // query is located in .sql file
+    Assertions.assertEquals("select * from tbl",
+        FileUtils.readFileToString(
+            new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sql"),
+            Charset.defaultCharset()));
+
+    // update
+    db.update(ofName("dj-query-catalog"), of("ID", id),
+        MapUtil.of("name", null, "query", "select * from tbl2"));
+    Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sql, query=select * from tbl2}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+
+    // rename file to .sparql and change pointer - read result remains
+    new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sql")
+        .renameTo(new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql"));
+    FileUtils.writeStringToFile(new File("model/dj-query-catalog/" + Escape.filename(id) + ".json"),
+        "{\"ID\": \"" + id + "\", \"query-pointer\": \"0.sparql\"}", Charset.defaultCharset());
+    Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sparql, query=select * from tbl2}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+
+    // update
+    db.update(ofName("dj-query-catalog"), of("ID", id), MapUtil.of("query", "select rdf:type"));
+    Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sparql, query=select rdf:type}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+
+    // query is located in .sparql file
+    Assertions.assertEquals("select rdf:type",
+        FileUtils.readFileToString(
+            new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql"),
+            Charset.defaultCharset()));
+
+    // update, set query to null
+    db.update(ofName("dj-query-catalog"), of("ID", id), MapUtil.of("type", "read", "query", null));
+    Assertions.assertEquals("{ID=" + id + ", type=read}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+    Assert.assertFalse(new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").exists());
+
+    // use a pointer on another property ("type")
+    FileUtils.writeStringToFile(new File("model/dj-query-catalog/" + Escape.filename(id) + ".json"),
+        "{\"ID\": \"" + id + "\", \"type-pointer\": \"0.sparql\"}", Charset.defaultCharset());
+    FileUtils.writeStringToFile(
+        new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql"), "???",
+        Charset.defaultCharset());
+    Assertions.assertEquals("{ID=" + id + ", type-pointer=0.sparql, type=???}",
+        "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
+
+    // delete removes secondary files as well
+    db.delete(ofName("dj-query-catalog"), of("ID", id));
+    Assertions.assertNull(db.read(ofName("dj-query-catalog"), of("ID", id)));
+    Assert.assertFalse(
+        new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.json").exists());
+    Assert
+        .assertFalse(new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sql").exists());
+    Assert.assertFalse(
+        new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").exists());
   }
 
   @Test

@@ -1,0 +1,8 @@
+{
+	"ID": "externalize-config-strings",
+	"description": "Defines which config DB strings get written to seperate files",
+	"type": "list",
+	"list": [
+		"dj-query-catalog: query"
+	]
+}
