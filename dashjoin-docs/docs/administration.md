@@ -56,7 +56,7 @@ following Azure AD example:
             "config": { 
                 "issuer": "https://login.microsoftonline.com/.../v2.0", 
                 "clientId": "...", 
-                "redirectUri": "https://dashjoin-app.example.com/login", 
+                "redirectUri": "https://dashjoin-app.example.com/", 
                 "scope": "openid profile email", 
                 "requestAccessToken": false, 
                 "strictDiscoveryDocumentValidation": false 
@@ -73,7 +73,8 @@ This config fields are defined as follows:
 * Logo: Absolute or relative URL to the IDM logo to be displayed on teh login screen
 * Issuer: URL / UUID of the IDM issuing authorizations
 * Client ID: ID of the registered application in the IDM
-* Redirect URI: URL of the Dashjoin login page
+* Redirect URI: URL of the Dashjoin application
+Important: previously this required a link to /login, this does not work anymore. Use the root URL
 * Scopes: scopes are used by an application during authentication to authorize access to a user's details
 * Request Access Token: obtain an Access Token, an ID Token, and optionally a Refresh Token
 * Strict Discovery Document Validation: ensure that all of the endpoints provided via the ID Provider discovery document share the same base URL as the issuer parameter
