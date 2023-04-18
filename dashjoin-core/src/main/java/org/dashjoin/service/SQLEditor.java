@@ -583,12 +583,13 @@ public class SQLEditor implements QueryEditorInternal {
       name = name.substring(1, name.length() - 1);
 
     Table t = db.tables.get(name);
-    for (String col : t.properties.keySet()) {
-      SelectExpressionItem se = new SelectExpressionItem();
-      Col c = Col.col(t.name, col);
-      se.setExpression(getColumn(c));
-      res.add(se);
-    }
+    if (t != null)
+      for (String col : t.properties.keySet()) {
+        SelectExpressionItem se = new SelectExpressionItem();
+        Col c = Col.col(t.name, col);
+        se.setExpression(getColumn(c));
+        res.add(se);
+      }
     return res;
   }
 

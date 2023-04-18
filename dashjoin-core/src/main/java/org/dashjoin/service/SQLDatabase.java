@@ -1066,7 +1066,8 @@ public class SQLDatabase extends AbstractDatabase {
                     for (Expression g : body.getGroupBy().getGroupByExpressions()) {
                       if (g instanceof Column) {
                         Column gg = (Column) g;
-                        if (SQLEditor.equals(gg.getTable().getName(), c.col.table))
+                        if (gg.getTable() != null
+                            && SQLEditor.equals(gg.getTable().getName(), c.col.table))
                           if (SQLEditor.equals(gg.getColumnName(), c.col.column))
                             c.groupBy = "GROUP BY";
                       }
