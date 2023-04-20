@@ -22,8 +22,11 @@ import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.function.JobStatus;
+import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Manage;
+import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -234,6 +237,7 @@ public class ExpressionService {
     res.put("$delete", new Delete(sc, readOnly));
     res.put("$query", new Query(sc, readOnly));
     res.put("$queryGraph", new QueryGraph(sc, readOnly));
+    res.put("$adHocQuery", new AdHocQuery(sc, readOnly));
     res.put("$call", new Call(sc, readOnly));
     res.put("$incoming", new Incoming(sc));
 
@@ -708,6 +712,37 @@ public class ExpressionService {
             getValuesListExpression(v, ctx, 1).asText(), getArgumentCount(ctx) == 2 ? null
                 : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
             readOnly));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  /**
+   * org.dashjoin.service.QueryEditor.Delegate.noop(SecurityContext, QueryDatabase)
+   */
+  public class AdHocQuery extends Query {
+
+    public AdHocQuery(SecurityContext sc, boolean readOnly) {
+      super(sc, readOnly);
+    }
+
+    @Override
+    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
+      if (getArgumentCount(ctx) < 2)
+        throw new RuntimeException("Arguments required: $adHocQuery(database, query, limit?)");
+      if (getValuesListExpression(v, ctx, 0) == null)
+        throw new RuntimeException("Database name cannot be null");
+      if (getValuesListExpression(v, ctx, 0) == null)
+        throw new RuntimeException("Query cannot be null");
+      try {
+        QueryDatabase query = new QueryDatabase();
+        query.database = "dj/" + getValuesListExpression(v, ctx, 0).asText();
+        query.query = getValuesListExpression(v, ctx, 1).asText();
+        query.limit = getArgumentCount(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
+        AbstractDatabase db = services.getConfig().getDatabase(query.database);
+        ACLContainerRequestFilter.allowQueryEditor(sc, db);
+        return o2j(db.getQueryEditor().noop(query).data);
       } catch (Exception e) {
         throw new RuntimeException(e);
       }

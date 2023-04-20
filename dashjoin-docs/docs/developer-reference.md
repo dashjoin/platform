@@ -1061,6 +1061,7 @@ delete| $delete(database, table, pk1)
 call| $call(function, argument) |   Dashjoin function result
 query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
+adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 echo | $echo(any) | Prints the parameter to the log
 index | $index() | Generates a unique row index ID

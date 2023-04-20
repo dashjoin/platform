@@ -96,7 +96,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
   /**
    * like check(sc, db) but also disallow if there's row level restriction
    */
-  static void allowQueryEditor(SecurityContext sc, AbstractDatabase db) {
+  public static void allowQueryEditor(SecurityContext sc, AbstractDatabase db) {
     check(sc, db);
     for (Table m : db.tables.values())
       if (hasTenantFilter(sc, m))
