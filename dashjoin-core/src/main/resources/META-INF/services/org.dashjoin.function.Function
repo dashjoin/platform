@@ -25,3 +25,4 @@ org.dashjoin.function.Exec
 org.dashjoin.function.CreateTable
 org.dashjoin.function.CreateStubs
 org.dashjoin.function.SaveApi
+org.dashjoin.function.ERDiagram

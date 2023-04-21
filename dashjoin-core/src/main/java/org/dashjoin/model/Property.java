@@ -55,6 +55,7 @@ public class Property {
    */
   @Schema(title = "JSON schema title")
   public String title;
+  public String comment;
 
   /**
    * long description of the property

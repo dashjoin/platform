@@ -295,6 +295,12 @@
                 "href": "/page/OpenAPI",
                 "icon": "webhook",
                 "text": "App API"
+              },
+              {
+                "widget": "text",
+                "href": "/page/ERDiagram",
+                "icon": "schema",
+                "text": "ER Diagram"
               }
             ]
           }

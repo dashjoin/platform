@@ -1,0 +1,17 @@
+{
+    "ID": "ERDiagram",
+    "layout": {
+        "widget": "page",
+        "pageLayout": "horizontal",
+        "children": [
+            {
+                "widget": "html",
+                "title": "App OpenAPI Specification",
+                "markdown": "Copy the entity relationship description printed below and paste it into this <a href=\"https://dbdiagram.io/d\" target=\"_blank\">online visualization tool</a>. You can restrict the output by editing the expression of this widget in the layout editor.\n\n<pre>${context}</pre>",
+                "context": "$erDiagram()",
+                "html": "Copy the entity relationship description printed below and paste it into this <a href=\"https://dbdiagram.io/d\" target=\"_blank\">online visualization tool</a>. You can restrict the output by editing the expression of this widget in the layout editor.\n\n<br><br><button onclick=\"go()\">Copy to Clipboard</button>\n\n<pre id=\"pre\">${context}</pre>",
+                "script": "function go(){\n  navigator.clipboard.writeText(context)\n}"
+            }
+        ]
+    }
+}
