@@ -160,7 +160,7 @@ public class ModelTest {
           "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
           "layout", "style", "class", /* schema info in config.json */ "name", "parent",
           /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
-          "expression", "html", "hideframe", "clearCache").contains(e.getKey()));
+          "expression", "html", "script", "hideframe", "clearCache").contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
@@ -206,7 +206,8 @@ public class ModelTest {
                                               if (!s.equals("Unknown function: $createTable"))
                                                 if (!s.equals("Unknown function: $read"))
                                                   if (!s.equals("Unknown function: $update"))
-                                                    throw e;
+                                                    if (!s.equals("Unknown function: $erDiagram"))
+                                                      throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");
