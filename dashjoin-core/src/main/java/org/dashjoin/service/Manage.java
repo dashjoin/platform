@@ -68,8 +68,10 @@ import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.Home;
 import org.dashjoin.util.OpenAPI;
 import org.dashjoin.util.Sorter;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -938,6 +940,14 @@ public class Manage {
     v.name = "Dashjoin Low Code Development and Integration Platform";
     v.buildTime = getGitBuildInfo().getProperty("git.build.time", "unknown");
     v.runtime = System.getProperty("java.version");
+    try {
+      v.home = Home.get().getFile("").getAbsolutePath();
+      URL url = new URL(ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue());
+      v.appurl = url.getProtocol() + "://" + url.getHost() + url.getPath();
+    } catch (Exception ignore) {
+
+    }
+    v.workingDir = System.getProperty("user.dir");
     return v;
   }
 
@@ -1179,6 +1189,18 @@ public class Manage {
     @Schema(title = "Runtime")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public String runtime;
+
+    @Schema(title = "Runtime working directory")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String workingDir;
+
+    @Schema(title = "Dashjoin home directory")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String home;
+
+    @Schema(title = "App Repository")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String appurl;
   }
 
   /**

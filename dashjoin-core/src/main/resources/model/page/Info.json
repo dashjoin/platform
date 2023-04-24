@@ -61,7 +61,10 @@
                     "buildTime": "access_time",
                     "runtime": "build",
                     "Third party licenses": "copyright",
-                    "title": "title"
+                    "title": "title",
+                    "appurl": "download",
+                    "home": "home_filled",
+                    "workingDir": "folder"
                 }
             },
             {
