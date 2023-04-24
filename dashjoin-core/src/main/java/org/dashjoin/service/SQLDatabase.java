@@ -312,7 +312,10 @@ public class SQLDatabase extends AbstractDatabase {
     try {
       if (table != null) {
         Table t = services.getConfig().getSchema(this.ID + "/" + table);
-        if (t != null)
+        // query metadata sometimes does not match schema
+        // https://github.com/dashjoin/platform/issues/280
+        // make sure map value is not null
+        if (t != null && t.properties.get(column) != null)
           return t.properties.get(column);
       }
     } catch (Exception e) {
