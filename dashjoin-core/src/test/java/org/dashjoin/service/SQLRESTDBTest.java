@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.dashjoin.model.Property;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.SQLDatabase.PreparedStmt;
@@ -71,7 +72,7 @@ public class SQLRESTDBTest {
         .executeUpdate("create table \"test\"(\"id\" int auto_increment, \"name\" varchar(255))");
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         return con;
       }
     };
@@ -149,7 +150,7 @@ public class SQLRESTDBTest {
   SQLDatabase db() {
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         throw new NumberFormatException();
       }
     };

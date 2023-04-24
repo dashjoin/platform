@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
 import org.h2.Driver;
@@ -84,7 +85,7 @@ public class SQLCastTest extends JsonCastTest {
     con.createStatement().executeUpdate("create table \"test\"(\"name\" varchar(255) primary key)");
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         return con;
       }
     };
@@ -104,7 +105,7 @@ public class SQLCastTest extends JsonCastTest {
     con.createStatement().executeUpdate("create table \"test\"(\"name\" varchar(255) primary key)");
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         return con;
       }
     };

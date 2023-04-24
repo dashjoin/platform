@@ -142,14 +142,16 @@ public class SQLDatabase extends AbstractDatabase {
 
     long start = System.currentTimeMillis();
     Connection con;
+    QueryMeta meta;
     java.sql.Statement stmt;
     Integer maxRows;
     Integer queryTimeout;
     String query;
     String error;
 
-    public Aspect(Connection con) {
+    public Aspect(Connection con, QueryMeta meta) {
       this.con = con;
+      this.meta = meta;
     }
 
     @Override
@@ -173,8 +175,8 @@ public class SQLDatabase extends AbstractDatabase {
       if (method.getName().equals("setQueryTimeout"))
         queryTimeout = (Integer) args[0];
       if (method.equals(Connection.class.getMethod("close")))
-        PerformanceDatabase.add(ID + ": " + query, System.currentTimeMillis() - start, maxRows,
-            queryTimeout, error);
+        PerformanceDatabase.add(ID + ": " + query, meta, System.currentTimeMillis() - start,
+            maxRows, queryTimeout, error);
       if (method
           .equals(java.sql.Statement.class.getMethod("executeQuery", new Class[] {String.class})))
         query = (String) args[0];
@@ -190,12 +192,16 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   public Connection getConnection() throws SQLException {
+    return getConnection(null);
+  }
+
+  public Connection getConnection(QueryMeta meta) throws SQLException {
     try {
       SQLDatabase x = services.getConfig().getCachedForce(ID, getClass());
       if (x._cp == null)
         throw new Exception("Database not yet initialized: " + ID);
       return (Connection) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-          new Class[] {Connection.class}, new Aspect(x._cp.getConnection()));
+          new Class[] {Connection.class}, new Aspect(x._cp.getConnection(), meta));
     } catch (SQLException e) {
       throw e;
     } catch (Exception e) {
@@ -536,7 +542,7 @@ public class SQLDatabase extends AbstractDatabase {
 
     List<Map<String, Object>> data = new ArrayList<>();
     List<Map<String, Object>> multidata = null;
-    try (Connection con = getConnection()) {
+    try (Connection con = getConnection(info)) {
       try (PreparedStatement pstmt = con.prepareStatement(ps.query)) {
         ps.cast(pstmt.getParameterMetaData());
         if (limit != null)

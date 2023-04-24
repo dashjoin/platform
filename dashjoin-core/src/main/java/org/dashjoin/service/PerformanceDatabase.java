@@ -20,14 +20,20 @@ public class PerformanceDatabase extends JSONDatabase {
    * query performance entry (one row in the dj-query-performance table)
    */
   public static class QueryPerformance {
-    public QueryPerformance(String query) {
+    public QueryPerformance(String query, QueryMeta meta) {
       this.query = query;
+      this.catalog = meta == null ? null : meta.ID;
     }
 
     /**
      * the query string / also the PK
      */
     public String query;
+
+    /**
+     * optional FK to the query catalog
+     */
+    public String catalog;
 
     /**
      * query use case / type
@@ -150,6 +156,11 @@ public class PerformanceDatabase extends JSONDatabase {
     return objectMapper.convertValue(queries, JSONDatabase.trr);
   }
 
+  synchronized public static void add(String query, long runtime, Integer limit,
+      Integer queryTimeout, String error) {
+    add(query, null, runtime, limit, queryTimeout, error);
+  }
+
   /**
    * update performance table
    * 
@@ -157,12 +168,12 @@ public class PerformanceDatabase extends JSONDatabase {
    * @param runtime query runtime in millisecs
    * @param limit optional limit given to the connection
    */
-  synchronized public static void add(String query, long runtime, Integer limit,
+  synchronized public static void add(String query, QueryMeta meta, long runtime, Integer limit,
       Integer queryTimeout, String error) {
 
     QueryPerformance q = queries.get(query);
     if (q == null) {
-      q = new QueryPerformance(query);
+      q = new QueryPerformance(query, meta);
       if (queries.size() == 1000) {
         // evict the entry with the smallest total runtime
         long min = Long.MAX_VALUE;

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.inject.Inject;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.SQLDatabase;
 import org.dashjoin.service.Services;
 import org.h2.Driver;
@@ -23,7 +24,7 @@ public class SQLSchemaChangeTest {
     Connection con = DriverManager.getConnection("jdbc:h2:mem:ddl");
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         return con;
       }
     };

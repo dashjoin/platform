@@ -4,6 +4,7 @@ import static com.google.common.collect.ImmutableMap.of;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.QueryEditor.QueryColumn;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +17,7 @@ public class JDBC {
   public static void main(String[] args) throws Exception {
     SQLDatabase db = new SQLDatabase() {
       @Override
-      public Connection getConnection() throws SQLException {
+      public Connection getConnection(QueryMeta meta) throws SQLException {
         return _cp.getConnection();
       }
     };

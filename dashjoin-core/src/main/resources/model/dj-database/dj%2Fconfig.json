@@ -910,7 +910,15 @@
       "name": "dj-query-performance",
       "parent": "dj/config",
       "type": "object",
-      "properties": {}
+      "properties": {
+        "catalog": {
+          "ID": "dj/config/dj-query-performance/catalog",
+          "name": "catalog",
+          "parent": "dj/config/dj-query-performance",
+          "type": "string",
+          "ref": "dj/config/dj-query-catalog/ID"
+		}
+	  }
     }
   }
 }
