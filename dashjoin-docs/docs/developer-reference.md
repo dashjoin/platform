@@ -1072,7 +1072,6 @@ call| $call(function, argument) |   Dashjoin function result
 query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
 adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
-erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 echo | $echo(any) | Prints the parameter to the log
 index | $index() | Generates a unique row index ID
@@ -1095,6 +1094,8 @@ openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openText | $openText(url, encoding) | Parses the url and converts it to a string
 uuid | $uuid() | Generates a random UUID
 exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
+erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
+stats| $stats(database, table, limit?) | Generate statistics for a database table (type, min, max, count, distinct values, etc.)
 
 ## Access Control
 

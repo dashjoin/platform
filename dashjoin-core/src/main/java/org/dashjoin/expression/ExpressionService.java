@@ -74,6 +74,10 @@ public class ExpressionService {
     return manage;
   }
 
+  public Data getData() {
+    return data;
+  }
+
   /**
    * combine expression and data into a single post parameter
    */
