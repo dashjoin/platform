@@ -113,7 +113,7 @@ export const __DJ_TYPES = [
   MapComponent,
   HTMLComponent,
   ValueComponent,
-  NotebookComponent
+  NotebookComponent,
 ];
 // Decouple access to avoid circular deps:
 (window as any).__DJ_TYPES = __DJ_TYPES;
