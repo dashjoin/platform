@@ -1,0 +1,13 @@
+{
+    "ID": "Notebook",
+    "layout": {
+        "widget": "page",
+        "pageLayout": "horizontal",
+        "children": [
+            {
+                "widget": "notebook",
+                "title": "Dashjoin Notebook"
+            }
+        ]
+    }
+}

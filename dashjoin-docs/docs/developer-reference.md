@@ -536,6 +536,16 @@ You can achieve this by adding a class attribute to the element and setting the 
 material class like mat-elevation-z8. Alternatively, the markdown widget defines the styles margin1 to margin5
 which set the element margin to 1em to 5em.
 
+#### notebook
+
+This widget is the JSONata equivalent of a Jupyter notebook. It allows composing and running several expressions.
+The result of every expression is stored in the browser session. You can also assign variables and use them
+in other expressions. 
+
+The widget offers a save function at the bottom. This saves the entire page and the expressions contained within.
+Please note that the notebook widget should only be used as the sole widget on the page, since saving the notebook
+will delete other widgets you might place on the page.
+
 #### table
 
 Displays query results as a table

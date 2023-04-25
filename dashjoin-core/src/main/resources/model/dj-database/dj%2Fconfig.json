@@ -837,6 +837,12 @@
           {
             "widget": "create",
             "title": "New Function"
+          },
+          {
+            "widget": "text",
+            "text": "Dashjoin Notebook",
+            "href": "/page/Notebook",
+            "icon": "edit_note"
           }
         ]
       },
