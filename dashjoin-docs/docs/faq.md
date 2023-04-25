@@ -77,3 +77,19 @@ value.(
     $keys($).{"key": $, "value": $lookup($x, $)}
 )
 ```
+
+* **How can I determine whether it makes sense to define a foreign key on a given column?** In some data integration scenarios, it may not be clear
+whether a column is a good candidate to reference a primary key. Some keys might match, others won't. You can use the following piece of
+JSONata code to determine to which degree the values intersect. We first get the table data and project the column. The intersection
+is computed using a JSONata filter which only includes the values in the other array.
+
+```javascript
+(
+  $t1 := $all("db1", "table1").column1;
+  $t2 := $all("db2", "table2").column2;
+  {
+    "count1": $count($t1),
+    "count2": $count($t2),
+    "intersect": $count($t2[$ in $t1])
+  }
+)```
