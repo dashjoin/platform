@@ -142,14 +142,13 @@ public class ModelTest {
 
     if (tree.get("widget") != null) {
       System.out.println(tree.get("widget"));
-      Assertions
-          .assertTrue(Arrays
-              .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
-                  "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
-                  "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch",
-                  "search", "search-result", "toolbar", "table", "queryeditor", "editRelated",
-                  "markdown", "page", "tree", "variable", "sidenav-switch", "html")
-              .contains(tree.get("widget").asText()));
+      Assertions.assertTrue(Arrays
+          .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
+              "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
+              "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
+              "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
+              "tree", "variable", "sidenav-switch", "html", "notebook")
+          .contains(tree.get("widget").asText()));
     }
 
     for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
