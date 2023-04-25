@@ -61,15 +61,52 @@ export class NotebookComponent extends DisplayComponent implements OnInit {
    * run command
    */
   run(line: Line, i: number) {
-    this.runExpression(line.expression)
+    this.runExpression(this.vars(line))
       .then(res => {
         line.result = res
         this.saveState()
+
+        // parse variable
+        line.variable = undefined
+        if (line.expression) {
+          let v = line.expression.trim()
+          if (v.startsWith('$'))
+            v = v.substring(1)
+          const parts = v.split(':=')
+          if (parts.length > 1) {
+            if (/^[0-9a-zA-Z_]+$/.test(parts[0].trim()))
+              line.variable = parts[0].trim()
+          }
+        }
       })
       .catch(err => {
         line.result = err.error
         this.saveState()
       })
+  }
+
+  /**
+   * replace $var with notebook.var
+   */
+  vars(l: Line): string {
+    let e = l.expression
+    for (const line of this.lines)
+      if (line.variable && line != l) {
+        // tokenize by $var
+        const parts = e.split('$' + line.variable)
+        const nonPrefix = [parts[0]]
+        for (let i = 1; i < parts.length; i++) {
+          const first = parts[i].charAt(0)
+          // check if the string after the $var split starts with letter digit or _
+          if (/^[0-9a-zA-Z_]$/.test(first))
+            // no, something line $var2 undo the split
+            nonPrefix[nonPrefix.length - 1] = nonPrefix[nonPrefix.length - 1] + '$' + line.variable + parts[i]
+          else
+            nonPrefix.push(parts[i])
+        }
+        e = nonPrefix.join('notebook.' + line.variable)
+      }
+    return e
   }
 
   /**
@@ -132,12 +169,37 @@ export class NotebookComponent extends DisplayComponent implements OnInit {
       this.run(this.lines[i], i)
     }
   }
+
+  /**
+   * overrides get context - include variable from other lines
+   */
+  context() {
+    const res = super.context()
+    res.notebook = {}
+    for (const line of this.lines)
+      if (line.variable)
+        res.notebook[line.variable] = line.result
+    return res
+  }
 }
 
 /**
  * line state
  */
 class Line {
+
+  /**
+   * expression for this line
+   */
   expression: string
+
+  /**
+   * expression result (undefined if it has not been run)
+   */
   result?: any
+
+  /**
+   * if the expression starts with $var := , this value is "var"
+   */
+  variable?: string
 }
