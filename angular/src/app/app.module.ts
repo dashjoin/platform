@@ -82,6 +82,7 @@ import { IconSelectComponent } from './edit-widget-dialog/icon-select.component'
 import { QuerySelectComponent } from './edit-widget-dialog/query-select.component';
 import { CodeEditorComponent } from './edit-widget-dialog/codeeditor.component';
 import { ValueComponent } from './value/value.component';
+import { NotebookComponent } from './widget/notebook/notebook.component';
 
 export const __DJ_TYPES = [
   DJBaseComponent,
@@ -112,6 +113,7 @@ export const __DJ_TYPES = [
   MapComponent,
   HTMLComponent,
   ValueComponent,
+  NotebookComponent
 ];
 // Decouple access to avoid circular deps:
 (window as any).__DJ_TYPES = __DJ_TYPES;

@@ -1,0 +1,27 @@
+<div *ngFor="let line of lines; let i=index">
+    <mat-form-field>
+        <textarea style="font-family: monospace" matInput [(ngModel)]="line.expression"
+            (keydown)="triggerFunction($event ,i)"></textarea>
+    </mat-form-field>
+    <button mat-icon-button (click)="run(line, i)">
+        <mat-icon matTooltip="Run (CTRL + ENTER)">play_circle_outline</mat-icon>
+    </button>
+    <button mat-icon-button (click)="deleteLine(i)">
+        <mat-icon matTooltip="Delete this line">delete_outline</mat-icon>
+    </button>
+    <pre>{{print(line)}}</pre>
+</div>
+
+<br>
+
+<button mat-icon-button (click)="addLine()" matTooltip="Add a line">
+    <mat-icon>add</mat-icon>
+</button>
+
+<button mat-icon-button (click)="restoreNotebook()" matTooltip="Restore saved state">
+    <mat-icon>restore</mat-icon>
+</button>
+
+<button mat-icon-button (click)="write()" matTooltip="Save this notebook" [disabled]="table">
+    <mat-icon>save</mat-icon>
+</button>

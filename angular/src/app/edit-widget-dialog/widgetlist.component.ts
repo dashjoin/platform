@@ -102,6 +102,7 @@ export class WidgetListComponent implements WidgetComponent, OnInit, OnDestroy {
         'table': 'table', //
         'text': 'title', //
         'tree': 'account_tree', //
+        'notebook': 'edit_note',
         'variable': 'plus_one' //
     };
 
