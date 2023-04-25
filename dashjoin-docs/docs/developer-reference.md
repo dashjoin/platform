@@ -1096,6 +1096,10 @@ uuid | $uuid() | Generates a random UUID
 exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
 erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
 stats| $stats(database, table, limit?) | Generate statistics for a database table (type, min, max, count, distinct values, etc.)
+gitStatus| $gitStatus() | Run git status
+gitPull| $gitPull() | Run git pull
+gitRestore| $gitRestore(path) | Revert a change
+gitCommit| $gitCommit(message, [paths]) | Run git commit and push
 
 ## Access Control
 

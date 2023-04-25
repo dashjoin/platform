@@ -94,3 +94,6 @@ is computed using a JSONata filter which only includes the values in the other a
   }
 )
 ```
+
+* **Can I trigger a git pull of the App in production without a restart?** You can run $gitPull() as a function or on the Dashjoin Notebook.
+

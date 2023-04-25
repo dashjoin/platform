@@ -27,3 +27,7 @@ org.dashjoin.function.CreateStubs
 org.dashjoin.function.SaveApi
 org.dashjoin.function.ERDiagram
 org.dashjoin.function.Stats
+org.dashjoin.function.GitPull
+org.dashjoin.function.GitRestore
+org.dashjoin.function.GitCommit
+org.dashjoin.function.GitStatus
