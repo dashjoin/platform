@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.SecurityContext;
 import org.dashjoin.model.JsonSchema;
-import org.dashjoin.service.JSONDatabase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -51,6 +50,6 @@ public class Receive extends AbstractMapping<Object> {
   @Override
   public Map<String, List<Map<String, Object>>> gather(SecurityContext sc) throws Exception {
     return new ETL().convertToMapOfTables(
-        om.readValue(new ByteArrayInputStream(sample.getBytes()), JSONDatabase.tr));
+        om.readValue(new ByteArrayInputStream(sample.getBytes()), Object.class));
   }
 }
