@@ -16,8 +16,6 @@ public class GitStatus extends AbstractFunction<Void, Object> {
 
   @Override
   public Object run(Void arg) throws Exception {
-    if (!sc.isUserInRole("admin"))
-      throw new Exception("must be admin to perform git operations");
     try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
       List<Map<String, Object>> res = new ArrayList<>();
       Status status = git.status().call();

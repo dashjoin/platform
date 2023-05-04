@@ -14,8 +14,6 @@ public class GitCommit extends AbstractVarArgFunction<String> {
   @SuppressWarnings("rawtypes")
   @Override
   public String run(List args) throws Exception {
-    if (!sc.isUserInRole("admin"))
-      throw new Exception("must be admin to perform git operations");
     URL url = new URL(ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue());
     String user = url.getUserInfo();
     if (user == null)
