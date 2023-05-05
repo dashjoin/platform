@@ -85,6 +85,8 @@ export class ButtonComponent extends DJBaseComponent implements OnInit {
           tmp[k] = { type: 'string', widget: 'date' };
         } else if (v === 'upload') {
           tmp[k] = { type: 'string', widget: 'upload' };
+        } else if (v === 'upload64') {
+          tmp[k] = { type: 'string', widget: 'upload64' };
         } else {
           tmp[k] = { type: v };
         }
