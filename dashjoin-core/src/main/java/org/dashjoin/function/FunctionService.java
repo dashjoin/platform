@@ -75,7 +75,12 @@ public class FunctionService {
       int index = 0;
       AbstractVarArgFunction<Object> vf = (AbstractVarArgFunction) a;
       for (Class<Object> c : vf.getArgumentClassList())
-        args.add(om.convertValue(((List) argument).get(index++), c));
+        try {
+          args.add(om.convertValue(((List) argument).get(index++), c));
+        } catch (IllegalArgumentException e) {
+          throw new IllegalArgumentException("Type error on parameter " + index + " (was "
+              + ((List) argument).get(index - 1).getClass() + ", expected " + c + ")");
+        }
       return a.run(args);
     } else
       return a.run(om.convertValue(argument, a.getArgumentClass()));
