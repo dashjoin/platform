@@ -1092,6 +1092,11 @@ openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON.
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openText | $openText(url, encoding) | Parses the url and converts it to a string
+parseJson | $parseJson(json) | Parses JSON (see openJson)
+parseCsv | $parseCsv(css, options) | Parses CSV and converts it to JSON (see openCsv)
+parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
+parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
+parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
 uuid | $uuid() | Generates a random UUID
 exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
 erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
