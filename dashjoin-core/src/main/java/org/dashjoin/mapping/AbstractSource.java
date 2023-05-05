@@ -189,7 +189,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
     return db;
   }
 
-  protected Void runInternal(Void arg) throws Exception {
+  public Void runInternal(Void arg) throws Exception {
     return runInternal(arg, true);
   }
 

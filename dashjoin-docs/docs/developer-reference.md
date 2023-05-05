@@ -1105,6 +1105,7 @@ gitStatus| $gitStatus() | Run git status
 gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change
 gitCommit| $gitCommit(message, [paths]) | Run git commit and push
+saveTable| $saveTable(Ignore | Refresh | Delete All, database, table, data, [pk]) | Allows performing an ad hoc ETL operation (note that createSchema is true)
 
 ## Access Control
 

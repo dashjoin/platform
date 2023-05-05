@@ -31,3 +31,4 @@ org.dashjoin.function.GitPull
 org.dashjoin.function.GitRestore
 org.dashjoin.function.GitCommit
 org.dashjoin.function.GitStatus
+org.dashjoin.function.SaveTable
