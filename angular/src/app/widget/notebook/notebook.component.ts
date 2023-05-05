@@ -117,6 +117,32 @@ export class NotebookComponent extends DisplayComponent implements OnInit {
     this.saveState()
   }
 
+
+  /**
+   * add a line with upload content
+   */
+  upload(files: FileList) {
+    const result = {}
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const name = files.item(i).name.replace('.', '_')
+        try {
+          result[name] = JSON.parse(reader.result as any)
+        } catch (err) {
+          result[name] = reader.result
+        }
+      }
+      if (files.item(i).name.toLocaleLowerCase().endsWith('.xlsx'))
+        reader.readAsDataURL(files.item(i))
+      else
+        reader.readAsText(files.item(i))
+    }
+
+    this.lines.push({ expression: '$upload := ...', result, variable: 'upload', upload: true })
+    this.saveState()
+  }
+
   /**
    * delete line
    */
@@ -202,4 +228,9 @@ class Line {
    * if the expression starts with $var := , this value is "var"
    */
   variable?: string
+
+  /**
+   * is this an uploaded line?
+   */
+  upload?: boolean
 }

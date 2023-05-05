@@ -3,7 +3,7 @@
         <textarea style="font-family: monospace" matInput [(ngModel)]="line.expression"
             (keydown)="triggerFunction($event ,i)"></textarea>
     </mat-form-field>
-    <button mat-icon-button (click)="run(line, i)">
+    <button [disabled]="line.upload" mat-icon-button (click)="run(line, i)">
         <mat-icon matTooltip="Run (CTRL + ENTER)">play_circle_outline</mat-icon>
     </button>
     <button mat-icon-button (click)="deleteLine(i)">
@@ -14,9 +14,12 @@
 
 <br>
 
-<button mat-icon-button (click)="addLine()" matTooltip="Add a line">
+<button mat-icon-button (click)="addLine()" matTooltip="Add a blank line">
     <mat-icon>add</mat-icon>
 </button>
+
+<input matTooltip="Add line with a variable set to the file contents" type="file" multiple
+    (change)="upload($event.target.files)">
 
 <button mat-icon-button (click)="restoreNotebook()" matTooltip="Restore saved state">
     <mat-icon>restore</mat-icon>
