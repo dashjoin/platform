@@ -429,14 +429,32 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 
 ### 3.2 (Jan 2023)
 
- * OpenAPI
-   * Dashjoin Apps can expose OpenAPI interface
-   * Implement existing OpenAPI specification via functions
-   * SwaggerHub integration
- * Platform
-   * ARM support
-   * CORS configuration
- * UI
-   * Optional confirmation dialog for button widget
- * SDK
-   * Ability to include static assets in apps
+* OpenAPI
+  * Dashjoin Apps can expose OpenAPI interface
+  * Implement existing OpenAPI specification via functions
+  * SwaggerHub integration
+* Platform
+  * ARM support
+  * CORS configuration
+* UI
+  * Optional confirmation dialog for button widget
+* SDK
+  * Ability to include static assets in apps
+
+### 4.0 (May 2023)
+
+* AI & ML
+  * Docker container / REST API for deploying translation, classification, and chat LLMs
+  * JSONata bindings for OpenAPI and Dashjoin AI & ML APIs
+* JSONata notebooks
+  * Ad hoc queries supported via JSONata
+  * File upload to JSONata notebooks
+  * Ad hoc ETL via JSONata
+* Data Model
+  * Entity relationship schema visualization
+  * Table statistics
+* Platform
+  * System exec JSONata function
+  * Improved SQLite insert performance
+* SDK
+  * GIT operations available via JSONata
