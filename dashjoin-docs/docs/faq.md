@@ -120,3 +120,21 @@ $call("openai", {
   "temperature": 0.7
 })
 ```
+
+* **I have a table with a unique column which is not the primary key, can I ETL into this table from a datasource which only contains this key and not the primary key?** Yes, you can lookup a record using the $all function. Let's consider the following example from the northwind database, where employee names are given with an email address, but not the employee ID. We can use the $all function to retrieve the record by last name and project the id which is then merged into the original record. Note that this runs one query per row. Alternatively, you can create a lookup table (unique2key), store it in a variable, and use $lookup to get the primary key to merge.
+
+```javascript
+[{"id": "Davolio", "email": "davolio@example.org"}, {"id": "Fuller", "email": "fuller@acme.org"}]
+  .$merge([
+    $, 
+    {"EMPLOYEE_ID": $all("northwind", "EMPLOYEES", null, null, null, false, {"LAST_NAME": id}).EMPLOYEE_ID}
+  ])
+```
+
+```javascript
+(
+  $input := [{"id": "Davolio", "email": "davolio@example.org"}, {"id": "Fuller", "email": "fuller@acme.org"}];
+  $unique2key := $all("northwind", "EMPLOYEES").{LAST_NAME: EMPLOYEE_ID};
+  $input.$merge([$, {"EMPLOYEE_ID": $lookup($unique2key, $.id)}])
+)
+```
