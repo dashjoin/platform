@@ -97,3 +97,26 @@ is computed using a JSONata filter which only includes the values in the other a
 
 * **Can I trigger a git pull of the App in production without a restart?** You can run $gitPull() as a function or on the Dashjoin Notebook.
 
+* **Can I call the OpenAI APIs from Dashjoin?** Yes, register the following function (replace your API key accordingly) can call it:
+
+```javascript
+{
+    "djClassName": "org.dashjoin.function.RestJson",
+    "ID": "openai",
+    "type": "read",
+    "method": "POST",
+    "contentType": "application/json",
+    "headers": {
+        "Authorization": "Bearer YOUR-API-KEY-HERE"
+    },
+    "url": "https://api.openai.com/v1/chat/completions"
+}
+```
+
+```javascript
+$call("openai", {
+  "model": "gpt-3.5-turbo",
+  "messages": [{"role": "user", "content": "Say this is a test!"}],
+  "temperature": 0.7
+})
+```
