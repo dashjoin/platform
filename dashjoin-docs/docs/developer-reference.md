@@ -1106,6 +1106,9 @@ gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change
 gitCommit| $gitCommit(message, [paths]) | Run git commit and push
 saveTable| $saveTable(Ignore | Refresh | Delete All, database, table, data, [pk]) | Allows performing an ad hoc ETL operation (note that createSchema is true)
+reconcileEntity | $reconcileEntity(entity, [entity-language], [limit]) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned
+classifyEntities | $classifyEntities(entity-array, [entity-language], [limit], [subclass-depth]) | Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results. 
+
 
 ## Access Control
 
