@@ -444,8 +444,12 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 ### 4.0 (May 2023)
 
 * AI & ML
-  * Docker container / REST API for deploying translation, classification, and chat LLMs
+  * Docker container / REST API for deploying custom models
+  * Image, face, and optical character recognition container
+  * Large language model for translation services
+  * Large language model for chat and instructions
   * JSONata bindings for OpenAPI and Dashjoin AI & ML APIs
+  * Automatic entity reconciliation and classification
 * JSONata notebooks
   * Ad hoc queries supported via JSONata
   * File upload to JSONata notebooks
