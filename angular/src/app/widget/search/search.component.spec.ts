@@ -25,6 +25,7 @@ describe('SearchComponent', () => {
     DepInjectorService.setInjector(TestBed.createComponent(MappingComponent).debugElement.injector);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    component.layout = {} as any
     fixture.detectChanges();
   });
 

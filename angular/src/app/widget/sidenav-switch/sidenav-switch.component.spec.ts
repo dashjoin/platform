@@ -24,6 +24,7 @@ describe('SidenavSwitchComponent', () => {
     DepInjectorService.setInjector(TestBed.createComponent(MappingComponent).debugElement.injector);
     fixture = TestBed.createComponent(SidenavSwitchComponent);
     component = fixture.componentInstance;
+    component.layout = {} as any
     fixture.detectChanges();
   });
 

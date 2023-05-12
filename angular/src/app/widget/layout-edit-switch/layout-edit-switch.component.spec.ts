@@ -25,6 +25,7 @@ describe('LayoutEditSwitchComponent', () => {
     DepInjectorService.setInjector(TestBed.createComponent(MappingComponent).debugElement.injector);
     fixture = TestBed.createComponent(LayoutEditSwitchComponent);
     component = fixture.componentInstance;
+    component.layout = {} as any
     fixture.detectChanges();
   });
 
