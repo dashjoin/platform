@@ -34,16 +34,23 @@ available to other users.
 
 ## Optical Character Recognition
 
-The optical character recognition (OCR) functionality is available as a Docker container. It exposes a
-REST API where you provide an image URL such as this picture (https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg).
+The optical character recognition (OCR) functionality is available in the dashjoin/ai-image Docker container. It exposes a
+REST API on port 8080 where you provide an image URL such as this picture (https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg). 
 
 <img width="400px" src="https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg">
+
+To start the container, run the following command (we use the host port 8083 to avoid 
+clashing with the platform port):
+
+```shell
+docker run -p 8083:8080 dashjoin/ai-image
+```
 
 The URL is passed in a GET request https://.../image-ocr?url=... and returns the extracted text:
 
 ```javascript
 $parseJson(
-  $openJson("https://.../image-ocr?url=https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg")
+  $openJson("http://.../image-ocr?url=https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg")
 )
 ```
 
@@ -53,7 +60,7 @@ $parseJson(
 
 ## Image Classification
 
-The image classification functionality is available as a Docker container. It exposes a
+The image classification functionality is also available in the dashjoin/ai-image Docker container. It exposes a
 REST API where you provide an image URL such as this picture of a bird (https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg).
 
 <img width="400px" src="https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg">
@@ -63,7 +70,7 @@ classifications and probabilities:
 
 ```javascript
 $parseJson(
-  $openJson("https://.../image-classify?url=https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg")
+  $openJson("http://.../image-classify?url=https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg")
 ).{"type": $[1], "prob": $[2]}
 ```
 
@@ -87,7 +94,7 @@ $parseJson(
 
 ## Face Recognition
 
-The optical character recognition (OCR) functionality is available as a Docker container. It exposes a
+The optical character recognition (OCR) functionality is also available in the dashjoin/ai-image Docker container. It exposes a
 REST API where you provide an image URL such as this picture (https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg).
 
 <img width="400px" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg">
@@ -97,7 +104,7 @@ coordinates of the face within the image:
 
 ```javascript
 $parseJson(
-  $openJson("https://ml-img-classify-qtmq6xeijq-ew.a.run.app/image-face?url=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg")
+  $openJson("http://.../image-face?url=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg")
 )
 ```
 
@@ -115,10 +122,18 @@ $parseJson(
 
 ## Text Translation
 
-The translation services base on a large language model and are available via REST API in a
-seperate container. The OpenAPI specification can be accessed at 
-https://.../docs#/default/translate_translate_get.
-It offers a single service called "translate" which takes the following parameters:
+The translation services base on a large language model and are available via REST API in the
+dashjoin/ai-translation container. You can start the container using the following command
+(the REST service runs on port 8080, we use 8084 to avoid port collisions):
+
+```shell
+docker run -p 8084:8080 dashjoin/ai-translation
+```
+
+The OpenAPI specification can be accessed at 
+http://.../docs.
+It offers a number of services, which the most important ones being "translate" and "language_detection". 
+Translate takes the following parameters:
 
 * target_lang: the code of the language, the text is supposed to be translated to
 * text: an array of strings with the original text to be translated
@@ -127,7 +142,7 @@ It offers a single service called "translate" which takes the following paramete
 * perform_sentence_splitting: determines whether the sentences are split into a string array
 
 ```javascript
-$openJson("https://dj-ai-tl-qtmq6xeijq-ew.a.run.app/translate?target_lang=de&text=This%20is%20an%20awesome%20translation%20service")
+$openJson("http://.../translate?target_lang=de&text=This%20is%20an%20awesome%20translation%20service")
 ```
 
 ```json
@@ -144,7 +159,92 @@ $openJson("https://dj-ai-tl-qtmq6xeijq-ew.a.run.app/translate?target_lang=de&tex
 }
 ```
 
+Language detection takes a single text parameter with the sample text and works as follows:
+
+```javascript
+$openJson("http://.../language_detection?text=example")
+```
+
+```json
+"en"
+```
+
 ## Large Language Model
+
+The chat and instruction functionality is available in the dashjoin/ai-llm container.
+To start it, you need to mount your language model (e.g. the popular [llama model](https://github.com/facebookresearch/llama)) 
+and a configuration into the container as follows. The file ts_server.cfg determines important parameters:
+
+```json
+{
+  log_filename: "ts_server.log",
+  /* if true, enable GPU usage */
+  //  cuda: true,
+  /* cuda device index, use it if multiple GPUs */
+  //  device_index: 0,
+
+  /* maximum number of threads, only matters when running on CPU */
+  n_threads: 1,
+  
+  /* models to load. 'name' is the identifier used in the JSON
+     request. 'filename' is the file containing the model description
+   */
+  models: [
+    { name: "alpaca_7B_q4",  filename: "/opt/dashjoin/ai/model.bin" },
+  ],
+  local_port: 8080, /* port on which the server listen to */
+  log_start: true, /* print "Started." when the server is ready */
+  gui: true, /* start a simple GUI when exploring the root path
+               (e.g. http://localhost:8080 here) (default = false) */
+}
+```
+
+Start the docker container as follows:
+
+```shell
+docker run 
+    -p 8080:8080 
+    -v $PWD/ts_server.cfg:/opt/dashjoin/ai/ts_server.cfg
+    -v $PWD/my_model.bin:/opt/dashjoin/ai/model.bin \
+    dashjoin/ai-llm
+```
+
+To test the language model, create the following JSONata function (note that /model/ in the URL selects the 
+model in the config file, also note that you can deploy multiple models into the container):
+
+```json
+{
+    "djClassName": "org.dashjoin.function.RestJson",
+    "ID": "dashjoin-llm",
+    "type": "read",
+    "method": "POST",
+    "contentType": "application/json",
+    "url": "http://.../v1/engines/model/completions"
+}
+```
+
+To call the function use:
+
+```javascript
+$call("dashjoin-llm", {
+  "prompt": "...",
+  "temperature": 1,
+  "top_k": 40,
+  "top_p": 0.9,
+  "max_tokens": 200,
+  "stream": true,
+  "stop": null
+})
+```
+
+{"text":" the things I liked about the show and thought","reached_end":false}
+
+{"text":" everyone else should be able to see. But","reached_end":false}
+
+{"text":" it’s also, in many","reached_end":false}
+
+{"text":" ways, kind of","reached_end":true,"input_tokens":4,"output_tokens":200}
+
 
 ## Entity Reconciliation
 
