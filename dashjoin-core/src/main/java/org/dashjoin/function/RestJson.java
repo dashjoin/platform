@@ -21,7 +21,7 @@ import okhttp3.RequestBody;
  */
 @SuppressWarnings("rawtypes")
 @JsonSchema(required = {"url"},
-    order = {"url", "username", "password", "method", "contentType", "headers"})
+    order = {"url", "username", "password", "method", "contentType", "headers", "returnText"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -54,6 +54,12 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   @JsonSchema(enums = {"GET", "POST"})
   public String method;
+
+  /**
+   * if true, return the result as a string
+   */
+  @JsonSchema(title = "Return the result as raw text")
+  public Boolean returnText;
 
   /**
    * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
@@ -104,6 +110,9 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     String body = response.body().string();
     if (body.isEmpty())
       return "";
+
+    if (Boolean.TRUE.equals(returnText))
+      return body;
 
     if (body.trim().startsWith("{") || body.trim().startsWith("["))
       return objectMapper.readValue(body, Object.class);
