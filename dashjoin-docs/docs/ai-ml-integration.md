@@ -190,7 +190,7 @@ and a configuration into the container as follows. The file ts_server.cfg determ
      request. 'filename' is the file containing the model description
    */
   models: [
-    { name: "alpaca_7B_q4",  filename: "/opt/dashjoin/ai/model.bin" },
+    { name: "djmodel",  filename: "/opt/dashjoin/ai/model.bin" },
   ],
   local_port: 8080, /* port on which the server listen to */
   log_start: true, /* print "Started." when the server is ready */
@@ -210,7 +210,7 @@ docker run
 ```
 
 To test the language model, create the following JSONata function (note that /model/ in the URL selects the 
-model in the config file, also note that you can deploy multiple models into the container):
+model key in the config file, also note that you can deploy multiple models into the container):
 
 ```json
 {
@@ -219,7 +219,7 @@ model in the config file, also note that you can deploy multiple models into the
     "type": "read",
     "method": "POST",
     "contentType": "application/json",
-    "url": "http://.../v1/engines/model/completions",
+    "url": "http://.../v1/engines/djmodel/completions",
     "returnText": true
 }
 ```
