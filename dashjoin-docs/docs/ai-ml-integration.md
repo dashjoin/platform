@@ -219,32 +219,38 @@ model in the config file, also note that you can deploy multiple models into the
     "type": "read",
     "method": "POST",
     "contentType": "application/json",
-    "url": "http://.../v1/engines/model/completions"
+    "url": "http://.../v1/engines/model/completions",
+    "returnText": true
 }
 ```
 
 To call the function use:
 
 ```javascript
-$call("dashjoin-llm", {
-  "prompt": "...",
+$parseJson("[" & $replace($call("dashjoin-llm", {
+  "prompt": "Game of Thrones is",
   "temperature": 1,
   "top_k": 40,
   "top_p": 0.9,
   "max_tokens": 200,
   "stream": true,
   "stop": null
-})
+}), /\}\s*\{/, "},{") & "]")
 ```
 
-{"text":" the things I liked about the show and thought","reached_end":false}
+The result is a stream of concatenated JSON. $call returns this stream as a string.
+The example uses JSONata regular expressions to convert this into a proper JSON
+array of objects before parsing it via $parseJson.
 
-{"text":" everyone else should be able to see. But","reached_end":false}
-
-{"text":" it’s also, in many","reached_end":false}
-
-{"text":" ways, kind of","reached_end":true,"input_tokens":4,"output_tokens":200}
-
+```json
+[
+  ...
+  {"text":" the things I liked about the show and thought","reached_end":false},
+  {"text":" everyone else should be able to see. But","reached_end":false},
+  {"text":" it’s also, in many","reached_end":false},
+  {"text":" ways, kind of","reached_end":true,"input_tokens":4,"output_tokens":200},
+]
+```
 
 ## Entity Reconciliation
 
