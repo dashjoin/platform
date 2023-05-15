@@ -52,6 +52,12 @@ For anyone who is planning a development project, faces a tight schedule, needs 
       <a href="https://www.youtube.com/watch?v=_itCZjvw9D8"><img src="https://img.youtube.com/vi/_itCZjvw9D8/mqdefault.jpg"></a>
     </td>
   </tr>
+  <tr>
+    <td valign="top" width="33%">
+      <b>Artificial Intelligence</b><br><br>
+	  Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App (<a href="https://dashjoin.github.io/platform/4.0/ai-ml-integration/">read more ...</a>)
+    </td>
+  </tr>
 </table>
 
 ## Getting Started
