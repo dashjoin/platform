@@ -870,6 +870,9 @@ public class SQLDatabase extends AbstractDatabase {
         if (count == 0)
           return false;
       }
+    } catch (SQLException e) {
+      // append the record that we tried to write to the exception
+      throw new SQLException(e.getMessage() + ": " + object, e);
     }
     return true;
   }
