@@ -31,6 +31,7 @@ import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.graalvm.polyglot.PolyglotException;
 import org.graalvm.polyglot.Value;
 import org.jboss.logmanager.Level;
 import com.api.jsonata4java.expressions.Expressions;
@@ -93,7 +94,11 @@ public class ExpressionService {
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
   public JsonNode resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
-    return jsonata(sc, e.expression, o2j(e.data), false);
+    try {
+      return jsonata(sc, e.expression, o2j(e.data), false);
+    } catch (PolyglotException ex) {
+      throw convert(ex);
+    }
   }
 
   @GET
@@ -103,10 +108,31 @@ public class ExpressionService {
   public JsonNode resolveCached(@Context SecurityContext sc,
       @PathParam("expression") String expression) throws Exception {
     ExpressionAndData e = om.readValue(expression, ExpressionAndData.class);
-    return jsonata(sc, e.expression, o2j(e.data), false);
+    try {
+      return jsonata(sc, e.expression, o2j(e.data), false);
+    } catch (PolyglotException ex) {
+      throw convert(ex);
+    }
     // return jsonata(sc, expression.expression, o2j(expression.data), false);
   }
 
+  /**
+   * when logged by JAX-RS, PolyglotException does not show exceptions in JSONata functions
+   */
+  Exception convert(PolyglotException e) {
+    if (e.isHostException()) {
+      Throwable host = e.asHostException();
+      if (host != null) {
+        Throwable wrapped = host.getCause();
+        if (wrapped != null) {
+          Throwable real = wrapped.getCause();
+          if (real instanceof Exception)
+            return (Exception) real;
+        }
+      }
+    }
+    return e;
+  }
 
   public Object resolve(SecurityContext sc, String expression, Object data) throws Exception {
     return j2o(jsonata(sc, expression, o2j(data), false));
