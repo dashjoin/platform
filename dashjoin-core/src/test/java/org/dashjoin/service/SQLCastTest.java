@@ -63,11 +63,15 @@ public class SQLCastTest extends JsonCastTest {
         db.cast(p("uuid", "uuid"), "d0a334cf-ae1a-43b6-8bd5-eb01389d9d4d") instanceof UUID);
   }
 
+  @Test
   public void testSetObject() throws Exception {
     SQLDatabase db = (SQLDatabase) db();
     db.url = "jdbc:postgresql:blabla";
     Assertions.assertTrue(db.cast(null, Arrays.asList(1, 2, 3)) instanceof PGobject);
     Assertions.assertTrue(db.cast((Property) null, MapUtil.of("id", 1)) instanceof PGobject);
+    Property prop = p("array", "array");
+    prop.items = p("string", "string");
+    Assertions.assertTrue(db.cast(prop, "I should be an array") instanceof PGobject);
   }
 
   @Test

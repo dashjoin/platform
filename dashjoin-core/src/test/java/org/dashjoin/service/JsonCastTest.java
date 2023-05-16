@@ -54,6 +54,8 @@ public class JsonCastTest {
 
   @Test
   public void testArray() throws Exception {
+    if (db() instanceof SQLDatabase)
+      return;
     Property p = p("array", null);
     p.items = p("string", null);
     Assertions.assertEquals(Arrays.asList("a"), db().cast(p, "a"));
@@ -67,6 +69,8 @@ public class JsonCastTest {
 
   @Test
   public void testObject() throws Exception {
+    if (db() instanceof SQLDatabase)
+      return;
     Property p = p("object", null);
     p.properties = ImmutableMap.of("name", p("string", null));
     Assertions.assertEquals(MapUtil.of("name", "test"), db().cast(p, "{\"name\": \"test\"}"));

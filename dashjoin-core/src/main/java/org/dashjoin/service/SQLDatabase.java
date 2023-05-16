@@ -1230,18 +1230,6 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public Object cast(Property p, Object object) {
 
-    if (object instanceof Map<?, ?> || object instanceof List<?>)
-      if (url.startsWith("jdbc:postgresql:")) {
-        PGobject jsonObject = new PGobject();
-        jsonObject.setType("json");
-        try {
-          jsonObject.setValue(om.writeValueAsString(object));
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        }
-        return jsonObject;
-      }
-
     if (object instanceof String) {
       String s = (String) object;
 
@@ -1289,7 +1277,21 @@ public class SQLDatabase extends AbstractDatabase {
       }
     }
 
-    return super.cast(p, object);
+    object = super.cast(p, object);
+
+    if (object instanceof Map<?, ?> || object instanceof List<?>)
+      if (url.startsWith("jdbc:postgresql:")) {
+        PGobject jsonObject = new PGobject();
+        jsonObject.setType("json");
+        try {
+          jsonObject.setValue(om.writeValueAsString(object));
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+        return jsonObject;
+      }
+
+    return object;
   }
 
   Object date(Property p, Date date) {
