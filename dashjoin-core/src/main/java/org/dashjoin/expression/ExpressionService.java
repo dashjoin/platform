@@ -126,6 +126,8 @@ public class ExpressionService {
         Throwable wrapped = host.getCause();
         if (wrapped != null) {
           Throwable real = wrapped.getCause();
+          if (real instanceof PolyglotException && real != e)
+            return convert((PolyglotException) real);
           if (real instanceof Exception)
             return (Exception) real;
         }
