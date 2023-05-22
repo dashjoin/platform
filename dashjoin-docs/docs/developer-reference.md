@@ -1109,6 +1109,7 @@ saveTable| $saveTable(Ignore | Refresh | Delete All, database, table, data, [pk]
 reconcileEntity | $reconcileEntity(entity, entity-language?, limit?) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see chapter AI & ML)
 classifyEntities | $classifyEntities([entities], entity-language?, limit?, subclass-depth?) | Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results (see chapter AI & ML)
 synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see chapter AI & ML)
+wait| $wait(object, millisecs) | Wait millisecs provided before returning object
 
 ## Access Control
 
