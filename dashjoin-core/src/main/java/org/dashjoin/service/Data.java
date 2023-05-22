@@ -336,6 +336,10 @@ public class Data {
       Map<String, Object> arguments) throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
+
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table: " + table);
+
     ACLContainerRequestFilter.check(sc, db, m);
     db.cast(m, arguments);
     return db.all(m, offset, limit, sort, descending,
