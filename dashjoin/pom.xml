@@ -104,7 +104,7 @@
     <dependency>
 		<groupId>org.projectlombok</groupId>
 		<artifactId>lombok</artifactId>
-		<version>1.18.22</version>
+		<version>1.18.26</version>
 		<scope>provided</scope>
 	</dependency>
 	
@@ -144,7 +144,7 @@
       <plugin>
       <groupId>org.jboss.jandex</groupId>
       <artifactId>jandex-maven-plugin</artifactId>
-      <version>1.0.7</version>
+      <version>1.2.3</version>
       <executions>
         <execution>
           <id>make-index</id>
@@ -163,7 +163,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.2.2</version>
+				<version>1.4.1</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>

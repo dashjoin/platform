@@ -227,7 +227,14 @@
 		<dependency>
 			<groupId>com.ibm.jsonata4java</groupId>
 			<artifactId>JSONata4Java</artifactId>
-			<version>1.5.8</version>
+			<version>2.4.2</version>
+			<exclusions>
+				<!-- wooodstox is included with com.fasterxml.jackson.dataformat:jackson-dataformat-xml -->
+		    	<exclusion>
+		    		<groupId>com.fasterxml.woodstox</groupId>
+		    		<artifactId>woodstox-core</artifactId>
+		    	</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
@@ -268,7 +275,7 @@
     <dependency>
       <groupId>io.quarkiverse.jgit</groupId>
       <artifactId>quarkus-jgit</artifactId>
-      <version>2.2.0</version>
+      <version>3.0.0</version>
       <exclusions>
       <!-- required to make maven-enforcer happy. Seems to be an error in Quarkus BOM -->
 	      <exclusion>
@@ -316,7 +323,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.2</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<goals>

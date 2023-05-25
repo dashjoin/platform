@@ -20,7 +20,7 @@
     <!-- option to skip the long running Angular build -->
     <skipAngular>false</skipAngular>
           
-		<compiler-plugin.version>3.8.1</compiler-plugin.version>
+		<compiler-plugin.version>3.11.0</compiler-plugin.version>
 	    <maven.compiler.parameters>true</maven.compiler.parameters>
 	    <maven.compiler.source>11</maven.compiler.source>
 	    <maven.compiler.target>11</maven.compiler.target>
@@ -28,8 +28,8 @@
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 	    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-	    <quarkus.platform.version>2.14.3.Final</quarkus.platform.version>
-	    <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+	    <quarkus.platform.version>3.0.3.Final</quarkus.platform.version>
+	    <surefire-plugin.version>3.1.0</surefire-plugin.version>
   </properties>
   
   	<packaging>pom</packaging>
@@ -53,7 +53,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.2.2</version>
+				<version>1.4.1</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>
