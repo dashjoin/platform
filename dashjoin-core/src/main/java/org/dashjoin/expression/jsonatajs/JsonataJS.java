@@ -10,7 +10,7 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.Value;
 import org.jboss.logmanager.Level;
-import com.api.jsonata4java.expressions.functions.Function;
+import com.api.jsonata4java.expressions.functions.FunctionBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
@@ -123,12 +123,12 @@ public class JsonataJS {
   }
 
   static ThreadLocal<Value> bindings = new ThreadLocal<>();
-  static ThreadLocal<Map<String, Function>> functions = new ThreadLocal<>();
+  static ThreadLocal<Map<String, FunctionBase>> functions = new ThreadLocal<>();
 
-  public void initBindings(Map<String, Function> functions) {
+  public void initBindings(Map<String, FunctionBase> functions) {
     JsonataJS.functions.set(functions);
     String s = "(function(x){ return {";
-    for (Map.Entry<String, Function> e : functions.entrySet()) {
+    for (Map.Entry<String, FunctionBase> e : functions.entrySet()) {
       String k = e.getKey();
       s += "'" + k.substring(1) + "':(...args)=>x.call('" + k + "',args),";
     }
@@ -187,7 +187,7 @@ public class JsonataJS {
     if (log.isLoggable(Level.DEBUG))
       log.info("Calling fn " + function + " args=" + Arrays.asList(args));
 
-    Function fn = functions.get().get(function);
+    FunctionBase fn = functions.get().get(function);
     JsonataJS.args.set(args);
     try {
       Object res = fn.invoke(null, null);

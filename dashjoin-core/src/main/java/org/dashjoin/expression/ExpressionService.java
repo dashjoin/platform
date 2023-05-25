@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.jsonatajs.JsonataJS;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
@@ -37,7 +37,7 @@ import org.jboss.logmanager.Level;
 import com.api.jsonata4java.expressions.Expressions;
 import com.api.jsonata4java.expressions.ExpressionsVisitor;
 import com.api.jsonata4java.expressions.ParseException;
-import com.api.jsonata4java.expressions.functions.Function;
+import com.api.jsonata4java.expressions.functions.FunctionBase;
 import com.api.jsonata4java.expressions.generated.MappingExpressionParser.Function_callContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -239,7 +239,7 @@ public class ExpressionService {
   ParsedExpression parse(SecurityContext sc, String expression, boolean readOnly)
       throws ParseException, IOException {
 
-    Map<String, Function> fns = getJsonataFunctions(sc, readOnly);
+    Map<String, FunctionBase> fns = getJsonataFunctions(sc, readOnly);
 
     if (jsonataJs) {
       // Execute jsonata-js reference implementation
@@ -250,17 +250,17 @@ public class ExpressionService {
     }
 
     Expressions expr = Expressions.parse(expression);
-    for (Map.Entry<String, Function> e : fns.entrySet()) {
+    for (Map.Entry<String, FunctionBase> e : fns.entrySet()) {
       expr.getEnvironment().setJsonataFunction(e.getKey(), e.getValue());
     }
     return new Jsonata4JavaParsedExpression(expression, expr);
   }
 
-  Map<String, Function> getJsonataFunctions(SecurityContext sc, boolean readOnly)
+  Map<String, FunctionBase> getJsonataFunctions(SecurityContext sc, boolean readOnly)
       throws ParseException, IOException {
     // TODO: combine these with the service loader functions
     // keep in sync with org.dashjoin.service.Manage.getFunctions()
-    HashMap<String, Function> res = new HashMap<>();
+    HashMap<String, FunctionBase> res = new HashMap<>();
     res.put("$all", new All(sc, readOnly));
     res.put("$read", new Read(sc, readOnly));
     res.put("$create", new Create(sc, readOnly));
@@ -277,7 +277,7 @@ public class ExpressionService {
         .load(org.dashjoin.function.Function.class)) {
       if (!(f instanceof AbstractConfigurableFunction<?, ?>)) {
         ((AbstractFunction<?, ?>) f).init(sc, services, this, readOnly);
-        res.put("$" + ((AbstractFunction<?, ?>) f).getID(), new Function() {
+        res.put("$" + ((AbstractFunction<?, ?>) f).getID(), new FunctionBase() {
 
           @Override
           public int getMaxArgs() {
@@ -329,6 +329,9 @@ public class ExpressionService {
    * Checks if the JsonataJS instance can be created
    */
   static boolean canUseJsonataReference() {
+    // FIXME: always use Jsonata4Java version
+    if (true) return false;
+
     return JsonataJS.getInstance() != null;
   }
 
@@ -422,7 +425,7 @@ public class ExpressionService {
   /**
    * data.all(database, table)
    */
-  public class All implements Function {
+  public class All extends FunctionBase {
     SecurityContext sc;
     boolean readOnly;
 
@@ -481,7 +484,7 @@ public class ExpressionService {
   /**
    * data.read(database, table, pk1)
    */
-  public class Read implements Function {
+  public class Read extends FunctionBase {
     SecurityContext sc;
     boolean readOnly;
 
@@ -675,7 +678,7 @@ public class ExpressionService {
   /**
    * data.query(sc, database, queryId, arguments)
    */
-  public class Query implements Function {
+  public class Query extends FunctionBase {
 
     SecurityContext sc;
     boolean readOnly;
@@ -784,7 +787,7 @@ public class ExpressionService {
   /**
    * call(sc, function, argument)
    */
-  public class Call implements Function {
+  public class Call extends FunctionBase {
 
     SecurityContext sc;
     boolean readOnly;
@@ -856,7 +859,7 @@ public class ExpressionService {
   /**
    * data.incoming(database, table, pk1) - limit and offset are null
    */
-  public class Incoming implements Function {
+  public class Incoming extends FunctionBase {
     SecurityContext sc;
 
     public Incoming(SecurityContext sc) {
