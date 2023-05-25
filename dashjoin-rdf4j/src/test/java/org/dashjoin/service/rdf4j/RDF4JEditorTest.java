@@ -3,7 +3,7 @@ package org.dashjoin.service.rdf4j;
 import static org.dashjoin.service.QueryEditor.Col.col;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.service.JSONClassloaderDatabase;
 import org.dashjoin.service.JSONFileDatabase;

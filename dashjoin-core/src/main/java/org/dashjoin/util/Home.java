@@ -3,9 +3,9 @@ package org.dashjoin.util;
 import java.io.File;
 import java.util.Optional;
 import java.util.logging.Level;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -26,7 +26,7 @@ public class Home {
 
   public synchronized static Home get() {
     if (instance == null) {
-      Instance<Home> inst = javax.enterprise.inject.spi.CDI.current().select(Home.class);
+      Instance<Home> inst = jakarta.enterprise.inject.spi.CDI.current().select(Home.class);
       if (inst.isUnsatisfied()) {
         log.warning("Dashjoin Home is unresolvable - using default");
         instance = new Home(Optional.empty(), Optional.empty());

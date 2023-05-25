@@ -1,6 +1,6 @@
 package org.dashjoin.expression;
 
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.WebApplicationException;
 
 /**
  * Runtime exception that is used to wrap regular exceptions from JSONata evaluations

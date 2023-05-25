@@ -1,8 +1,8 @@
 package org.dashjoin.mapping;
 
 import java.util.Map;
-import javax.inject.Inject;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.expression.ExpressionService.ParsedExpression;
 import org.dashjoin.util.MapUtil;

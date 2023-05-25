@@ -4,7 +4,7 @@ import static org.dashjoin.service.QueryEditor.Col.col;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Metadata.Key;
 import org.dashjoin.service.Metadata.MdTable;

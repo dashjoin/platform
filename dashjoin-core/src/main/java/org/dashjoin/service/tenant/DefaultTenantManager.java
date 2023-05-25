@@ -1,7 +1,7 @@
 package org.dashjoin.service.tenant;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.RuntimeDefinitions;
 import lombok.Getter;

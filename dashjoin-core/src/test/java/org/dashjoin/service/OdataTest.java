@@ -1,9 +1,9 @@
 package org.dashjoin.service;
 
 import static org.mockito.Mockito.when;
-import javax.inject.Inject;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.UriInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;

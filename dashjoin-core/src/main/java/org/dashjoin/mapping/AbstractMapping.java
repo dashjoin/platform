@@ -2,7 +2,7 @@ package org.dashjoin.mapping;
 
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.JsonSchema;
 

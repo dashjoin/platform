@@ -1,7 +1,7 @@
 package org.dashjoin.mapping;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.service.Services;
 import org.junit.jupiter.api.Assertions;

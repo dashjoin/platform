@@ -2,8 +2,8 @@ package org.dashjoin.service;
 
 import java.sql.SQLException;
 import java.util.Date;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.Response;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

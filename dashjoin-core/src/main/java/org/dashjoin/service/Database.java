@@ -2,8 +2,8 @@ package org.dashjoin.service;
 
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;

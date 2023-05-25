@@ -3,7 +3,7 @@ package org.dashjoin.function;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.mapping.ETL;
 import org.dashjoin.mapping.Mapping;
 import org.dashjoin.util.MapUtil;

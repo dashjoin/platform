@@ -1,7 +1,7 @@
 package org.dashjoin.expression;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Services;

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.DBTest;

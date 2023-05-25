@@ -1,6 +1,6 @@
 package org.dashjoin.function;
 
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.service.Services;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -3,7 +3,7 @@ package org.dashjoin.service.ddl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.SQLDatabase;
 import org.dashjoin.service.Services;

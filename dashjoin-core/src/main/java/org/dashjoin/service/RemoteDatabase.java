@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.ws.rs.WebApplicationException;
+import jakarta.ws.rs.WebApplicationException;
 import org.dashjoin.function.RestJson;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;

@@ -3,7 +3,7 @@ package org.dashjoin.mapping;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.JsonSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;

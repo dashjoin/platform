@@ -3,12 +3,12 @@ package org.dashjoin.function;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.dashjoin.model.JsonSchema;
 
 /**
@@ -56,7 +56,7 @@ public class Email extends AbstractConfigurableFunction<Email.Argument, String> 
       for (Entry<String, Object> e : properties.entrySet())
         prop.put(e.getKey(), e.getValue());
 
-    Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+    Session session = Session.getInstance(prop, new jakarta.mail.Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
         try {

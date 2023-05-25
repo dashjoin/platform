@@ -2,8 +2,8 @@ package org.dashjoin.util;
 
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.Services;

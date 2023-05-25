@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;

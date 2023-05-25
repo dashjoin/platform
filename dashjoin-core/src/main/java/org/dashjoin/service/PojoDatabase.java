@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -223,7 +223,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       return pojo;
     } catch (Throwable t) {
       // Hard errors, like ClassNotFound etc.
-      System.err.println("Error in convert: " + t);
+      System.err.println("Error in convert: " + t + " table="+table+" res="+res+" type="+type); t.printStackTrace();
       return null;
     }
   }

@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 import org.dashjoin.util.Home;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.jasypt.util.text.StrongTextEncryptor;
@@ -37,7 +37,7 @@ public class CredentialManager {
 
   public synchronized static CredentialManager getInstance() {
     if (instance == null) {
-      instance = javax.enterprise.inject.spi.CDI.current().select(CredentialManager.class).get();
+      instance = jakarta.enterprise.inject.spi.CDI.current().select(CredentialManager.class).get();
     }
     return instance;
   }

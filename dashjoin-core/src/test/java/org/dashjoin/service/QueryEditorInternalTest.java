@@ -2,7 +2,7 @@ package org.dashjoin.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.service.QueryEditor.QueryColumn;
 import org.dashjoin.service.QueryEditor.QueryResponse;

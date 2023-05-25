@@ -2,7 +2,7 @@ package org.dashjoin.service.rdf4j;
 
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.DBTest;
 import org.junit.jupiter.api.Assertions;

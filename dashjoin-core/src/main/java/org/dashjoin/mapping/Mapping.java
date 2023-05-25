@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.expression.ExpressionService.ParsedExpression;
 import org.dashjoin.function.Index;
