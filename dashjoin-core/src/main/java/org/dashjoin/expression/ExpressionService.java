@@ -448,7 +448,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 2)
+      if (getArgumentCountEx(ctx) < 2)
         throw new RuntimeException("Arguments required: $all(database, table)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -456,16 +456,16 @@ public class ExpressionService {
         throw new RuntimeException("Table name cannot be null");
 
       Integer offset =
-          getArgumentCount(ctx) < 3 || getValuesListExpression(v, ctx, 2) == null ? null
+          getArgumentCountEx(ctx) < 3 || getValuesListExpression(v, ctx, 2) == null ? null
               : getValuesListExpression(v, ctx, 2).asInt();
-      Integer limit = getArgumentCount(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
+      Integer limit = getArgumentCountEx(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
           : getValuesListExpression(v, ctx, 3).asInt();
-      String sort = getArgumentCount(ctx) < 5 || getValuesListExpression(v, ctx, 4) == null ? null
+      String sort = getArgumentCountEx(ctx) < 5 || getValuesListExpression(v, ctx, 4) == null ? null
           : getValuesListExpression(v, ctx, 4).asText();
       boolean descending =
-          getArgumentCount(ctx) < 6 ? false : getValuesListExpression(v, ctx, 5).asBoolean();
+          getArgumentCountEx(ctx) < 6 ? false : getValuesListExpression(v, ctx, 5).asBoolean();
       @SuppressWarnings("unchecked")
-      Map<String, Object> arguments = getArgumentCount(ctx) < 7 ? null
+      Map<String, Object> arguments = getArgumentCountEx(ctx) < 7 ? null
           : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 6));
 
       try {
@@ -507,7 +507,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 3)
+      if (getArgumentCountEx(ctx) < 3)
         throw new RuntimeException("Arguments required: $read(database, table, pk1)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -537,7 +537,7 @@ public class ExpressionService {
     @SuppressWarnings("unchecked")
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 3)
+      if (getArgumentCountEx(ctx) < 3)
         throw new RuntimeException("Arguments required: $create(database, table, object)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -584,7 +584,7 @@ public class ExpressionService {
     @SuppressWarnings("unchecked")
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 4)
+      if (getArgumentCountEx(ctx) < 4)
         throw new RuntimeException("Arguments required: $update(database, table, pk1, object)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -619,7 +619,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 4)
+      if (getArgumentCountEx(ctx) < 4)
         throw new RuntimeException("Arguments required: $traverse(database, table, pk1, fk)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -651,7 +651,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 3)
+      if (getArgumentCountEx(ctx) < 3)
         throw new RuntimeException("Arguments required: $delete(database, table, pk1)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -703,7 +703,7 @@ public class ExpressionService {
     @SuppressWarnings("unchecked")
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 2)
+      if (getArgumentCountEx(ctx) < 2)
         throw new RuntimeException("Arguments required: $query(database, queryId, arguments?)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -711,7 +711,7 @@ public class ExpressionService {
         throw new RuntimeException("Query name cannot be null");
       try {
         return o2j(data.queryInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), getArgumentCount(ctx) == 2 ? null
+            getValuesListExpression(v, ctx, 1).asText(), getArgumentCountEx(ctx) == 2 ? null
                 : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
             readOnly));
       } catch (Exception e) {
@@ -732,7 +732,7 @@ public class ExpressionService {
     @SuppressWarnings("unchecked")
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 2)
+      if (getArgumentCountEx(ctx) < 2)
         throw new RuntimeException(
             "Arguments required: $queryGraph(database, queryId, arguments?)");
       if (getValuesListExpression(v, ctx, 0) == null)
@@ -741,7 +741,7 @@ public class ExpressionService {
         throw new RuntimeException("Query name cannot be null");
       try {
         return o2j(data.queryGraphInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), getArgumentCount(ctx) == 2 ? null
+            getValuesListExpression(v, ctx, 1).asText(), getArgumentCountEx(ctx) == 2 ? null
                 : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
             readOnly));
       } catch (Exception e) {
@@ -761,7 +761,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 2)
+      if (getArgumentCountEx(ctx) < 2)
         throw new RuntimeException("Arguments required: $adHocQuery(database, query, limit?)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
@@ -771,7 +771,7 @@ public class ExpressionService {
         QueryDatabase query = new QueryDatabase();
         query.database = "dj/" + getValuesListExpression(v, ctx, 0).asText();
         query.query = getValuesListExpression(v, ctx, 1).asText();
-        query.limit = getArgumentCount(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
+        query.limit = getArgumentCountEx(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
         AbstractDatabase db = services.getConfig().getDatabase(query.database);
         ACLContainerRequestFilter.allowQueryEditor(sc, db);
         return o2j(db.getQueryEditor().noop(query).data);
@@ -880,7 +880,7 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 3)
+      if (getArgumentCountEx(ctx) < 3)
         throw new RuntimeException("Arguments required: $incoming(database, table, pk1)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Database name cannot be null");
