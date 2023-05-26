@@ -96,7 +96,6 @@ public class ArangoDBQuery {
 
       @Override
       public void exitLimit(QueryParser.LimitContext ctx) {
-        System.out.println();
         if (ctx.getChildCount() == 4) {
           offset = Integer.parseInt(ctx.getChild(1).getText());
           limit = Integer.parseInt(ctx.getChild(3).getText());

@@ -2,11 +2,11 @@ package org.dashjoin.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 /**
  * REST exception mapper. makes sure the exception text is written to the HTTP entity data. We
@@ -15,7 +15,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 @Provider
 public class ExMapper implements ExceptionMapper<Throwable> {
 
-  private final static Logger logger = Logger.getLogger(ExMapper.class.getName());
+  final static Logger logger = Logger.getLogger(ExMapper.class.getName());
 
   /**
    * convert exception to response code

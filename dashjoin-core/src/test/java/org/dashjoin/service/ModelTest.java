@@ -141,7 +141,7 @@ public class ModelTest {
         checkLayout(i);
 
     if (tree.get("widget") != null) {
-      System.out.println(tree.get("widget"));
+      // System.out.println(tree.get("widget"));
       Assertions.assertTrue(Arrays
           .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
               "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
@@ -152,7 +152,7 @@ public class ModelTest {
     }
 
     for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
-      System.out.println(e);
+      // System.out.println(e);
       Assertions.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
           "tooltip", "icon", "icons", "href", "children", "database", "table", "schema", "chart",
           "query", "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",

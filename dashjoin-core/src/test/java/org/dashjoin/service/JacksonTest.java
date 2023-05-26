@@ -2,11 +2,12 @@ package org.dashjoin.service;
 
 import java.sql.SQLException;
 import java.util.Date;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.core.Response;
+import java.util.logging.Level;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.Response;
 
 
 /**
@@ -30,6 +31,7 @@ public class JacksonTest {
   @Test
   public void test404() {
     ExMapper m = new ExMapper();
+    ExMapper.logger.setLevel(Level.OFF);
     Response res = m.toResponse(new NotFoundException());
     check(res, 404, null, "Not Found");
   }
@@ -37,6 +39,7 @@ public class JacksonTest {
   @Test
   public void testNPE() {
     ExMapper m = new ExMapper();
+    ExMapper.logger.setLevel(Level.OFF);
     Response res = m.toResponse(new NullPointerException());
     check(res, 500, "NullPointerException", "Internal Server Error");
   }
