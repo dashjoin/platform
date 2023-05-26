@@ -1,4 +1,4 @@
-// Generated from Query.g4 by ANTLR 4.8
+// Generated from Query.g4 by ANTLR 4.13.0
 package org.dashjoin.service.arangodb;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class QueryParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.0", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -94,6 +94,7 @@ public class QueryParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class QueryContext extends ParserRuleContext {
 		public List<TerminalNode> VAR() { return getTokens(QueryParser.VAR); }
 		public TerminalNode VAR(int i) {
@@ -204,6 +205,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SortContext extends ParserRuleContext {
 		public List<TerminalNode> VAR() { return getTokens(QueryParser.VAR); }
 		public TerminalNode VAR(int i) {
@@ -261,6 +263,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LimitContext extends ParserRuleContext {
 		public List<TerminalNode> INT() { return getTokens(QueryParser.INT); }
 		public TerminalNode INT(int i) {
@@ -322,6 +325,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ObjContext extends ParserRuleContext {
 		public List<PairContext> pair() {
 			return getRuleContexts(PairContext.class);
@@ -400,6 +404,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PairContext extends ParserRuleContext {
 		public TerminalNode STRING() { return getToken(QueryParser.STRING, 0); }
 		public List<TerminalNode> VAR() { return getTokens(QueryParser.VAR); }
@@ -449,6 +454,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FilterContext extends ParserRuleContext {
 		public List<TerminalNode> VAR() { return getTokens(QueryParser.VAR); }
 		public TerminalNode VAR(int i) {
@@ -502,6 +508,7 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ValueContext extends ParserRuleContext {
 		public TerminalNode INT() { return getToken(QueryParser.INT, 0); }
 		public TerminalNode STRING() { return getToken(QueryParser.STRING, 0); }
@@ -550,27 +557,55 @@ public class QueryParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24T\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\3\2\3\2\3\2\3\2\5\2\26"+
-		"\n\2\3\2\5\2\31\n\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\5\2#\n\2\3"+
-		"\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3,\n\3\3\4\3\4\3\4\3\4\3\4\3\4\5\4\64\n\4"+
-		"\3\5\3\5\3\5\3\5\7\5:\n\5\f\5\16\5=\13\5\3\5\3\5\3\5\3\5\5\5C\n\5\3\6"+
-		"\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\2\2\t\2\4"+
-		"\6\b\n\f\16\2\3\4\2\21\21\23\23\2T\2\20\3\2\2\2\4&\3\2\2\2\6\63\3\2\2"+
-		"\2\bB\3\2\2\2\nD\3\2\2\2\fJ\3\2\2\2\16Q\3\2\2\2\20\21\7\3\2\2\21\22\7"+
-		"\22\2\2\22\23\7\4\2\2\23\25\7\22\2\2\24\26\5\4\3\2\25\24\3\2\2\2\25\26"+
-		"\3\2\2\2\26\30\3\2\2\2\27\31\5\6\4\2\30\27\3\2\2\2\30\31\3\2\2\2\31\35"+
-		"\3\2\2\2\32\34\5\f\7\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36"+
-		"\3\2\2\2\36 \3\2\2\2\37\35\3\2\2\2 \"\7\5\2\2!#\7\6\2\2\"!\3\2\2\2\"#"+
-		"\3\2\2\2#$\3\2\2\2$%\5\b\5\2%\3\3\2\2\2&\'\7\7\2\2\'(\7\22\2\2()\7\b\2"+
-		"\2)+\7\22\2\2*,\7\t\2\2+*\3\2\2\2+,\3\2\2\2,\5\3\2\2\2-.\7\n\2\2./\7\23"+
-		"\2\2/\60\7\13\2\2\60\64\7\23\2\2\61\62\7\n\2\2\62\64\7\23\2\2\63-\3\2"+
-		"\2\2\63\61\3\2\2\2\64\7\3\2\2\2\65\66\7\f\2\2\66;\5\n\6\2\678\7\13\2\2"+
-		"8:\5\n\6\29\67\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<>\3\2\2\2=;\3\2\2"+
-		"\2>?\7\r\2\2?C\3\2\2\2@A\7\f\2\2AC\7\r\2\2B\65\3\2\2\2B@\3\2\2\2C\t\3"+
-		"\2\2\2DE\7\21\2\2EF\7\16\2\2FG\7\22\2\2GH\7\b\2\2HI\7\22\2\2I\13\3\2\2"+
-		"\2JK\7\17\2\2KL\7\22\2\2LM\7\b\2\2MN\7\22\2\2NO\7\20\2\2OP\5\16\b\2P\r"+
-		"\3\2\2\2QR\t\2\2\2R\17\3\2\2\2\n\25\30\35\"+\63;B";
+		"\u0004\u0001\u0012R\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
+		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0001\u0000\u0001\u0000\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0003\u0000\u0014\b\u0000\u0001\u0000\u0003"+
+		"\u0000\u0017\b\u0000\u0001\u0000\u0005\u0000\u001a\b\u0000\n\u0000\f\u0000"+
+		"\u001d\t\u0000\u0001\u0000\u0001\u0000\u0003\u0000!\b\u0000\u0001\u0000"+
+		"\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0003\u0001*\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0003\u00022\b\u0002\u0001\u0003\u0001\u0003"+
+		"\u0001\u0003\u0001\u0003\u0005\u00038\b\u0003\n\u0003\f\u0003;\t\u0003"+
+		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0003\u0003A\b\u0003"+
+		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0000\u0000\u0007\u0000"+
+		"\u0002\u0004\u0006\b\n\f\u0000\u0001\u0002\u0000\u000f\u000f\u0011\u0011"+
+		"R\u0000\u000e\u0001\u0000\u0000\u0000\u0002$\u0001\u0000\u0000\u0000\u0004"+
+		"1\u0001\u0000\u0000\u0000\u0006@\u0001\u0000\u0000\u0000\bB\u0001\u0000"+
+		"\u0000\u0000\nH\u0001\u0000\u0000\u0000\fO\u0001\u0000\u0000\u0000\u000e"+
+		"\u000f\u0005\u0001\u0000\u0000\u000f\u0010\u0005\u0010\u0000\u0000\u0010"+
+		"\u0011\u0005\u0002\u0000\u0000\u0011\u0013\u0005\u0010\u0000\u0000\u0012"+
+		"\u0014\u0003\u0002\u0001\u0000\u0013\u0012\u0001\u0000\u0000\u0000\u0013"+
+		"\u0014\u0001\u0000\u0000\u0000\u0014\u0016\u0001\u0000\u0000\u0000\u0015"+
+		"\u0017\u0003\u0004\u0002\u0000\u0016\u0015\u0001\u0000\u0000\u0000\u0016"+
+		"\u0017\u0001\u0000\u0000\u0000\u0017\u001b\u0001\u0000\u0000\u0000\u0018"+
+		"\u001a\u0003\n\u0005\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a\u001d"+
+		"\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001c"+
+		"\u0001\u0000\u0000\u0000\u001c\u001e\u0001\u0000\u0000\u0000\u001d\u001b"+
+		"\u0001\u0000\u0000\u0000\u001e \u0005\u0003\u0000\u0000\u001f!\u0005\u0004"+
+		"\u0000\u0000 \u001f\u0001\u0000\u0000\u0000 !\u0001\u0000\u0000\u0000"+
+		"!\"\u0001\u0000\u0000\u0000\"#\u0003\u0006\u0003\u0000#\u0001\u0001\u0000"+
+		"\u0000\u0000$%\u0005\u0005\u0000\u0000%&\u0005\u0010\u0000\u0000&\'\u0005"+
+		"\u0006\u0000\u0000\')\u0005\u0010\u0000\u0000(*\u0005\u0007\u0000\u0000"+
+		")(\u0001\u0000\u0000\u0000)*\u0001\u0000\u0000\u0000*\u0003\u0001\u0000"+
+		"\u0000\u0000+,\u0005\b\u0000\u0000,-\u0005\u0011\u0000\u0000-.\u0005\t"+
+		"\u0000\u0000.2\u0005\u0011\u0000\u0000/0\u0005\b\u0000\u000002\u0005\u0011"+
+		"\u0000\u00001+\u0001\u0000\u0000\u00001/\u0001\u0000\u0000\u00002\u0005"+
+		"\u0001\u0000\u0000\u000034\u0005\n\u0000\u000049\u0003\b\u0004\u00005"+
+		"6\u0005\t\u0000\u000068\u0003\b\u0004\u000075\u0001\u0000\u0000\u0000"+
+		"8;\u0001\u0000\u0000\u000097\u0001\u0000\u0000\u00009:\u0001\u0000\u0000"+
+		"\u0000:<\u0001\u0000\u0000\u0000;9\u0001\u0000\u0000\u0000<=\u0005\u000b"+
+		"\u0000\u0000=A\u0001\u0000\u0000\u0000>?\u0005\n\u0000\u0000?A\u0005\u000b"+
+		"\u0000\u0000@3\u0001\u0000\u0000\u0000@>\u0001\u0000\u0000\u0000A\u0007"+
+		"\u0001\u0000\u0000\u0000BC\u0005\u000f\u0000\u0000CD\u0005\f\u0000\u0000"+
+		"DE\u0005\u0010\u0000\u0000EF\u0005\u0006\u0000\u0000FG\u0005\u0010\u0000"+
+		"\u0000G\t\u0001\u0000\u0000\u0000HI\u0005\r\u0000\u0000IJ\u0005\u0010"+
+		"\u0000\u0000JK\u0005\u0006\u0000\u0000KL\u0005\u0010\u0000\u0000LM\u0005"+
+		"\u000e\u0000\u0000MN\u0003\f\u0006\u0000N\u000b\u0001\u0000\u0000\u0000"+
+		"OP\u0007\u0000\u0000\u0000P\r\u0001\u0000\u0000\u0000\b\u0013\u0016\u001b"+
+		" )19@";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

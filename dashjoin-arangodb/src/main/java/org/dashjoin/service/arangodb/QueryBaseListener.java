@@ -1,4 +1,4 @@
-// Generated from Query.g4 by ANTLR 4.8
+// Generated from Query.g4 by ANTLR 4.13.0
 package org.dashjoin.service.arangodb;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class QueryBaseListener implements QueryListener {
 	/**
 	 * {@inheritDoc}
