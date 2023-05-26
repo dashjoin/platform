@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class QueryTest {
 
-  // FIXME Quarkus 3 broken - @Test
+  @Test
   public void testAggregate() throws Exception {
     eq("FOR i IN col RETURN {\"x\": i.x}");
     eq("FOR i IN col LIMIT 1,2 RETURN {\"x\": i.x}");
