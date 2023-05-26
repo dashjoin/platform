@@ -303,7 +303,7 @@ public class ExpressionService {
                 List<Object> args = new ArrayList<>();
                 int index = 0;
                 for (Class<?> c : vf.getArgumentClassList()) {
-                  if (index < getArgumentCount(ctx))
+                  if (index < getArgumentCountEx(ctx))
                     args.add(j2o(getValuesListExpression(v, ctx, index)));
                   else
                     args.add(null);
@@ -313,7 +313,7 @@ public class ExpressionService {
                     readOnly));
               } else
                 return o2j(function.callInternal(sc, (AbstractFunction<Object, Object>) f,
-                    getArgumentCount(ctx) == 0 ? null : j2o(getValuesListExpression(v, ctx, 0)),
+                    getArgumentCountEx(ctx) == 0 ? null : j2o(getValuesListExpression(v, ctx, 0)),
                     readOnly));
             } catch (Exception e) {
               throw new WrappedException(e);
@@ -329,9 +329,6 @@ public class ExpressionService {
    * Checks if the JsonataJS instance can be created
    */
   static boolean canUseJsonataReference() {
-    // FIXME: always use Jsonata4Java version
-    if (true) return false;
-
     return JsonataJS.getInstance() != null;
   }
 
@@ -814,14 +811,14 @@ public class ExpressionService {
 
     @Override
     public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCount(ctx) < 1)
+      if (getArgumentCountEx(ctx) < 1)
         throw new RuntimeException("Arguments required: $call(function, argument?)");
       if (getValuesListExpression(v, ctx, 0) == null)
         throw new RuntimeException("Function name cannot be null");
       try {
         String f = getValuesListExpression(v, ctx, 0).asText();
         return o2j(function.callInternal(sc, f,
-            getArgumentCount(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)), readOnly));
+            getArgumentCountEx(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)), readOnly));
       } catch (Exception e) {
         throw new WrappedException(e);
       }
@@ -836,7 +833,7 @@ public class ExpressionService {
     return om.convertValue(node, Object.class);
   }
 
-  public static int getArgumentCount(Function_callContext ctx) {
+  public static int getArgumentCountEx(Function_callContext ctx) {
     if (ctx != null)
       return com.api.jsonata4java.expressions.functions.FunctionBase.getArgumentCount(ctx);
 
