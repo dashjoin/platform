@@ -10,8 +10,7 @@
   <modules>
 	<module>angular</module>
   	<module>dashjoin</module>
-  	<!--module>angular</module-->
-  	<module>.</module>
+  	<module>/</module>
   </modules>
   
   <properties>

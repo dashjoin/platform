@@ -291,6 +291,5 @@
   	<groupId>org.dashjoin</groupId>
   	<artifactId>dashjoin-base</artifactId>
   	<version>${revision}</version>
-  	<relativePath>..</relativePath>
   </parent>
 </project>
