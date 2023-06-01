@@ -37,19 +37,31 @@ test.json:
 ```
 {
   "ID": "test",
-  "query": "test.0.sql"
+  "query-pointer": "test.0.sql"
 }
 ```
 
-test.0.sql
+test.0.sql:
 
 ```
 select * from test
-where id=4
+  where id=4
 ```
 
+These two files are equivalent to:
+
+test.json:
+
+```
+{
+  "ID": "test",
+  "query": "select * from test\n  where id=4"
+}
+```
+
+
 If you'd like to also externalize widget markdown for instance, simply add "page: markdown" to "externalize-config-strings".
-This specifies the table and the (possibly nested) string to be externalized.
+This specifies the table and the (possibly nested) key containing the string to be externalized.
 
 
 On the production system, there are three ways of deploying an application:
