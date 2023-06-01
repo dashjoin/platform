@@ -11,9 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Default;
-import jakarta.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
@@ -23,6 +20,9 @@ import org.dashjoin.util.Escape;
 import org.dashjoin.util.Home;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.RuntimeDefinitions;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
+import jakarta.inject.Inject;
 
 /**
  * file implementation of the config DB
@@ -224,6 +224,10 @@ public class JSONFileDatabase extends JSONDatabase {
       throws IOException {
     String newName = Escape.filename("" + id) + "." + pointer;
     File newFile = new File(file.getParentFile(), newName);
+
+    if (!(map.get(field) instanceof String))
+      throw new RuntimeException("Error externalizing data. The value of '" + field
+          + "' must be a string. Please change the config.");
 
     map.put(field + "-pointer", pointer);
     FileUtils.writeStringToFile(newFile, (String) map.remove(field), Charset.defaultCharset());

@@ -28,23 +28,29 @@ Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo
 ## Multi Line JSON
 
 Markdown, queries, and JSONata expressions can be hard to read if they are stored in JSON files.
-You can use multi-line JSON strings to make these more readable. Rather than escaping the newline character within the string, 
-simply add a newline in the file. Note that quotes still need to be escaped:
+You can configure the platform to externalize strings in separate text files which are linked
+from the JSON data using the "externalize-config-strings" setting.
+By default, the query field of entries in the query catalog is externalized as follows:
+
+test.json:
 
 ```
-"regular": "  line 1\n  line \"2\"",
-// comments are allowed too
-"multi": "
-  line 1
-  line \"2\"
-"
+{
+  "ID": "test",
+  "query": "test.0.sql"
+}
 ```
 
-Important: if you edit the file via the query, expression, or layout editors, the file will be reverted back to the default single line
-representation.
-The ETL function saves its progress by writing start, stop, and the status. This also causes
-multi line expressions to be overwritten. This can be avoided by setting the field logStatusOnly=true in the
-function's JSON file.
+test.0.sql
+
+```
+select * from test
+where id=4
+```
+
+If you'd like to also externalize widget markdown for instance, simply add "page: markdown" to "externalize-config-strings".
+This specifies the table and the (possibly nested) string to be externalized.
+
 
 On the production system, there are three ways of deploying an application:
 

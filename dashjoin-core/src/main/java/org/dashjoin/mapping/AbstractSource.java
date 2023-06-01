@@ -58,6 +58,9 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
 
   public Date end;
 
+  /**
+   * no longer needed since we can externalize multi line strings
+   */
   public Boolean logStatusOnly;
 
   public static ThreadLocal<Context> context = new ThreadLocal<>();
