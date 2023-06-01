@@ -28,16 +28,15 @@ Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo
 ## Multi Line JSON
 
 Markdown, queries, and JSONata expressions can be hard to read if they are stored in JSON files.
-You can configure the platform to externalize strings in separate text files which are linked
-from the JSON data using the "externalize-config-strings" setting.
-By default, the query field of entries in the query catalog is externalized as follows:
+You can externalize strings in separate text files which are linked
+from the JSON data as follows:
 
 test.json:
 
 ```
 {
   "ID": "test",
-  "query-pointer": "test.0.sql"
+  "query-pointer": "0.sql"
 }
 ```
 
@@ -59,7 +58,11 @@ test.json:
 }
 ```
 
+You can use this mechanism anytime when you're editing the files manually.
+When making changes via the platform, by default, only the query strings of
+the query catalog are externalized.
 
+This is controlled by the "externalize-config-strings" setting.
 If you'd like to also externalize widget markdown for instance, simply add "page: markdown" to "externalize-config-strings".
 This specifies the table and the (possibly nested) key containing the string to be externalized.
 
