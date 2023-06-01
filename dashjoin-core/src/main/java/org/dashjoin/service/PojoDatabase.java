@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.inject.Inject;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -35,6 +34,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import jakarta.inject.Inject;
 
 /**
  * The actual config database instance. Sits on top of the union database. It maintains a cache of
@@ -223,7 +223,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
       return pojo;
     } catch (Throwable t) {
       // Hard errors, like ClassNotFound etc.
-      System.err.println("Error in convert: " + t + " table="+table+" res="+res+" type="+type); t.printStackTrace();
+      System.err
+          .println("Error in convert: " + t + " table=" + table + " res=" + res + " type=" + type);
+      t.printStackTrace();
       return null;
     }
   }
@@ -862,6 +864,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
       if ("Account".equals(page.get("ID")))
         continue;
       if ("OpenAPI".equals(page.get("ID")))
+        continue;
+      if ("ERDiagram".equals(page.get("ID")))
+        continue;
+      if ("Notebook".equals(page.get("ID")))
         continue;
       if ("default".equals(page.get("ID")))
         continue;
