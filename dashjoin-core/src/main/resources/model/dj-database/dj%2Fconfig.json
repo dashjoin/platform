@@ -666,6 +666,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "widget": "textarea",
+	      "widgetType": "queryEdit",
           "style": {
 		    "width": "calc(100vw - 100px - 240px)",
 		    "font-family": "monospace"
