@@ -664,7 +664,12 @@
           "ID": "dj/config/dj-query-catalog/query",
           "name": "query",
           "parent": "dj/config/dj-query-catalog",
-          "type": "string"
+          "type": "string",
+          "widget": "textarea",
+          "style": {
+		    "width": "calc(100vw - 100px - 240px)",
+		    "font-family": "monospace"
+		  }
         },
         "comment": {
           "ID": "dj/config/dj-query-catalog/comment",
