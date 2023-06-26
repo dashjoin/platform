@@ -734,6 +734,14 @@ public class SQLEditor implements QueryEditorInternal {
                   e.preview = db.serialize(rsmd, rs, c);
                   e.add = Col.col(t.getKey().name, colname);
                   e.col = t.getValue();
+                  if (t.getValue() != null)
+                    if (Data.pk(t.getKey()) == null)
+                      // table has no PK and a join is required (simple add col is allowed)
+                      continue;
+                  if (e.col != null && e.col.table != null && db.tables.get(e.col.table) != null)
+                    if (Data.pk(db.tables.get(e.col.table)) == null)
+                      // join is required but joined table has no PK
+                      continue;
                   res.joinOptions.add(e);
                 }
               }
