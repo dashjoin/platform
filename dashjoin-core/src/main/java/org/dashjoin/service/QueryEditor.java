@@ -2,6 +2,13 @@ package org.dashjoin.service;
 
 import java.util.List;
 import java.util.Map;
+import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.Property;
+import org.dashjoin.model.Table;
+import org.dashjoin.util.Escape;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -10,11 +17,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
-import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.Table;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 /**
  * REST API for editing and managing queries
@@ -40,7 +42,17 @@ public interface QueryEditor {
       return db.getQueryEditor();
     }
 
-    QueryResponse limit(QueryResponse res) {
+    QueryResponse limit(QueryResponse res) throws Exception {
+      AbstractDatabase db = services.getConfig().getDatabase(res.database);
+
+      for (QueryColumn c : res.metadata)
+        if (c.columnID != null) {
+          String[] parts = Escape.parseColumnID(c.columnID);
+          Table t = db.tables.get(parts[2]);
+          if (t != null && t.properties != null)
+            c.prop = t.properties.get(parts[3]);
+        }
+
       if (res.limit == null)
         res.limit = 1000;
       while (res.data.size() > res.limit)
@@ -169,6 +181,12 @@ public interface QueryEditor {
     @Schema(title = "Aggregation applied on the column. Null if no aggregation is present",
         example = "GROUP BY")
     public String groupBy;
+
+    /**
+     * optional column schema
+     */
+    @Schema(title = "Optional column schema")
+    public Property prop;
   }
 
   /**
