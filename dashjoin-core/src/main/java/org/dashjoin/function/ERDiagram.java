@@ -3,6 +3,7 @@ package org.dashjoin.function;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
@@ -25,13 +26,13 @@ public class ERDiagram extends AbstractFunction<String, String> {
         continue;
       for (Table table : db.tables.values()) {
         String comp = comp(table);
-        res.append("Table " + table.name + "{\n");
+        res.append("Table " + q(table.name) + "{\n");
         for (Property prop : table.properties.values()) {
-          res.append("  " + prop.name + " " + t(prop.dbType));
+          res.append("  " + q(prop.name) + " " + t(prop.dbType != null ? prop.dbType : prop.type));
           if (prop.pkpos != null && prop.pkpos == 0 && comp == null)
             res.append(" [primary key]");
           if (prop.ref != null)
-            res.append(" [ref: > " + Escape.parseColumnID(prop.ref)[2] + '.'
+            res.append(" [ref: > " + q(Escape.parseColumnID(prop.ref)[2]) + '.'
                 + Escape.parseColumnID(prop.ref)[3] + "]");
           if (prop.title != null || prop.description != null)
             res.append(" [note: '" + s(prop.title) + ' ' + s(prop.comment) + "']");
@@ -44,7 +45,7 @@ public class ERDiagram extends AbstractFunction<String, String> {
         res.append("}\n\n");
       }
     }
-    return res.toString();
+    return res.toString().replace("] [", ", ");
   }
 
   @Override
@@ -69,7 +70,18 @@ public class ERDiagram extends AbstractFunction<String, String> {
       return s;
   }
 
+  String q(String s) {
+    if (s == null)
+      return null;
+    if (StringUtils.isAlphanumeric(s.replace('_', 'a')))
+      return s;
+    else
+      return '"' + s + '"';
+  }
+
   String t(String s) {
+    if (s == null)
+      return null;
     return s.replaceAll(" ", "_");
   }
 
