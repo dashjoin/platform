@@ -6,16 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.jsonatajs.JsonataJS;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
@@ -44,6 +34,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 import lombok.extern.java.Log;
 
 /**
@@ -458,8 +458,9 @@ public class ExpressionService {
       Integer offset =
           getArgumentCountEx(ctx) < 3 || getValuesListExpression(v, ctx, 2) == null ? null
               : getValuesListExpression(v, ctx, 2).asInt();
-      Integer limit = getArgumentCountEx(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
-          : getValuesListExpression(v, ctx, 3).asInt();
+      Integer limit =
+          getArgumentCountEx(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
+              : getValuesListExpression(v, ctx, 3).asInt();
       String sort = getArgumentCountEx(ctx) < 5 || getValuesListExpression(v, ctx, 4) == null ? null
           : getValuesListExpression(v, ctx, 4).asText();
       boolean descending =
@@ -662,9 +663,15 @@ public class ExpressionService {
       try {
         if (readOnly)
           return null;
-        data.delete(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            getValuesListExpression(v, ctx, 2).asText());
+        if (getArgumentCountEx(ctx) == 4)
+          data.delete(sc, getValuesListExpression(v, ctx, 0).asText(),
+              getValuesListExpression(v, ctx, 1).asText(),
+              getValuesListExpression(v, ctx, 2).asText(),
+              getValuesListExpression(v, ctx, 3).asText());
+        else
+          data.delete(sc, getValuesListExpression(v, ctx, 0).asText(),
+              getValuesListExpression(v, ctx, 1).asText(),
+              getValuesListExpression(v, ctx, 2).asText());
         return null;
       } catch (Exception e) {
         throw new RuntimeException(e);
@@ -771,7 +778,8 @@ public class ExpressionService {
         QueryDatabase query = new QueryDatabase();
         query.database = "dj/" + getValuesListExpression(v, ctx, 0).asText();
         query.query = getValuesListExpression(v, ctx, 1).asText();
-        query.limit = getArgumentCountEx(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
+        query.limit =
+            getArgumentCountEx(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
         AbstractDatabase db = services.getConfig().getDatabase(query.database);
         ACLContainerRequestFilter.allowQueryEditor(sc, db);
         return o2j(db.getQueryEditor().noop(query).data);
@@ -818,7 +826,8 @@ public class ExpressionService {
       try {
         String f = getValuesListExpression(v, ctx, 0).asText();
         return o2j(function.callInternal(sc, f,
-            getArgumentCountEx(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)), readOnly));
+            getArgumentCountEx(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)),
+            readOnly));
       } catch (Exception e) {
         throw new WrappedException(e);
       }
