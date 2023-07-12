@@ -8,6 +8,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Escape;
+import com.google.common.base.CharMatcher;
 
 /**
  * generate ER diagram for https://dbdiagram.io/d
@@ -73,7 +74,7 @@ public class ERDiagram extends AbstractFunction<String, String> {
   String q(String s) {
     if (s == null)
       return null;
-    if (StringUtils.isAlphanumeric(s.replace('_', 'a')))
+    if (StringUtils.isAlphanumeric(s.replace('_', 'a')) && CharMatcher.ascii().matchesAllOf(s))
       return s;
     else
       return '"' + s + '"';
