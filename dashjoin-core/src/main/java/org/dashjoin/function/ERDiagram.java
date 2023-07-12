@@ -26,20 +26,20 @@ public class ERDiagram extends AbstractFunction<String, String> {
         continue;
       for (Table table : db.tables.values()) {
         String comp = comp(table);
-        res.append("Table " + q(table.name) + "{\n");
+        res.append("Table " + isAlphanumeric(table.name) + "{\n");
         for (Property prop : table.properties.values()) {
-          res.append("  " + q(prop.name) + " " + t(prop.dbType != null ? prop.dbType : prop.type));
+          res.append("  " + isAlphanumeric(prop.name) + " " + replaceSpaceWithUnderScore(prop.dbType != null ? prop.dbType : prop.type));
           if (prop.pkpos != null && prop.pkpos == 0 && comp == null)
             res.append(" [primary key]");
           if (prop.ref != null)
-            res.append(" [ref: > " + q(Escape.parseColumnID(prop.ref)[2]) + '.'
+            res.append(" [ref: > " + isAlphanumeric(Escape.parseColumnID(prop.ref)[2]) + '.'
                 + Escape.parseColumnID(prop.ref)[3] + "]");
           if (prop.title != null || prop.description != null)
-            res.append(" [note: '" + s(prop.title) + ' ' + s(prop.comment) + "']");
+            res.append(" [note: '" + getStringSafely(prop.title) + ' ' + getStringSafely(prop.comment) + "']");
           res.append("\n");
         }
         if (table.title != null || table.comment != null)
-          res.append("  Note: '" + s(table.title) + ' ' + s(table.comment) + "'");
+          res.append("  Note: '" + getStringSafely(table.title) + ' ' + getStringSafely(table.comment) + "'");
         if (comp != null)
           res.append("  " + comp + "\n");
         res.append("}\n\n");
@@ -63,14 +63,14 @@ public class ERDiagram extends AbstractFunction<String, String> {
     return "read";
   }
 
-  String s(String s) {
+  String getStringSafely(String s) {
     if (s == null)
       return "";
     else
       return s;
   }
 
-  String q(String s) {
+  String isAlphanumeric(String s) {
     if (s == null)
       return null;
     if (StringUtils.isAlphanumeric(s.replace('_', 'a')))
@@ -79,7 +79,7 @@ public class ERDiagram extends AbstractFunction<String, String> {
       return '"' + s + '"';
   }
 
-  String t(String s) {
+  String replaceSpaceWithUnderScore(String s) {
     if (s == null)
       return null;
     return s.replaceAll(" ", "_");
