@@ -232,7 +232,7 @@ Instead of calling the echo function, we can of course send an email or perform 
 set the createdBy and createdOn fields. This can be achieved by setting the after create trigger to:
 
 ```text
-$update(database, table, object.ID, {\"createdBy\": $djUser(), \"createdOn\": $now()})
+$update(database, table, object.ID, {"createdBy": $djUser(), "createdOn": $now()})
 ```
 
 Note that triggers can invoke each other recursively. If this expression would be the update trigger, 
