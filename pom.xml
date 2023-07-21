@@ -20,7 +20,7 @@
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 	    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-	    <quarkus.platform.version>3.0.3.Final</quarkus.platform.version>
+	    <quarkus.platform.version>3.2.1.Final</quarkus.platform.version>
     
 	    <surefire-plugin.version>3.1.0</surefire-plugin.version>
     
@@ -146,7 +146,7 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
-				<version>4.0.0</version>
+				<version>4.9.10</version>
 				<executions>
 					<execution>
 						<id>get-the-git-infos</id>
@@ -174,7 +174,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.4.1</version>
+				<version>1.5.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>
