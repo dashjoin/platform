@@ -26,4 +26,4 @@ jobs:
         #cache: 'maven'
 
     - name: Build with Maven
-      run: ./mvnw -v && ./mvnw -B package --file pom-ci.xml -Drevision=1.0.0-$(git rev-parse --short $GITHUB_SHA)
+      run: ./mvnw -v && ./mvnw -B install --file pom-ci.xml -Drevision=1.0.0-$(git rev-parse --short $GITHUB_SHA)
