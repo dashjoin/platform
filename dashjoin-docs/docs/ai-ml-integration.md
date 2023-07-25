@@ -35,7 +35,7 @@ available to other users.
 ## Optical Character Recognition
 
 The optical character recognition (OCR) functionality is available in the dashjoin/ai-image Docker container. It exposes a
-REST API on port 8080 where you provide an image URL such as this picture (https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg). 
+REST API on port 8080 where you provide an image URL such as this picture: 
 
 <img width="400px" src="https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg">
 
@@ -95,7 +95,7 @@ $parseJson(
 ## Face Recognition
 
 The optical character recognition (OCR) functionality is also available in the dashjoin/ai-image Docker container. It exposes a
-REST API where you provide an image URL such as this picture (https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg).
+REST API where you provide an image URL such as this picture:
 
 <img width="400px" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg">
 
