@@ -91,7 +91,6 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${compiler-plugin.version}</version>
-		<scope>provided</scope>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
