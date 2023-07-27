@@ -26,6 +26,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.dashjoin</groupId>
+			<artifactId>jsonata</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 		<!-- dev dependencies -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

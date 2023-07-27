@@ -52,6 +52,8 @@ public class ExpressionServiceTest {
       s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
       Assertions.fail();
     } catch (RuntimeException wrapped404) {
+      System.out.println(wrapped404.toString());
+
       // Note: exception loses cause from Javascript to Java world...
       Assertions.assertTrue(wrapped404.toString().indexOf("NotFoundException") > 0);
     }
@@ -120,7 +122,7 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals(0, ExpressionService.j2o(s.jsonata(sc, "$add()", null, false)));
     Assertions.assertEquals(1, ExpressionService.j2o(s.jsonata(sc, "$add(1)", null, false)));
-    Assertions.assertEquals(2, ExpressionService.j2o(s.jsonata(sc, "$add(null, 2)", null, false)));
+    Assertions.assertEquals(2, ExpressionService.j2o(s.jsonata(sc, "$add(undefined, 2)", null, false)));
     Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2)", null, false)));
     Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2,3)", null, false)));
   }

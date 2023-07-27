@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.Map.Entry;
 import org.dashjoin.expression.jsonatajs.JsonataJS;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
@@ -29,6 +30,11 @@ import com.api.jsonata4java.expressions.ExpressionsVisitor;
 import com.api.jsonata4java.expressions.ParseException;
 import com.api.jsonata4java.expressions.functions.FunctionBase;
 import com.api.jsonata4java.expressions.generated.MappingExpressionParser.Function_callContext;
+import com.dashjoin.jsonata.Functions;
+import com.dashjoin.jsonata.Jsonata;
+import com.dashjoin.jsonata.Jsonata.Fn7;
+import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
+import com.dashjoin.jsonata.Jsonata.JLambda;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -152,6 +158,12 @@ public class ExpressionService {
 
   public Object resolve(ParsedExpression _expr, Object data) throws Exception {
 
+    if (_expr instanceof DJsonataParsedExpression) {
+      DJsonataParsedExpression expr = (DJsonataParsedExpression)_expr;
+      Object res = expr.expr.evaluate(data, expr.bindings);
+      return res; //j2o(res);
+    }
+
     if (_expr instanceof JsonataJSParsedExpression) {
       Value expr = ((JsonataJSParsedExpression) _expr).getExpression();
       Value bindings = ((JsonataJSParsedExpression) _expr).getBindings();
@@ -236,10 +248,47 @@ public class ExpressionService {
     }
   }
 
+  /**
+   * Parsed Dashjoin JSonata expression
+   */
+  public static class DJsonataParsedExpression implements ParsedExpression {
+    String sexpr;
+    Jsonata expr;
+    Jsonata.Frame bindings;
+
+    DJsonataParsedExpression(String sexpr, Jsonata expr, Jsonata.Frame bindings) {
+      this.sexpr = sexpr;
+      this.expr = expr;
+      this.bindings = bindings;
+    }
+
+    public Jsonata getExpression() {
+      return this.expr;
+    }
+
+    public Jsonata.Frame getBindings() {
+      return this.bindings;
+    }
+
+    @Override
+    public String toString() {
+      return sexpr;
+    }
+  }
+
   ParsedExpression parse(SecurityContext sc, String expression, boolean readOnly)
       throws ParseException, IOException {
 
     Map<String, FunctionBase> fns = getJsonataFunctions(sc, readOnly);
+
+    if (djsonata) {
+      Jsonata parsed = new Jsonata(expression, false);
+      try {
+        return new DJsonataParsedExpression(expression, parsed, getDjsonataFunctions(parsed, sc, readOnly));
+      } catch (Exception e) {
+       throw new RuntimeException(e);
+      }
+    }
 
     if (jsonataJs) {
       // Execute jsonata-js reference implementation
@@ -254,6 +303,38 @@ public class ExpressionService {
       expr.getEnvironment().setJsonataFunction(e.getKey(), e.getValue());
     }
     return new Jsonata4JavaParsedExpression(expression, expr);
+  }
+
+  /**
+   * Returns the platform functions with JFunction call wrappers
+   * 
+   * @param expr
+   * @param sc
+   * @param readOnly
+   * @return
+   * @throws Exception
+   */
+  Jsonata.Frame getDjsonataFunctions(Jsonata expr, SecurityContext sc, boolean readOnly) throws Exception {
+    Jsonata.Frame bindings = expr.createFrame();
+
+    for (final Entry<String, FunctionBase> e : getJsonataFunctions(sc, readOnly).entrySet()) {
+      final String name = e.getKey().substring(1); // Strip leading "$"
+      final FunctionBase fn = e.getValue();
+
+      JFunctionCallable fc = new JFunctionCallable() {
+
+        @Override
+        public Object call(Object input, List args) throws Throwable {
+          JsonataJS.args.set(args.toArray());
+          JsonNode jn = fn.invoke(null, null);
+          return j2o(jn);
+        }
+
+      };
+
+      bindings.bind( name, new Jsonata.JFunction(fc, null)); 
+    }
+    return bindings;
   }
 
   Map<String, FunctionBase> getJsonataFunctions(SecurityContext sc, boolean readOnly)
@@ -329,13 +410,18 @@ public class ExpressionService {
    * Checks if the JsonataJS instance can be created
    */
   static boolean canUseJsonataReference() {
-    return JsonataJS.getInstance() != null;
+    return false; //JsonataJS.getInstance() != null;
   }
 
   /**
    * True if reference impl via JsonataJS is active
    */
   boolean jsonataJs = canUseJsonataReference();
+
+  /**
+   * True if Dashjoin Jsonata reference is active
+   */
+  boolean djsonata = true;
 
   /**
    * wrapper around new evaluate(expression, data) that defines our custom function
@@ -371,6 +457,23 @@ public class ExpressionService {
         } catch (Exception e) {
           throw new IOException(e);
         }
+    }
+
+    if (djsonata) {
+      try {
+        Jsonata expr = new Jsonata(expression, false);
+        Jsonata.Frame bindings = getDjsonataFunctions(expr, sc, readOnly);
+        String str = data!=null ? data.toString() : null;
+        System.err.println("Data "+str);
+
+        Object res = expr.evaluate(str!=null ? com.dashjoin.jsonata.json.Json.parseJson(str) : null, bindings);
+        System.err.println("Expr "+expression+" Result "+res);
+        return o2j(res);// Functions.string(res, false);
+
+      } catch (Exception ex) {
+        //log.warning("Error in expression "+expression);
+        throw ex;
+      }
     }
 
     if (jsonataJs) {
