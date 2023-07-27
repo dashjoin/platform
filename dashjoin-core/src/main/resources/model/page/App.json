@@ -1,0 +1,26 @@
+{
+    "ID": "App",
+    "layout": {
+        "widget": "page",
+        "children": [
+            {
+                "markdown": "<a target=\"expert\" href=\"/djcode/index.html\">Open Expert Mode</a>",
+                "widget": "markdown"
+            },
+            {
+                "text": "Pull",
+                "print": "$gitPull()",
+                "widget": "button"
+            },
+            {
+                "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff.$split($, \"\\n\")}",
+                "title": "Changes",
+                "properties": {
+                    "Revert": "$.$gitRestore(path)",
+                    "Commit": "$gitCommit(\"change\", [path])"
+                },
+                "widget": "actionTable"
+            }
+        ]
+    }
+}

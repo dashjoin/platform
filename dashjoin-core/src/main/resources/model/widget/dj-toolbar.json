@@ -71,6 +71,17 @@
 					{
 						"widget": "icon",
 						"fxHide": "lt-md",
+						"tooltip": "App",
+						"icon": "terminal",
+						"readOnly": true,
+						"href": "/page/App",
+						"roles": [
+							"admin"
+						]
+					},
+					{
+						"widget": "icon",
+						"fxHide": "lt-md",
 						"tooltip": "General Information",
 						"icon": "info",
 						"readOnly": true,
