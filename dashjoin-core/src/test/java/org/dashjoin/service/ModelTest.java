@@ -147,7 +147,7 @@ public class ModelTest {
               "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
               "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
               "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
-              "tree", "variable", "sidenav-switch", "html", "notebook")
+              "tree", "variable", "sidenav-switch", "html", "notebook", "actionTable")
           .contains(tree.get("widget").asText()));
     }
 
@@ -206,6 +206,7 @@ public class ModelTest {
                                                 if (!s.equals("Unknown function: $read"))
                                                   if (!s.equals("Unknown function: $update"))
                                                     if (!s.equals("Unknown function: $erDiagram"))
+                                                      if (!s.startsWith("Unknown function: $git"))
                                                       throw e;
             }
           }
