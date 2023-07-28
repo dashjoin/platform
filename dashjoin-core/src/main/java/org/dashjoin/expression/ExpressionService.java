@@ -282,7 +282,7 @@ public class ExpressionService {
     Map<String, FunctionBase> fns = getJsonataFunctions(sc, readOnly);
 
     if (djsonata) {
-      Jsonata parsed = new Jsonata(expression, false);
+      Jsonata parsed = Jsonata.jsonata(expression);
       try {
         return new DJsonataParsedExpression(expression, parsed, getDjsonataFunctions(parsed, sc, readOnly));
       } catch (Exception e) {
@@ -461,17 +461,16 @@ public class ExpressionService {
 
     if (djsonata) {
       try {
-        Jsonata expr = new Jsonata(expression, false);
+        Jsonata expr = Jsonata.jsonata(expression);
         Jsonata.Frame bindings = getDjsonataFunctions(expr, sc, readOnly);
         String str = data!=null ? data.toString() : null;
-        System.err.println("Data "+str);
+        //System.err.println("Data "+str);
 
         Object res = expr.evaluate(str!=null ? com.dashjoin.jsonata.json.Json.parseJson(str) : null, bindings);
-        System.err.println("Expr "+expression+" Result "+res);
-        return o2j(res);// Functions.string(res, false);
-
+        //System.err.println("Expr "+expression+" Result "+res);
+        return o2j(res); // Functions.string(res, false);
       } catch (Exception ex) {
-        //log.warning("Error in expression "+expression);
+        log.warning("Error in expression "+expression);
         throw ex;
       }
     }
