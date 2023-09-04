@@ -43,8 +43,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
@@ -68,6 +66,8 @@ import org.postgresql.jdbc.PgArray;
 import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.SecurityContext;
 import lombok.extern.java.Log;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
@@ -300,7 +300,7 @@ public class SQLDatabase extends AbstractDatabase {
           break;
 
       String x = m.group().substring(2, m.group().length() - 1);
-      args.add(arguments.get(x));
+      args.add(arguments == null ? null : arguments.get(x));
       ps.query = m.replaceFirst("?");
     }
     ps.arguments = args.toArray();
