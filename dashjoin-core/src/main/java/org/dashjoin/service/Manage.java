@@ -405,7 +405,7 @@ public class Manage {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));
         IOUtils.copy(inputPart.getBody(InputStream.class, null), new FileOutputStream(tmp));
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:" + tmp.getAbsolutePath())) {
-          try (ResultSet rs = con.getMetaData().getTables(null, null, null, null)) {
+          try (ResultSet rs = con.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
             while (rs.next()) {
               String tablename = rs.getString("TABLE_NAME");
               Table m = db.tables.get(tablename);
@@ -543,7 +543,7 @@ public class Manage {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));
         IOUtils.copy(inputPart.getBody(InputStream.class, null), new FileOutputStream(tmp));
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:" + tmp.getAbsolutePath())) {
-          try (ResultSet rs = con.getMetaData().getTables(null, null, null, null)) {
+          try (ResultSet rs = con.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
             while (rs.next()) {
               String tablename = rs.getString("TABLE_NAME");
               Table m = db.tables.get(tablename);
