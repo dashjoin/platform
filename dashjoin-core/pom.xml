@@ -110,7 +110,7 @@
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
-		    <version>3.39.3.0</version>
+		    <version>3.43.0.0</version>
 		</dependency>
 
 		<dependency>
@@ -130,24 +130,19 @@
 		<dependency>
 		    <groupId>org.hsqldb</groupId>
 		    <artifactId>hsqldb</artifactId>
-		    <version>2.3.1</version>
+		    <version>2.7.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sf.ucanaccess/ucanaccess -->
 		<dependency>
 		    <groupId>net.sf.ucanaccess</groupId>
 		    <artifactId>ucanaccess</artifactId>
-		    <version>4.0.1</version>
+		    <version>5.0.1</version>
 		    <exclusions>
-		    	<exclusion>
-		    		<groupId>commons-logging</groupId>
-		    		<artifactId>commons-logging</artifactId>
-		    	</exclusion>
-		    	<!-- remove transient dependency here -->
-		    	<exclusion>
-		    		<groupId>com.healthmarketscience.jackcess</groupId>
-		    		<artifactId>jackcess</artifactId>
-		    	</exclusion>
+				<exclusion>
+					<groupId>org.hsqldb</groupId>
+					<artifactId>hsqldb</artifactId>
+				</exclusion>
 		    </exclusions>
 		</dependency>
 
