@@ -6,10 +6,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
-public class GitRestore extends AbstractFunction<String, String> {
+public class GitRestore extends AbstractFunction<String, Void> {
 
   @Override
-  public String run(String arg) throws Exception {
+  public Void run(String arg) throws Exception {
     if (arg == null)
       throw new IllegalArgumentException("Arguments required: $gitRestore(path)");
     try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
@@ -18,7 +18,7 @@ public class GitRestore extends AbstractFunction<String, String> {
         new File(Home.get().getHome() + "/" + arg).delete();
       else
         git.checkout().addPath(arg).call();
-      return "Ok";
+      return null;
     }
   }
 

@@ -3,19 +3,19 @@ package org.dashjoin.function;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.mapping.ETL;
 import org.dashjoin.mapping.Mapping;
 import org.dashjoin.util.MapUtil;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * JSONata shortcut for ETL
  */
 @SuppressWarnings("rawtypes")
-public class SaveTable extends AbstractVarArgFunction<String> {
+public class SaveTable extends AbstractVarArgFunction<Void> {
 
   @Override
-  public String run(List arg) throws Exception {
+  public Void run(List arg) throws Exception {
     String mode = (String) arg.get(0);
     String database = (String) arg.get(1);
     String table = (String) arg.get(2);
@@ -44,8 +44,8 @@ public class SaveTable extends AbstractVarArgFunction<String> {
     etl.database = database;
     etl.oldData = mode;
     etl.runInternal(null);
-
-    return "ok";
+    
+    return null;
   }
 
   @Override

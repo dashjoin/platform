@@ -9,11 +9,11 @@ import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.microprofile.config.ConfigProvider;
 
-public class GitCommit extends AbstractVarArgFunction<String> {
+public class GitCommit extends AbstractVarArgFunction<Void> {
 
   @SuppressWarnings("rawtypes")
   @Override
-  public String run(List args) throws Exception {
+  public Void run(List args) throws Exception {
     URL url = new URL(ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue());
     String user = url.getUserInfo();
     if (user == null)
@@ -30,7 +30,7 @@ public class GitCommit extends AbstractVarArgFunction<String> {
           .setCredentialsProvider(
               new UsernamePasswordCredentialsProvider(user.split(":")[0], user.split(":")[1]))
           .call();
-      return "Ok";
+      return null;
     }
   }
 

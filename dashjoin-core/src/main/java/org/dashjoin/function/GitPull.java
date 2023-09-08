@@ -4,13 +4,13 @@ import org.dashjoin.util.Home;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
-public class GitPull extends AbstractFunction<Void, String> {
+public class GitPull extends AbstractFunction<Void, Void> {
 
   @Override
-  public String run(Void arg) throws Exception {
+  public Void run(Void arg) throws Exception {
     try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
       git.pull().call();
-      return "Ok";
+      return null;
     }
   }
 
