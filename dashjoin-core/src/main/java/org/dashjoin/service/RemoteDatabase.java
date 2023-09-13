@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.WebApplicationException;
 import org.dashjoin.function.RestJson;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
@@ -27,6 +26,7 @@ import org.dashjoin.service.QueryEditor.SortRequest;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.MapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.WebApplicationException;
 
 /**
  * Client for remote databases
@@ -54,6 +54,11 @@ public class RemoteDatabase extends AbstractDatabase {
    */
   @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
+
+  @Override
+  public String displayUrl() {
+    return url;
+  }
 
   /**
    * uses RestJson to communicate with the server. In case a "Schema not set" error is detected,
