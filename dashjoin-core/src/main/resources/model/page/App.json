@@ -16,8 +16,8 @@
                 "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff.$split($, \"\\n\")}",
                 "title": "Changes",
                 "properties": {
-                    "Revert": "$.$gitRestore(path)",
-                    "Commit": "$gitCommit(\"change\", [path])"
+                    "Revert": "(selected.$gitRestore(path); $refresh(); $notify(\"Ok\"))",
+                    "Commit": "$gitCommit(\"change\", [selected.path])"
                 },
                 "widget": "actionTable"
             }
