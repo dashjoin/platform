@@ -13,7 +13,7 @@
                 "widget": "button"
             },
             {
-                "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff.$split($, \"\\n\")}",
+                "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff}",
                 "title": "Changes",
                 "properties": {
                     "Revert": "(selected.$gitRestore(path); $refresh(); $notify(\"Ok\"))",
