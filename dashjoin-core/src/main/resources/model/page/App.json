@@ -17,7 +17,7 @@
                 "title": "Changes",
                 "properties": {
                     "Revert": "(selected.$gitRestore(path); $refresh(); $notify(\"Ok\"))",
-                    "Commit": "$gitCommit(\"change\", [selected.path])"
+                    "Commit": "($message := $prompt(\"Enter commit message\"); $gitCommit($message, [selected.path]))"
                 },
                 "widget": "actionTable"
             }
