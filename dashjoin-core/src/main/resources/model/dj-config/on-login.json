@@ -1,0 +1,5 @@
+{
+	"ID": "on-login",
+	"description": "Expression to be evaluated upon login.",
+	"type": "string"
+}
