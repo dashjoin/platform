@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -407,6 +408,23 @@ public class Data {
       for (Table table : s.tables.values())
         if (table.ID != null)
           res.add(table.ID);
+    return res;
+  }
+
+  /**
+   * returns all table IDs and the corresponding labels from all databases known to the system
+   */
+  @GET
+  @Path("/tableLabels")
+  @Operation(
+      summary = "returns all table IDs and the corresponding labels from all databases known to the system")
+  @APIResponse(description = "List of table ID")
+  public Map<String, String> tableLabels() throws Exception {
+    Map<String, String> res = new LinkedHashMap<>();
+    for (AbstractDatabase s : services.getConfig().getDatabases())
+      for (Table table : s.tables.values())
+        if (table.ID != null)
+          res.put(table.ID, table.djLabel);
     return res;
   }
 
