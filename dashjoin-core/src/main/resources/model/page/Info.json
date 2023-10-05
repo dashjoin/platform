@@ -36,16 +36,10 @@
                         "icon": "people_outline"
                     },
                     {
-                        "widget": "container",
-                        "children": [
-                            {
-                                "widget": "text",
-                                "text": "Tenant Users",
-                                "href": "/table/config/tenantusers",
-                                "icon": "people"
-                            }
-                        ],
-                        "if": "$contains(href, \".my.dashjoin.\")"
+                        "widget": "text",
+                        "text": "Tenant Users",
+                        "href": "/table/config/tenantusers",
+                        "icon": "people"
                     }
                 ],
                 "title": "User Information"
