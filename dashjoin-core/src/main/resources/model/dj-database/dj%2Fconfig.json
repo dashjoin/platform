@@ -764,6 +764,21 @@
       "required": [
         "ID"
       ],
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Edit Page",
+            "deleteConfirmation": "Are you sure you want to delete this page?"
+          },
+          {
+            "display": "{\"label\": \"Visit Page\", \"href\": \"/page/\" & value.ID}",
+            "title": "",
+            "widget": "display"
+          }
+        ]
+      },
       "tableLayout": {
         "widget": "page",
         "children": [
