@@ -129,7 +129,11 @@ public class RemoteDatabase extends AbstractDatabase {
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
-    return (Map<String, Object>) call("read/" + e(s.name), search);
+    Object res = call("read/" + e(s.name), search);
+    if (res instanceof Map)
+      return (Map<String, Object>) res;
+    else
+      return null;
   }
 
   @Override
