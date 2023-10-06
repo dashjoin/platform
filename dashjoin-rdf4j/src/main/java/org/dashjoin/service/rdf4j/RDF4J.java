@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -63,6 +61,8 @@ import com.inova8.intelligentgraph.model.Thing;
 import com.inova8.intelligentgraph.path.Path;
 import com.inova8.intelligentgraph.results.PathResults;
 import com.inova8.intelligentgraph.vocabulary.PATHQL;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 import lombok.extern.java.Log;
 
 /**
@@ -179,6 +179,8 @@ public class RDF4J extends AbstractDatabase {
       throw new IllegalArgumentException("Literal cannot be null");
     if (o instanceof List)
       throw new IllegalArgumentException("Literal cannot be a list");
+    if (o instanceof Map)
+      throw new IllegalArgumentException("Literal cannot be a map");
     if (o instanceof String)
       if (language == null)
         return vf.createLiteral((String) o);
