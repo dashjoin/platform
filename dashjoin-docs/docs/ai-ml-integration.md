@@ -344,7 +344,7 @@ It returns a list of matches that can be used as a synonym lookup table. Hence t
 The soundex similarity is higher for a pair of strings that sound similar in the english language:
 
 ```javascript
-$synonym({"SoundexSimilaity":2}, ["roast"], ["ghost", "boast", "hello"])
+$synonym({"SoundexSimilarity":2}, ["roast"], ["ghost", "boast", "hello"])
 ```
 
 ```json
