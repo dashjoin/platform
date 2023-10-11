@@ -65,10 +65,14 @@ public class RemoteDatabase extends AbstractDatabase {
    * setSchema is called and the call is repeated
    */
   Object call(String method, Object arguments) throws Exception {
-    RestJson client = new RestJson();
+    RestJson client = new RestJson() {
+      @Override
+      public String password() {
+        return this.password;
+      }
+    };
     client.url = url + "/" + method;
     client.username = username;
-    client.password = password;
     client.method = "POST";
     client.contentType = "application/json";
     client.headers = MapUtil.of("Accept", "application/json");
