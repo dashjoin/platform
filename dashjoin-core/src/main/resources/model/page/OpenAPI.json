@@ -6,6 +6,7 @@
         "children": [
             {
                 "widget": "markdown",
+                "card": true,
                 "title": "App OpenAPI Specification",
                 "markdown": "You can associate an OpenAPI specification with your Dashjoin app. This allows you to:\n\n* use Dashjoin to implement an existing OpenAPI spec\n* publish schemas and paths to your OpenAPI spec\n* generate an OpenAPI spec for your Dashjoin app\n\nYou can use the [online editor](https://editor.swagger.io/) or the [SwaggerHub repository](https://app.swaggerhub.com/) to create your OpenAPI. Enter your SwaggerHub API key [here](/#/resource/config/dj-config/openapi-authorization). Use the x-dashjoin tag to export tables, functions, and queries to the referenced spec:\n\n```\nx-dashjoin:\n  schemas: [dj/postgres/Pet]\n  functions: [add]\n  queries: [list]\n```\n\nThe app's [OpenAPI spec is available here](/swagger-ui). Enter the path ```/rest/manage/openapi``` and click explore.\n"
             },

@@ -268,7 +268,7 @@
             "title": "Connect a New Database"
           },
           {
-            "widget": "container",
+            "widget": "card",
             "layout": "vertical",
             "title": "System Configuration",
             "children": [

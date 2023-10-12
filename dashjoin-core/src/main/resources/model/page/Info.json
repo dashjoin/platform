@@ -4,9 +4,8 @@
         "widget": "page",
         "children": [
             {
-                "widget": "container",
+                "widget": "card",
                 "layout": "vertical",
-                "text": "User Information",
                 "children": [
                     {
                         "widget": "display",
@@ -46,6 +45,7 @@
             },
             {
                 "widget": "display",
+                "card": true,
                 "display": "( $f:=function($x){ $merge( [$x, {\"Third party licenses\": {\"href\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}}]) }; $f($djVersion()) )",
                 "title": "Software",
                 "icons": {
