@@ -1,6 +1,7 @@
 package org.dashjoin.function;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class GitStatus extends AbstractFunction<Void, Object> {
   }
 
   String diff(Git git, String path) throws GitAPIException {
+    if (new File(Home.get().getHome() + '/' + path).length() > 100l * 1024l)
+      return null;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     git.diff().setOutputStream(out).setPathFilter(PathFilter.create(path)).call();
     return out.toString();
