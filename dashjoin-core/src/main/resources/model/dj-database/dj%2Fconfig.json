@@ -119,6 +119,19 @@
       "required": [
         "name"
       ],
+      "layout": "vertical",
+      "order": [
+		  ["ID", "name", "dj-label"],
+		  ["title", "comment"],
+		  ["readRoles", "writeRoles"],
+		  ["tenantColumn", "roleMappings"],
+		  "before-create",
+		  "after-create",
+		  "before-update",
+		  "after-update",
+		  "before-delete",
+		  "after-delete"
+	  ],
       "properties": {
         "ID": {
           "ID": "dj/config/Table/ID",
@@ -640,6 +653,7 @@
           "parent": "dj/config/dj-query-catalog",
           "pkpos": 0,
           "type": "string",
+	      "size": 4,
           "createOnly": true
         },
         "type": {
@@ -647,6 +661,7 @@
           "name": "type",
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
+	      "size": 4,
           "enum": [
             "read",
             "write"
@@ -658,6 +673,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "ref": "dj/config/dj-database/ID",
+	      "size": 4,
           "displayWith": "fk"
         },
         "query": {
@@ -667,6 +683,7 @@
           "type": "string",
           "widget": "textarea",
 	      "widgetType": "queryEdit",
+	      "size": 12,
           "style": {
 		    "width": "calc(100vw - 100px - 240px)",
 		    "font-family": "monospace"
@@ -676,6 +693,7 @@
           "ID": "dj/config/dj-query-catalog/comment",
           "name": "comment",
           "parent": "dj/config/dj-query-catalog",
+	      "size": 8,
           "type": "string"
         },
         "roles": {
@@ -686,6 +704,7 @@
           "choicesUrl": "/rest/database/query/config/dj-roles-without-admin",
           "jsonata": "ID",
           "layout": "select",
+	      "size": 4,
           "items": {
             "type": "string"
           }
@@ -696,6 +715,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "object",
           "layout": "vertical",
+	      "size": 12,
           "additionalProperties": {
             "type": "object",
             "properties": {
