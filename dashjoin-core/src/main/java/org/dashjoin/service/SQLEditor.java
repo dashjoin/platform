@@ -578,6 +578,9 @@ public class SQLEditor implements QueryEditorInternal {
     if (!(fi instanceof net.sf.jsqlparser.schema.Table))
       return res;
 
+    if (fi.getAlias() != null)
+      return res;
+
     String name = ((net.sf.jsqlparser.schema.Table) fi).getName();
     if (name.startsWith("\"") && name.endsWith("\""))
       name = name.substring(1, name.length() - 1);
