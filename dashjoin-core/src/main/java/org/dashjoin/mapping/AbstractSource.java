@@ -296,32 +296,39 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
   public static String type(String pk, List<Map<String, Object>> table) {
     if ("_dj_source".equals(pk))
       return "string";
+    Set<String> types = new HashSet<>();
     for (Map<String, Object> row : table) {
       Object o = row.get(pk);
       if (o != null) {
         if (o instanceof String) {
           try {
             DateTimeFormatter.ISO_DATE_TIME.parse((String) o);
-            return "date";
+            types.add("date");
           } catch (Exception e) {
             return "string";
           }
         }
         if (o instanceof Date)
-          return "date";
+          types.add("date");
         if (o instanceof Integer)
-          return "integer";
+          types.add("integer");
         if (o instanceof Boolean)
-          return "boolean";
+          types.add("boolean");
         if (o instanceof Number)
-          return "number";
+          types.add("number");
         if (o instanceof List)
-          return "array";
+          types.add("array");
         if (o instanceof Map)
-          return "object";
+          types.add("object");
+
+        if (types.size() > 1)
+          return "string";
       }
     }
-    return "string";
+    if (types.size() == 0)
+      return "string";
+    else
+      return types.iterator().next();
   }
 
   @Override

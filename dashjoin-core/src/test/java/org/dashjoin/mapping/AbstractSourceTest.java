@@ -21,4 +21,14 @@ public class AbstractSourceTest {
   public void testType() {
     Assertions.assertEquals("date", Provider.type("z", table));
   }
+
+  @Test
+  public void testMixed() {
+    Assertions.assertEquals("string", Provider.type("x", asList(of("x", 1), of("x", "string"))));
+  }
+
+  @Test
+  public void testNull() {
+    Assertions.assertEquals("string", Provider.type("x", asList(of("x", null), of("x", null))));
+  }
 }
