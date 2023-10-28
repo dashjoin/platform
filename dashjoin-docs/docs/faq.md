@@ -141,3 +141,5 @@ $call("openai", {
 
 * **I need to ETL from an API that has a rate limit. How can I throttle my requests?** You can use the wait function in your JSONata expression:
 Let's assume $openJson(url) is called on several array elements. Simply change it to $wait($openJson(x), 1000) to introduce a 1 second delay after each call.
+
+* **How can I realize an audit log that keeps track of all changes to a table?** You can define a triggers for create, update, and delete operations on the table that must be audited. Create an audit log table with the following columns: autoincrementing ID, user, timestamp, operation, and payload. The trigger `$create("db", "audit", {"timestamp": $now(), "user", user, "operation": "update", "payload": $})` will log changes to the table.
