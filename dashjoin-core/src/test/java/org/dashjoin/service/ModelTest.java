@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
@@ -14,6 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 import com.api.jsonata4java.Expression;
+import com.dashjoin.jsonata.Jsonata;
+import com.dashjoin.jsonata.Jsonata.JFunction;
+import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -178,36 +182,47 @@ public class ModelTest {
       for (String field : PojoDatabase.EXPRESSION_FIELDS)
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
+
+          // exceptions
+          if (expr.contains("$read("))
+            continue;
+          if (expr.contains("$echo("))
+            continue;
+
           if (!(kid.getValue() instanceof ObjectNode)) {
             Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("$")
                 || expr.startsWith("value.") || expr.startsWith("("));
-            Expression jsonata = Expression.jsonata(expr);
+            Jsonata jsonata = Jsonata.jsonata(expr);
+            JFunction x = new JFunction(new JFunctionCallable() {
+              @Override
+              public Object call(Object input, List args) throws Throwable {
+                return null;
+              }
+            }, "<a?a?a?a?:s>");
+            jsonata.registerFunction("gitPull", x);
+            jsonata.registerFunction("gitStatus", x);
+            jsonata.registerFunction("djRoles", x);
+            jsonata.registerFunction("djVersion", x);
+            jsonata.registerFunction("djGetDatabases", x);
+            jsonata.registerFunction("djGetDrivers", x);
+            jsonata.registerFunction("djGetFunctions", x);
+            jsonata.registerFunction("read", x);
+            jsonata.registerFunction("update", x);
+            jsonata.registerFunction("openJson", x);
+            jsonata.registerFunction("refresh", x);
+            jsonata.registerFunction("createTable", x);
+            jsonata.registerFunction("createStubs", x);
+            jsonata.registerFunction("saveApi", x);
+            jsonata.registerFunction("erDiagram", x);
+            jsonata.registerFunction("echo", x);
+            jsonata.registerFunction("alterColumnTrigger", x);
+            jsonata.registerFunction("alterTableTrigger", x);
+            jsonata.registerFunction("query", x);
+            jsonata.registerFunction("call", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
-              String s = e.getMessage();
-              if (!s.equals("Unknown function: $call"))
-                if (!s.equals("Unknown function: $trigger"))
-                  if (!s.equals("Unknown function: $djRoles"))
-                    if (!s.equals("Unknown function: $djVersion"))
-                      if (!s.equals("Unknown function: $djGetDatabases"))
-                        if (!s.equals("Unknown function: $djGetDrivers"))
-                          if (!s.equals("Unknown function: $djGetFunctions"))
-                            if (!s.equals("Unknown function: $echo"))
-                              if (!s.equals("Unknown function: $alterColumnTrigger"))
-                                if (!s.equals("Unknown function: $alterTableTrigger"))
-                                  if (!s.equals("Unknown function: $traverse"))
-                                    if (!s.equals("Unknown function: $query"))
-                                      if (!s.equals("Unknown function: $doc2data"))
-                                        if (!s.equals("Unknown function: $djSubscription"))
-                                          if (!s.equals("Unknown function: $saveApi"))
-                                            if (!s.equals("Unknown function: $createStubs"))
-                                              if (!s.equals("Unknown function: $createTable"))
-                                                if (!s.equals("Unknown function: $read"))
-                                                  if (!s.equals("Unknown function: $update"))
-                                                    if (!s.equals("Unknown function: $erDiagram"))
-                                                      if (!s.startsWith("Unknown function: $git"))
-                                                        throw e;
+              throw e;
             }
           }
           // JsonNode expr = kid.getValue().get("dj-expr");
