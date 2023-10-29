@@ -178,12 +178,6 @@ public class ModelTest {
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
 
-          // exceptions
-          if (expr.contains("$read("))
-            continue;
-          if (expr.contains("$echo("))
-            continue;
-
           if (!(kid.getValue() instanceof ObjectNode)) {
             Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("$")
                 || expr.startsWith("value.") || expr.startsWith("("));
@@ -194,7 +188,7 @@ public class ModelTest {
                   throws Throwable {
                 return null;
               }
-            }, "<a?a?a?a?:s>");
+            }, null);
             jsonata.registerFunction("gitPull", x);
             jsonata.registerFunction("gitStatus", x);
             jsonata.registerFunction("djRoles", x);
@@ -221,11 +215,6 @@ public class ModelTest {
               throw e;
             }
           }
-          // JsonNode expr = kid.getValue().get("dj-expr");
-          // Assertions.assertEquals(1, expr.size());
-          // Entry<String, JsonNode> op = expr.fields().next();
-          // Assertions.assertTrue(Arrays.asList("object", "trigger",
-          // "call").contains(op.getKey()));
         }
     }
   }
