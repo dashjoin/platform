@@ -1,7 +1,5 @@
 package org.dashjoin.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -14,14 +12,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
-import com.api.jsonata4java.Expression;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -195,7 +190,8 @@ public class ModelTest {
             Jsonata jsonata = Jsonata.jsonata(expr);
             JFunction x = new JFunction(new JFunctionCallable() {
               @Override
-              public Object call(Object input, List args) throws Throwable {
+              public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                  throws Throwable {
                 return null;
               }
             }, "<a?a?a?a?:s>");
@@ -232,44 +228,5 @@ public class ModelTest {
           // "call").contains(op.getKey()));
         }
     }
-  }
-
-  public static void testDriver(String file) throws Exception {
-
-    ObjectMapper om =
-        new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
-            .configure(JsonReadFeature.ALLOW_SINGLE_QUOTES.mappedFeature(), true)
-            .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
-
-    JsonNode map = om.readTree(new FileInputStream(new File(file)));
-    file = map.get("test").get("file").asText();
-    JsonNode test = om.readTree(new FileInputStream(new File(file)));
-    String expr =
-        Expression.jsonata(map.get("test").get("expression").asText()).evaluate(test).asText();
-
-    Expression e = Expression.jsonata(expr);
-    Iterator<String> cases = map.get("cases").fieldNames();
-    while (cases.hasNext()) {
-      String name = cases.next();
-      JsonNode c = map.get("cases").get(name);
-      ObjectNode basedata = map.get("basedata").deepCopy();
-
-      Iterator<String> dataFields = c.get("data").fieldNames();
-      while (dataFields.hasNext()) {
-        String field = dataFields.next();
-        basedata.set(field, c.get("data").get(field));
-      }
-
-      Assertions.assertEquals("error in case: " + name, "" + c.get("expected"),
-          "" + wrap(e.evaluate(basedata)));
-    }
-  }
-
-  static JsonNode wrap(JsonNode n) {
-    if (n instanceof ArrayNode)
-      return n;
-    else
-      return om.createArrayNode().add(n);
   }
 }
