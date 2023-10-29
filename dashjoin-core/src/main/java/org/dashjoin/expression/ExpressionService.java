@@ -35,6 +35,7 @@ import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.Fn7;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
 import com.dashjoin.jsonata.Jsonata.JLambda;
+import com.dashjoin.jsonata.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -937,7 +938,7 @@ public class ExpressionService {
   }
 
   public static JsonNode o2j(Object object) {
-    return om.convertValue(object, JsonNode.class);
+    return om.convertValue(Utils.convertNulls(object), JsonNode.class);
   }
 
   public static Object j2o(JsonNode node) {

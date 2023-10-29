@@ -123,6 +123,7 @@ public class ExpressionServiceTest {
     Assertions.assertEquals(0, ExpressionService.j2o(s.jsonata(sc, "$add()", null, false)));
     Assertions.assertEquals(1, ExpressionService.j2o(s.jsonata(sc, "$add(1)", null, false)));
     Assertions.assertEquals(2, ExpressionService.j2o(s.jsonata(sc, "$add(undefined, 2)", null, false)));
+    Assertions.assertEquals(2, ExpressionService.j2o(s.jsonata(sc, "$add(null, 2)", null, false)));
     Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2)", null, false)));
     Assertions.assertEquals(3, ExpressionService.j2o(s.jsonata(sc, "$add(1,2,3)", null, false)));
   }
