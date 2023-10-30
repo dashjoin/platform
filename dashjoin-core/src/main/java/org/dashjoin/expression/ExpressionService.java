@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.expression.jsonatajs.JsonataJS;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
@@ -16,6 +17,7 @@ import org.dashjoin.function.JobStatus;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
+import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Manage;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.Services;
@@ -30,11 +32,10 @@ import com.api.jsonata4java.expressions.ExpressionsVisitor;
 import com.api.jsonata4java.expressions.ParseException;
 import com.api.jsonata4java.expressions.functions.FunctionBase;
 import com.api.jsonata4java.expressions.generated.MappingExpressionParser.Function_callContext;
-import com.dashjoin.jsonata.Functions;
+import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
-import com.dashjoin.jsonata.Jsonata.Fn7;
+import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
-import com.dashjoin.jsonata.Jsonata.JLambda;
 import com.dashjoin.jsonata.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -100,27 +101,18 @@ public class ExpressionService {
   @Path("/")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
-  public JsonNode resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
-    try {
-      return jsonata(sc, e.expression, o2j(e.data), false);
-    } catch (PolyglotException ex) {
-      throw convert(ex);
-    }
+  public Object resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
+    return jsonata(sc, e.expression, (e.data), false);
   }
 
   @GET
   @Path("/{expression}")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
-  public JsonNode resolveCached(@Context SecurityContext sc,
+  public Object resolveCached(@Context SecurityContext sc,
       @PathParam("expression") String expression) throws Exception {
     ExpressionAndData e = om.readValue(expression, ExpressionAndData.class);
-    try {
-      return jsonata(sc, e.expression, o2j(e.data), false);
-    } catch (PolyglotException ex) {
-      throw convert(ex);
-    }
-    // return jsonata(sc, expression.expression, o2j(expression.data), false);
+    return jsonata(sc, e.expression, (e.data), false);
   }
 
   /**
@@ -144,12 +136,12 @@ public class ExpressionService {
   }
 
   public Object resolve(SecurityContext sc, String expression, Object data) throws Exception {
-    return j2o(jsonata(sc, expression, o2j(data), false));
+    return (jsonata(sc, expression, (data), false));
   }
 
   public Object resolve(SecurityContext sc, String expression, Object data, boolean readOnly)
       throws Exception {
-    return j2o(jsonata(sc, expression, o2j(data), readOnly));
+    return (jsonata(sc, expression, (data), readOnly));
   }
 
   public ParsedExpression prepare(SecurityContext sc, String expression)
@@ -160,9 +152,9 @@ public class ExpressionService {
   public Object resolve(ParsedExpression _expr, Object data) throws Exception {
 
     if (_expr instanceof DJsonataParsedExpression) {
-      DJsonataParsedExpression expr = (DJsonataParsedExpression)_expr;
+      DJsonataParsedExpression expr = (DJsonataParsedExpression) _expr;
       Object res = expr.expr.evaluate(data, expr.bindings);
-      return res; //j2o(res);
+      return res; // j2o(res);
     }
 
     if (_expr instanceof JsonataJSParsedExpression) {
@@ -285,9 +277,10 @@ public class ExpressionService {
     if (djsonata) {
       Jsonata parsed = Jsonata.jsonata(expression);
       try {
-        return new DJsonataParsedExpression(expression, parsed, getDjsonataFunctions(parsed, sc, readOnly));
+        return new DJsonataParsedExpression(expression, parsed,
+            getDjsonataFunctions(parsed, sc, readOnly));
       } catch (Exception e) {
-       throw new RuntimeException(e);
+        throw new RuntimeException(e);
       }
     }
 
@@ -315,7 +308,8 @@ public class ExpressionService {
    * @return
    * @throws Exception
    */
-  Jsonata.Frame getDjsonataFunctions(Jsonata expr, SecurityContext sc, boolean readOnly) throws Exception {
+  Jsonata.Frame getDjsonataFunctions(Jsonata expr, SecurityContext sc, boolean readOnly)
+      throws Exception {
     Jsonata.Frame bindings = expr.createFrame();
 
     for (final Entry<String, FunctionBase> e : getJsonataFunctions(sc, readOnly).entrySet()) {
@@ -333,7 +327,7 @@ public class ExpressionService {
 
       };
 
-      bindings.bind( name, new Jsonata.JFunction(fc, null)); 
+      bindings.bind(name, new Jsonata.JFunction(fc, null));
     }
     return bindings;
   }
@@ -343,17 +337,15 @@ public class ExpressionService {
     // TODO: combine these with the service loader functions
     // keep in sync with org.dashjoin.service.Manage.getFunctions()
     HashMap<String, FunctionBase> res = new HashMap<>();
-    res.put("$all", new All(sc, readOnly));
-    res.put("$read", new Read(sc, readOnly));
-    res.put("$create", new Create(sc, readOnly));
-    res.put("$update", new Update(sc, readOnly));
-    res.put("$traverse", new Traverse(sc, readOnly));
-    res.put("$delete", new Delete(sc, readOnly));
-    res.put("$query", new Query(sc, readOnly));
-    res.put("$queryGraph", new QueryGraph(sc, readOnly));
-    res.put("$adHocQuery", new AdHocQuery(sc, readOnly));
-    res.put("$call", new Call(sc, readOnly));
-    res.put("$incoming", new Incoming(sc));
+
+    /*
+     * res.put("$all", new All(sc, readOnly)); res.put("$read", new Read(sc, readOnly));
+     * res.put("$create", new Create(sc, readOnly)); res.put("$update", new Update(sc, readOnly));
+     * res.put("$traverse", new Traverse(sc, readOnly)); res.put("$delete", new Delete(sc,
+     * readOnly)); res.put("$query", new Query(sc, readOnly)); res.put("$queryGraph", new
+     * QueryGraph(sc, readOnly)); res.put("$adHocQuery", new AdHocQuery(sc, readOnly));
+     * res.put("$call", new Call(sc, readOnly)); res.put("$incoming", new Incoming(sc));
+     */
 
     for (org.dashjoin.function.Function<?, ?> f : ServiceLoader
         .load(org.dashjoin.function.Function.class)) {
@@ -411,7 +403,7 @@ public class ExpressionService {
    * Checks if the JsonataJS instance can be created
    */
   static boolean canUseJsonataReference() {
-    return false; //JsonataJS.getInstance() != null;
+    return false; // JsonataJS.getInstance() != null;
   }
 
   /**
@@ -424,10 +416,92 @@ public class ExpressionService {
    */
   boolean djsonata = true;
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  Object jsonata(SecurityContext sc, String expression, Object data, boolean readOnly)
+      throws Exception {
+
+    if (expression == null || expression.isBlank())
+      return null;
+
+    Jsonata expr = Jsonata.jsonata(expression);
+
+    for (org.dashjoin.function.Function f : ServiceLoader
+        .load(org.dashjoin.function.Function.class)) {
+
+      // configurable function are run via $call(...)
+      if (!(f instanceof AbstractConfigurableFunction)) {
+        ((AbstractFunction) f).init(sc, services, this, false);
+
+        // special case for $call
+        if (f instanceof Call)
+          ((Call) f).function = this.function;
+
+        expr.registerFunction(f.getID(), new JFunction(new JFunctionCallable() {
+          @Override
+          public Object call(Object input, List args) throws Throwable {
+
+            // check readOnly
+            if (readOnly && !"read".equals(f.getType()))
+              return null;
+
+            // we do not allow custom functions to differentiate between null / undefined
+            args = (List) Utils.convertNulls(args);
+
+            if (f instanceof AbstractVarArgFunction) {
+              AbstractVarArgFunction vaf = (AbstractVarArgFunction) f;
+              if (vaf.getArgumentClassList() == null)
+                // can pass 1:1
+                return f.run(args);
+              else {
+                // legacy mode - implementations expect optional arguments to be null (i.e. [null]
+                // and not [])
+                AbstractVarArgFunction<Object> vf = (AbstractVarArgFunction<Object>) f;
+                List<Object> vargs = new ArrayList<>();
+                int index = 0;
+                for (Class<?> c : vf.getArgumentClassList()) {
+                  if (index < args.size())
+                    vargs.add(args.get(index));
+                  else
+                    vargs.add(null);
+                  index++;
+                }
+                return f.run(vargs);
+              }
+            } else {
+              // single parameter, get optional parameter and handle NULL
+              return f.run(
+                  om.convertValue(args.size() == 0 ? null : args.get(0), f.getArgumentClass()));
+            }
+          }
+        }, f.getSignature()));
+      }
+    }
+    try {
+      Object res = expr.evaluate(data);
+      return res;
+    } catch (JException e) {
+
+      // intercept the exception
+      // TODO: add getter to jsonata
+      if ("T0410".equals(FieldUtils.readDeclaredField(e, "error", true)))
+        if (expression.startsWith("$") && expression.contains("(")) {
+          // TODO: add function name to exception
+          String name = expression.substring(1, expression.indexOf('('));
+          for (org.dashjoin.function.Function f : ServiceLoader
+              .load(org.dashjoin.function.Function.class))
+            if (!(f instanceof AbstractConfigurableFunction))
+              if (name.equals(f.getID()))
+                if (f.getHelp() != null)
+                  throw new Exception(f.getHelp());
+        }
+      throw e;
+    }
+  }
+
   /**
    * wrapper around new evaluate(expression, data) that defines our custom function
    */
-  JsonNode jsonata(SecurityContext sc, String expression, JsonNode data, boolean readOnly)
+  JsonNode __jsonata(SecurityContext sc, String expression, JsonNode data, boolean readOnly)
       throws Exception {
 
     if (expression == null || expression.isBlank())
@@ -464,14 +538,15 @@ public class ExpressionService {
       try {
         Jsonata expr = Jsonata.jsonata(expression);
         Jsonata.Frame bindings = getDjsonataFunctions(expr, sc, readOnly);
-        String str = data!=null ? data.toString() : null;
-        //System.err.println("Data "+str);
+        String str = data != null ? data.toString() : null;
+        // System.err.println("Data "+str);
 
-        Object res = expr.evaluate(str!=null ? com.dashjoin.jsonata.json.Json.parseJson(str) : null, bindings);
-        //System.err.println("Expr "+expression+" Result "+res);
+        Object res = expr
+            .evaluate(str != null ? com.dashjoin.jsonata.json.Json.parseJson(str) : null, bindings);
+        // System.err.println("Expr "+expression+" Result "+res);
         return o2j(res); // Functions.string(res, false);
       } catch (Exception ex) {
-        log.warning("Error in expression "+expression);
+        log.warning("Error in expression " + expression);
         throw ex;
       }
     }
@@ -522,418 +597,293 @@ public class ExpressionService {
       return res.textValue();
   }
 
+  public static abstract class Base<T> extends AbstractVarArgFunction<T> {
+
+    /**
+     * get optional parameter (or null) from arguments
+     */
+    @SuppressWarnings("unchecked")
+    <C> C optional(List<Object> arg, int index, Class<C> type) throws Exception {
+      if (arg.size() <= index)
+        return null;
+      Object o = arg.get(index);
+      if (o == null)
+        return null;
+      if (type.isAssignableFrom(o.getClass()))
+        return (C) o;
+      throw new Exception(getHelp());
+    }
+  }
+
   /**
    * data.all(database, table)
    */
-  public class All extends FunctionBase {
-    SecurityContext sc;
-    boolean readOnly;
+  public static class All extends Base<List<Map<String, Object>>> {
 
-    public All(SecurityContext sc, boolean readOnly) {
-      this.readOnly = readOnly;
-      this.sc = sc;
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    @Override
+    public List<Map<String, Object>> run(List arg) throws Exception {
+      return this.expressionService.getData().all(sc, (String) arg.get(0), (String) arg.get(1),
+          optional(arg, 2, Integer.class), optional(arg, 3, Integer.class),
+          optional(arg, 4, String.class), (optional(arg, 5, Boolean.class) == null ? false
+              : (boolean) optional(arg, 5, Boolean.class)),
+          optional(arg, 6, Map.class));
     }
 
     @Override
-    public int getMaxArgs() {
-      return 7;
-    }
-
-    @Override
-    public int getMinArgs() {
-      return 2;
+    public String getHelp() {
+      return "Arguments required: $all(database, table, offset?, limit?, sort?, desc?, arguments?)";
     }
 
     @Override
     public String getSignature() {
-      return "<j:ss>";
-    }
-
-    @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 2)
-        throw new RuntimeException("Arguments required: $all(database, table)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-
-      Integer offset =
-          getArgumentCountEx(ctx) < 3 || getValuesListExpression(v, ctx, 2) == null ? null
-              : getValuesListExpression(v, ctx, 2).asInt();
-      Integer limit =
-          getArgumentCountEx(ctx) < 4 || getValuesListExpression(v, ctx, 3) == null ? null
-              : getValuesListExpression(v, ctx, 3).asInt();
-      String sort = getArgumentCountEx(ctx) < 5 || getValuesListExpression(v, ctx, 4) == null ? null
-          : getValuesListExpression(v, ctx, 4).asText();
-      boolean descending =
-          getArgumentCountEx(ctx) < 6 ? false : getValuesListExpression(v, ctx, 5).asBoolean();
-      @SuppressWarnings("unchecked")
-      Map<String, Object> arguments = getArgumentCountEx(ctx) < 7 ? null
-          : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 6));
-
-      try {
-        return o2j(data.all(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), offset, limit, sort, descending,
-            arguments));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      return "<ssn?n?s?b?o?:a>";
     }
   }
 
   /**
    * data.read(database, table, pk1)
    */
-  public class Read extends FunctionBase {
-    SecurityContext sc;
-    boolean readOnly;
+  public static class Read extends AbstractVarArgFunction<Object> {
 
-    public Read(SecurityContext sc, boolean readOnly) {
-      this.readOnly = readOnly;
-      this.sc = sc;
+    @SuppressWarnings("rawtypes")
+    @Override
+    public Object run(List arg) throws Exception {
+      return this.expressionService.getData().read(sc, (String) arg.get(0), (String) arg.get(1),
+          "" + arg.get(2));
     }
 
     @Override
-    public int getMaxArgs() {
-      return 3;
-    }
-
-    @Override
-    public int getMinArgs() {
-      return 3;
+    public String getHelp() {
+      return "Arguments required: $read(database, table, pk1)";
     }
 
     @Override
     public String getSignature() {
-      return "<j:sss>";
-    }
-
-    @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 3)
-        throw new RuntimeException("Arguments required: $read(database, table, pk1)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      try {
-        return o2j(data.read(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            getValuesListExpression(v, ctx, 2).asText()));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      return "<ss(bns):o?>";
     }
   }
 
   /**
    * data.create(database, table, pk1)
    */
-  public class Create extends Read {
-
-    public Create(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+  public static class Create extends AbstractVarArgFunction<Object> {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      return this.expressionService.getData().createInternal(sc, (String) arg.get(0),
+          (String) arg.get(1), (Map<String, Object>) arg.get(2));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 3)
-        throw new RuntimeException("Arguments required: $create(database, table, object)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      try {
-        if (readOnly)
-          return null;
-        return o2j(data.createInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2))));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+    public String getHelp() {
+      return "Arguments required: $create(database, table, object)";
+    }
+
+    @Override
+    public String getType() {
+      return "write";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<sso:o?>";
     }
   }
 
   /**
    * data.update(database, table, pk1, object)
    */
-  public class Update extends Read {
-
-    public Update(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+  public static class Update extends AbstractVarArgFunction<Object> {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      this.expressionService.getData().update(sc, (String) arg.get(0), (String) arg.get(1),
+          "" + arg.get(2), (Map<String, Object>) arg.get(3));
+      return null;
     }
 
     @Override
-    public int getMaxArgs() {
-      return 4;
+    public String getHelp() {
+      return "Arguments required: $update(database, table, pk1, object)";
     }
 
     @Override
-    public int getMinArgs() {
-      return 4;
+    public String getType() {
+      return "write";
     }
 
     @Override
     public String getSignature() {
-      return "<j:ssss>";
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 4)
-        throw new RuntimeException("Arguments required: $update(database, table, pk1, object)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      if (getValuesListExpression(v, ctx, 3) == null)
-        throw new RuntimeException("object cannot be null");
-      try {
-        if (readOnly)
-          return null;
-        data.update(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            getValuesListExpression(v, ctx, 2).asText(),
-            (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 3)));
-        return null;
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      return "<ss(bns)o:l>";
     }
   }
 
   /**
    * data.traverse(database, table, pk1, fk)
    */
-  public class Traverse extends Update {
+  public static class Traverse extends AbstractVarArgFunction<Object> {
 
-    public Traverse(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      return this.expressionService.getData().traverse(sc, (String) arg.get(0), (String) arg.get(1),
+          "" + arg.get(2), (String) arg.get(3));
     }
 
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 4)
-        throw new RuntimeException("Arguments required: $traverse(database, table, pk1, fk)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      if (getValuesListExpression(v, ctx, 3) == null)
-        throw new RuntimeException("fk cannot be null");
-      try {
-        return o2j(data.traverse(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            getValuesListExpression(v, ctx, 2).asText(),
-            getValuesListExpression(v, ctx, 3).asText()));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+    public String getHelp() {
+      return "Arguments required: $traverse(database, table, pk1, fk)";
     }
   }
 
   /**
    * data.delete(database, table, pk1)
    */
-  public class Delete extends Read {
+  public static class Delete extends AbstractVarArgFunction<Object> {
 
-    public Delete(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+    @SuppressWarnings({"rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      this.expressionService.getData().delete(sc, (String) arg.get(0), (String) arg.get(1),
+          "" + arg.get(2));
+      return null;
     }
 
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 3)
-        throw new RuntimeException("Arguments required: $delete(database, table, pk1)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      try {
-        if (readOnly)
-          return null;
-        if (getArgumentCountEx(ctx) == 4)
-          data.delete(sc, getValuesListExpression(v, ctx, 0).asText(),
-              getValuesListExpression(v, ctx, 1).asText(),
-              getValuesListExpression(v, ctx, 2).asText(),
-              getValuesListExpression(v, ctx, 3).asText());
-        else
-          data.delete(sc, getValuesListExpression(v, ctx, 0).asText(),
-              getValuesListExpression(v, ctx, 1).asText(),
-              getValuesListExpression(v, ctx, 2).asText());
-        return null;
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }
-  }
-
-  /**
-   * data.query(sc, database, queryId, arguments)
-   */
-  public class Query extends FunctionBase {
-
-    SecurityContext sc;
-    boolean readOnly;
-
-    public Query(SecurityContext sc, boolean readOnly) {
-      this.readOnly = readOnly;
-      this.sc = sc;
+    public String getHelp() {
+      return "Arguments required: $delete(database, table, pk1)";
     }
 
     @Override
-    public int getMaxArgs() {
-      return 3;
-    }
-
-    @Override
-    public int getMinArgs() {
-      return 2;
+    public String getType() {
+      return "write";
     }
 
     @Override
     public String getSignature() {
-      return "<j:ssj>";
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 2)
-        throw new RuntimeException("Arguments required: $query(database, queryId, arguments?)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Query name cannot be null");
-      try {
-        return o2j(data.queryInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), getArgumentCountEx(ctx) == 2 ? null
-                : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
-            readOnly));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      return "<ss(bns):o?>";
     }
   }
 
   /**
    * data.query(sc, database, queryId, arguments)
    */
-  public class QueryGraph extends Query {
+  public static class Query extends Base<List<Map<String, Object>>> {
 
-    public QueryGraph(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public List<Map<String, Object>> run(List arg) throws Exception {
+      return this.expressionService.getData().queryInternal(sc, (String) arg.get(0),
+          (String) arg.get(1), optional(arg, 2, Map.class), readOnly);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 2)
-        throw new RuntimeException(
-            "Arguments required: $queryGraph(database, queryId, arguments?)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Query name cannot be null");
-      try {
-        return o2j(data.queryGraphInternal(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(), getArgumentCountEx(ctx) == 2 ? null
-                : (Map<String, Object>) j2o(getValuesListExpression(v, ctx, 2)),
-            readOnly));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+    public String getHelp() {
+      return "Arguments required: $query(database, queryId, arguments?)";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<sso?:a>";
+    }
+  }
+
+  /**
+   * data.query(sc, database, queryId, arguments)
+   */
+  public static class QueryGraph extends Base<List<Map<String, Object>>> {
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public List<Map<String, Object>> run(List arg) throws Exception {
+      return this.expressionService.getData().queryGraphInternal(sc, (String) arg.get(0),
+          (String) arg.get(1), optional(arg, 2, Map.class), readOnly);
+    }
+
+    @Override
+    public String getHelp() {
+      return "Arguments required: $queryGraph(database, queryId, arguments?)";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<sso?:a>";
     }
   }
 
   /**
    * org.dashjoin.service.QueryEditor.Delegate.noop(SecurityContext, QueryDatabase)
    */
-  public class AdHocQuery extends Query {
+  public static class AdHocQuery extends Base<List<Map<String, Object>>> {
 
-    public AdHocQuery(SecurityContext sc, boolean readOnly) {
-      super(sc, readOnly);
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public List<Map<String, Object>> run(List arg) throws Exception {
+      QueryDatabase query = new QueryDatabase();
+      query.database = "dj/" + arg.get(0);
+      query.query = (String) arg.get(1);
+      query.limit = optional(arg, 2, Integer.class);
+      AbstractDatabase db = services.getConfig().getDatabase(query.database);
+      ACLContainerRequestFilter.allowQueryEditor(sc, db);
+      return db.getQueryEditor().noop(query).data;
     }
 
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 2)
-        throw new RuntimeException("Arguments required: $adHocQuery(database, query, limit?)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Query cannot be null");
-      try {
-        QueryDatabase query = new QueryDatabase();
-        query.database = "dj/" + getValuesListExpression(v, ctx, 0).asText();
-        query.query = getValuesListExpression(v, ctx, 1).asText();
-        query.limit =
-            getArgumentCountEx(ctx) < 3 ? null : getValuesListExpression(v, ctx, 2).asInt();
-        AbstractDatabase db = services.getConfig().getDatabase(query.database);
-        ACLContainerRequestFilter.allowQueryEditor(sc, db);
-        return o2j(db.getQueryEditor().noop(query).data);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+    public String getHelp() {
+      return "Arguments required: $adHocQuery(database, query, limit?)";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<ssn?:a>";
     }
   }
 
   /**
    * call(sc, function, argument)
    */
-  public class Call extends FunctionBase {
+  public static class Call extends Base<Object> {
 
-    SecurityContext sc;
-    boolean readOnly;
+    FunctionService function;
 
-    public Call(SecurityContext sc, boolean readOnly) {
-      this.sc = sc;
-      this.readOnly = readOnly;
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      return function.call(sc, (String) arg.get(0), optional(arg, 1, Object.class));
     }
 
     @Override
-    public int getMaxArgs() {
-      return 2;
-    }
-
-    @Override
-    public int getMinArgs() {
-      return 1;
+    public String getHelp() {
+      return "Arguments required: $call(function, argument?)";
     }
 
     @Override
     public String getSignature() {
-      return "<j:sj>";
+      return "<sx?:x>";
+    }
+  }
+
+  /**
+   * data.incoming(database, table, pk1) - limit and offset are null
+   */
+  public static class Incoming extends AbstractVarArgFunction<List<Origin>> {
+
+    @SuppressWarnings({"rawtypes"})
+    @Override
+    public List<Origin> run(List arg) throws Exception {
+      return this.expressionService.getData().incoming(sc, (String) arg.get(0), (String) arg.get(1),
+          "" + arg.get(2), null, null);
     }
 
     @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 1)
-        throw new RuntimeException("Arguments required: $call(function, argument?)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Function name cannot be null");
-      try {
-        String f = getValuesListExpression(v, ctx, 0).asText();
-        return o2j(function.callInternal(sc, f,
-            getArgumentCountEx(ctx) == 1 ? null : j2o(getValuesListExpression(v, ctx, 1)),
-            readOnly));
-      } catch (Exception e) {
-        throw new WrappedException(e);
-      }
+    public String getHelp() {
+      return "Arguments required: $incoming(database, table, pk1)";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<ss(bns):a>";
     }
   }
 
@@ -963,50 +913,5 @@ public class ExpressionService {
     // Emulate: jsonata-js mode
     Object[] args = JsonataJS.getArgs();
     return args != null && args.length > index && args[index] != null ? o2j(args[index]) : null;
-  }
-
-  /**
-   * data.incoming(database, table, pk1) - limit and offset are null
-   */
-  public class Incoming extends FunctionBase {
-    SecurityContext sc;
-
-    public Incoming(SecurityContext sc) {
-      this.sc = sc;
-    }
-
-    @Override
-    public int getMaxArgs() {
-      return 3;
-    }
-
-    @Override
-    public int getMinArgs() {
-      return 3;
-    }
-
-    @Override
-    public String getSignature() {
-      return "<j:sss>";
-    }
-
-    @Override
-    public JsonNode invoke(ExpressionsVisitor v, Function_callContext ctx) {
-      if (getArgumentCountEx(ctx) < 3)
-        throw new RuntimeException("Arguments required: $incoming(database, table, pk1)");
-      if (getValuesListExpression(v, ctx, 0) == null)
-        throw new RuntimeException("Database name cannot be null");
-      if (getValuesListExpression(v, ctx, 1) == null)
-        throw new RuntimeException("Table name cannot be null");
-      if (getValuesListExpression(v, ctx, 2) == null)
-        throw new RuntimeException("pk1 cannot be null");
-      try {
-        return o2j(data.incoming(sc, getValuesListExpression(v, ctx, 0).asText(),
-            getValuesListExpression(v, ctx, 1).asText(),
-            getValuesListExpression(v, ctx, 2).asText(), null, null));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }
   }
 }

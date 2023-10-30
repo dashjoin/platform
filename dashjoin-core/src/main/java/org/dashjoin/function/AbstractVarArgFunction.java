@@ -16,5 +16,7 @@ public abstract class AbstractVarArgFunction<RET> extends AbstractFunction<List,
     return List.class;
   }
 
-  public abstract List<Class> getArgumentClassList();
+  public List<Class> getArgumentClassList() {
+    return null;
+  }
 }

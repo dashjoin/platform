@@ -29,7 +29,7 @@
 		<dependency>
 			<groupId>com.dashjoin</groupId>
 			<artifactId>jsonata</artifactId>
-			<version>0.9.1</version>
+			<version>0.9.3</version>
 		</dependency>
 
 		<!-- dev dependencies -->

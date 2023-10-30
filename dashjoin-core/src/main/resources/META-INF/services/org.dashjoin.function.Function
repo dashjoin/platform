@@ -1,3 +1,14 @@
+org.dashjoin.expression.ExpressionService$All
+org.dashjoin.expression.ExpressionService$Create
+org.dashjoin.expression.ExpressionService$Read
+org.dashjoin.expression.ExpressionService$Update
+org.dashjoin.expression.ExpressionService$Delete
+org.dashjoin.expression.ExpressionService$AdHocQuery
+org.dashjoin.expression.ExpressionService$Query
+org.dashjoin.expression.ExpressionService$QueryGraph
+org.dashjoin.expression.ExpressionService$Traverse
+org.dashjoin.expression.ExpressionService$Incoming
+org.dashjoin.expression.ExpressionService$Call
 org.dashjoin.function.Email
 org.dashjoin.function.RestJson
 org.dashjoin.function.ConsoleLog

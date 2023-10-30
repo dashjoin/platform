@@ -5,45 +5,12 @@ import java.util.List;
 /**
  * basic platform function interface
  */
-public interface Function<ARG, RET> extends java.util.function.Function<ARG, RET> {
+public interface Function<ARG, RET> {
 
   /**
    * performs the action: RET = run(ARG). The action can have real world side effects.
    */
   public RET run(ARG arg) throws Exception;
-
-  /**
-   * runtime exception used to wrap exceptions. used in order to make the dashjoin function
-   * interface compatible with jdk functions
-   */
-  public class FunctionException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
-
-    public FunctionException() {
-      super();
-    }
-
-    public FunctionException(String message) {
-      super(message);
-    }
-
-    public FunctionException(String message, Throwable cause) {
-      super(message, cause);
-    }
-
-    public FunctionException(Throwable cause) {
-      super(cause);
-    }
-  }
-
-  @Override
-  default RET apply(ARG arg) {
-    try {
-      return run(arg);
-    } catch (Exception e) {
-      throw new FunctionException(e);
-    }
-  }
 
   /**
    * returns the argument class
@@ -52,18 +19,48 @@ public interface Function<ARG, RET> extends java.util.function.Function<ARG, RET
 
   /**
    * get function name / ID
+   * 
+   * defaults to ClassName => className
    */
-  public String getID();
+  default public String getID() {
+    String str = getClass().getSimpleName();
+    return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+  }
 
   /**
-   * either read or write
+   * indicates whether the function has side effects
+   * 
+   * read: no side effects, function is executed in preview mode also (unless handled by implementation, e.g. query)
+   * 
+   * write: side effects, function is not executed in preview mode, null returned instead
+   * 
+   * defaults to "read"
    */
-  public String getType();
+  default public String getType() {
+    return "read";
+  }
 
   /**
    * get roles that can run this (null means admin only)
    */
   default public List<String> getRoles() {
+    return null;
+  }
+
+  /**
+   * function signature (see https://docs.jsonata.org/embedding-extending#function-signature-syntax)
+   * if provided, the framework performs signature checks
+   * 
+   * default null means: no signature check performed, the function implementation must perform it
+   */
+  default public String getSignature() {
+    return null;
+  }
+
+  /**
+   * if a signature is provided and the signature is violated, the help text is displayed
+   */
+  default public String getHelp() {
     return null;
   }
 }

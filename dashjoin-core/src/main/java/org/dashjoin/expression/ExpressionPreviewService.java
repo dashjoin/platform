@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import org.dashjoin.expression.ExpressionService.ExpressionAndData;
+import org.dashjoin.mapping.ETL;
+import org.dashjoin.service.Services;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -12,12 +17,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
-import org.dashjoin.expression.ExpressionService.ExpressionAndData;
-import org.dashjoin.mapping.ETL;
-import org.dashjoin.service.Services;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * REST API for expression evaluation in read only mode
@@ -49,7 +48,7 @@ public class ExpressionPreviewService {
     if (e.foreach) {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
-        JsonNode node = expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
+        Object node = expression.jsonata(sc, e.expression, (e.data), true);
         ETL.context.get().producerDone();
         if (ETL.context.get().queue.size() > 10) {
           List<Object> res = new ArrayList<>();
@@ -59,7 +58,7 @@ public class ExpressionPreviewService {
           return res;
         } else if (ETL.context.get().queue.isEmpty()) {
           // no queue, use result directly
-          Object o = ExpressionService.j2o(node);
+          Object o = (node);
           @SuppressWarnings("unchecked")
           List<Object> list =
               o == null ? Arrays.asList() : o instanceof List ? (List<Object>) o : Arrays.asList(o);
@@ -73,6 +72,6 @@ public class ExpressionPreviewService {
         ETL.context.set(null);
       }
     } else
-      return expression.jsonata(sc, e.expression, ExpressionService.o2j(e.data), true);
+      return expression.jsonata(sc, e.expression, (e.data), true);
   }
 }
