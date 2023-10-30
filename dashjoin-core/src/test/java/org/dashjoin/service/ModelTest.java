@@ -209,6 +209,7 @@ public class ModelTest {
             jsonata.registerFunction("alterTableTrigger", x);
             jsonata.registerFunction("query", x);
             jsonata.registerFunction("call", x);
+            jsonata.registerFunction("djSubscription", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
