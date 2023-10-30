@@ -34,13 +34,6 @@ public class ExpressionPreviewService {
   ExpressionService expression;
 
   @POST
-  @Path("/parse")
-  @Operation(summary = "Parses an expression")
-  public void parseExpression(@Context SecurityContext sc, String exp) throws Exception {
-    expression.prepare(sc, exp);
-  }
-
-  @POST
   @Path("/")
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
@@ -48,7 +41,7 @@ public class ExpressionPreviewService {
     if (e.foreach) {
       try {
         ETL.context.set(new org.dashjoin.mapping.ETL.Context());
-        Object node = expression.jsonata(sc, e.expression, (e.data), true);
+        Object node = expression.resolve(sc, e.expression, (e.data), true);
         ETL.context.get().producerDone();
         if (ETL.context.get().queue.size() > 10) {
           List<Object> res = new ArrayList<>();
@@ -72,6 +65,6 @@ public class ExpressionPreviewService {
         ETL.context.set(null);
       }
     } else
-      return expression.jsonata(sc, e.expression, (e.data), true);
+      return expression.resolve(sc, e.expression, (e.data), true);
   }
 }

@@ -170,6 +170,12 @@
 		    <version>1.8</version>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-text</artifactId>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
@@ -202,19 +208,6 @@
 			<version>4.1.4</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.ibm.jsonata4java</groupId>
-			<artifactId>JSONata4Java</artifactId>
-			<version>2.4.2</version>
-			<exclusions>
-				<!-- wooodstox is included with com.fasterxml.jackson.dataformat:jackson-dataformat-xml -->
-		    	<exclusion>
-		    		<groupId>com.fasterxml.woodstox</groupId>
-		    		<artifactId>woodstox-core</artifactId>
-		    	</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
 		<dependency>
 		    <groupId>org.eclipse.microprofile.jwt</groupId>

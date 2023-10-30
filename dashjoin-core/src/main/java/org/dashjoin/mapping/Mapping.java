@@ -5,13 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
-import org.dashjoin.expression.ExpressionService.ParsedExpression;
+import org.dashjoin.expression.ExpressionService.ParsedJsonata;
 import org.dashjoin.function.Index;
 import org.dashjoin.util.MapUtil;
-import com.api.jsonata4java.expressions.EvaluateException;
 import io.quarkus.logging.Log;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * represents a table mapping which is part of the JSON structure for provider functions
@@ -88,17 +87,16 @@ public class Mapping {
    * apply the row mapping expression to a source row. return null if the result is not included
    */
   @SuppressWarnings("unchecked")
-  public static Map<String, Object> apply(ExpressionService expressionService,
-      ParsedExpression filter, ParsedExpression rowMapping, Map<String, Object> row)
-      throws Exception {
+  public static Map<String, Object> apply(ExpressionService expressionService, ParsedJsonata filter,
+      ParsedJsonata rowMapping, Map<String, Object> row) throws Exception {
     if (filter != null) {
-      Object include = expressionService.resolve(filter, row);
+      Object include = filter.evaluate(row);
       if (include instanceof Boolean)
         if (!((Boolean) include))
           return null;
     }
     if (rowMapping != null) {
-      return (Map<String, Object>) expressionService.resolve(rowMapping, row);
+      return (Map<String, Object>) rowMapping.evaluate(row);
     } else
       return row;
   }
@@ -141,16 +139,16 @@ public class Mapping {
             }
           }
           if (tmp.isEmpty())
-            throw new EvaluateException("Column " + mapping.getValue().extractColumn
+            throw new Exception("Column " + mapping.getValue().extractColumn
                 + " does not contain arrays to extract");
           source = tmp;
         }
 
         List<Map<String, Object>> mapped = new ArrayList<>();
-        ParsedExpression filter = mapping.getValue().rowFilter == null ? null
-            : expressionService.prepare(sc, mapping.getValue().rowFilter);
-        ParsedExpression rowMapping = mapping.getValue().rowMapping() == null ? null
-            : expressionService.prepare(sc, mapping.getValue().rowMapping());
+        ParsedJsonata filter = mapping.getValue().rowFilter == null ? null
+            : expressionService.jsonata(sc, mapping.getValue().rowFilter);
+        ParsedJsonata rowMapping = mapping.getValue().rowMapping() == null ? null
+            : expressionService.jsonata(sc, mapping.getValue().rowMapping());
 
         long t0 = System.currentTimeMillis();
         Log.debug("Mapping started #records=" + source.size());

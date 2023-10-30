@@ -31,7 +31,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     org.junit.jupiter.api.Assertions.assertEquals("{ID=1, NAME=mike, WORKSON=1000}",
-        "" + s.jsonata(sc, "$read(\"junit\", \"EMP\", 1)", null, false));
+        "" + s.resolve(sc, "$read(\"junit\", \"EMP\", 1)", null, false));
   }
 
   @SuppressWarnings("unchecked")
@@ -41,25 +41,25 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
     Resource res =
-        (Resource) s.jsonata(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false);
+        (Resource) s.resolve(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false);
     Assertions.assertEquals("junit", res.database);
     Assertions.assertEquals("EMP", res.table);
     Assertions.assertEquals(8, res.pk.get(0));
 
     Assertions.assertEquals(8,
-        ((Map<String, Object>) s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false))
+        ((Map<String, Object>) s.resolve(sc, "$read(\"junit\", \"EMP\", 8)", null, false))
             .get("ID"));
 
-    s.jsonata(sc, "$update(\"junit\", \"EMP\", 8, {\"NAME\": \"jsonata\"})", null, false);
+    s.resolve(sc, "$update(\"junit\", \"EMP\", 8, {\"NAME\": \"jsonata\"})", null, false);
 
     Assertions.assertEquals("jsonata",
-        ((Map<String, Object>) s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false))
+        ((Map<String, Object>) s.resolve(sc, "$read(\"junit\", \"EMP\", 8)", null, false))
             .get("NAME"));
 
-    s.jsonata(sc, "$delete(\"junit\", \"EMP\", 8)", null, false);
+    s.resolve(sc, "$delete(\"junit\", \"EMP\", 8)", null, false);
 
     try {
-      s.jsonata(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
+      s.resolve(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
       Assertions.fail();
     } catch (RuntimeException wrapped404) {
       System.out.println(wrapped404.toString());
@@ -75,7 +75,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Origin> res =
-        (List<Origin>) s.jsonata(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false);
+        (List<Origin>) s.resolve(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false);
     Assertions.assertEquals("junit", res.get(1).id.database);
     Assertions.assertEquals("EMP", res.get(1).id.table);
     Assertions.assertEquals(2, res.get(1).id.pk.get(0));
@@ -88,7 +88,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[{EMP.ID=1, EMP.NAME=mike}, {EMP.ID=2, EMP.NAME=joe}]",
-        "" + s.jsonata(sc, "$query(\"junit\", \"list\")", null, false));
+        "" + s.resolve(sc, "$query(\"junit\", \"list\")", null, false));
   }
 
   @Test
@@ -96,7 +96,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[{EMP.ID=1, EMP.NAME=mike}, {EMP.ID=2, EMP.NAME=joe}]",
-        "" + s.jsonata(sc, "$adHocQuery(\"junit\", \"select ID,NAME from EMP\")", null, false));
+        "" + s.resolve(sc, "$adHocQuery(\"junit\", \"select ID,NAME from EMP\")", null, false));
   }
 
   @Test
@@ -104,12 +104,12 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}, {ID=2, NAME=joe, WORKSON=1000}]",
-        "" + s.jsonata(sc, "$all(\"junit\", \"EMP\")", null, false));
+        "" + s.resolve(sc, "$all(\"junit\", \"EMP\")", null, false));
     Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}]",
-        "" + s.jsonata(sc, "$all(\"junit\", \"EMP\", 0 ,1)", null, false));
+        "" + s.resolve(sc, "$all(\"junit\", \"EMP\", 0 ,1)", null, false));
     Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}]",
-        "" + s.jsonata(sc, "$all(\"junit\", \"EMP\", 1 , 2, \"ID\", true)", null, false));
-    Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}]", "" + s.jsonata(sc,
+        "" + s.resolve(sc, "$all(\"junit\", \"EMP\", 1 , 2, \"ID\", true)", null, false));
+    Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}]", "" + s.resolve(sc,
         "$all(\"junit\", \"EMP\", null , null, null, null, {\"ID\":1})", null, false));
   }
 
@@ -118,7 +118,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Assertions.assertEquals("result", s.jsonata(sc, "$echo(\"result\")", null, false));
+    Assertions.assertEquals("result", s.resolve(sc, "$echo(\"result\")", null, false));
   }
 
   @Test
@@ -127,7 +127,7 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
     // see echo.json
-    Assertions.assertEquals(123, s.jsonata(sc, "$call(\"echo\")", null, false));
+    Assertions.assertEquals(123, s.resolve(sc, "$call(\"echo\")", null, false));
   }
 
   @Test
@@ -136,10 +136,10 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
     Assertions.assertEquals("{ID=1000, NAME=dev-project, BUDGET=null}",
-        s.jsonata(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
+        s.resolve(sc, "$traverse(\"junit\", \"EMP\", 1, \"WORKSON\")", null, false).toString());
 
     Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}, {ID=2, NAME=joe, WORKSON=1000}]",
-        s.jsonata(sc, "$traverse(\"junit\", \"PRJ\", 1000, \"dj/junit/EMP/WORKSON\")", null, false)
+        s.resolve(sc, "$traverse(\"junit\", \"PRJ\", 1000, \"dj/junit/EMP/WORKSON\")", null, false)
             .toString());
   }
 
@@ -148,28 +148,28 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[mike, joe]",
-        "" + s.jsonata(sc, "$query(\"junit\", \"list\").$echo($.\"EMP.NAME\")", null, false));
+        "" + s.resolve(sc, "$query(\"junit\", \"list\").$echo($.\"EMP.NAME\")", null, false));
   }
 
   @Test
   public void vararg() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    Assertions.assertEquals(0, (s.jsonata(sc, "$add()", null, false)));
-    Assertions.assertEquals(1, (s.jsonata(sc, "$add(1)", null, false)));
-    Assertions.assertEquals(2, (s.jsonata(sc, "$add(undefined, 2)", null, false)));
-    Assertions.assertEquals(2, (s.jsonata(sc, "$add(null, 2)", null, false)));
-    Assertions.assertEquals(3, (s.jsonata(sc, "$add(1,2)", null, false)));
-    Assertions.assertEquals(3, (s.jsonata(sc, "$add(1,2,3)", null, false)));
+    Assertions.assertEquals(0, (s.resolve(sc, "$add()", null, false)));
+    Assertions.assertEquals(1, (s.resolve(sc, "$add(1)", null, false)));
+    Assertions.assertEquals(2, (s.resolve(sc, "$add(undefined, 2)", null, false)));
+    Assertions.assertEquals(2, (s.resolve(sc, "$add(null, 2)", null, false)));
+    Assertions.assertEquals(3, (s.resolve(sc, "$add(1,2)", null, false)));
+    Assertions.assertEquals(3, (s.resolve(sc, "$add(1,2,3)", null, false)));
   }
 
   @Test
   public void testPojoArg() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    s.jsonata(sc, "$coord({\"x\":1})", null, false);
-    s.jsonata(sc, "$coord()", null, false);
-    s.jsonata(sc, "$coord(null)", null, false);
+    s.resolve(sc, "$coord({\"x\":1})", null, false);
+    s.resolve(sc, "$coord()", null, false);
+    s.resolve(sc, "$coord(null)", null, false);
   }
 
   public static class Coord {
