@@ -435,6 +435,45 @@ Creates new database records:
 * database: optional database to create the record in (defaults to the database of the table you are currently displaying)
 * table: optional table to create the record in (defaults to the table you are currently displaying)
 
+### diagram
+
+Allows displaying and editing data as a graph of nodes and edges.
+
+Nodes are represented by the following JSON structure:
+
+```
+{
+  id: node id
+  database: database name
+  table: table name
+  position?: {
+    x: coordindate
+    y: coordindate
+  },
+  data?: {
+    label: display label
+  }
+}
+```
+
+Edges are represented by the following JSON structure:
+
+```
+{
+  source: id of the edge source node
+  target: id of the edge target node
+}
+```
+
+* style: CSS widget styles (e.g. width and height of the widget)
+* nodes: JSONata that generates a list of nodes
+* edges: JSONata that generates a list of edges
+* moveNode: optional JSONata to persist new coordinates (e.g. $update("northwind", "EMPLOYEES", node.id, {"Y": node.position.y}))
+* addNode: optional JSONata to persist new node that was added via SHIFT click (e.g. ($x := {"id": node.name, "x": node.position.x, "y": node.position.y}; $create("db", "table", $x); $x) )
+* removeNode: optional JSONata to remove node in the DB (passed via node.id)
+* addEdge: optional JSONata to create a relationship (passed via edge.source, edge.target)
+* removeEdge: optional JSONata to remove a relationship (passed via edge.source, edge.target)
+
 #### [display](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
 
 Displays the result of an expression:
