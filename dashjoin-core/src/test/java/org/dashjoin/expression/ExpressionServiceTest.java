@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.SecurityContext;
@@ -40,8 +42,8 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
 
-    Resource res =
-        (Resource) s.resolve(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false);
+    Resource res = new ObjectMapper().convertValue(
+        s.resolve(sc, "$create(\"junit\", \"EMP\", {\"ID\": 8})", null, false), Resource.class);
     Assertions.assertEquals("junit", res.database);
     Assertions.assertEquals("EMP", res.table);
     Assertions.assertEquals(8, res.pk.get(0));
@@ -69,13 +71,13 @@ public class ExpressionServiceTest {
     }
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void incoming() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
-    List<Origin> res =
-        (List<Origin>) s.resolve(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false);
+    List<Origin> res = new ObjectMapper().convertValue(
+        s.resolve(sc, "$incoming(\"junit\", \"PRJ\", 1000)", null, false),
+        new TypeReference<List<Origin>>() {});
     Assertions.assertEquals("junit", res.get(1).id.database);
     Assertions.assertEquals("EMP", res.get(1).id.table);
     Assertions.assertEquals(2, res.get(1).id.pk.get(0));
@@ -170,6 +172,8 @@ public class ExpressionServiceTest {
     s.resolve(sc, "$coord({\"x\":1})", null, false);
     s.resolve(sc, "$coord()", null, false);
     s.resolve(sc, "$coord(null)", null, false);
+    Assertions.assertEquals(1, s.resolve(sc, "$coord({\"x\":1}).x", null, false));
+    Assertions.assertEquals(1, s.resolve(sc, "$coords([{\"x\":1}, {\"x\":1}])[0].x", null, false));
   }
 
   public static class Coord {
@@ -197,6 +201,25 @@ public class ExpressionServiceTest {
     @Override
     public String getType() {
       return "read";
+    }
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static class EchoCoords extends AbstractFunction<List, List> {
+
+    @Override
+    public List run(List arg) throws Exception {
+      return arg;
+    }
+
+    @Override
+    public String getID() {
+      return "coords";
+    }
+
+    @Override
+    public Class<List> getArgumentClass() {
+      return List.class;
     }
   }
 }

@@ -1,2 +1,3 @@
 org.dashjoin.expression.ExpressionServiceTest$EchoCoord
+org.dashjoin.expression.ExpressionServiceTest$EchoCoords
 org.dashjoin.function.Add
