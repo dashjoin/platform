@@ -1,0 +1,7 @@
+{
+	"ID": "sidenav-open",
+	"description": "Side navigation is open initially (changes applied after next login)",
+	"category": "ui",
+	"type": "boolean",
+	"boolean": true
+}

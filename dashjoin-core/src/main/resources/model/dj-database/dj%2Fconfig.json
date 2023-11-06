@@ -499,6 +499,15 @@
           "items": {
             "type": "string"
           }
+        },
+        "properties": {
+          "ID": "dj/config/tenantusers/properties",
+          "name": "properties",
+          "parent": "dj/config/tenantusers",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -953,14 +962,6 @@
           "name": "description",
           "parent": "dj/config/dj-role",
           "type": "string"
-        },
-        "homepage": {
-          "ID": "dj/config/dj-role/homepage",
-          "name": "homepage",
-          "parent": "dj/config/dj-role",
-          "type": "string",
-          "title": "Default page for users in this role",
-          "examples": ["/page/Home"]
         },
         "properties": {
           "ID": "dj/config/dj-role/properties",

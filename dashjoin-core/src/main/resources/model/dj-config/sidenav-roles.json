@@ -1,6 +1,0 @@
-{
-	"ID": "sidenav-roles",
-	"description": "Roles which show the side navigation (changes applied after next login)",
-	"category": "ui",
-	"type": "list"
-}

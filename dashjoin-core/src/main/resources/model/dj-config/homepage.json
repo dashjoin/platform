@@ -1,0 +1,7 @@
+{
+	"ID": "homepage",
+	"description": "Application home page",
+	"category": "ui",
+	"type": "string",
+	"string": "/page/Home"
+}

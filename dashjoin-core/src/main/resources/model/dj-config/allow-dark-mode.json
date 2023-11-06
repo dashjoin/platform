@@ -1,0 +1,7 @@
+{
+	"ID": "allow-dark-mode",
+	"description": "Show the dark mode icon in the toolbar",
+	"category": "ui",
+	"type": "boolean",
+	"boolean": true
+}
