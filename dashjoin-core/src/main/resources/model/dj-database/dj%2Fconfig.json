@@ -531,6 +531,18 @@
           "type": "string",
           "readOnly": true
         },
+        "description": {
+          "ID": "dj/config/dj-config/description",
+          "name": "description",
+          "parent": "dj/config/dj-config",
+          "type": "string"
+		},
+        "category": {
+          "ID": "dj/config/dj-config/category",
+          "name": "category",
+          "parent": "dj/config/dj-config",
+          "type": "string"
+		},
         "boolean": {
           "ID": "dj/config/dj-config/boolean",
           "name": "boolean",

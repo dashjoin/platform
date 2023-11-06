@@ -1,6 +1,7 @@
 {
 	"ID": "search-timeout-ms",
 	"description": "Query timeout in milliseconds for queries issued when searching data. To disable the timeout, set to 0.",
+	"category": "query",
 	"type": "integer",
 	"integer": 5000
 }

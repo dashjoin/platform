@@ -1,5 +1,6 @@
 {
 	"ID": "openapi-authorization",
 	"description": "Authorization when reading / writing the App OpenAPI specification",
+	"category": "app",
 	"type": "password"
 }

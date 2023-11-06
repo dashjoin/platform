@@ -1,5 +1,6 @@
 {
 	"ID": "openapi",
 	"description": "Location of the App OpenAPI specification",
+	"category": "app",
 	"type": "map"
 }
