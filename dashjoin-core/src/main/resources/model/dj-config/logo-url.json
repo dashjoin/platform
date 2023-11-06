@@ -1,0 +1,6 @@
+{
+	"ID": "logo-url",
+	"description": "Logo to display in the toolbar",
+	"category": "ui",
+	"type": "string"
+}
