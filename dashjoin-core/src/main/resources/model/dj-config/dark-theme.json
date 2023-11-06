@@ -1,0 +1,6 @@
+{
+	"ID": "dark-theme",
+	"description": "Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)",
+	"category": "ui",
+	"type": "map"
+}
