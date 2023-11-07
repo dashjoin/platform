@@ -35,19 +35,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FilenameUtils;
@@ -90,6 +77,19 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.ibm.db2.jcc.DB2Driver;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * REST API for management tasks
@@ -405,7 +405,8 @@ public class Manage {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));
         IOUtils.copy(inputPart.getBody(InputStream.class, null), new FileOutputStream(tmp));
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:" + tmp.getAbsolutePath())) {
-          try (ResultSet rs = con.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
+          try (ResultSet rs =
+              con.getMetaData().getTables(null, null, null, new String[] {"TABLE"})) {
             while (rs.next()) {
               String tablename = rs.getString("TABLE_NAME");
               Table m = db.tables.get(tablename);
@@ -543,7 +544,8 @@ public class Manage {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));
         IOUtils.copy(inputPart.getBody(InputStream.class, null), new FileOutputStream(tmp));
         try (Connection con = DriverManager.getConnection("jdbc:sqlite:" + tmp.getAbsolutePath())) {
-          try (ResultSet rs = con.getMetaData().getTables(null, null, null, new String[]{"TABLE"})) {
+          try (ResultSet rs =
+              con.getMetaData().getTables(null, null, null, new String[] {"TABLE"})) {
             while (rs.next()) {
               String tablename = rs.getString("TABLE_NAME");
               Table m = db.tables.get(tablename);
@@ -856,6 +858,11 @@ public class Manage {
   public List<Version> getDatabases() {
     List<Version> res = new ArrayList<>();
     for (Object inst : SafeServiceLoader.load(Database.class)) {
+
+      // disable for 5.0
+      if (inst.getClass().getName().equals("com.dashjoin.service.google.firestore.Firestore"))
+        continue;
+
       if (!(inst instanceof PojoDatabase)) {
         Version v = metaInf(inst.getClass(), null, new Version());
         v.name = inst.getClass().getName();
