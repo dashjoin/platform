@@ -74,10 +74,12 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
       producerDone = true;
     }
 
-    public boolean hasNext() {
-      if (producerDone)
-        if (queue.isEmpty())
+    public boolean hasNext() throws InterruptedException {
+      while (queue.isEmpty()) {
+        if (producerDone)
           return false;
+        Thread.sleep(100);
+      }
       return true;
     }
   }
