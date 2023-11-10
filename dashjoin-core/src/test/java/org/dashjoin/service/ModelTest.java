@@ -158,7 +158,8 @@ public class ModelTest {
           "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
           "layout", "style", "class", /* schema info in config.json */ "name", "parent",
           /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
-          "expression", "html", "script", "hideframe", "clearCache", "card").contains(e.getKey()));
+          "expression", "html", "script", "hideframe", "clearCache", "card", "size")
+          .contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
