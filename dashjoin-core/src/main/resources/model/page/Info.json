@@ -1,82 +1,153 @@
 {
-    "ID": "Info",
-    "layout": {
-        "widget": "page",
-        "children": [
-            {
-                "widget": "card",
-                "layout": "vertical",
-                "children": [
-                    {
-                        "widget": "display",
-                        "display": "{\"user\": user}",
-                        "icons": {
-                            "user": "account_circle"
-                        }
-                    },
-                    {
-                        "widget": "display",
-                        "display": "{\"email\": email}",
-                        "icons": {
-                            "email": "email"
-                        }
-                    },
-                    {
-                        "widget": "display",
-                        "display": "{\"roles\": $djRoles()}",
-                        "icons": {
-                            "roles": "person_search"
-                        }
-                    },
-                    {
-                        "widget": "text",
-                        "text": "System Roles",
-                        "href": "/table/config/dj-role",
-                        "icon": "people_outline"
-                    },
-                    {
-                        "widget": "text",
-                        "text": "Tenant Users",
-                        "href": "/table/config/tenantusers",
-                        "icon": "people"
-                    }
-                ],
-                "title": "User Information"
-            },
-            {
-                "widget": "display",
-                "card": true,
-                "display": "( $f:=function($x){ $merge( [$x, {\"Third party licenses\": {\"href\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}}]) }; $f($djVersion()) )",
-                "title": "Software",
-                "icons": {
-                    "version": "content_copy",
-                    "vendor": "store",
-                    "name": "check_circle_outline",
-                    "buildTime": "access_time",
-                    "runtime": "build",
-                    "Third party licenses": "copyright",
-                    "title": "title",
-                    "appurl": "download",
-                    "home": "home_filled",
-                    "workingDir": "folder"
-                }
-            },
-            {
-                "widget": "table",
-                "expression": "$djGetDatabases()",
-                "title": "Database Drivers"
-            },
-            {
-                "widget": "table",
-                "expression": "$djGetDrivers()",
-                "title": "JDBC Drivers"
-            },
-            {
-                "widget": "table",
-                "expression": "$djGetFunctions()",
-                "title": "Functions"
-            }
-        ],
-        "pageLayout": "2 column"
-    }
+	"ID": "Info",
+	"layout": {
+		"widget": "page",
+		"children": [
+			{
+				"widget": "card",
+				"layout": "vertical",
+				"size": 3,
+				"children": [
+					{
+						"widget": "display",
+						"display": "{\"user\": user}",
+						"icons": {
+							"user": "account_circle"
+						}
+					},
+					{
+						"widget": "display",
+						"display": "{\"email\": email}",
+						"icons": {
+							"email": "email"
+						}
+					},
+					{
+						"widget": "display",
+						"display": "{\"roles\": $djRoles()}",
+						"icons": {
+							"roles": "person_search"
+						}
+					},
+					{
+						"widget": "text",
+						"text": "System Roles",
+						"href": "/table/config/dj-role",
+						"icon": "people_outline"
+					},
+					{
+						"widget": "text",
+						"text": "Tenant Users",
+						"href": "/table/config/tenantusers",
+						"icon": "people"
+					}
+				],
+				"title": "User Information"
+			},
+			{
+				"widget": "card",
+				"layout": "vertical",
+				"title": "App",
+				"size": 3,
+				"children": [
+					{
+						"markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='/djcode/index.html'>Expert Mode</a>",
+						"widget": "markdown"
+					},
+					{
+						"widget": "text",
+						"href": "/page/OpenAPI",
+						"icon": "webhook",
+						"text": "App API"
+					},
+					{
+						"widget": "text",
+						"text": "Notebook",
+						"href": "/page/Notebook",
+						"icon": "edit_note"
+					},
+					{
+						"widget": "text",
+						"text": "GIT",
+						"href": "/page/App",
+						"icon": "computer"
+					}
+				]
+			},
+			{
+				"widget": "card",
+				"layout": "vertical",
+				"title": "Configuration",
+				"size": 3,
+				"children": [
+					{
+						"widget": "text",
+						"href": "/table/config/dj-config",
+						"icon": "build",
+						"text": "System Configuration"
+					},
+					{
+						"widget": "text",
+						"href": "/resource/config/dj-database/dj%2Fconfig",
+						"icon": "build_circle",
+						"text": "Configuration Database"
+					}
+				]
+			},
+			{
+				"widget": "card",
+				"layout": "vertical",
+				"title": "Databases",
+				"size": 3,
+				"children": [
+					{
+						"widget": "text",
+						"href": "/table/config/dj-query-performance",
+						"icon": "speed",
+						"text": "Query Performance"
+					},
+					{
+						"widget": "text",
+						"href": "/page/ERDiagram",
+						"icon": "schema",
+						"text": "ER Diagram"
+					}
+				]
+			},
+			{
+				"widget": "display",
+				"card": true,
+				"display": "( $f:=function($x){ $merge( [$x, {\"Third party licenses\": {\"href\": \"https://download.dashjoin.com/dashjoin/release/\" & $substringBefore($x.version, '-') & \"/license-report.html\"}}]) }; $f($djVersion()) )",
+				"title": "Software",
+				"icons": {
+					"version": "content_copy",
+					"vendor": "store",
+					"name": "check_circle_outline",
+					"buildTime": "access_time",
+					"runtime": "build",
+					"Third party licenses": "copyright",
+					"title": "title",
+					"appurl": "download",
+					"home": "home_filled",
+					"workingDir": "folder"
+				}
+			},
+			{
+				"widget": "table",
+				"expression": "$djGetDatabases()",
+				"title": "Database Drivers"
+			},
+			{
+				"widget": "table",
+				"expression": "$djGetDrivers()",
+				"title": "JDBC Drivers"
+			},
+			{
+				"widget": "table",
+				"expression": "$djGetFunctions()",
+				"title": "Functions"
+			}
+		],
+		"pageLayout": "2 column"
+	}
 }

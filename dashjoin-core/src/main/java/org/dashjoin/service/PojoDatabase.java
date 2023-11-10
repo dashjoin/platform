@@ -838,7 +838,6 @@ public class PojoDatabase extends UnionDatabase implements Config {
         "children", asList()));
     configs.add(of("name", "Functions", "href", asList("/table", "config", "dj-function"),
         "children", asList()));
-    configs.add(of("name", "App", "href", asList("/page", "App"), "children", asList()));
     configs.add(of("name", "Info", "href", asList("/page", "Info"), "children", asList()));
     projected.add(of("ID", of("display", "Configuration", "children", configs)));
 

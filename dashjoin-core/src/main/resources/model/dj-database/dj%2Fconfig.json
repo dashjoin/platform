@@ -279,43 +279,6 @@
             "widget": "create",
             "text": "Connect",
             "title": "Connect a New Database"
-          },
-          {
-            "widget": "card",
-            "layout": "vertical",
-            "title": "System Configuration",
-            "children": [
-              {
-                "widget": "text",
-                "href": "/table/config/dj-config",
-                "icon": "build",
-                "text": "System Configuration"
-              },
-              {
-                "widget": "text",
-                "href": "/resource/config/dj-database/dj%2Fconfig",
-                "icon": "build_circle",
-                "text": "Configuration Database"
-              },
-              {
-                "widget": "text",
-                "href": "/table/config/dj-query-performance",
-                "icon": "speed",
-                "text": "Query Performance"
-              },
-              {
-                "widget": "text",
-                "href": "/page/OpenAPI",
-                "icon": "webhook",
-                "text": "App API"
-              },
-              {
-                "widget": "text",
-                "href": "/page/ERDiagram",
-                "icon": "schema",
-                "text": "ER Diagram"
-              }
-            ]
           }
         ]
       },
@@ -899,12 +862,6 @@
           {
             "widget": "create",
             "title": "New Function"
-          },
-          {
-            "widget": "text",
-            "text": "Dashjoin Notebook",
-            "href": "/page/Notebook",
-            "icon": "edit_note"
           }
         ]
       },
