@@ -167,16 +167,9 @@ widget: inout
 name: name
 ```
 
+Change the input to a textarea. If you'd like the tetarea to be wider, you can
+add width 400px in the CSS properties.
 
-This adds a form and a button to the page. There are three context menus, the top one for the widget, the middle one for the form, and the lower one for the name form element. Edit the last one and select these values:
-
-```text
-widget: textarea
-title: Your message
-CSS styles: width / 400px, height / 200px
-```
-
-These settings change the default text field to a larger multi line text area.
 Finally, let's edit the button widget again to define what happens when the button is pressed. Enter the following expression in the field "run this when clicked and display the result":
 
 ```text

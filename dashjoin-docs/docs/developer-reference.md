@@ -41,12 +41,12 @@ In Dashjoin, it is possible to register multiple databases. This section lists t
 
 The database dashboard shows the databases known to the system and allows registering new databases. The table displays some core information about each database, the connection status as well as the number of tables detected.
 To register a new database, first select the database type. Depending on your choice, the respective connection options appear. Once you connect, Dashjoin will collect the database metadata and immediately make the new database ready for searches, queries, and browsing. The table also provides a link to the individual database. Use this page to change connection parameters. You can also simply press update to recollect the metadata. This is useful if the underlying schema was changed by another application. Deleting the database disconnects from the database and deletes the connection information. No data is deleted in the database.
-The page also contains a link to the system's configuration database. Every role defined in the system must have read-only
-access to the configuration database. You can use this page to grant that access. In the PaaS version, you can also use the upload functionality
-to bulk-register tenant users.
+
+On the page of a database instance, you can edit the connection parameters.
+Submitting the form will re-connect the database and pick up any schema changes
+that were performed by other applications.
 
 You can also specify the roles that are allowed to read and write to the database. Note that by default, the admin role has access to all tables.
-Finally, you can specify search queries for a database. Please see the performance tuning section below.
 
 If you would like to exclude certain tables from being accessible via the platform, you can add their names in the excludeTables field in the database's JSON file in the model folder as follows:
 
@@ -56,7 +56,7 @@ If you would like to exclude certain tables from being accessible via the platfo
 
 ### Data Definition Operations
 
-The database page also offer a database management section. You can create a new table there. The new table will contain two columns:
+The database page offers a database management section. You can create a new table there. The new table will contain two columns:
 
 * ID: a numeric primary key
 * name: a generic string describing the record
@@ -243,99 +243,50 @@ While Dashjoin has a rich default page layout that is suitable for many use case
 
 The pages dashboard provides you with an overview of the available pages in the system. The first table shows the dashboards available in the system. This is a mix of system pages, which are explained in more detail in the next section, and pages created by the user via the "create a new page" form.
 
-The page contains a link to widgets, which are introduced further down. Finally, the layouts table provides an overview of all tables and whether the default layout is used or whether the user has customized the layout using the layout editor.
+The page contains a link to widgets. This allows you to customize the sidebar and the toolbar. 
+You can edit the those by visiting the page /config/widget/dj-toolbar or /config/widget/dj-sidenav.
+A typical use case would be to edit the roles that are required for an icon to appear.
+You can also add an icon pointing to your custom dashboard page.
+Since the dj-toolbar is shipped with the system, you can revert back to the original version by clicking delete on this page.
+
+Finally, the layouts table provides an overview of all tables and whether the default layout is used or whether the user has customized the layout using the layout editor.
 
 ### System Pages and Layouts
 
-The system comes with two system pages (Home and Info) and some layouts for databases, tables, queries, etc. These layouts contain much of the functionality described in this reference guide.
+The system comes with a set of system pages (e.g. Home and Info) and some layouts for databases, tables, queries, etc. These layouts contain much of the functionality described in this reference guide.
 
 System pages can be changed using the editor introduced below, however, a delete operation does not delete them altogether, but rather resets them to the "factory" state. This ensures that you cannot accidentally damage a system permanently using the editor.
 
 ### Layout Editor
 
-To activate the layout and form editor, press the pen symbol in the toolbar. You will remain on the page, but several controls will pop up on the screen.
+To activate the layout and form editor, press the pen symbol in the toolbar. You will remain on the page, but several controls will pop up on the screen. The pen symbol is replaced with three icons:
 
-All widgets show a context menu with the following options:
+* Delete: deletes the page or resets the default table or record layout
+* Save: saves the changes
+* Abort: leaves the editor without saving
 
-* The top line and tooltip tell you which part of the user interface you are editing. The options are:
-  * Page "pagename": You are editing a dashboard page such as /page/Home
-  * "tablename" table: You are editing a table layout such as /table/config/dj-database
-  * "tablename" record: You are editing a table's record layout such as /resource/config/dj-database/dj%2Fnorthwind
-  * default record / table: this is the default layout (note that the default table cannot be modified and any attempted change will display an error message)
-* Edit: opens a dialog to edit the widget
-  * You can change the widget type using the dropdown element on the top of the form
-  * Depending on your choice, different fields show up allowing you to configure the widget
-  * Please refer to the widget reference section below for a complete documentation of the various options
-* Add: adds a new widget to the container or next to the widget
-* Delete: removes the widget (not available on the page root)
-* Cut: like delete but remembers the widget for paste operations
-* Copy: Remembers the widget for paste operations
-* Paste: Like add but uses the cut or copied widget
-* Top: moves the widget to the top or left of the container depending on the layout
-* Up: moves the widget one position up or left depending on the layout
-* Down: moves the widget one position down or right depending on the layout
-* Bottom: moves the widget to the bottom or right of the container depending on the layout
-* The last entry is one of the following:
-  * Delete page: deletes a dashboard page
-  * Customize: if you are on a default table or record, creates a customized version of the page for this table
-  * Delete custom layout: if you are on a custom table or record layout, goes back to the default layout for this table
+In the lower right screen corner you have the following controls:
 
-The top of the page shows a number of layout options that can be chose for the page. The options are explained in the widget reference section below. Note that the layout is responsive and will switch to a one column layout for mobile devices.
+* Undo / redo: undo an unwanted change
+* Zoom: if you are editing a large page, you can zoom out to get a better overview or to drag elements from one end to the other
+* Edit: when clicking on a widget, opens the widget editor on the bottom
+* Move: displays arrows in each widget that move the mights in that direction. Alternatively, you can drag and frop widgets using the drag handle in the widget's upper right corner
+* Resize: allows resizing widgets on a 12 column grid
 
-Any changes to the layout or kept in the browser memory only. You can reload the page if you would like to abandon any changes and leave the edit mode. Your changes are saved once you click the save symbol in the toolbar.
+The plus icon is shown at the bottom of the page as well as for each container that was added to the page.
+This allows you to create nested layouts.
+Pressing the plus icon opens a drawer on the left where you can select the widget to add.
 
-### Form Editor
+Once you add a widget or select it for editing, the widget editor opens at the bottom of the page.
+You can enter texts, expressions, styles, icons etc.
 
-The button, create, and edit widgets display a nested form. Unless specified otherwise, the form elements are initialized from the table metadata. Each element display another context menu with the following options:
-
-* Edit: opens a dialog to edit the form element giving you the following choices
-  * Form widget: allows you to pick the input control such as a date picker or a password field
-  * Title: the title of the form element (defaults to the column name)
-  * Description / tooltip: an optional longer description
-  * Example data: shows valid example input once the user clicks in the element
-  * Read only: disables fields that should be shown not not changed
-  * Format: contains pre-defined input formats for email addresses, websites, etc.
-  * Validation error message: the error message to show if the user enters illegal values
-  * Input choices: allows you to specify predefined input options
-  * CSS classes and CSS styles: allows you to change the default styling of the component. You can attach CSS classes used in the [material design](https://material.angular.io/guide/elevation#predefined-css-classes) (e.g. mat-elevation-z8) or use CSS style attributes directly (e.g. width: 400px or color: green).
-* Show: allows to re-add form elements that were previously hidden
-* Show inline: like show, but forms a subgroup of elements (for instance address form fields can be grouped together)
-* Hide: hides a form element
-* Up / Left: moves the form element up or left depending on the layout
-* Down / Right: moves the form element down or right depending on the layout
-
-### Custom Widgets
-
-The system ships with a number of built-in widget such as charts or buttons. When building an application, you might find it useful to create reusable layouts. These are called custom widgets. To create a widget, navigate to the pages dashboard and follow the link to widgets.
-
-Let's do a walkthrough of a small example. Create a widget called "tooltip-icon", navigate to the widget's page, and enter the edit mode.
-On the "Widget preview" element, open the second context menu with the tooltip Widget "tooltip-icon" in order to define the widget.
-In the editor, select the widget "icon", remove the element text and enter "reusable" in the tooltip, and save the layout.
-You now created a custom widget called tooltip-icon that carries a reusable configuration.
-
-Next, you need to do a browser reload, since the editor caches custom widgets and needs to pick up the new widget.
-Navigate to the home page and add two widgets.
-Edit both widgets, select "tooltip-icon" as the widget type, and use icon home and search respectively.
-Note that the different icons show up, but both show the tooltip "reusable".
-The layout editor also shows two context menus. The left menu with tooltip "Page Home" edits how the the tooltip-icon widget is embedded.
-The right menu with tooltip "Widget tooltip-icon" edits the widget itself. If you open the editor there and select a different tooltip, the next value is applied to both home and search.
-
-Obviously this example is very simplistic, however it demonstrates how you can create reusable sub layouts.
-Note that the custom widget can also be a container with nested widgets. You can test this by changing the tooltip-icon widget to "expansion" for instance.
-
-### dj-toolbar
-
-The system ship with two predefined widgets. The widget dj-toolbar is included by default by the page widget.
-You can edit the toolbar by visiting the page /resource/config/widget/dj-toolbar.
-Once you enter the edit mode, you can make changes to the toolbar.
-A typical use case would be to edit the roles that are required for an icon to appear.
-You can also add an icon pointing to your custom dashboard page.
-Since the dj-toolbar is shipped with the system, you can revert back to the original version by clicking delete on this page.
-Do not forget to reload the browser since the widgets are cached.
+For more information on the layout editor, you can refer to the [React Page](https://react-page.github.io/) documentation.
 
 ## Widget Reference
 
 The following sections describe the platform widgets and which configuration options are available for them.
+You can create custom widgets and use them just like platform widgets.
+Please refer to the section Development / Production.
 Note that all widgets have the title option:
 
 * title: when the widget is a direct child of the page container, the widget is placed in a card with this title
