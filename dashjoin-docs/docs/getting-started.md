@@ -66,7 +66,7 @@ Note that the tooltip shows the underlying five letter primary key. This feature
 
 ## Restricting Access
 
-Dashjoin makes it very easy to secure data based on user roles. To view the roles know to the system, go to the info page linked in the toolbar.
+Dashjoin makes it very easy to secure data based on user roles. To view the roles known to the system, go to the info page linked in the toolbar.
 The top left widget display the following information:
 
 * The name of the current user (should be user name 'admin')
@@ -77,20 +77,24 @@ Follow the link to the roles page. On there, you can define new roles and define
 In the system there are several places where you will be able to select the roles defined here.
 The role IDs you choose depend on the identity management system that is configured.
 In the Dashjoin PaaS, this is OpenID. If you are using the open source default installation,
-the roles are defined in the djroles.properties file:
+local users and their role associations are defined in the files djusers.properties and djroles.properties:
+
+You already have an admin user. To add a user "authenticated" with password djdjdj that is in the role with the same nave,
+edit the files as shown below:
 
 ```bash
-admin: dj,admin
-user: dj,authenticated
+# djusers.properties
+admin=1395a3149fee498061e6c06581a3decf
+authenticated=4a699242c282b1180a24df1ff411001f
 ```
 
-This file defines the users admin and user with roles admin and authenticated and both having the password dj.
-Therefore, the default system roles are admin and authenticated.
-If your identity management system defines other roles, you can define them on the roles management page in order
-to make them usable in the system.
-We will leave this unchanged for now.
+```bash
+# djroles.properties
+admin=admin
+authenticated=authenticated
+```
 
-In the next step, use a different browser or an incognito window and login user user with password dj.
+In the next step, use a different browser or an incognito window and login user user with password djdjdj.
 Except for the toolbar, the system looks pretty much the same. Navigate to the info page. You will need
 to type /page/Info into the browser, since the toolbar icon is not displayed.
 Verify that the page shows user in role authenticated.
@@ -100,7 +104,7 @@ has read access to the config database, but cannot create, delete or update any 
 
 By default, new databases are only accessible for the admin. We can demonstrate this by searching for the term "cracker". In the admin browser, you get a total of seven results from both the northwind and sqlite databases.
 
-If you preform the same search in the user browser, you only get the five northwind results.
+If you perform the same search in the user browser, you only get the five northwind results.
 
 The northwind database grants read only access to the authenticated role. You can check this on the page /config/dj-database/dj%2Fnorthwind.
 
@@ -114,7 +118,8 @@ This section explains how we can customize the layouts and how we can display di
 
 For our application, we'd like the users to have a page where they can see their past requests and where they can issue a new request. A request should only consist of the text. The fields ID, submitted and user should be determined by the system.
 
-We start with the admin browser and navigate to the "dashboard pages" via the toolbar. Using the "Create a new page" control, create a new page called "Start". We will use this as the homepage for authenticated users. This can be setup on the authenticated role page (config/dj-role/authenticated). Enter "/page/Start" to specify the start page as the homepage for users in this role.
+We start with the admin browser and navigate to the "dashboard pages" via the toolbar. Using the "Create a new page" control, create a new page called "Start". We will use this as the homepage for authenticated users. This can be setup on the authenticated role page (config/dj-role/authenticated). Enter a new property 
+with the key "homepage" and the value "/page/Start" to specify the start page as the homepage for users in this role.
 We need to logout and back in using the user browser to pick up this setting. Clicking the home icon will now get you to the start page which at this point only shows a single tile with the text "New page".
 
 In order to create this page, we need to use the admin browser. Before we add widgets to this page, we need to create a query that filters the user's requests and that projects the request columns in a suitable way.
@@ -132,7 +137,8 @@ WHERE
 
 Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with `${user}`. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
 
-Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. Press the context menu under the text "New page" and select edit. This widget currently is a text widget displaying a static text. Instead we'd like a table showing our query result. Select the following:
+Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. The page contains one widget which currently is a text widget displaying a static text. You can delete this widget and instead add a table widget showing our query result. 
+After adding the table widget from the left drawer, enter the following widget proerties in the editor:
 
 ```text
 widget: table
@@ -142,18 +148,25 @@ title: My Requests
 arguments: {"user": $.user}
 ```
 
-Press ok and the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
+Press the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
 
 We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
 
-Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and select add from the table widget's context menu. A new widget appears which we edit. Select the following values:
+Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and add button widget with the following parameters:
 
 ```text
 widget: button
 text: Submit
 title: New Requests
-argument: name / string
 ```
+
+In the button widget, add an inout widget:
+
+```text
+widget: inout
+name: name
+```
+
 
 This adds a form and a button to the page. There are three context menus, the top one for the widget, the middle one for the form, and the lower one for the name form element. Edit the last one and select these values:
 
