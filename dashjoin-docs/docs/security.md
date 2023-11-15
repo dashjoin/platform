@@ -26,6 +26,10 @@ The roles dashboard allows the administrator to define system roles along with t
 If you change your container configuration to use windows authentication, your role names will be "Users", "Power Users", "Guests", etc.
 If you are using the Dashjoin Cloud, you can choose arbitrary role names and assign users to these roles using the tenant user dashboard.
 
+### Tenant User Dashboard
+
+Users can authenticate via OpenID. The tenant user dashboard allows you to control who has access to your Dashjoin tenant. Once a user requests access, his or her record shows up on this page. Once you set the active flag, they are allowed to login. Using this page, you can also assign which roles a user should be in. Specifically, it is possible to promote users to be co-administrators.
+
 ### Assigning Roles
 
 Roles can be assigned to the following elements:

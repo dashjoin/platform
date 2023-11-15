@@ -1,6 +1,8 @@
 # Installation
 
-The easiest and recommended way to run Dashjoin as a production service is to use the [container image.](#docker)
+## Platform as a Service
+
+Dashjoin offers a fully managed Platform as a Service available at <https://my.dashjoin.com/>.
 
 ## Download and local developer setup
 
@@ -129,6 +131,7 @@ To access the application, navigate to <http://localhost:8080>
 
 ## Docker
 
+This is the easiest and recommended way to run Dashjoin as a production service.
 The official container image ```dashjoin/platform``` is hosted on [dockerhub](https://hub.docker.com/r/dashjoin/platform)
 
 ```bash
