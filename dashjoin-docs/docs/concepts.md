@@ -147,6 +147,7 @@ If expressions are run on a record page, the context is structured as follows:
   value: the current record
   variable: the session variables (see below)
   form: data entered via a form (see below)
+  selected: selected table rows if used in an action table (see below) 
 }
 ```
 
@@ -166,6 +167,7 @@ On table pages, the context looks like this:
   value: schema information of the current table in JSON Schema format
   variable: the session variables (see below)
   form: data entered via a form (see below)
+  selected: selected table rows if used in an action table (see below) 
 }
 ```
 
@@ -182,6 +184,7 @@ Dashboard pages provide the following context:
   href: the current URL
   variable: the session variables (see below)
   form: data entered via a form (see below)
+  selected: selected table rows if used in an action table (see below) 
 }
 ```
 
@@ -212,6 +215,22 @@ If a number form element with name "y" has the value 2 and the form is submitted
   "form": {
     "y": 2
   }
+}
+```
+
+### Action Table Context
+
+The action table allows selecting rows from a table. If a table action us run, these rows
+are added to the context as follows:
+
+```json
+{
+  ...
+  "selected": [
+    selected row 1,
+    ...
+    selected row n
+  ]
 }
 ```
 
