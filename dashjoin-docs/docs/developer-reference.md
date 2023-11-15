@@ -574,10 +574,29 @@ is no expression that fetches data. Instead, the data is passed via the API call
 
 ## Dashjoin Expression Reference
 
-TODO: client side expressions
-
-In addition to the default JSONata builtin functions ([see Function Library](https://docs.jsonata.org/overview.html)), the following Dashjoin functions are added
+In addition to the default JSONata built-in functions ([see Function Library](https://docs.jsonata.org/overview.html)), the following Dashjoin functions are added
 (some internal functions are omitted - you can refer to the platform's info page for a full list):
+
+These functions can be classified as frontend and backend functions. Frontend functions run in the browser
+and can be used to trigger a screen popup or to set a browser session variable.
+Backend functions typically access backend data.
+You can mix both kinds in a single JSONata expression tree. 
+
+### Frontend Expressions
+
+Function | Syntax |  Returns
+---|---|---
+confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmation was given, false otherwise
+setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
+prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
+alert | $alert(message) | Shows a modal alert message
+notify | $notify(message) | Shows the message at the bottom of the screen
+refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
+reload | $reload() | reloads the browser page
+log | $log(value) | logs value to the developer console
+navigate | $navigate(url) | points the browser to the URL
+
+### Backend Expressions
 
 Function | Syntax |  Returns
 ---|---|---
