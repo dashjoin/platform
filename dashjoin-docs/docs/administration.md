@@ -247,3 +247,25 @@ Please see the descriptions on the system configuration page (/table/config/dj-c
 The system configuration page (/table/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:
 
 * Sidebar: settings allow defining the width of the side bar and the roles for which it is visible
+
+TODO: add a section about UI parameters
+
+* homepage	/page/Home	ui	Application home page
+* on-login		ui	Expression to be evaluated upon login
+* sidenav-open	true	ui	Side navigation is open initially (changes applied after next login)
+* dark-theme		ui	Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* sidenav-width-px	200	ui	Width of the side navigation bar (changes applied after next login)
+* theme		ui	Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* allow-dark-mode	true	ui	Show the dark mode icon in the toolbar
+* logo-url
+
+### Adding static assets to the app
+
+Static assets like images, logos, movies, and other files required by your application can be placed in the ```/assets```folder.
+
+The assets are accessible in the running application as ```http(s)://<app url>/assets```
+
+By definition, access to static assets does not require login, so they are always readable / publically accessible.
+Do not place any confidential data in the assets folder.
+
+When working with version control tools (i.e. git), assets can be maintained along with all other app resources under revision control.
