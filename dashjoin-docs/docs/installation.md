@@ -4,7 +4,7 @@
 
 Dashjoin offers a fully managed Platform as a Service available at <https://my.dashjoin.com/>.
 
-## Download and local developer setup
+## Download and local setup
 
 Installers and binaries for Windows, MacOS, and Linux are available at <https://download.dashjoin.com/>
 

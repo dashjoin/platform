@@ -5,25 +5,74 @@ like defining new queries or registering new user roles using the editors on the
 system. Instead, you can setup multiple development systems where these changes are
 developed and tested.
 
-You can put the model folder under version control by following these steps:
+## Development Container
 
-* create a repository, for instance on GitHub
-* install Dashjoin locally
-* clone the repository into your Dashjoin user home directory:
+The most convenient way to setup a development system is by using docker development container.
+This container includes all the required tools and setup.
+To start the container, run:
 
-```bash
-USER_HOME> git clone https://github.com/ORG/PROJECT.git .dashjoin
+```
+docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj dashjoin/development
 ```
 
-* start Dashjoin and start developing
-* pull changes from others
-* review and commit changes:
+If you would like to work on an existing app that is located on a Git repository, also specify the DASHJOIN_HOME and
+DASHJOIN_APPURL parameters (see section automatic Git checkout below)
 
-```bash
-USER_HOME/.dashjoin> git status
+```
+docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj -e DASHJOIN_HOME=dashjoin-demo -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/development
 ```
 
-Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) to find out about the recommended app folder structure.
+The development container works like the platform container, but offers two additional services.
+On port 8081, it allows connecting a browser based integrated development environment (expert mode) to the container.
+On port 3000 an additional web service provides access to the user interface that includes
+custom widgets you add to the app.
+
+## Expert Mode
+
+To open the expert mode, open the general information page and follow the expert mode link under "App".
+To log in, please use the password you specified for the admin user (djdjdj in our examples).
+This opens VS Code in your browser. For more information about VS Code, please refer to
+[this documentation](https://code.visualstudio.com/docs).
+
+The project that is open in VS Code represents the app you are writing.
+Adding a query in the query catalog, for example, will create a JSON file in
+model/dj-query-catalog. If you change the file in VS Code, the change will be
+visible immediately in the query catalog as well.
+
+### App Folder Structure
+
+The contains the following folders:
+
+* assets: any media that should be available via http(s)://<app url>/assets
+* model
+  * dj-config: Contains any system configuration
+  * dj-database: All connected databases and any table and record page layouts. If a database JSON file is open in the editor, you can test connecting to it via the "Connect to this database" button at the top of the file
+  * dj-function: All functions defined on the functions page. Also offers the ability to "Run this function". Note that passing parameters to the function is not supported. You can use the JSONata notebook for this.
+  * dj-query-catalog: All queries in the catalog. Offers the "Run this query" and "Run this query metadata" commands. Note that passing query parameters is not supported. You can use the JSONata notebook for this.
+  * dj-role: All roles defined in the system
+  * page: All app dashboard pages. Offers the "Open this page in the browser" button.
+  * tenantusers: All tenant users
+  * widget: Custom toolbar and sidebar are located here
+* upload: this folder can contain files that can be accessed from JSONata functions like openJson("file:upload/...")
+
+### Source Control
+
+If you would like to commit and publish your changes to the production system, you can
+switch to the source control tab on the left. The usual workflow is to:
+
+* review your changes in the diff editor
+* stage your change by adding the file via the + icon
+* entering a message describing your change and committing the change
+* publishing your change to the remote Git repository
+
+For more details, please refer to [this guide](https://code.visualstudio.com/docs/sourcecontrol/overview).
+
+## Developing a Custom Widget
+
+One of the most powerful features of the expert mode is the ability to write your own widgets.
+Let's assume we have a database containing ...
+
+### TODO
 
 ## Multi Line JSON
 
@@ -75,7 +124,7 @@ You can upload an entire model folder to the config DB. On the database page, se
 Open the "Database Management" tab and select "Upload". Select the model folder there and either append or replace
 the contents of the config database.
 
-## Automatic GIT Checkout
+## Automatic Git Checkout
 
 You can specify the DASHJOIN_APPURL environment variable and have it point to your app repository.
 Upon startup, the system will perform a git clone if the model folder is empty or a git pull if the model has content already.
@@ -94,7 +143,7 @@ If you are using containers, you can mount the model folder under /deployments/m
 
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.
 Therefore, it is quite common to use different sets of resources for development and production.
-As described in the section on automatic GIT checkout above, the production credentials are usually
+As described in the section on automatic Git checkout above, the production credentials are usually
 checked into the code repository. During development, you can use [environment](../installation/#environment)
 variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
 
