@@ -123,3 +123,99 @@ You can think of the expressions being the glue between widgets on the top and q
   <tr><td>CRUD</td><td>Function</td><td>Query</td></tr>
 </tbody>
 </table>
+
+## Expression Context
+
+Every time an expression is evaluated (e.g. by pressing a button or in order to render a display widget),
+a context is passed to this expression for processing. This section describes what this context looks like
+under different circumstances.
+
+### Record Page Context
+
+If expressions are run on a record page, the context is structured as follows:
+
+```text
+{
+  database: the database the record is in
+  table: the table the record is in
+  pk1, ..., pk4: the (composite) key(s) of the record
+  loc: location information about the current page
+  user: the ID of the user that's currently logged in
+  roles: the roles the user is in
+  email: the user's email address (not set for local users)
+  href: the current URL
+  value: the current record
+  variable: the session variables (see below)
+  form: data entered via a form (see below)
+}
+```
+
+### Table Page Context
+
+On table pages, the context looks like this:
+
+```text
+{
+  database: the database the record is in
+  table: the table the record is in
+  loc: location information about the current page
+  user: the ID of the user that's currently logged in
+  roles: the roles the user is in
+  email: the user's email address (not set for local users)
+  href: the current URL
+  value: schema information of the current table in JSON Schema format
+  variable: the session variables (see below)
+  form: data entered via a form (see below)
+}
+```
+
+### Dashboard Page Context
+
+Dashboard pages provide the following context:
+
+```text
+{
+  loc: location information about the current page
+  user: the ID of the user that's currently logged in
+  roles: the roles the user is in
+  email: the user's email address (not set for local users)
+  href: the current URL
+  variable: the session variables (see below)
+  form: data entered via a form (see below)
+}
+```
+
+### Session Variable Context
+
+The user interface can store variables per browser tab. Note that these variables are lost once
+the tab is closed or the user logs out of Dashjoin. A variable can be set from any expression
+using the "setVariable" JSONata function. Therefore, calling setVariable("x", 1) will cause
+the expression context to be:
+
+```json
+{
+  ...
+  "variable": {
+    "x": 1
+  }
+}
+```
+
+### Form Context
+
+Several widgets allow adding form elements (see section "Form Widgets" in the next chapter).
+If a number form element with name "y" has the value 2 and the form is submitted, the context is:
+
+```json
+{
+  ...
+  "form": {
+    "y": 2
+  }
+}
+```
+
+### Database Trigger Context
+
+Database triggers are a special case for how JSONata expressions are used and have a different
+context. Please refer to section JSONata in Triggers for more details.
