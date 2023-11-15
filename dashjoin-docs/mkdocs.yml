@@ -24,6 +24,7 @@ nav:
   - Overview: 'index.md'
   - 'getting-started.md'
   - 'concepts.md'
+  - 'user-interface.md'
   - 'developer-reference.md'
   - 'ai-ml-integration.md'
   - 'platform-as-a-service.md'
