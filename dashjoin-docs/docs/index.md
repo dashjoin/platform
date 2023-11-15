@@ -28,4 +28,5 @@ Features
 5. Processes: Seamlessly start and integrate REST services from the application and monitor progress.
 6. Cloud Deployment: Deploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks.
 7. Everything JSON: Dashjoin leverages popular JSON standards like JSON Schema and JSONata and for all aspects of the system
-8. Open Source: Join the Dashjoin community and avoid vendor lock-in.
+8. Artificial Intelligence: Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App
+9. Open Source: Join the Dashjoin community and avoid vendor lock-in.
