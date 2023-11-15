@@ -148,6 +148,7 @@ If expressions are run on a record page, the context is structured as follows:
   variable: the session variables (see below)
   form: data entered via a form (see below)
   selected: selected table rows if used in an action table (see below) 
+  context: result of the expression in the map / markdown widgets (see below)
 }
 ```
 
@@ -167,7 +168,8 @@ On table pages, the context looks like this:
   value: schema information of the current table in JSON Schema format
   variable: the session variables (see below)
   form: data entered via a form (see below)
-  selected: selected table rows if used in an action table (see below) 
+  selected: selected table rows if used in an action table (see below)
+  context: result of the expression in the map / markdown widgets (see below)
 }
 ```
 
@@ -185,6 +187,7 @@ Dashboard pages provide the following context:
   variable: the session variables (see below)
   form: data entered via a form (see below)
   selected: selected table rows if used in an action table (see below) 
+  context: result of the expression in the map / markdown widgets (see below)
 }
 ```
 
@@ -231,6 +234,19 @@ are added to the context as follows:
     ...
     selected row n
   ]
+}
+```
+
+### HTML and Markdown Context
+
+The markdown and HTML widgets allow using string template syntax like `${a.b}` to include
+values from the context. These widgets allow adding the result of a custom expression to the context
+which is then passed as:
+
+```json
+{
+  ...
+  "context": result of the expression in the map / markdown widgets
 }
 ```
 
