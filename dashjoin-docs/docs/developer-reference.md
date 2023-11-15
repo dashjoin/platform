@@ -593,53 +593,6 @@ The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
 
 The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
 
-### Expression Editor
-
-Expressions are used in various places throughout the platform. The next sections describe the different usage scenarios in more detail. Whenever an expression is to be edited on a form, Dashjoin allows you to do this via the expression editor component which is explained in this section.
-
-The expression editor is a simple text field that shows context sensitive help and a result preview once you start typing.
-
-As an example, you can navigate to the info page, enter the page edit mode and edit the user display widget. The widget displays the result of the following expression which projects the user field from the page context (the composition of the context is explained in the next section):
-
-```text
-{"user": user}
-```
-
-If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:
-
-```text
-$read()
-```
-
-The system will tell you about missing parameters: Arguments required: `$read(database, table, pk1)`. Now change the expression to:
-
-```text
-$read("northwind", "EMPLOYEES", 2)
-```
-
-Assuming you have the demo application installed, this will show the first 10 lines of JSON that contain the respective record in the employees table of the northwind database. Finally, setting the expression to
-
-```text
-$
-```
-
-displays the entire page context.
-
-Apart from the inline editor, you also have the ability to compose and debug JSONata expressions by opening the
-drag and drop editor with the edit icon:
-
-![Drag and Drop JSONata Editor](assets/jsonata.png)
-
-* Drag and drop fuctions and operators onto the canvas from the left palette
-* Edit the parameters and re-arrange the steps using drag and drop
-* You can run the expression step by step; the data context is shown on the left
-
-The screenshot shows the following expression just before the final filter is applied.
-
-```
-$openJson("https://filesamples.com/samples/code/json/sample4.json").people.$[age > 30]
-```
-
 ### JSONata in Widgets
 
 When expressions are used in widgets, the context is the following JSON object:
@@ -695,7 +648,7 @@ The expression is defined with the table.
 
 The result is ignored, unless the trigger function extends the AbstractDatabaseTrigger Java interface. In this case, we expect a Boolean value that aborts the write operation in case the value false is returned.
 
-### Dashjoin Expression Reference
+## Dashjoin Expression Reference
 
 In addition to the default JSONata builtin functions ([see Function Library](https://docs.jsonata.org/overview.html)), the following Dashjoin functions are added
 (some internal functions are omitted - you can refer to the platform's info page for a full list):

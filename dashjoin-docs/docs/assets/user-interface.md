@@ -282,3 +282,35 @@ You can enter texts, expressions, styles, icons etc.
 
 For more information on the layout editor, you can refer to the [React Page](https://react-page.github.io/) documentation.
 
+## Expression Editor
+
+Expressions are used in various places throughout the platform. The next sections describe the different usage scenarios in more detail. Whenever an expression is to be edited on a form, Dashjoin allows you to do this via the expression editor component which is explained in this section.
+
+The expression editor is a simple text field that shows context sensitive help and a result preview once you start typing.
+
+As an example, you can navigate to the info page, enter the page edit mode and edit the user display widget. The widget displays the result of the following expression which projects the user field from the page context (the composition of the context is explained in the next section):
+
+```text
+{"user": user}
+```
+
+If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:
+
+```text
+$read()
+```
+
+The system will tell you about missing parameters: Arguments required: `$read(database, table, pk1)`. Now change the expression to:
+
+```text
+$read("northwind", "EMPLOYEES", 2)
+```
+
+Assuming you have the demo application installed, this will show the first 10 lines of JSON that contain the respective record in the employees table of the northwind database. Finally, setting the expression to
+
+```text
+$
+```
+
+displays the entire page context.
+
