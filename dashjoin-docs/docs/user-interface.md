@@ -235,11 +235,9 @@ database. The Dashjoin drivers make sure that the query result has the same stru
 
 Note that the graphical query editor does not yet support composing graph queries.
 
-## User Interface Layout
+## Pages Dashboard
 
 While Dashjoin has a rich default page layout that is suitable for many use cases, every aspects of the display can be configured using the functionality described in this section.
-
-### Pages Dashboard
 
 The pages dashboard provides you with an overview of the available pages in the system. The first table shows the dashboards available in the system. This is a mix of system pages, which are explained in more detail in the next section, and pages created by the user via the "create a new page" form.
 
@@ -282,7 +280,7 @@ You can enter texts, expressions, styles, icons etc.
 
 For more information on the layout editor, you can refer to the [React Page](https://react-page.github.io/) documentation.
 
-## Expression Editor
+### Expression Editor
 
 Expressions are used in various places throughout the platform. The next sections describe the different usage scenarios in more detail. Whenever an expression is to be edited on a form, Dashjoin allows you to do this via the expression editor component which is explained in this section.
 
@@ -314,3 +312,45 @@ $
 
 displays the entire page context.
 
+## Functions Page
+
+Like the query catalog, the functions page shows an overview of functions registered in the system. 
+Functions define extract load transform operations that load data into one of the databases,
+email endpoints, or access the RESTful web services.
+
+Please refer to the developer reference chapter for a detailed listing of all supported functions.
+
+## General Information Page
+
+This page contains some basic information about the platform version and installation parameters.
+At the top of the page, you find some important links that are grouped into the following four categories:
+
+### User Information
+
+This section shows the user name, email, and roles. In addition, you can find links to the roles and tenant users
+tables. These are used for configuring roles and access control. For details, please consult the section
+security and access control.
+
+### App
+
+The app section contains links to the following pages:
+
+* Expert mode: this link opens the expert mode in a new window. This mode allows writing your own widgets using third party JavaScript libraries
+* App API: This page allows you to use Dashjoin to implement an existing OpenAPI spec, publish schemas and paths to your OpenAPI spec, and generate an OpenAPI spec for your Dashjoin app
+* Notebook: this is an area that works much like a jupyter notebook. You can conveniently experiment with JSONata there
+* GIT: this page provides a lightweight way to manage version control of your app. For more information please refer to the section development / production
+
+### Configuration
+
+This section provides links to the system configuration. You can define certain user interface customizations there,
+configure database search parameters, and define some other system settings.
+
+The configuration database is a built-in database that defines queries, function, registered databases, etc. 
+Every role defined in the system must have read-only
+access to the configuration database. On this page, you can define which roles have access to which system tables and you can
+upload system tables (e.g. for importing users).
+
+### Databases
+
+The databases section shows a link to the query performance table. This table helps you to identify
+performance problems in your app. The ER diagram is a convenient way of visualizing your database schemata.
