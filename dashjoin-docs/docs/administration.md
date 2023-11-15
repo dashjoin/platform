@@ -246,18 +246,22 @@ Please see the descriptions on the system configuration page (/table/config/dj-c
 
 The system configuration page (/table/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:
 
-* Sidebar: settings allow defining the width of the side bar and the roles for which it is visible
+* homepage:	Application home page that is displayed when home is pressed and after login
+* on-login:	Expression to be evaluated upon login - it typically sets session variables via setVariable
+* sidenav-open:	Side navigation is open initially (changes applied after next login)
+* dark-theme	: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* sidenav-width-px:	Width of the side navigation bar (changes applied after next login)
+* theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* allow-dark-mode: Show the dark mode icon in the toolbar
+* logo-url: URL of the logo to display in the toolbar
 
-TODO: add a section about UI parameters
+Note that these customizations can be overwritten or applied to roles also.
+If you'd like to change the homepage for role authenticated only, navigate to /config/dj-role/authenticated
+and in the properties field, enter "homepage" and your desired page, e.g. /page/AuthenticatedHome.
 
-* homepage	/page/Home	ui	Application home page
-* on-login		ui	Expression to be evaluated upon login
-* sidenav-open	true	ui	Side navigation is open initially (changes applied after next login)
-* dark-theme		ui	Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
-* sidenav-width-px	200	ui	Width of the side navigation bar (changes applied after next login)
-* theme		ui	Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
-* allow-dark-mode	true	ui	Show the dark mode icon in the toolbar
-* logo-url
+The customizations can also be applied to an individual OpenID user only via the tenant users table.
+If you'd like to change the homepage for user joe@example.org, naviage to
+/config/tenantusers/joe%40example.org and again use the properties field.
 
 ### Adding static assets to the app
 

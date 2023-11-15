@@ -123,7 +123,7 @@ A trigger is an expression that is evaluated in the respective case. This follow
 
 Please see the section on expressions for more details.
 
-#### Table and Column Comment and Title
+### Table and Column Comment and Title
 
 Dashjoin extracts the technical metadata from the databases. The editor allows you to add a comment for tables and columns in order to document the data model.
 The table title is used when displaying a link to the table. Likewise, column titles are used in CRUD forms and the show all records table columns.
