@@ -31,7 +31,7 @@ nav:
   - 'installation.md'
   - 'administration.md'
   - 'development-production.md'
-  - 'security.md'
+  - Security and Access Control: 'security.md'
   - 'support-matrix.md'
   - 'api.md'
   - 'faq.md'
