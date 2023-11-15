@@ -68,7 +68,7 @@
 					},
 					{
 						"widget": "text",
-						"text": "GIT",
+						"text": "Git",
 						"href": "/page/App",
 						"icon": "computer"
 					}
