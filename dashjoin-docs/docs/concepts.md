@@ -124,13 +124,38 @@ You can think of the expressions being the glue between widgets on the top and q
 </tbody>
 </table>
 
-## Expression Context
+## Expressions
+
+Expressions are small programs that can be used to:
+
+* configure widgets on a page (the most common case)
+* save an expression with an Invoke function
+* attach triggers to database tables
+
+This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.
+
+### JSONata
+
+Expressions use the well established JSON query and transformation language [JSONata](https://jsonata.org/).
+The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
+
+* the context data (this usually is the record you are browsing on the user interface)
+* the expression
+* the expression result
+
+The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
+
+### JSONata in Widgets
+
+Expressions are provided as widget parameters via the layout editor.
+The result is used depending on the widget and the expression field. The if parameter, for instance, expects a Boolean value in order to determine whether to show the widget or not. The display widget simply displays the expression result.
+Consult the widget reference for information about your use case.
 
 Every time an expression is evaluated (e.g. by pressing a button or in order to render a display widget),
 a context is passed to this expression for processing. This section describes what this context looks like
 under different circumstances.
 
-### Record Page Context
+#### Record Page Context
 
 If expressions are run on a record page, the context is structured as follows:
 
@@ -152,7 +177,7 @@ If expressions are run on a record page, the context is structured as follows:
 }
 ```
 
-### Table Page Context
+#### Table Page Context
 
 On table pages, the context looks like this:
 
@@ -173,7 +198,7 @@ On table pages, the context looks like this:
 }
 ```
 
-### Dashboard Page Context
+#### Dashboard Page Context
 
 Dashboard pages provide the following context:
 
@@ -191,7 +216,7 @@ Dashboard pages provide the following context:
 }
 ```
 
-### Session Variable Context
+#### Session Variable Context
 
 The user interface can store variables per browser tab. Note that these variables are lost once
 the tab is closed or the user logs out of Dashjoin. A variable can be set from any expression
@@ -207,7 +232,7 @@ the expression context to be:
 }
 ```
 
-### Form Context
+#### Form Context
 
 Several widgets allow adding form elements (see section "Form Widgets" in the next chapter).
 If a number form element with name "y" has the value 2 and the form is submitted, the context is:
@@ -221,7 +246,7 @@ If a number form element with name "y" has the value 2 and the form is submitted
 }
 ```
 
-### Action Table Context
+#### Action Table Context
 
 The action table allows selecting rows from a table. If a table action us run, these rows
 are added to the context as follows:
@@ -237,7 +262,7 @@ are added to the context as follows:
 }
 ```
 
-### HTML and Markdown Context
+#### HTML and Markdown Context
 
 The markdown and HTML widgets allow using string template syntax like `${a.b}` to include
 values from the context. These widgets allow adding the result of a custom expression to the context
@@ -250,7 +275,48 @@ which is then passed as:
 }
 ```
 
-### Database Trigger Context
+### JSONata in Invoke Functions
 
-Database triggers are a special case for how JSONata expressions are used and have a different
-context. Please refer to section JSONata in Triggers for more details.
+The Invoke function allows you to wrap an expression as a function.
+The context is passed as the function parameter and the result is returned to the function caller.
+Consider the following example of a Invoke function "geturl":
+
+```json
+{
+  "ID": "geturl",
+  "djClassName": "org.dashjoin.function.Invoke",
+  "expression": "$openJson($).parse.some.value"
+}
+```
+
+This function opens JSON from a URL, performs some computation with the file contents and returns the result.
+The URL is passed via the context and is referenced via dollar being the parameter of openJson.
+
+Now we can call this function as follows:
+
+```text
+$call("geturl", "http://example.org/test.json")
+```
+
+In this case dollar evaluates to the string "http://example.org/test.json".
+
+### JSONata in Triggers
+
+Triggers allow evaluating expression before or after a write operation on a table.
+
+In this case, the context is defined as follows:
+
+```text
+{
+  command: create, update or delete
+  database: CRUD on this DB
+  table: CRUD on this table
+  search: primary keys of the record, set for delete and update
+  object: object to create or fields to update, set for update and create
+}
+```
+
+The expression is defined with the table.
+
+The result is ignored, unless the trigger function extends the AbstractDatabaseTrigger Java interface. In this case, we expect a Boolean value that aborts the write operation in case the value false is returned.
+

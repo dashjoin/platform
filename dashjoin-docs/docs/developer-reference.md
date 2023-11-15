@@ -572,83 +572,9 @@ This sample data is used to edit the mapping.
 Note that Receive always appends the new data like the Ignore mode in the ETL case. The difference is that there
 is no expression that fetches data. Instead, the data is passed via the API call.
 
-## Expressions
-
-Expressions are small programs that can be used to:
-
-* configure widgets on a page (the most common case)
-* save an expression with an Invoke function
-* attach triggers to database tables
-
-This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.
-
-### JSONata
-
-Expressions use the well established JSON query and transformation language [JSONata](https://jsonata.org/).
-The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
-
-* the context data (this usually is the record you are browsing on the user interface)
-* the expression
-* the expression result
-
-The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
-
-### JSONata in Widgets
-
-When expressions are used in widgets, the context is the following JSON object:
-
-```text
-{
-  database: name of the the database we are on
-  search: the search term (only set if we are on the search result page)
-  table: name of the table we are on
-  pk1: value of the first primary key column
-  pk2: value of the second primary key column
-  pk3: value of the third primary key column
-  pk4: value of the forth primary key column
-  user: the name of the user logged in
-  email: the email of the user logged in (PaaS only)
-  roles: the array of roles the user is in
-  form: value entered in the custom form of the button widget
-}
-```
-
-The expression is provided as the widget parameter via the layout editor.
-
-The result is used depending on the widget and the expression field. The if parameter, for instance, expects a Boolean value in order to determine whether to show the widget or not. The display widget simply displays the expression result.
-Consult the widget reference for information about your use case.
-
-### JSONata in Invoke Functions
-
-The Invoke function allows you to wrap an expression as a function.
-
-The context is passed as the function parameter.
-
-The expression is a configuration parameter of the function.
-
-The result is returned to the function caller.
-
-### JSONata in Triggers
-
-Triggers allow evaluating expression before or after a write operation on a table.
-
-In this case, the context is defined as follows:
-
-```text
-{
-  command: create, update or delete
-  database: CRUD on this DB
-  table: CRUD on this table
-  search: primary keys of the record, set for delete and update
-  object: object to create or fields to update, set for update and create
-}
-```
-
-The expression is defined with the table.
-
-The result is ignored, unless the trigger function extends the AbstractDatabaseTrigger Java interface. In this case, we expect a Boolean value that aborts the write operation in case the value false is returned.
-
 ## Dashjoin Expression Reference
+
+TODO: client side expressions
 
 In addition to the default JSONata builtin functions ([see Function Library](https://docs.jsonata.org/overview.html)), the following Dashjoin functions are added
 (some internal functions are omitted - you can refer to the platform's info page for a full list):
