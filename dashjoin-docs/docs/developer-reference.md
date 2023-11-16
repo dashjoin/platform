@@ -296,10 +296,6 @@ register an instance of email service with specific parameters and call it email
 
 [Click here](https://www.youtube.com/watch?v=XuymQh6aMIk) for a demo video.
 
-### Function Page
-
-The function page works a lot like the database page. It shows a table of the functions that have been created on the system. To create a new function, you first need to select the function type. Depending on your choice, you can enter the respective configuration parameters. The function type specifies whether the function is read only or whether it has side effects like sending email or writing data. Finally, the roles specify which user role is allowed to run the function.
-
 ### Function Reference
 
 The system supports the following functions. Each section lists the function configuration parameters that are constant any time this function is called as well as the parameters that are specific for each invocation.

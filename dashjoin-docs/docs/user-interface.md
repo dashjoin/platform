@@ -312,12 +312,13 @@ $
 
 displays the entire page context.
 
-## Functions Page
+## Function Page
 
-Like the query catalog, the functions page shows an overview of functions registered in the system. 
-Functions define extract load transform operations that load data into one of the databases,
-email endpoints, or access the RESTful web services.
+The function page works a lot like the database page. It shows a table of the functions that have been created on the system. To create a new function, you first need to select the function type. Depending on your choice, you can enter the respective configuration parameters. The function type specifies whether the function is read only or whether it has side effects like sending email or writing data. Finally, the roles specify which user role is allowed to run the function. Functions define extract load transform operations that load data into one of the databases, email endpoints, or access the RESTful web services.
 
+Apart from creating and editing functions, you can also run the functions from the function page.
+Note that functions will be called without any parameters.
+If you would like to run functions with parameters, use the JSONata Notebook.
 Please refer to the developer reference chapter for a detailed listing of all supported functions.
 
 ## General Information Page
