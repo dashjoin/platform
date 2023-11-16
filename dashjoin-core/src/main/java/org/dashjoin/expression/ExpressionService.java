@@ -158,8 +158,7 @@ public class ExpressionService {
                 if (list.get(0) != null)
                   if (!list.get(0).getClass().getName().startsWith("java"))
                     return om.convertValue(res, new TypeReference<List<Map<String, Object>>>() {});
-            }
-            if (!res.getClass().getName().startsWith("java"))
+            } else if (!res.getClass().getName().startsWith("java"))
               return om.convertValue(res, new TypeReference<Map<String, Object>>() {});
             return res;
           }
