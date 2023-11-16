@@ -70,9 +70,119 @@ For more details, please refer to [this guide](https://code.visualstudio.com/doc
 ## Developing a Custom Widget
 
 One of the most powerful features of the expert mode is the ability to write your own widgets.
-Let's assume we have a database containing ...
+Let's assume we have a database containing chemical molecules. One of the columns contains the [SMILES string](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system). We're going to write a widget, that draws a 2D representation of the molecule
+based off this information.
 
-### TODO
+### Adding a 3rd Party Library
+
+The first step is to find a 3rd party library that is suitable for the task. The Dashjoin UI is written
+in [React](https://react.dev/), therefore, keep this in mind when selecting a library.
+For this example, we'll use [smilesDrawer](https://github.com/reymond-group/smilesDrawer).
+
+In VS Code, open a terminal and enter:
+
+```
+yarn add smiles-drawer
+```
+
+Yarn is a JavaScript package manage, that will retrieve the latest version of the library and all other required components.
+Now we can start the development webserver that will run on port 3000:
+
+```
+yarn dev
+```
+
+### Adding a new Widget
+
+Adding a new widget requires three changes: First, create the file Smiles.tsx in src/widgets:
+
+```
+import { Icon } from "@mui/material"
+import { Widget } from "../model/widget"
+import { text, title } from "../api/Const"
+import { useEffect, useRef } from "react"
+const SmilesDrawer = require('smiles-drawer')
+
+export const Smiles = ({ widget }: { widget: Widget }) => {
+
+    const imgRef = useRef<HTMLImageElement>(null);
+    const drawer = new SmilesDrawer.SmiDrawer();
+
+    useEffect(() => {
+        drawer.draw(widget.text, imgRef.current, 'light');
+    });
+
+    return (
+        <div>
+            <img ref={imgRef} width={300}></img>
+        </div>
+    );
+}
+
+export const config = {
+    id: 'smiles',
+    title: 'Smiles',
+    description: 'Renders a SMILES string as a 3D molecule',
+    version: 1,
+    icon: <Icon>science</Icon>,
+    controls: {
+        type: 'autoform',
+        schema: {
+            properties: {
+                title: title,
+                text: text
+            }
+        }
+    }
+}
+```
+
+This code contains two blocks. The first block is the actual widget. It gets the parameter "widget",
+which is a JSON structure to configure the widget. The rest of the code is taken from the 
+library's documentation. The key point is in line 13, where widget.text is passed as the parameter
+to the draw function. This parameter contains the SMILES string passed to the widget.
+
+The second part defines how the widget edit dialog looks like. It contains an icon, some description, and
+a list of controls. In this case, we allow editing the widget title (this is a property shared by all
+widgets) and the text to contain the SMILES string. You could add other properties. For instance,
+the width of the generated image is fixed at 300 pixels. This could be replaced with a widget parameter.
+
+Now edit the file EditorLayout.tsx in src/page and add the following lines:
+
+```
+import { config as Smiles } from '../widgets/Smiles';
+...
+    if (!cellPlugins) {
+        cellPlugins = [
+            Smiles, Markdown, ...
+```
+
+Adding the new Smiles widget to the list of layout editor plugins makes it appear in the add widget drawer.
+
+Finally, add these lines to Layout.tsx in src/widgets:
+
+```
+import { Smiles } from "./Smiles";
+...
+        else if (compid === 'html')
+            type = HTML
+        else if (compid === 'smiles')
+            type = Smiles
+```
+
+Now we're all set. We can create a test page and add the widget with the following parameters in order to [see the molecule in all its glory](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#/media/File:Beta-D-Glucose.svg):
+
+```json
+{
+    "widget": "smiles",
+    "title": "Glucose",
+    "text": "OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)1"
+}
+```
+
+### Packaging the Widget and Deploying it to Production
+
+TODO
 
 ## Multi Line JSON
 
