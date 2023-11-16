@@ -87,9 +87,15 @@ allows editing a database record. Note that the form layout can be customized in
 
 * deleteConfirmation: optional confirmation message before deleting the record
 
+#### [variable](https://demo.my.dashjoin.com/#/page/variable)
+
+Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x". A variable can be set via a URL query parameter. Appending ?a=1&b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only string variables can be set this way, so you might have to use $number(variable.a) when using the variable.
+
+* text: text shown for the apply button (default is "Apply")
+
 ### Regular Widgets
 
-#### actionTable
+#### [actionTable](https://demo.my.dashjoin.com/#/page/actionTable)
 
 The Action table widget works like the table widget. In addition, it allows selecting several rows in the table.
 If rows are selected, action buttons become visible. The actions are configured via a set of key value pairs.
@@ -116,7 +122,7 @@ Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
 * [chart-timeline](https://demo.my.dashjoin.com/#/page/chart-timeline)
 
-### diagram
+#### [diagram](https://demo.my.dashjoin.com/#/page/diagram)
 
 Allows displaying and editing data as a graph of nodes and edges.
 
