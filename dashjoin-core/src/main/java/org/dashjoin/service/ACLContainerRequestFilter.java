@@ -47,7 +47,9 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       return;
 
     if (path.startsWith("/_ah/") || path.startsWith("/rest/info/")
-        || path.equals("/rest/manage/openapi"))
+        || path.equals("/rest/manage/openapi")
+        || path.startsWith("/login") || path.startsWith("auth-callback")
+    )
       return;
 
     SecurityContext sc = requestContext.getSecurityContext();
