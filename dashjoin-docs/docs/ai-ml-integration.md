@@ -15,8 +15,33 @@ a page with a single notebook widget. The platform ships with a default notebook
 available at /page/Notebook. Note that you can create as many notebook pages as you like.
 
 A Notebook consists of a sequence of code blocks that can be run individually via the run icon
-or by pressing CTRL ENTER. The result of the call is also stored in die notebook and displayed below the
+or by pressing CTRL ENTER. The result of the call is also stored in the notebook and displayed below the
 code block.
+
+The default way of displaying data is JSON. You can display the data as a table, on a map,
+or as a chart using the following syntax:
+
+```json
+{
+  "widget": "table",
+  "data": $query("northwind", "group")
+}
+```
+
+```json
+{
+  "widget": "map",
+  "data": $adHocQuery("northwind", "select distinct CITY from EMPLOYEES")."EMPLOYEES.CITY"
+}
+```
+
+```json
+{
+  "widget": "chart",
+  "chart": "bar",
+  "data": $query("northwind", "group")
+}
+```
 
 If a code block starts with a variable assignment ($variable := ...), the variable can be used
 in other code blocks as $variable.
