@@ -465,3 +465,18 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Improved SQLite insert performance
 * SDK
   * GIT operations available via JSONata
+
+### 5.0 (Dec 2023)
+
+* UI
+  * Revamped user interface with several theme customization options
+  * WYSIWYG drag and drop layout editor
+  * Form layout integrated into the layout editor
+  * Edit and arrange diagrams and flow charts using the diagram widget
+  * Notebooks support map, table, and chart visualizations
+* Platform
+  * Improved JSONata performance
+* SDK
+  * Write your own widgets using any 3rd party JavaScript library and integrate them into the layout editor
+  * Manage your app versions and unit testing via the new expert mode
+  * Development container bundles all required tools and makes them available right in your browser
