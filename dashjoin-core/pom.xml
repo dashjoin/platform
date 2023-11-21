@@ -110,7 +110,13 @@
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
-		    <version>3.43.0.0</version>
+		    <!-- 
+		    	starting from this version https://www.javadoc.io/doc/org.xerial/sqlite-jdbc/3.43.0.0/deprecated-list.html
+		    	sqlite removes support for getGeneratedKeys, which is required for us
+		    	lots of discussions going on https://github.com/xerial/sqlite-jdbc/issues/1018
+		    	before we change our code, I'm downgrading the version for now
+		    -->
+		    <version>3.42.0.1</version>
 		</dependency>
 
 		<dependency>
