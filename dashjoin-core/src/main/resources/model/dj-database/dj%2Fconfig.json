@@ -318,19 +318,7 @@
                   "ID",
                   "comment",
                   "dj-label"
-                ],
-                "createSchema": {
-                  "type": "object",
-                  "required": [
-                    "name"
-                  ],
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name of the table to create"
-                    }
-                  }
-                }
+                ]
               }
             ]
           }
