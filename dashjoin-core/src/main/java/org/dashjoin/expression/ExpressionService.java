@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
@@ -227,17 +226,15 @@ public class ExpressionService {
       } catch (JException e) {
         // intercept the exception
         // TODO: add getter to jsonata
-        if ("T0410".equals(FieldUtils.readDeclaredField(e, "error", true)))
-          if (expression.startsWith("$") && expression.contains("(")) {
-            // TODO: add function name to exception
-            String name = expression.substring(1, expression.indexOf('('));
-            for (org.dashjoin.function.Function f : ServiceLoader
-                .load(org.dashjoin.function.Function.class))
-              if (!(f instanceof AbstractConfigurableFunction))
-                if (name.equals(f.getID()))
-                  if (f.getHelp() != null)
-                    throw new Exception(f.getHelp());
-          }
+        JException je = (JException) e;
+        if ("T0410".equals(je.getError())) {
+          for (org.dashjoin.function.Function f : ServiceLoader
+              .load(org.dashjoin.function.Function.class))
+            if (!(f instanceof AbstractConfigurableFunction))
+              if (je.getExpected().equals(f.getID()))
+                if (f.getHelp() != null)
+                  throw new Exception(f.getHelp());
+        }
         throw e;
       }
     }

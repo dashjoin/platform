@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import com.dashjoin.jsonata.JException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
@@ -113,6 +114,18 @@ public class ExpressionServiceTest {
         "" + s.resolve(sc, "$all(\"junit\", \"EMP\", 1 , 2, \"ID\", true)", null, false));
     Assertions.assertEquals("[{ID=1, NAME=mike, WORKSON=1000}]", "" + s.resolve(sc,
         "$all(\"junit\", \"EMP\", null , null, null, null, {\"ID\":1})", null, false));
+  }
+
+  @Test
+  public void testError() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    JException ex =
+        Assertions.assertThrows(JException.class, () -> s.resolve(sc, "1+", null, false));
+    Assertions.assertEquals("Unexpected end of expression", ex.getMessage());
+    Exception e =
+        Assertions.assertThrows(Exception.class, () -> s.resolve(sc, "$read()", null, false));
+    Assertions.assertEquals("Arguments required: $read(database, table, pk1)", e.getMessage());
   }
 
   @Test
