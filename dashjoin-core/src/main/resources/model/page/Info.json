@@ -51,8 +51,9 @@
 				"size": 3,
 				"children": [
 					{
-						"markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='/djcode/index.html'>Expert Mode</a>",
-						"widget": "markdown"
+                        "markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='${context}'>Expert Mode</a>",
+                        "context": "(\n$parse := href.$split(\"/\");\n$hostPort := $parse[2].$split(\":\");\n$host := $hostPort[0];\n$port := $hostPort[1] ? $hostPort[1] : \"8080\";\n$parse[0] & \"//\" & $host & \":\" & ($number($port)+1)\n)",
+                        "widget": "markdown"
 					},
 					{
 						"widget": "text",

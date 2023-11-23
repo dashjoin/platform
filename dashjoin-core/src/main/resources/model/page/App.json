@@ -4,10 +4,6 @@
         "widget": "page",
         "children": [
             {
-                "markdown": "<a target=\"expert\" href=\"/djcode/index.html\">Open Expert Mode</a>",
-                "widget": "markdown"
-            },
-            {
                 "text": "Pull",
                 "print": "$gitPull()",
                 "widget": "button"
