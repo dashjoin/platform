@@ -147,29 +147,21 @@ a list of controls. In this case, we allow editing the widget title (this is a p
 widgets) and the text to contain the SMILES string. You could add other properties. For instance,
 the width of the generated image is fixed at 300 pixels. This could be replaced with a widget parameter.
 
-Now edit the file EditorLayout.tsx in src/page and add the following lines:
+Now edit the file CustomWidgets.tsx in src and add the following lines:
 
 ```
-import { config as Smiles } from '../widgets/Smiles';
-...
-    if (!cellPlugins) {
-        cellPlugins = [
-            Smiles, Markdown, ...
+import { config } from "./widgets/Smiles";
+import { Smiles } from "./widgets/Smiles";
+
+export const customWidgets = [
+    {
+        widget: Smiles,
+        config: config
+    }
+]
 ```
 
-Adding the new Smiles widget to the list of layout editor plugins makes it appear in the add widget drawer.
-
-Finally, add these lines to Layout.tsx in src/widgets:
-
-```
-import { Smiles } from "./Smiles";
-...
-        else if (compid === 'html')
-            type = HTML
-        else if (compid === 'smiles')
-            type = Smiles
-```
-
+Custom widgets is an array. Therefore, you can add other custom widgets as well.
 Now we're all set. We can create a test page and add the widget with the following parameters in order to [see the molecule in all its glory](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#/media/File:Beta-D-Glucose.svg):
 
 ```json
