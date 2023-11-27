@@ -79,13 +79,13 @@ The first step is to find a 3rd party library that is suitable for the task. The
 in [React](https://react.dev/), therefore, keep this in mind when selecting a library.
 For this example, we'll use [smilesDrawer](https://github.com/reymond-group/smilesDrawer).
 
-In VS Code, open a terminal and enter:
+In VS Code, open a terminal (on the top left, click the menu, then terminal, and finally new terminal) and enter:
 
 ```
 yarn add smiles-drawer
 ```
 
-Yarn is a JavaScript package manage, that will retrieve the latest version of the library and all other required components.
+Yarn is a JavaScript package manager, that will retrieve the latest version of the library and all other required components. Depending on your internet connection speed, this command might take a while to complete.
 Now we can start the development webserver that will run on port 3000:
 
 ```
@@ -174,7 +174,27 @@ Now we're all set. We can create a test page and add the widget with the followi
 
 ### Packaging the Widget and Deploying it to Production
 
-TODO
+Once you are done with your widget development, you can start the build process via the terminal:
+
+```
+yarn build
+```
+
+This command will create a folder with the compiled user interface in the folder
+of your app. You can commit these assets along with the query catalog and the other files in your app.
+If the app is deployed onto a production system, the user interface containing the new widget
+will be active.
+
+### Making Changes to the Platform
+
+The development container gives you full access to the entire user interface. 
+Therefore, you can not only add widgets, but also make changes to the core UI. For instance,
+you can make changes to the login screen or the legal cookie and data privacy disclaimer
+presented to new users.
+
+Any of these changes are picked up by the build and deploy process described in the previous section.
+Please note however, that changes to the core platform must be re-applied manually
+once a new version of Dashjoin is released.
 
 ## Multi Line JSON
 
