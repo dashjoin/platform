@@ -135,7 +135,7 @@ public class ExpressionService {
 
       // configurable function are run via $call(...)
       if (!(f instanceof AbstractConfigurableFunction)) {
-        ((AbstractFunction) f).init(sc, services, this, false);
+        ((AbstractFunction) f).init(sc, services, this, readOnly);
 
         // special case for $call
         if (f instanceof Call)
