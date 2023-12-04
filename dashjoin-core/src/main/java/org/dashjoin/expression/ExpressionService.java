@@ -222,6 +222,11 @@ public class ExpressionService {
 
       try {
         Object res = expr.evaluate(data);
+
+        // handle the case where the user types $function - the object cannot be
+        if (res instanceof JFunction)
+          return null;
+
         return res;
       } catch (JException e) {
         // intercept the exception
