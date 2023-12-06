@@ -386,7 +386,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ssss:o?>";
+      return "<ss(bns)s:o?>";
     }
   }
 
