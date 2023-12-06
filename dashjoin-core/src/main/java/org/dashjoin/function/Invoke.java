@@ -9,7 +9,7 @@ import org.dashjoin.model.JsonSchema;
 @JsonSchema(required = {"expression"}, order = {"expression"})
 public class Invoke extends AbstractConfigurableFunction<Object, Object> {
 
-  @JsonSchema(widget = "custom", widgetType = "expression")
+  @JsonSchema(widget = "custom", widgetType = "expression", title = "Expression")
   public String expression;
 
   @Override
