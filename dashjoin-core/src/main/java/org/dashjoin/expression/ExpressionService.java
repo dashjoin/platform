@@ -383,6 +383,11 @@ public class ExpressionService {
     public String getHelp() {
       return "Arguments required: $traverse(database, table, pk1, fk)";
     }
+
+    @Override
+    public String getSignature() {
+      return "<ssss:o?>";
+    }
   }
 
   /**
