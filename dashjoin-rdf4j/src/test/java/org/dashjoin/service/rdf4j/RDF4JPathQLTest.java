@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.DBTest;
@@ -22,6 +21,7 @@ import org.mockito.Mockito;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Disabled
 @QuarkusTest
@@ -82,7 +82,7 @@ public class RDF4JPathQLTest extends DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Map<String, Map<String, Object>> res =
-        db.list(sc, "junit", (String) toID("EMP"), Arrays.asList((String) toID("1")));
+        db.list(sc, "junit", (String) toID("EMP"), Arrays.asList((String) toID("1")), null);
     map("{WORKSON=1000, ID=1, NAME=mike, REPORTSTO=6}", res.get(toID("1")));
   }
 

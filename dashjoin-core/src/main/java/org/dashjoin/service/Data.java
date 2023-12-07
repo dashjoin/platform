@@ -653,11 +653,7 @@ public class Data {
     db.cast(m, search);
     Map<String, Object> res = db.read(m, search);
     if (res == null)
-      if ("config".equals(database) && "namespace".equals(search.get("ID")))
-        // avoid 401 for namespace query so apps can still boostrap namespace.json
-        return MapUtil.of("map", MapUtil.of());
-      else
-        throw new NotFoundException();
+      throw new NotFoundException();
     ACLContainerRequestFilter.checkRow(sc, m, res);
     return res;
   }
@@ -880,10 +876,22 @@ public class Data {
           example = "northwind") @PathParam("database") String database,
       @Parameter(description = "table name to run the operation on",
           example = "EMPLOYEES") @PathParam("table") String table,
-      List<String> objectIds) throws Exception {
+      List<String> objectIds, @QueryParam("ignoreMissing") Boolean ignoreMissing) throws Exception {
     Map<String, Map<String, Object>> res = new HashMap<>();
     for (String objectId : objectIds) {
-      res.put(objectId, read(sc, database, table, objectId));
+      try {
+        res.put(objectId, read(sc, database, table, objectId));
+      } catch (NotFoundException e) {
+        if (Boolean.TRUE.equals(ignoreMissing)) {
+          // record not found - add the {pk=search} to the result
+          AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+          Table m = db.tables.get(table);
+          Map<String, Object> search = key(m, Arrays.asList(objectId));
+          db.cast(m, search);
+          res.put(objectId, search);
+        } else
+          throw e;
+      }
     }
     return res;
   }

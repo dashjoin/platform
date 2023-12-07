@@ -4,10 +4,6 @@ import static com.google.common.collect.ImmutableMap.of;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
@@ -22,6 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * tests the REST endpoint Data that serves "/database". This endpoint delegates requests to the
@@ -436,8 +436,17 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Map<String, Map<String, Object>> res =
-        db.list(sc, "junit", toID("EMP"), Arrays.asList(toID("1")));
+        db.list(sc, "junit", toID("EMP"), Arrays.asList(toID("1")), null);
     map("{WORKSON=1000, ID=1, NAME=mike}", res.get(toID("1")));
+  }
+
+  @Test
+  public void testListMissing() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    Map<String, Map<String, Object>> res =
+        db.list(sc, "junit", toID("EMP"), Arrays.asList(toID("1"), toID("999")), true);
+    map("{ID=999}", res.get(toID("999")));
   }
 
   @Test
