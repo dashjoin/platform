@@ -174,10 +174,11 @@ Now we're all set. We can create a test page and add the widget with the followi
 
 ### Packaging the Widget and Deploying it to Production
 
-Once you are done with your widget development, you can start the build process via the terminal:
-
+Once you are done with your widget development, you can start the build process via the terminal
+and deploy the result to your app:
 ```
 yarn build
+yarn deploy
 ```
 
 This command will create a folder with the compiled user interface in the folder
