@@ -757,11 +757,22 @@ public class SQLDatabase extends AbstractDatabase {
       if (search != null && !search.isEmpty()) {
         select = select + " where ";
         for (String k : search.keySet()) {
-          if (url.startsWith("jdbc:postgresql:") && search.get(k) instanceof List
-              && s.properties.get(k).dbType.equals("jsonb")
-              && (((List<?>) search.get(k)).size() == 1)) {
+          // for array columns, treat equality to be array contains
+          Object value = search.get(k);
+          Object firstValue = null;
+          if (value instanceof PGobject)
+            try {
+              value = om.readValue(((PGobject) value).getValue(), Object.class);
+            } catch (Exception e) {
+              throw new SQLException(e);
+            }
+          if (value instanceof List)
+            if (((List<?>) value).size() == 1)
+              firstValue = ((List<?>) value).get(0);
+          if (url.startsWith("jdbc:postgresql:") && s.properties.get(k).dbType.equals("jsonb")
+              && firstValue != null) {
             select = select + "\"" + k + "\"::jsonb ??" + " ? and ";
-            args.add(((List<?>) search.get(k)).get(0));
+            args.add(firstValue);
           } else {
             select = select + q(k) + "=? and ";
             args.add(search.get(k));
