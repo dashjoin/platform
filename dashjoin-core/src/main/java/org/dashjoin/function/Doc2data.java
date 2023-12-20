@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -156,7 +155,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
   }
 
   public static Object xml(Element node) {
-    return xml(node, null);
+    return xml(node, getArrays(node));
   }
 
   @SuppressWarnings("unchecked")
@@ -192,7 +191,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
         }
       }
     if (!res.isEmpty())
-      return cleanArrays(res);
+      return res;
 
     for (int i = 0; i < list.getLength(); i++)
       if (list.item(i) instanceof Text) {
@@ -203,41 +202,25 @@ public class Doc2data extends AbstractFunction<String, Object> {
     return null;
   }
 
-  /**
-   * in array of object fields, make sure all "types" are consistent (a single value might have to
-   * be converted to an array)
-   */
-  @SuppressWarnings("unchecked")
-  static Object cleanArrays(Map<String, Object> res) {
-    for (String field : arrayFields(res)) {
-      Set<String> arrayFields = new HashSet<>();
-
-      // sweep 1: collect all array fields
-      for (Object i : (List<Object>) res.get(field)) {
-        if (i instanceof Map<?, ?>)
-          arrayFields.addAll(arrayFields((Map<String, Object>) i));
-      }
-
-      // sweep 2: add array if necessary
-      for (Object i : (List<Object>) res.get(field)) {
-        if (i instanceof Map<?, ?>) {
-          for (Entry<String, Object> e : ((Map<String, Object>) i).entrySet()) {
-            if (arrayFields.contains(e.getKey()))
-              if (!(e.getValue() instanceof List))
-                e.setValue(Arrays.asList(e.getValue()));
-          }
-        }
-      }
-    }
-    return res;
+  static List<String> getArrays(Element node) {
+    Set<String> arrays = new HashSet<>();
+    getArrays(node, arrays);
+    return new ArrayList<>(arrays);
   }
 
-  static Set<String> arrayFields(Map<String, Object> res) {
-    Set<String> arrayFields = new HashSet<>();
-    for (Entry<String, Object> e : res.entrySet())
-      if (e.getValue() instanceof List<?>)
-        arrayFields.add(e.getKey());
-    return arrayFields;
+  /**
+   * traverse the tree an identify array elements
+   */
+  static void getArrays(Element node, Set<String> arrays) {
+    Set<String> elementNames = new HashSet<>();
+    NodeList list = node.getChildNodes();
+    for (int i = 0; i < list.getLength(); i++)
+      if (list.item(i) instanceof Element) {
+        Element kid = (Element) list.item(i);
+        if (!elementNames.add(kid.getNodeName()))
+          arrays.add(kid.getNodeName());
+        getArrays(kid, arrays);
+      }
   }
 
   Object parseJsonDoc(String file) throws Throwable {

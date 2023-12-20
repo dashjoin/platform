@@ -5,20 +5,19 @@ import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.SecurityContext;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.dashjoin.expression.ExpressionService;
-import org.dashjoin.util.MapUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.w3c.dom.Document;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 
 @QuarkusTest
 public class Doc2dataTest {
@@ -83,6 +82,14 @@ public class Doc2dataTest {
   }
 
   @Test
+  public void testxmlArr3() throws Exception {
+    Doc2data f = new Doc2data();
+    Object res = f.parse(
+        "<?xml version=\"1.0\"?><c><x><list><y>2</y></list></x><x><list><y>2</y><y>2</y><y>2</y></list></x></c>");
+    Assertions.assertEquals("{c={x=[{list={y=[2]}}, {list={y=[2, 2, 2]}}]}}", res.toString());
+  }
+
+  @Test
   public void testxmlTextWithAtt() throws Exception {
     Doc2data f = new Doc2data();
     Object res = f.parse("<?xml version=\"1.0\"?><c x=\"1\">test</c>");
@@ -90,16 +97,23 @@ public class Doc2dataTest {
   }
 
   @Test
-  public void testCleanArrays() {
-    Object res = Doc2data.cleanArrays(MapUtil.of("x", Arrays.asList(1, 2)));
-    Assertions.assertEquals("{x=[1, 2]}", res.toString());
+  public void testGetArrays() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new ByteArrayInputStream(
+        "<?xml version=\"1.0\"?><c><y><list>1</list><list>2</list></y></c>".getBytes()));
+    Assertions.assertEquals("[list]", "" + Doc2data.getArrays(doc.getDocumentElement()));
   }
 
   @Test
-  public void testCleanArrays2() {
-    Object res = Doc2data.cleanArrays(
-        MapUtil.of("x", Arrays.asList(MapUtil.of("y", 1), MapUtil.of("y", Arrays.asList(1, 2)))));
-    Assertions.assertEquals("{x=[{y=[1]}, {y=[1, 2]}]}", res.toString());
+  public void testGetArrays2() throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc = db.parse(new ByteArrayInputStream(
+        "<?xml version=\"1.0\"?><c><y></y><y><list>1</list><list>2</list></y></c>".getBytes()));
+    Assertions.assertEquals("[y, list]", "" + Doc2data.getArrays(doc.getDocumentElement()));
   }
 
   @Test
