@@ -466,7 +466,7 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 * SDK
   * GIT operations available via JSONata
 
-### 5.0 (Dec 2023)
+### 5.0 (Jan 2024)
 
 * UI
   * Revamped user interface with several theme customization options
