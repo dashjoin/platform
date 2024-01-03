@@ -340,7 +340,7 @@ public class SQLEditor implements QueryEditorInternal {
             func.setDistinct(false);
           }
 
-          if (db.url.startsWith("jdbc:postgresql:")) {
+          if (db.url.startsWith("jdbc:postgresql:") && "GROUP_CONCAT".equals(x.condition)) {
             func.setName("string_agg");
             func.setParameters(new ExpressionList(se.getExpression(), new StringValue(",")));
           } else {
