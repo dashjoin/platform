@@ -1238,6 +1238,24 @@ public class SQLDatabase extends AbstractDatabase {
     return url;
   }
 
+  public void castArray(Table m, Map<String, Object> object) {
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table");
+    if (m.properties != null && object != null)
+      for (Entry<String, Property> p : m.properties.entrySet())
+        if ("jsonb".equals(p.getValue().dbType)) {
+          Object obj = object.get(p.getKey());
+          if ((obj instanceof Map) || (obj instanceof List))
+            // value is a json array or object - no cast required
+            ;
+          else
+            // value is a simple type - makes no sense to be stored in a jsonb column
+            // and likely caused by jsonata array "unrolling"
+            // convert value to [value]
+            object.put(p.getKey(), Arrays.asList(obj));
+        }
+  }
+
   @Override
   public Object cast(Property p, Object object) {
 

@@ -282,6 +282,15 @@ public abstract class AbstractDatabase implements Database {
   }
 
   /**
+   * when we ETL data, JSONata simplifies arrays with a single value
+   * to just the value. Databases can choose to handle this by overriding
+   * this method (see https://github.com/dashjoin/platform/issues/311)
+   */
+  public void castArray(Table m, Map<String, Object> object) {
+    
+  }
+  
+  /**
    * default implementation for bulk inserts
    */
   public void create(Table m, List<Map<String, Object>> objects) throws Exception {

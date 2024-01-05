@@ -244,6 +244,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
       MergeBatch mbatch = db.openMergeBatch(t);
       for (Map<String, Object> row : table.getValue()) {
         row.put("_dj_source", ID);
+        db.castArray(t, row);
         db.cast(t, row);
         mbatch.merge(row);
         if (counter++ % 1000 == 0)
