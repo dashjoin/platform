@@ -22,13 +22,36 @@ The info page shows various system data. At the top of the page you find the use
 
 ### Roles Dashboard
 
-The roles dashboard allows the administrator to define system roles along with the homepage for users in this role. You cannot pick arbitrary role names here. Unless you are using the Dashjoin Cloud, the names depend on the roles defined in the identity management system (IDM) you are using.
-If you change your container configuration to use windows authentication, your role names will be "Users", "Power Users", "Guests", etc.
+The roles dashboard allows the administrator to define system roles. The role names should correspond on the roles defined in the identity management system (IDM) you are using.
+Let's assume that the IDM defines a user to be in the role "consulting".
+If this role "consulting" is defined in Dashjoin and the user logs in, 
+the user also has this role when using Dashjoin.
 If you are using the Dashjoin Cloud, you can choose arbitrary role names and assign users to these roles using the tenant user dashboard.
 
 ### Tenant User Dashboard
 
-Users can authenticate via OpenID. The tenant user dashboard allows you to control who has access to your Dashjoin tenant. Once a user requests access, his or her record shows up on this page. Once you set the active flag, they are allowed to login. Using this page, you can also assign which roles a user should be in. Specifically, it is possible to promote users to be co-administrators.
+The previous section explained how IDM roles are carried over to Dashjoin.
+However, there might be situations, where an application requires a role which is not yet
+defined in the IDM. For instance, only some of the consultants in the IDM group "consultant"
+should be granted access to the application.
+One way would be to create a new Dashjoin role and a new corresponding IDM role.
+In some organizations, this might not be feasible though, since the IDM is usually
+managed by a different entity within the organization.
+
+The tenant user dashboard can be used in these cases. It allows the administrator
+of the Dashjoin instance to explicitly assign roles to IDM users without having to
+explicitly create and assign the role in the IDM.
+
+This mechanism can also be used to request access to a Dashjoin application.
+Let's assume a user is registered in the IDM, but has no access to Dashjoin.
+If he logs in, he'll get a "permission denied" error, however, the user will show up
+on this dashboard, with the "active" flag set to false.
+The administrator can then activate the user and assign the proper roles.
+
+If all users of a domain are to be added, the tenant user id can be set to "@domain.org".
+In this case any user id ending with this domain suffix gets the roles defined in this record.
+
+Finally, you can use the tenant id "@EVERYONE" to define roles for all users that are defined in the IDM, regardless of the roles they are assigned in the IDM.
 
 ### Assigning Roles
 
