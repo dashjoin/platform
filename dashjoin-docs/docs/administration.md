@@ -236,6 +236,12 @@ The platform will run this query by replacing the search parameter with the cont
 Besides custom queries, you can also entirely exclude databases and tables from
 searches using the system configuration page (/table/config/dj-config).
 
+### Prioritizing Results
+
+Using the configuration setting "prioritize-table-in-search", you can instruct the system
+which tables are to be searched first. Results from these tables will appear further
+up in the search results.
+
 ### Global Timeout Settings
 
 Finally, the system configuration page allows setting some global contraints that prevent

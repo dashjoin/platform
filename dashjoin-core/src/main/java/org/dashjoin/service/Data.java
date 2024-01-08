@@ -5,6 +5,8 @@ import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE_RO
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.UPDATE_ROW;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -86,7 +88,21 @@ public class Data {
   public List<SearchResult> search(@Context SecurityContext sc, @PathParam("search") String search,
       @QueryParam("limit") Integer limit) throws Exception {
     List<SearchResult> res = new ArrayList<>();
-    for (AbstractDatabase db : services.getConfig().getDatabases()) {
+
+    // when searching all databases, search the config DB last
+    List<AbstractDatabase> dbs = services.getConfig().getDatabases();
+    Collections.sort(dbs, new Comparator<AbstractDatabase>() {
+      @Override
+      public int compare(AbstractDatabase o1, AbstractDatabase o2) {
+        if (o1 instanceof PojoDatabase)
+          return 1;
+        if (o2 instanceof PojoDatabase)
+          return -1;
+        return 0;
+      }
+    });
+
+    for (AbstractDatabase db : dbs) {
       try {
         if (db instanceof PojoDatabase)
           if (!sc.isUserInRole("admin"))

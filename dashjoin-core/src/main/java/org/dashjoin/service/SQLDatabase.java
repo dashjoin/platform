@@ -446,7 +446,7 @@ public class SQLDatabase extends AbstractDatabase {
 
     List<SearchResult> ret = new ArrayList<>();
     search = search.toLowerCase();
-    Map<Table, List<String>> tables = new HashMap<>();
+    Map<Table, List<String>> tables = new LinkedHashMap<>();
 
     // make sure all tables are added
     for (Table c : services.getConfig().searchTables(this)) {

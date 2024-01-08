@@ -1,0 +1,6 @@
+{
+	"ID": "prioritize-table-in-search",
+	"description": "Tables in this list are searched first",
+	"category": "query",
+	"type": "list"
+}

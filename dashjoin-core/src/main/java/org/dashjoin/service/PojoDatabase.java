@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
@@ -1179,17 +1180,43 @@ public class PojoDatabase extends UnionDatabase implements Config {
         read(Table.ofName("dj-config"), MapUtil.of("ID", "exclude-table-from-search"));
 
     if (res == null)
-      return db.tables.values();
+      return prioritize(db.tables.values());
     @SuppressWarnings("unchecked")
     List<String> excludeTable = (List<String>) res.get("list");
     if (excludeTable == null)
-      return db.tables.values();
+      return prioritize(db.tables.values());
 
     List<Table> list = new ArrayList<>();
     for (Table t : db.tables.values())
       if (!excludeTable.contains(t.name))
         list.add(t);
-    return list;
+    return prioritize(list);
+  }
+
+  Collection<Table> prioritize(Collection<Table> tables) throws Exception {
+    Map<String, Object> res =
+        read(Table.ofName("dj-config"), MapUtil.of("ID", "prioritize-table-in-search"));
+    if (res == null)
+      return tables;
+    @SuppressWarnings("unchecked")
+    List<String> prioritize = (List<String>) res.get("list");
+    if (prioritize == null)
+      return tables;
+
+    tables = new ArrayList<>(tables);
+    Collections.sort((List<Table>) tables, new Comparator<Table>() {
+      @Override
+      public int compare(Table o1, Table o2) {
+        if (prioritize.contains(o2.name) && prioritize.contains(o1.name))
+          return prioritize.indexOf(o1.name) - prioritize.indexOf(o2.name);
+        if (prioritize.contains(o1.name))
+          return -1;
+        if (prioritize.contains(o2.name))
+          return 1;
+        return 0;
+      }
+    });
+    return tables;
   }
 
   @Override
