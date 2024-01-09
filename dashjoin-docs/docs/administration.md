@@ -255,9 +255,9 @@ The system configuration page (/table/config/dj-config) allows defining some UI 
 * homepage:	Application home page that is displayed when home is pressed and after login
 * on-login:	Expression to be evaluated upon login - it typically sets session variables via setVariable
 * sidenav-open:	Side navigation is open initially (changes applied after next login)
-* dark-theme	: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* dark-theme	: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF
 * sidenav-width-px:	Width of the side navigation bar (changes applied after next login)
-* theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)
+* theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF
 * allow-dark-mode: Show the dark mode icon in the toolbar
 * logo-url: URL of the logo to display in the toolbar
 
