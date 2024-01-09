@@ -944,6 +944,7 @@ public class Manage {
 
   public static Version getVersion() {
     Version v = metaInf(Manage.class, "dev", new Version());
+    v.title = "dashjoin-platform";
     v.name = "Dashjoin Low Code Development and Integration Platform";
     v.buildTime = getGitBuildInfo().getProperty("git.build.time", "unknown");
     v.runtime = System.getProperty("java.version");
