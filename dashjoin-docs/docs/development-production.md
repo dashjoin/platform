@@ -109,7 +109,7 @@ export const Smiles = ({ widget }: { widget: Widget }) => {
     const drawer = new SmilesDrawer.SmiDrawer();
 
     useEffect(() => {
-        drawer.draw(widget.text, imgRef.current, 'light');
+        drawer.draw(widget.text ? widget.text : 'C', imgRef.current, 'light');
     });
 
     return (
