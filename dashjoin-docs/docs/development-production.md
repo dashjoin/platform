@@ -5,24 +5,24 @@ like defining new queries or registering new user roles using the editors on the
 system. Instead, you can setup multiple development systems where these changes are
 developed and tested.
 
-## Development Container
+## Dashjoin Studio
 
-The most convenient way to setup a development system is by using docker development container.
+The most convenient way to setup a development system is by using the Dashjoin Studio container.
 This container includes all the required tools and setup.
 To start the container, run:
 
 ```
-docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj dashjoin/development
+docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj dashjoin/studio
 ```
 
 If you would like to work on an existing app that is located on a Git repository, also specify the DASHJOIN_HOME and
 DASHJOIN_APPURL parameters (see section automatic Git checkout below)
 
 ```
-docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj -e DASHJOIN_HOME=dashjoin-demo -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/development
+docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj -e DASHJOIN_HOME=dashjoin-demo -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/studio
 ```
 
-The development container works like the platform container, but offers two additional services.
+Dashjoin Studio works like the platform container, but offers two additional services.
 On port 8081, it allows connecting a browser based integrated development environment (expert mode) to the container.
 On port 3000 an additional web service provides access to the user interface that includes
 custom widgets you add to the app.
@@ -188,7 +188,7 @@ will be active.
 
 ### Making Changes to the Platform
 
-The development container gives you full access to the entire user interface. 
+Dashjoin Studio gives you full access to the entire user interface. 
 Therefore, you can not only add widgets, but also make changes to the core UI. For instance,
 you can make changes to the login screen or the legal cookie and data privacy disclaimer
 presented to new users.
