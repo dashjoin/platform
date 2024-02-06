@@ -83,7 +83,10 @@ public class ExpressionService {
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
   public Object resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
-    return resolve(sc, e.expression, e.data);
+    Object res = resolve(sc, e.expression, e.data);
+    if (res instanceof String)
+      return om.writeValueAsString(res);
+    return res;
   }
 
   @GET
@@ -93,7 +96,10 @@ public class ExpressionService {
   public Object resolveCached(@Context SecurityContext sc,
       @PathParam("expression") String expression) throws Exception {
     ExpressionAndData e = om.readValue(expression, ExpressionAndData.class);
-    return resolve(sc, e.expression, e.data);
+    Object res = resolve(sc, e.expression, e.data);
+    if (res instanceof String)
+      return om.writeValueAsString(res);
+    return res;
   }
 
   /**
