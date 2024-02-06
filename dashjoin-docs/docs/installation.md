@@ -478,5 +478,5 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Improved JSONata performance
 * SDK
   * Write your own widgets using any 3rd party JavaScript library and integrate them into the layout editor
-  * Manage your app versions and unit testing via the new expert mode
-  * Development container bundles all required tools and makes them available right in your browser
+  * Manage your app versions and unit testing via the new Dashjoin Studio
+  * Dashjoin Studio bundles all required tools and makes them available right in your browser
