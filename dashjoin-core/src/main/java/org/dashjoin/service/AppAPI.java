@@ -4,6 +4,11 @@ import static org.dashjoin.util.MapUtil.of;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.commons.collections4.IteratorUtils;
+import org.dashjoin.function.FunctionService;
+import org.dashjoin.util.OpenAPI;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -20,11 +25,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.UriInfo;
-import org.apache.commons.collections4.IteratorUtils;
-import org.dashjoin.function.FunctionService;
-import org.dashjoin.util.OpenAPI;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * generic REST interceptor that proxies between an OpenAPI spec and the respective DJ functions
@@ -120,7 +120,7 @@ public class AppAPI {
           }
         }
 
-        return functionService.call(sc, operationId.asText(),
+        return functionService.callInternal(sc, operationId.asText(),
             of("parameters", parameters, "body", body));
       }
     }
@@ -149,6 +149,6 @@ public class AppAPI {
   @Operation(hidden = true)
   public Object call(@Context SecurityContext sc, @PathParam("function") String function,
       Object argument) throws Exception {
-    return functionService.call(sc, function, argument);
+    return functionService.callInternal(sc, function, argument);
   }
 }

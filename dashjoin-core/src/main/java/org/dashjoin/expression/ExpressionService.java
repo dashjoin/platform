@@ -503,7 +503,7 @@ public class ExpressionService {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Object run(List arg) throws Exception {
-      return function.call(sc, (String) arg.get(0), optional(arg, 1, Object.class));
+      return function.callInternal(sc, (String) arg.get(0), optional(arg, 1, Object.class));
     }
 
     @Override
