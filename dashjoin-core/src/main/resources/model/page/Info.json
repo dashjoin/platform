@@ -51,7 +51,7 @@
 				"size": 3,
 				"children": [
 					{
-                        "markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='${context}'>Expert Mode</a>",
+                        "markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='${context}'>Dashjoin Studio</a>",
                         "context": "(\n$parse := href.$split(\"/\");\n$hostPort := $parse[2].$split(\":\");\n$host := $hostPort[0];\n$port := $hostPort[1] ? $hostPort[1] : ($parse[0] = \"http:\" ? 80 : 443);\n$parse[0] & \"//\" & $host & \":\" & ($number($port)+1)\n)",
                         "widget": "markdown"
 					},
