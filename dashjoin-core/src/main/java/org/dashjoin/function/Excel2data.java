@@ -19,7 +19,9 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  * Loads an excel sheet into a json structure (map of sheetname to table). we interpret the first
  * row as the table field names
  */
-public abstract class Excel2data extends AbstractFunction<String, Object> {
+public abstract class Excel2data extends AbstractVarArgFunction<Object> {
+
+  protected FormulaEvaluator evaluator;
 
   @Override
   public String getType() {
@@ -28,7 +30,7 @@ public abstract class Excel2data extends AbstractFunction<String, Object> {
   
   protected Object parse(InputStream in) throws Exception {
     Workbook wb = WorkbookFactory.create(in);
-    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+    evaluator = wb.getCreationHelper().createFormulaEvaluator();
     Map<String, List<Map<String, Object>>> res = new LinkedHashMap<>();
     for (Sheet sheet : wb) {
       Iterator<Row> records = sheet.iterator();
@@ -36,22 +38,28 @@ public abstract class Excel2data extends AbstractFunction<String, Object> {
       res.put(sheet.getSheetName(), table);
 
       Map<Integer, String> cols = new LinkedHashMap<>();
-      for (Cell cell : records.next())
-        if (o(evaluator.evaluate(cell)) != null)
-          cols.put(cell.getColumnIndex(), "" + o(evaluator.evaluate(cell)));
+      for (Cell cell : records.next()) {
+        Object val = getCellValue(cell);
+        if (val != null)
+          cols.put(cell.getColumnIndex(), "" + val);
+      }
 
       while (records.hasNext()) {
         Map<String, Object> row = new LinkedHashMap<>();
         table.add(row);
         for (Cell cell : records.next())
           if (cols.get(cell.getColumnIndex()) != null)
-            row.put(cols.get(cell.getColumnIndex()), o(evaluator.evaluate(cell)));
+            row.put(cols.get(cell.getColumnIndex()), getCellValue(cell));
       }
     }
     return res;
   }
 
-  Object o(CellValue cellValue) {
+  protected Object getCellValue(Cell cell) {
+    return o(evaluator.evaluate(cell));
+  }
+
+  protected Object o(CellValue cellValue) {
     if (cellValue == null)
       return null;
     else if (cellValue.getCellType() == CellType.BOOLEAN)
@@ -69,7 +77,7 @@ public abstract class Excel2data extends AbstractFunction<String, Object> {
   }
 
   @Override
-  public Class<String> getArgumentClass() {
-    return String.class;
+  public List<Class> getArgumentClassList() {
+    return List.of(String.class, Object.class);
   }
 }
