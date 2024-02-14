@@ -4,13 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 import okhttp3.FormBody.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -108,16 +108,7 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     }
 
     String body = response.body().string();
-    if (body.isEmpty())
-      return "";
-
-    if (Boolean.TRUE.equals(returnText))
-      return body;
-
-    if (body.trim().startsWith("{") || body.trim().startsWith("["))
-      return objectMapper.readValue(body, Object.class);
-    else
-      return body;
+    return objectMapper.readValue(body, Object.class);
   }
 
   @Override

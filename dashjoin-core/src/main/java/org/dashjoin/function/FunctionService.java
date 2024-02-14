@@ -2,6 +2,14 @@ package org.dashjoin.function;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.dashjoin.service.ACLContainerRequestFilter;
+import org.dashjoin.service.Data;
+import org.dashjoin.service.Services;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -11,14 +19,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
-import org.dashjoin.service.ACLContainerRequestFilter;
-import org.dashjoin.service.Data;
-import org.dashjoin.service.Services;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * REST API for function calls
@@ -50,6 +50,11 @@ public class FunctionService {
       return om.writeValueAsString(res);
     else
       return res;
+  }
+
+  public Object callInternal(SecurityContext sc, String function, Object argument)
+      throws Exception {
+    return callInternal(sc, function, argument, false);
   }
 
   public Object callInternal(SecurityContext sc, String function, Object argument, boolean readOnly)

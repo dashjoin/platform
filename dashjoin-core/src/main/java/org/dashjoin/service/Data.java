@@ -250,7 +250,8 @@ public class Data {
       @Parameter(description = "database name to run the operation on",
           example = "northwind") @PathParam("database") String database,
       @PathParam("queryId") String queryId, Map<String, Object> arguments) throws Exception {
-    return queryGraphInternal(sc, database, queryId, arguments, false);
+    QueryMeta info = services.getConfig().getQueryMeta(queryId);
+    return queryGraphInternal(sc, database, info, arguments, false);
   }
 
   /**
@@ -258,10 +259,9 @@ public class Data {
    * preview)
    */
   public List<Map<String, Object>> queryGraphInternal(SecurityContext sc, String database,
-      String queryId, Map<String, Object> arguments, boolean readOnly) throws Exception {
+      QueryMeta info, Map<String, Object> arguments, boolean readOnly) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
-    QueryMeta info = services.getConfig().getQueryMeta(queryId);
 
     ACLContainerRequestFilter.check(sc, info);
 

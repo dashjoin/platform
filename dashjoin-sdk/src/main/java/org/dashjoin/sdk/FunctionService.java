@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ServiceLoader;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.Function;
 import org.eclipse.microprofile.config.ConfigProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 /**
  * function REST skeleton
@@ -100,6 +100,12 @@ public class FunctionService {
       throw new Exception("Function does not exist: " + function);
 
     arg = om.convertValue(arg, fn().get(function).getArgumentClass());
-    return fn().get(function).run(arg);
+
+    Object res = fn().get(function).run(arg);
+
+    if (res instanceof String)
+      return om.writeValueAsString(res);
+    else
+      return res;
   }
 }

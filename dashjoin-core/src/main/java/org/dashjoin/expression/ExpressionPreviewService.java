@@ -9,6 +9,8 @@ import org.dashjoin.mapping.ETL;
 import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -25,6 +27,9 @@ import jakarta.ws.rs.core.SecurityContext;
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 public class ExpressionPreviewService {
+
+  private static final ObjectMapper om =
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
   public static class ExpressionCursorData extends ExpressionAndData {
     public boolean foreach;
@@ -64,7 +69,11 @@ public class ExpressionPreviewService {
       } finally {
         ETL.context.set(null);
       }
-    } else
-      return expression.resolve(sc, e.expression, (e.data), true);
+    } else {
+      Object res = expression.resolve(sc, e.expression, (e.data), true);
+      if (res instanceof String)
+        return om.writeValueAsString(res);
+      return res;
+    }
   }
 }

@@ -166,7 +166,7 @@ Edges are represented by the following JSON structure:
 Displays the result of an expression:
 
 * display: expression to display
-* icons: if display evaluates to an object, icons maps the object keys to [material icons]([https://fonts.google.com/icons])
+* icons: if display evaluates to an object, icons maps the object keys to [material icons](https://fonts.google.com/icons)
 
 Depending on the result of the evaluation, one of the following cases applies:
 

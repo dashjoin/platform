@@ -23,13 +23,11 @@ docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj -e DAS
 ```
 
 Dashjoin Studio works like the platform container, but offers two additional services.
-On port 8081, it allows connecting a browser based integrated development environment (expert mode) to the container.
+On port 8081, it allows connecting a browser based integrated development environment to the container.
 On port 3000 an additional web service provides access to the user interface that includes
 custom widgets you add to the app.
 
-## Expert Mode
-
-To open the expert mode, open the general information page and follow the expert mode link under "App".
+To open Dashjoin Studio, navigate to the general information page and follow the Dashjoin Studio link under "App".
 To log in, please use the password you specified for the admin user (djdjdj in our examples).
 This opens VS Code in your browser. For more information about VS Code, please refer to
 [this documentation](https://code.visualstudio.com/docs).
@@ -69,7 +67,7 @@ For more details, please refer to [this guide](https://code.visualstudio.com/doc
 
 ## Developing a Custom Widget
 
-One of the most powerful features of the expert mode is the ability to write your own widgets.
+One of the most powerful features of Dashjoin Studio is the ability to write your own widgets.
 Let's assume we have a database containing chemical molecules. One of the columns contains the [SMILES string](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system). We're going to write a widget, that draws a 2D representation of the molecule
 based off this information.
 
@@ -267,7 +265,7 @@ If you are using containers, you can mount the model folder under /deployments/m
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.
 Therefore, it is quite common to use different sets of resources for development and production.
 As described in the section on automatic Git checkout above, the production credentials are usually
-checked into the code repository. During development, you can use [environment](../installation/#environment)
+checked into the code repository. During development, you can use [environment](../installation.md/#environment)
 variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
 
 * dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)

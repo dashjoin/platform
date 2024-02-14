@@ -9,6 +9,7 @@ import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Origin;
@@ -83,7 +84,10 @@ public class ExpressionService {
   @Operation(summary = "evaluates the expression with the data context")
   @APIResponse(description = "evaluation result")
   public Object resolve(@Context SecurityContext sc, ExpressionAndData e) throws Exception {
-    return resolve(sc, e.expression, e.data);
+    Object res = resolve(sc, e.expression, e.data);
+    if (res instanceof String)
+      return om.writeValueAsString(res);
+    return res;
   }
 
   @GET
@@ -93,7 +97,10 @@ public class ExpressionService {
   public Object resolveCached(@Context SecurityContext sc,
       @PathParam("expression") String expression) throws Exception {
     ExpressionAndData e = om.readValue(expression, ExpressionAndData.class);
-    return resolve(sc, e.expression, e.data);
+    Object res = resolve(sc, e.expression, e.data);
+    if (res instanceof String)
+      return om.writeValueAsString(res);
+    return res;
   }
 
   /**
@@ -450,13 +457,39 @@ public class ExpressionService {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public List<Map<String, Object>> run(List arg) throws Exception {
-      return this.expressionService.getData().queryGraphInternal(sc, (String) arg.get(0),
-          (String) arg.get(1), optional(arg, 2, Map.class), readOnly);
+      QueryMeta info = services.getConfig().getQueryMeta((String) arg.get(1));
+      return this.expressionService.getData().queryGraphInternal(sc, (String) arg.get(0), info,
+          optional(arg, 2, Map.class), readOnly);
     }
 
     @Override
     public String getHelp() {
       return "Arguments required: $queryGraph(database, queryId, arguments?)";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<sso?:a>";
+    }
+  }
+
+  /**
+   * data.query(sc, database, queryId, arguments)
+   */
+  public static class AdHocQueryGraph extends Base<List<Map<String, Object>>> {
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public List<Map<String, Object>> run(List arg) throws Exception {
+      QueryMeta info = new QueryMeta();
+      info.query = (String) arg.get(1);
+      return this.expressionService.getData().queryGraphInternal(sc, (String) arg.get(0), info,
+          optional(arg, 2, Map.class), readOnly);
+    }
+
+    @Override
+    public String getHelp() {
+      return "Arguments required: $adHocQueryGraph(database, query, arguments?)";
     }
 
     @Override
@@ -503,7 +536,7 @@ public class ExpressionService {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Object run(List arg) throws Exception {
-      return function.call(sc, (String) arg.get(0), optional(arg, 1, Object.class));
+      return function.callInternal(sc, (String) arg.get(0), optional(arg, 1, Object.class));
     }
 
     @Override
