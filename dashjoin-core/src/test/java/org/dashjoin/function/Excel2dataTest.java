@@ -14,7 +14,7 @@ public class Excel2dataTest {
   public void testxlsx() throws Exception {
     Excel2data f = new Excel2data() {
       @Override
-      public Object run(String arg) throws Exception {
+      public Object run(List arg) throws Exception {
         return null;
       }
 
