@@ -53,6 +53,11 @@ public class OpenCypherQuery {
      * table / collection / edge name
      */
     public String name;
+
+    /**
+     * the table name inferred from the query context
+     */
+    public String ref;
   }
 
   /**
@@ -387,10 +392,10 @@ public class OpenCypherQuery {
    * holds potential recursion data
    */
   static class Struct {
-    Struct(Map<String, Object> i, String linkEdgeName, String ctxName) {
+    Struct(Map<String, Object> i, String linkEdgeName, VariableName ctx) {
       this.i = i;
       this.linkEdgeName = linkEdgeName;
-      this.ctxName = ctxName;
+      this.ctxName = ctx.ref;
     }
 
     Map<String, Object> i;
@@ -427,12 +432,13 @@ public class OpenCypherQuery {
               List<String> pks = pks(dbs.get(table[1]), table[2]);
               if (pks.size() == 1)
                 incRes.add(new Struct((Map<String, Object>) data.traverse(sc, table[1], table[2],
-                    "" + row.get(pks.get(0)), p.name), p.name, ctx.name));
+                    "" + row.get(pks.get(0)), p.name), p.name, ctx));
               else
-                incRes.add(new Struct(
-                    (Map<String, Object>) data.traverse(sc, table[1], table[2],
-                        "" + row.get(pks.get(0)), "" + row.get(pks.get(1)), p.name),
-                    p.name, ctx.name));
+                incRes
+                    .add(new Struct(
+                        (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                            "" + row.get(pks.get(0)), "" + row.get(pks.get(1)), p.name),
+                        p.name, ctx));
             }
         } else {
           // outgoing link with prop, do a simple traverse
@@ -444,7 +450,7 @@ public class OpenCypherQuery {
             incRes.add(new Struct(
                 (Map<String, Object>) data.traverse(sc, table[1], table[2],
                     "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
-                link.edge.name, ctx.name));
+                link.edge.name, ctx));
         }
       } else {
         if (link.edge.name == null) {
@@ -458,7 +464,7 @@ public class OpenCypherQuery {
             if (!checkContext(ctx, "dj/" + o.id.database + "/" + o.id.table))
               ;
             else
-              incRes.add(new Struct(lookup, o.fk, ctx.name));
+              incRes.add(new Struct(lookup, o.fk, ctx));
           }
         } else {
           // incoming, prop specified, do a traverse (which might yield several results)
@@ -467,7 +473,7 @@ public class OpenCypherQuery {
           else
             for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
                 table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
-              incRes.add(new Struct(x, link.edge.name, ctx.name));
+              incRes.add(new Struct(x, link.edge.name, ctx));
         }
       }
       for (Struct i : incRes) {
@@ -500,8 +506,9 @@ public class OpenCypherQuery {
   }
 
   boolean checkContext(VariableName ctx, String ref) {
+    ctx.ref = ref;
     if (ctx.name == null)
-      ctx.name = ref;
+      ;
     else if (!ctx.name.equals(ref))
       // ref type and table type do not match
       return false;
