@@ -106,6 +106,7 @@ public class OpenCypherQuery {
      * {key:value}] or (var:edge *1..2)
      */
     public Table(String s, boolean isEdge) {
+      s = s.trim();
       this.isEdge = isEdge;
       s = s.substring(1, s.length() - 1).trim();
       if (s.endsWith("}")) {

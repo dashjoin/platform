@@ -41,8 +41,8 @@ public class OpenCypherQueryTest {
 
   @Test
   public void testWhitespace() throws Exception {
-    OpenCypherQuery q =
-        new OpenCypherQuery("MATCH ( prj : `dj/junit/PRJ`)<-[rel]-(emp)RETURN emp.NAME", null);
+    OpenCypherQuery q = new OpenCypherQuery(
+        "MATCH ( prj : `dj/junit/PRJ` ) <- [ rel ]-(emp) RETURN emp.NAME", null);
     Assertions.assertEquals("MATCH (prj:`dj/junit/PRJ`)<-[rel]-(emp) RETURN emp.NAME",
         q.toString());
   }
