@@ -145,6 +145,18 @@ public class OpenCypherQueryTest {
   }
 
   @Test
+  public void testTraverseAllOut() throws Exception {
+    List<Map<String, Object>> res = run("MATCH (p:EMP {ID:1})-->(project) RETURN project.ID");
+    Assertions.assertEquals("[{project.ID=1000}]", "" + res);
+  }
+
+  @Test
+  public void testTraverseAllIn() throws Exception {
+    List<Map<String, Object>> res = run("MATCH (project:PRJ {ID:1000})<--(e) RETURN e.ID");
+    Assertions.assertEquals("[{e.ID=1}, {e.ID=2}]", "" + res);
+  }
+
+  @Test
   public void testTraverseCheckType() throws Exception {
     List<Map<String, Object>> res =
         run("MATCH (p:`dj/junit/EMP`)-[e:WORKSON]->(project:`dj/junit/EMP`) RETURN project");

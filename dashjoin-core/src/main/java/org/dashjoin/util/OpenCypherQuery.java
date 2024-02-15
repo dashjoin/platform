@@ -109,7 +109,8 @@ public class OpenCypherQuery {
     public Table(String s, boolean isEdge) {
       s = s.trim();
       this.isEdge = isEdge;
-      s = s.substring(1, s.length() - 1).trim();
+      if (!s.isEmpty())
+        s = s.substring(1, s.length() - 1).trim();
       if (s.endsWith("}")) {
         int start = s.lastIndexOf('{');
         int colon = s.indexOf(':', start + 1);
@@ -422,23 +423,28 @@ public class OpenCypherQuery {
           for (Property p : dbs.get(table[1]).tables.get(table[2]).properties.values())
             if (p.ref != null) {
               if (!checkContext(ctx, p.ref.substring(0, p.ref.lastIndexOf('/'))))
-                return;
-              incRes
-                  .add(new Struct(
-                      (Map<String, Object>) data.traverse(sc, table[1], table[2],
-                          "" + row.get(pk(dbs.get(table[1]), table[2])), p.name),
-                      p.name, ctx.name));
+                continue;
+              List<String> pks = pks(dbs.get(table[1]), table[2]);
+              if (pks.size() == 1)
+                incRes.add(new Struct((Map<String, Object>) data.traverse(sc, table[1], table[2],
+                    "" + row.get(pks.get(0)), p.name), p.name, ctx.name));
+              else
+                incRes.add(new Struct(
+                    (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                        "" + row.get(pks.get(0)), "" + row.get(pks.get(1)), p.name),
+                    p.name, ctx.name));
             }
         } else {
           // outgoing link with prop, do a simple traverse
           String ref = dbs.get(table[1]).tables.get(table[2]).properties.get(link.edge.name).ref;
           ref = ref == null ? null : ref.substring(0, ref.lastIndexOf('/'));
           if (!checkContext(ctx, ref))
-            return;
-          incRes.add(new Struct(
-              (Map<String, Object>) data.traverse(sc, table[1], table[2],
-                  "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
-              link.edge.name, ctx.name));
+            ;
+          else
+            incRes.add(new Struct(
+                (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                    "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
+                link.edge.name, ctx.name));
         }
       } else {
         if (link.edge.name == null) {
@@ -450,16 +456,18 @@ public class OpenCypherQuery {
                     : data.read(sc, o.id.database, o.id.table, "" + o.id.pk.get(0),
                         "" + o.id.pk.get(1));
             if (!checkContext(ctx, "dj/" + o.id.database + "/" + o.id.table))
-              return;
-            incRes.add(new Struct(lookup, o.fk, ctx.name));
+              ;
+            else
+              incRes.add(new Struct(lookup, o.fk, ctx.name));
           }
         } else {
           // incoming, prop specified, do a traverse (which might yield several results)
           if (!checkContext(ctx, link.edge.name.substring(0, link.edge.name.lastIndexOf('/'))))
-            return;
-          for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
-              table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
-            incRes.add(new Struct(x, link.edge.name, ctx.name));
+            ;
+          else
+            for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
+                table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
+              incRes.add(new Struct(x, link.edge.name, ctx.name));
         }
       }
       for (Struct i : incRes) {
@@ -537,11 +545,16 @@ public class OpenCypherQuery {
   /**
    * get the property name with pkpos=0
    */
-  String pk(AbstractDatabase db, String table) {
+  List<String> pks(AbstractDatabase db, String table) {
+    List<String> res = new ArrayList<>();
     for (Property p : db.tables.get(table).properties.values())
       if (p.pkpos != null)
-        return p.name;
-    return null;
+        res.add(p.name);
+    return res;
+  }
+
+  String pk(AbstractDatabase db, String table) {
+    return pks(db, table).get(0);
   }
 
   String guessTable(String table) {

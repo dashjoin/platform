@@ -551,7 +551,30 @@ public class Data {
       @Parameter(description = "Primary key of the record to operate on",
           example = "1") @PathParam("objectId1") String objectId1,
       @QueryParam("fk") String fk) throws Exception {
-    Map<String, Object> o = read(sc, database, table, Arrays.asList(objectId1));
+    return traverse(sc, database, table, Arrays.asList(objectId1), fk);
+  }
+
+  @GET
+  @Path("/traverse/{database}/{table}/{objectId1}/{objectId2}")
+  @Operation(
+      summary = "starting at the object defined by the given globally unique identifier, reads the object related via fk")
+  @APIResponse(description = "JSON object representing the record")
+  public Object traverse(@Context SecurityContext sc,
+      @Parameter(description = "database name to run the operation on",
+          example = "northwind") @PathParam("database") String database,
+      @Parameter(description = "table name to run the operation on",
+          example = "EMPLOYEES") @PathParam("table") String table,
+      @Parameter(description = "Primary key of the record to operate on",
+          example = "1") @PathParam("objectId1") String objectId1,
+      @Parameter(description = "Primary key of the record to operate on",
+          example = "1") @PathParam("objectId1") String objectId2,
+      @QueryParam("fk") String fk) throws Exception {
+    return traverse(sc, database, table, Arrays.asList(objectId1, objectId2), fk);
+  }
+
+  public Object traverse(SecurityContext sc, String database, String table, List<String> objectId,
+      String fk) throws Exception {
+    Map<String, Object> o = read(sc, database, table, objectId);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
     Property p = m.properties.get(fk);
