@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.core.SecurityContext;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -32,6 +31,7 @@ import org.dashjoin.util.cypher.CypherParser.OC_PatternElementContext;
 import org.dashjoin.util.cypher.CypherParser.OC_PatternPartContext;
 import org.dashjoin.util.cypher.CypherParser.OC_ReturnContext;
 import org.dashjoin.util.cypher.CypherParser.OC_VariableContext;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * Represents an OpenCypher query, where a small subset of the language is supported.
@@ -350,6 +350,10 @@ public class OpenCypherQuery {
     for (AbstractDatabase db : service.getConfig().getDatabases())
       dbs.put(db.name, db);
 
+    if (context.name == null)
+      throw new Exception("Cannot infer type of " + context
+          + ". Please specify the table via :``dj/database/table``");
+
     // compute starting context nodes
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
@@ -436,7 +440,9 @@ public class OpenCypherQuery {
           for (Origin o : data.incoming(sc, table[1], table[2],
               "" + row.get(pk(dbs.get(table[1]), table[2])), 0, 100)) {
             Map<String, Object> lookup =
-                data.read(sc, o.id.database, o.id.table, "" + o.id.pk.get(0));
+                o.id.pk.size() == 1 ? data.read(sc, o.id.database, o.id.table, "" + o.id.pk.get(0))
+                    : data.read(sc, o.id.database, o.id.table, "" + o.id.pk.get(0),
+                        "" + o.id.pk.get(1));
             if (!checkContext(ctx, "dj/" + o.id.database + "/" + o.id.table))
               return;
             incRes.add(new Struct(lookup, o.fk, ctx.name));
