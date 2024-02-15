@@ -138,7 +138,7 @@ public class OpenCypherQuery {
         variable = s.trim();
       else {
         variable = s.split(":")[0].trim();
-        name = s.substring(variable.length() + 1);
+        name = s.substring(s.split(":")[0].length() + 1).trim();
         if (name.startsWith("`") && name.endsWith("`")) {
           name = name.substring(1, name.length() - 1);
           nameEscaped = true;
@@ -148,7 +148,7 @@ public class OpenCypherQuery {
 
     @Override
     public String toString() {
-      String kv = key != null ? "{" + key + ": " + value + "}" : "";
+      String kv = key != null ? " {" + key + ": " + value + "}" : "";
       String ft = "";
       if (star)
         if (from == null && to == null)

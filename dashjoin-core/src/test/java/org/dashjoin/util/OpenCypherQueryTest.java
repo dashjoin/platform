@@ -2,8 +2,6 @@ package org.dashjoin.util;
 
 import java.util.List;
 import java.util.Map;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.Services;
@@ -14,6 +12,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 
 @QuarkusTest
 public class OpenCypherQueryTest {
@@ -35,8 +35,16 @@ public class OpenCypherQueryTest {
     eq("MATCH (var:A1_B) RETURN var");
     eq("MATCH (var:`dj/rdf4j/http:%2F%2Fex.org/urn:A`) RETURN var");
     eq("MATCH (nicole:Actor {name: $parameter})-[:ACTED_IN]->(movie:Movie) RETURN movie");
-    eq("MATCH (john:Person {name: \"John\"})-[:friend *1..2]->(friend: Person) RETURN friend.name, friend.age");
+    eq("MATCH (john:Person {name: \"John\"})-[:friend*1..2]->(friend:Person) RETURN friend.name, friend.age");
     eq("MATCH (bob:User)-[:IN*0..]->(group)-[:AXO]->(res1)-[:HAS*0..]->(res2) RETURN count(*)");
+  }
+
+  @Test
+  public void testWhitespace() throws Exception {
+    OpenCypherQuery q =
+        new OpenCypherQuery("MATCH ( prj : `dj/junit/PRJ`)<-[rel]-(emp)RETURN emp.NAME", null);
+    Assertions.assertEquals("MATCH (prj:`dj/junit/PRJ`)<-[rel]-(emp) RETURN emp.NAME",
+        q.toString());
   }
 
   void eq(String query) throws Exception {
@@ -59,7 +67,7 @@ public class OpenCypherQueryTest {
     edge("[*..5]");
     edge("[*3..]");
     edge("[*3..5]");
-    edge("[a:`b/c` *3..5]");
+    edge("[a:`b/c`*3..5]");
   }
 
   @Test
