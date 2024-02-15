@@ -357,6 +357,9 @@ public class OpenCypherQuery {
       throw new Exception("Cannot infer type of " + context
           + ". Please specify the table via :``dj/database/table``");
 
+    if (!context.name.contains("/"))
+      context.name = guessTable(context.name);
+
     // compute starting context nodes
     String[] table = Escape.parseTableID(context.name);
     for (Map<String, Object> row : data.all(sc, table[1], table[2], null, null, null, false,
@@ -538,6 +541,14 @@ public class OpenCypherQuery {
     for (Property p : db.tables.get(table).properties.values())
       if (p.pkpos != null)
         return p.name;
+    return null;
+  }
+
+  String guessTable(String table) {
+    for (AbstractDatabase db : dbs.values())
+      for (org.dashjoin.model.Table t : db.tables.values())
+        if (t.name.equals(table))
+          return t.ID;
     return null;
   }
 }
