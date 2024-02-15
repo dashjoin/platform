@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.service.Data;
@@ -296,7 +297,8 @@ public class OpenCypherQuery {
         } else
           rel = rel.substring(2, rel.length() - 1);
         c.edge = new Table(rel, true);
-        c.table = new Table(ctx.getChild(1).getText(), false);
+        int index = ctx.getChild(1) instanceof TerminalNode ? 2 : 1;
+        c.table = new Table(ctx.getChild(index).getText(), false);
         links.add(c);
       }
 
