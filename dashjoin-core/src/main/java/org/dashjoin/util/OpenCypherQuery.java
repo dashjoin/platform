@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -365,6 +366,9 @@ public class OpenCypherQuery {
 
     if (!context.name.contains("/"))
       context.name = guessTable(context.name);
+    for (Chain link : links)
+      if (link.table.name != null && !link.table.name.contains("/"))
+        link.table.name = guessTable(link.table.name);
 
     // compute starting context nodes
     String[] table = Escape.parseTableID(context.name);
@@ -454,6 +458,10 @@ public class OpenCypherQuery {
         }
       } else {
         if (link.edge.name == null) {
+
+          if (link.edge.star || link.edge.from != null || link.edge.to != null)
+            throw new Exception("Not supported: " + link.edge);
+
           // incoming, no prop specified, call data.incoming
           for (Origin o : data.incoming(sc, table[1], table[2],
               "" + row.get(pk(dbs.get(table[1]), table[2])), 0, 100)) {
@@ -503,6 +511,46 @@ public class OpenCypherQuery {
         step(service, data, sc, ctx, new LinkedHashMap<>(vars), path, row, linkIndex + 1);
       }
     }
+  }
+
+  /**
+   * traverse n steps
+   */
+  List<List<Map<String, Object>>> traverse(Data data, SecurityContext sc, String database,
+      String table, String id, String fk, int steps) throws Exception {
+    String pk = pk(dbs.get(database), table);
+    if (steps == 1)
+      return traverse(data, sc, database, table, id, fk).stream().map(o -> Arrays.asList(o))
+          .collect(Collectors.toList());
+    else {
+      List<List<Map<String, Object>>> res = new ArrayList<>();
+      List<List<Map<String, Object>>> rec = traverse(data, sc, database, table, id, fk, steps - 1);
+      for (List<Map<String, Object>> row : rec)
+        for (Map<String, Object> o : traverse(data, sc, database, table,
+            "" + row.get(row.size() - 1).get(pk), fk))
+          res.add(concat(row, o));
+      return res;
+    }
+  }
+
+  List<Map<String, Object>> concat(List<Map<String, Object>> row, Map<String, Object> o) {
+    List<Map<String, Object>> res = new ArrayList<>(row);
+    res.add(o);
+    return res;
+  }
+
+  /**
+   * traverse results is list of objects
+   */
+  @SuppressWarnings("unchecked")
+  List<Map<String, Object>> traverse(Data data, SecurityContext sc, String database, String table,
+      String id, String fk) throws Exception {
+    Object res = data.traverse(sc, database, table, id, fk);
+    if (res instanceof List)
+      return (List<Map<String, Object>>) res;
+    if (res instanceof Map)
+      return Arrays.asList((Map<String, Object>) res);
+    return Arrays.asList();
   }
 
   boolean checkContext(VariableName ctx, String ref) {
