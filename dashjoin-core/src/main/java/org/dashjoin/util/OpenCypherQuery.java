@@ -514,6 +514,23 @@ public class OpenCypherQuery {
   }
 
   /**
+   * traverse from...to steps
+   */
+  List<List<Map<String, Object>>> traverse(Data data, SecurityContext sc, String database,
+      String table, String id, String fk, Integer from, Integer to) throws Exception {
+
+    if (from == null)
+      from = 1;
+    if (to == null)
+      to = 10;
+
+    List<List<Map<String, Object>>> res = new ArrayList<>();
+    for (int i = from; i <= to; i++)
+      res.addAll(traverse(data, sc, database, table, id, fk, i));
+    return res;
+  }
+
+  /**
    * traverse n steps
    */
   List<List<Map<String, Object>>> traverse(Data data, SecurityContext sc, String database,
