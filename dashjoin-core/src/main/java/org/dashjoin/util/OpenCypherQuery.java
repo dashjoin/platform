@@ -387,7 +387,7 @@ public class OpenCypherQuery {
       if (pathVariable != null)
         vars.put(pathVariable, path);
 
-      step(service, data, sc, context, new LinkedHashMap<>(vars), path, row, 0);
+      step(service, data, sc, context, new LinkedHashMap<>(vars), row, 0);
     }
     return res;
   }
@@ -409,8 +409,7 @@ public class OpenCypherQuery {
 
   @SuppressWarnings("unchecked")
   void step(Services service, Data data, SecurityContext sc, VariableName ctx,
-      Map<String, Object> vars, Map<String, Object> path, Map<String, Object> row, int linkIndex)
-      throws Exception {
+      Map<String, Object> vars, Map<String, Object> row, int linkIndex) throws Exception {
 
     // parse context metadata
     String[] table = Escape.parseTableID(ctx.name);
@@ -506,9 +505,13 @@ public class OpenCypherQuery {
             MapUtil.of("_dj_edge", i.linkEdgeName, "_dj_outbound", link.left2right);
         vars.put(link.edge.variable, edge);
 
-        ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
+        if (pathVariable != null) {
+          Map<String, Object> path = (Map<String, Object>) vars.get(pathVariable);
+          ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
+        }
+
         ctx.name = i.ctxName;
-        step(service, data, sc, ctx, new LinkedHashMap<>(vars), path, row, linkIndex + 1);
+        step(service, data, sc, ctx, new LinkedHashMap<>(vars), row, linkIndex + 1);
       }
     }
   }
