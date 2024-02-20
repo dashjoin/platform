@@ -395,12 +395,18 @@ public class OpenCypherQuery {
    */
   static class Struct {
     Struct(Map<String, Object> i, String linkEdgeName, VariableName ctx) {
-      this.i = i;
+      this.list = Arrays.asList(i);
       this.linkEdgeName = linkEdgeName;
       this.ctxName = ctx.ref;
     }
 
-    Map<String, Object> i;
+    Struct(List<Map<String, Object>> list, String linkEdgeName, VariableName ctx) {
+      this.list = list;
+      this.linkEdgeName = linkEdgeName;
+      this.ctxName = ctx.ref;
+    }
+
+    List<Map<String, Object>> list;
     String linkEdgeName;
     String ctxName;
   }
@@ -433,8 +439,16 @@ public class OpenCypherQuery {
                 continue;
               List<String> pks = pks(dbs.get(table[1]), table[2]);
               if (pks.size() == 1)
-                incRes.add(new Struct((Map<String, Object>) data.traverse(sc, table[1], table[2],
-                    "" + row.get(pks.get(0)), p.name), p.name, ctx));
+                if (link.edge.star)
+                  for (List<Map<String, Object>> x : traverse(data, sc, table[1], table[2],
+                      "" + row.get(pks.get(0)), p.name, link.edge.from, link.edge.to)) {
+                    for (Map<String, Object> xx : x)
+                      addResource(table[1], table[2], xx);
+                    incRes.add(new Struct(x, p.name, ctx));
+                  }
+                else
+                  incRes.add(new Struct((Map<String, Object>) data.traverse(sc, table[1], table[2],
+                      "" + row.get(pks.get(0)), p.name), p.name, ctx));
               else
                 incRes
                     .add(new Struct(
@@ -484,8 +498,11 @@ public class OpenCypherQuery {
       }
       for (Struct i : incRes) {
 
+        // last element of solution path
+        Map<String, Object> last = i.list.get(i.list.size() - 1);
+
         // omit nulls
-        if (i.i == null)
+        if (last == null)
           continue;
 
         // check condition
@@ -493,11 +510,11 @@ public class OpenCypherQuery {
           String val = link.table.value;
           if (val.startsWith("'") && val.endsWith("'"))
             val = val.substring(1, val.length() - 1);
-          if (!("" + i.i.get(link.table.key)).equals(val))
+          if (!("" + last.get(link.table.key)).equals(val))
             continue;
         }
 
-        row = i.i;
+        row = last;
         vars.put(link.table.variable, row);
 
         Map<String, Object> edge =
@@ -506,8 +523,8 @@ public class OpenCypherQuery {
 
         // ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
         ctx.name = i.ctxName;
-        step(service, data, sc, ctx, new LinkedHashMap<>(vars),
-            addStep(path, MapUtil.of("edge", edge, "end", row)), row, linkIndex + 1);
+        step(service, data, sc, ctx, new LinkedHashMap<>(vars), addStep(path, edge, i.list), row,
+            linkIndex + 1);
       }
     }
   }
@@ -515,11 +532,13 @@ public class OpenCypherQuery {
   /**
    * clone the path variable and add the step
    */
-  Map<String, Object> addStep(Map<String, Object> path, Map<String, Map<String, Object>> step) {
+  Map<String, Object> addStep(Map<String, Object> path, Map<String, Object> edge,
+      List<Map<String, Object>> list) {
     path = new LinkedHashMap<>(path);
     @SuppressWarnings("unchecked")
     List<Object> steps = new ArrayList<>((List<Object>) path.get("steps"));
-    steps.add(step);
+    for (Object step : list)
+      steps.add(MapUtil.of("edge", edge, "end", step));
     path.put("steps", steps);
     return path;
   }
