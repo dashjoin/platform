@@ -384,10 +384,8 @@ public class OpenCypherQuery {
 
       // initialize path variable
       Map<String, Object> path = MapUtil.of("start", row, "steps", new ArrayList<>());
-      if (pathVariable != null)
-        vars.put(pathVariable, path);
 
-      step(service, data, sc, context, new LinkedHashMap<>(vars), row, 0);
+      step(service, data, sc, context, new LinkedHashMap<>(vars), path, row, 0);
     }
     return res;
   }
@@ -409,7 +407,8 @@ public class OpenCypherQuery {
 
   @SuppressWarnings("unchecked")
   void step(Services service, Data data, SecurityContext sc, VariableName ctx,
-      Map<String, Object> vars, Map<String, Object> row, int linkIndex) throws Exception {
+      Map<String, Object> vars, Map<String, Object> path, Map<String, Object> row, int linkIndex)
+      throws Exception {
 
     // parse context metadata
     String[] table = Escape.parseTableID(ctx.name);
@@ -418,7 +417,7 @@ public class OpenCypherQuery {
 
     if (linkIndex == links.size())
       // solution found
-      res.add(project(vars));
+      res.add(project(vars, path));
     else {
       Chain link = links.get(linkIndex);
       ctx = link.table.getVariableName();
@@ -505,15 +504,24 @@ public class OpenCypherQuery {
             MapUtil.of("_dj_edge", i.linkEdgeName, "_dj_outbound", link.left2right);
         vars.put(link.edge.variable, edge);
 
-        if (pathVariable != null) {
-          Map<String, Object> path = (Map<String, Object>) vars.get(pathVariable);
-          ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
-        }
-
+        // ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
         ctx.name = i.ctxName;
-        step(service, data, sc, ctx, new LinkedHashMap<>(vars), row, linkIndex + 1);
+        step(service, data, sc, ctx, new LinkedHashMap<>(vars),
+            addStep(path, MapUtil.of("edge", edge, "end", row)), row, linkIndex + 1);
       }
     }
+  }
+
+  /**
+   * clone the path variable and add the step
+   */
+  Map<String, Object> addStep(Map<String, Object> path, Map<String, Map<String, Object>> step) {
+    path = new LinkedHashMap<>(path);
+    @SuppressWarnings("unchecked")
+    List<Object> steps = new ArrayList<>((List<Object>) path.get("steps"));
+    steps.add(step);
+    path.put("steps", steps);
+    return path;
   }
 
   /**
@@ -587,13 +595,16 @@ public class OpenCypherQuery {
    * given a variable binding map, evaluates the "ret" projection
    */
   @SuppressWarnings("unchecked")
-  Map<String, Object> project(Map<String, Object> vars) {
+  Map<String, Object> project(Map<String, Object> vars, Map<String, Object> path) {
     Map<String, Object> projected = new LinkedHashMap<>();
     for (List<String> var : ret) {
       Object current = vars;
       for (String p : var) {
         if (current instanceof Map)
-          current = ((Map<String, Object>) current).get(p);
+          if (p.equals(pathVariable))
+            current = path;
+          else
+            current = ((Map<String, Object>) current).get(p);
         else
           current = null;
       }

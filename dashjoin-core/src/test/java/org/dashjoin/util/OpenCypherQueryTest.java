@@ -73,12 +73,13 @@ public class OpenCypherQueryTest {
   @Test
   public void testProject() throws Exception {
     OpenCypherQuery q = new OpenCypherQuery("MATCH (a:B) RETURN a, a.b, a.b.c", null);
-    Assertions.assertEquals("{a=null, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of()));
-    Assertions.assertEquals("{a=1, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of("a", 1)));
+    Assertions.assertEquals("{a=null, a.b=null, a.b.c=null}", "" + q.project(MapUtil.of(), null));
+    Assertions.assertEquals("{a=1, a.b=null, a.b.c=null}",
+        "" + q.project(MapUtil.of("a", 1), null));
     Assertions.assertEquals("{a={b=1}, a.b=1, a.b.c=null}",
-        "" + q.project(MapUtil.of("a", MapUtil.of("b", 1))));
+        "" + q.project(MapUtil.of("a", MapUtil.of("b", 1)), null));
     Assertions.assertEquals("{a={b={c=1}}, a.b={c=1}, a.b.c=1}",
-        "" + q.project(MapUtil.of("a", MapUtil.of("b", MapUtil.of("c", 1)))));
+        "" + q.project(MapUtil.of("a", MapUtil.of("b", MapUtil.of("c", 1))), null));
   }
 
   void table(String s) {
