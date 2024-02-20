@@ -365,7 +365,8 @@ public class OpenCypherQuery {
           + ". Please specify the table via :``dj/database/table``");
 
     if (!context.name.contains("/"))
-      context.name = guessTable(context.name);
+      if (guessTable(context.name) != null)
+        context.name = guessTable(context.name);
     for (Chain link : links)
       if (link.table.name != null && !link.table.name.contains("/"))
         link.table.name = guessTable(link.table.name);
