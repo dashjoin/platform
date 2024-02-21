@@ -194,10 +194,12 @@ public class OpenCypherQuery {
     /**
      * incoming or outgoing
      */
-    public boolean left2right;
+    public Boolean left2right;
 
     @Override
     public String toString() {
+      if (left2right == null)
+        return "-" + edge + "-" + table;
       if (left2right)
         return "-" + edge + "->" + table;
       else
@@ -301,8 +303,11 @@ public class OpenCypherQuery {
         if (rel.endsWith("->")) {
           c.left2right = true;
           rel = rel.substring(1, rel.length() - 2);
-        } else
+        } else if (rel.startsWith("<-")) {
+          c.left2right = false;
           rel = rel.substring(2, rel.length() - 1);
+        } else
+          rel = rel.substring(1, rel.length() - 1);
         c.edge = new Table(rel, true);
         int index = ctx.getChild(1) instanceof TerminalNode ? 2 : 1;
         c.table = new Table(ctx.getChild(index).getText(), false);
@@ -395,21 +400,25 @@ public class OpenCypherQuery {
    * holds potential recursion data
    */
   static class Struct {
-    Struct(Map<String, Object> i, String linkEdgeName, VariableName ctx) {
+    Struct(Map<String, Object> i, String linkEdgeName, VariableName ctx, boolean left2right) {
       this.list = Arrays.asList(i);
       this.linkEdgeName = linkEdgeName;
       this.ctxName = ctx.ref;
+      this.left2right = left2right;
     }
 
-    Struct(List<Map<String, Object>> list, String linkEdgeName, VariableName ctx) {
+    Struct(List<Map<String, Object>> list, String linkEdgeName, VariableName ctx,
+        boolean left2right) {
       this.list = list;
       this.linkEdgeName = linkEdgeName;
       this.ctxName = ctx.ref;
+      this.left2right = left2right;
     }
 
     List<Map<String, Object>> list;
     String linkEdgeName;
     String ctxName;
+    boolean left2right;
   }
 
   @SuppressWarnings("unchecked")
@@ -431,7 +440,7 @@ public class OpenCypherQuery {
       if (row == null)
         return;
       List<Struct> incRes = new ArrayList<>();
-      if (link.left2right) {
+      if (link.left2right == null || link.left2right) {
         if (link.edge.name == null) {
           // outgoing link, no rel type specified, check all properties for "ref"
           for (Property p : dbs.get(table[1]).tables.get(table[2]).properties.values())
@@ -445,17 +454,16 @@ public class OpenCypherQuery {
                       "" + row.get(pks.get(0)), p.name, link.edge.from, link.edge.to)) {
                     for (Map<String, Object> xx : x)
                       addResource(table[1], table[2], xx);
-                    incRes.add(new Struct(x, p.name, ctx));
+                    incRes.add(new Struct(x, p.name, ctx, true));
                   }
                 else
                   incRes.add(new Struct((Map<String, Object>) data.traverse(sc, table[1], table[2],
-                      "" + row.get(pks.get(0)), p.name), p.name, ctx));
+                      "" + row.get(pks.get(0)), p.name), p.name, ctx, true));
               else
-                incRes
-                    .add(new Struct(
-                        (Map<String, Object>) data.traverse(sc, table[1], table[2],
-                            "" + row.get(pks.get(0)), "" + row.get(pks.get(1)), p.name),
-                        p.name, ctx));
+                incRes.add(new Struct(
+                    (Map<String, Object>) data.traverse(sc, table[1], table[2],
+                        "" + row.get(pks.get(0)), "" + row.get(pks.get(1)), p.name),
+                    p.name, ctx, true));
             }
         } else {
           // outgoing link with prop, do a simple traverse
@@ -467,9 +475,10 @@ public class OpenCypherQuery {
             incRes.add(new Struct(
                 (Map<String, Object>) data.traverse(sc, table[1], table[2],
                     "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name),
-                link.edge.name, ctx));
+                link.edge.name, ctx, true));
         }
-      } else {
+      }
+      if (link.left2right == null || !link.left2right) {
         if (link.edge.name == null) {
 
           if (link.edge.star || link.edge.from != null || link.edge.to != null)
@@ -485,7 +494,7 @@ public class OpenCypherQuery {
             if (!checkContext(ctx, "dj/" + o.id.database + "/" + o.id.table))
               ;
             else
-              incRes.add(new Struct(lookup, o.fk, ctx));
+              incRes.add(new Struct(lookup, o.fk, ctx, false));
           }
         } else {
           // incoming, prop specified, do a traverse (which might yield several results)
@@ -494,7 +503,7 @@ public class OpenCypherQuery {
           else
             for (Map<String, Object> x : (List<Map<String, Object>>) data.traverse(sc, table[1],
                 table[2], "" + row.get(pk(dbs.get(table[1]), table[2])), link.edge.name))
-              incRes.add(new Struct(x, link.edge.name, ctx));
+              incRes.add(new Struct(x, link.edge.name, ctx, false));
         }
       }
       for (Struct i : incRes) {
@@ -519,7 +528,7 @@ public class OpenCypherQuery {
         vars.put(link.table.variable, row);
 
         Map<String, Object> edge =
-            MapUtil.of("_dj_edge", i.linkEdgeName, "_dj_outbound", link.left2right);
+            MapUtil.of("_dj_edge", i.linkEdgeName, "_dj_outbound", i.left2right);
         vars.put(link.edge.variable, edge);
 
         // ((List<Object>) path.get("steps")).add(MapUtil.of("edge", edge, "end", row));
