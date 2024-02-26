@@ -36,7 +36,11 @@ public class JSONFileDatabase extends JSONDatabase {
   Services services;
 
   @Inject
-  Home home;
+  protected Home home;
+
+  protected File getFile(String path) {
+    return home.getFile(path);
+  }
 
   /**
    * get json file handle from table and id
@@ -50,14 +54,14 @@ public class JSONFileDatabase extends JSONDatabase {
    */
   File file(Table s, Map<String, Object> search, String ext) throws UnsupportedEncodingException {
     String path = "model/" + s.name + "/" + Escape.filename("" + search.get("ID")) + "." + ext;
-    return home.getFile(path);
+    return getFile(path);
   }
 
   /**
    * get list of secondary file handles from table and id
    */
   List<File> secondaryFiles(Table s, Object id) throws UnsupportedEncodingException {
-    File[] files = home.getFile("model/" + s.name).listFiles();
+    File[] files = getFile("model/" + s.name).listFiles();
     return secondaryFiles(files, id);
   }
 
@@ -84,7 +88,7 @@ public class JSONFileDatabase extends JSONDatabase {
     String[] parts = info.query.split("/");
     if (parts.length == 1) {
       String path = "model/" + parts[0];
-      File[] files = home.getFile(path).listFiles();
+      File[] files = getFile(path).listFiles();
       if (files != null) {
         // Use the same order independent of file system or OS
         Arrays.sort(files, NameFileComparator.NAME_INSENSITIVE_COMPARATOR);

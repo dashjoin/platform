@@ -71,6 +71,9 @@ public class PolymorphismDatabase extends JSONDatabase {
         if (!(db instanceof AbstractConfigurableFunction))
           continue;
 
+      if ("com.dashjoin.service.playground.PlaygroundSQL".equals(db.getClass().getName()))
+        continue;
+
       // merge arrays (to preserve case array if field appears in multiple implementations)
       Map<String, Object> map = jsonSchema(db.getClass());
 
