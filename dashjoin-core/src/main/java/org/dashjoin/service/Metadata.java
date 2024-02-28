@@ -265,7 +265,13 @@ public class Metadata {
     }
 
     try {
-      return con.getSchema();
+      String res = con.getSchema();
+
+      if (res == null)
+        if (url.startsWith("jdbc:postgresql:"))
+          throw new SQLException("schema must not be null");
+
+      return res;
     } catch (SQLException ignore) {
       for (String part : url.split(";"))
         if (part.startsWith("SCHEMA="))
