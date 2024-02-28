@@ -863,7 +863,8 @@ public class Manage {
       if (inst.getClass().getName().equals("com.dashjoin.service.google.firestore.Firestore"))
         continue;
 
-      if (!(inst instanceof PojoDatabase)) {
+      if (!(inst instanceof PojoDatabase)
+          && !"com.dashjoin.service.playground.PlaygroundSQL".equals(inst.getClass().getName())) {
         Version v = metaInf(inst.getClass(), null, new Version());
         v.name = inst.getClass().getName();
         res.add(v);
