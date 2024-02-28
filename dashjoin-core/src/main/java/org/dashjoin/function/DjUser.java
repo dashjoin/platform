@@ -1,5 +1,8 @@
 package org.dashjoin.function;
 
+import java.security.Principal;
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 /**
  * expose sc.getUserPrincipal().getName() as a function
  */
@@ -7,7 +10,11 @@ public class DjUser extends AbstractEveryoneFunction<Void, String> {
 
   @Override
   public String run(Void arg) throws Exception {
-    return sc.getUserPrincipal().getName();
+    Principal up = sc.getUserPrincipal();
+    if (up instanceof JsonWebToken)
+      return ((JsonWebToken) up).getClaim("email");
+    else
+      return up.getName();
   }
 
   @Override
