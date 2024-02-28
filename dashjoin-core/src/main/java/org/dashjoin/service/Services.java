@@ -59,6 +59,8 @@ public class Services {
 
   final static Cache<String, Config> tenantCache = Caffeine.from(TENANT_CACHE_SPEC).build();
 
+  final static String NULL_KEY = "<<<NULL>>>";
+
   // @Inject
   public TenantManager tenantManager;
 
@@ -73,18 +75,14 @@ public class Services {
    */
   synchronized public Config getConfig() {
     String id = tenantManager.getTenantId();
-    // Cache can't store key==null -> return null
-    if (id == null) {
-      log.fine("TenantID == null : no metadata collection");
-      return null;
-    }
+    String key = id != null ? id : NULL_KEY;
 
-    Config c = tenantCache.getIfPresent(id);
+    Config c = tenantCache.getIfPresent(key);
     if (c == null) {
       c = pojoDatabase();
       // Put the config into the cache
       // Important: metadataCollection() might call getConfig() recursively!
-      tenantCache.put(id, c);
+      tenantCache.put(key, c);
 
       // make sure all DBs are initialized
       log.info("Starting metadata collection for tenant=" + id);
