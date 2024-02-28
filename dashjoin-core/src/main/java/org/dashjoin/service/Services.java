@@ -1,7 +1,5 @@
 package org.dashjoin.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +13,8 @@ import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.service.tenant.DefaultTenantManager;
 import org.dashjoin.service.tenant.TenantManager;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
 import lombok.extern.java.Log;
 
@@ -51,9 +51,13 @@ public class Services {
   }
 
   /**
-   * Tenant cache. TODO: should live with TenantManager
+   * Tenant cache
+   * 
+   * Evicts tenants after timeout, important for long living multi tenant hosting (i.e. PaaS, Playground)
    */
-  static Map<String, Config> tenantConfigs = new HashMap<>();
+  final static String TENANT_CACHE_SPEC = "expireAfterAccess=30m";
+
+  final static Cache<String, Config> tenantCache = Caffeine.from(TENANT_CACHE_SPEC).build();
 
   // @Inject
   public TenantManager tenantManager;
@@ -68,18 +72,19 @@ public class Services {
    * on (e.g. when a DB is defined)
    */
   synchronized public Config getConfig() {
-
-    // if (!multiTenancy) {
-    // if (config == null)
-    // config = pojoDatabase();
-    // return config;
-    // }
-
     String id = tenantManager.getTenantId();
-    Config c = tenantConfigs.get(id);
+    // Cache can't store key==null -> return null
+    if (id == null) {
+      log.fine("TenantID == null : no metadata collection");
+      return null;
+    }
+
+    Config c = tenantCache.getIfPresent(id);
     if (c == null) {
       c = pojoDatabase();
-      tenantConfigs.put(id, c);
+      // Put the config into the cache
+      // Important: metadataCollection() might call getConfig() recursively!
+      tenantCache.put(id, c);
 
       // make sure all DBs are initialized
       log.info("Starting metadata collection for tenant=" + id);
