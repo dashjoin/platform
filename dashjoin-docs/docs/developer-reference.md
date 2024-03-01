@@ -229,9 +229,53 @@ Displays links to related records
 
 Displays a map for a given location. 
 
-* display: expression that results in a location - this value is resolved using the q query parameter of the [Open Streetmap API](https://nominatim.org/release-docs/latest/api/Search/) service. The result can be a single value or an array. One marker is shown for each array element.
+* display: expression that results in a location - this value is resolved using the q query parameter of the [Open Streetmap API](https://nominatim.org/release-docs/latest/api/Search/) service. The expected result structure is explained below
 * css: CSS code to apply to the map
 * card: determines if the map is shown on a card (paper background)
+
+The map can be fed with the following data:
+
+```text
+{
+  center: {lat, lon}   // map center
+  zoom: number         // zoom level where globe=1 and street=15
+  points: [            // array of marker points
+    {
+      address: string  // address where marker is placed or marker coordinates
+      location: {lat, lon}
+      color: string    // marker color
+      radius: number   // marker radius
+      tooltip: any     // additional info to be displayed in tooltip or popup
+      popup: any       // any JSON is displayed like in the display widget
+    }
+  ]
+}
+```
+
+Note that most information is optional. The platform chooses good defaults.
+For instance, you can display a single address with a link to a record page as follows:
+
+```json
+{
+  "points": [
+    {
+      "address": "London",
+      "popup": {
+        "database": "northwind",
+        "table": "CUSTOMERS",
+        "pk": [ "AROUT" ]
+      }
+    }
+  ]
+}
+```
+
+If you would just like to show a marker at London, you can simply pass the string:
+
+```json
+"London"
+```
+
 
 #### [markdown](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
 
