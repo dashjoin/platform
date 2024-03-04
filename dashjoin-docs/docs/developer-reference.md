@@ -310,6 +310,7 @@ Displays query results as a table
 * arguments: optional expression resulting in query arguments
 * graph: specifies whether the query is a graph query
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
+* columns: if no query or expression is specified, this array allows specifying the columns to be projected. Note that this option is only available in Dashjoin Studio
 
 Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
