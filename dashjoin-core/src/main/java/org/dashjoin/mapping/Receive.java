@@ -3,9 +3,9 @@ package org.dashjoin.mapping;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.JsonSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * Receives data which is then transformed and loaded
@@ -15,6 +15,8 @@ public class Receive extends AbstractMapping<Object> {
 
   private static final ObjectMapper om = new ObjectMapper();
 
+  @JsonSchema(widget = "textarea", title = "Sample data for testing the mapping",
+      style = {"width", "400px", "font-family", "monospace"})
   public String sample;
 
   @Override
