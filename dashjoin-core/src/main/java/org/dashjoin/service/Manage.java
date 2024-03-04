@@ -867,6 +867,12 @@ public class Manage {
           && !"com.dashjoin.service.playground.PlaygroundSQL".equals(inst.getClass().getName())) {
         Version v = metaInf(inst.getClass(), null, new Version());
         v.name = inst.getClass().getName();
+
+        if (inst instanceof SQLDatabase)
+          v.title = "dashjoin-core";
+        if (inst instanceof RemoteDatabase)
+          v.title = "dashjoin-core";
+
         res.add(v);
       }
     }
@@ -886,6 +892,10 @@ public class Manage {
     List<FunctionVersion> res = new ArrayList<>();
     for (Function<?, ?> inst : SafeServiceLoader.load(Function.class)) {
       FunctionVersion v = (FunctionVersion) metaInf(inst.getClass(), null, new FunctionVersion());
+
+      if ("dashjoin-arangodb".equals(v.title))
+        v.title = "dashjoin-core";
+
       if (inst instanceof AbstractConfigurableFunction) {
         v.function = "$call(...)";
         // class name only needed for config functions
@@ -893,16 +903,6 @@ public class Manage {
       } else
         v.function = "$" + inst.getID();
       v.type = inst.getType();
-      res.add(v);
-    }
-    for (String f : new String[] {"$read", "$create", "$update", "$traverse", "$delete", "$query",
-        "$call", "$incoming", "$all", "$queryGraph"}) {
-      FunctionVersion v = (FunctionVersion) metaInf(getClass(), null, new FunctionVersion());
-      v.function = f;
-      if (f.equals("$create") || f.equals("$update") || f.equals("$delete"))
-        v.type = "write";
-      else
-        v.type = "read";
       res.add(v);
     }
     return res;
