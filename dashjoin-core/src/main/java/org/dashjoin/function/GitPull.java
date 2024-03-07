@@ -8,6 +8,8 @@ public class GitPull extends AbstractFunction<Void, Void> {
 
   @Override
   public Void run(Void arg) throws Exception {
+    if (!sc.isUserInRole("admin"))
+      throw new Exception("must be admin to perform Git operations");
     try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
       git.pull().call();
       return null;

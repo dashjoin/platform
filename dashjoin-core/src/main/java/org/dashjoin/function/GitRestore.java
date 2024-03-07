@@ -10,6 +10,8 @@ public class GitRestore extends AbstractFunction<String, Void> {
 
   @Override
   public Void run(String arg) throws Exception {
+    if (!sc.isUserInRole("admin"))
+      throw new Exception("must be admin to perform Git operations");
     if (arg == null)
       throw new IllegalArgumentException("Arguments required: $gitRestore(path)");
     try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
