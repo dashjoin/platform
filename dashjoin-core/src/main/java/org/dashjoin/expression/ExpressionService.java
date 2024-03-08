@@ -237,7 +237,6 @@ public class ExpressionService {
         return res;
       } catch (JException e) {
         // intercept the exception
-        // TODO: add getter to jsonata
         JException je = (JException) e;
         if ("T0410".equals(je.getError())) {
           for (org.dashjoin.function.Function f : ServiceLoader

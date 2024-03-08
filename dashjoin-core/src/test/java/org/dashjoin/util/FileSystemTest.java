@@ -2,12 +2,17 @@ package org.dashjoin.util;
 
 import java.io.File;
 import java.net.URL;
+import org.dashjoin.service.Services;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 public class FileSystemTest {
+
+  @Inject
+  Services services;
 
   @Test
   public void testCheckFileAccess() throws Exception {
@@ -48,21 +53,22 @@ public class FileSystemTest {
   @Test
   public void testJdbcUrl() throws Exception {
 
-    System.out.println(FileSystem.getJdbcUrl("jdbc:h2:mem:test"));
+    System.out.println(FileSystem.getJdbcUrl(services, "jdbc:h2:mem:test"));
 
-    System.out.println(FileSystem.getJdbcUrl("jdbc:sqlite:dashjoin-demo.db"));
+    System.out.println(FileSystem.getJdbcUrl(services, "jdbc:sqlite:dashjoin-demo.db"));
 
-    System.out.println(FileSystem.getJdbcUrl("jdbc:SQLite:dashjoin-demo.db"));
+    System.out.println(FileSystem.getJdbcUrl(services, "jdbc:SQLite:dashjoin-demo.db"));
 
     Assertions.assertThrows(RuntimeException.class, () -> {
-      System.out.println(FileSystem.getJdbcUrl("jdbc:h2:../TestDataBase"));
+      System.out.println(FileSystem.getJdbcUrl(services, "jdbc:h2:../TestDataBase"));
     });
 
     // tmp folder is ok (for appengine)
-    System.out.println(FileSystem.getJdbcUrl("jdbc:h2:/tmp/TestDataBase"));
-    System.out.println(FileSystem.getJdbcUrl("jdbc:sqlite:/tmp/sub/dashjoin-demo.db"));
+    System.out.println(FileSystem.getJdbcUrl(services, "jdbc:h2:/tmp/TestDataBase"));
+    System.out.println(FileSystem.getJdbcUrl(services, "jdbc:sqlite:/tmp/sub/dashjoin-demo.db"));
 
-    System.out.println(FileSystem.getJdbcUrl("jdbc:postgresql://your_host:5432/your_database"));
+    System.out
+        .println(FileSystem.getJdbcUrl(services, "jdbc:postgresql://your_host:5432/your_database"));
   }
 
   @Test
