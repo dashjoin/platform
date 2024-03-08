@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.dashjoin.util.Home;
 import org.dashjoin.util.MapUtil;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
@@ -17,7 +16,7 @@ public class GitStatus extends AbstractFunction<Void, Object> {
 
   @Override
   public Object run(Void arg) throws Exception {
-    try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
+    try (Git git = new Git(new FileRepository(services.getTenantHome() + "/.git"))) {
       List<Map<String, Object>> res = new ArrayList<>();
       Status status = git.status().call();
 
@@ -41,7 +40,7 @@ public class GitStatus extends AbstractFunction<Void, Object> {
   }
 
   String diff(Git git, String path) throws GitAPIException {
-    if (new File(Home.get().getHome() + '/' + path).length() > 100l * 1024l)
+    if (new File(services.getTenantHome() + '/' + path).length() > 100l * 1024l)
       return null;
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     git.diff().setOutputStream(out).setPathFilter(PathFilter.create(path)).call();

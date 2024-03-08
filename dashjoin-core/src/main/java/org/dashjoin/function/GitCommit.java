@@ -3,7 +3,6 @@ package org.dashjoin.function;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import org.dashjoin.util.Home;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -24,7 +23,7 @@ public class GitCommit extends AbstractVarArgFunction<Void> {
     List paths = (List) args.get(1);
     if (message == null || paths == null || paths.isEmpty())
       throw new IllegalArgumentException("Arguments required: $gitCommit(message, [paths])");
-    try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
+    try (Git git = new Git(new FileRepository(services.getTenantHome() + "/.git"))) {
       for (Object s : paths)
         git.add().addFilepattern("" + s).call();
       git.commit().setMessage(message).call();

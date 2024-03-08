@@ -16,6 +16,14 @@
                     "Commit": "($message := $prompt(\"Enter commit message\"); $gitCommit($message, [selected.path]))"
                 },
                 "widget": "actionTable"
+            },
+            {
+                "title": "Install Apps from GitHub",
+                "expression": "$openJson(\"https://api.github.com/orgs/dashjoin/repos\").name.(\n  \"https://raw.githubusercontent.com/dashjoin/\" & $ & \"/main/dashjoin.json\";\n)[$urlExists($)].$openJson($).{\n  \"name\": name,\n  \"url\": url\n}",
+                "properties": {
+                    "install": "$gitClone(selected.url)"
+                },
+                "widget": "actionTable"
             }
         ]
     }

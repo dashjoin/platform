@@ -8,4 +8,8 @@ public interface TenantManager {
   void setTenantId(String tenant);
 
   String getTenantId();
+
+  default String getHomePrefix() {
+    return "";
+  }
 }

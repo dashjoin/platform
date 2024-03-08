@@ -1,7 +1,6 @@
 package org.dashjoin.function;
 
 import java.io.File;
-import org.dashjoin.util.Home;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -14,10 +13,10 @@ public class GitRestore extends AbstractFunction<String, Void> {
       throw new Exception("must be admin to perform Git operations");
     if (arg == null)
       throw new IllegalArgumentException("Arguments required: $gitRestore(path)");
-    try (Git git = new Git(new FileRepository(Home.get().getHome() + "/.git"))) {
+    try (Git git = new Git(new FileRepository(services.getTenantHome() + "/.git"))) {
       Status status = git.status().addPath(arg).call();
       if (status.getUntracked().contains(arg))
-        new File(Home.get().getHome() + "/" + arg).delete();
+        new File(services.getTenantHome() + "/" + arg).delete();
       else
         git.checkout().addPath(arg).call();
       return null;

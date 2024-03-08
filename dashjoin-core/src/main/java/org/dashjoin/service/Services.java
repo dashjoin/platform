@@ -5,17 +5,18 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.expression.ExpressionPreviewService;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.service.tenant.DefaultTenantManager;
 import org.dashjoin.service.tenant.TenantManager;
+import org.dashjoin.util.Home;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.java.Log;
 
 /**
@@ -53,7 +54,8 @@ public class Services {
   /**
    * Tenant cache
    * 
-   * Evicts tenants after timeout, important for long living multi tenant hosting (i.e. PaaS, Playground)
+   * Evicts tenants after timeout, important for long living multi tenant hosting (i.e. PaaS,
+   * Playground)
    */
   final static String TENANT_CACHE_SPEC = "expireAfterAccess=30m";
 
@@ -119,6 +121,13 @@ public class Services {
   public String getDashjoinID() {
     // TODO: hard coded string
     return "dj";
+  }
+
+  /**
+   * Home folder with tenant prefix appended in playground mode
+   */
+  public String getTenantHome() {
+    return Home.get().getHome() + tenantManager.getHomePrefix();
   }
 
   /**
