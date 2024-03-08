@@ -224,7 +224,7 @@ public class SQLDatabase extends AbstractDatabase {
     url = url.trim();
 
     BasicDataSource ds = new BasicDataSource();
-    ds.setUrl(FileSystem.getJdbcUrl(url));
+    ds.setUrl(FileSystem.getJdbcUrl(services, url));
     ds.setUsername(username == null ? null : username.trim());
     if (url.startsWith("jdbc:jtds")) {
       ds.setDriverClassName("net.sourceforge.jtds.jdbc.Driver");

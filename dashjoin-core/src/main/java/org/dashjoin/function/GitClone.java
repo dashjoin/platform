@@ -38,7 +38,7 @@ public class GitClone extends AbstractFunction<String, String> {
     cloneCommand.call();
 
     log.info("collecting metadata");
-    services.getConfig().getConfigDatabase().connectAndCollectMetadata();
+    services.getConfig().metadataCollection();
 
     log.info("done");
     return "Installation successful - please refresh your browser";

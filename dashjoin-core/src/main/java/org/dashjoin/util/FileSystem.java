@@ -3,6 +3,7 @@ package org.dashjoin.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import org.dashjoin.service.Services;
 
 /**
  * makes sure no file access is allowed except for the upload folder
@@ -62,21 +63,26 @@ public class FileSystem {
     return url;
   }
 
-  public static String getJdbcUrl(String url) throws IOException {
+  static File getFile(Services services, String file) {
+    return new File(services.getTenantHome(), file);
+  }
+
+  public static String getJdbcUrl(Services services, String url) throws IOException {
+
     if (url.toLowerCase().startsWith("jdbc:sqlite:")) {
       String file = url.substring("jdbc:sqlite:".length());
-      checkSQLiteAccess(Home.get().getFile(file));
-      return "jdbc:sqlite:" + Home.get().getFile(file);
+      checkSQLiteAccess(getFile(services, file));
+      return "jdbc:sqlite:" + getFile(services, file);
     }
     if (url.toLowerCase().startsWith("jdbc:h2:") && !url.toLowerCase().startsWith("jdbc:h2:mem:")) {
       String file = url.substring("jdbc:h2:".length());
-      checkSQLiteAccess(Home.get().getFile(file));
-      return "jdbc:h2:" + Home.get().getFile(file);
+      checkSQLiteAccess(getFile(services, file));
+      return "jdbc:h2:" + getFile(services, file);
     }
     if (url.toLowerCase().startsWith("jdbc:ucanaccess://")) {
       String file = url.substring("jdbc:ucanaccess://".length());
-      checkSQLiteAccess(Home.get().getFile(file));
-      return "jdbc:ucanaccess://" + Home.get().getFile(file);
+      checkSQLiteAccess(getFile(services, file));
+      return "jdbc:ucanaccess://" + getFile(services, file);
     }
     return url;
   }
