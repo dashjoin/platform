@@ -67,7 +67,7 @@ function go() {
 
 * **How can I format dates or currency in tables?** This can be done on the database query level. If you're using PostgreSQL for instance, this query will format the "born" and "salary" columns accordingly (assuming their database type is date and int): select to_char(born, 'DD-MON-YYYY'), cast(salary as money) from employee.
 
-* **Why does the browser not show changes performed via an expression called from a button?** You need to check the button option "clearCache" if your expression makes changes to the database. Otherwise, old values might be shown for five minutes.
+* **Why does the browser not show changes performed via an expression called from a button?** You need to include the clearCache function if your expression makes changes to the database. Otherwise, old values might be shown for five minutes.
 
 * **The display widget shows an object as a [material list](https://material.angular.io/components/list/examples). Can I transpose the object such that it is displayed as a two column table with colums key and value?** This can be done using the following JSONata transformation. For each object key, we create an object where key is the current key and value is the key lookup. This array of objects is then shown as a table.
 

@@ -211,6 +211,7 @@ public class ModelTest {
             jsonata.registerFunction("query", x);
             jsonata.registerFunction("call", x);
             jsonata.registerFunction("djSubscription", x);
+            jsonata.registerFunction("clearCache", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {

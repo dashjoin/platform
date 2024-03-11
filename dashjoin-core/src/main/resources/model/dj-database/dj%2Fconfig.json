@@ -834,6 +834,10 @@
         "widget": "page",
         "pageLayout": "1 column",
         "children": [
+			{
+              "display": "$clearCache()",
+              "widget": "display"
+			},
             {
               "widget": "container",
               "title": "Available Functions",
@@ -867,7 +871,7 @@
               },
               {
                 "widget": "display",
-                "display": "{\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis(value.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status}",
+                "display": "($clearCache(); {\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis(value.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status})",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",

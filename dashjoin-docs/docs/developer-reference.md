@@ -642,6 +642,7 @@ refresh | $refresh() | refreshes the screen just (just like hitting the refresh 
 reload | $reload() | reloads the browser page
 log | $log(value) | logs value to the developer console
 navigate | $navigate(url) | points the browser to the URL
+clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
 
 ### Backend Expressions
 
