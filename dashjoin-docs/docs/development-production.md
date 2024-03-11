@@ -286,7 +286,7 @@ In addition to these syntactical checks, it is possible to run JSONata expressio
 
 To setup unit tests in your app, follow these steps:
 
-* Install [Maven](https://maven.apache.org/)
+* Open Dashjoin Studio
 * Copy this [maven project file](https://github.com/dashjoin/dashjoin-demo/blob/main/pom.xml) to your app's root directory
 * Copy this [JUnit test file](https://github.com/dashjoin/dashjoin-demo/blob/main/src/test/java/org/dashjoin/app/AppTest.java) to "src/test/java/org/dashjoin/app"
 * If you would like to test a JSONata expression, create a [JSON test file](https://github.com/dashjoin/dashjoin-demo/blob/main/test.json) that describes the file containing the expression, where the expression is located, which test cases should be run, and which outputs are to be expected. The file is structured as follows:
@@ -310,6 +310,5 @@ To setup unit tests in your app, follow these steps:
 
 To run the unit test:
 
-```
-dashjoin-demo>mvn test
-```
+* Via the VS Code extensions tab, install the [Debugger for Java](https://open-vsx.org/extension/vscjava/vscode-java-debug) and the [Test Runner for Java](https://open-vsx.org/extension/vscjava/vscode-java-test) plugins
+* Press run in the new JUnit tab to run all the tests
