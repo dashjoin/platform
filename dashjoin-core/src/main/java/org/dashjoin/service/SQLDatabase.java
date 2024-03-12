@@ -532,7 +532,8 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws SQLException {
-
+    if (info.query == null)
+      throw new SQLException("Query is empty");
     return query(info, arguments, null);
   }
 
