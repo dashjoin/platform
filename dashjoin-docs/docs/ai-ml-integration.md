@@ -18,8 +18,17 @@ A Notebook consists of a sequence of code blocks that can be run individually vi
 or by pressing CTRL ENTER. The result of the call is also stored in the notebook and displayed below the
 code block.
 
-The default way of displaying data is JSON. You can display the data as a table, on a map,
+The default way of displaying data is JSON. You can display the data as a value, table, on a map,
 or as a chart using the following syntax:
+
+```json
+{
+  "widget": "display",
+  "data": {
+    "img": "https://dashjoin.com/img/fav.png",
+    "width": "32"
+  }
+}```
 
 ```json
 {
