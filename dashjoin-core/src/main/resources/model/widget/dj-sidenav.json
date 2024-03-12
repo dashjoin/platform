@@ -3,6 +3,7 @@
   "layout" : {
     "widget" : "tree",
     "query" : "dj-navigation",
+    "cached" : true,
     "database" : "config",
 	    "readOnly": true
   }

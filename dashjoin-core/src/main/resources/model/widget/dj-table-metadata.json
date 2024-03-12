@@ -37,6 +37,7 @@
         "children": [
           {
             "widget": "display",
+            "cached" : true,
             "display": "{\"database\": \"config\", \"table\": \"dj-database\", \"pk1\": $.value.parent}"
           },
           {
