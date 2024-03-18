@@ -68,7 +68,7 @@ public class FunctionStreamService {
           BufferedReader br = new BufferedReader(r);
           String line;
           while ((line = br.readLine()) != null) {
-            writer.write(line);
+            writer.write(line + "\n");
             writer.flush();
           }
         } catch (Exception e) {
