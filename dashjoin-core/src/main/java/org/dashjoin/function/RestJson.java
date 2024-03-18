@@ -65,6 +65,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   @JsonSchema(title = "Optional HTTP timeout (s)")
   public Integer timeoutSeconds;
 
+  transient boolean stream;
+
   /**
    * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
    * POSTs the arg serialized as JSON. If arg is null, GETs the result.
@@ -112,6 +114,9 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       }
       throw new WebApplicationException(Response.status(response.code()).entity(error).build());
     }
+
+    if (this.stream)
+      return response.body().charStream();
 
     String body = response.body().string();
     return objectMapper.readValue(body, Object.class);
