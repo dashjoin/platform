@@ -1,7 +1,6 @@
 package org.dashjoin.function;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -62,7 +61,7 @@ public class FunctionStreamService {
     StreamingOutput stream = new StreamingOutput() {
       @Override
       public void write(OutputStream out) throws IOException, WebApplicationException {
-        Writer writer = new BufferedWriter(new OutputStreamWriter(out));
+        Writer writer = new OutputStreamWriter(out);
         try {
           Reader r = (Reader) a.run(argument);
           BufferedReader br = new BufferedReader(r);
