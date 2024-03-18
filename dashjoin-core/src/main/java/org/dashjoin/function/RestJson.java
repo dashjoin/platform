@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
@@ -20,8 +21,8 @@ import okhttp3.RequestBody;
  * calls a JSON REST service
  */
 @SuppressWarnings("rawtypes")
-@JsonSchema(required = {"url"},
-    order = {"url", "username", "password", "method", "contentType", "headers", "returnText"})
+@JsonSchema(required = {"url"}, order = {"url", "username", "password", "method", "contentType",
+    "headers", "returnText", "timeoutSeconds"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -61,6 +62,9 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   @JsonSchema(title = "Return the result as raw text")
   public Boolean returnText;
 
+  @JsonSchema(title = "Optional HTTP timeout (s)")
+  public Integer timeoutSeconds;
+
   /**
    * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
    * POSTs the arg serialized as JSON. If arg is null, GETs the result.
@@ -70,6 +74,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   public Object run(Object obj) throws Exception {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     OkHttpClient client = Doc2data.getHttpClient();
+    if (this.timeoutSeconds != null)
+      client = client.newBuilder().readTimeout(this.timeoutSeconds, TimeUnit.SECONDS).build();
     String sv = map == null ? url : (String) Template.replace(url, map, true);
     Request.Builder request = new Request.Builder().url(sv);
     if (username != null)
