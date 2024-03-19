@@ -104,6 +104,12 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     okhttp3.Response response = client.newCall(request.build()).execute();
 
     if (response.code() >= 400) {
+
+      // UI logout out automatically if a 401 is encountered (use 500 instead)
+      if (response.code() == 401)
+        throw new WebApplicationException(
+            Response.status(500).entity("HTTP 401: Unauhtorized").build());
+
       String error = "" + response.body().string();
       try {
         Map<String, Object> s =
