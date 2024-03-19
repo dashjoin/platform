@@ -126,7 +126,8 @@ public class OpenCypherQuery {
       }
       if (s.endsWith("*")) {
         star = true;
-        s = "";
+        int st = s.lastIndexOf('*');
+        s = s.substring(0, st);
       } else if (s.contains("*")) {
         star = true;
         int st = s.lastIndexOf('*');
@@ -479,10 +480,11 @@ public class OpenCypherQuery {
         }
       }
       if (link.left2right == null || !link.left2right) {
-        if (link.edge.name == null) {
 
-          if (link.edge.star || link.edge.from != null || link.edge.to != null)
-            throw new Exception("Not supported: " + link.edge);
+        if (link.edge.star || link.edge.from != null || link.edge.to != null)
+          throw new Exception("Not supported: " + link.edge);
+
+        if (link.edge.name == null) {
 
           // incoming, no prop specified, call data.incoming
           for (Origin o : data.incoming(sc, table[1], table[2],

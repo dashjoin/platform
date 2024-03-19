@@ -29,6 +29,7 @@ public class OpenCypherQueryTest {
   @Test
   public void testAggregate() throws Exception {
     eq("MATCH (prj:`dj/junit/PRJ`)<-[rel]-(emp) RETURN emp.NAME");
+    eq("MATCH (prj:`dj/junit/PRJ`)<-[rel*]-(emp) RETURN emp.NAME");
     eq("MATCH (prj:`dj/junit/EMP`)-[]->(prj) RETURN prj.NAME");
     eq("MATCH p=(tom:Person {name: 'Tom Hanks'})-[directed:DIRECTED]->(movie:Movie) RETURN p");
     eq("MATCH (var:A1_B {key: 'value'}) RETURN var");
