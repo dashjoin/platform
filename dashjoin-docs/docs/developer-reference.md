@@ -104,6 +104,16 @@ The key specifies the action button's label, the value contains the expression t
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 * properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  
 
+#### aichat
+
+Chatbot widget for interacting with large language models.
+
+* url: LLM Service URL or function name
+* name: Chatbot name
+* tagline: Chatbot tagline
+* logo: Logo URL
+* system_prompt: AI system prompt
+
 #### chart
 
 Chart for visualizing query results.
@@ -204,6 +214,45 @@ Allows editing related records of a database record:
 
 * prop: foreign key column on the related table
 * columns: columns to display in the editRelated table display
+
+#### graph
+
+Displays data as a directed graph
+
+* nodes: expression to generate nodes, this can either be the result of an OpenCypher query or a list of nodes
+* _3d: if true, displays the graph in 3D, 2D otherwise
+
+To add a single starting node, you can simply use the following expression for "nodes":
+
+```text
+{
+  "database": "northwind",
+  "table": "EMPLOYEES",
+  "pk": [1]
+}
+```
+
+To add all employees, you can select all employee IDs and convert them into resource objects as shown above:
+
+```text
+$all("northwind", "EMPLOYEES").EMPLOYEE_ID.{
+  "database": "northwind",
+  "table": "EMPLOYEES",
+  "pk": [$]
+}
+```
+
+Alternatively, you can use an OpenCypher query:
+
+```text
+$adHocQueryGraph("*", "MATCH (e:EMPLOYEES) return e").e
+```
+
+The previous examples only added nodes to the canvas. You can use OpenCypher to pre-select a path:
+
+```text
+$adHocQueryGraph("*", "MATCH path=(e:EMPLOYEES) -[REPORTS_TO]-> (x) return path").path
+```
 
 #### [html](https://demo.my.dashjoin.com/#/page/html)
 
