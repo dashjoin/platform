@@ -279,3 +279,13 @@ By definition, access to static assets does not require login, so they are alway
 Do not place any confidential data in the assets folder.
 
 When working with version control tools (i.e. git), assets can be maintained along with all other app resources under revision control.
+
+## Tracking User Logins
+
+The platform has no built-in functionality for tracking users in the system.
+You may be able to retrieve this information at your identity managemnent platform.
+The platform does track user login events in the system log. You can grep the log for messages like this one:
+
+```text
+2024-03-20 14:15:32,163 INFO  [com.das.ser.ten.TenantService] (executor-thread-12) Login profile uid=admin email=null roles=[admin] username=admin
+```
