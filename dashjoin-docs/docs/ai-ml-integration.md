@@ -203,88 +203,76 @@ $openJson("http://.../language_detection?text=example")
 "en"
 ```
 
-## Large Language Model
+## Dashjoin AI Assistant / Large Language Model
 
-The chat and instruction functionality is available in the dashjoin/ai-llm container.
-To start it, you need to mount your language model (e.g. the popular [llama model](https://github.com/facebookresearch/llama)) 
-and a configuration into the container as follows. The file ts_server.cfg determines important parameters:
+The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
+text embedding technology into your low code application. The functionality is available via an easy to use
+administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
+via JSONata.
 
-```json
-{
-  log_filename: "ts_server.log",
-  /* if true, enable GPU usage */
-  //  cuda: true,
-  /* cuda device index, use it if multiple GPUs */
-  //  device_index: 0,
+Please refer to the documentation of the aichat widget in the developer reference for information
+about how the chat widget can be configured.
 
-  /* maximum number of threads, only matters when running on CPU */
-  n_threads: 1,
-  
-  /* models to load. 'name' is the identifier used in the JSON
-     request. 'filename' is the file containing the model description
-   */
-  models: [
-    { name: "djmodel",  filename: "/opt/dashjoin/ai/model.bin" },
-  ],
-  local_port: 8080, /* port on which the server listen to */
-  log_start: true, /* print "Started." when the server is ready */
-  gui: true, /* start a simple GUI when exploring the root path
-               (e.g. http://localhost:8080 here) (default = false) */
-}
+### Large Language Model Chat
+
+The large language model chat exposes the generative language capabilities of the underlying model.
+The model is trained using a large collection of documents and books. It is able to summarize text,
+answer questions you pose, and much more. In the admin UI, use the mode "LLM Chat" to work in this mode.
+
+### Retrieval Augmented Generation (RAG)
+
+Retrieval augmented generation allows inserting knowledge around a specific use case into the large language
+model - even if was not trained on these documents. You can upload your documents using the [admin
+UI](https://aikb.run.dashjoin.com/). The LLM is then able to answer your questions about these documents.
+In the admin UI, select the button "Query KB" to use this mode.
+
+Choosing "Search in KB", only performs a semantic search on the uploaded documents without involving the LLM to answer your query.
+
+### API
+
+The API of both the vector database and the large language model are available via the following
+[OpenAPI Definition](https://aikb.run.dashjoin.com/docs).
+
+In order to access the API, we recommend registering a credential set with the service's username and password.
+The following examples assume you have setup these credentials under the name "ai".
+
+List all document added to the vector database:
+
+```text
+$curl("GET", "https://aikb.run.dashjoin.com/v1/ingest/list", null, {"Authorization": "ai"})
 ```
 
-Start the docker container as follows:
+Invoke LLM chat:
 
-```shell
-docker run 
-    -p 8080:8080 
-    -v $PWD/ts_server.cfg:/opt/dashjoin/ai/ts_server.cfg
-    -v $PWD/my_model.bin:/opt/dashjoin/ai/model.bin \
-    dashjoin/ai-llm
+```text
+$curl("POST", "https://aikb.run.dashjoin.com/v1/completions", {
+  "include_sources": false,
+  "prompt": "How do you fry an egg?",
+  "stream": false,
+  "system_prompt": "You are a rapper. Always answer with a rap.",
+  "use_context": false
+}, {"Authorization": "ai"})
 ```
 
-To test the language model, create the following JSONata function (note that /model/ in the URL selects the 
-model key in the config file, also note that you can deploy multiple models into the container):
+Invoke RAG:
 
-```json
-{
-    "djClassName": "org.dashjoin.function.RestJson",
-    "ID": "dashjoin-llm",
-    "type": "read",
-    "method": "POST",
-    "contentType": "application/json",
-    "url": "http://.../v1/engines/djmodel/completions",
-    "returnText": true
-}
+```text
+$curl("POST", "https://aikb.run.dashjoin.com/v1/completions", {
+  "include_sources": true,
+  "prompt": "wie muss die firewall bei SAP systemen konfiguriert werden?",
+  "stream": false,
+  "system_prompt": "You can only answer questions about the provided context. If you know the answer but it is not based in the provided context, don't provide the answer, just state the answer is not in the context provided. Answer in German.",
+  "use_context": true
+}, {"Authorization": "ai"})
 ```
 
-To call the function use:
+### Getting Access to AI Assistant
 
-```javascript
-$parseJson("[" & $replace($call("dashjoin-llm", {
-  "prompt": "Game of Thrones is",
-  "temperature": 1,
-  "top_k": 40,
-  "top_p": 0.9,
-  "max_tokens": 200,
-  "stream": true,
-  "stop": null
-}), /\}\s*\{/, "},{") & "]")
-```
-
-The result is a stream of concatenated JSON. $call returns this stream as a string.
-The example uses JSONata regular expressions to convert this into a proper JSON
-array of objects before parsing it via $parseJson.
-
-```json
-[
-  ...
-  {"text":" the things I liked about the show and thought","reached_end":false},
-  {"text":" everyone else should be able to see. But","reached_end":false},
-  {"text":" it’s also, in many","reached_end":false},
-  {"text":" ways, kind of","reached_end":true,"input_tokens":4,"output_tokens":200},
-]
-```
+AI Assistant is available for demo purposes in the playground app.
+You can book a private instance along with your Dashjoin tenant. Please refer to the [website](http://dashjoin.com) 
+to access the shop page.
+Note that the services all comply with european GDPR regulations.
+Please contact us if you are interested in deploying your own copy using GPU resources in your datacenter.
 
 ## Entity Reconciliation
 
