@@ -380,7 +380,7 @@ public class Manage {
         Workbook wb = WorkbookFactory.create(inputPart.getBody(InputStream.class, null));
         FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
         for (Sheet sheet : wb) {
-          Table m = db.tables.get(sheet.getSheetName());
+          Table m = db.tables.get(getSheetName(sheet));
           if (clearTable)
             db.delete(m);
 
@@ -528,7 +528,7 @@ public class Manage {
         Workbook wb = WorkbookFactory.create(inputPart.getBody(InputStream.class, null));
         FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
         for (Sheet sheet : wb) {
-          Table m = db.tables.get(sheet.getSheetName());
+          Table m = db.tables.get(getSheetName(sheet));
           createMode(res, database, getFileName(header), m);
 
           Iterator<Row> iter = sheet.iterator();
@@ -537,8 +537,8 @@ public class Manage {
           for (int i = 0; i < 10; i++)
             _second.add(iter.hasNext() ? new RowWrapper(evaluator, iter.next()) : null);
 
-          handleStringTable(res, database, sheet.getSheetName(), m,
-              new RowWrapper(evaluator, first), _second);
+          handleStringTable(res, database, getSheetName(sheet), m, new RowWrapper(evaluator, first),
+              _second);
         }
       } else if (getFileExt(header).toLowerCase().equals("sqlite")) {
         File tmp = File.createTempFile(getFileName(header), "." + getFileExt(header));
@@ -804,6 +804,10 @@ public class Manage {
     return cell.toString().replace('-', '_');
   }
 
+  String cleanTableName(String res) {
+    return res.replace(' ', '_');
+  }
+
   String getFileExt(MultivaluedMap<String, String> header) {
     return FilenameUtils.getExtension(getFileNameInternal(header));
   }
@@ -815,7 +819,11 @@ public class Manage {
         // allow RDF uploads where filename must be a URI
         res = URLDecoder.decode(res, StandardCharsets.UTF_8);
 
-    return res;
+    return cleanTableName(res);
+  }
+
+  String getSheetName(Sheet sheet) {
+    return cleanTableName(sheet.getSheetName());
   }
 
   String getFileNameInternal(MultivaluedMap<String, String> header) {
