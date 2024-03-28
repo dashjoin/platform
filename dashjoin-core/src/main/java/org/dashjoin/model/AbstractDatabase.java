@@ -6,9 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.Data.Choice;
@@ -24,11 +21,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * abstract base class for all database implementations
  */
-@JsonSchema(required = {"name"}, layout = "vertical",
+@JsonSchema(required = {"djClassName", "name"}, layout = "vertical",
     order = {"djClassName", "name", "comment", "title", "readRoles", "writeRoles"},
     computed = "{ \"ID\": \"\\\"dj/\\\" & name\" }")
 public abstract class AbstractDatabase implements Database {
@@ -282,14 +282,14 @@ public abstract class AbstractDatabase implements Database {
   }
 
   /**
-   * when we ETL data, JSONata simplifies arrays with a single value
-   * to just the value. Databases can choose to handle this by overriding
-   * this method (see https://github.com/dashjoin/platform/issues/311)
+   * when we ETL data, JSONata simplifies arrays with a single value to just the value. Databases
+   * can choose to handle this by overriding this method (see
+   * https://github.com/dashjoin/platform/issues/311)
    */
   public void castArray(Table m, Map<String, Object> object) {
-    
+
   }
-  
+
   /**
    * default implementation for bulk inserts
    */
