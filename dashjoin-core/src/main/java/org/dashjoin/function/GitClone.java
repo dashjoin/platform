@@ -18,16 +18,6 @@ public class GitClone extends AbstractFunction<String, Void> {
       throw new Exception(
           "Ad hoc gitClone is only allowed in playground mode. To install an App, use the DASHJOIN_APPURL environment variable.");
 
-    File model = new File(services.getTenantHome(), "model");
-    if (hasFiles(new File(model, "page")))
-      throw new Exception("Please delete all custom dashboard pages before installing a new App");
-    if (hasFiles(new File(model, "dj-function")))
-      throw new Exception("Please delete all functions before installing a new App");
-    if (hasFiles(new File(model, "dj-query-catalog")))
-      throw new Exception("Please delete all queries before installing a new App");
-    if (hasFiles(new File(model, "dj-database")))
-      throw new Exception("Please delete all custom databases before installing a new App");
-
     log.info("deleting home folder");
     FileUtils.deleteDirectory(new File(services.getTenantHome()));
 
