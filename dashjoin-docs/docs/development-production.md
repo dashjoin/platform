@@ -271,7 +271,7 @@ variables to specify alternative values for url, username, hostname, port, datab
 * dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
 * dashjoin.function.NAME OF THE FUNCTION.url: URL to use to connect to the REST service (overrides the url field in the function's json file)
 
-To change the username, simply replace url with username in the examples above.
+To change the username / password, simply replace url with username / password in the examples above.
 Note that the development passwords are provided in plain text.
 
 ## Unit Testing
