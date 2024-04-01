@@ -948,7 +948,10 @@ public class Manage {
   @Operation(summary = "returns the version of the Dashjoin platform")
   @APIResponse(description = "Version object describing the platform")
   public Version version() {
-    return getVersion();
+    Version res = getVersion();
+    if (!("".equals(services.getTenantManager().getHomePrefix())))
+      res.title = "dashjoin-playground";
+    return res;
   }
 
   public static Version getVersion() {
