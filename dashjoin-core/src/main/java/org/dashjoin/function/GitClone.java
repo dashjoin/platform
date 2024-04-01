@@ -7,10 +7,10 @@ import org.eclipse.jgit.api.Git;
 import lombok.extern.java.Log;
 
 @Log
-public class GitClone extends AbstractFunction<String, String> {
+public class GitClone extends AbstractFunction<String, Void> {
 
   @Override
-  public String run(String url) throws Exception {
+  public Void run(String url) throws Exception {
     if (!sc.isUserInRole("admin"))
       throw new Exception("must be admin to perform Git operations");
 
@@ -41,7 +41,7 @@ public class GitClone extends AbstractFunction<String, String> {
     services.getConfig().metadataCollection();
 
     log.info("done");
-    return "Installation successful - please refresh your browser";
+    return null;
   }
 
   boolean hasFiles(File file) {
