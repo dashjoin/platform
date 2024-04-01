@@ -949,8 +949,9 @@ public class Manage {
   @APIResponse(description = "Version object describing the platform")
   public Version version() {
     Version res = getVersion();
-    if (!("".equals(services.getTenantManager().getHomePrefix())))
-      res.title = "dashjoin-playground";
+    if (services != null)
+      if (!("".equals(services.getTenantManager().getHomePrefix())))
+        res.title = "dashjoin-playground";
     return res;
   }
 
