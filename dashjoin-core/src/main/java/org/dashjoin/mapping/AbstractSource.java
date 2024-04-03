@@ -180,10 +180,11 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
               }
           }
         } else {
-          if ("Delete All".equals(oldData))
+          if ("Delete All".equals(oldData)) {
             if (db.tables.get(table.getKey()) == null)
               throw new Exception("Table does not exist: " + table.getKey());
-          db.delete(db.tables.get(table.getKey()));
+            db.delete(db.tables.get(table.getKey()));
+          }
         }
       }
     } finally {
