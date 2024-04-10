@@ -64,8 +64,8 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 
 * Docker: ```docker run -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj dashjoin/platform```
 * [Download](https://download.dashjoin.com/)
-* [Playground](https://playground.dashjoin.com/)
-* [Book your fully managed PaaS tenant (Platform plus PostgreSQL)](https://dashjoin.com/#getstarted)
+* <a target="_blank" href="https://playground.dashjoin.com/">Playground</a>
+* <a target="_blank" href="https://dashjoin.com/#getstarted">Book your fully managed PaaS tenant</a> (Platform plus PostgreSQL)
 
 ## Learn
 
