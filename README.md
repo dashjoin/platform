@@ -2,7 +2,7 @@
 <a href="https://dashjoin.com"><img src="https://dashjoin.com/img/fav.png" /></a>
 </p>
 
-# Dashjoin Open Source Low Code Development Platform
+# Open Source Low Code & AI Development Platform
 
 [![Dashjoin Angular and Java build](https://github.com/dashjoin/platform/workflows/Dashjoin%20CI%20build/badge.svg)](https://github.com/dashjoin/platform/actions)
 [![junit-coverage](https://img.shields.io/badge/junit_coverage-84%25-brightgreen)](https://github.com/dashjoin/platform/tree/master/dashjoin-core/src/test/java/org/dashjoin/service)
@@ -13,7 +13,7 @@
 [![GitHub license](https://img.shields.io/github/license/dashjoin/platform)](https://github.com/dashjoin/platform)
 [![Twitter Follow](https://img.shields.io/twitter/follow/dashjoin?style=social)](https://twitter.com/dashjoin)
 
-For anyone who is planning a development project, faces a tight schedule, needs to present results quickly, or has limited development resources available. Dashjoin taps into and integrates your existing data sources and allows you to intuitively browse, search, edit, and visualize your integrated information. Add business logic to enable users and automation to act on the information. Unlike other Low Code Development Platforms, Dashjoin offers a free open source version with a commercial PaaS and bases on a unique, linked-data inspired approach to scalable data integration.
+For anyone who is planning a development project, faces a tight schedule, needs to present results quickly, or has limited development resources available. Dashjoin taps into and integrates your existing data sources and allows you to intuitively browse, search, edit, and visualize your integrated information. Add AI empowered business logic to enable users and automation to act on the information. Unlike other Low Code Development Platforms, Dashjoin offers a free open source version with a commercial PaaS and bases on a unique, linked-data inspired approach to scalable data integration.
 
 ## Features
 
@@ -55,7 +55,7 @@ For anyone who is planning a development project, faces a tight schedule, needs 
   <tr>
     <td valign="top" width="33%">
       <b>Artificial Intelligence</b><br><br>
-	  Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App (<a href="https://dashjoin.github.io/platform/4.0/ai-ml-integration/">read more ...</a>)
+	  Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App (<a href="https://dashjoin.github.io/platform/latest/ai-ml-integration/">read more ...</a>)
     </td>
   </tr>
 </table>
@@ -63,16 +63,17 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 ## Getting Started
 
 * Docker: ```docker run -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj dashjoin/platform```
-* Download: <https://download.dashjoin.com/>
-* Free Cloud Trial: <https://my.dashjoin.com/>
+* [Download](https://download.dashjoin.com/)
+* [Playground](https://playground.dashjoin.com/)
+* [Book your fully managed PaaS tenant (Platform plus PostgreSQL)](https://dashjoin.com/#getstarted)
 
 ## Learn
 
-* Online Documentation: <https://dashjoin.github.io/platform>
-* Live demo: <https://cyber.run.dashjoin.com/>
-* Blog: <https://medium.com/@dashjoin>
-* Training course: <https://download.dashjoin.com/training/platform.pdf>
-* Video tutorials: https://www.youtube.com/@dashjoin
+* [Online Documentation](https://dashjoin.github.io/platform)
+* [Live demo](https://cyber.run.dashjoin.com/)
+* [Blog](https://medium.com/@dashjoin)
+* [Training course](https://download.dashjoin.com/training/platform.pdf)
+* [Video tutorials](https://www.youtube.com/@dashjoin)
 
 ## Contribute
 
