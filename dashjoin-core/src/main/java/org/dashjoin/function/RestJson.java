@@ -101,31 +101,32 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     else
       request = request.get();
 
-    okhttp3.Response response = client.newCall(request.build()).execute();
+    try (okhttp3.Response response = client.newCall(request.build()).execute()) {
 
-    if (response.code() >= 400) {
+      if (response.code() >= 400) {
 
-      // UI logout out automatically if a 401 is encountered (use 500 instead)
-      if (response.code() == 401)
-        throw new WebApplicationException(
-            Response.status(500).entity("HTTP 401: Unauhtorized").build());
+        // UI logout out automatically if a 401 is encountered (use 500 instead)
+        if (response.code() == 401)
+          throw new WebApplicationException(
+              Response.status(500).entity("HTTP 401: Unauhtorized").build());
 
-      String error = "" + response.body().string();
-      try {
-        Map<String, Object> s =
-            objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
-        error = (String) s.get("details");
-      } catch (Exception e) {
-        // ignore and keep the body
+        String error = "" + response.body().string();
+        try {
+          Map<String, Object> s =
+              objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
+          error = (String) s.get("details");
+        } catch (Exception e) {
+          // ignore and keep the body
+        }
+        throw new WebApplicationException(Response.status(response.code()).entity(error).build());
       }
-      throw new WebApplicationException(Response.status(response.code()).entity(error).build());
+
+      if (this.stream)
+        return response.body().charStream();
+
+      String body = response.body().string();
+      return objectMapper.readValue(body, Object.class);
     }
-
-    if (this.stream)
-      return response.body().charStream();
-
-    String body = response.body().string();
-    return objectMapper.readValue(body, Object.class);
   }
 
   @Override

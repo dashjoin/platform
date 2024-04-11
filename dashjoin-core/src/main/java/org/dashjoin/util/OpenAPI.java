@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
@@ -28,6 +27,7 @@ import org.dashjoin.service.ddl.SchemaChange;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import jakarta.ws.rs.core.SecurityContext;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -264,7 +264,7 @@ public class OpenAPI {
           s = s.substring(0, s.length() - "/swagger.yaml".length());
         if (s.endsWith("/"))
           s = s.substring(0, s.length() - "/".length());
-        
+
         // trim version
         s = s.substring(0, s.lastIndexOf('/'));
 
@@ -272,9 +272,10 @@ public class OpenAPI {
             .addHeader("content-type", "application/yaml").post(RequestBody.create(null, generate))
             .build();
 
-        Response response = new OkHttpClient().newCall(request).execute();
-        if (!response.isSuccessful())
-          throw new Exception("save failed: " + response.code() + " - " + response.message());
+        try (Response response = new OkHttpClient().newCall(request).execute()) {
+          if (!response.isSuccessful())
+            throw new Exception("save failed: " + response.code() + " - " + response.message());
+        }
       }
     }
   }
