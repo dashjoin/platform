@@ -229,7 +229,7 @@ public class JSONFileDatabase extends JSONDatabase {
     String newName = Escape.filename("" + id) + "." + pointer;
     File newFile = new File(file.getParentFile(), newName);
 
-    if (!(map.get(field) instanceof String))
+    if (!(map.get(field) instanceof String) && (map.get(field) != null))
       throw new RuntimeException("Error externalizing data. The value of '" + field
           + "' must be a string. Please change the config.");
 
