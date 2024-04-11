@@ -77,7 +77,7 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     OkHttpClient client = Doc2data.getHttpClient();
     if (this.timeoutSeconds != null)
-      client = client.newBuilder().readTimeout(this.timeoutSeconds, TimeUnit.SECONDS).build();
+      client = client.newBuilder().callTimeout(this.timeoutSeconds, TimeUnit.SECONDS).build();
     String sv = map == null ? url : (String) Template.replace(url, map, true);
     Request.Builder request = new Request.Builder().url(sv);
     if (username != null)
