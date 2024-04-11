@@ -51,6 +51,8 @@ public class Receive extends AbstractMapping<Object> {
 
   @Override
   public Map<String, List<Map<String, Object>>> gather(SecurityContext sc) throws Exception {
+    if (sample == null)
+      throw new Exception("Please provide sample data in order to edit the mapping");
     return new ETL().convertToMapOfTables(
         om.readValue(new ByteArrayInputStream(sample.getBytes()), Object.class));
   }
