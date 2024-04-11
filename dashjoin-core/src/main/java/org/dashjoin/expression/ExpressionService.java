@@ -24,7 +24,6 @@ import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
 import com.dashjoin.jsonata.Utils;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.inject.Inject;
@@ -156,17 +155,7 @@ public class ExpressionService {
           @Override
           public Object call(Object input, List args) throws Throwable {
             Object res = _call(input, args);
-            if (res == null)
-              return null;
-            if (res instanceof List) {
-              List list = (List) res;
-              if (list.size() > 0)
-                if (list.get(0) != null)
-                  if (!list.get(0).getClass().getName().startsWith("java"))
-                    return om.convertValue(res, new TypeReference<List<Map<String, Object>>>() {});
-            } else if (!res.getClass().getName().startsWith("java"))
-              return om.convertValue(res, new TypeReference<Map<String, Object>>() {});
-            return res;
+            return om.convertValue(res, Object.class);
           }
 
           Object _call(Object input, List args) throws Throwable {

@@ -1,7 +1,15 @@
 package org.dashjoin.expression;
 
+import static org.dashjoin.util.MapUtil.of;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import org.dashjoin.function.AbstractEveryoneFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Origin;
@@ -14,6 +22,7 @@ import org.mockito.Mockito;
 import com.dashjoin.jsonata.JException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.SecurityContext;
@@ -28,6 +37,74 @@ public class ExpressionServiceTest {
 
   @Inject
   ExpressionService s;
+
+  private static final ObjectMapper om =
+      new ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+  @Test
+  public void testJsonataTypes() throws Exception {
+
+    // make sure om.convertValue() does not change legal types
+    Object o;
+    o = "string";
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = 1;
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = Arrays.asList(1, 2, 3);
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = of("x", Arrays.asList(1, 2, 3));
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = true;
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = (short) 12;
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+    o = null;
+    Assertions.assertEquals(o, om.convertValue(o, Object.class));
+
+    // date / uuid etc., om.convertValue() performs a toString() / ISO 8601 for date / time
+    o = UUID.randomUUID();
+    Assertions.assertEquals(o + "", om.convertValue(o, Object.class));
+    o = new java.util.Date();
+    om.convertValue(o, Object.class);
+    o = UUID.randomUUID();
+    Assertions.assertEquals(of("x", o + ""), om.convertValue(of("x", o), Object.class));
+
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+    for (int i = 0; i < 7; i++)
+      s.resolve(sc, "$sqlDate(x) & '  '", of("x", i));
+  }
+
+  public static class SqlDate extends AbstractEveryoneFunction<Integer, Object> {
+
+    @Override
+    public Object run(Integer arg) throws Exception {
+      if (arg == 0)
+        return new Date(0);
+      if (arg == 1)
+        return Calendar.getInstance();
+      if (arg == 2)
+        return UUID.randomUUID();
+      if (arg == 2)
+        return LocalDate.of(2020, 1, 8);
+      if (arg == 3)
+        return null;
+      // requires additional jackson lib
+      // return LocalDateTime.of(2014, Month.JANUARY, 1, 10, 10, 30);
+      if (arg == 3)
+        return Instant.now();
+      if (arg == 4)
+        return Arrays.asList(run(0));
+      if (arg == 5)
+        return of("x", run(0));
+      return null;
+    }
+
+    @Override
+    public Class<Integer> getArgumentClass() {
+      return Integer.class;
+    }
+  }
 
   @Test
   public void read() throws Exception {
