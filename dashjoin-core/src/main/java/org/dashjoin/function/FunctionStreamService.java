@@ -61,9 +61,9 @@ public class FunctionStreamService {
     StreamingOutput stream = new StreamingOutput() {
       @Override
       public void write(OutputStream out) throws IOException, WebApplicationException {
-        Writer writer = new OutputStreamWriter(out);
-        try {
-          Reader r = (Reader) a.run(argument);
+        try (okhttp3.Response response = ((RestJson) a).getCall(argument).execute()) {
+          Writer writer = new OutputStreamWriter(out);
+          Reader r = (Reader) ((RestJson) a).process(response);
           BufferedReader br = new BufferedReader(r);
           String line;
           while ((line = br.readLine()) != null) {

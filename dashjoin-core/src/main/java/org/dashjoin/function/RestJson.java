@@ -1,6 +1,7 @@
 package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +13,7 @@ import org.dashjoin.util.Template;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
+import okhttp3.Call;
 import okhttp3.FormBody.Builder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -67,13 +69,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   transient boolean stream;
 
-  /**
-   * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
-   * POSTs the arg serialized as JSON. If arg is null, GETs the result.
-   */
   @SuppressWarnings("unchecked")
-  @Override
-  public Object run(Object obj) throws Exception {
+  protected Call getCall(Object obj) throws Exception {
     Map map = obj instanceof Map ? (Map) obj : MapUtil.of();
     OkHttpClient client = Doc2data.getHttpClient();
     if (this.timeoutSeconds != null)
@@ -100,33 +97,45 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       }
     else
       request = request.get();
+    Call call = client.newCall(request.build());
+    return call;
+  }
 
-    try (okhttp3.Response response = client.newCall(request.build()).execute()) {
-
-      if (response.code() >= 400) {
-
-        // UI logout out automatically if a 401 is encountered (use 500 instead)
-        if (response.code() == 401)
-          throw new WebApplicationException(
-              Response.status(500).entity("HTTP 401: Unauthorized").build());
-
-        String error = "" + response.body().string();
-        try {
-          Map<String, Object> s =
-              objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
-          error = (String) s.get("details");
-        } catch (Exception e) {
-          // ignore and keep the body
-        }
-        throw new WebApplicationException(Response.status(response.code()).entity(error).build());
-      }
-
-      if (this.stream)
-        return response.body().charStream();
-
-      String body = response.body().string();
-      return objectMapper.readValue(body, Object.class);
+  /**
+   * returns the result of the REST call with JSON mapped to a Map / List. If arg is specified,
+   * POSTs the arg serialized as JSON. If arg is null, GETs the result.
+   */
+  @Override
+  public Object run(Object obj) throws Exception {
+    try (okhttp3.Response response = getCall(obj).execute()) {
+      return process(response);
     }
+  }
+
+  protected Object process(okhttp3.Response response) throws IOException {
+    if (response.code() >= 400) {
+
+      // UI logout out automatically if a 401 is encountered (use 500 instead)
+      if (response.code() == 401)
+        throw new WebApplicationException(
+            Response.status(500).entity("HTTP 401: Unauthorized").build());
+
+      String error = "" + response.body().string();
+      try {
+        Map<String, Object> s =
+            objectMapper.readValue(new ByteArrayInputStream(error.getBytes()), JSONDatabase.tr);
+        error = (String) s.get("details");
+      } catch (Exception e) {
+        // ignore and keep the body
+      }
+      throw new WebApplicationException(Response.status(response.code()).entity(error).build());
+    }
+
+    if (this.stream)
+      return response.body().charStream();
+
+    String body = response.body().string();
+    return objectMapper.readValue(body, Object.class);
   }
 
   @Override
