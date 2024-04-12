@@ -480,3 +480,20 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Write your own widgets using any 3rd party JavaScript library and integrate them into the layout editor
   * Manage your app versions and unit testing via the new Dashjoin Studio
   * Dashjoin Studio bundles all required tools and makes them available right in your browser
+
+### 5.1 (April 2024)
+
+* Dashjoin AI Assistant
+  * Provisions a powerful large language model in a GDPR compliant way
+  * Allows defining document collections that the AI can use to answer questions
+  * Fully secured and ready to be managed by role based access control
+* UI
+  * AI Chat Widget to interface with the AI Assistant
+  * Graph widget to explore the data graph - can be configured via JSONata and OpenCypher graph queries
+* Platform
+  * New cloud offering includes ProgreSQL and flexible workloads
+  * Multi-tenant playground online
+* SDK
+  * Optimized performance for JSONata openExcel
+  * JSONata curl command as a flexible HTTP client
+  * openHtml function to scrape webpages
