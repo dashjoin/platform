@@ -7,6 +7,9 @@
       "markdown" : "### [Universal DB Frontend](/#/table/config/dj-database)\n\nConnect to any SQL or NoSQL database, browse, search, and edit its contents. Extend the schema on the fly. \n\n [<img src=\"https://img.youtube.com/vi/zXXtR9zSOXs/mqdefault.jpg\">](https://www.youtube.com/watch?v=zXXtR9zSOXs)"
     }, {
       "widget" : "markdown",
+      "markdown" : "### [Artificial Intelligence](https://dashjoin.github.io/platform/latest/ai-ml-integration/)\n\nSeamlessly incorporate large language models, image classification, and translation (I18N) in a GDPR compliant way."
+    }, {
+      "widget" : "markdown",
       "markdown" : "### [Query Catalog & Editor](/#/table/config/dj-query-catalog)\n\nAutomatically collect schema information that powers an intuitive graphical query editor! \n\n [<img src=\"https://img.youtube.com/vi/yxjE8GgXtfo/mqdefault.jpg\">](https://www.youtube.com/watch?v=yxjE8GgXtfo)"
     }, {
       "widget" : "markdown",
@@ -19,7 +22,7 @@
       "markdown" : "### Data Integration and Federation\n\nVisually map external data sources to your model. Load the data into a warehouse or federate the source into a virtual linked-data graph. \n\n [<img src=\"https://img.youtube.com/vi/ZsjyucALidY/mqdefault.jpg\">](https://www.youtube.com/watch?v=ZsjyucALidY)"
     }, {
       "widget" : "markdown",
-      "markdown" : "### [Getting Started & Cloud Deployment](https://my.dashjoin.com/)\n\nDownload the platform or deploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks. \n\n [<img src=\"https://img.youtube.com/vi/_xmFRwhbAFA/mqdefault.jpg\">](https://www.youtube.com/watch?v=_xmFRwhbAFA)"
+      "markdown" : "### [Getting Started & Cloud Deployment](https://dashjoin.com/#getstarted)\n\nDownload the platform or deploy the apps in your private cloud or book our PaaS service. All apps scale horizontally and support state of the art cloud stacks. \n\n [<img src=\"https://img.youtube.com/vi/_xmFRwhbAFA/mqdefault.jpg\">](https://www.youtube.com/watch?v=_xmFRwhbAFA)"
     }, {
       "widget" : "markdown",
       "markdown" : "### [Rich Support Matrix](/#/page/Info)\n\nDashjoin supports a wide variety of SQL and NoSQL databases. You can construct queries in a uniform way and you can even define relationships between record from different databases and database types in order to enable a seamless browsing experience. \n\n [<img src=\"https://img.youtube.com/vi/_itCZjvw9D8/mqdefault.jpg\">](https://www.youtube.com/watch?v=_itCZjvw9D8)"
