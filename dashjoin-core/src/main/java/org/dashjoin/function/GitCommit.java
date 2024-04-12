@@ -15,7 +15,10 @@ public class GitCommit extends AbstractVarArgFunction<Void> {
   public Void run(List args) throws Exception {
     if (!sc.isUserInRole("admin"))
       throw new Exception("must be admin to perform Git operations");
-    URL url = new URL(ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue());
+    String spec = ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue();
+    if (spec == null)
+      throw new Exception("Cannot commit: No repository configured.");
+    URL url = new URL(spec);
     String user = url.getUserInfo();
     if (user == null)
       throw new IllegalArgumentException("No Git credentials configured in the App URL");
