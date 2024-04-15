@@ -7,7 +7,7 @@
       "markdown" : "### [Universal DB Frontend](/#/table/config/dj-database)\n\nConnect to any SQL or NoSQL database, browse, search, and edit its contents. Extend the schema on the fly. \n\n [<img src=\"https://img.youtube.com/vi/zXXtR9zSOXs/mqdefault.jpg\">](https://www.youtube.com/watch?v=zXXtR9zSOXs)"
     }, {
       "widget" : "markdown",
-      "markdown" : "### [Artificial Intelligence](https://dashjoin.github.io/platform/latest/ai-ml-integration/)\n\nSeamlessly incorporate large language models, image classification, and translation (I18N) in a GDPR compliant way."
+      "markdown" : "### [Artificial Intelligence](https://dashjoin.github.io/platform/latest/ai-ml-integration/)\n\nSeamlessly incorporate large language models, image classification, and translation (I18N) in a GDPR compliant way. \n\n  [<img src=\"https://img.youtube.com/vi/m5ysD2AlbcE/mqdefault.jpg\">](https://www.youtube.com/watch?v=m5ysD2AlbcE)"
     }, {
       "widget" : "markdown",
       "markdown" : "### [Query Catalog & Editor](/#/table/config/dj-query-catalog)\n\nAutomatically collect schema information that powers an intuitive graphical query editor! \n\n [<img src=\"https://img.youtube.com/vi/yxjE8GgXtfo/mqdefault.jpg\">](https://www.youtube.com/watch?v=yxjE8GgXtfo)"
