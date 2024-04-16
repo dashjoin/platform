@@ -2,7 +2,7 @@
 
 ## Platform as a Service
 
-Dashjoin offers a fully managed Platform as a Service available at <https://my.dashjoin.com/>.
+Dashjoin offers a fully managed Platform as a Service available at <https://dashjoin.com/#getstarted>.
 
 ## Download and local setup
 
