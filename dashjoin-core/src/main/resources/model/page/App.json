@@ -23,7 +23,7 @@
 				"children": [
 		            {
 		                "title": "Install Apps from GitHub",
-		                "expression": "$openJson(\"https://api.github.com/orgs/dashjoin/repos\").name.(\n  \"https://raw.githubusercontent.com/dashjoin/\" & $ & \"/main/dashjoin.json\";\n)[$urlExists($)].$openJson($).{\n  \"name\": name,\n  \"url\": url\n}",
+		                "expression": "$openJson(\"https://api.github.com/orgs/dashjoin/repos\").name.(\n  \"https://raw.githubusercontent.com/dashjoin/\" & $ & \"/main/dashjoin.json\";\n)[$urlExists($)].$openJson($).{\n  \"name\": name,\n  \"description\": description,\n  \"url\": url\n}",
 		                "properties": {
 		                    "install": "($confirm(\"WARNING: Installing an app will delete your current playground contents. Are you sure?\") ? ($notify(\"Installing...\"); $gitClone(selected.url); $notify(\"Installation successful - please refresh your browser\")) : null)"
 		                },
