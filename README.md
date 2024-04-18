@@ -25,17 +25,22 @@ For anyone who is planning a development project, faces a tight schedule, needs 
       <a href="https://www.youtube.com/watch?v=zXXtR9zSOXs"><img src="https://img.youtube.com/vi/zXXtR9zSOXs/mqdefault.jpg"></a>
     </td>
     <td valign="top" width="33%">
+      <b>Artificial Intelligence</b><br><br>
+	  Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App.<br><br>
+	  <a href="https://www.youtube.com/watch?v=m5ysD2AlbcE"><img src="https://img.youtube.com/vi/m5ysD2AlbcE/mqdefault.jpg"></a>
+    </td>
+    <td valign="top" width="33%">
       <b>Query Catalog & Editor</b><br><br>
       Automatically collect schema information that powers an intuitive graphical query editor!<br><br>
       <a href="https://www.youtube.com/watch?v=yxjE8GgXtfo"><img src="https://img.youtube.com/vi/yxjE8GgXtfo/mqdefault.jpg"></a>
     </td>
+  </tr>
+  <tr>
     <td valign="top" width="33%">
       <b>Layout Designer</b><br><br>
       Graphically customize the layout for different types found in the database. Leverage the query editor to include meaningful charts.<br><br>
       <a href="https://www.youtube.com/watch?v=RuM-im9wd58"><img src="https://img.youtube.com/vi/RuM-im9wd58/mqdefault.jpg"></a>
     </td>
-  </tr>
-  <tr>
     <td valign="top" width="33%">
       <b>Functions and Processes</b><br><br>
       Seamlessly start and integrate REST services from the application and monitor progress. <br><br>
@@ -46,16 +51,12 @@ For anyone who is planning a development project, faces a tight schedule, needs 
       Visually map external data sources to your model. Load the data into a warehouse or federate the source into a virtual linked-data graph. <br><br>
       <a href="https://www.youtube.com/watch?v=ZsjyucALidY"><img src="https://img.youtube.com/vi/ZsjyucALidY/mqdefault.jpg"></a>
     </td>
+  </tr>
+  <tr>
     <td valign="top" width="33%">
       <b>Rich Support Matrix</b><br><br>
       Dashjoin supports a wide variety of SQL and NoSQL databases. You can define relationships between databases in order to enable a seamless browsing experience.<br><br>
       <a href="https://www.youtube.com/watch?v=_itCZjvw9D8"><img src="https://img.youtube.com/vi/_itCZjvw9D8/mqdefault.jpg"></a>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top" width="33%">
-      <b>Artificial Intelligence</b><br><br>
-	  Seamlessly incorporate large language models, image classification, translation, and entity reconciliation services in your App (<a href="https://dashjoin.github.io/platform/latest/ai-ml-integration/">read more ...</a>)
     </td>
   </tr>
 </table>
