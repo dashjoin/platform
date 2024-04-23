@@ -741,7 +741,7 @@ openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openText | $openText(url, encoding) | Parses the url and converts it to a string
 parseJson | $parseJson(json) | Parses JSON (see openJson)
 parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see openCsv)
-parseHtml | $parseHtml(html, query, [xpath|css]) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
+parseHtml | $parseHtml(html, query, [xpath/css]) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
 parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
 parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
