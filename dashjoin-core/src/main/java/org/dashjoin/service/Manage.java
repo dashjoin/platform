@@ -601,10 +601,34 @@ public class Manage {
    * if the upload is done using the model folder, parses this into a map of tables
    */
   Map<String, List<Map<String, Object>>> handleModel(List<InputPart> inputParts) throws Exception {
+    // table, id, key to value
+    Map<String, Map<String, Map<String, String>>> pointers = new LinkedHashMap<>();
     Map<String, List<Map<String, Object>>> tables = new LinkedHashMap<>();
     for (InputPart inputPartM : inputParts) {
       MultivaluedMap<String, String> headerM = inputPartM.getHeaders();
       if ("model/.secrets.id".equals(getFileNameInternal(headerM)))
+        continue;
+      if (getFileNameInternal(headerM).endsWith(".json"))
+        continue;
+      String[] x = getFileName(headerM).split("/");
+      String tableName = x[x.length - 2];
+      String name = x[x.length - 1];
+      String[] parts = name.split("\\.");
+      String key = parts[0];
+      String number = parts[1];
+      InputStream inputStream = inputPartM.getBody(InputStream.class, null);
+      String value = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+      if (pointers.get(tableName) == null)
+        pointers.put(tableName, new LinkedHashMap<>());
+      if (pointers.get(tableName).get(key) == null)
+        pointers.get(tableName).put(key, new LinkedHashMap<>());
+      pointers.get(tableName).get(key).put(number, value);
+    }
+    for (InputPart inputPartM : inputParts) {
+      MultivaluedMap<String, String> headerM = inputPartM.getHeaders();
+      if ("model/.secrets.id".equals(getFileNameInternal(headerM)))
+        continue;
+      if (!getFileNameInternal(headerM).endsWith(".json"))
         continue;
       InputStream inputStream = inputPartM.getBody(InputStream.class, null);
       Map<String, Object> parsed = objectMapper.readValue(inputStream, JSONDatabase.tr);
@@ -616,6 +640,22 @@ public class Manage {
         tables.put(tableName, table);
       }
       table.add(parsed);
+
+      for (Entry<String, Object> e : new LinkedHashMap<>(parsed).entrySet())
+        if (e.getKey().endsWith("-pointer")) {
+          String key = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
+          String value = FilenameUtils.removeExtension((String) e.getValue());
+          Map<String, Map<String, String>> t = pointers.get(tableName);
+          if (t == null)
+            continue;
+          Map<String, String> o = t.get(parsed.get("ID"));
+          if (o == null)
+            continue;
+          String replace = o.get(value);
+          parsed.remove(e.getKey());
+          if (replace != null)
+            parsed.put(key, replace);
+        }
     }
     return tables;
   }
@@ -758,8 +798,10 @@ public class Manage {
         TypeSample ts = new TypeSample();
 
         Property p = m.properties.get(cleanColumnName(cell));
-        ts.pk = p.pkpos == null ? false : p.pkpos == 0;
-        ts.type = p.type;
+        if (p != null) {
+          ts.pk = p.pkpos == null ? false : p.pkpos == 0;
+          ts.type = p.type;
+        }
 
         ts.sample = new ArrayList<>();
         for (List<String> second : _second)
