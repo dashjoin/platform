@@ -73,10 +73,17 @@ For anyone who is planning a development project, faces a tight schedule, needs 
       <b>Rich Support Matrix</b><br><br>
       Dashjoin supports a wide variety of SQL and NoSQL databases. You can define relationships between databases in order to enable a seamless browsing experience.
     </td>
+    <td valign="top" width="33%">
+      <b>Collaboration and Release Process</b><br><br>
+      Dashjoin Studio empowers teams to jointly develop apps using an enterprise grade release process.
+    </td>
   </tr>
   </tr>
     <td valign="top" width="33%">
       <a href="https://www.youtube.com/watch?v=_itCZjvw9D8"><img src="https://img.youtube.com/vi/_itCZjvw9D8/mqdefault.jpg"></a>
+    </td>
+    <td valign="top" width="33%">
+      <a href="https://www.youtube.com/watch?v=Nf3OlChn7p0"><img src="https://img.youtube.com/vi/Nf3OlChn7p0/mqdefault.jpg"></a>
     </td>
   <tr>
 </table>
