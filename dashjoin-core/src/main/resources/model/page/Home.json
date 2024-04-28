@@ -26,6 +26,9 @@
     }, {
       "widget" : "markdown",
       "markdown" : "### [Rich Support Matrix](/#/page/Info)\n\nDashjoin supports a wide variety of SQL and NoSQL databases. You can construct queries in a uniform way and you can even define relationships between record from different databases and database types in order to enable a seamless browsing experience. \n\n [<img src=\"https://img.youtube.com/vi/_itCZjvw9D8/mqdefault.jpg\">](https://www.youtube.com/watch?v=_itCZjvw9D8)"
+    }, {
+      "widget" : "markdown",
+      "markdown" : "### [Collaboration and Release Process](/#/page/App)\n\nDashjoin Studio empowers teams to jointly develop apps using an enterprise grade release process. \n\n [<img src=\"https://img.youtube.com/vi/Nf3OlChn7p0/mqdefault.jpg\">](https://www.youtube.com/watch?v=Nf3OlChn7p0)"
     } ],
     "pageLayout" : "3 column"
   }
