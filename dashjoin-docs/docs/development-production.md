@@ -254,6 +254,15 @@ Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo
 Dashjoin with the demo application installed.
 If the git operation fails (e.g. due to incorrect credentials or illegal filenames), the platform will log the error and resume the startup process.
 
+### Private GitHub Repositories
+
+If you would like to launch an App that is stored in a private GitHub repository, you can use
+a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). You can assign the right to clone the repository to the token and add it to the DASHJOIN_APPURL as follows:
+
+```
+https://user:token@github.com/org/project
+```
+
 ## Manual App Installation
 
 Last but not least, you can also copy the app into the Dashoin working directory using other means
