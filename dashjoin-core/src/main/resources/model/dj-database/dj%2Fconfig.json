@@ -867,7 +867,7 @@
               },
               {
                 "widget": "display",
-                "display": "({\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis(value.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis(value.end?value.end:$now())-$toMillis(value.start))/1000), \"status\": value.status})",
+                "display": "($v := $read(database, table, pk1); {\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",
