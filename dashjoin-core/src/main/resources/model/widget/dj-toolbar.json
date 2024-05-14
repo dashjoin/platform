@@ -97,7 +97,7 @@
 					},
 					{
 						"widget": "icon",
-						"fxHide": "lt-md",
+						"fxHide": "lt-sm",
 						"tooltip": "Open help pages",
 						"icon": "help_outline",
 						"readOnly": true,
