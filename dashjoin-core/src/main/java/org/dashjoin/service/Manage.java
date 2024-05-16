@@ -843,11 +843,11 @@ public class Manage {
   }
 
   String cleanColumnName(Object cell) {
-    return cell.toString().replace('-', '_');
+    return cell.toString(); // .replace('-', '_');
   }
 
   String cleanTableName(String res) {
-    return res.replace(' ', '_');
+    return res; // .replace(' ', '_');
   }
 
   String getFileExt(MultivaluedMap<String, String> header) {
