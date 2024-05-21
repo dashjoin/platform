@@ -98,8 +98,8 @@ public class SQLDatabase extends AbstractDatabase {
   /**
    * JSON config field
    */
-  @JsonSchema(choices = {"jdbc:postgresql://your_host:5432/your_database",
-      "jdbc:h2:tcp:your_host:9092/path/your_database", "jdbc:sqlite:path/your_database.db"
+  @JsonSchema(choices = {"jdbc:postgresql://localhost:5432/postgres",
+      "jdbc:h2:localhost:9092/path/your_database", "jdbc:sqlite:path/your_database.db"
       /*
        * "jdbc:jtds:sqlserver://your_host:1433/your_database;SCHEMA=your_schema",
        * "jdbc:oracle:thin:@your_host:1521/ORCL", "jdbc:mariadb://your_host:3306/your_database",
