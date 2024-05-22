@@ -179,7 +179,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
     info.query = table;
     for (Map<String, Object> i : query(info, null))
       try {
-        res.add(convert(table, i, type));
+        T x = convert(table, i, type);
+        if (x != null)
+          res.add(x);
       } catch (Exception e) {
         logger.log(Level.SEVERE, "Object " + i.get("ID") + " cannot be loaded from JSON: " + type,
             e);
