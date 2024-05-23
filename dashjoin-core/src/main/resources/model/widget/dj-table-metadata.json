@@ -21,6 +21,7 @@
               "name",
               "dbType",
               "type",
+              "title",
               "comment",
               "pkpos",
               "ref"
