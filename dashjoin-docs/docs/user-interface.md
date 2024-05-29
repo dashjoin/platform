@@ -92,6 +92,35 @@ The operations on columns can be grouped into two categories. First, changing th
 
 Second, editing primary and foreign keys are changes on the metadata level only, since not all databases support these concepts. You can specify a column to be the primary key of the table. Note that the user interface does not support composite primary keys. A column can also be defined to be a foreign key by entering the corresponding linked primary key. Note that it is possible to define references not only within the same database but also to other databases. Setting foreign key references causes the foreign key column to display links to the related record and vice versa.
 
+### Complex Column Types
+
+Certain databases support storing arbitrary JSON data in a column. In this case, it is not possible to
+retrieve the required schema information in order to display a proper form for data entry.
+In this situation, you can use Dashjoin Studio to enter a complex schema via a text editor.
+A JSON column defaults to type "string". In the column editor, you can change this type to "object" or "array".
+Open Dashjoin Studio, and locate the change. You can enter a schema - for instance for a coordinate type - as follows:
+
+```text
+    "tables": {
+        "mytable": {
+            "properties": {
+                "mycolumn": {
+                    "type": "object",
+                    "properties": {
+                        "x": {
+                            "type": "integer"
+                        },
+                        "y": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    }
+```
+
+
 ### Table Label
 
 Besides changing the table name, you can enter a label and triggers.
