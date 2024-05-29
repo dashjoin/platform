@@ -63,6 +63,28 @@ used as the key in the resulting JSON structure. Inputs can be of the following 
 * file with metadata: like file but includes file metadata
 * binary file with metadata: like binary file but includes file metadata
 
+Not all form options can be edited in the form edit dialog. If you would like to create a form for
+nested objects and arrays, you can add the JSON schema to the form in Dashjoin Studio.
+This example displays a form to enter an object with a field emails which is an array of strings: 
+
+```text
+            {
+                "print": "form",
+                "widget": "button",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+```
+
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
 Runs / evaluates an expression when clicked.
