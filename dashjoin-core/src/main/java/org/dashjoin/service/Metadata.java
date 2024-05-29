@@ -5,6 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -92,6 +93,7 @@ public class Metadata {
      * https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html
      */
     public String typeName;
+    public int typeCode;
 
     /**
      * NULLABLE
@@ -170,7 +172,8 @@ public class Metadata {
   public Metadata(Connection con, String url, List<String> excludeTables) throws SQLException {
     DatabaseMetaData md = con.getMetaData();
     String schema = getSchema(con, url);
-    try (ResultSet res = md.getTables(url.startsWith("jdbc:mariadb") ? con.getCatalog() : null, schema, null, null)) {
+    try (ResultSet res = md.getTables(url.startsWith("jdbc:mariadb") ? con.getCatalog() : null,
+        schema, null, null)) {
       while (res.next()) {
         String tableType = res.getString("TABLE_TYPE");
         // Note - H2 2.x introduced "BASE TABLE" as default table type:
@@ -219,6 +222,7 @@ public class Metadata {
           col.name = res.getString("COLUMN_NAME");
           // unused: col.type = res.getInt("DATA_TYPE");
           col.typeName = res.getString("TYPE_NAME");
+          col.typeCode = res.getInt("DATA_TYPE");
           // col.columnSize = res.getInt("COLUMN_SIZE");
           col.required = DatabaseMetaData.columnNoNulls == res.getInt("NULLABLE");
           col.readOnly = "YES".equals(res.getString("IS_AUTOINCREMENT"));
@@ -335,7 +339,10 @@ public class Metadata {
               String type = "string";
               type = convert(tc.typeName);
               pkm.put("dbType", tc.typeName);
-              if ("date".equals(type)) {
+              if (Types.ARRAY == tc.typeCode) {
+                pkm.put("type", "array");
+                pkm.put("items", Map.of("type", type));
+              } else if ("date".equals(type)) {
                 pkm.put("widget", "date");
                 pkm.put("style", ImmutableMap.of("width", "180px"));
                 pkm.put("type", "string");
@@ -373,6 +380,10 @@ public class Metadata {
 
     // Postgres returns lower case types
     typeName = typeName.toUpperCase();
+
+    // Postgres marks arrays with _type
+    if (typeName.startsWith("_"))
+      typeName = typeName.substring(1);
 
     if (typeName.endsWith(" UNSIGNED"))
       typeName = typeName.substring(0, typeName.length() - " UNSIGNED".length());

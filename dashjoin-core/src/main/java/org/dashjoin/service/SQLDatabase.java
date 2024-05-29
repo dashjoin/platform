@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static org.dashjoin.service.QueryEditor.Col.col;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1313,6 +1314,15 @@ public class SQLDatabase extends AbstractDatabase {
 
     if (object instanceof Map<?, ?> || object instanceof List<?>)
       if (url.startsWith("jdbc:postgresql:")) {
+
+        if (p != null && p.dbType != null && p.dbType.startsWith("_"))
+          if (object instanceof List<?>) {
+            List<?> list = (List<?>) object;
+            for (Object i : list)
+              if (i != null)
+                return list.toArray((Object[]) Array.newInstance(i.getClass(), 0));
+          }
+
         PGobject jsonObject = new PGobject();
         jsonObject.setType("json");
         try {
