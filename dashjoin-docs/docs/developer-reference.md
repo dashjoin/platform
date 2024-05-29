@@ -63,6 +63,15 @@ used as the key in the resulting JSON structure. Inputs can be of the following 
 * file with metadata: like file but includes file metadata
 * binary file with metadata: like binary file but includes file metadata
 
+Further options include:
+* an optional title for the input element
+* a description which shows up as a tooltip
+* an optional expression to compute select options
+* CSS options (e.g. width: 500px)
+* Read only flag (input is inactive)
+* Required flag
+* An optional format validation
+
 Not all form options can be edited in the form edit dialog. If you would like to create a form for
 nested objects and arrays, you can add the JSON schema to the form in Dashjoin Studio.
 This example displays a form to enter an object with a field emails which is an array of strings: 
