@@ -94,6 +94,10 @@ This example displays a form to enter an object with a field emails which is an 
             }
 ```
 
+If you choose one of the file upload widgets, you can add the attribute multiple: true via Dashjoin
+Studio. This allows you to upload multiple files at once. Note that the return value changes from
+a single value to an array if you do so.
+
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
 Runs / evaluates an expression when clicked.
