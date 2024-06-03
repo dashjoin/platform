@@ -346,6 +346,10 @@ public class Metadata {
                 pkm.put("widget", "date");
                 pkm.put("style", ImmutableMap.of("width", "180px"));
                 pkm.put("type", "string");
+              } else if ("datetime".equals(type)) {
+                pkm.put("widget", "datetime");
+                pkm.put("style", ImmutableMap.of("width", "180px"));
+                pkm.put("type", "string");
               } else
                 pkm.put("type", type);
             }
@@ -441,11 +445,11 @@ public class Metadata {
         // postgres time like 12:34:56
         return "string";
       case "DATETIME": // Sybase
-        return "date";
+        return "datetime";
       case "TIMESTAMP":
-        return "date";
+        return "datetime";
       case "TIMESTAMPTZ":
-        return "date";
+        return "datetime";
       case "INT2": // Postgres
       case "INT4": // Postgres
       case "INT8": // Postgres
