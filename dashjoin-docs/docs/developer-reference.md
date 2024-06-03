@@ -221,7 +221,7 @@ Depending on the result of the evaluation, one of the following cases applies:
 * if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record
 * an array of objects is displayed as a table
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
-* if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink 
+* if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink (note that absolute or relative links to another page in the app are specified without the "slash hash" part of the URL - for instance, the href "Info" or "/page/Info" links to the Info page)
 
 Example:
 ```
@@ -295,6 +295,8 @@ Displays custom HTML
 
 * html: HTML to display
 * context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
+
+As in the Markdown widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
 #### icon
 
@@ -374,6 +376,8 @@ Specifically, if you are using HTML tags, style attributes are filtered. A commo
 You can achieve this by adding a class attribute to the element and setting the value to a predefined
 material class like mat-elevation-z8. Alternatively, the markdown widget defines the styles margin1 to margin5
 which set the element margin to 1em to 5em.
+
+As in the HTML widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
 #### notebook
 
