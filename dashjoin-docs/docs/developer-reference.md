@@ -206,7 +206,7 @@ Edges are represented by the following JSON structure:
 * addEdge: optional JSONata to create a relationship (passed via edge.source, edge.target)
 * removeEdge: optional JSONata to remove a relationship (passed via edge.source, edge.target)
 
-#### [display](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
+#### [display](https://demo.my.dashjoin.com/#/northwind/EMPLOYEES/1?page=markdown)
 
 Displays the result of an expression:
 
@@ -309,7 +309,7 @@ Displays a hyperlink icon with tooltip
 
 Displays links to related records
 
-#### [map](https://demo.my.dashjoin.com/#/resource/northwind/CUSTOMERS/BERGS)
+#### [map](https://demo.my.dashjoin.com/#/northwind/CUSTOMERS/BERGS)
 
 Displays a map for a given location. 
 
@@ -361,7 +361,7 @@ If you would just like to show a marker at London, you can simply pass the strin
 ```
 
 
-#### [markdown](https://demo.my.dashjoin.com/#/resource/northwind/EMPLOYEES/1?page=markdown)
+#### [markdown](https://demo.my.dashjoin.com/#/northwind/EMPLOYEES/1?page=markdown)
 
 Displays markdown
 
