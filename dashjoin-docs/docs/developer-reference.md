@@ -784,6 +784,7 @@ parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes 
 parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
 parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
+parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query, etc.
 uuid | $uuid() | Generates a random UUID
 exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
 erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
