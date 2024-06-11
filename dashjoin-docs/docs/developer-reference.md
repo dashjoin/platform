@@ -66,7 +66,7 @@ used as the key in the resulting JSON structure. Inputs can be of the following 
 Further options include:
 * an optional title for the input element
 * a description which shows up as a tooltip
-* an optional expression to compute select options
+* an optional expression to compute select options (must return an array of strings or an array of objects containing name and value)
 * CSS options (e.g. width: 500px)
 * Read only flag (input is inactive)
 * Required flag
