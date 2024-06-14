@@ -41,6 +41,12 @@ Collapsible container with nested widgets
 * text: card title
 * roles: show container only if user is in one of these roles
 
+#### page
+
+The page widget is implicitly present at the root on any platform page. It cannot be edited via the layout editor, but changes can be made in Dashjoin Studio.
+
+* onRender: expression that is evaluated when the page renders in the browser
+
 ### Form Widgets
 
 Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
