@@ -1,6 +1,7 @@
 package org.dashjoin.expression;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -227,6 +228,12 @@ public class ExpressionService {
       } catch (JException e) {
         // intercept the exception
         JException je = (JException) e;
+        if ("T1006".equals(je.getError())) {
+          for (String s : Arrays.asList("confirm", "setVariable", "prompt", "alert", "notify",
+              "refresh", "reload", "log", "navigate", "clearCache"))
+            if (expression.contains("$" + s))
+              throw new Exception("Function $" + s + " can only be used in the browser");
+        }
         if ("T0410".equals(je.getError())) {
           for (org.dashjoin.function.Function f : ServiceLoader
               .load(org.dashjoin.function.Function.class))
