@@ -222,8 +222,8 @@ answer questions you pose, and much more. In the admin UI, use the mode "LLM Cha
 ### Retrieval Augmented Generation (RAG)
 
 Retrieval augmented generation allows inserting knowledge around a specific use case into the large language
-model - even if was not trained on these documents. You can upload your documents using the [admin
-UI](https://aikb.run.dashjoin.com/). The LLM is then able to answer your questions about these documents.
+model - even if was not trained on these documents. You can upload your documents using the admin
+UI. The LLM is then able to answer your questions about these documents.
 In the admin UI, select the button "Query KB" to use this mode.
 
 Choosing "Search in KB", only performs a semantic search on the uploaded documents without involving the LLM to answer your query.
