@@ -5,8 +5,6 @@ import static com.google.common.collect.Maps.newHashMap;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
@@ -20,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * tests specific features of the pojo config database
@@ -289,6 +289,19 @@ public class PojoDatabaseTest {
             Arrays.asList(
                 MapUtil.of("widget", "button", "print", "$query(\"northwind\", \"list\", {})"))),
         "query", "list"));
+  }
+
+  @Test
+  public void testContainsExpressionTree2() {
+    Assertions.assertTrue(PojoDatabase.containsFunction(MapUtil.of("children", Arrays.asList(
+        MapUtil.of("widget", "actionTable", "properties", MapUtil.of("action", "$call('fn')")))),
+        "call", "fn"));
+  }
+
+  @Test
+  public void testContainsExpressionTree3() {
+    Assertions.assertTrue(PojoDatabase
+        .containsFunction(MapUtil.of("wiget", "page", "onRender", "$call(\"fn\")"), "call", "fn"));
   }
 
   @Test

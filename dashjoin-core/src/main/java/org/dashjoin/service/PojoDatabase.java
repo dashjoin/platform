@@ -1260,15 +1260,24 @@ public class PojoDatabase extends UnionDatabase implements Config {
   /**
    * JSON fields that contain JSONata expressions
    */
-  public static final String[] EXPRESSION_FIELDS =
-      {"if", "context", "display", "expression", "onClick", "before-create", "after-create",
-          "before-update", "after-update", "before-delete", "after-delete", "print", "navigate"};
+  public static final String[] EXPRESSION_FIELDS = {"if", "context", "display", "expression",
+      "onClick", "before-create", "after-create", "before-update", "after-update", "before-delete",
+      "after-delete", "print", "navigate", "onRender"};
 
   /**
    * returns true if this tree contains expression / display / ... ="...$fn(.."arg"..)"
    */
   @SuppressWarnings("unchecked")
   static boolean containsFunction(Map<String, Object> node, String fn, String arg) {
+    if ("actionTable".equals(node.get("widget"))) {
+      Object properties = node.get("properties");
+      if (properties instanceof Map) {
+        Map<String, String> map = (Map<String, String>) properties;
+        for (String e : map.values())
+          if (containsFunction(e, fn, arg))
+            return true;
+      }
+    }
     for (String field : EXPRESSION_FIELDS) {
       if (node.get(field) instanceof String)
         if (containsFunction((String) node.get(field), fn, arg))
@@ -1293,6 +1302,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
   static boolean containsFunction(String e, String fn, String arg) {
     if (e != null) {
       int argIdx = e.indexOf("\"" + arg + "\"");
+      if (argIdx < 0)
+        argIdx = e.indexOf("'" + arg + "'");
       if (argIdx >= 0) {
         e = e.substring(0, argIdx);
         int fnIdx = e.lastIndexOf("$" + fn + "(");
