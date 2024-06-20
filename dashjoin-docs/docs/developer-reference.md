@@ -9,6 +9,13 @@ Note that all widgets have the title option:
 
 * title: when the widget is a direct child of the page container, the widget is placed in a card with this title
 
+Apart from title, all widgets support the following two options:
+
+* roles: show container only if user is in one of these roles
+* if: show the widget if the expression is true
+
+These can be edited using Dashjoin Studio. Some widgets, like the container, expose them via the layout editor as well.
+
 Widgets can be grouped into the following three categories.
 
 ### Container Widgets
