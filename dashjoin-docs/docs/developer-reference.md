@@ -676,6 +676,12 @@ Result
 
 The table content is deleted and rows 1 and 4 are added.
 
+**Sync**
+
+The sync mode works like Ignore. In conjunction with the foreach expression, it can be used to keep
+the database in sync with a file system or a web download location, by deleting certain entries.
+This is explained in the next section.
+
 ### Mapping Function Reference
 
 #### ETL
@@ -695,17 +701,54 @@ Note that you can also stream large JSON, XML, or CSV files via the streamJson, 
 functions. In this case, these functions split a large file into smaller chunks which are then
 passed to the mapping expression.
 
-Consider the following example expressions:
-```
-$openExcel("https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial%20Sample.xlsx")
-```
-
 The setting "ETL worker threads" can be used to achieve parallel writes to the database.
 This setting is only applicable if a foreach expression is specified.
 In this case, the setting "ignore ETL errors and continue process" specifies that any error
 that occurs when streaming a large file (e.g. a formatting error towards the end of the file)
 or when workers map and write the contents to the database (e.g. due a malformatted date string)
 are ignored and do not stop the other workers.
+
+#### ETL Sync
+
+The foreach construct also allows you to conveniently keep the database in sync with a set of files
+on the file system or the web. Consider the following foreach expression:
+
+```
+$ls("file:upload")
+```
+
+It returns a list of objects describing files in the upload folder. Let's assume those are JSON
+files, that are mapped to the database using this expression:
+
+```
+{
+  "url": url,
+  "modified": modified,
+  "content": $openJson(url)
+}
+```
+
+Now we can compute the urls and modified timestamps that are in the database:
+
+```
+$all(db, table) // please use a native distinct query for large datasets
+```
+
+The platform offers the etlSync function that computes the set of URLs that must be loaded
+for the next run and the records that might have been deleted using the URLs and modified
+pairs:
+
+```
+$etlSync($ls("file:upload"), $all(db, table), "url")
+```
+
+The third parameter specifies the name of the database column that contains the source URL.
+You can use this as the foreach expression. If you choose the mode "Ignore", new files will
+be added, unchanged files will be skipped, and deleted file remain in the database.
+
+If you choose mode "Sync", deleted and modified files will be removed from the DB first.
+Note that if you do not have a modified timestamp available, you can also use some sort of
+version string or etag to notify the system about a change in a source file.
 
 #### Receive
 
@@ -801,5 +844,5 @@ classifyEntities | $classifyEntities([entities], entity-language?, limit?, subcl
 synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see chapter AI & ML)
 urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
 wait| $wait(object, millisecs) | Wait millisecs provided before returning object
-
-
+etl | $etl(foreach, expression, database) | Run an ETL process programmatically
+etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
