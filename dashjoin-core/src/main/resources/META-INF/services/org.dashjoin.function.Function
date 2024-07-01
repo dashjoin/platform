@@ -31,7 +31,6 @@ org.dashjoin.function.DjGetFunctions
 org.dashjoin.function.Crawl
 org.dashjoin.function.Doc2data
 org.dashjoin.function.Index
-org.dashjoin.function.JobStatus
 org.dashjoin.function.IsRecursiveTrigger
 org.dashjoin.function.MoveField
 org.dashjoin.function.UUID

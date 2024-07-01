@@ -700,17 +700,6 @@ Consider the following example expressions:
 $openExcel("https://download.microsoft.com/download/1/4/E/14EDED28-6C58-4055-A65C-23B4DA81C4DE/Financial%20Sample.xlsx")
 ```
 
-Note that you have the full power of JSONata available for this operation. Consider the following example.
-We'd like to incrementally load files that are placed in an upload folder. Only files that have been
-added since the last run should be considered:
-```
-$ls("file:upload/delta")[modified > $jobStatus().start].url.$openJson($);
-```
-
-The ls function returns an array containing objects with the modified file timestamp as well as the url
-of the file. The jobStatus function returns information about the last job run. Therefore, we can
-filter the files to only include the ones that have a modified timestamp after the job ran last.
-
 The setting "ETL worker threads" can be used to achieve parallel writes to the database.
 This setting is only applicable if a foreach expression is specified.
 In this case, the setting "ignore ETL errors and continue process" specifies that any error
@@ -777,7 +766,6 @@ djVersion | $djVersion() | Returns the platform version information
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
-jobStatus | $jobStatus() | if evaluated within a function, start and stop timestamps (millis since 1970) and job status
 moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
 ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
 streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
