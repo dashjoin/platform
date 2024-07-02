@@ -1014,7 +1014,7 @@ public class Data {
     update(sc, database, table, Arrays.asList(objectId1, objectId2, objectId3, objectId4), object);
   }
 
-  void update(SecurityContext sc, String database, String table, List<String> objectId,
+  public void update(SecurityContext sc, String database, String table, List<String> objectId,
       Map<String, Object> object) throws Exception {
     MapUtil.clean(object);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
@@ -1155,7 +1155,7 @@ public class Data {
     return res;
   }
 
-  String dj(String database) {
+  public String dj(String database) {
     return services.getDashjoinID() + "/" + database;
   }
 }

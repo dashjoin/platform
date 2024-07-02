@@ -2,6 +2,7 @@ package org.dashjoin.expression;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -10,7 +11,9 @@ import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
+import org.dashjoin.model.Table;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Origin;
@@ -315,7 +318,7 @@ public class ExpressionService {
   }
 
   /**
-   * data.create(database, table, pk1)
+   * data.create(database, table, object)
    */
   public static class Create extends AbstractVarArgFunction<Object> {
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -328,6 +331,58 @@ public class ExpressionService {
     @Override
     public String getHelp() {
       return "Arguments required: $create(database, table, object)";
+    }
+
+    @Override
+    public String getType() {
+      return "write";
+    }
+
+    @Override
+    public String getSignature() {
+      return "<sso:o?>";
+    }
+  }
+
+  /**
+   * data.upsert(database, table, object)
+   */
+  public static class Upsert extends AbstractVarArgFunction<Object> {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public Object run(List arg) throws Exception {
+      String database = (String) arg.get(0);
+      String table = (String) arg.get(1);
+      Map<String, Object> object = (Map<String, Object>) arg.get(2);
+      AbstractDatabase db =
+          services.getConfig().getDatabase(this.expressionService.getData().dj(database));
+      Table t = db.tables.get(table);
+      try {
+        return this.expressionService.getData().createInternal(sc, database, table, object);
+      } catch (Exception assumePkViolation) {
+        // clone the map so changes to not affect the caller
+        object = new LinkedHashMap<>(object);
+
+        // move PKs to row to search
+        List<String> search = new ArrayList<>();
+        for (Property p : t.properties.values())
+          if (p.pkpos != null) {
+            while (search.size() <= p.pkpos)
+              search.add(null);
+            Object o = object.remove(p.name);
+            search.set(p.pkpos, o == null ? null : o.toString());
+          }
+
+        // make sure there is something to update
+        if (!object.isEmpty())
+          this.expressionService.getData().update(sc, database, table, search, object);
+        return null;
+      }
+    }
+
+    @Override
+    public String getHelp() {
+      return "Arguments required: $upsert(database, table, object)";
     }
 
     @Override

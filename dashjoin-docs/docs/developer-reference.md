@@ -802,7 +802,8 @@ clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction 
 
 Function | Syntax |  Returns
 ---|---|---
-create| $create(database, table, pk1) | ID of the new record
+create| $create(database, table, object) | ID of the new record
+upsert| $upsert(database, table, object) | first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update
 all| $all(database, table) | array of all table records
 all| $all(database, table, offset, limit, sort, descending, filter) | array of all table records whose columns match the filter key's values
 read|  $read(database, table, pk1) | The record
