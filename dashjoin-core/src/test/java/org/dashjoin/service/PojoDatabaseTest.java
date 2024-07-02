@@ -305,6 +305,17 @@ public class PojoDatabaseTest {
   }
 
   @Test
+  public void testContainsExpressionSchema() {
+    Assertions
+        .assertTrue(PojoDatabase.containsFunction(
+            MapUtil.of("children",
+                Arrays.asList(MapUtil.of("widget", "button", "schema",
+                    MapUtil.of("properties",
+                        MapUtil.of("field", MapUtil.of("options", "$call('fn')")))))),
+            "call", "fn"));
+  }
+
+  @Test
   public void testContainsQuery() {
     Assertions.assertTrue(PojoDatabase.containsQuery(
         MapUtil.of("children", Arrays.asList(MapUtil.of("widget", "chart", "query", "list"))),

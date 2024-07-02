@@ -180,8 +180,8 @@ public class ModelTest {
           String expr = kid.getValue().asText();
 
           if (!(kid.getValue() instanceof ObjectNode)) {
-            Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("$")
-                || expr.startsWith("value.") || expr.startsWith("("));
+            Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("[")
+                || expr.startsWith("$") || expr.startsWith("value.") || expr.startsWith("("));
             Jsonata jsonata = Jsonata.jsonata(expr);
             JFunction x = new JFunction(new JFunctionCallable() {
               @Override
@@ -210,6 +210,7 @@ public class ModelTest {
             jsonata.registerFunction("alterTableTrigger", x);
             jsonata.registerFunction("query", x);
             jsonata.registerFunction("call", x);
+            jsonata.registerFunction("all", x);
             jsonata.registerFunction("djSubscription", x);
             jsonata.registerFunction("clearCache", x);
             try {

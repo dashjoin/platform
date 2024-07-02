@@ -1262,7 +1262,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
    */
   public static final String[] EXPRESSION_FIELDS = {"if", "context", "display", "expression",
       "onClick", "before-create", "after-create", "before-update", "after-update", "before-delete",
-      "after-delete", "print", "navigate", "onRender"};
+      "after-delete", "print", "navigate", "onRender", "options"};
 
   /**
    * returns true if this tree contains expression / display / ... ="...$fn(.."arg"..)"
@@ -1276,6 +1276,17 @@ public class PojoDatabase extends UnionDatabase implements Config {
         for (String e : map.values())
           if (containsFunction(e, fn, arg))
             return true;
+      }
+    }
+    Object schema = node.get("schema");
+    if (schema instanceof Map) {
+      Object properties = ((Map<String, Object>) schema).get("properties");
+      if (properties instanceof Map) {
+        Map<String, Object> map = (Map<String, Object>) properties;
+        for (Object field : map.values())
+          if (field instanceof Map)
+            if (containsFunction((Map<String, Object>) field, fn, arg))
+              return true;
       }
     }
     for (String field : EXPRESSION_FIELDS) {
