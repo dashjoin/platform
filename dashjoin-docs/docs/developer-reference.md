@@ -507,12 +507,20 @@ Return value
 
 #### Credentials
 
-Allows saving credentials that can be references by other functions.
+Allows saving credentials that can be referenced by the JSONata curl function. This is done by
+specifying the authorization header and setting it to the name of the credential:
+
+```
+$curl("GET", "http://localhost:8080/rest/manage/version", {}, {"Authorization": "credential name"})
+```
+
+This works for both basic authentication and passing an API key via some generic HTTP header.
 
 Configuration:
 
 * username: credential username
 * password: credential password
+* apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
 
 ### Mapping Functions
 
