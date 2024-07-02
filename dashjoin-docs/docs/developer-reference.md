@@ -52,7 +52,7 @@ Collapsible container with nested widgets
 
 The page widget is implicitly present at the root on any platform page. It cannot be edited via the layout editor, but changes can be made in Dashjoin Studio.
 
-* onRender: expression that is evaluated when the page renders in the browser
+* onRender: expression that is evaluated when the page renders in the browser. This is useful if you need to initialize variables that are used in expressions of other widgets. Note that variables are stored per browser tab whereas the login session applies to the entire browser. Therefore, variables should be set using onRender instead of on-login.
 
 ### Form Widgets
 
