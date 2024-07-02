@@ -24,7 +24,7 @@ import okhttp3.RequestBody;
  */
 @SuppressWarnings("rawtypes")
 @JsonSchema(required = {"url"}, order = {"url", "username", "password", "method", "contentType",
-    "headers", "returnText", "timeoutSeconds"})
+    "headers", "apiKey", "timeoutSeconds"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -58,11 +58,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   @JsonSchema(enums = {"GET", "POST"})
   public String method;
 
-  /**
-   * if true, return the result as a string
-   */
-  @JsonSchema(title = "Return the result as raw text")
-  public Boolean returnText;
+  @JsonSchema(title = "Use credentials as HTTP API key")
+  public Boolean apiKey;
 
   @JsonSchema(title = "Optional HTTP timeout (s)")
   public Integer timeoutSeconds;
@@ -78,8 +75,11 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     String sv = map == null ? url : (String) Template.replace(url, map, true);
     Request.Builder request = new Request.Builder().url(sv);
     if (username != null)
-      request = request.header("Authorization",
-          "Basic " + Base64.getEncoder().encodeToString((username + ":" + password()).getBytes()));
+      if (apiKey != null && apiKey)
+        request = request.header(username, password());
+      else
+        request = request.header("Authorization", "Basic "
+            + Base64.getEncoder().encodeToString((username + ":" + password()).getBytes()));
     if (headers != null)
       for (Entry<String, String> e : headers.entrySet())
         request = request.header(e.getKey(), e.getValue());

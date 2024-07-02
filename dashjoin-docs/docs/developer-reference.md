@@ -448,13 +448,17 @@ The system supports the following functions. Each section lists the function con
 
 #### RestJson
 
-Calls an external REST service.
+Calls an external REST service. If you need more control over the how the call is performed, please use the JSONata function curl.
 
 Configuration
 
 * url: the URL of the REST service to call (the URL may contain template variables `${var}` which are replaced with the respective argument field)
 * username: optional HTTP basic authentication user name
 * password: optional HTTP basic authentication password
+* method: GET or POST
+* headers: HTTP headers
+* contentType: content-type header application/json or url-form-encoded
+* apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
 
 Invocation parameter
 
