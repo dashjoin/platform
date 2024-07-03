@@ -151,6 +151,7 @@ The key specifies the action button's label, the value contains the expression t
 
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 * properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  
+* perPage: default number of rows to display
 
 #### aichat
 
@@ -412,6 +413,7 @@ Displays query results as a table
 * graph: specifies whether the query is a graph query
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 * columns: if no query or expression is specified, this array allows specifying the columns to be projected. Note that this option is only available in Dashjoin Studio
+* perPage: default number of rows to display
 
 Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
