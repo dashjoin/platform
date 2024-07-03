@@ -173,14 +173,15 @@ Note: all settings not specified will use their defaults (see above).
 With this config the login dialog will look similar to this:
 
 ![Login with minimalistic config](assets/logincfg_mini.png)
-## Query Performance
+## Query / Expression Performance
 
 When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
-The query performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
+The query and expression performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
 with this task. It shows recent query statistics in a table. The columns are defined as follows:
 
-* query: shows the query that was run along with the database prefixed
+* query: shows the JSONata expression or the query that was run along with the database prefixed
 * type: 
+  * jsonata: JSONata expression evaluation
   * key: determining possible foreign key autocomplete values
   * search: the toolbar search 
   * query: the query editor, tables or charts

@@ -122,6 +122,10 @@ public class PerformanceDatabase extends JSONDatabase {
           this.type = "delete";
           break;
         }
+        if (el.getMethodName().equals("evaluate")) {
+          this.type = "jsonata";
+          break;
+        }
       }
 
       if (error != null) {

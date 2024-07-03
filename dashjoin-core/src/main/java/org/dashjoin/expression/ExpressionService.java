@@ -18,6 +18,7 @@ import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Manage;
+import org.dashjoin.service.PerformanceDatabase;
 import org.dashjoin.service.QueryEditor.QueryDatabase;
 import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -220,6 +221,8 @@ public class ExpressionService {
       if (expr == null)
         return null;
 
+      long start = System.currentTimeMillis();
+      String error = null;
       try {
         Object res = expr.evaluate(data);
 
@@ -245,7 +248,13 @@ public class ExpressionService {
                 if (f.getHelp() != null)
                   throw new Exception(f.getHelp());
         }
+        error = e.toString();
         throw e;
+      } catch (Exception e) {
+        error = e.toString();
+        throw e;
+      } finally {
+        PerformanceDatabase.add(expression, System.currentTimeMillis() - start, null, null, error);
       }
     }
   }

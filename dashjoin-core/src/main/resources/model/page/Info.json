@@ -105,7 +105,7 @@
 						"widget": "text",
 						"href": "/table/config/dj-query-performance",
 						"icon": "speed",
-						"text": "Query Performance"
+						"text": "Query / Expression Performance"
 					},
 					{
 						"widget": "text",

@@ -164,6 +164,13 @@ public class SQLDatabase extends AbstractDatabase {
         return Proxy.newProxyInstance(this.getClass().getClassLoader(),
             new Class[] {PreparedStatement.class}, this);
       }
+      if (method.equals(java.sql.Connection.class.getMethod("prepareStatement",
+          new Class[] {String.class, int.class}))) {
+        query = (String) args[0];
+        stmt = con.prepareStatement(query, (int) args[1]);
+        return Proxy.newProxyInstance(this.getClass().getClassLoader(),
+            new Class[] {PreparedStatement.class}, this);
+      }
       if (method.getName().equals("createStatement")) {
         stmt = con.createStatement();
         return Proxy.newProxyInstance(this.getClass().getClassLoader(),
