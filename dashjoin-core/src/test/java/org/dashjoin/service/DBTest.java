@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import static com.google.common.collect.ImmutableMap.of;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -362,6 +363,12 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
     Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
+    Mockito.when(sc.getUserPrincipal()).thenReturn(new Principal() {
+      @Override
+      public String getName() {
+        return "admin";
+      }
+    });
     List<Origin> links = db.incoming(sc, "junit", toID("PRJ"), toID("1000"), 0, 10);
     Assertions.assertEquals(0, links.size());
   }
