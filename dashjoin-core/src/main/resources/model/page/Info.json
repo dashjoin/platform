@@ -37,6 +37,12 @@
 					},
 					{
 						"widget": "text",
+						"text": "User",
+						"href": "/table/config/user",
+						"icon": "people"
+					},
+					{
+						"widget": "text",
 						"text": "Tenant Users",
 						"href": "/table/config/tenantusers",
 						"icon": "people"
