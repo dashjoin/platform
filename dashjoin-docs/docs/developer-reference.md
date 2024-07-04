@@ -117,9 +117,11 @@ Runs / evaluates an expression when clicked.
 
 * text: text shown for the run button (default is "Run")
 * print: evaluates this expression when clicked
+* expression: optional expression - the form fields are initialized with the result of this expression
 * deleteConfirmation: optional confirmation message before performing the action
 
 The form content (if a form is present), is added to the context using the key "form".
+This widget is a container. Any form elements are defined by adding an "Input" widget for each form field.
 
 #### create
 
@@ -140,6 +142,8 @@ allows editing a database record. Note that the form layout can be customized in
 Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x". A variable can be set via a URL query parameter. Appending ?a=1&b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only string variables can be set this way, so you might have to use $number(variable.a) when using the variable.
 
 * text: text shown for the apply button (default is "Apply")
+
+This widget is a container. Any form elements are defined by adding an "Input" widget for each form field.
 
 ### Regular Widgets
 
