@@ -408,6 +408,12 @@
       "required": [
         "ID"
       ],
+      "readRoles": [
+          "admin"
+      ],
+      "writeRoles": [
+          "admin"
+      ],
       "properties": {
         "ID": {
           "ID": "dj/config/tenantusers/ID",
@@ -454,6 +460,59 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
+          }
+        }
+      }
+    },
+    "user": {
+      "ID": "dj/config/user",
+      "name": "user",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+      "readRoles": [
+        "authenticated"
+      ],
+      "writeRoles": [
+          "authenticated"
+      ],
+      "tenantColumn": "ID",
+      "properties": {
+        "ID": {
+          "ID": "dj/config/user/ID",
+          "name": "ID",
+          "parent": "dj/config/user",
+          "pkpos": 0,
+          "createOnly": true,
+          "type": "string"
+        },
+        "name": {
+          "ID": "dj/config/user/name",
+          "name": "name",
+          "parent": "dj/config/user",
+          "type": "string"
+        },
+        "comment": {
+          "ID": "dj/config/user/comment",
+          "name": "comment",
+          "parent": "dj/config/user",
+          "type": "string"
+        },
+        "lastlogin": {
+          "ID": "dj/config/user/lastlogin",
+          "name": "lastlogin",
+          "parent": "dj/config/user",
+          "type": "date"
+        },
+        "properties": {
+          "ID": "dj/config/user/properties",
+          "name": "properties",
+          "parent": "dj/config/user",
+          "type": "object",
+          "additionalProperties": {
+              "type": "object"
           }
         }
       }
