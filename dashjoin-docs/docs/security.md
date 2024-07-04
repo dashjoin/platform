@@ -68,12 +68,12 @@ Roles can be assigned to the following elements:
 
 ### Row-Level Security
 
-Row-Level Security allows restricting access to certain table rows depending on the value of a column. A common use case are portals where different tenants should only see their data. Consider the following example where the owner column is the name of the user the item belongs to:
+Row-Level Security allows restricting access to certain table rows depending on the value of a column. A common use case are portals where different tenants should only see their data. Consider the following example where the owner column is the email of the user the item belongs to:
 
-| id | name   | owner |
-|----|--------|-------|
-| 1  | item 1 | joe   |
-| 2  | item 2 | mike  |
+| id | name   | owner             |
+|----|--------|-------------------|
+| 1  | item 1 | joe@example.com   |
+| 2  | item 2 | mike@localhost    |
 
 Using the table metadata editor, we can define "owner" to be the "tenantColumn", i.e. the column that defines the row-level security.
 If user mike logs in, he will only see item 2 on the item table.
