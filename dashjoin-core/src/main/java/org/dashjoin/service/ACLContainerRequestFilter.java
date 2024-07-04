@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import jakarta.inject.Inject;
+import jakarta.json.JsonString;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -19,6 +20,7 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.tenant.TenantManager;
 import org.dashjoin.util.MapUtil;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 /**
  * REST Filter that enforces query catalog level RBAC
@@ -205,7 +207,22 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
         }
       }
     } else {
-      v = sc.getUserPrincipal().getName();
+      // Note: keep logic in sync with TenantService.updateUserProfileFromJWT
+      if (sc.getUserPrincipal() instanceof JsonWebToken) {
+        JsonWebToken p = (JsonWebToken) sc.getUserPrincipal();
+        v = p.getClaim("email");
+        // If the JWT has no user info, it is a custom token
+        if (v == null) {
+          // In a token created with FirebaseAuth.createCustomToken,
+          // we have to put the data in the sub-claim "claims"
+          Map<String, Object> claims = p.getClaim("claims");
+          // Strings are of type JsonStringImpl
+          v = ((JsonString) claims.get("email")).getString();
+        }
+      } else {
+        // Local user's email
+        v = sc.getUserPrincipal().getName() + "@localhost";
+      }
     }
 
     if (v == null)
