@@ -503,6 +503,7 @@ public class Data {
     return Resource.of(db, m, object);
   }
 
+  @SuppressWarnings("unchecked")
   boolean dbTriggers(SecurityContext sc, String command, String database, String table,
       Map<String, Object> search, Map<String, Object> object, String t) throws Exception {
     if (t == null)
@@ -534,7 +535,15 @@ public class Data {
     context.put("table", table);
     context.put("search", search);
     context.put("object", object);
-    expression.resolve(sc, t, context);
+    Object res = expression.resolve(sc, t, context);
+    if (res instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) res;
+      Object setObject = map.get("setObject");
+      if (setObject instanceof Map) {
+        object.clear();
+        object.putAll((Map<String, Object>) setObject);
+      }
+    }
     return true;
   }
 

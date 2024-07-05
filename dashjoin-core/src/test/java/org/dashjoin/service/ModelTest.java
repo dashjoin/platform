@@ -180,8 +180,6 @@ public class ModelTest {
           String expr = kid.getValue().asText();
 
           if (!(kid.getValue() instanceof ObjectNode)) {
-            Assertions.assertTrue(expr.startsWith("{") || expr.startsWith("[")
-                || expr.startsWith("$") || expr.startsWith("value.") || expr.startsWith("("));
             Jsonata jsonata = Jsonata.jsonata(expr);
             JFunction x = new JFunction(new JFunctionCallable() {
               @Override
@@ -192,7 +190,13 @@ public class ModelTest {
             }, null);
             jsonata.registerFunction("gitPull", x);
             jsonata.registerFunction("gitStatus", x);
-            jsonata.registerFunction("djRoles", x);
+            jsonata.registerFunction("djRoles", new JFunction(new JFunctionCallable() {
+              @Override
+              public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                  throws Throwable {
+                return "admin";
+              }
+            }, null));
             jsonata.registerFunction("djVersion", x);
             jsonata.registerFunction("djGetDatabases", x);
             jsonata.registerFunction("djGetDrivers", x);

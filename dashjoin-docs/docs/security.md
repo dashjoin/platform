@@ -100,3 +100,9 @@ The role mappings on the customer are translated to a JSONata expression:
 
 * query: select * from customer where region = ${tenant}
 * query parameter expression: { "tenant": "sales-south" in roles ? "south" : ("sales-north" in roles ? "north") }
+
+### User Dashboard
+
+As the platform admin, the user dashboard shows all the users that have already logged into the system, along with
+the time of the first and last login.
+This information can be used by app developers to implement billing mechanisms for their users respectively.

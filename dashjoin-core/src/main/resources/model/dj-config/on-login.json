@@ -3,5 +3,5 @@
 	"description": "Expression to be evaluated upon login",
 	"category": "ui",
 	"type": "string",
-    "string": "(\n  $upsert(\"config\", \"user\", {\"ID\":email, \"name\":user, \"lastlogin\":$now()});\n  /* example for denying login with $error */\n  /* email != \"admin@localhost\" ? $error(\"Only user 'admin' allowed\") */\n)\n"
+    "string": "(\n  $upsert(\"config\", \"user\", {\"ID\":email, \"name\":user, \"firstlogin\":$now(), \"lastlogin\":$now()});\n  /* example for denying login with $error */\n  /* email != \"admin@localhost\" ? $error(\"Only user 'admin' allowed\") */\n)\n"
 }

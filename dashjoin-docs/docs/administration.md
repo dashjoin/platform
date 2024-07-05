@@ -283,9 +283,12 @@ When working with version control tools (i.e. git), assets can be maintained alo
 
 ## Tracking User Logins
 
-The platform has no built-in functionality for tracking users in the system.
-You may be able to retrieve this information at your identity managemnent platform.
-The platform does track user login events in the system log. You can grep the log for messages like this one:
+The platform tracks user logins in the table user within the config database.
+The table is written every time a user logs into the system. You can deactivate
+this feature by changing the on-login expression.
+
+Alternatively, you may be able to retrieve this information at your identity management platform.
+The platform logs user login events in the system log. You can grep the log for messages like this one:
 
 ```text
 2024-03-20 14:15:32,163 INFO  [com.das.ser.ten.TenantService] (executor-thread-12) Login profile uid=admin email=null roles=[admin] username=admin

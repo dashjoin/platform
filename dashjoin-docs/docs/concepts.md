@@ -318,5 +318,15 @@ In this case, the context is defined as follows:
 
 The expression is defined with the table.
 
-The result is ignored, unless the trigger function extends the AbstractDatabaseTrigger Java interface. In this case, we expect a Boolean value that aborts the write operation in case the value false is returned.
+The result is ignored, unless the trigger function returns the following result:
 
+```text
+{
+  "setObject": the object for the create or update call will be replaced by this object
+}
+```
+
+This mechanism allows setting default column values or removing keys for columns that should
+not be changed. You can also use the djVersion function to change the trigger behaviour based on the user role.
+
+In order to abort the update, create, or delete operation, you can use the "error" function.
