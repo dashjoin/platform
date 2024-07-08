@@ -156,6 +156,7 @@ The key specifies the action button's label, the value contains the expression t
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 * properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  
 * perPage: default number of rows to display
+* columns: columns to display. Use this option if you need certain fields to be included in the selection value but don't want those values to be included in the table. Note that this option is only available in Dashjoin Studio
 
 #### aichat
 
@@ -266,7 +267,7 @@ When icons is "*": "icon", all icons will be mapped to that same specified icon.
 Allows editing related records of a database record:
 
 * prop: foreign key column on the related table
-* columns: columns to display in the editRelated table display
+* columns: columns to display in the editRelated table display. Note that this option is only available in Dashjoin Studio
 
 #### graph
 
