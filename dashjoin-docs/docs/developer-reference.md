@@ -118,7 +118,11 @@ Runs / evaluates an expression when clicked.
 * text: text shown for the run button (default is "Run")
 * print: evaluates this expression when clicked
 * expression: optional expression - the form fields are initialized with the result of this expression
-* deleteConfirmation: optional confirmation message before performing the action
+* deleteConfirmation: optional confirmation message before performing the action (this option is only available in Dashjoin Studio - you can prompt the user via JSONata as follows):
+
+```
+$prompt('Are you sure?' ? perform action : 'cancelled')
+```
 
 The form content (if a form is present), is added to the context using the key "form".
 This widget is a container. Any form elements are defined by adding an "Input" widget for each form field.
