@@ -337,6 +337,7 @@ public class SQLDatabase extends AbstractDatabase {
     }
     Property p = new Property();
     p.dbType = type;
+    p.type = Metadata.convert(type);
     return p;
   }
 
