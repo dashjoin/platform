@@ -16,7 +16,6 @@
             "widget": "editRelated",
             "text": "Create Column",
             "prop": "dj/config/Property/parent",
-            "deleteConfirmation": "You are deleting a column and all its data. This operation cannot be reverted!",
             "columns": [
               "name",
               "dbType",
@@ -42,8 +41,7 @@
             "display": "{\"database\": \"config\", \"table\": \"dj-database\", \"pk1\": $.value.parent}"
           },
           {
-            "widget": "edit",
-            "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!"
+            "widget": "edit"
           }
         ]
       }

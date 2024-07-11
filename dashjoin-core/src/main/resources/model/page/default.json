@@ -4,8 +4,7 @@
     "widget" : "page",
     "children" : [ {
       "widget" : "edit",
-      "title" : "Edit Record",
-      "deleteConfirmation": "Are you sure you want to delete this record?"
+      "title" : "Edit Record"
     }, {
       "widget" : "links",
       "title" : "Related Records"

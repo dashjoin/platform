@@ -287,8 +287,7 @@
         "children": [
           {
             "widget": "edit",
-            "title": "Connection Information",
-            "deleteConfirmation": "Are you sure you want to delete this database connection?"
+            "title": "Connection Information"
           },
           {
             "widget": "display",
@@ -313,7 +312,6 @@
                 "widget": "editRelated",
                 "text": "Create Table",
                 "prop": "dj/config/Table/parent",
-                "deleteConfirmation": "You are deleting a table and all its data. This operation cannot be reverted!",
                 "columns": [
                   "ID",
                   "comment",
@@ -664,8 +662,7 @@
         "children": [
           {
             "widget": "edit",
-            "title": "Edit Record",
-            "deleteConfirmation": "Are you sure you want to delete this query?"
+            "title": "Edit Record"
           },
           {
             "widget": "container",
@@ -782,8 +779,7 @@
         "children": [
           {
             "title": "Edit Record",
-            "widget": "edit",
-            "deleteConfirmation": "Are you sure you want to delete this widget?"
+            "widget": "edit"
           },
           {
             "title": "Widget Preview",
@@ -824,8 +820,7 @@
         "children": [
           {
             "widget": "edit",
-            "title": "Edit Page",
-            "deleteConfirmation": "Are you sure you want to delete this page?"
+            "title": "Edit Page"
           },
           {
             "display": "{\"label\": \"Visit Page\", \"href\": \"/page/\" & value.ID}",
@@ -921,8 +916,7 @@
         "children": [
           {
             "widget": "edit",
-            "title": "Edit Record",
-            "deleteConfirmation": "Are you sure you want to delete this function?"
+            "title": "Edit Record"
           },
           {
             "widget": "container",
