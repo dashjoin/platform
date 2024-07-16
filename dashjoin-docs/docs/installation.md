@@ -505,7 +505,7 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Delete confirmation for table bulk delete
   * Button form can be pre-populated
   * Rows per table can be set
-  * if condition for all widgets
+  * Conditional rendering for all widgets
   * onRender JSONata hook for all pages
   * Multi file upload in forms
   * Filter improvements
