@@ -497,3 +497,21 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Optimized performance for JSONata openExcel
   * JSONata curl command as a flexible HTTP client
   * openHtml function to scrape webpages
+
+### 5.2 (July 2024)
+
+* UI
+  * Ability to specify redirect behavior after edit / delete
+  * Delete confirmation for table bulk delete
+  * Button form can be pre-populated
+  * Rows per table can be set
+  * if condition for all widgets
+  * onRender JSONata hook for all pages
+  * Multi file upload in forms
+  * Filter improvements
+* Platform
+  * Ability to track platform users' first and last login times
+  * Incremental ETL from file resources
+* SDK
+  * JSONata upsert function
+  * Support credential store for any kind of REST header / API key
