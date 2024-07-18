@@ -1,0 +1,1539 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../concepts/">
+      
+      
+        <link rel="next" href="../developer-reference/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+    
+    
+      
+        <title>User Interface - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-interface" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Interface
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#universal-database-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Universal Database Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Database Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Visualization of Tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Visualization of Records
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search Page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-database-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data and Database Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data and Database Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-definition-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Definition Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Column Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-column-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Column Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Label
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Triggers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-and-column-comment-and-title" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table and Column Comment and Title
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-catalog-and-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Catalog and Editor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Catalog and Editor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Catalog Page
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-query-constructs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Query Constructs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Result Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Parameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Queries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pages-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pages Dashboard
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pages Dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-pages-and-layouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Pages and Layouts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout Editor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expression-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expression Editor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-information-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Information Page
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General Information Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Information
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Databases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI & ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#universal-database-frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Universal Database Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Universal Database Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Visualization of Tables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-visualization-of-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Visualization of Records
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search Page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-database-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data and Database Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data and Database Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-definition-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Definition Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Column Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complex-column-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Column Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Label
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Triggers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-and-column-comment-and-title" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table and Column Comment and Title
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-catalog-and-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Catalog and Editor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query Catalog and Editor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#query-catalog-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Catalog Page
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-query-constructs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Query Constructs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#result-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      Result Size
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query Parameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Queries
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pages-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pages Dashboard
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pages Dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-pages-and-layouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Pages and Layouts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout Editor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expression-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expression Editor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-information-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Information Page
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General Information Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Information
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Databases
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="user-interface">User Interface</h1>
+<p>This section explains all Dashjoin user interface pages in more detail.</p>
+<h2 id="universal-database-frontend">Universal Database Frontend</h2>
+<p>Dashjoin offers an intuitive default visualization for any kind of data. 
+<a href="https://www.youtube.com/watch?v=zXXtR9zSOXs">Click here</a> for a demo video.
+It features the following building blocks:</p>
+<h3 id="default-visualization-of-tables">Default Visualization of Tables</h3>
+<p>Unless specified otherwise using the layout editor, all table pages show two elements. First, we have a sortable and pageable table showing the database table contents. Any primary or foreign key displays a link to the corresponding record page. Secord, the page shows a form for creating a new table record. The form is configured using the table metadata the system collected from the database.
+In case you are a system administrator, you will see two more widgets which are explained in the section on data definition operations below.</p>
+<h3 id="default-visualization-of-records">Default Visualization of Records</h3>
+<p>The record page also has two elements. First, there is a form allowing to update and delete the record. The form is almost identical to the create form on the table page. The only exception is that it is not allowed to change primary key columns. If you would like to do this, you need to delete and re-create the record using the new key. Second, the page has a widget showing links to the table page and all related records. Note that records are related if a key in the record points to another record or vice versa.</p>
+<h3 id="search-page">Search Page</h3>
+<p>Dashjoin offers a powerful search capability of the underlying databases. When you enter a search term in the toolbar, the search is federated to all registered databases and the result page shows the combined result using the following columns:</p>
+<ul>
+<li>a link to the actual record matching the search</li>
+<li>the name of the table the record is located in</li>
+<li>the name of the column that matched the search</li>
+<li>the matching column value</li>
+</ul>
+<p>In order to boost performance, Dashjoin pushes down the search queries to the underlying databases if possible.
+Therefore, depending on the database, the search might match keywords slight differently:</p>
+<ul>
+<li>SQL databases perform a case insensitive contains operation (i.e. "My Test String" would match the search term "test")</li>
+<li>Firestore performs a case sensitive starts with operation (i.e. "My Test String" would match the search term "My" but not "test")</li>
+<li>The default implementation behaves like SQL</li>
+</ul>
+<h2 id="data-and-database-management">Data and Database Management</h2>
+<p>In Dashjoin, it is possible to register multiple databases. This section lists the supported management operations for these databases.</p>
+<h3 id="database-dashboard">Database Dashboard</h3>
+<p>The database dashboard shows the databases known to the system and allows registering new databases. The table displays some core information about each database, the connection status as well as the number of tables detected.
+To register a new database, first select the database type. Depending on your choice, the respective connection options appear. Once you connect, Dashjoin will collect the database metadata and immediately make the new database ready for searches, queries, and browsing. The table also provides a link to the individual database. Use this page to change connection parameters. You can also simply press update to recollect the metadata. This is useful if the underlying schema was changed by another application. Deleting the database disconnects from the database and deletes the connection information. No data is deleted in the database.</p>
+<p>On the page of a database instance, you can edit the connection parameters.
+Submitting the form will re-connect the database and pick up any schema changes
+that were performed by other applications.</p>
+<p>You can also specify the roles that are allowed to read and write to the database. Note that by default, the admin role has access to all tables.</p>
+<p>If you would like to exclude certain tables from being accessible via the platform, you can add their names in the excludeTables field in the database's JSON file in the model folder as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">  </span><span class="nt">&quot;excludeTables&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;table1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;table2&quot;</span><span class="p">],</span>
+</code></pre></div>
+<h3 id="data-definition-operations">Data Definition Operations</h3>
+<p>The database page offers a database management section. You can create a new table there. The new table will contain two columns:</p>
+<ul>
+<li>ID: a numeric primary key</li>
+<li>name: a generic string describing the record</li>
+</ul>
+<p>The display table shows all database tables. You can delete tables there.
+Attention: this is a permanent operation that you have to confirm by typing "delete" into the dialog. Editing a table offers several options which are explained in the following sections. You can change the table name. This change is performed on the underlying database (e.g. a rename table operation on an SQL database).</p>
+<p>Following the link to an individual table offers two sections in addition to the normal table display. The table metadata section simply makes the table operations (e.g. renaming a table) available from this page also. The column metadata allows creating, renaming, and deleting columns. Attention: deleting columns is a permanent operation and needs to be confirmed by typing "delete" in the dialog.
+Besides renaming columns, other options are available which are explained in the below.</p>
+<h3 id="upload">Upload</h3>
+<p>The database management section also allows to upload data from multiple files to the current database. The following file extensions are supported:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Extension</th>
+<th>Table Name</th>
+<th>Column Name</th>
+<th>Suggested Data Type</th>
+<th>Suggested Primary Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comma separated UFT-8 format as defined by <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a></td>
+<td>.csv</td>
+<td>File name before extension</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>Microsoft Excel</td>
+<td>.xlsx</td>
+<td>Sheet name</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>SQLite database</td>
+<td>.sqlite</td>
+<td>From database</td>
+<td>From database</td>
+<td>From database</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>JSON table</td>
+<td>.json</td>
+<td>File name before extension</td>
+<td>First row</td>
+<td>Guess by inspecting the data</td>
+<td>First unique column</td>
+</tr>
+<tr>
+<td>Model folder upload to config DB</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The system allows you to choose multiple files and collects all tables and columns from them and displays a preview of all tables in tabs. The table above shows how the system determines table and column names as well as the primary key and column types. You cannot change the table and column names in this display. If you would like to change them, abort the process, change the source file, and repeat the upload process.</p>
+<p>Depending on the tables to be uploaded, there are two modes. If one of the tables exists already, we enter the append / replace mode. This mode requires the structure of all tables to match the existing tables. You cannot pick column types or primary keys in this mode. You can then decide to append the data to the existing data or to replace the existing data. Attention, replacing the data will delete the data currently stored in these tables permanently. You therefore have to confirm this operation by entering "delete contents".</p>
+<p>If none of the tables exist, we enter the create mode.
+The preview does allow changing the primary key and column types. The suggested values are guesses based on the data and must be double checked by the user.</p>
+<h3 id="column-operations">Column Operations</h3>
+<p>The operations on columns can be grouped into two categories. First, changing the name and / or datatype results in the underlying database to be changed (i.e. using an alter column command on SQL databases).</p>
+<p>Second, editing primary and foreign keys are changes on the metadata level only, since not all databases support these concepts. You can specify a column to be the primary key of the table. Note that the user interface does not support composite primary keys. A column can also be defined to be a foreign key by entering the corresponding linked primary key. Note that it is possible to define references not only within the same database but also to other databases. Setting foreign key references causes the foreign key column to display links to the related record and vice versa.</p>
+<h3 id="complex-column-types">Complex Column Types</h3>
+<p>Certain databases support storing arbitrary JSON data in a column. In this case, it is not possible to
+retrieve the required schema information in order to display a proper form for data entry.
+In this situation, you can use Dashjoin Studio to enter a complex schema via a text editor.
+A JSON column defaults to type "string". In the column editor, you can change this type to "object" or "array".
+Open Dashjoin Studio, and locate the change. You can enter a schema - for instance for a coordinate type - as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>    &quot;tables&quot;: {
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>        &quot;mytable&quot;: {
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>            &quot;properties&quot;: {
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                &quot;mycolumn&quot;: {
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                    &quot;type&quot;: &quot;object&quot;,
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                    &quot;properties&quot;: {
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                        &quot;x&quot;: {
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                            &quot;type&quot;: &quot;integer&quot;
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>                        },
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                        &quot;y&quot;: {
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>                            &quot;type&quot;: &quot;integer&quot;
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>                        }
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                    }
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>                }
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>            }
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        }
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    }
+</code></pre></div>
+<h3 id="table-label">Table Label</h3>
+<p>Besides changing the table name, you can enter a label and triggers.
+The label defines how the system should display a record in the following scenarios:</p>
+<ul>
+<li>the browser page title when we are on a record of that table</li>
+<li>in the autocomplete dropdown when editing a foreign key field</li>
+<li>when displaying the label of a hyperlink pointing to the record</li>
+</ul>
+<p>This feature is important when a table uses an artificial or non-descriptive primary key like a number or a UUID. By default, the system uses the key in the scenarios above, leading to unreadable and unintuitive displays. In this situation, the label can be changed to a template string with the template variable referencing other more descriptive record columns. For instance the table PERSON could define a label <code>${LAST_NAME}</code> or even <code>${LAST_NAME}, ${FIRST_NAME}</code> in order to display meaningful and user readable information rather than numbers or UUIDs.</p>
+<p>In case of an M:N relationship, the label can be shown depending on where the link is being displayed.
+I.e. the page for M looks at the M:N and will only display N, and N looking at M:N will see M (this works as intuitively expected).
+The syntax for labels that need dereferencing is to prepend '<em>'. To render a M:N you could use: {</em>M} {*N}
+where M and N are attributes (columns) in the relationship (table).</p>
+<p>Note that the user interface loads these template values in a lazy fashion whenever you visit a record page.</p>
+<h3 id="table-triggers">Table Triggers</h3>
+<p>Dashjoin offers create, update, and delete operations for each table. A trigger can be installed on each table that reacts before or after these operations, resulting is six trigger configurations.
+A trigger is an expression that is evaluated in the respective case. This following context is passed to the expression:</p>
+<ul>
+<li>command: one of create, update, or delete</li>
+<li>database: the database being modified</li>
+<li>table: the table being modified</li>
+<li>search: a map with the record's primary keys</li>
+<li>object: the record to the created or the fields to be updated</li>
+</ul>
+<p>Please see the section on expressions for more details.</p>
+<h3 id="table-and-column-comment-and-title">Table and Column Comment and Title</h3>
+<p>Dashjoin extracts the technical metadata from the databases. The editor allows you to add a comment for tables and columns in order to document the data model.
+The table title is used when displaying a link to the table. Likewise, column titles are used in CRUD forms and the show all records table columns.</p>
+<h2 id="query-catalog-and-editor">Query Catalog and Editor</h2>
+<p>The query catalog allows you to save queries that are used by other parts of the application. Usually, these are chart and table widgets that display query results. The catalog allows you to manage queries in a central place, reuse them across the application and define important metadata about parameters and access control.
+<a href="https://www.youtube.com/watch?v=yxjE8GgXtfo">Click here</a> for a demo video.</p>
+<h3 id="query-catalog-page">Query Catalog Page</h3>
+<p>The query catalog page show a list of all defined queries as well as a form for entering a new query. The form has the following fields:</p>
+<ul>
+<li>ID: this is a unique identifier to reference the query (e.g. from a chart widget)</li>
+<li>type: queries can have type read and write indicating whether the running the query will make changes to the underlying database</li>
+<li>roles: defines which roles are allowed to run the query</li>
+<li>database: this field can only be written from the editor as shown below and defines which database is used in the query editor (note that the application can later run a query on other database with the same schema)</li>
+<li>arguments: queries can be parameterized using arguments (see the section below for more details)</li>
+<li>query: allows making manual edits to the query and offers to open the query editor dialog</li>
+</ul>
+<p><img alt="Features of the Query Editor" src="../assets/features.png" /></p>
+<h3 id="features">Features</h3>
+<ul>
+<li>Graphically build queries in an Excel-like fashion</li>
+<li>Add columns and join tables via point and click</li>
+<li>Reorder columns using drag &amp; drop</li>
+<li>Apply where filters by simply adding them to the query result table</li>
+<li>Aggregate / group results right in the data table</li>
+<li>Rename columns</li>
+<li>Manual query edits are possible as well</li>
+<li>Download results as CSV</li>
+</ul>
+<h3 id="supported-query-constructs">Supported Query Constructs</h3>
+<p>The editor supports a wide range of features of the query language, namely any kind of table join, aggregation and filter.
+It is possible to add advanced constructs such as a subquery or a call to a user defined function or stored procedure to the query by making changes in the lower text field.
+In this case, the query editor displays the query result but no longer allows making changes to the query via the UI controls.
+The reason for the controls being disabled is shown in a tool tip.
+You can return to the last supported query via the undo button.</p>
+<h3 id="result-size">Result Size</h3>
+<p>During the process of writing the query, we limit the results to 1000 rows.
+Use the limit text field to set an explicit query limit. Once, the limit is set, it overrides the default of 1000 result rows.</p>
+<h3 id="query-parameters">Query Parameters</h3>
+<p>The query catalog page allows defining query parameters. Each parameter consists of the following information:</p>
+<ul>
+<li>key: this is the parameter name that allows the query to reference the parameter using <code>${key}</code></li>
+<li>type: defines the datatype of the parameter</li>
+<li>sample: this is the value that will be used in the query editor</li>
+</ul>
+<p>Consider the following example that searches for persons with a certain name older than a given age:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PERSON</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="n">p_name</span><span class="err">}</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">AGE</span><span class="o">&gt;</span><span class="err">${</span><span class="n">p_age</span><span class="err">}</span>
+</code></pre></div>
+<p>This query has the string parameter p_name and the integer parameter p_age. In order to edit the query and display a result preview, we need to pluck in sample data. So we can define the samples:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>p_name: Mike
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>p_age: 20
+</code></pre></div>
+<p>This results in the following query that is used when editing the query. So in the edit dialog, the following query is used (note that the system automatically handles quotation of strings and dates):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PERSON</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;Mike&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">AGE</span><span class="o">&gt;</span><span class="mi">20</span>
+</code></pre></div>
+<p>Once the editor is closed, the samples are replaced with the template variables again. Note that this replacement is string based, so you should choose parameter names that do not "collide" with other parts of the query. Hence, we choose the prefix p_.</p>
+<h3 id="graph-queries">Graph Queries</h3>
+<p>Apart from managing traditional queries, the Dashjoin query catalog can also be used to store graph queries.
+There are different flavors of graph query languages. We orient ourselves at the <a href="https://opencypher.org/">OpenCypher</a> language
+and the upcoming <a href="https://www.gqlstandards.org/">GQL Standard</a>. Like queries on document and relational database,
+graph queries return a table where the columns represent the projection variables and each row contains variable values
+that match the query pattern / path.</p>
+<p>The difference between the query types is that a graph query may return very different record types for a column / variable.
+Consider a graph query that returns all related records that are reachable with two hops from the starting record.
+Obviously, you will end up on very different records. In the northwind case, starting from an employee, these might be
+orders processed by the employee, the employee's boss's boss, and so on. Therefore, Dashjoin graph queries will make
+sure that apart from the raw data, the result also contains type information that can be used by the UI in order to
+interpret the values.</p>
+<p>Graph queries can be run on a specific or on all databases. Dashjoin contains a partial OpenCypher implementation. Consider the following OpenCypher 
+example (to learn OpenCypher, please refer to <a href="https://neo4j.com/developer/cypher/querying/">this interactive guide</a>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>MATCH 
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]-&gt;(boss)-[r2:REPORTS_TO]-&gt;(finish) 
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>RETURN 
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  start._dj_resource, boss.LAST_NAME, finish._dj_resource, path&quot;
+</code></pre></div>
+<p>This query traverses the recursive "reports to" relationship. The variables start, boss, and finish
+represent the graph nodes. As mentioned before, the engine adds the record metadata. i.e. which database and table / collection
+the record comes from. The path variable matches the entire traversal and contains all nodes and edges (relationships) that were
+traversed.</p>
+<p><a href="https://www.arangodb.com/docs/stable/aql/graphs-traversals.html">AQL</a> and <a href="https://www.w3.org/TR/sparql11-property-paths/">SPARQL Property Paths</a>
+are alternative graph query languages that can be pushed down to the native database query engine if the query is run on the respective ArangoDB / RDF4J
+database. The Dashjoin drivers make sure that the query result has the same structure as a corresponding OpenCypher query.</p>
+<p>Note that the graphical query editor does not yet support composing graph queries.</p>
+<h2 id="pages-dashboard">Pages Dashboard</h2>
+<p>While Dashjoin has a rich default page layout that is suitable for many use cases, every aspects of the display can be configured using the functionality described in this section.</p>
+<p>The pages dashboard provides you with an overview of the available pages in the system. The first table shows the dashboards available in the system. This is a mix of system pages, which are explained in more detail in the next section, and pages created by the user via the "create a new page" form.</p>
+<p>The page contains a link to widgets. This allows you to customize the sidebar and the toolbar. 
+You can edit the those by visiting the page /config/widget/dj-toolbar or /config/widget/dj-sidenav.
+A typical use case would be to edit the roles that are required for an icon to appear.
+You can also add an icon pointing to your custom dashboard page.
+Since the dj-toolbar is shipped with the system, you can revert back to the original version by clicking delete on this page.</p>
+<p>Finally, the layouts table provides an overview of all tables and whether the default layout is used or whether the user has customized the layout using the layout editor.</p>
+<h3 id="system-pages-and-layouts">System Pages and Layouts</h3>
+<p>The system comes with a set of system pages (e.g. Home and Info) and some layouts for databases, tables, queries, etc. These layouts contain much of the functionality described in this reference guide.</p>
+<p>System pages can be changed using the editor introduced below, however, a delete operation does not delete them altogether, but rather resets them to the "factory" state. This ensures that you cannot accidentally damage a system permanently using the editor.</p>
+<h3 id="layout-editor">Layout Editor</h3>
+<p>To activate the layout and form editor, press the pen symbol in the toolbar. You will remain on the page, but several controls will pop up on the screen. The pen symbol is replaced with three icons:</p>
+<ul>
+<li>Delete: deletes the page or resets the default table or record layout</li>
+<li>Save: saves the changes</li>
+<li>Abort: leaves the editor without saving</li>
+</ul>
+<p>In the lower right screen corner you have the following controls:</p>
+<ul>
+<li>Undo / redo: undo an unwanted change</li>
+<li>Zoom: if you are editing a large page, you can zoom out to get a better overview or to drag elements from one end to the other</li>
+<li>Edit: when clicking on a widget, opens the widget editor on the bottom</li>
+<li>Move: displays arrows in each widget that move the mights in that direction. Alternatively, you can drag and frop widgets using the drag handle in the widget's upper right corner</li>
+<li>Resize: allows resizing widgets on a 12 column grid</li>
+</ul>
+<p>The plus icon is shown at the bottom of the page as well as for each container that was added to the page.
+This allows you to create nested layouts.
+Pressing the plus icon opens a drawer on the left where you can select the widget to add.</p>
+<p>Once you add a widget or select it for editing, the widget editor opens at the bottom of the page.
+You can enter texts, expressions, styles, icons etc.</p>
+<p>For more information on the layout editor, you can refer to the <a href="https://react-page.github.io/">React Page</a> documentation.</p>
+<h3 id="expression-editor">Expression Editor</h3>
+<p>Expressions are used in various places throughout the platform. The next sections describe the different usage scenarios in more detail. Whenever an expression is to be edited on a form, Dashjoin allows you to do this via the expression editor component which is explained in this section.</p>
+<p>The expression editor is a simple text field that shows context sensitive help and a result preview once you start typing.</p>
+<p>As an example, you can navigate to the info page, enter the page edit mode and edit the user display widget. The widget displays the result of the following expression which projects the user field from the page context (the composition of the context is explained in the next section):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>{&quot;user&quot;: user}
+</code></pre></div>
+<p>If you delete the closing curly bracket, the system will tell you that the expression is invalid: line 1:13: missing '}'. Now enter the following expression that calls the built-in read:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$read()
+</code></pre></div>
+<p>The system will tell you about missing parameters: Arguments required: <code>$read(database, table, pk1)</code>. Now change the expression to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$read(&quot;northwind&quot;, &quot;EMPLOYEES&quot;, 2)
+</code></pre></div>
+<p>Assuming you have the demo application installed, this will show the first 10 lines of JSON that contain the respective record in the employees table of the northwind database. Finally, setting the expression to</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$
+</code></pre></div>
+<p>displays the entire page context.</p>
+<h2 id="function-page">Function Page</h2>
+<p>The function page works a lot like the database page. It shows a table of the functions that have been created on the system. To create a new function, you first need to select the function type. Depending on your choice, you can enter the respective configuration parameters. The function type specifies whether the function is read only or whether it has side effects like sending email or writing data. Finally, the roles specify which user role is allowed to run the function. Functions define extract load transform operations that load data into one of the databases, email endpoints, or access the RESTful web services.</p>
+<p>Apart from creating and editing functions, you can also run the functions from the function page.
+Note that functions will be called without any parameters.
+If you would like to run functions with parameters, use the JSONata Notebook.
+Please refer to the developer reference chapter for a detailed listing of all supported functions.</p>
+<h2 id="general-information-page">General Information Page</h2>
+<p>This page contains some basic information about the platform version and installation parameters.
+At the top of the page, you find some important links that are grouped into the following four categories:</p>
+<h3 id="user-information">User Information</h3>
+<p>This section shows the user name, email, and roles. In addition, you can find links to the roles and tenant users
+tables. These are used for configuring roles and access control. For details, please consult the section
+security and access control.</p>
+<h3 id="app">App</h3>
+<p>The app section contains links to the following pages:</p>
+<ul>
+<li>Dashjoin Studio: this link opens Dashjoin Studio in a new window. This mode allows writing your own widgets using third party JavaScript libraries</li>
+<li>App API: This page allows you to use Dashjoin to implement an existing OpenAPI spec, publish schemas and paths to your OpenAPI spec, and generate an OpenAPI spec for your Dashjoin app</li>
+<li>Notebook: this is an area that works much like a jupyter notebook. You can conveniently experiment with JSONata there</li>
+<li>Git: this page provides a lightweight way to manage version control of your app. For more information please refer to the section development / production</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>This section provides links to the system configuration. You can define certain user interface customizations there,
+configure database search parameters, and define some other system settings.</p>
+<p>The configuration database is a built-in database that defines queries, function, registered databases, etc. 
+Every role defined in the system must have read-only
+access to the configuration database. On this page, you can define which roles have access to which system tables and you can
+upload system tables (e.g. for importing users).</p>
+<h3 id="databases">Databases</h3>
+<p>The databases section shows a link to the query performance table. This table helps you to identify
+performance problems in your app. The ER diagram is a convenient way of visualizing your database schemata.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      
+    
+  </body>
+</html>

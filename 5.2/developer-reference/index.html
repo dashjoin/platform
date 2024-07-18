@@ -1,0 +1,2779 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../user-interface/">
+      
+      
+        <link rel="next" href="../ai-ml-integration/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+    
+    
+      
+        <title>Developer Reference - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#developer-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Developer Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#widget-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Widget Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Widget Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#card" class="md-nav__link">
+    <span class="md-ellipsis">
+      card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      expansion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    <span class="md-ellipsis">
+      page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Form Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button" class="md-nav__link">
+    <span class="md-ellipsis">
+      button
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    <span class="md-ellipsis">
+      create
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      variable
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regular-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regular Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actiontable" class="md-nav__link">
+    <span class="md-ellipsis">
+      actionTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aichat" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display" class="md-nav__link">
+    <span class="md-ellipsis">
+      display
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editrelated" class="md-nav__link">
+    <span class="md-ellipsis">
+      editRelated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html" class="md-nav__link">
+    <span class="md-ellipsis">
+      html
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    <span class="md-ellipsis">
+      links
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      markdown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      notebook
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      text
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      RestJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invoke
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credentials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gathering Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mapping Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Save Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Function Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      ETL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      ETL Sync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receive
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-expression-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin Expression Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin Expression Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend Expressions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI & ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#widget-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Widget Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Widget Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Container Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#card" class="md-nav__link">
+    <span class="md-ellipsis">
+      card
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      expansion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page" class="md-nav__link">
+    <span class="md-ellipsis">
+      page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Form Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#button" class="md-nav__link">
+    <span class="md-ellipsis">
+      button
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    <span class="md-ellipsis">
+      create
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edit" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      variable
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regular-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regular Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Regular Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actiontable" class="md-nav__link">
+    <span class="md-ellipsis">
+      actionTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aichat" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#display" class="md-nav__link">
+    <span class="md-ellipsis">
+      display
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#editrelated" class="md-nav__link">
+    <span class="md-ellipsis">
+      editRelated
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html" class="md-nav__link">
+    <span class="md-ellipsis">
+      html
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#icon" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    <span class="md-ellipsis">
+      links
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#markdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      markdown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      notebook
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    <span class="md-ellipsis">
+      table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#text" class="md-nav__link">
+    <span class="md-ellipsis">
+      text
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Function Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      RestJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      Invoke
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Credentials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gathering Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Mapping Step
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Save Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mapping Function Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      ETL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      ETL Sync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receive
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-expression-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin Expression Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin Expression Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frontend-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend Expressions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="developer-reference">Developer Reference</h1>
+<h2 id="widget-reference">Widget Reference</h2>
+<p>The following sections describe the platform widgets and which configuration options are available for them.
+You can create custom widgets and use them just like platform widgets.
+Please refer to the section Development / Production.
+Note that all widgets have the title option:</p>
+<ul>
+<li>title: when the widget is a direct child of the page container, the widget is placed in a card with this title</li>
+</ul>
+<p>Apart from title, all widgets support the following two options:</p>
+<ul>
+<li>roles: show container only if user is in one of these roles</li>
+<li>if: show the widget if the expression is true</li>
+</ul>
+<p>These can be edited using Dashjoin Studio. Some widgets, like the container, expose them via the layout editor as well.</p>
+<p>Widgets can be grouped into the following three categories.</p>
+<h3 id="container-widgets">Container Widgets</h3>
+<p>Container widgets can contain other widgets. All container widgets have features that control under which
+conditions content is shown or hidden. Please note that these features are enforced on the client and thus
+can be manipulated by malicious users. Specifically, do not rely on these features to implement security
+and data privacy. You can safely restrict access on the server side by applying access control to
+functions, databases, tables, and queries.</p>
+<h4 id="card"><a href="https://demo.my.dashjoin.com/#/page/card">card</a></h4>
+<p>Layout card with a title and nested widgets:</p>
+<ul>
+<li>text: card title</li>
+<li>roles: show container only if user is in one of these roles</li>
+</ul>
+<h4 id="container">container</h4>
+<p>Container with a plain layout</p>
+<ul>
+<li>roles: show container only if user is in one of these roles</li>
+<li>if: show the widget if the expression is true</li>
+<li>redrawInterval: redraw interval (seconds). Periodically refreshes the container and all contained content.</li>
+</ul>
+<h4 id="expansion">expansion</h4>
+<p>Collapsible container with nested widgets</p>
+<ul>
+<li>text: card title</li>
+<li>roles: show container only if user is in one of these roles</li>
+</ul>
+<h4 id="page">page</h4>
+<p>The page widget is implicitly present at the root on any platform page. It cannot be edited via the layout editor, but changes can be made in Dashjoin Studio.</p>
+<ul>
+<li>onRender: expression that is evaluated when the page renders in the browser. This is useful if you need to initialize variables that are used in expressions of other widgets. Note that variables are stored per browser tab whereas the login session applies to the entire browser. Therefore, variables should be set using onRender instead of on-login.</li>
+</ul>
+<h3 id="form-widgets">Form Widgets</h3>
+<p>Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
+used as the key in the resulting JSON structure. Inputs can be of the following type:</p>
+<ul>
+<li>boolean: displays an on/off toggle and returns a boolean value</li>
+<li>string; a regular text box that returns a string</li>
+<li>number: a number input returning a number</li>
+<li>auto complete: an input field with auto-complete options (which are generated by a JSONata expression)</li>
+<li>select: like auto complete, but uses a select widget instead of a text field</li>
+<li>multi select: like select but allows multiple selections, returns an array</li>
+<li>key value: allows entering any key value pairs, returns an object</li>
+<li>password: like string but hides the input</li>
+<li>textarea: like string but uses a multi-line input</li>
+<li>date: like string but uses a date picker</li>
+<li>time: like string but uses a time picker</li>
+<li>datetime: like string but uses a datetime picker</li>
+<li>file: like string but uses the content of an uploaded file are the value</li>
+<li>binary file: like file, but uses base64 encoding</li>
+<li>file with metadata: like file but includes file metadata</li>
+<li>binary file with metadata: like binary file but includes file metadata</li>
+</ul>
+<p>Further options include:
+* an optional title for the input element
+* a description which shows up as a tooltip
+* an optional expression to compute select options (must return an array of strings or an array of objects containing name and value)
+* CSS options (e.g. width: 500px)
+* Read only flag (input is inactive)
+* Required flag
+* An optional format validation</p>
+<p>Not all form options can be edited in the form edit dialog. If you would like to create a form for
+nested objects and arrays, you can add the JSON schema to the form in Dashjoin Studio.
+This example displays a form to enter an object with a field emails which is an array of strings: </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>            {
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                &quot;print&quot;: &quot;form&quot;,
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                &quot;widget&quot;: &quot;button&quot;,
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                &quot;schema&quot;: {
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                    &quot;type&quot;: &quot;object&quot;,
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                    &quot;properties&quot;: {
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                        &quot;emails&quot;: {
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                            &quot;type&quot;: &quot;array&quot;,
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                            &quot;items&quot;: {
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                                &quot;type&quot;: &quot;string&quot;
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                            }
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                        }
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                    }
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>                }
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>            }
+</code></pre></div>
+<p>If you choose one of the file upload widgets, you can add the attribute multiple: true via Dashjoin
+Studio. This allows you to upload multiple files at once. Note that the return value changes from
+a single value to an array if you do so.</p>
+<h4 id="button"><a href="https://demo.my.dashjoin.com/#/page/button">button</a></h4>
+<p>Runs / evaluates an expression when clicked.</p>
+<ul>
+<li>text: text shown for the run button (default is "Run")</li>
+<li>print: evaluates this expression when clicked</li>
+<li>expression: optional expression - the form fields are initialized with the result of this expression</li>
+<li>deleteConfirmation: optional confirmation message before performing the action (this option is only available in Dashjoin Studio - you can prompt the user via JSONata as follows):</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$prompt(&#39;Are you sure?&#39; ? perform action : &#39;cancelled&#39;)
+</code></pre></div>
+<p>The form content (if a form is present), is added to the context using the key "form".
+This widget is a container. Any form elements are defined by adding an "Input" widget for each form field.</p>
+<h4 id="create">create</h4>
+<p>Creates new database records:</p>
+<ul>
+<li>text: text shown for the create button (default is "Create")</li>
+<li>database: optional database to create the record in (defaults to the database of the table you are currently displaying)</li>
+<li>table: optional table to create the record in (defaults to the table you are currently displaying)</li>
+</ul>
+<h4 id="edit">edit</h4>
+<p>allows editing a database record. Note that the form layout can be customized in the layout editor. Please also refer to the FAQ for information on how to further customize the input form.</p>
+<ul>
+<li>deleteConfirmation: optional confirmation message before deleting the record (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)</li>
+<li>editRedirect: redirect after save (Dashjoin Studio only) - table: back to table view (default), record: stay on record page, page/Dashboard, db/table, db/table/id: navigate to fixed page</li>
+<li>deleteRedirect:redirect after delete (Dashjoin Studio only) - table: back to table view (default), record: stay on record page, page/Dashboard, db/table, db/table/id: navigate to fixed page</li>
+</ul>
+<h4 id="variable"><a href="https://demo.my.dashjoin.com/#/page/variable">variable</a></h4>
+<p>Displays a form that allows setting session variables. If a variable "x" is defined and set, it can be referenced in other widgets using "variable.x". A variable can be set via a URL query parameter. Appending ?a=1&amp;b=test to the URL will set variable.a to "1" and variable.b to "test". Note that only string variables can be set this way, so you might have to use $number(variable.a) when using the variable.</p>
+<ul>
+<li>text: text shown for the apply button (default is "Apply")</li>
+</ul>
+<p>This widget is a container. Any form elements are defined by adding an "Input" widget for each form field.</p>
+<h3 id="regular-widgets">Regular Widgets</h3>
+<h4 id="actiontable"><a href="https://demo.my.dashjoin.com/#/page/actionTable">actionTable</a></h4>
+<p>The Action table widget works like the table widget. In addition, it allows selecting several rows in the table.
+If rows are selected, action buttons become visible. The actions are configured via a set of key value pairs.
+The key specifies the action button's label, the value contains the expression that is run if the button is pressed.</p>
+<ul>
+<li>expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)</li>
+<li>properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  </li>
+<li>perPage: default number of rows to display</li>
+<li>columns: columns to display. Use this option if you need certain fields to be included in the selection value but don't want those values to be included in the table. Note that this option is only available in Dashjoin Studio</li>
+</ul>
+<h4 id="aichat">aichat</h4>
+<p>Chatbot widget for interacting with large language models.</p>
+<ul>
+<li>url: LLM Service URL or function name</li>
+<li>name: Chatbot name</li>
+<li>tagline: Chatbot tagline</li>
+<li>logo: Logo URL</li>
+<li>system_prompt: AI system prompt</li>
+</ul>
+<h4 id="chart">chart</h4>
+<p>Chart for visualizing query results.</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query to run; the query is expected to project the following column structure:<ul>
+<li>label followed by a value column: in this case, a chart with a single series is shown. The first column is used as the series axis label and the second column is used as the value range</li>
+<li>two label columns followed by a value column: in this case, a chart with a multiple series is shown. The first column identifies which series the row belongs to. From there, the process described above is repeated</li>
+</ul>
+</li>
+<li>arguments: optional expression resulting in query arguments</li>
+<li>chart: chart type</li>
+<li>style: key value pairs that construct <a href="https://www.chartjs.org/docs/latest/configuration/">chart option object</a> - for instance, scales.y.min = 0 makes sure the y-axis starts at 0. By default, the chart limits the number of data points to 1000. This can be overridden by setting "limit" to the desired value</li>
+<li>graph: specifies whether the query is a graph query</li>
+<li>expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)</li>
+</ul>
+<p>Examples:
+* <a href="https://demo.my.dashjoin.com/#/page/chart-stacked-bar">chart-stacked-bar</a>
+* <a href="https://demo.my.dashjoin.com/#/page/chart-timeline">chart-timeline</a></p>
+<h4 id="diagram"><a href="https://demo.my.dashjoin.com/#/page/diagram">diagram</a></h4>
+<p>Allows displaying and editing data as a graph of nodes and edges.</p>
+<p>Nodes are represented by the following JSON structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  id: node id
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  database: database name
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  table: table name
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  position?: {
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    x: coordindate
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    y: coordindate
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  },
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  data?: {
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    label: display label
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  }
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>}
+</code></pre></div>
+<p>Edges are represented by the following JSON structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  source: id of the edge source node
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  target: id of the edge target node
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>}
+</code></pre></div>
+<ul>
+<li>style: CSS widget styles (e.g. width and height of the widget)</li>
+<li>nodes: JSONata that generates a list of nodes</li>
+<li>edges: JSONata that generates a list of edges</li>
+<li>moveNode: optional JSONata to persist new coordinates (e.g. $update("northwind", "EMPLOYEES", node.id, {"Y": node.position.y}))</li>
+<li>addNode: optional JSONata to persist new node that was added via SHIFT click (e.g. ($x := {"id": node.name, "x": node.position.x, "y": node.position.y}; $create("db", "table", $x); $x) )</li>
+<li>removeNode: optional JSONata to remove node in the DB (passed via node.id)</li>
+<li>addEdge: optional JSONata to create a relationship (passed via edge.source, edge.target)</li>
+<li>removeEdge: optional JSONata to remove a relationship (passed via edge.source, edge.target)</li>
+</ul>
+<h4 id="display"><a href="https://demo.my.dashjoin.com/#/northwind/EMPLOYEES/1?page=markdown">display</a></h4>
+<p>Displays the result of an expression:</p>
+<ul>
+<li>display: expression to display</li>
+<li>icons: if display evaluates to an object, icons maps the object keys to <a href="https://fonts.google.com/icons">material icons</a></li>
+</ul>
+<p>Depending on the result of the evaluation, one of the following cases applies:</p>
+<ul>
+<li>a single result value is displayed as is</li>
+<li>an object is displayed as a key-value list</li>
+<li>if the object has exactly the keys "database", "table", and "pk1", the result is displayed as a link to the record identified by these values</li>
+<li>if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record</li>
+<li>an array of objects is displayed as a table</li>
+<li>if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute</li>
+<li>if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink (note that absolute or relative links to another page in the app are specified without the "slash hash" part of the URL - for instance, the href "Info" or "/page/Info" links to the Info page)</li>
+</ul>
+<p>Example:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>  &quot;display&quot;: {
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    &quot;item one&quot;: &quot;this item&#39;s value&quot;,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    &quot;item two&quot;: &quot;another value&quot;,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    &quot;item three&quot;: &quot;last value&quot;,
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  },
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  &quot;icons&quot;: {
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    &quot;item one&quot;: &quot;traffic&quot;,
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    &quot;item two&quot;: &quot;turn_left&quot;
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  }
+</code></pre></div></p>
+<p><img width="166" alt="image" src="https://user-images.githubusercontent.com/62463897/162797294-32c5a7b0-ebc9-4ae5-8e7a-ef056c1a644d.png"></p>
+<p>Item one will be displayed with the "traffic" icon, item two with the "turn_left" icon.
+When no item is specified for a key, the default item is used. In the above example, "item three" will display the default icon.</p>
+<p>When icons is "*": "icon", all icons will be mapped to that same specified icon.</p>
+<h4 id="editrelated">editRelated</h4>
+<p>Allows editing related records of a database record:</p>
+<ul>
+<li>prop: foreign key column on the related table</li>
+<li>columns: columns to display in the editRelated table display. Note that this option is only available in Dashjoin Studio</li>
+</ul>
+<h4 id="graph">graph</h4>
+<p>Displays data as a directed graph</p>
+<ul>
+<li>nodes: expression to generate nodes, this can either be the result of an OpenCypher query or a list of nodes</li>
+<li>_3d: if true, displays the graph in 3D, 2D otherwise</li>
+</ul>
+<p>To add a single starting node, you can simply use the following expression for "nodes":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>{
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  &quot;database&quot;: &quot;northwind&quot;,
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  &quot;table&quot;: &quot;EMPLOYEES&quot;,
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  &quot;pk&quot;: [1]
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>}
+</code></pre></div>
+<p>To add all employees, you can select all employee IDs and convert them into resource objects as shown above:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$all(&quot;northwind&quot;, &quot;EMPLOYEES&quot;).EMPLOYEE_ID.{
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  &quot;database&quot;: &quot;northwind&quot;,
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  &quot;table&quot;: &quot;EMPLOYEES&quot;,
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  &quot;pk&quot;: [$]
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>}
+</code></pre></div>
+<p>Alternatively, you can use an OpenCypher query:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$adHocQueryGraph(&quot;*&quot;, &quot;MATCH (e:EMPLOYEES) return e&quot;).e
+</code></pre></div>
+<p>The previous examples only added nodes to the canvas. You can use OpenCypher to pre-select a path:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$adHocQueryGraph(&quot;*&quot;, &quot;MATCH path=(e:EMPLOYEES) -[REPORTS_TO]-&gt; (x) return path&quot;).path
+</code></pre></div>
+<h4 id="html"><a href="https://demo.my.dashjoin.com/#/page/html">html</a></h4>
+<p>Displays custom HTML</p>
+<ul>
+<li>html: HTML to display</li>
+<li>context: an expression that allows setting additional context variables that can be referenced via <code>${context.VARIABLE}</code></li>
+</ul>
+<p>As in the Markdown widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.</p>
+<h4 id="icon">icon</h4>
+<p>Displays a hyperlink icon with tooltip</p>
+<ul>
+<li>href: optional link target</li>
+<li>icon: icon to display (see https://material.io/resources/icons/?style=baseline)</li>
+<li>tooltip: icon tooltip</li>
+<li>roles: show container only if user is in one of these roles</li>
+</ul>
+<h4 id="links">links</h4>
+<p>Displays links to related records</p>
+<h4 id="map"><a href="https://demo.my.dashjoin.com/#/northwind/CUSTOMERS/BERGS">map</a></h4>
+<p>Displays a map for a given location. </p>
+<ul>
+<li>display: expression that results in a location - this value is resolved using the q query parameter of the <a href="https://nominatim.org/release-docs/latest/api/Search/">Open Streetmap API</a> service. The expected result structure is explained below</li>
+<li>css: CSS code to apply to the map</li>
+<li>card: determines if the map is shown on a card (paper background)</li>
+</ul>
+<p>The map can be fed with the following data:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>{
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  center: {lat, lon}   // map center
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  zoom: number         // zoom level where globe=1 and street=15
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  points: [            // array of marker points
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    {
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>      address: string  // address where marker is placed or marker coordinates
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>      location: {lat, lon}
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>      color: string    // marker color
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>      radius: number   // marker radius
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>      tooltip: any     // additional info to be displayed in tooltip or popup
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>      popup: any       // any JSON is displayed like in the display widget
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    }
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>  ]
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>}
+</code></pre></div>
+<p>Note that most information is optional. The platform chooses good defaults.
+For instance, you can display a single address with a link to a record page as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;points&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">      </span><span class="nt">&quot;address&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;London&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">      </span><span class="nt">&quot;popup&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="nt">&quot;database&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="nt">&quot;table&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CUSTOMERS&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">        </span><span class="nt">&quot;pk&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;AROUT&quot;</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>If you would just like to show a marker at London, you can simply pass the string:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="s2">&quot;London&quot;</span>
+</code></pre></div>
+<h4 id="markdown"><a href="https://demo.my.dashjoin.com/#/northwind/EMPLOYEES/1?page=markdown">markdown</a></h4>
+<p>Displays markdown</p>
+<ul>
+<li>markdown: markdown to display</li>
+<li>context: an expression that allows setting additional context variables that can be referenced via <code>${context.VARIABLE}</code></li>
+<li>card: determines if the markdown is shown on a card (paper background)</li>
+</ul>
+<p>Note that the HTML generated by the markdown engine is sanitized in order to avoid XSS vulnerabilities.
+Specifically, if you are using HTML tags, style attributes are filtered. A common task is to add margins to images.
+You can achieve this by adding a class attribute to the element and setting the value to a predefined
+material class like mat-elevation-z8. Alternatively, the markdown widget defines the styles margin1 to margin5
+which set the element margin to 1em to 5em.</p>
+<p>As in the HTML widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.</p>
+<h4 id="notebook">notebook</h4>
+<p>This widget is the JSONata equivalent of a Jupyter notebook. It allows composing and running several expressions.
+The result of every expression is stored in the browser session. You can also assign variables and use them
+in other expressions. </p>
+<p>The widget offers a save function at the bottom. This saves the entire page and the expressions contained within.
+Please note that the notebook widget should only be used as the sole widget on the page, since saving the notebook
+will delete other widgets you might place on the page.</p>
+<h4 id="table">table</h4>
+<p>Displays query results as a table</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query to run</li>
+<li>arguments: optional expression resulting in query arguments</li>
+<li>graph: specifies whether the query is a graph query</li>
+<li>expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)</li>
+<li>columns: if no query or expression is specified, this array allows specifying the columns to be projected. Note that this option is only available in Dashjoin Studio</li>
+<li>perPage: default number of rows to display</li>
+<li>deleteConfirmation: optional confirmation message before bulk deleting records (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)</li>
+</ul>
+<p>Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.</p>
+<h4 id="text">text</h4>
+<p>Displays a simple text</p>
+<ul>
+<li>href: optional link target</li>
+<li>text: text to display</li>
+<li>icon: optional icon to display in front of the text</li>
+</ul>
+<h4 id="tree">tree</h4>
+<p>Displays a tree based on a recursive query</p>
+<ul>
+<li>database: database to run the query on</li>
+<li>query: query that projects a single column with the keys of the current node's children</li>
+<li>arguments: expression that passes the current node's primary key as a query argument</li>
+<li>expression: allows configuring the widget via JSONata. If omitted, the widget uses $query(database, query, arguments)</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>Apart from changing data in databases, Dashjoin can call functions on the backend. Functions come in two flavors: First, there are functions that simply extend
+the functionality you can use in expressions. An example would be a simple toUpperCase function that transforms a string to upper case.
+These functions are introduced further later in the section on expressions. Second, there are configurable functions. These work very much like their counterpart,
+however, they require additional configuration parameters. An example would be a function to send an email. The actual function call requires you to specify subject, sender, receiver, and the body. But you would not want to have to repeat the email server address and credentials every time. So you can
+register an instance of email service with specific parameters and call it email-service-1. This section describes the latter configurable functions.</p>
+<p><a href="https://www.youtube.com/watch?v=XuymQh6aMIk">Click here</a> for a demo video.</p>
+<h3 id="function-reference">Function Reference</h3>
+<p>The system supports the following functions. Each section lists the function configuration parameters that are constant any time this function is called as well as the parameters that are specific for each invocation.</p>
+<h4 id="restjson">RestJson</h4>
+<p>Calls an external REST service. If you need more control over the how the call is performed, please use the JSONata function curl.</p>
+<p>Configuration</p>
+<ul>
+<li>url: the URL of the REST service to call (the URL may contain template variables <code>${var}</code> which are replaced with the respective argument field)</li>
+<li>username: optional HTTP basic authentication user name</li>
+<li>password: optional HTTP basic authentication password</li>
+<li>method: GET or POST</li>
+<li>headers: HTTP headers</li>
+<li>contentType: content-type header application/json or url-form-encoded</li>
+<li>apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: If object is specified, POSTs the object serialized as JSON. If object is null, GETs the result</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>JSON result returned by the service</li>
+</ul>
+<h4 id="email">Email</h4>
+<p>Sends an email.</p>
+<p>Configuration</p>
+<ul>
+<li>username: username to log into the email service</li>
+<li>password: password to log into the email service</li>
+<li>properties: <a href="https://www.tutorialspoint.com/javamail_api/javamail_api_smtp_servers.htm">SMTP server configuration</a></li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>from: email sender in RFC822 syntax</li>
+<li>to: email recipient in RFC822 syntax</li>
+<li>subject: email subject line</li>
+<li>text: email text</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>none</li>
+</ul>
+<h4 id="invoke">Invoke</h4>
+<p>Allows saving an expression on the server. When run, we evaluate / apply the expression with the data context passed as an argument.</p>
+<p>Configuration</p>
+<ul>
+<li>expression: The expression to save and run when invoked</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: the expression evaluation context (see next chapter)</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>expression result</li>
+</ul>
+<h4 id="credentials">Credentials</h4>
+<p>Allows saving credentials that can be referenced by the JSONata curl function. This is done by
+specifying the authorization header and setting it to the name of the credential:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$curl(&quot;GET&quot;, &quot;http://localhost:8080/rest/manage/version&quot;, {}, {&quot;Authorization&quot;: &quot;credential name&quot;})
+</code></pre></div>
+<p>This works for both basic authentication and passing an API key via some generic HTTP header.</p>
+<p>Configuration:</p>
+<ul>
+<li>username: credential username</li>
+<li>password: credential password</li>
+<li>apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header</li>
+</ul>
+<h3 id="mapping-functions">Mapping Functions</h3>
+<p>Mapping functions are specialized functions that have no invocation parameters and outputs.
+They are used to write data into a database and can be run in a scheduled fashion.
+All mapping functions perform the following three steps.</p>
+<p><a href="https://www.youtube.com/watch?v=ZsjyucALidY">Click here</a> for a demo video.</p>
+<h4 id="gathering-data">Gathering Data</h4>
+<p>It is up to the mapping function how this task is achieved. The only requirement is that the function
+gathers a set of tables. </p>
+<h4 id="the-mapping-step">The Mapping Step</h4>
+<p>This step is common to all mapping functions and is supported by a specialized mapping editor. The mapping step
+transforms the gathered set of tables into another set of tables. The mapping step supports the following operations:</p>
+<ul>
+<li>remove table: a table from the initial step can be removed / ignored</li>
+<li>remove column: drops a column from a table</li>
+<li>rename table: a table from the initial step can be renamed</li>
+<li>rename column: renames a column in a table</li>
+<li>add table: a table can be added by providing the name of an initial table</li>
+<li>add column: a column can be added to a table</li>
+<li>modify column: sets the column to a new expression (the default simply copies the original value 1:1 using <code>$.columnname</code>; please see the next section for more details on expressions)</li>
+<li>extract table: if an input table contains a column with array values, extracts the union of these arrays into a new table</li>
+</ul>
+<h4 id="the-save-step">The Save Step</h4>
+<p>The save step writes the output of the mapping step into the database. The following modes are supported:</p>
+<p><strong>Ignore</strong></p>
+<p>Simply add the data (update in case the record already is in the DB, insert if not). We follow the "normal" update semantics meaning that key=null actually deletes the value in the DB, whereas missing keys remain untouched.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "ignore"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ignore</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Row 1 is updated. Row 2 remains unchanged. Row 3 is added and thus gets marked as having source e.</p>
+<p>Extracted Data from ETL "ignore"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ignore</td>
+<td>Nate</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ignore</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Row 4 gets added. Row 3 remains even though it is no longer in the extraction result.</p>
+<p><strong>Refresh</strong></p>
+<p>All records from the target tables that have the _dj_source column matching the ID of this function are updated. If a key is no longer present in the new data, the record is deleted.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "refresh"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>refresh</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>The first run of "refresh" has the same effect as "ignore".</p>
+<p>Extracted Data from ETL "refresh"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>4</td>
+<td>refresh</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>The third row, which was added by "refresh" previously, is deleted and row 4 is added.</p>
+<p><strong>Delete All</strong></p>
+<p>All records from the target tables are deleted, if createSchema is true, the tables are also dropped in case columns are no longer needed or previously had another datatype.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+<td>33</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+<td>44</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "delete-all"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>delete-all</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>delete-all</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>The table content is deleted. If create schema is specified, the age column is also deleted.
+Rows 1 and 3 get added with the respective source.</p>
+<p>Extracted Data from ETL "delete-all"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>delete-all</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>delete-all</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>The table content is deleted and rows 1 and 4 are added.</p>
+<p><strong>Sync</strong></p>
+<p>The sync mode works like Ignore. In conjunction with the foreach expression, it can be used to keep
+the database in sync with a file system or a web download location, by deleting certain entries.
+This is explained in the next section.</p>
+<h3 id="mapping-function-reference">Mapping Function Reference</h3>
+<h4 id="etl">ETL</h4>
+<p>The ETL function uses an expression as input into the mapping process.
+The expression result can be a map of table names to an array of rows (JSON objects).
+If the expression result has a simpler structure (for instance only a single table),
+the ETL function wraps this in a default table called "table".</p>
+<p>If you want to load a large amount of data, you can use the "foreach" expression to specify
+how to split the loading process into smaller parts. Assume you have a directory with
+thousands of files to load. The foreach expression can list the files using <code>$ls("url")</code>.
+The expression then specifies how each file is handled. Its <code>$</code> context is set to
+each individual URL and the expression and subsequent ETL are called for each URL individually.</p>
+<p>Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
+functions. In this case, these functions split a large file into smaller chunks which are then
+passed to the mapping expression.</p>
+<p>The setting "ETL worker threads" can be used to achieve parallel writes to the database.
+This setting is only applicable if a foreach expression is specified.
+In this case, the setting "ignore ETL errors and continue process" specifies that any error
+that occurs when streaming a large file (e.g. a formatting error towards the end of the file)
+or when workers map and write the contents to the database (e.g. due a malformatted date string)
+are ignored and do not stop the other workers.</p>
+<h4 id="etl-sync">ETL Sync</h4>
+<p>The foreach construct also allows you to conveniently keep the database in sync with a set of files
+on the file system or the web. Consider the following foreach expression:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$ls(&quot;file:upload&quot;)
+</code></pre></div>
+<p>It returns a list of objects describing files in the upload folder. Let's assume those are JSON
+files, that are mapped to the database using this expression:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>{
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  &quot;url&quot;: url,
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  &quot;modified&quot;: modified,
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  &quot;content&quot;: $openJson(url)
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>}
+</code></pre></div>
+<p>Now we can compute the urls and modified timestamps that are in the database:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$all(db, table) // please use a native distinct query for large datasets
+</code></pre></div>
+<p>The platform offers the etlSync function that computes the set of URLs that must be loaded
+for the next run and the records that might have been deleted using the URLs and modified
+pairs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$etlSync($ls(&quot;file:upload&quot;), $all(db, table), &quot;url&quot;)
+</code></pre></div>
+<p>The third parameter specifies the name of the database column that contains the source URL.
+You can use this as the foreach expression. If you choose the mode "Ignore", new files will
+be added, unchanged files will be skipped, and deleted file remain in the database.</p>
+<p>If you choose mode "Sync", deleted and modified files will be removed from the DB first.
+Note that if you do not have a modified timestamp available, you can also use some sort of
+version string or etag to notify the system about a change in a source file.</p>
+<h4 id="receive">Receive</h4>
+<p>The receive function allows handling cases, where the platform is being sent data that is to be processed and saved into a database.
+This use case is common in IoT scenarios where a stream of sensor data is passed via the REST API.
+The Receive function can be configured like the ETL function and allows mapping the data into the desired structure.
+The create schema parameter works like in the ETL case and optionally adapts the underlying schema to accommodate new fields and tables.
+Receive defines a parameter called sample where a stream data sample can be added.
+This sample data is used to edit the mapping.
+Note that Receive always appends the new data like the Ignore mode in the ETL case. The difference is that there
+is no expression that fetches data. Instead, the data is passed via the API call.</p>
+<h2 id="dashjoin-expression-reference">Dashjoin Expression Reference</h2>
+<p>In addition to the default JSONata built-in functions (<a href="https://docs.jsonata.org/overview.html">see Function Library</a>), the following Dashjoin functions are added
+(some internal functions are omitted - you can refer to the platform's info page for a full list):</p>
+<p>These functions can be classified as frontend and backend functions. Frontend functions run in the browser
+and can be used to trigger a screen popup or to set a browser session variable.
+Backend functions typically access backend data.
+You can mix both kinds in a single JSONata expression tree. </p>
+<h3 id="frontend-expressions">Frontend Expressions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Syntax</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confirm</td>
+<td>$confirm(message)</td>
+<td>Opens a confirm dialog. Returns true if confirmation was given, false otherwise</td>
+</tr>
+<tr>
+<td>setVariable</td>
+<td>$setVariable(key, value)</td>
+<td>Sets variable key to value. The key value pair then becomes accessible via the context by other expressions</td>
+</tr>
+<tr>
+<td>prompt</td>
+<td>$prompt(message)</td>
+<td>Prompts the user for an input. Returns the input or undefined if the prompt is cancelled</td>
+</tr>
+<tr>
+<td>alert</td>
+<td>$alert(message)</td>
+<td>Shows a modal alert message</td>
+</tr>
+<tr>
+<td>notify</td>
+<td>$notify(message)</td>
+<td>Shows the message at the bottom of the screen</td>
+</tr>
+<tr>
+<td>refresh</td>
+<td>$refresh()</td>
+<td>refreshes the screen just (just like hitting the refresh icon in the toolbar)</td>
+</tr>
+<tr>
+<td>reload</td>
+<td>$reload()</td>
+<td>reloads the browser page</td>
+</tr>
+<tr>
+<td>log</td>
+<td>$log(value)</td>
+<td>logs value to the developer console</td>
+</tr>
+<tr>
+<td>navigate</td>
+<td>$navigate(url)</td>
+<td>points the browser to the URL</td>
+</tr>
+<tr>
+<td>clearCache</td>
+<td>$clearCache()</td>
+<td>clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend</td>
+</tr>
+</tbody>
+</table>
+<h3 id="backend-expressions">Backend Expressions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Syntax</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create</td>
+<td>$create(database, table, object)</td>
+<td>ID of the new record</td>
+</tr>
+<tr>
+<td>upsert</td>
+<td>$upsert(database, table, object)</td>
+<td>first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update</td>
+</tr>
+<tr>
+<td>all</td>
+<td>$all(database, table)</td>
+<td>array of all table records</td>
+</tr>
+<tr>
+<td>all</td>
+<td>$all(database, table, offset, limit, sort, descending, filter)</td>
+<td>array of all table records whose columns match the filter key's values</td>
+</tr>
+<tr>
+<td>read</td>
+<td>$read(database, table, pk1)</td>
+<td>The record</td>
+</tr>
+<tr>
+<td>traverse</td>
+<td>$traverse(database, table, pk1, fk)</td>
+<td>Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned</td>
+</tr>
+<tr>
+<td>update</td>
+<td>$update(database, table, pk1, object)</td>
+<td></td>
+</tr>
+<tr>
+<td>delete</td>
+<td>$delete(database, table, pk1)</td>
+<td></td>
+</tr>
+<tr>
+<td>call</td>
+<td>$call(function, argument)</td>
+<td>Dashjoin function result</td>
+</tr>
+<tr>
+<td>query</td>
+<td>$query(database, queryId, arguments)</td>
+<td>Query result table</td>
+</tr>
+<tr>
+<td>queryGraph</td>
+<td>$queryGraph(database, queryId, arguments)</td>
+<td>Graph query result, specifying the database as * runs an OpenCypher query over all DBs</td>
+</tr>
+<tr>
+<td>adHocQuery</td>
+<td>$adHocQuery(database, query, limit?)</td>
+<td>Runs as ad hoc select / read query</td>
+</tr>
+<tr>
+<td>search</td>
+<td>$search(term, limit?, database?, table?)</td>
+<td>Searches the databases(s)</td>
+</tr>
+<tr>
+<td>incoming</td>
+<td>$incoming(database, table, pk1)</td>
+<td>[{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]</td>
+</tr>
+<tr>
+<td>echo</td>
+<td>$echo(any)</td>
+<td>Prints the parameter to the log</td>
+</tr>
+<tr>
+<td>index</td>
+<td>$index()</td>
+<td>Generates a unique row index ID</td>
+</tr>
+<tr>
+<td>djVersion</td>
+<td>$djVersion()</td>
+<td>Returns the platform version information</td>
+</tr>
+<tr>
+<td>djRoles</td>
+<td>$djRoles()</td>
+<td>Returns the roles of the current user</td>
+</tr>
+<tr>
+<td>djUser</td>
+<td>$djUser()</td>
+<td>Returns the current user's name</td>
+</tr>
+<tr>
+<td>isRecursiveTrigger</td>
+<td>$isRecursiveTrigger()</td>
+<td>true if the current expression is called from a trigger expression (trigger calls trigger)</td>
+</tr>
+<tr>
+<td>moveField</td>
+<td>$moveField(object, 'from', 'to')</td>
+<td>Moves the object's from key into the to key, where to must be an object or array</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>$ls(url, preview-limit)</td>
+<td>Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)</td>
+</tr>
+<tr>
+<td>streamJson</td>
+<td>$streamJson(url, jsonPointer)</td>
+<td>Parses JSON at the url and splits it at the <a href="https://datatracker.ietf.org/doc/html/rfc6901">json pointer</a> location</td>
+</tr>
+<tr>
+<td>streamXml</td>
+<td>$streamXml(url, jsonPointer)</td>
+<td>Parses XML at the url, converts it to JSON, and splits it at the <a href="https://datatracker.ietf.org/doc/html/rfc6901">json pointer</a> location</td>
+</tr>
+<tr>
+<td>streamCsv</td>
+<td>$streamCsv(url, options)</td>
+<td>Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the <a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html">documentation</a> for more details.</td>
+</tr>
+<tr>
+<td>streamDb</td>
+<td>$streamDb(database, table)</td>
+<td>Streams records from the database table specified</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>$curl(method, url, data?, headers?)</td>
+<td>Full fledged HTTP client. Use {"Authorization": credential} to reference a credential set defined in functions</td>
+</tr>
+<tr>
+<td>openJson</td>
+<td>$openJson(url)</td>
+<td>Parses JSON at the url</td>
+</tr>
+<tr>
+<td>openCsv</td>
+<td>$openCsv(url, options)</td>
+<td>Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the <a href="https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html">documentation</a> for more details.</td>
+</tr>
+<tr>
+<td>openXml</td>
+<td>$openXml(url, arrays)</td>
+<td>Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.</td>
+</tr>
+<tr>
+<td>openYaml</td>
+<td>$openYaml(url)</td>
+<td>Parses YAML at the url and converts it to JSON</td>
+</tr>
+<tr>
+<td>openExcel</td>
+<td>$openExcel(url)</td>
+<td>Parses Excel at the url and converts it to JSON</td>
+</tr>
+<tr>
+<td>openText</td>
+<td>$openText(url, encoding)</td>
+<td>Parses the url and converts it to a string</td>
+</tr>
+<tr>
+<td>parseJson</td>
+<td>$parseJson(json)</td>
+<td>Parses JSON (see openJson)</td>
+</tr>
+<tr>
+<td>parseCsv</td>
+<td>$parseCsv(csv, options)</td>
+<td>Parses CSV and converts it to JSON (see openCsv)</td>
+</tr>
+<tr>
+<td>parseHtml</td>
+<td>$parseHtml(html, query, xpath/css?)</td>
+<td>Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)</td>
+</tr>
+<tr>
+<td>parseXml</td>
+<td>$parseXml(xml, arrays)</td>
+<td>Parses XML at converts it to JSON (see openXml)</td>
+</tr>
+<tr>
+<td>parseYaml</td>
+<td>$parseYaml(yaml)</td>
+<td>Parses YAML and converts it to JSON (see openYaml)</td>
+</tr>
+<tr>
+<td>parseExcel</td>
+<td>$parseExcel(base64)</td>
+<td>Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)</td>
+</tr>
+<tr>
+<td>parseUrl</td>
+<td>$parseUrl(url)</td>
+<td>Parses a URL into protocol, host, port, path, query, etc.</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>$uuid()</td>
+<td>Generates a random UUID</td>
+</tr>
+<tr>
+<td>exec</td>
+<td>$exec(executable, arguments, [json, xml, csv, yaml])</td>
+<td>runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV</td>
+</tr>
+<tr>
+<td>erDiagram</td>
+<td>$erDiagram(database?)</td>
+<td>Generate an ER diagram for https://dbdiagram.io/d</td>
+</tr>
+<tr>
+<td>stats</td>
+<td>$stats(database, table, limit?)</td>
+<td>Generate statistics for a database table (type, min, max, count, distinct values, etc.)</td>
+</tr>
+<tr>
+<td>gitStatus</td>
+<td>$gitStatus()</td>
+<td>Run git status</td>
+</tr>
+<tr>
+<td>gitPull</td>
+<td>$gitPull()</td>
+<td>Run git pull</td>
+</tr>
+<tr>
+<td>gitRestore</td>
+<td>$gitRestore(path)</td>
+<td>Revert a change</td>
+</tr>
+<tr>
+<td>gitCommit</td>
+<td>$gitCommit(message, [paths])</td>
+<td>Run git commit and push</td>
+</tr>
+<tr>
+<td>gitClone</td>
+<td>$gitClone(url)</td>
+<td>Run git clone url - only available in the DJ playground</td>
+</tr>
+<tr>
+<td>saveTable</td>
+<td>$saveTable(Ignore</td>
+<td>Refresh</td>
+</tr>
+<tr>
+<td>reconcileEntity</td>
+<td>$reconcileEntity(entity, entity-language?, limit?)</td>
+<td>Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see chapter AI &amp; ML)</td>
+</tr>
+<tr>
+<td>classifyEntities</td>
+<td>$classifyEntities([entities], entity-language?, limit?, subclass-depth?)</td>
+<td>Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results (see chapter AI &amp; ML)</td>
+</tr>
+<tr>
+<td>synonym</td>
+<td>$synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?)</td>
+<td>Allows generating synonym table to match keys despite small typos etc. (see chapter AI &amp; ML)</td>
+</tr>
+<tr>
+<td>urlExists</td>
+<td>$urlExists(url)</td>
+<td>Returns true if the url is reachable, false otherwise</td>
+</tr>
+<tr>
+<td>wait</td>
+<td>$wait(object, millisecs)</td>
+<td>Wait millisecs provided before returning object</td>
+</tr>
+<tr>
+<td>etl</td>
+<td>$etl(foreach, expression, database)</td>
+<td>Run an ETL process programmatically</td>
+</tr>
+<tr>
+<td>etlSync</td>
+<td>$etlSync(source, target, url column)</td>
+<td>Compute the files changed since the last run</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      
+    
+  </body>
+</html>

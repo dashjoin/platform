@@ -1,0 +1,1216 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../development-production/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+    
+    
+      
+        <title>Administration - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#administration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Administration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI & ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-openid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring OpenID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring OpenID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-the-dashjoin-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering the Dashjoin Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-openid-provider-in-dashjoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the OpenID Provider in Dashjoin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-assigning-application-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating and Assigning Application Roles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-open-id-config-to-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Open ID Config to the Platform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding the Open ID Config to the Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installed-dashjoin-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installed Dashjoin application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalistic-logincfgjson-customization-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimalistic logincfg.json customization example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-expression-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query / Expression Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query / Expression Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-database-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Database Indices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specific-search-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Search Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excluding-tables-and-databases-from-searches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excluding Tables and Databases from Searches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prioritizing-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritizing Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-timeout-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global Timeout Settings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-customizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI Customizations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UI Customizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-static-assets-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding static assets to the app
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracking-user-logins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracking User Logins
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-openid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring OpenID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring OpenID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-the-dashjoin-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering the Dashjoin Application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-the-openid-provider-in-dashjoin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the OpenID Provider in Dashjoin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-assigning-application-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating and Assigning Application Roles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-the-open-id-config-to-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding the Open ID Config to the Platform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding the Open ID Config to the Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installed-dashjoin-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installed Dashjoin application
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashjoin-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin container
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimalistic-logincfgjson-customization-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimalistic logincfg.json customization example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#query-expression-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Query / Expression Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Query / Expression Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-database-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Database Indices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specific-search-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specific Search Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excluding-tables-and-databases-from-searches" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excluding Tables and Databases from Searches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prioritizing-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritizing Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#global-timeout-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global Timeout Settings
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-customizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI Customizations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UI Customizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-static-assets-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding static assets to the app
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracking-user-logins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tracking User Logins
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="administration">Administration</h1>
+<p>This section describes administration and operating procedures for the Dashjoin platform.</p>
+<h2 id="configuration-changes">Configuration Changes</h2>
+<p>A system is defined by the following configurations: Dashboards, layout pages, user roles, registered databases, and functions.
+These settings are stored in the configuration database. For the open source version, this data is kept on the file system
+in the model folder. In the docker container, this folder is located under /deployments/model. For locally installed
+systems, this folder can be found under USER_HOME/.dashjoin/model.</p>
+<h2 id="configuring-openid">Configuring OpenID</h2>
+<p>The Dashjoin platform can be setup to delegate identity management to an OpenID provider such as Google, Microsoft Azure AD, Okta, or Keycloak.</p>
+<h3 id="registering-the-dashjoin-application">Registering the Dashjoin Application</h3>
+<p>The first step is to register the Dashjoin application in your OpenID management console.
+This <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app">example</a> explains the process
+for Azure AD. Note that you will have to have a redirect URL such as "https://dashjoin-app.example.com/login" available.</p>
+<h3 id="configuring-the-openid-provider-in-dashjoin">Configuring the OpenID Provider in Dashjoin</h3>
+<p>The Dashjoin login page can be configured via a configuration file named <code>/assets/logincfg.json</code>.</p>
+<p>The default config is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My Dashjoin&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sign In&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;emailText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;E-Mail or Username&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;registerTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;New User&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&quot;resetPasswordTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Reset My Password&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&quot;resetPasswordInputText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter your E-Mail. Password reset instructions will be sent&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">&quot;emailLoginEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">&quot;registrationEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">&quot;guestEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">&quot;guestLoginEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;openIdConfigs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">}</span>
+</code></pre></div>
+<p>The information you gathered from registering your application in the previous step can be added in the openIdConfigs array as shown in the 
+following Azure AD example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="err">...</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;openIdConfigs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="p">{</span><span class="w"> </span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">            </span><span class="nt">&quot;domain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dashjoin.com&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dashjoin Example.com&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">            </span><span class="nt">&quot;logo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/favicon.ico&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">            </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">                </span><span class="nt">&quot;issuer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://login.microsoftonline.com/.../v2.0&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">                </span><span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">                </span><span class="nt">&quot;redirectUri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://dashjoin-app.example.com/&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">                </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openid profile email&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">                </span><span class="nt">&quot;requestAccessToken&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">                </span><span class="nt">&quot;strictDiscoveryDocumentValidation&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="p">}</span>
+</code></pre></div>
+<p>This config fields are defined as follows:</p>
+<ul>
+<li>Domain: the domain the application is running on</li>
+<li>Name: Application name in the IDM</li>
+<li>Logo: Absolute or relative URL to the IDM logo to be displayed on teh login screen</li>
+<li>Issuer: URL / UUID of the IDM issuing authorizations</li>
+<li>Client ID: ID of the registered application in the IDM</li>
+<li>Redirect URI: URL of the Dashjoin application
+Important: previously this required a link to /login, this does not work anymore. Use the root URL</li>
+<li>Scopes: scopes are used by an application during authentication to authorize access to a user's details</li>
+<li>Request Access Token: obtain an Access Token, an ID Token, and optionally a Refresh Token</li>
+<li>Strict Discovery Document Validation: ensure that all of the endpoints provided via the ID Provider discovery document share the same base URL as the issuer parameter</li>
+</ul>
+<p>You can configure multiple OpenID providers:</p>
+<p><img alt="Login with multiple OpenID providers" src="../assets/openid.png" /></p>
+<h3 id="creating-and-assigning-application-roles">Creating and Assigning Application Roles</h3>
+<ul>
+<li>After the application is registered within the IDM and the IDM made known to the application, you need to define
+the roles an IDM user has within the application. On Azure AD, this is the "App roles" dialog. Note that these roles must match
+the role names defined in the Dashjoin platform. The IDM must be configured to emit the groups as role claims. On Azure AD, this is done in the "Token configuration" dialog.</li>
+</ul>
+<h3 id="adding-the-open-id-config-to-the-platform">Adding the Open ID Config to the Platform</h3>
+<ul>
+<li>Option 1: </li>
+</ul>
+<p>The login config can be stored in the app as
+<code>/assets/logincfg.json</code></p>
+<p>This is the easiest and usually preferred method.</p>
+<p>But note that all app developers with write rights can make changes to this file.</p>
+<p>As the login config is highly relevant to security, make sure to validate its content and verify who has made changes.</p>
+<p>If this is not acceptable, you can also use the next option.</p>
+<ul>
+<li>Option 2:</li>
+</ul>
+<p>Alternatively, you can store the file in the installed Dashjoin platform, outside of the app.</p>
+<p>The Open ID configuration must be stored as 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>META-INF/resources/assets/logincfg.json
+</code></pre></div>
+relative to the current working directory of the platform.</p>
+<p>Note that the current working directory depends on the OS and the way the platform is installed / started.</p>
+<p>The next sections list the locations on different operating systems.</p>
+<h4 id="installed-dashjoin-application">Installed Dashjoin application</h4>
+<ul>
+<li>
+<p>On Windows, the default location is
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>C:\Users\&lt;username&gt;\AppData\Local\Dashjoin\META-INF\resources\assets\logincfg.json
+</code></pre></div></p>
+</li>
+<li>
+<p>On Linux and MacOS, store the file relative to the location Dashjoin is launched (current working directory).
+I.e. if the platform is launched from <code>/home/dashjoin</code>, store the config at
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/home/dashjoin/META-INF/resources/assets/logincfg.json
+</code></pre></div></p>
+</li>
+<li>
+<p>On MacOS, you need to launch the application manually from a terminal, otherwise the working directory is <code>/</code> which does not allow to store the config.
+The executable of the application is by default located at
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/Applications/Dashjoin.app/Contents/MacOS/Dashjoin
+</code></pre></div></p>
+</li>
+</ul>
+<h4 id="dashjoin-container">Dashjoin container</h4>
+<p>The current working directory in the container is <code>/deployments</code>.
+Use the Docker -v option to mount logincfg.json to <code>/deployments/META-INF/resources/assets/logincfg.json</code></p>
+<p>Command Line Example:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json:ro dashjoin/platform
+</code></pre></div></p>
+<ul>
+<li>Dashjoin PaaS Cloud</li>
+</ul>
+<p><a href="https://dashjoin.com/#contact">please send an email</a> to request the change.</p>
+<h3 id="minimalistic-logincfgjson-customization-example">Minimalistic logincfg.json customization example</h3>
+<p>The following example disables all OpenID providers, disables password reset, and disables user registration.
+Also it re-defines the displayed texts.</p>
+<p>Note: all settings not specified will use their defaults (see above).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nt">&quot;signInTabText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My New Demo App&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">&quot;signInCardTitleText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter Your Credentials&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">&quot;registrationEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">&quot;resetPasswordEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>With this config the login dialog will look similar to this:</p>
+<p><img alt="Login with minimalistic config" src="../assets/logincfg_mini.png" /></p>
+<h2 id="query-expression-performance">Query / Expression Performance</h2>
+<p>When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
+The query and expression performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
+with this task. It shows recent query statistics in a table. The columns are defined as follows:</p>
+<ul>
+<li>query: shows the JSONata expression or the query that was run along with the database prefixed</li>
+<li>type: </li>
+<li>jsonata: JSONata expression evaluation</li>
+<li>key: determining possible foreign key autocomplete values</li>
+<li>search: the toolbar search </li>
+<li>query: the query editor, tables or charts</li>
+<li>all: the all records table view</li>
+<li>read: read from an instance page</li>
+<li>update: update from an instance page </li>
+<li>create: create from a table page or the upload feature</li>
+<li>delete: delete from an instance page or the upload feature</li>
+<li>lastRun: the time the query was last run</li>
+<li>count: how often was the query run</li>
+<li>errorCount: of these, how often did an error occur (e.g. a timeout)</li>
+<li>lastError: the last error message</li>
+<li>totalTimeMs: the runtime in milliseconds all query runs took combined</li>
+<li>lastTimeoutMs: optional timeout set for the last run</li>
+<li>lastLimit: optional limit set for the last run (does not include limits in the query)</li>
+<li>averageTimeMs: the average time a query evaluation took in milliseconds</li>
+</ul>
+<p>The table helps you to identify queries with long runtimes. Possible remedies are:</p>
+<h3 id="creating-database-indices">Creating Database Indices</h3>
+<p>All key columns should be indexed in the database in order to avoid full table sweeps
+when a record is accessed by its key.</p>
+<h3 id="specific-search-queries">Specific Search Queries</h3>
+<p>By default, Dashjoin will perform searches on all database tables which can be a very costly
+operation. If a database contains more data, you can either opt out of it being searched, or
+you can associate a query from the catalog to be used. For instance, you might want employees
+to be searchable by firstname or lastname, but other tables are not relevant for searches.
+In this case, you can define the following query:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">select</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n">concat</span><span class="p">(</span><span class="err">${</span><span class="k">search</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>You can also use union queries to search over multiple tables. Note that in this case,
+the query needs to project table, id, match:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;EMP&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">EMP</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">union</span><span class="w"> </span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">select</span><span class="w"> </span><span class="s1">&#39;PRJ&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="p">,</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">PRJ</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">NAME</span><span class="o">=</span><span class="err">${</span><span class="k">search</span><span class="err">}</span>
+</code></pre></div>
+<p>Note that the query must have a single parameter "search" in order to be used this way.
+The platform will run this query by replacing the search parameter with the contents of the search field.</p>
+<h3 id="excluding-tables-and-databases-from-searches">Excluding Tables and Databases from Searches</h3>
+<p>Besides custom queries, you can also entirely exclude databases and tables from
+searches using the system configuration page (/table/config/dj-config).</p>
+<h3 id="prioritizing-results">Prioritizing Results</h3>
+<p>Using the configuration setting "prioritize-table-in-search", you can instruct the system
+which tables are to be searched first. Results from these tables will appear further
+up in the search results.</p>
+<h3 id="global-timeout-settings">Global Timeout Settings</h3>
+<p>Finally, the system configuration page allows setting some global contraints that prevent
+"rogue" queries to deteriorate the overall system and database performance.
+Please see the descriptions on the system configuration page (/table/config/dj-config) for more details.</p>
+<h2 id="ui-customizations">UI Customizations</h2>
+<p>The system configuration page (/table/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:</p>
+<ul>
+<li>homepage: Application home page that is displayed when home is pressed and after login</li>
+<li>on-login: Expression to be evaluated upon login - it typically sets session variables via setVariable</li>
+<li>sidenav-open: Side navigation is open initially (changes applied after next login)</li>
+<li>dark-theme    : Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF</li>
+<li>sidenav-width-px: Width of the side navigation bar (changes applied after next login) - if the width is set to 0, the open / close button in the toolbar is also hidden</li>
+<li>theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF</li>
+<li>allow-dark-mode: Show the dark mode icon in the toolbar</li>
+<li>logo-url: URL of the logo to display in the toolbar</li>
+</ul>
+<p>Note that these customizations can be overwritten or applied to roles also.
+If you'd like to change the homepage for role authenticated only, navigate to /config/dj-role/authenticated
+and in the properties field, enter "homepage" and your desired page, e.g. /page/AuthenticatedHome.</p>
+<p>The customizations can also be applied to an individual OpenID user only via the tenant users table.
+If you'd like to change the homepage for user joe@example.org, naviage to
+/config/tenantusers/joe%40example.org and again use the properties field.</p>
+<h3 id="adding-static-assets-to-the-app">Adding static assets to the app</h3>
+<p>Static assets like images, logos, movies, and other files required by your application can be placed in the <code>/assets</code>folder.</p>
+<p>The assets are accessible in the running application as <code>http(s)://&lt;app url&gt;/assets</code></p>
+<p>By definition, access to static assets does not require login, so they are always readable / publically accessible.
+Do not place any confidential data in the assets folder.</p>
+<p>When working with version control tools (i.e. git), assets can be maintained along with all other app resources under revision control.</p>
+<h2 id="tracking-user-logins">Tracking User Logins</h2>
+<p>The platform tracks user logins in the table user within the config database.
+The table is written every time a user logs into the system. You can deactivate
+this feature by changing the on-login expression.</p>
+<p>Alternatively, you may be able to retrieve this information at your identity management platform.
+The platform logs user login events in the system log. You can grep the log for messages like this one:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>2024-03-20 14:15:32,163 INFO  [com.das.ser.ten.TenantService] (executor-thread-12) Login profile uid=admin email=null roles=[admin] username=admin
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      
+    
+  </body>
+</html>
