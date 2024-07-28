@@ -1,6 +1,7 @@
 package org.dashjoin.util;
 
 import java.util.Arrays;
+import org.dashjoin.service.SQLDatabase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.google.common.collect.ImmutableMap;
@@ -35,8 +36,19 @@ public class TemplateTest {
 
   @Test
   public void sql() {
-    Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql("", "x", null));
-    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql("", "x", "${col}"));
-    Assertions.assertEquals("concat('Hi ', col, '')", Template.sql("", "x", "Hi ${col}"));
+    SQLDatabase db = new SQLDatabase();
+    db.url = "jdbc:";
+    Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql(db, "x", null));
+    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("concat('Hi ', col, '')", Template.sql(db, "x", "Hi ${col}"));
+    db.url = "jdbc:sqlite:";
+    Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql(db, "x", null));
+    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("'Hi ' || col || ''", Template.sql(db, "x", "Hi ${col}"));
+    db.url = "jdbc:mariadb:";
+    Assertions.assertEquals("cast(x as CHAR)", Template.sql(db, "x", null));
+    Assertions.assertEquals("cast(col as CHAR)", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("concat('Hi ', COALESCE(col, 'null'), '')",
+        Template.sql(db, "x", "Hi ${col}"));
   }
 }

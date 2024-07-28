@@ -1207,7 +1207,7 @@ public class SQLDatabase extends AbstractDatabase {
     for (Property p : s.properties.values())
       if (p.pkpos != null)
         try (Connection con = getConnection()) {
-          String label = Template.sql(url, q(p.name), s.djLabel);
+          String label = Template.sql(this, q(p.name), s.djLabel);
           String select = "select " + q(p.name) + ", " + label + " from " + schema() + q(s.name);
           if (prefix != null)
             // not all DBs support ILIKE, lower(col) causes the index to be useless

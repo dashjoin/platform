@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.dashjoin.service.SQLDatabase;
 
 /**
  * simple version of
@@ -71,9 +72,9 @@ public class Template {
   /**
    * translates the template to a SQL expression
    */
-  public static String sql(String url, String key, String template) {
+  public static String sql(SQLDatabase db, String key, String template) {
 
-    String asType = url.startsWith("jdbc:mariadb:") ? "CHAR" : "VARCHAR(255)";
+    String asType = db.url.startsWith("jdbc:mariadb:") ? "CHAR" : "VARCHAR(255)";
 
     if (template == null)
       return "cast(" + key + " as " + asType + ")";
@@ -85,13 +86,13 @@ public class Template {
       return "cast(" + vars.get(0) + " as " + asType + ")";
 
     Map<String, Object> values = new HashMap<>();
-    if (url.startsWith("jdbc:sqlite:")) {
+    if (db.url.startsWith("jdbc:sqlite:")) {
       for (String var : vars)
         values.put(var, "' || " + var + " || '");
       return "'" + replace(template, values) + "'";
     } else {
       for (String var : vars)
-        if (url.startsWith("jdbc:mariadb:"))
+        if (db.url.startsWith("jdbc:mariadb:"))
           values.put(var, "', COALESCE(" + var + ", 'null'), '");
         else
           values.put(var, "', " + var + ", '");
