@@ -39,16 +39,16 @@ public class TemplateTest {
     SQLDatabase db = new SQLDatabase();
     db.url = "jdbc:";
     Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql(db, "x", null));
-    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql(db, "x", "${col}"));
-    Assertions.assertEquals("concat('Hi ', col, '')", Template.sql(db, "x", "Hi ${col}"));
+    Assertions.assertEquals("cast(\"col\" as VARCHAR(255))", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("concat('Hi ', \"col\", '')", Template.sql(db, "x", "Hi ${col}"));
     db.url = "jdbc:sqlite:";
     Assertions.assertEquals("cast(x as VARCHAR(255))", Template.sql(db, "x", null));
-    Assertions.assertEquals("cast(col as VARCHAR(255))", Template.sql(db, "x", "${col}"));
-    Assertions.assertEquals("'Hi ' || col || ''", Template.sql(db, "x", "Hi ${col}"));
+    Assertions.assertEquals("cast(\"col\" as VARCHAR(255))", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("'Hi ' || \"col\" || ''", Template.sql(db, "x", "Hi ${col}"));
     db.url = "jdbc:mariadb:";
     Assertions.assertEquals("cast(x as CHAR)", Template.sql(db, "x", null));
-    Assertions.assertEquals("cast(col as CHAR)", Template.sql(db, "x", "${col}"));
-    Assertions.assertEquals("concat('Hi ', COALESCE(col, 'null'), '')",
+    Assertions.assertEquals("cast(\"col\" as CHAR)", Template.sql(db, "x", "${col}"));
+    Assertions.assertEquals("concat('Hi ', COALESCE(\"col\", 'null'), '')",
         Template.sql(db, "x", "Hi ${col}"));
   }
 }

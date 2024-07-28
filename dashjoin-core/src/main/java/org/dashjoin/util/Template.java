@@ -83,19 +83,19 @@ public class Template {
 
     // special case where template is a single var
     if (vars.size() == 1 && ("${" + vars.get(0) + "}").equals(template))
-      return "cast(" + vars.get(0) + " as " + asType + ")";
+      return "cast(" + db.q(vars.get(0)) + " as " + asType + ")";
 
     Map<String, Object> values = new HashMap<>();
     if (db.url.startsWith("jdbc:sqlite:")) {
       for (String var : vars)
-        values.put(var, "' || " + var + " || '");
+        values.put(var, "' || " + db.q(var) + " || '");
       return "'" + replace(template, values) + "'";
     } else {
       for (String var : vars)
         if (db.url.startsWith("jdbc:mariadb:"))
-          values.put(var, "', COALESCE(" + var + ", 'null'), '");
+          values.put(var, "', COALESCE(" + db.q(var) + ", 'null'), '");
         else
-          values.put(var, "', " + var + ", '");
+          values.put(var, "', " + db.q(var) + ", '");
       return "concat('" + replace(template, values) + "')";
     }
   }
