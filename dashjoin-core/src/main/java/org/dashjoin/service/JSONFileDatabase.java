@@ -277,7 +277,7 @@ public class JSONFileDatabase extends JSONDatabase {
 
     for (int counter = 0; counter < 1000; counter++) {
       String pointer = counter + "." + ext(field);
-      if (!names.contains(id + "." + pointer))
+      if (!names.contains(Escape.filename("" + id) + "." + pointer))
         return pointer;
     }
     throw new IllegalArgumentException();

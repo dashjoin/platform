@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -33,6 +32,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.common.constraint.Assert;
+import jakarta.inject.Inject;
 
 /**
  * tests various aspects of the config database (merging, handling of pojos etc...)
@@ -314,6 +314,11 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sql, query=select * from tbl}",
         "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
 
+    if (db instanceof JSONFileDatabase) {
+      JSONFileDatabase x = (JSONFileDatabase) db;
+      Assertions.assertEquals("1.sql", x.generatePointer(ofName("dj-query-catalog"), id, "query"));
+    }
+
     // query is located in .sql file
     Assertions.assertEquals("select * from tbl",
         FileUtils.readFileToString(
@@ -349,7 +354,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     db.update(ofName("dj-query-catalog"), of("ID", id), MapUtil.of("type", "read", "query", null));
     Assertions.assertEquals("{ID=" + id + ", type=read}",
         "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
-    Assert.assertFalse(new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").exists());
+    Assert.assertFalse(
+        new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").exists());
 
     // use a pointer on another property ("type")
     FileUtils.writeStringToFile(new File("model/dj-query-catalog/" + Escape.filename(id) + ".json"),
