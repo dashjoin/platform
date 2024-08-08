@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
@@ -166,25 +167,53 @@ public class JSONFileDatabase extends JSONDatabase {
   /**
    * traverse the JSON tree and search for keys called X-pointer, add key X with the file contents
    */
-  @SuppressWarnings("unchecked")
   void readExternalizedStrings(String id, List<File> secondaryFiles, Object res)
       throws IOException {
+    _readExternalizedStrings(id,
+        secondaryFiles.stream().map(f -> new FileUsed(f)).collect(Collectors.toList()), res);
+  }
+
+  @SuppressWarnings("unchecked")
+  void _readExternalizedStrings(String id, List<FileUsed> secondaryFiles, Object res)
+      throws IOException {
     if (res instanceof Map) {
+      List<String> removeKeys = new ArrayList<>();
       for (Entry<String, Object> e : new ArrayList<>(((Map<String, Object>) res).entrySet())) {
-        readExternalizedStrings(id, secondaryFiles, e.getValue());
+        _readExternalizedStrings(id, secondaryFiles, e.getValue());
         if (e.getKey().endsWith("-pointer")) {
           String field = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
-          for (File f : secondaryFiles)
-            if (f.getName().equals(Escape.filename(id) + "." + e.getValue()))
+          for (FileUsed f : secondaryFiles)
+            if (f.file.getName().equals(Escape.filename(id) + "." + e.getValue())) {
               ((Map<String, Object>) res).put(field,
-                  FileUtils.readFileToString(f, Charset.defaultCharset()));
+                  FileUtils.readFileToString(f.file, Charset.defaultCharset()));
+              if (f.used)
+                removeKeys.add(e.getKey());
+              else
+                f.used = true;
+            }
         }
+        for (String key : removeKeys)
+          ((Map<String, Object>) res).remove(key);
       }
     }
     if (res instanceof List) {
       for (Object i : (List<Object>) res)
-        readExternalizedStrings(id, secondaryFiles, i);
+        _readExternalizedStrings(id, secondaryFiles, i);
     }
+  }
+
+  /**
+   * make sure a file is only referenced once. Might be referenced multiple times if we use copy /
+   * paste or the duplicate plugin UI feature. The second time, the pointer field is removed to make
+   * sure the content gets its own ID.
+   */
+  static class FileUsed {
+    FileUsed(File file) {
+      this.file = file;
+    }
+
+    boolean used;
+    File file;
   }
 
   /**
