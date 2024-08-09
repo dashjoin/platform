@@ -639,7 +639,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
   /**
    * remove pojo from cache and also remove the metadata provider
    */
-  void removeCache(String id) throws Exception {
+  void removeCache(String id) {
     AbstractDatabase db = cache().get(id);
     if (db != null)
       try {

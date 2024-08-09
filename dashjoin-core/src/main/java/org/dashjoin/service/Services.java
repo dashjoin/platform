@@ -1,5 +1,8 @@
 package org.dashjoin.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +12,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.expression.ExpressionPreviewService;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.function.FunctionService;
+import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.service.tenant.DefaultTenantManager;
 import org.dashjoin.service.tenant.TenantManager;
 import org.dashjoin.util.Home;
@@ -59,7 +63,17 @@ public class Services {
    */
   final static String TENANT_CACHE_SPEC = "expireAfterAccess=30m";
 
-  final static Cache<String, Config> tenantCache = Caffeine.from(TENANT_CACHE_SPEC).build();
+  final static Cache<String, Config> tenantCache =
+      Caffeine.from(TENANT_CACHE_SPEC).removalListener((k, v, c) -> {
+        PojoDatabase pojo = (PojoDatabase) v;
+        Map<String, AbstractDatabase> cache = pojo.cache();
+        if (cache != null) {
+          List<String> dbs = new ArrayList<>(cache.keySet());
+          log.info("evicting pojo db - closing connection pools for " + dbs);
+          for (String db : dbs)
+            pojo.removeCache(db);
+        }
+      }).build();
 
   final static String NULL_KEY = "<<<NULL>>>";
 
