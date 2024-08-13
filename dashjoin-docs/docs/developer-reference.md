@@ -75,6 +75,7 @@ used as the key in the resulting JSON structure. Inputs can be of the following 
 * binary file: like file, but uses base64 encoding
 * file with metadata: like file but includes file metadata
 * binary file with metadata: like binary file but includes file metadata
+* voice: like string, but offers a speech to text input option (language option is available via Dashjoin Studio)
 
 Further options include:
 * an optional title for the input element
@@ -811,6 +812,8 @@ reload | $reload() | reloads the browser page
 log | $log(value) | logs value to the developer console
 navigate | $navigate(url) | points the browser to the URL
 clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
+speak | $speak(message, language?) | Text to speech
+stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
 
 ### Backend Expressions
 
