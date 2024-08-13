@@ -87,6 +87,10 @@ public class PerformanceDatabase extends JSONDatabase {
       return totalTimeMs / count;
     }
 
+    public long minTimeMs = Long.MAX_VALUE;
+
+    public long maxTimeMs;
+
     public void add(long runtime, Integer limit, Integer queryTimeout, String error) {
 
       for (StackTraceElement el : Thread.currentThread().getStackTrace()) {
@@ -135,6 +139,8 @@ public class PerformanceDatabase extends JSONDatabase {
       this.count++;
       this.lastTimeMs = runtime;
       this.totalTimeMs += runtime;
+      this.maxTimeMs = Math.max(maxTimeMs, runtime);
+      this.minTimeMs = Math.min(minTimeMs, runtime);
       this.lastRun = new Date();
       this.lastLimit = limit;
       this.lastTimeoutMs = queryTimeout == null ? null : queryTimeout * 1000;
