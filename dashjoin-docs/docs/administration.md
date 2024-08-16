@@ -25,22 +25,16 @@ The Dashjoin login page can be configured via a configuration file named ```/ass
 
 The default config is:
 
-```json
+```text
 {
-    "signInTabText": "My Dashjoin",
-    "signInCardTitleText": "Sign In",
-    "emailText": "E-Mail or Username",
-    "registerTabText": "New User",
-    "resetPasswordTabText": "Reset My Password",
-    "resetPasswordInputText": "Enter your E-Mail. Password reset instructions will be sent",
-    "emailLoginEnabled": true,
-    "registrationEnabled": true,
-    "guestEnabled": false,
-    "guestLoginEnabled": true,
-    "providers": "google",
-    "openIdConfigs": []
-}
-```
+    "signInTabText": "My Dashjoin",          // text on the login page
+    "emailLoginEnabled": true,               // users can login with an email address or a local user (e.g. admin)
+    "passwordResetEnabled": true,            // if emailLoginEnabled, the system offers the option to reset the user's password
+    "registrationEnabled": true,             // if emailLoginEnabled, users can register with an email address
+    "providers": "google",                   // space-separated list of identity providers like twitter, github, facebook, and google - currently, only google is supported
+    "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
+    "openIdConfigs": []                      // OpenID provider configurations such as O365, Keycloak, etc.
+}```
 
 The information you gathered from registering your application in the previous step can be added in the openIdConfigs array as shown in the 
 following Azure AD example:
