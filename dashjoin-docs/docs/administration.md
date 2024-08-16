@@ -34,7 +34,8 @@ The default config is:
     "providers": "google",                   // space-separated list of identity providers like twitter, github, facebook, and google - currently, only google is supported
     "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
     "openIdConfigs": []                      // OpenID provider configurations such as O365, Keycloak, etc.
-}```
+}
+```
 
 The information you gathered from registering your application in the previous step can be added in the openIdConfigs array as shown in the 
 following Azure AD example:
