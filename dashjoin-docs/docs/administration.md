@@ -31,7 +31,7 @@ The default config is:
     "emailLoginEnabled": true,               // users can login with an email address or a local user (e.g. admin) - this setting can also be enabled by adding "?admin" to the login URL
     "passwordResetEnabled": true,            // if emailLoginEnabled, the system offers the option to reset the user's password
     "registrationEnabled": true,             // if emailLoginEnabled, users can register with an email address
-    "guestLoginEnabled": false,              // allows login with user guest@dashjoin.com (this user must be assigned a suitable role in the tenant user page)
+    "guestLoginEnabled": false,              // allows login with user guest@dashjoin.com (this user must be assigned a suitable role in the tenant user page), if this is the only login option, users are automatically logged in as guests
     "providers": "google",                   // space-separated list of identity providers like twitter, github, facebook, and google - currently, only google is supported
     "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
     "openIdConfigs": []                      // OpenID provider configurations such as O365, Keycloak, etc.
