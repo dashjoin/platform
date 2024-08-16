@@ -151,17 +151,12 @@ docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/
 ### Minimalistic logincfg.json customization example
 
 The following example disables all OpenID providers, disables password reset, and disables user registration.
-Also it re-defines the displayed texts.
 
 Note: all settings not specified will use their defaults (see above).
 
 ```json
 {
-    "signInTabText": "My New Demo App",
-    "signInCardTitleText": "Enter Your Credentials",
-    "registrationEnabled": false,
-    "resetPasswordEnabled": false,
-    "providers": ""
+    "emailLoginEnabled": true
 }
 ```
 
