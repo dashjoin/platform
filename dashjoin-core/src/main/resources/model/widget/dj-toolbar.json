@@ -105,13 +105,6 @@
 						"roles": [
 							"admin"
 						]
-					},
-					{
-						"widget": "icon",
-						"tooltip": "My Account",
-						"icon": "account_circle",
-						"readOnly": true,
-						"href": "/page/Account"
 					}
 				]
 			}
