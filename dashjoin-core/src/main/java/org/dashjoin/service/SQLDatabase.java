@@ -50,7 +50,9 @@ import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Data.Aggregation;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.ColInfo;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.QueryEditor.Col;
@@ -530,6 +532,94 @@ public class SQLDatabase extends AbstractDatabase {
       }
     }
     return ret;
+  }
+
+  @Override
+  public String analytics(Table s, List<ColInfo> arguments) {
+    List<String> project = new ArrayList<>();
+    for (ColInfo a : arguments) {
+      String col = q(a.name);
+      if (a.project) {
+        String add = col;
+        if (a.aggregation != null)
+          switch (a.aggregation) {
+            case AVG:
+              add = "avg(" + col + ")";
+              break;
+            case COUNT:
+              add = "count (" + col + ")";
+              break;
+            case COUNT_DISTINCT:
+              add = "count distinct (" + col + ")";
+              break;
+            case GROUP_BY:
+              add = col;
+              break;
+            case GROUP_CONCAT:
+              add = "group concat (" + col + ")";
+              break;
+            case GROUP_CONCAT_DISTINCT:
+              add = "group concat distinct (" + col + ")";
+              break;
+            case MAX:
+              add = "max(" + col + ")";
+              break;
+            case MIN:
+              add = "min(" + col + ")";
+              break;
+            case STDDEV:
+              add = "stddev(" + col + ")";
+              break;
+            case SUM:
+              add = "sum(" + col + ")";
+              break;
+          }
+        if (a.alias != null)
+          add = add + " as " + q(a.alias);
+        project.add(add);
+      }
+    }
+
+    List<String> where = new ArrayList<>();
+    for (ColInfo a : arguments)
+      if (a.filter != null) {
+        String col = q(a.name);
+        Object arg1 = a.arg1 instanceof String ? "'" + a.arg1 + "'" : a.arg1;
+        Object arg2 = a.arg2 instanceof String ? "'" + a.arg2 + "'" : a.arg2;
+        switch (a.filter) {
+          case BETWEEN:
+            where.add(col + " between " + arg1 + " and " + arg2);
+            break;
+          case EQUALS:
+            break;
+          case GREATER_EQUAL:
+            where.add(col + " >= " + arg1);
+            break;
+          case IS_NOT_NULL:
+            break;
+          case IS_NULL:
+            break;
+          case LIKE:
+            break;
+          case NOT_EQUALS:
+            break;
+          case SMALLER_EQUAL:
+            break;
+        }
+      }
+
+    String select = "select " + String.join(", ", project) + " from " + schema() + q(s.name);
+
+    if (!where.isEmpty())
+      select += " where " + String.join(" and ", where);
+
+    for (ColInfo a : arguments) {
+      String col = q(a.name);
+      if (a.aggregation == Aggregation.GROUP_BY)
+        select = select + " group by " + col;
+    }
+
+    return select + " limit 1000";
   }
 
   @Override

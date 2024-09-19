@@ -2,14 +2,15 @@ package org.dashjoin.service;
 
 import java.util.List;
 import java.util.Map;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Choice;
+import org.dashjoin.service.Data.ColInfo;
 import org.dashjoin.service.Data.SearchResult;
 import org.dashjoin.service.ddl.SchemaChange;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * Database implementation interface. Sits below the Data REST service. Database instances are
@@ -66,6 +67,13 @@ public interface Database {
    */
   public List<Map<String, Object>> all(Table s, Integer offset, Integer limit, String sort,
       boolean descending, Map<String, Object> arguments) throws Exception;
+
+  /**
+   * generates ad hoc analytics queries without having to rely on the query editor
+   */
+  default public String analytics(Table s, List<ColInfo> arguments) {
+    return null;
+  }
 
   /**
    * create object in schema

@@ -52,4 +52,10 @@ public class QueryMeta {
     t.query = query;
     return t;
   }
+
+  public static QueryMeta ofQuery(String query, boolean write) {
+    QueryMeta t = ofQuery(query);
+    t.type = write ? "write" : "read";
+    return t;
+  }
 }

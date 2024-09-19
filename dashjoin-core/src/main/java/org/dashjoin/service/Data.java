@@ -28,6 +28,8 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -63,6 +65,8 @@ import lombok.extern.java.Log;
 @ApplicationScoped
 @Log
 public class Data {
+
+  private static final ObjectMapper om = new ObjectMapper();
 
   @Inject
   Services services;
@@ -303,6 +307,13 @@ public class Data {
       String queryId, Map<String, Object> arguments, boolean readOnly) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
+
+    if (arguments.get("__dj_analytics") instanceof List) {
+      AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+      String query = getAnalytics(sc, db, queryId, arguments);
+      return db.query(QueryMeta.ofQuery(query, false), null);
+    }
+
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
 
     if (readOnly && "write".equals(info.type))
@@ -311,6 +322,33 @@ public class Data {
     ACLContainerRequestFilter.check(sc, info);
     Database db = services.getConfig().getDatabase(dj(database));
     return db.query(info, arguments);
+  }
+
+  String getAnalytics(SecurityContext sc, AbstractDatabase db, String table,
+      Map<String, Object> arguments) {
+    List<ColInfo> cols =
+        om.convertValue(arguments.get("__dj_analytics"), new TypeReference<List<ColInfo>>() {});
+    Table m = db.tables.get(table);
+
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table: " + table);
+
+    ACLContainerRequestFilter.check(sc, db, m);
+    for (ColInfo e : cols) {
+      if (e.arg1 != null) {
+        Map<String, Object> tmp = MapUtil.of(e.name, e.arg1);
+        db.cast(m, tmp);
+        e.arg1 = tmp.get(e.name);
+      }
+      if (e.arg2 != null) {
+        Map<String, Object> tmp = MapUtil.of(e.name, e.arg2);
+        db.cast(m, tmp);
+        e.arg2 = tmp.get(e.name);
+      }
+    }
+    // TODO
+    // ACLContainerRequestFilter.tenantFilter(sc, m, arguments)
+    return db.analytics(m, cols);
   }
 
   /**
@@ -329,6 +367,13 @@ public class Data {
       @PathParam("queryId") String queryId, Map<String, Object> arguments) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
+
+    if (arguments.get("__dj_analytics") instanceof List) {
+      AbstractDatabase db = services.getConfig().getDatabase(dj(database));
+      String query = getAnalytics(sc, db, queryId, arguments);
+      return db.queryMeta(QueryMeta.ofQuery(query, false), null);
+    }
+
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
     ACLContainerRequestFilter.check(sc, info);
     Database db = services.getConfig().getDatabase(dj(database));
@@ -798,6 +843,61 @@ public class Data {
     @Schema(title = "key value")
     public Object value;
 
+  }
+
+  /**
+   * analytics aggregations
+   */
+  public static enum Aggregation {
+    GROUP_BY, COUNT, COUNT_DISTINCT, MIN, MAX, GROUP_CONCAT, GROUP_CONCAT_DISTINCT, AVG, SUM, STDDEV
+  }
+
+  /**
+   * analytics filters
+   */
+  public static enum Filter {
+    EQUALS, NOT_EQUALS, LIKE, IS_NULL, IS_NOT_NULL, SMALLER_EQUAL, GREATER_EQUAL, BETWEEN
+  }
+
+  /**
+   * analytics query column info
+   */
+  public static class ColInfo {
+
+    /**
+     * column name this object refers to (name might be repeated, e.g. select min(c), max(c) from t)
+     */
+    public String name;
+
+    /**
+     * include in projection
+     */
+    public boolean project;
+
+    /**
+     * aggregation - all null means no aggregation
+     */
+    public Aggregation aggregation;
+
+    /**
+     * filter
+     */
+    public Filter filter;
+
+    /**
+     * filter arg 1
+     */
+    public Object arg1;
+
+    /**
+     * filter arg 2 (between only)
+     */
+    public Object arg2;
+
+    /**
+     * column alias
+     */
+    public String alias;
   }
 
   /**
