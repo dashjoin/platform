@@ -537,6 +537,13 @@ public class SQLDatabase extends AbstractDatabase {
   @Override
   public String analytics(Table s, List<ColInfo> arguments) {
     List<String> project = new ArrayList<>();
+
+    boolean isGroupBy = false;
+    for (ColInfo a : arguments)
+      if (a.project)
+        if (a.aggregation != null)
+          isGroupBy = true;
+
     for (ColInfo a : arguments) {
       String col = q(a.name);
       if (a.project) {
@@ -574,6 +581,9 @@ public class SQLDatabase extends AbstractDatabase {
               add = "sum(" + col + ")";
               break;
           }
+        else if (isGroupBy)
+          add = "count (" + col + ")";
+
         if (a.alias != null)
           add = add + " as " + q(a.alias);
         project.add(add);
@@ -591,6 +601,7 @@ public class SQLDatabase extends AbstractDatabase {
             where.add(col + " between " + arg1 + " and " + arg2);
             break;
           case EQUALS:
+            where.add(col + " = " + arg1);
             break;
           case GREATER_EQUAL:
             where.add(col + " >= " + arg1);
@@ -604,6 +615,7 @@ public class SQLDatabase extends AbstractDatabase {
           case NOT_EQUALS:
             break;
           case SMALLER_EQUAL:
+            where.add(col + " <= " + arg1);
             break;
         }
       }
@@ -613,11 +625,16 @@ public class SQLDatabase extends AbstractDatabase {
     if (!where.isEmpty())
       select += " where " + String.join(" and ", where);
 
+    List<String> groupBy = new ArrayList<>();
     for (ColInfo a : arguments) {
       String col = q(a.name);
       if (a.aggregation == Aggregation.GROUP_BY)
-        select = select + " group by " + col;
+        groupBy.add(col);
     }
+    if (!groupBy.isEmpty())
+      select += " group by " + String.join(",", groupBy);
+
+    // System.out.println(select);
 
     return select + " limit 1000";
   }
