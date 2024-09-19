@@ -346,8 +346,17 @@ public class Data {
         e.arg2 = tmp.get(e.name);
       }
     }
-    // TODO
-    // ACLContainerRequestFilter.tenantFilter(sc, m, arguments)
+
+    Map<String, Object> racl = new HashMap<>();
+    ACLContainerRequestFilter.tenantFilter(sc, m, racl);
+    for (Entry<String, Object> e : racl.entrySet()) {
+      ColInfo ci = new ColInfo();
+      ci.name = e.getKey();
+      ci.filter = Filter.EQUALS;
+      ci.arg1 = e.getValue();
+      cols.add(ci);
+    }
+
     return db.analytics(m, cols);
   }
 
