@@ -610,8 +610,10 @@ public class SQLDatabase extends AbstractDatabase {
               where.add(col + " >= " + arg1);
             break;
           case IS_NOT_NULL:
+            where.add(col + " is not null");
             break;
           case IS_NULL:
+            where.add(col + " is null");
             break;
           case LIKE:
             break;
