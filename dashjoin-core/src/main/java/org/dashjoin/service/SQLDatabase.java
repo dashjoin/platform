@@ -598,13 +598,16 @@ public class SQLDatabase extends AbstractDatabase {
         Object arg2 = a.arg2 instanceof String ? "'" + a.arg2 + "'" : a.arg2;
         switch (a.filter) {
           case BETWEEN:
-            where.add(col + " between " + arg1 + " and " + arg2);
+            if (arg1 != null && arg2 != null)
+              where.add(col + " between " + arg1 + " and " + arg2);
             break;
           case EQUALS:
-            where.add(col + " = " + arg1);
+            if (arg1 != null)
+              where.add(col + " = " + arg1);
             break;
           case GREATER_EQUAL:
-            where.add(col + " >= " + arg1);
+            if (arg1 != null)
+              where.add(col + " >= " + arg1);
             break;
           case IS_NOT_NULL:
             break;
@@ -615,7 +618,8 @@ public class SQLDatabase extends AbstractDatabase {
           case NOT_EQUALS:
             break;
           case SMALLER_EQUAL:
-            where.add(col + " <= " + arg1);
+            if (arg1 != null)
+              where.add(col + " <= " + arg1);
             break;
         }
       }
