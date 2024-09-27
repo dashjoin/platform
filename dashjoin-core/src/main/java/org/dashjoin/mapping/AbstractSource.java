@@ -316,12 +316,18 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
         }
         if (o instanceof Date)
           types.add("date");
-        if (o instanceof Integer)
-          types.add("integer");
+
+        if (o instanceof Integer) {
+          if (!types.contains("number"))
+            types.add("integer");
+        } else if (o instanceof Number) {
+          if (types.contains("integer"))
+            types.remove("integer");
+          types.add("number");
+        }
+
         if (o instanceof Boolean)
           types.add("boolean");
-        if (o instanceof Number)
-          types.add("number");
         if (o instanceof List)
           types.add("array");
         if (o instanceof Map)

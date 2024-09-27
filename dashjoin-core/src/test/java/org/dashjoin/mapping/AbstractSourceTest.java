@@ -28,6 +28,18 @@ public class AbstractSourceTest {
   }
 
   @Test
+  public void testIntNumber() {
+    Assertions.assertEquals("integer", Provider.type("x", asList(of("x", 1))));
+    Assertions.assertEquals("integer", Provider.type("x", asList(of("x", 1), of("x", 1))));
+  }
+
+  @Test
+  public void testNumber() {
+    Assertions.assertEquals("number", Provider.type("x", asList(of("x", 1.2))));
+    Assertions.assertEquals("number", Provider.type("x", asList(of("x", 1), of("x", 1.2))));
+  }
+
+  @Test
   public void testNull() {
     Assertions.assertEquals("string", Provider.type("x", asList(of("x", null), of("x", null))));
   }
