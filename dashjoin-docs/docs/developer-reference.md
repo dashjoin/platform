@@ -40,6 +40,7 @@ Container with a plain layout
 * roles: show container only if user is in one of these roles
 * if: show the widget if the expression is true
 * redrawInterval: redraw interval (seconds). Periodically refreshes the container and all contained content.
+* foreach: expression that evaluates to an array of objects. The first child of the container is rendered for each object, with the "value" context set to the respective array item (Dashjoin Studio only)
 
 #### expansion
 
