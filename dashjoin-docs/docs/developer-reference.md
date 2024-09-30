@@ -41,6 +41,7 @@ Container with a plain layout
 * if: show the widget if the expression is true
 * redrawInterval: redraw interval (seconds). Periodically refreshes the container and all contained content.
 * foreach: expression that evaluates to an array of objects. The first child of the container is rendered for each object, with the "value" context set to the respective array item (Dashjoin Studio only)
+* layout: if foreach is used, use "horizontal" or "vertical" layout (Dashjoin Studio only)
 
 #### expansion
 
@@ -247,6 +248,7 @@ Depending on the result of the evaluation, one of the following cases applies:
 * if the object has exactly the keys "database", "table", and "pk1", the result is displayed as a link to the record identified by these values
 * if the object has exactly the keys "database", "table", "pk1", and "page", the result is displayed as a link to the record identified by these values and uses the specified page to visualize the record
 * an array of objects is displayed as a table
+* if the object has exactly the keys "cardtitle" and "cardcontent" (with optional width and height), the result is displayed as an HTML card
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
 * if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink (note that absolute or relative links to another page in the app are specified without the "slash hash" part of the URL - for instance, the href "Info" or "/page/Info" links to the Info page)
 
