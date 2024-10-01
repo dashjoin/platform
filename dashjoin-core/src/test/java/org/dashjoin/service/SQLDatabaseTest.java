@@ -137,5 +137,11 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
             Arrays.asList(alias("Y", "ID", null, null, Aggregation.GROUP_CONCAT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
+    // filter and aggregation
+    Assertions.assertEquals("[{COUNT(ID)=1, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", Filter.EQUALS, 1, Aggregation.COUNT),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
   }
 }
