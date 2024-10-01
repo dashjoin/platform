@@ -616,8 +616,14 @@ public class SQLDatabase extends AbstractDatabase {
             where.add(col + " is null");
             break;
           case LIKE:
+            if (supportsIlike())
+              where.add(col + " ILIKE " + arg1);
+            else
+              where.add(col + " LIKE " + arg1);
             break;
           case NOT_EQUALS:
+            if (arg1 != null)
+              where.add(col + " <> " + arg1);
             break;
           case SMALLER_EQUAL:
             if (arg1 != null)
