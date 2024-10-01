@@ -20,6 +20,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -594,6 +595,11 @@ public class SQLDatabase extends AbstractDatabase {
     for (ColInfo a : arguments)
       if (a.filter != null) {
         String col = q(a.name);
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        if (a.arg1 instanceof Date)
+          a.arg1 = sm.format((Date) a.arg1);
+        if (a.arg2 instanceof Date)
+          a.arg2 = sm.format((Date) a.arg2);
         Object arg1 = a.arg1 instanceof String ? "'" + a.arg1 + "'" : a.arg1;
         Object arg2 = a.arg2 instanceof String ? "'" + a.arg2 + "'" : a.arg2;
         switch (a.filter) {

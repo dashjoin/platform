@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import java.util.Arrays;
+import java.util.Date;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.Data.Aggregation;
@@ -53,6 +54,14 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
     col.arg1 = arg1;
     col.aggregation = aggregation;
     return col;
+  }
+
+  @Test
+  public void testAnalyticsDate() throws Exception {
+    Assertions.assertEquals(
+        "select \"HIRE_DATE\" from \"EMP\" where \"HIRE_DATE\" = '1970-01-01' limit 1000",
+        db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("HIRE_DATE", Filter.EQUALS, new Date(0), null))));
   }
 
   @Test
