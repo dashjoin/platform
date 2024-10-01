@@ -557,16 +557,16 @@ public class SQLDatabase extends AbstractDatabase {
               add = "count (" + col + ")";
               break;
             case COUNT_DISTINCT:
-              add = "count distinct (" + col + ")";
+              add = "count (distinct " + col + ")";
               break;
             case GROUP_BY:
               add = col;
               break;
             case GROUP_CONCAT:
-              add = "group concat (" + col + ")";
+              add = "group_concat (" + col + ")";
               break;
             case GROUP_CONCAT_DISTINCT:
-              add = "group concat distinct (" + col + ")";
+              add = "group_concat (distinct " + col + ")";
               break;
             case MAX:
               add = "max(" + col + ")";

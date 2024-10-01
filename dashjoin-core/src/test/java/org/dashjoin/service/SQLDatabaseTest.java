@@ -39,6 +39,12 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
     return services.getConfig().getDatabase("dj/junit");
   }
 
+  ColInfo alias(String alias, String name, Filter filter, Object arg1, Aggregation aggregation) {
+    ColInfo c = col(name, filter, arg1, aggregation);
+    c.alias = alias;
+    return c;
+  }
+
   ColInfo col(String name, Filter filter, Object arg1, Aggregation aggregation) {
     ColInfo col = new ColInfo();
     col.name = name;
@@ -89,6 +95,46 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
     Assertions.assertEquals("[{COUNT(ID)=2, EMP.WORKSON=1000}]",
         "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.COUNT),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{AVG(ID)=1.5, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.AVG),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{SUM(ID)=3, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.SUM),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{MIN(ID)=1, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.MIN),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{MAX(ID)=2, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.MAX),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{COUNT(DISTINCT ID)=2, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.COUNT_DISTINCT),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{X=1,2, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(alias("X", "ID", null, null, Aggregation.GROUP_CONCAT_DISTINCT),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{STDDEV_SAMP(ID)=0.7071067811865476, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(col("ID", null, null, Aggregation.STDDEV),
+                col("WORKSON", null, null, Aggregation.GROUP_BY)))),
+            null));
+    Assertions.assertEquals("[{Y=1,2, EMP.WORKSON=1000}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+            Arrays.asList(alias("Y", "ID", null, null, Aggregation.GROUP_CONCAT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
   }
