@@ -60,95 +60,87 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
   public void testAnalyticsDate() throws Exception {
     Assertions.assertEquals(
         "select \"HIRE_DATE\" from \"EMP\" where \"HIRE_DATE\" = '1970-01-01' limit 1000",
-        db().analytics(Table.ofName("EMP"),
+        db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("HIRE_DATE", Filter.EQUALS, new Date(0), null))));
   }
 
   @Test
   public void testAnalytics() throws Exception {
     // project
-    Assertions
-        .assertEquals("[{EMP.ID=1}, {EMP.ID=2}]",
-            "" + db().query(QueryMeta.ofQuery(
-                db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", null, null, null)))),
-                null));
-    // filter
-    Assertions.assertEquals("[{EMP.ID=1}]",
-        "" + db().query(QueryMeta.ofQuery(
-            db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", Filter.EQUALS, 1, null)))),
-            null));
     Assertions.assertEquals("[{EMP.ID=1}, {EMP.ID=2}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(
+            db().analytics(null, Table.ofName("EMP"), Arrays.asList(col("ID", null, null, null)))),
+            null));
+    // filter
+    Assertions.assertEquals("[{EMP.ID=1}]", "" + db().query(QueryMeta.ofQuery(db().analytics(null,
+        Table.ofName("EMP"), Arrays.asList(col("ID", Filter.EQUALS, 1, null)))), null));
+    Assertions.assertEquals("[{EMP.ID=1}, {EMP.ID=2}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", Filter.GREATER_EQUAL, 1, null)))), null));
-    Assertions.assertEquals("[{EMP.ID=1}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
-            Arrays.asList(col("ID", Filter.SMALLER_EQUAL, 1, null)))), null));
-    Assertions.assertEquals("[{EMP.ID=2}]", "" + db().query(QueryMeta.ofQuery(
-        db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", Filter.NOT_EQUALS, 1, null)))),
+    Assertions.assertEquals("[{EMP.ID=1}]", "" + db().query(QueryMeta.ofQuery(db().analytics(null,
+        Table.ofName("EMP"), Arrays.asList(col("ID", Filter.SMALLER_EQUAL, 1, null)))), null));
+    Assertions.assertEquals("[{EMP.ID=2}]", "" + db().query(QueryMeta.ofQuery(db().analytics(null,
+        Table.ofName("EMP"), Arrays.asList(col("ID", Filter.NOT_EQUALS, 1, null)))), null));
+    Assertions.assertEquals("[{EMP.NAME=mike}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
+            Arrays.asList(col("NAME", Filter.LIKE, "%IK%", null)))), null));
+    Assertions.assertEquals("[{EMP.ID=1}]", "" + db().query(QueryMeta.ofQuery(
+        db().analytics(null, Table.ofName("EMP"), Arrays.asList(col("ID", Filter.LIKE, 1, null)))),
         null));
-    Assertions.assertEquals("[{EMP.NAME=mike}]", "" + db().query(QueryMeta.ofQuery(
-        db().analytics(Table.ofName("EMP"), Arrays.asList(col("NAME", Filter.LIKE, "%IK%", null)))),
-        null));
-    Assertions.assertEquals("[{EMP.ID=1}]",
-        "" + db().query(QueryMeta.ofQuery(
-            db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", Filter.LIKE, 1, null)))),
-            null));
-    Assertions.assertEquals("[{EMP.ID=1}, {EMP.ID=2}]", "" + db().query(QueryMeta.ofQuery(
-        db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", Filter.IS_NOT_NULL, 1, null)))),
-        null));
-    Assertions.assertEquals("[]",
-        "" + db().query(QueryMeta.ofQuery(
-            db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", Filter.IS_NULL, 1, null)))),
-            null));
+    Assertions.assertEquals("[{EMP.ID=1}, {EMP.ID=2}]",
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
+            Arrays.asList(col("ID", Filter.IS_NOT_NULL, 1, null)))), null));
+    Assertions.assertEquals("[]", "" + db().query(QueryMeta.ofQuery(db().analytics(null,
+        Table.ofName("EMP"), Arrays.asList(col("ID", Filter.IS_NULL, 1, null)))), null));
     // aggregation
     Assertions.assertEquals("[{COUNT(ID)=2, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.COUNT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{AVG(ID)=1.5, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.AVG),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{SUM(ID)=3, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.SUM),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{MIN(ID)=1, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.MIN),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{MAX(ID)=2, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.MAX),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{COUNT(DISTINCT ID)=2, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.COUNT_DISTINCT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{X=1,2, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(alias("X", "ID", null, null, Aggregation.GROUP_CONCAT_DISTINCT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{STDDEV_SAMP(ID)=0.7071067811865476, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", null, null, Aggregation.STDDEV),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     Assertions.assertEquals("[{Y=1,2, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(alias("Y", "ID", null, null, Aggregation.GROUP_CONCAT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
     // filter and aggregation
     Assertions.assertEquals("[{COUNT(ID)=1, EMP.WORKSON=1000}]",
-        "" + db().query(QueryMeta.ofQuery(db().analytics(Table.ofName("EMP"),
+        "" + db().query(QueryMeta.ofQuery(db().analytics(null, Table.ofName("EMP"),
             Arrays.asList(col("ID", Filter.EQUALS, 1, Aggregation.COUNT),
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
@@ -159,7 +151,7 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
     for (Filter f : Filter.values()) {
       if (!f.toString().contains("NULL"))
         Assertions.assertFalse(
-            db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", f, null, null)))
+            db().analytics(null, Table.ofName("EMP"), Arrays.asList(col("ID", f, null, null)))
                 .contains("where"));
     }
   }

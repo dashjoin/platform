@@ -71,7 +71,7 @@ public interface Database {
   /**
    * generates ad hoc analytics queries without having to rely on the query editor
    */
-  default public String analytics(Table s, List<ColInfo> arguments) {
+  default public String analytics(QueryMeta info, Table s, List<ColInfo> arguments) {
     return null;
   }
 

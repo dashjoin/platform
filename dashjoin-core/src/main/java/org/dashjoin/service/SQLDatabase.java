@@ -536,7 +536,7 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  public String analytics(Table s, List<ColInfo> arguments) {
+  public String analytics(QueryMeta info, Table s, List<ColInfo> arguments) {
     List<String> project = new ArrayList<>();
 
     boolean isGroupBy = false;
@@ -639,7 +639,9 @@ public class SQLDatabase extends AbstractDatabase {
         }
       }
 
-    String select = "select " + String.join(", ", project) + " from " + schema() + q(s.name);
+    String subselect = info == null ? "" : "(" + info.query + ") as ";
+    String select =
+        "select " + String.join(", ", project) + " from " + subselect + schema() + q(s.name);
 
     if (!where.isEmpty())
       select += " where " + String.join(" and ", where);

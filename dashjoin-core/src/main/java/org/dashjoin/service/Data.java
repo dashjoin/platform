@@ -29,7 +29,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -309,10 +308,11 @@ public class Data {
     if (arguments == null)
       arguments = new HashMap<>();
 
-    if (arguments.get("__dj_analytics") instanceof List) {
+    if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-      String query = getAnalytics(sc, db, queryId, arguments);
-      return db.query(QueryMeta.ofQuery(query, false), null);
+      Analytics analytics = om.convertValue(arguments, Analytics.class);
+      String query = getAnalytics(sc, db, analytics);
+      return db.query(QueryMeta.ofQuery(query, false), analytics.arguments);
     }
 
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
@@ -325,17 +325,22 @@ public class Data {
     return db.query(info, arguments);
   }
 
-  String getAnalytics(SecurityContext sc, AbstractDatabase db, String table,
-      Map<String, Object> arguments) {
-    List<ColInfo> cols =
-        om.convertValue(arguments.get("__dj_analytics"), new TypeReference<List<ColInfo>>() {});
-    Table m = db.tables.get(table);
+  String getAnalytics(SecurityContext sc, AbstractDatabase db, Analytics a) throws Exception {
 
+    QueryMeta info = null;
+    if (a.query != null) {
+      info = services.getConfig().getQueryMeta(a.query);
+      if ("write".equals(info.type))
+        return null;
+      ACLContainerRequestFilter.check(sc, info);
+    }
+
+    Table m = db.tables.get(a.table);
     if (m == null)
-      throw new IllegalArgumentException("Unknown table: " + table);
-
+      throw new IllegalArgumentException("Unknown table: " + a.table);
     ACLContainerRequestFilter.check(sc, db, m);
-    for (ColInfo e : cols) {
+
+    for (ColInfo e : a.cols) {
       if (e.arg1 != null) {
         Map<String, Object> tmp = MapUtil.of(e.name, e.arg1);
         db.cast(m, tmp);
@@ -355,10 +360,10 @@ public class Data {
       ci.name = e.getKey();
       ci.filter = Filter.EQUALS;
       ci.arg1 = e.getValue();
-      cols.add(ci);
+      a.cols.add(ci);
     }
 
-    return db.analytics(m, cols);
+    return db.analytics(info, m, a.cols);
   }
 
   /**
@@ -378,10 +383,11 @@ public class Data {
     if (arguments == null)
       arguments = new HashMap<>();
 
-    if (arguments.get("__dj_analytics") instanceof List) {
+    if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-      String query = getAnalytics(sc, db, queryId, arguments);
-      return db.queryMeta(QueryMeta.ofQuery(query, false), null);
+      Analytics analytics = om.convertValue(arguments, Analytics.class);
+      String query = getAnalytics(sc, db, analytics);
+      return db.queryMeta(QueryMeta.ofQuery(query, false), analytics.arguments);
     }
 
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
@@ -867,6 +873,13 @@ public class Data {
    */
   public static enum Filter {
     EQUALS, NOT_EQUALS, LIKE, IS_NULL, IS_NOT_NULL, SMALLER_EQUAL, GREATER_EQUAL, BETWEEN
+  }
+
+  public static class Analytics {
+    public List<ColInfo> cols;
+    public String table;
+    public String query;
+    public Map<String, Object> arguments;
   }
 
   /**
