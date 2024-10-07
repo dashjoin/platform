@@ -282,14 +282,23 @@ public class ExpressionService {
    */
   public static class All extends Base<List<Map<String, Object>>> {
 
+    boolean isNull(List<Object> arg, int index) throws Exception {
+      return optional(arg, index, Object.class) == null;
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public List<Map<String, Object>> run(List arg) throws Exception {
-      return this.expressionService.getData().all(sc, (String) arg.get(0), (String) arg.get(1),
-          optional(arg, 2, Integer.class), optional(arg, 3, Integer.class),
-          optional(arg, 4, String.class), (optional(arg, 5, Boolean.class) == null ? false
-              : (boolean) optional(arg, 5, Boolean.class)),
-          optional(arg, 6, Map.class));
+      if ((optional(arg, 2, Object.class) instanceof Map) && isNull(arg, 3) && isNull(arg, 4)
+          && isNull(arg, 5) && isNull(arg, 6))
+        return this.expressionService.getData().all(sc, (String) arg.get(0), (String) arg.get(1),
+            null, null, null, false, optional(arg, 2, Map.class));
+      else
+        return this.expressionService.getData().all(sc, (String) arg.get(0), (String) arg.get(1),
+            optional(arg, 2, Integer.class), optional(arg, 3, Integer.class),
+            optional(arg, 4, String.class), (optional(arg, 5, Boolean.class) == null ? false
+                : (boolean) optional(arg, 5, Boolean.class)),
+            optional(arg, 6, Map.class));
     }
 
     @Override
@@ -299,7 +308,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ssn?n?s?b?o?:a>";
+      return "<ss(on)?n?s?b?o?:a>";
     }
   }
 
