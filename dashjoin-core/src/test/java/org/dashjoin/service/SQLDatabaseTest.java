@@ -153,4 +153,14 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
                 col("WORKSON", null, null, Aggregation.GROUP_BY)))),
             null));
   }
+
+  @Test
+  public void testAnalyticsWhereNull() throws Exception {
+    for (Filter f : Filter.values()) {
+      if (!f.toString().contains("NULL"))
+        Assertions.assertFalse(
+            db().analytics(Table.ofName("EMP"), Arrays.asList(col("ID", f, null, null)))
+                .contains("where"));
+    }
+  }
 }
