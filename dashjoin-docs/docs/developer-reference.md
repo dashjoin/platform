@@ -177,6 +177,23 @@ Chatbot widget for interacting with large language models.
 * logo: Logo URL
 * system_prompt: AI system prompt
 
+#### analytics
+
+Like chart and table, but allows exposing query filters to the user. The query can be based on a table or a base query. The widget configuration allows defining projection, aggregation, and filters in the widget configuration (i.e. without having to rely on the query catalog).
+
+* database: database to run the query on
+* table: the table to query and filter
+* chart: chart type or table
+* style: see chart widget
+* columns: a list of columns to project / aggregate from the table or query
+* filter: a list of filters to expose to the user
+
+The following settings are available in Dashjoin Studio only:
+
+* query: optionally base the widget on this query instead of a single table
+* arguments: optional expression resulting in query arguments
+
+
 #### chart
 
 Chart for visualizing query results.
