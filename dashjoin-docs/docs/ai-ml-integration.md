@@ -413,3 +413,44 @@ $synonym({"LevenshteinDistance": 1}, ["apple"], ["apples", "appl"])
   }
 ]
 ```
+
+## Document to Text
+
+In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dasjoin NLP container. You can run it as follows:
+
+```shell
+docker run -p 8081:8081 dashjoin/nlp
+```
+
+The container offers a conversion service that can be called as follows:
+
+```shell
+curl -X 'POST' \
+  'http://localhost:8081/function/run/doc2text' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '"https://pdfobject.com/pdf/sample.pdf"'
+```
+
+This example passes a URL to a PDF document. In turn, the extracted text is returned.
+
+If the document is not available directly via a public URL, you can obtain it via some other means and pass it via a [data URL](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data) as follows:
+
+```shell
+curl -X 'POST' \
+  'http://localhost:8081/function/run/doc2text' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '"data:application/pdf;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg=="'
+```
+
+Note that the data URL has the prefix: data:application/pdf;base64,
+The following data is a base 64 encoded HTML page.
+
+In order to send a document from your upload folder, you can use the following JSONata code:
+
+```
+$curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/pdf;base64," & $openText("file:upload/test.html", "BASE_64"))
+```
+
+The document is loaded via the openText function using base64 encoding. The data URL prefix is appended and fed into the curl command.
