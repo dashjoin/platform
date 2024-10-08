@@ -493,6 +493,7 @@ Configuration
 * headers: HTTP headers
 * contentType: content-type header application/json or url-form-encoded
 * apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
+* timeoutSeconds: Optional HTTP timeout in seconds
 
 Invocation parameter
 
@@ -864,7 +865,7 @@ streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits i
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 streamDb | $streamDb(database, table) | Streams records from the database table specified
-curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use {"Authorization": credential} to reference a credential set defined in functions
+curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout.
 openJson | $openJson(url) | Parses JSON at the url
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
