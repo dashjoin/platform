@@ -515,3 +515,21 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 * SDK
   * JSONata upsert function
   * Support credential store for any kind of REST header / API key
+
+### 5.3 (Oct 2024)
+
+* UI
+  * Analytics widget allows users to easily apply filters to charts and tables
+  * Voice (speech to text) input form element
+  * Support for comparators in table filters
+  * Enhanced JSONata support for the tree widget
+  * Container widget allows rendering a child for each array item
+  * Forms support entering arrays of foreign keys
+* Platform
+  * Docker container / REST API for extracting text from PDF, Word, and HTML files
+  * Support PostgreSQL array type
+  * Support anonymous guest login
+* SDK
+  * Support for externalizing JSONata into separate files
+  * JSONata text to speech function
+  * curl supports socket timeout
