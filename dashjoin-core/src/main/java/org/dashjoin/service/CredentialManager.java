@@ -35,6 +35,8 @@ public class CredentialManager {
 
   private final String SECRETS_ID_FILE;
 
+  private final String SID;
+
   public synchronized static CredentialManager getInstance() {
     if (instance == null) {
       instance = jakarta.enterprise.inject.spi.CDI.current().select(CredentialManager.class).get();
@@ -44,6 +46,14 @@ public class CredentialManager {
 
   @Inject
   CredentialManager(Home home) {
+    SID = System.getenv("DJ_SID");
+    // Use DJ_SID if provided
+    if (SID != null) {
+      logger.info("Using provided DJ_SID from environment "+SID);
+      SECRETS_ID_FILE = null;
+      return;
+    }
+
     SECRETS_ID_FILE = System.getenv("DJ_SID_FILE") != null ? System.getenv("DJ_SID_FILE")
         : home.getFile("model/.secrets.id").getAbsolutePath();
     logger.info("Using SID file: " + SECRETS_ID_FILE);
@@ -54,6 +64,10 @@ public class CredentialManager {
    * Generates the system unique SECRETS_ID_FILE.
    */
   private void generateSecretsId() {
+    // Use DJ_SID if provided
+    if (SID != null)
+      return;
+
     File secretsFile = new File(SECRETS_ID_FILE);
     if (!secretsFile.exists()) {
       logger.info("New system - creating " + SECRETS_ID_FILE);
@@ -85,6 +99,10 @@ public class CredentialManager {
    * @return
    */
   private char[] getSecret() {
+    // Use DJ_SID if provided
+    if (SID != null)
+      return SID.toCharArray();
+
     try (FileReader r = new FileReader(SECRETS_ID_FILE, StandardCharsets.UTF_8)) {
       char[] buf = new char[1024];
       int sz;
