@@ -49,7 +49,7 @@ public class CredentialManager {
     SID = System.getenv("DJ_SID");
     // Use DJ_SID if provided
     if (SID != null) {
-      logger.info("Using provided DJ_SID from environment "+SID);
+      logger.info("Using provided DJ_SID from environment");
       SECRETS_ID_FILE = null;
       return;
     }
