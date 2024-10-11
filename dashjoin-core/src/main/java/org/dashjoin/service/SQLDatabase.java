@@ -1395,8 +1395,8 @@ public class SQLDatabase extends AbstractDatabase {
       for (Entry<String, Property> p : m.properties.entrySet())
         if ("jsonb".equals(p.getValue().dbType)) {
           Object obj = object.get(p.getKey());
-          if ((obj instanceof Map) || (obj instanceof List))
-            // value is a json array or object - no cast required
+          if (obj == null || (obj instanceof Map) || (obj instanceof List))
+            // value is null, a json array or object - no cast required
             ;
           else
             // value is a simple type - makes no sense to be stored in a jsonb column
