@@ -1,0 +1,1393 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../user-interface/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
+    
+    
+      
+        <title>Concepts - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#concepts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Concepts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record Coordinates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tables-and-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tables and Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-and-foreign-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary and Foreign Keys
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-and-instance-layout-and-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table and Instance Layout and Navigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Table and Instance Layout and Navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-table-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Table Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-record-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Record Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widgets-and-custom-layouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Widgets and Custom Layouts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-the-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interacting with the System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-read-update-delete-crud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create, Read, Update, Delete (CRUD)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executing Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluating-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluating Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expressions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jsonata" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSONata in Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashboard Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-variable-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session Variable Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#action-table-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Action Table Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-and-markdown-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML and Markdown Context
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-invoke-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Invoke Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Triggers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI & ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-coordinates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record Coordinates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tables-and-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tables and Columns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary-and-foreign-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary and Foreign Keys
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-and-instance-layout-and-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table and Instance Layout and Navigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Table and Instance Layout and Navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-table-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Table Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-record-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Default Record Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widgets-and-custom-layouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Widgets and Custom Layouts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schema Metadata
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interacting-with-the-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interacting with the System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with the System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-read-update-delete-crud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create, Read, Update, Delete (CRUD)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Queries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executing Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluating-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluating Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expressions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jsonata" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-widgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Widgets
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JSONata in Widgets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Record Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard-page-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashboard Page Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#session-variable-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session Variable Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Form Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#action-table-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Action Table Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#html-and-markdown-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTML and Markdown Context
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-invoke-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Invoke Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsonata-in-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata in Triggers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="concepts">Concepts</h1>
+<p>Before we dive into the user guide for the platform, this section explains a couple of key concepts.</p>
+<h2 id="data-model">Data Model</h2>
+<p>The Dashjoin low code platform sits on top of one or more databases. These databases can be empty, ready to store application data,
+or they can contain an existing schema and data, possibly under the control of other software and systems.
+Dashjoin connects to these databases and maps the data using coordinates for each data record:</p>
+<h3 id="record-coordinates">Record Coordinates</h3>
+<ol>
+<li>Dashjoin: The first coordinate is the ID of the Dashjoin installation that accesses the database.</li>
+<li>Database: The unique name of the database containing the record.</li>
+<li>Table: The table name (unique within the database) of the table containing the record.</li>
+<li>Record key(s): The unique ID of the record within its table. This might be a list of keys if we are dealing with composite keys, for instance in a relational database.</li>
+</ol>
+<p>These coordinates (DJ, DB, TABLE, PK) translate to RESTful URLs:</p>
+<ul>
+<li>Visualizing a record: <code>https://dashjoin.host.name/#/resource/DB/TABLE/PK</code></li>
+<li>API access to the record: <code>https://dashjoin.host.name/rest/database/crud/DB/TABLE/PK</code></li>
+</ul>
+<h3 id="tables-and-columns">Tables and Columns</h3>
+<p>Dashjoin organizes data in tables and columns. Columns can be of simple types such as strings, integers, etc., but they can also be complex
+JSON documents. Therefore, Dashjoin is able to connect to multiple kinds of databases. Each of these drivers aligns the database specific nomenclature
+to the common data model. Therefore a document database's collections become tables, the documents become records and the document fields become columns.</p>
+<h3 id="primary-and-foreign-keys">Primary and Foreign Keys</h3>
+<p>Each table usually defines one or more primary key columns that uniquely define each record in the table.
+In addition, there can be foreign keys in a table that reference another table. This information is crucial for Dashjoin, since it is used to
+automatically display hyperlinks between records.</p>
+<p>Usually the key information is extracted from the databases by the drivers. However, some databases do not allow
+for expressing foreign key information. In this case, the information can be added to the Dashjoin metadata by the user.
+This mechanism even allows setting foreign key relationships between databases and even from one Dashjoin system to another.
+This does not enable you to run a federated query like you would within a single SQL database. However, Dashjoin
+uses this metadata to hyperlink records between databases and logical Dashjoin installations.</p>
+<h2 id="table-and-instance-layout-and-navigation">Table and Instance Layout and Navigation</h2>
+<p>The Dashjoin user interface concept is inspired by the Semantic MediaWiki. The database is thought of as a large linked data cloud. Dashjoin user interface pages can be one of the following types:</p>
+<ol>
+<li>Record page: Assume the user navigates to the page /resource/DB/TABLE/PK. The system displays a page that corresponds to this record.</li>
+<li>Table page: Assume the user navigates to the page /table/DB/TABLE. The system displays a page that corresponds to this concept / table.</li>
+<li>Dashboard page: Assume the user navigates to the page /page/Page. The system displays this page which has no direct related context in the database.</li>
+</ol>
+<p>Unless the low code developer specifies otherwise, table and record pages are displayed as follows:</p>
+<h3 id="default-table-layout">Default Table Layout</h3>
+<p>Table pages show</p>
+<ul>
+<li>a pageable and sortable data table</li>
+<li>a form to create a new record</li>
+<li>if you are in the admin role, controls to edit the table schema and metadata</li>
+</ul>
+<p>Within the data table, any primary or foreign key field links to the corresponding record page,</p>
+<h3 id="default-record-layout">Default Record Layout</h3>
+<p>Record pages show</p>
+<ul>
+<li>a form to edit the record</li>
+<li>a delete button</li>
+<li>a link back to the table page</li>
+<li>links to any related record (this can either a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)</li>
+</ul>
+<p>The default layout allows the user to easily navigate the data regardless of which specific database it is located in.</p>
+<h3 id="widgets-and-custom-layouts">Widgets and Custom Layouts</h3>
+<p>For each table, the default table and instance layout can be adapted.
+A layout is a hierarchy of widgets. Widgets that contain other widgets are called containers.
+Every widget has a couple of properties. The chart widget for example, defines which query to visualize.</p>
+<h2 id="schema-metadata">Schema Metadata</h2>
+<p>We already mentioned that a developer can define foreign key relationships, even if the underlying database does not support this concept.
+Dashjoin allows a number of information to be entered about databases, tables, and columns. This data is usually called metadata.
+Dashjoin stores this metadata in the built-in configuration database, but this database behaves just like any other database.
+Therefore, each database and table are records and their pages behave just like any other page in the system.</p>
+<h2 id="interacting-with-the-system">Interacting with the System</h2>
+<p>So far, we mostly looked at the way Dashjoin organizes and especially how it visualizes information.
+This section describes how an application interacts and changes the underlying systems in other ways.</p>
+<h3 id="create-read-update-delete-crud">Create, Read, Update, Delete (CRUD)</h3>
+<p>A database driver usually exposes CRUD operations to the platform. These operations are used to display data but also
+to make changes from the forms displayed in the default layout. Note that, unless configured otherwise, the form shows
+an edit element for all columns.</p>
+<h3 id="running-queries">Running Queries</h3>
+<p>Besides simple read and browse operations, the underlying databases usually have the ability to run powerful
+queries. Dashjoin allows the developer to design such queries and save them in the query catalog consumption.
+These queries usually drive table and chart displays on customized layout pages and dashboards.
+Note that queries can also be used to run delete or update operations nd that they can also be parameterized.</p>
+<h3 id="executing-functions">Executing Functions</h3>
+<p>Apart from changing data in databases, Dashjoin can call functions on the backend. You can think of a function
+as a small pre-built and configurable service. Examples for function types are sending email or making a REST call.
+These can be instantiated in a system as "sendGmail" and "getStockPrice" by using the function type and providing the required configuration.
+These functions can then be used by active page elements such as buttons.</p>
+<h3 id="evaluating-expressions">Evaluating Expressions</h3>
+<p>Expressions are small programs that can be used to configure widgets on a page.
+The display widget for instance can display texts on the UI. The text to display is computed
+by an expression. This expression can for instance call the stock market function on the backend, and do some additional
+JSON transformation on the results before displaying the data.</p>
+<p>You can think of the expressions being the glue between widgets on the top and queries, CRUD and functions on the backend:</p>
+<table>
+<tbody>
+  <tr><td colspan="3">Widget</td></tr>
+  <tr><td colspan="3">Expression</td></tr>
+  <tr><td>CRUD</td><td>Function</td><td>Query</td></tr>
+</tbody>
+</table>
+
+<h2 id="expressions">Expressions</h2>
+<p>Expressions are small programs that can be used to:</p>
+<ul>
+<li>configure widgets on a page (the most common case)</li>
+<li>save an expression with an Invoke function</li>
+<li>attach triggers to database tables</li>
+</ul>
+<p>This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.</p>
+<h3 id="jsonata">JSONata</h3>
+<p>Expressions use the well established JSON query and transformation language <a href="https://jsonata.org/">JSONata</a>.
+The <a href="https://try.jsonata.org/">JSONata exerciser</a> shows three sections:</p>
+<ul>
+<li>the context data (this usually is the record you are browsing on the user interface)</li>
+<li>the expression</li>
+<li>the expression result</li>
+</ul>
+<p>The <a href="https://docs.jsonata.org/overview.html">JSONata documentation</a> explains the language, the operators, as well as which built-ins are available.</p>
+<h3 id="jsonata-in-widgets">JSONata in Widgets</h3>
+<p>Expressions are provided as widget parameters via the layout editor.
+The result is used depending on the widget and the expression field. The if parameter, for instance, expects a Boolean value in order to determine whether to show the widget or not. The display widget simply displays the expression result.
+Consult the widget reference for information about your use case.</p>
+<p>Every time an expression is evaluated (e.g. by pressing a button or in order to render a display widget),
+a context is passed to this expression for processing. This section describes what this context looks like
+under different circumstances.</p>
+<h4 id="record-page-context">Record Page Context</h4>
+<p>If expressions are run on a record page, the context is structured as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>{
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  database: the database the record is in
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  table: the table the record is in
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  pk1, ..., pk4: the (composite) key(s) of the record
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  loc: location information about the current page
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  user: the ID of the user that&#39;s currently logged in
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  roles: the roles the user is in
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  email: the user&#39;s email address (not set for local users)
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  href: the current URL
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  value: the current record
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  variable: the session variables (see below)
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  form: data entered via a form (see below)
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  selected: selected table rows if used in an action table (see below) 
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  context: result of the expression in the map / markdown widgets (see below)
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>}
+</code></pre></div>
+<h4 id="table-page-context">Table Page Context</h4>
+<p>On table pages, the context looks like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  database: the database the record is in
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  table: the table the record is in
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  loc: location information about the current page
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  user: the ID of the user that&#39;s currently logged in
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  roles: the roles the user is in
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  email: the user&#39;s email address (not set for local users)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  href: the current URL
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  value: schema information of the current table in JSON Schema format
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  variable: the session variables (see below)
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  form: data entered via a form (see below)
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  selected: selected table rows if used in an action table (see below)
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  context: result of the expression in the map / markdown widgets (see below)
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>}
+</code></pre></div>
+<h4 id="dashboard-page-context">Dashboard Page Context</h4>
+<p>Dashboard pages provide the following context:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>{
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  loc: location information about the current page
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  user: the ID of the user that&#39;s currently logged in
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  roles: the roles the user is in
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  email: the user&#39;s email address (not set for local users)
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  href: the current URL
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  variable: the session variables (see below)
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  form: data entered via a form (see below)
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  selected: selected table rows if used in an action table (see below) 
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  context: result of the expression in the map / markdown widgets (see below)
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>}
+</code></pre></div>
+<h4 id="session-variable-context">Session Variable Context</h4>
+<p>The user interface can store variables per browser tab. Note that these variables are lost once
+the tab is closed or the user logs out of Dashjoin. A variable can be set from any expression
+using the "setVariable" JSONata function. Therefore, calling setVariable("x", 1) will cause
+the expression context to be:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="err">...</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;variable&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="form-context">Form Context</h4>
+<p>Several widgets allow adding form elements (see section "Form Widgets" in the next chapter).
+If a number form element with name "y" has the value 2 and the form is submitted, the context is:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="err">...</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;form&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="action-table-context">Action Table Context</h4>
+<p>The action table allows selecting rows from a table. If a table action us run, these rows
+are added to the context as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="err">...</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;selected&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="err">selec</span><span class="kc">te</span><span class="err">d</span><span class="w"> </span><span class="err">row</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="err">...</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="err">selec</span><span class="kc">te</span><span class="err">d</span><span class="w"> </span><span class="err">row</span><span class="w"> </span><span class="kc">n</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="html-and-markdown-context">HTML and Markdown Context</h4>
+<p>The markdown and HTML widgets allow using string template syntax like <code>${a.b}</code> to include
+values from the context. These widgets allow adding the result of a custom expression to the context
+which is then passed as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="err">...</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;context&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">resul</span><span class="kc">t</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">expressio</span><span class="kc">n</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">map</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">markdow</span><span class="kc">n</span><span class="w"> </span><span class="err">widge</span><span class="kc">ts</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="jsonata-in-invoke-functions">JSONata in Invoke Functions</h3>
+<p>The Invoke function allows you to wrap an expression as a function.
+The context is passed as the function parameter and the result is returned to the function caller.
+Consider the following example of a Invoke function "geturl":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;geturl&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.function.Invoke&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$openJson($).parse.some.value&quot;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>This function opens JSON from a URL, performs some computation with the file contents and returns the result.
+The URL is passed via the context and is referenced via dollar being the parameter of openJson.</p>
+<p>Now we can call this function as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$call(&quot;geturl&quot;, &quot;http://example.org/test.json&quot;)
+</code></pre></div>
+<p>In this case dollar evaluates to the string "http://example.org/test.json".</p>
+<h3 id="jsonata-in-triggers">JSONata in Triggers</h3>
+<p>Triggers allow evaluating expression before or after a write operation on a table.</p>
+<p>In this case, the context is defined as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>{
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  command: create, update or delete
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  database: CRUD on this DB
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  table: CRUD on this table
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  search: primary keys of the record, set for delete and update
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  object: object to create or fields to update, set for update and create
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>}
+</code></pre></div>
+<p>The expression is defined with the table.</p>
+<p>The result is ignored, unless the trigger function returns the following result:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>{
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  &quot;setObject&quot;: the object for the create or update call will be replaced by this object
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>}
+</code></pre></div>
+<p>This mechanism allows setting default column values or removing keys for columns that should
+not be changed. You can also use the djVersion function to change the trigger behaviour based on the user role.</p>
+<p>In order to abort the update, create, or delete operation, you can use the "error" function.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.7389ff0e.min.js"></script>
+      
+    
+  </body>
+</html>
