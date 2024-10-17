@@ -249,7 +249,7 @@ The system configuration page (/table/config/dj-config) allows defining some UI 
 * sidenav-open:	Side navigation is open initially (changes applied after next login)
 * dark-theme	: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF
 * sidenav-width-px:	Width of the side navigation bar (changes applied after next login) - if the width is set to 0, the open / close button in the toolbar is also hidden
-* theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF
+* theme: Theme settings (see https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme) - example: to change the primary color to blue, set the key palette.primary.main to #0000FF (note that the toolbar uses the secondary color)
 * allow-dark-mode: Show the dark mode icon in the toolbar
 * logo-url: URL of the logo to display in the toolbar
 
