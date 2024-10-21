@@ -278,6 +278,9 @@ Since the dj-toolbar is shipped with the system, you can revert back to the orig
 
 Finally, the layouts table provides an overview of all tables and whether the default layout is used or whether the user has customized the layout using the layout editor.
 
+Pages are located under /#/page/Pagename. Like all other UIs, they show the toolbar, the side navigation, and the main page content.
+If you navigate to /#/full/Pagename instead, only the main page content is rendered. This feature can be used for providing simplified UIs or simple landing pages.
+
 ### System Pages and Layouts
 
 The system comes with a set of system pages (e.g. Home and Info) and some layouts for databases, tables, queries, etc. These layouts contain much of the functionality described in this reference guide.
