@@ -341,6 +341,7 @@ Displays custom HTML
 
 * html: HTML to display
 * context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
+* script: JavaScript function definitions the can be called from HTML onClick or other event handlers
 
 As in the Markdown widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
