@@ -866,13 +866,13 @@ streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits i
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 streamDb | $streamDb(database, table) | Streams records from the database table specified
-curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout.
+curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout. User header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1
 openJson | $openJson(url) | Parses JSON at the url
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
-openText | $openText(url, encoding) | Parses the url and converts it to a string
+openText | $openText(url, encoding) | Parses the url and converts it to a string. Possible encodings are: UTF_8 (default), BASE_64, ISO_8859_1
 parseJson | $parseJson(json) | Parses JSON (see openJson)
 parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see openCsv)
 parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
