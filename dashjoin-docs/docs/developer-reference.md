@@ -123,6 +123,7 @@ Runs / evaluates an expression when clicked.
 * expression: optional expression - the form fields are initialized with the result of this expression
 * schemaExpression: optional JSONata expression that computes a JSON Schema driving the input form (this option is only available in Dashjoin Studio)
 * deleteConfirmation: optional confirmation message before performing the action (this option is only available in Dashjoin Studio - you can prompt the user via JSONata as follows):
+* icon: icon to show left of the text (this option is only available in Dashjoin Studio)
 
 ```
 $prompt('Are you sure?' ? perform action : 'cancelled')
