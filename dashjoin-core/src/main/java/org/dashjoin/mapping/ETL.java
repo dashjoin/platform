@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.model.JsonSchema;
 import org.dashjoin.util.MapUtil;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * Uses an expression to extract data which is then transformed and loaded
@@ -33,6 +33,8 @@ public class ETL extends AbstractSource {
 
   @SuppressWarnings("unchecked")
   public Map<String, List<Map<String, Object>>> convertToMapOfTables(Object res) {
+    if (res == null)
+      return Map.of();
     if (res instanceof List<?>)
       if (isTable((List<?>) res))
         return MapUtil.of("table", (List<Map<String, Object>>) res);
