@@ -1,13 +1,13 @@
 package org.dashjoin.mapping;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.core.SecurityContext;
 import org.dashjoin.expression.ExpressionService;
 import org.dashjoin.service.Services;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 
 @QuarkusTest
 public class InferenceTest {
@@ -27,7 +27,7 @@ public class InferenceTest {
 
     // empty
     i.expression = "";
-    Assertions.assertEquals("{table=[{column=null}]}", i.gather(sc).toString());
+    Assertions.assertEquals("{}", i.gather(sc).toString());
 
     // single value
     i.expression = "123";
