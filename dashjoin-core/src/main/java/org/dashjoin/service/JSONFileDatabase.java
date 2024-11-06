@@ -287,6 +287,26 @@ public class JSONFileDatabase extends JSONDatabase {
         return "jsonata";
       case "foreach":
         return "jsonata";
+      case "print":
+        return "jsonata";
+      case "onRender":
+        return "jsonata";
+      case "if":
+        return "jsonata";
+      case "extraArgs":
+        return "jsonata";
+      case "arguments":
+        return "jsonata";
+      case "schemaExpression":
+        return "jsonata";
+      case "nodes":
+        return "jsonata";
+      case "edges":
+        return "jsonata";
+      case "display":
+        return "jsonata";
+      case "context":
+        return "jsonata";
       case "markdown":
         return "md";
       case "html":
