@@ -145,7 +145,30 @@ The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
 
 The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
 
-### JSONata in Widgets
+### JavaScript
+
+Expressions in widgets, that are evaluated in the browser can alternatively be written in JavaScript. Consider the following rules for this scenario:
+
+* Use // JavaScript or //JavaScript in the first line of your expression to switch to the JavaScript runtime
+* Your expression implicitly is run within an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Therefore, if you would like the function to return a value to the widget, you must use a return statement at the end.
+* All Dashjoin functions that are available in the JSONata runtime, are also available in JavaScript. Please refer to the developer reference for details. Omit the dollar sign to call them. The only exception is the delete function which is available as _delete. 
+* Any backend function (e.g. read to get a value from the database), must be called with the await keyword.
+* The context data (as described in detail in the next section) is available via the variable "context".
+
+Consider this example:
+
+```
+// Javascript
+const v = await all("config", "page")
+return "user " + context.email + " has " + v.length + " pages"
+```
+
+The first line contains the case insensitive marker. 
+The second line loads all dashboards from the config database by awaiting the call to the all function.
+Finally, the result is returned to the widget (a display widget for instance).
+It appends a text that includes the number of pages (v.length) and the user's email (context.email).
+
+### JSONata / JavaScript in Widgets
 
 Expressions are provided as widget parameters via the layout editor.
 The result is used depending on the widget and the expression field. The if parameter, for instance, expects a Boolean value in order to determine whether to show the widget or not. The display widget simply displays the expression result.
