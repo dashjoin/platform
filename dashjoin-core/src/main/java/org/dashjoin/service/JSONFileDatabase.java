@@ -134,7 +134,7 @@ public class JSONFileDatabase extends JSONDatabase {
           if (parts.length == 2) {
             String table = parts[0].trim();
             String field = parts[1].trim();
-            if (table.equals(s.name))
+            if (table.equals(s.name) || table.equals("*"))
               externalizeFields.add(field);
           }
         }
@@ -239,8 +239,11 @@ public class JSONFileDatabase extends JSONDatabase {
       }
 
       // second, in case we're creating for the first time, check the fields that should be ext.
+      final boolean autoExternalize = externalizeFields.contains("*");
       for (Entry<String, Object> e : new ArrayList<>(map.entrySet())) {
-        if (externalizeFields.contains(e.getKey()))
+        if (externalizeFields.contains(e.getKey())
+          || (autoExternalize && e.getValue() instanceof String
+          && ((String)e.getValue()).contains("\n")))
           writeString(id, e.getKey(), file, map, generatePointer(s, id, e.getKey()));
       }
     }
