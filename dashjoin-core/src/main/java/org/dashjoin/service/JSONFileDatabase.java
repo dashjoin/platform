@@ -244,7 +244,7 @@ public class JSONFileDatabase extends JSONDatabase {
         if (externalizeFields.contains(e.getKey())
           || (autoExternalize && e.getValue() instanceof String
           && ((String)e.getValue()).contains("\n")))
-          writeString(id, e.getKey(), file, map, generatePointer(s, id, e.getKey()));
+          writeString(id, e.getKey(), file, map, generatePointer(s, id, e));
       }
     }
     if (res instanceof List) {
@@ -282,7 +282,23 @@ public class JSONFileDatabase extends JSONDatabase {
   /**
    * pick good defaults for file extensions
    */
-  String ext(String field) {
+  String ext(Entry<String,Object> e) {
+    String field = e.getKey();
+
+    String val = ((String)e.getValue()).toLowerCase();
+    // Check if the value contains language hint
+    // Usually first line like "// Javascript" or "/* Jsonata */"
+    if (val.contains("javascript"))
+      return "js";
+    if (val.contains("jsonata"))
+      return "jsonata";
+
+    // Use hints from the field name to generate file type
+    if (field.endsWith("js") || field.endsWith("javascript"))
+      return "js";
+    if (field.endsWith("jsonata") || field.endsWith("jn"))
+      return "jsonata";
+    
     switch (field) {
       case "query":
         return "sql";
@@ -322,13 +338,14 @@ public class JSONFileDatabase extends JSONDatabase {
   /**
    * generate an unused pointer name with a suitable file extension
    */
-  String generatePointer(Table s, Object id, String field) throws UnsupportedEncodingException {
+  String generatePointer(Table s, Object id, Entry<String,Object> e) throws UnsupportedEncodingException {
+    String field = e.getKey();
     List<String> names = new ArrayList<>();
     for (File f : secondaryFiles(s, id))
       names.add(f.getName());
 
-    for (int counter = 0; counter < 1000; counter++) {
-      String pointer = counter + "." + ext(field);
+      for (int counter = 0; counter < 1000; counter++) {
+      String pointer = field + (counter>0 ? "-" + counter : "" ) + "." + ext(e);
       if (!names.contains(Escape.filename("" + id) + "." + pointer))
         return pointer;
     }
