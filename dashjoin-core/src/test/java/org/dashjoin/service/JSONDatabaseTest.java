@@ -428,4 +428,45 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Payload p = JSONDatabase.fromMap(MapUtil.of("s", "hello world", "unknown", 42), Payload.class);
     Assertions.assertEquals(p.s, "hello world");
   }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void testCopyPointer() {
+    JSONDatabase.copyPointers(null, null);
+    JSONDatabase.copyPointers(1, null);
+    JSONDatabase.copyPointers("test", null);
+    JSONDatabase.copyPointers(null, 1);
+    JSONDatabase.copyPointers(null, "test");
+    JSONDatabase.copyPointers(null, Map.of("x", 1));
+    JSONDatabase.copyPointers(Map.of("x", 1), null);
+
+    Map<String, Object> from = MapUtil.of("x", "code", "x-pointer", "0.txt");
+    Map<String, Object> to = MapUtil.of("x", "new code");
+    JSONDatabase.copyPointers(from, to);
+    Assertions.assertEquals("0.txt", to.get("x-pointer"));
+
+    from = Map.of("n", MapUtil.of("x", "code", "x-pointer", "0.txt"));
+    to = Map.of("n", MapUtil.of("x", "new code"));
+    JSONDatabase.copyPointers(from, to);
+    Assertions.assertEquals("0.txt", ((Map<String, Object>) to.get("n")).get("x-pointer"));
+
+    from = Map.of("n", MapUtil.of("x", "code", "x-pointer", "0.txt"));
+    to = Map.of();
+    JSONDatabase.copyPointers(from, to);
+
+    from = MapUtil.of("x", "code", "x-pointer", "0.txt");
+    to = MapUtil.of();
+    JSONDatabase.copyPointers(from, to);
+    Assertions.assertNull(to.get("x-pointer"));
+
+    from = MapUtil.of("x-pointer", "0.txt");
+    to = MapUtil.of("x", "code");
+    JSONDatabase.copyPointers(from, to);
+    Assertions.assertNull(to.get("x-pointer"));
+
+    from = MapUtil.of("x", "code", "x-pointer", "0.txt");
+    to = MapUtil.of("x", "code", "x-pointer", "1.txt");
+    JSONDatabase.copyPointers(from, to);
+    Assertions.assertEquals("1.txt", to.get("x-pointer"));
+  }
 }

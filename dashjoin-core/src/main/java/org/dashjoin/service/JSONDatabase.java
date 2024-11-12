@@ -166,8 +166,12 @@ public abstract class JSONDatabase implements Database {
     for (Entry<String, Object> e : object.entrySet()) {
       if (e.getValue() == null)
         r.remove(e.getKey());
-      else
+      else {
+        // when nested objects are overwritten and the old value contains a pointer,
+        // make sure to re-use the pointer
+        copyPointers(r.get(e.getKey()), e.getValue());
         r.put(e.getKey(), e.getValue());
+      }
     }
     return update(s, r);
   }
@@ -303,5 +307,30 @@ public abstract class JSONDatabase implements Database {
    */
   public static Map<String, Object> fromJsonString(String json) throws JsonProcessingException {
     return objectMapper.readValue(json, JSONDatabase.tr);
+  }
+
+  /**
+   * copy -pointer fields from source to dest
+   */
+  @SuppressWarnings("unchecked")
+  static void copyPointers(Object _from, Object _to) {
+    if (_from instanceof Map && _to instanceof Map) {
+      Map<String, Object> from = (Map<String, Object>) _from;
+      Map<String, Object> to = (Map<String, Object>) _to;
+      for (Entry<String, Object> e : from.entrySet()) {
+        Object toValue = to.get(e.getKey());
+        if (e.getKey().endsWith("-pointer")) {
+          String key = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
+          if (from.containsKey(key))
+            if (to.containsKey(key))
+              if (toValue == null)
+                // from and to contain externalized value
+                // only from contains pointer
+                // re-use the from pointer
+                to.put(e.getKey(), e.getValue());
+        }
+        copyPointers(e.getValue(), toValue);
+      }
+    }
   }
 }
