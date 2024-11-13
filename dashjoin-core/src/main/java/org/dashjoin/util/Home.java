@@ -3,13 +3,13 @@ package org.dashjoin.util;
 import java.io.File;
 import java.util.Optional;
 import java.util.logging.Level;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import lombok.extern.java.Log;
 
 /**
@@ -65,7 +65,10 @@ public class Home {
           log.info("git clone ...");
           CloneCommand cloneCommand = Git.cloneRepository();
           cloneCommand.setDirectory(new File(fileHome));
-          cloneCommand.setURI(appurl.get());
+          UrlBranch ub = getUrlBranch(appurl.get());
+          cloneCommand.setURI(ub.url);
+          if (ub.branch != null)
+            cloneCommand.setBranch(ub.branch);
           cloneCommand.call();
         }
       } catch (Exception e) {
@@ -88,5 +91,21 @@ public class Home {
 
   public File getFile(String path) {
     return new File(fileHome, path);
+  }
+
+  static class UrlBranch {
+    String url;
+    String branch;
+  }
+
+  static UrlBranch getUrlBranch(String s) {
+    UrlBranch res = new UrlBranch();
+    String[] a = s.split("#");
+    if (a.length == 2) {
+      res.url = a[0];
+      res.branch = a[1];
+    } else
+      res.url = s;
+    return res;
   }
 }
