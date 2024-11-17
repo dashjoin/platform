@@ -612,8 +612,9 @@
           ],
           "additionalProperties": {
             "type": "string",
+            "widget": "textarea",
             "style": {
-              "width": "400px"
+              "width": "800px"
             }
           }
         },
