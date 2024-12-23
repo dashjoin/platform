@@ -302,6 +302,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
       crudQueryCatalogTest(id);
   }
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
   void crudQueryCatalogTest(String id) throws Exception {
     new File("model/dj-query-catalog/" + Escape.filename(id) + ".json").delete();
     new File("model/dj-query-catalog/" + Escape.filename(id) + ".query.sql").delete();
@@ -311,23 +312,24 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     FieldUtils.writeField(db, "services", services, true);
 
     // create json and sql file
-    java.util.Map<String,Object> map = MapUtil.of("ID", id, "query", "select * from tbl");
+    java.util.Map<String, Object> map = MapUtil.of("ID", id, "query", "select * \n from tbl");
     java.util.Iterator it = map.entrySet().iterator();
     it.next();
     // Need entry "query" as arg for generatePointer
-    Map.Entry entry = (Map.Entry)it.next();
+    Map.Entry entry = (Map.Entry) it.next();
 
     db.create(ofName("dj-query-catalog"), map);
-    Assertions.assertEquals("{ID=" + id + ", query-pointer=query.sql, query=select * from tbl}",
+    Assertions.assertEquals("{ID=" + id + ", query-pointer=query.sql, query=select * \n from tbl}",
         "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
 
     if (db instanceof JSONFileDatabase) {
       JSONFileDatabase x = (JSONFileDatabase) db;
-      Assertions.assertEquals("query-1.sql", x.generatePointer(ofName("dj-query-catalog"), id, entry));
+      Assertions.assertEquals("query-1.sql",
+          x.generatePointer(ofName("dj-query-catalog"), id, entry));
     }
 
     // query is located in .sql file
-    Assertions.assertEquals("select * from tbl",
+    Assertions.assertEquals("select * \n from tbl",
         FileUtils.readFileToString(
             new File("model/dj-query-catalog/" + Escape.filename(id) + ".query.sql"),
             Charset.defaultCharset()));
@@ -376,10 +378,10 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     // delete removes secondary files as well
     db.delete(ofName("dj-query-catalog"), of("ID", id));
     Assertions.assertNull(db.read(ofName("dj-query-catalog"), of("ID", id)));
-    Assert.assertFalse(
-        new File("model/dj-query-catalog/" + Escape.filename(id) + ".json").exists());
     Assert
-        .assertFalse(new File("model/dj-query-catalog/" + Escape.filename(id) + ".query.sql").exists());
+        .assertFalse(new File("model/dj-query-catalog/" + Escape.filename(id) + ".json").exists());
+    Assert.assertFalse(
+        new File("model/dj-query-catalog/" + Escape.filename(id) + ".query.sql").exists());
     Assert.assertFalse(
         new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").exists());
   }
