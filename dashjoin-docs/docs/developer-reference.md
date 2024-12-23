@@ -56,6 +56,17 @@ The page widget is implicitly present at the root on any platform page. It canno
 
 * onRender: expression that is evaluated when the page renders in the browser. This is useful if you need to initialize variables that are used in expressions of other widgets. Note that variables are stored per browser tab whereas the login session applies to the entire browser. Therefore, variables should be set using onRender instead of on-login.
 
+#### stepper
+
+The stepper widget allows stepping through its children. It displays the step number and title along with the
+child at the current step position. Note that the widget does not display back and next buttons. The stepper child
+widgets are responsible for advancing the current page via the JSONata functions stepBack, stepForward, and setActiveStep.
+
+#### tabs
+
+The tabs widget displays its children in a container which allows selecting the current tab on top.
+The child titles are used as a label. Only the active tab is shown.
+
 ### Form Widgets
 
 Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
