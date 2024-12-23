@@ -839,7 +839,7 @@ confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmati
 setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
 prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
 alert | $alert(message) | Shows a modal alert message
-dialog | $dialog({title, message, inputs, buttons, options}) | Shows a model dialog with title and message. The inputs and buttons arrays denote which input fields and buttons are shown. The result of the call is defined as follows. If the dialog is closed, the result is undefined. If a button is pressed, the result is the button id or - if the button is an object with label and type: submit - an object with the inputs.
+dialog | $dialog({title, message, inputs, buttons, options}) | Shows a model dialog with title and message. The inputs and buttons arrays denote which input fields and buttons are shown. The result of the call is defined as follows. If the dialog is closed, the result is undefined. If a button is pressed, the result is the button id or - if the button is an object with label and type: submit - an object with the inputs. Finally, if options is set to an object with alert: info / warning / error, the dialog message is shows with the respective label.
 notify | $notify(message) | Shows the message at the bottom of the screen
 refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
 reload | $reload() | reloads the browser page
