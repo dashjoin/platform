@@ -30,6 +30,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -66,7 +67,7 @@ import lombok.extern.java.Log;
 @Log
 public class Data {
 
-  private static final ObjectMapper om = new ObjectMapper();
+  private static final ObjectMapper om = new ObjectMapper().registerModules(new JavaTimeModule());
 
   @Inject
   Services services;
@@ -558,15 +559,16 @@ public class Data {
 
     db.cast(m, object);
 
-    if (dbTriggers(sc, "create", database, table, null, object, m.beforeCreate))
+    if (dbTriggers(sc, db, m, "create", database, table, null, object, m.beforeCreate))
       db.create(m, object);
-    dbTriggers(sc, "create", database, table, null, object, m.afterCreate);
+    dbTriggers(sc, db, m, "create", database, table, null, object, m.afterCreate);
     return Resource.of(db, m, object);
   }
 
   @SuppressWarnings("unchecked")
-  boolean dbTriggers(SecurityContext sc, String command, String database, String table,
-      Map<String, Object> search, Map<String, Object> object, String t) throws Exception {
+  boolean dbTriggers(SecurityContext sc, AbstractDatabase db, Table tbl, String command,
+      String database, String table, Map<String, Object> search, Map<String, Object> object,
+      String t) throws Exception {
     if (t == null)
       // no trigger, continue
       return true;
@@ -596,11 +598,12 @@ public class Data {
     context.put("table", table);
     context.put("search", search);
     context.put("object", object);
-    Object res = expression.resolve(sc, t, context);
+    Object res = expression.resolve(sc, t, om.convertValue(context, JSONDatabase.tr));
     if (res instanceof Map) {
       Map<String, Object> map = (Map<String, Object>) res;
       Object setObject = map.get("setObject");
       if (setObject instanceof Map) {
+        db.cast(tbl, (Map<String, Object>) setObject);
         object.clear();
         object.putAll((Map<String, Object>) setObject);
       }
@@ -1170,11 +1173,11 @@ public class Data {
     db.cast(m, search);
     db.cast(m, object);
 
-    if (!dbTriggers(sc, "update", database, table, search, object, m.beforeUpdate))
+    if (!dbTriggers(sc, db, m, "update", database, table, search, object, m.beforeUpdate))
       return;
     if (!db.update(m, search, object))
       throw new NotFoundException();
-    dbTriggers(sc, "update", database, table, search, object, m.afterUpdate);
+    dbTriggers(sc, db, m, "update", database, table, search, object, m.afterUpdate);
   }
 
   /**
@@ -1259,11 +1262,11 @@ public class Data {
     ACLContainerRequestFilter.check(sc, db, m, DELETE_ROW);
     Map<String, Object> search = key(m, objectId);
     db.cast(m, search);
-    if (!dbTriggers(sc, "delete", database, table, search, null, m.beforeDelete))
+    if (!dbTriggers(sc, db, m, "delete", database, table, search, null, m.beforeDelete))
       return;
     if (!db.delete(m, search))
       throw new NotFoundException();
-    dbTriggers(sc, "delete", database, table, search, null, m.afterDelete);
+    dbTriggers(sc, db, m, "delete", database, table, search, null, m.afterDelete);
   }
 
   /**
