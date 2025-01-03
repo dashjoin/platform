@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.QueryEditor.AddColumnRequest;
@@ -416,6 +417,14 @@ public class SQLEditor implements QueryEditorInternal {
       }
       Select stmt = (Select) s;
       PlainSelect body = (PlainSelect) stmt.getSelectBody();
+      if (stmt.getWithItemsList() != null) {
+        String prefix = "WITH " + String.join(",",
+            stmt.getWithItemsList().stream().map(i -> i.toString()).collect(Collectors.toList()))
+            + "\n";
+        QueryResponse res = prettyPrint(query.database, prefix, body, query.limit);
+        res.compatibilityError = "WITH clause not supported";
+        return res;
+      }
       return prettyPrint(query.database, body, query.limit);
     } catch (JSQLParserException | ClassCastException | IllegalArgumentException e) {
       // IllegalArgumentException: might be thrown when parsing the where clause
@@ -596,11 +605,16 @@ public class SQLEditor implements QueryEditorInternal {
     return res;
   }
 
+  protected QueryResponse prettyPrint(String database, PlainSelect body, Integer limit)
+      throws Exception {
+    return prettyPrint(database, "", body, limit);
+  }
+
   /**
    * simplified and slightly adjusted (indent + line breaks) version of PlainSelect.toString()
    */
-  protected QueryResponse prettyPrint(String database, PlainSelect body, Integer limit)
-      throws Exception {
+  protected QueryResponse prettyPrint(String database, String prefix, PlainSelect body,
+      Integer limit) throws Exception {
 
     // replace select *
     if (body.getSelectItems().size() == 1)
@@ -624,7 +638,7 @@ public class SQLEditor implements QueryEditorInternal {
           body.addSelectItems(allColumns);
       }
 
-    StringBuilder sql = new StringBuilder();
+    StringBuilder sql = new StringBuilder(prefix);
     sql.append("SELECT" + (body.getDistinct() == null ? "" : " DISTINCT") + "\n  ");
     sql.append(PlainSelect.getStringList(body.getSelectItems()));
 

@@ -4,13 +4,6 @@
 	"category": "app",
 	"type": "list",
 	"list": [
-		"dj-query-catalog: query",
-		"dj-function: expression",
-        "dj-database: print",
-        "dj-database: display",
-        "dj-database: expression",
-        "page: print",
-        "page: display",
-        "page: expression"
+		"*: *"
 	]
 }

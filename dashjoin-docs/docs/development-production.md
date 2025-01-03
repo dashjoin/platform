@@ -77,7 +77,7 @@ The first step is to find a 3rd party library that is suitable for the task. The
 in [React](https://react.dev/), therefore, keep this in mind when selecting a library.
 For this example, we'll use [smilesDrawer](https://github.com/reymond-group/smilesDrawer).
 
-In VS Code, open a terminal (on the top left, click the menu, then terminal, and finally new terminal) and enter:
+In VS Code, open a terminal (on the top left, click the menu, then terminal, and finally new terminal. When prompted where to open the terminal, please select "Dashjoin Platform UI") and enter:
 
 ```
 yarn add smiles-drawer
@@ -145,6 +145,8 @@ a list of controls. In this case, we allow editing the widget title (this is a p
 widgets) and the text to contain the SMILES string. You could add other properties. For instance,
 the width of the generated image is fixed at 300 pixels. This could be replaced with a widget parameter.
 
+The demo application contains a [version of this widget](https://github.com/dashjoin/dashjoin-demo/blob/main/custom-widget/Smiles.tsx) that computes the SMILES string via JSONata. It uses the "useExpression" React hook. This allows reading SMILES data from a DB or a RESTful web service.
+
 Now edit the file CustomWidgets.tsx in src and add the following lines:
 
 ```
@@ -170,6 +172,8 @@ Now we're all set. We can create a test page and add the widget with the followi
 }
 ```
 
+An example is available in the [demo app](https://demo.my.dashjoin.com/#/page/Smiles) as well.
+
 ### Packaging the Widget and Deploying it to Production
 
 Once you are done with your widget development, you can start the build process via the terminal
@@ -181,8 +185,11 @@ yarn deploy
 
 This command will create a folder with the compiled user interface in the folder
 of your app. You can commit these assets along with the query catalog and the other files in your app.
+You can view an example in the [demo app](https://github.com/dashjoin/dashjoin-demo/tree/main/assets/public_html).
 If the app is deployed onto a production system, the user interface containing the new widget
 will be active.
+
+Note that this process must be repeated when the platform is updated to a newer version.
 
 ### Making Changes to the Platform
 
