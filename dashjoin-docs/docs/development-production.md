@@ -274,7 +274,7 @@ If you are using containers, you can mount the model folder under /deployments/m
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.
 Therefore, it is quite common to use different sets of resources for development and production.
 As described in the section on automatic Git checkout above, the production credentials are usually
-checked into the code repository. During development, you can use [environment](../installation.md/#environment)
+checked into the code repository. During development, you can use [environment](installation.md/#environment)
 variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
 
 * dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
