@@ -146,7 +146,12 @@ public class OpenCypher {
       return bindings.get(bindings.size() - 1).pattern.isLast;
     }
 
+    /**
+     * given the current partial result, return the list of possible next patterns to traverse. This
+     * can be a list, because there are constructs like "traverse this link 1 or 2 times"
+     */
     List<Pattern> candidatePatterns() {
+      // TODO: only take next pattern for now
       Pattern next = bindings.get(bindings.size() - 1).pattern.next;
       if (next == null)
         return Arrays.asList();
@@ -177,22 +182,7 @@ public class OpenCypher {
         List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
             : Arrays.asList((Map<String, Object>) traverse);
         for (Map<String, Object> item : list) {
-          Binding nb = new Binding();
-          nb.pattern = pattern;
-          nb.value = item;
-
-          nb.link = MapUtil.of("_dj_edge", pattern.relation.name, "_dj_outbound",
-              pattern.relation.left2right);
-
-          Resource targetType = targetType(b.node, pattern.relation.name);
-          nb.node = OpenCypher.this.query.getResource(targetType.database, targetType.table, item);
-
-          if (pattern.right.table != null)
-            if (!pattern.right.table.equals(targetType.table))
-              continue;
-          if (pattern.right.db != null)
-            if (!pattern.right.table.equals(targetType.database))
-              continue;
+          Binding nb = newBinding(b, pattern, item);
 
           Path np = new Path();
           np.bindings = new ArrayList<>(bindings);
@@ -202,6 +192,34 @@ public class OpenCypher {
       }
     }
 
+    /**
+     * given the current binding b, the next pattern and the match (item), make sure the item type
+     * matches the pattern and return a new binding
+     */
+    Binding newBinding(Binding b, Pattern pattern, Map<String, Object> item) {
+      Binding nb = new Binding();
+      nb.pattern = pattern;
+      nb.value = item;
+
+      nb.link = MapUtil.of("_dj_edge", pattern.relation.name, "_dj_outbound",
+          pattern.relation.left2right);
+
+      Resource targetType = targetType(b.node, pattern.relation.name);
+      nb.node = OpenCypher.this.query.getResource(targetType.database, targetType.table, item);
+
+      if (pattern.right.table != null)
+        if (!pattern.right.table.equals(targetType.table))
+          return null;
+      if (pattern.right.db != null)
+        if (!pattern.right.table.equals(targetType.database))
+          return null;
+
+      return nb;
+    }
+
+    /**
+     * given a FK, return db / table it points to
+     */
     Resource targetType(Resource from, String prop) {
       String ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
           .get(prop).ref;
