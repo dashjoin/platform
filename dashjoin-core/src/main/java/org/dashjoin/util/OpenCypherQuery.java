@@ -240,6 +240,8 @@ public class OpenCypherQuery {
     public Map<String, Object> edge;
   }
 
+  public boolean newEngine = false;
+
   /**
    * name of the path variable: MATCH path=(...
    */
@@ -386,13 +388,18 @@ public class OpenCypherQuery {
                     ? context.value.substring(1, context.value.length() - 1)
                     : context.value))) {
 
-      // initialize variable bindings
-      Map<String, Object> vars = new LinkedHashMap<>();
+      if (this.newEngine) {
+        OpenCypher oc = new OpenCypher(this);
+        res.addAll(oc.run(service, data, sc, row));
+      } else {
+        // initialize variable bindings
+        Map<String, Object> vars = new LinkedHashMap<>();
 
-      // initialize path variable
-      Map<String, Object> path = MapUtil.of("start", row, "steps", new ArrayList<>());
+        // initialize path variable
+        Map<String, Object> path = MapUtil.of("start", row, "steps", new ArrayList<>());
 
-      step(service, data, sc, context, new LinkedHashMap<>(vars), path, row, 0);
+        step(service, data, sc, context, new LinkedHashMap<>(vars), path, row, 0);
+      }
     }
     return res;
   }
@@ -647,7 +654,7 @@ public class OpenCypherQuery {
   /**
    * adds the resource object to the current object
    */
-  void addResource(String database, String table, Map<String, Object> object) {
+  Resource getResource(String database, String table, Map<String, Object> object) {
     List<Object> keys = new ArrayList<>();
     for (Property prop : dbs.get(database).tables.get(table).properties.values()) {
       if (prop.pkpos != null) {
@@ -656,7 +663,11 @@ public class OpenCypherQuery {
         keys.set(prop.pkpos, object.get(prop.name));
       }
     }
-    object.put("_dj_resource", Resource.of(database, table, keys));
+    return Resource.of(database, table, keys);
+  }
+
+  void addResource(String database, String table, Map<String, Object> object) {
+    object.put("_dj_resource", getResource(database, table, object));
   }
 
   /**
