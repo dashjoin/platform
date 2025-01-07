@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.dashjoin.model.Property;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Services;
@@ -175,10 +176,33 @@ public class OpenCypher {
       }
       for (Pattern pattern : candidatePatterns()) {
         Binding b = bindings.get(bindings.size() - 1);
-        Object traverse = data.traverse(sc, b.node.database, b.node.table,
-            b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
-            pattern.relation.name);
-        traverse(b, pattern, traverse, res);
+
+        if (pattern.relation.left2right == null || pattern.relation.left2right) {
+          if (pattern.relation.name == null) {
+            // any outgoing rel
+            for (Property p : allFKs(b.node)) {
+              Object traverse = data.traverse(sc, b.node.database, b.node.table,
+                  b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()), p.name);
+              traverse(b, pattern, traverse, res, p.name);
+            }
+          } else {
+            // fixed outgoing rel, traverse FK
+            Object traverse = data.traverse(sc, b.node.database, b.node.table,
+                b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
+                pattern.relation.name);
+            traverse(b, pattern, traverse, res, pattern.relation.name);
+          }
+        }
+
+        if (pattern.relation.left2right == null || !pattern.relation.left2right) {
+          if (pattern.relation.name == null) {
+            // any incoming
+            throw new RuntimeException("not implemented");
+          } else {
+            // fixed incoming
+            throw new RuntimeException("not implemented");
+          }
+        }
       }
     }
 
@@ -187,12 +211,12 @@ public class OpenCypher {
      * single map), create a new binding, with it a new path and recurse
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    void traverse(Binding b, Pattern pattern, Object traverse, List<Map<String, Object>> res)
-        throws Exception {
+    void traverse(Binding b, Pattern pattern, Object traverse, List<Map<String, Object>> res,
+        String relName) throws Exception {
       List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
           : Arrays.asList((Map<String, Object>) traverse);
       for (Map<String, Object> item : list) {
-        Binding nb = newBinding(b, pattern, item);
+        Binding nb = newBinding(b, pattern, item, relName);
 
         Path np = new Path();
         np.bindings = new ArrayList<>(bindings);
@@ -205,22 +229,21 @@ public class OpenCypher {
      * given the current binding b, the next pattern and the match (item), make sure the item type
      * matches the pattern and return a new binding
      */
-    Binding newBinding(Binding b, Pattern pattern, Map<String, Object> item) {
+    Binding newBinding(Binding b, Pattern pattern, Map<String, Object> item, String relName) {
       Binding nb = new Binding();
       nb.pattern = pattern;
       nb.value = item;
 
-      nb.link = MapUtil.of("_dj_edge", pattern.relation.name, "_dj_outbound",
-          pattern.relation.left2right);
+      nb.link = MapUtil.of("_dj_edge", relName, "_dj_outbound", pattern.relation.left2right);
 
-      Resource targetType = targetType(b.node, pattern.relation.name);
-      nb.node = OpenCypher.this.query.getResource(targetType.database, targetType.table, item);
+      Table targetType = targetType(b.node, relName);
+      nb.node = OpenCypher.this.query.getResource(targetType.db, targetType.table, item);
 
       if (pattern.right.table != null)
         if (!pattern.right.table.equals(targetType.table))
           return null;
       if (pattern.right.db != null)
-        if (!pattern.right.table.equals(targetType.database))
+        if (!pattern.right.table.equals(targetType.db))
           return null;
 
       return nb;
@@ -229,14 +252,26 @@ public class OpenCypher {
     /**
      * given a FK, return db / table it points to
      */
-    Resource targetType(Resource from, String prop) {
+    Table targetType(Resource from, String prop) {
       String ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
           .get(prop).ref;
       String[] arr = Escape.parseColumnID(ref);
-      Resource res = new Resource();
-      res.database = arr[1];
+      Table res = new Table();
+      res.db = arr[1];
       res.table = arr[2];
       return res;
+    }
+
+    /**
+     * given a resource, return its FKs
+     */
+    List<Property> allFKs(Resource from) {
+      List<Property> list = new ArrayList<>();
+      for (Property p : OpenCypher.this.query.dbs.get(from.database).tables
+          .get(from.table).properties.values())
+        if (p.ref != null)
+          list.add(p);
+      return list;
     }
   }
 }
