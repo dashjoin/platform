@@ -122,65 +122,7 @@ public class OpenCypher {
     this.service = service;
 
     List<Map<String, Object>> res = new ArrayList<>();
-    search(path, res);
-    return res;
-  }
-
-  /**
-   * recursive search
-   */
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  void search(Path path, List<Map<String, Object>> res) throws Exception {
-    if (path.isSolution()) {
-      Map<String, Object> r = new LinkedHashMap<>();
-      for (Binding b : path.bindings) {
-        b.value.put("_dj_resource", b.node);
-        r.put(b.pattern.right.variable, b.value);
-        if (b.pattern.relation != null)
-          r.put(b.pattern.relation.variable, b.link);
-      }
-      res.add(OpenCypher.this.query.project(r, null));
-    }
-    for (Pattern pattern : path.candidatePatterns()) {
-      Binding b = path.bindings.get(path.bindings.size() - 1);
-      Object traverse = data.traverse(sc, b.node.database, b.node.table,
-          b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
-          pattern.relation.name);
-      List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
-          : Arrays.asList((Map<String, Object>) traverse);
-      for (Map<String, Object> item : list) {
-        Binding nb = new Binding();
-        nb.pattern = pattern;
-        nb.value = item;
-
-        nb.link = MapUtil.of("_dj_edge", pattern.relation.name, "_dj_outbound",
-            pattern.relation.left2right);
-
-        Resource targetType = targetType(b.node, pattern.relation.name);
-        nb.node = OpenCypher.this.query.getResource(targetType.database, targetType.table, item);
-
-        if (pattern.right.table != null)
-          if (!pattern.right.table.equals(targetType.table))
-            continue;
-        if (pattern.right.db != null)
-          if (!pattern.right.table.equals(targetType.database))
-            continue;
-
-        Path np = new Path();
-        np.bindings = new ArrayList<>(path.bindings);
-        np.bindings.add(nb);
-        search(np, res);
-      }
-    }
-  }
-
-  Resource targetType(Resource from, String prop) {
-    String ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
-        .get(prop).ref;
-    String[] arr = Escape.parseColumnID(ref);
-    Resource res = new Resource();
-    res.database = arr[1];
-    res.table = arr[2];
+    path.search(res);
     return res;
   }
 
@@ -210,6 +152,64 @@ public class OpenCypher {
         return Arrays.asList();
       else
         return Arrays.asList(next);
+    }
+
+    /**
+     * recursive search
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    void search(List<Map<String, Object>> res) throws Exception {
+      if (isSolution()) {
+        Map<String, Object> r = new LinkedHashMap<>();
+        for (Binding b : bindings) {
+          b.value.put("_dj_resource", b.node);
+          r.put(b.pattern.right.variable, b.value);
+          if (b.pattern.relation != null)
+            r.put(b.pattern.relation.variable, b.link);
+        }
+        res.add(OpenCypher.this.query.project(r, null));
+      }
+      for (Pattern pattern : candidatePatterns()) {
+        Binding b = bindings.get(bindings.size() - 1);
+        Object traverse = data.traverse(sc, b.node.database, b.node.table,
+            b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
+            pattern.relation.name);
+        List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
+            : Arrays.asList((Map<String, Object>) traverse);
+        for (Map<String, Object> item : list) {
+          Binding nb = new Binding();
+          nb.pattern = pattern;
+          nb.value = item;
+
+          nb.link = MapUtil.of("_dj_edge", pattern.relation.name, "_dj_outbound",
+              pattern.relation.left2right);
+
+          Resource targetType = targetType(b.node, pattern.relation.name);
+          nb.node = OpenCypher.this.query.getResource(targetType.database, targetType.table, item);
+
+          if (pattern.right.table != null)
+            if (!pattern.right.table.equals(targetType.table))
+              continue;
+          if (pattern.right.db != null)
+            if (!pattern.right.table.equals(targetType.database))
+              continue;
+
+          Path np = new Path();
+          np.bindings = new ArrayList<>(bindings);
+          np.bindings.add(nb);
+          np.search(res);
+        }
+      }
+    }
+
+    Resource targetType(Resource from, String prop) {
+      String ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
+          .get(prop).ref;
+      String[] arr = Escape.parseColumnID(ref);
+      Resource res = new Resource();
+      res.database = arr[1];
+      res.table = arr[2];
+      return res;
     }
   }
 }
