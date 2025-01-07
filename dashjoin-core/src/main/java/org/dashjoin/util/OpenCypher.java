@@ -162,7 +162,6 @@ public class OpenCypher {
     /**
      * recursive search
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     void search(List<Map<String, Object>> res) throws Exception {
       if (isSolution()) {
         Map<String, Object> r = new LinkedHashMap<>();
@@ -179,16 +178,26 @@ public class OpenCypher {
         Object traverse = data.traverse(sc, b.node.database, b.node.table,
             b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
             pattern.relation.name);
-        List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
-            : Arrays.asList((Map<String, Object>) traverse);
-        for (Map<String, Object> item : list) {
-          Binding nb = newBinding(b, pattern, item);
+        traverse(b, pattern, traverse, res);
+      }
+    }
 
-          Path np = new Path();
-          np.bindings = new ArrayList<>(bindings);
-          np.bindings.add(nb);
-          np.search(res);
-        }
+    /**
+     * given the current binding b, the next pattern and the match (traverse which is a list or a
+     * single map), create a new binding, with it a new path and recurse
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    void traverse(Binding b, Pattern pattern, Object traverse, List<Map<String, Object>> res)
+        throws Exception {
+      List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
+          : Arrays.asList((Map<String, Object>) traverse);
+      for (Map<String, Object> item : list) {
+        Binding nb = newBinding(b, pattern, item);
+
+        Path np = new Path();
+        np.bindings = new ArrayList<>(bindings);
+        np.bindings.add(nb);
+        np.search(res);
       }
     }
 
