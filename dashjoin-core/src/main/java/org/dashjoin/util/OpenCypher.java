@@ -172,7 +172,14 @@ public class OpenCypher {
           if (b.pattern.relation != null)
             r.put(b.pattern.relation.variable, b.link);
         }
-        res.add(OpenCypher.this.query.project(r, null));
+        // initialize path variable
+        List<Map<String, Object>> steps = new ArrayList<>();
+        for (Binding binding : bindings)
+          if (binding.link != null)
+            steps.add(MapUtil.of("edge", binding.link, "end", binding.value));
+        Map<String, Object> path = MapUtil.of("start", bindings.get(0).value, "steps", steps);
+
+        res.add(OpenCypher.this.query.project(r, path));
       }
       for (Pattern pattern : candidatePatterns()) {
         Binding b = bindings.get(bindings.size() - 1);
