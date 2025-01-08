@@ -7,6 +7,7 @@ import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.Services;
 import org.dashjoin.util.OpenCypherQuery.Table;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -267,5 +268,33 @@ public class OpenCypherQueryTest {
         run("MATCH (prj:`dj/junit/PRJ`)<-[wo]-(emp:`dj/junit/PRJ`) RETURN emp.NAME");
     // no result due to type mismatch
     Assertions.assertEquals(0, res.size());
+  }
+
+  @Test
+  public void testRange() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (from:`dj/junit/NODE`)-[*]->(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals(4, res.size());
+
+    res = run("MATCH (from:`dj/junit/NODE` {ID:4})-[*2..2]->(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=4, to.ID=1}]", res.toString());
+
+    res = run("MATCH (from:`dj/junit/NODE` {ID:4})-[REL*2..2]->(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=4, to.ID=1}]", res.toString());
+  }
+
+  @Disabled
+  @Test
+  public void testRange2() throws Exception {
+    List<Map<String, Object>> res =
+        run("MATCH (from:`dj/junit/NODE`)<-[*]-(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals(4, res.size());
+
+    res = run("MATCH (from:`dj/junit/NODE` {ID:1})<-[*2..2]-(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=4, to.ID=1}]", res.toString());
+
+    res = run(
+        "MATCH (from:`dj/junit/NODE` {ID:4})<-[dj/junit/NODE/REL`*2..2]-(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=4, to.ID=1}]", res.toString());
   }
 }

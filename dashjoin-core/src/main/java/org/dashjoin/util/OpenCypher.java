@@ -234,8 +234,9 @@ public class OpenCypher {
     @SuppressWarnings({"unchecked", "rawtypes"})
     void traverse(Binding b, Pattern pattern, Object traverse, List<Map<String, Object>> res,
         String relName) throws Exception {
-      List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
-          : Arrays.asList((Map<String, Object>) traverse);
+      List<Map<String, Object>> list = traverse == null ? Arrays.asList()
+          : (traverse instanceof List ? (List) traverse
+              : Arrays.asList((Map<String, Object>) traverse));
       for (Map<String, Object> item : list) {
 
         // check condition
