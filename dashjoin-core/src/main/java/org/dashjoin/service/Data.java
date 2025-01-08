@@ -1009,7 +1009,7 @@ public class Data {
         offset, limit);
   }
 
-  List<Origin> incoming(@Context SecurityContext sc, String database, String table,
+  public List<Origin> incoming(@Context SecurityContext sc, String database, String table,
       List<String> objectIds, Integer offset, Integer limit) throws Exception {
 
     long start = System.currentTimeMillis();

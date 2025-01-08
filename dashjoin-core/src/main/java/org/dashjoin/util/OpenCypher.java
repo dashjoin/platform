@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.dashjoin.model.Property;
 import org.dashjoin.service.Data;
+import org.dashjoin.service.Data.Origin;
 import org.dashjoin.service.Data.Resource;
 import org.dashjoin.service.Services;
 import org.dashjoin.util.OpenCypherQuery.Chain;
@@ -192,8 +193,8 @@ public class OpenCypher {
           if (pattern.relation.name == null) {
             // any outgoing rel
             for (Property p : allFKs(b.node)) {
-              Object traverse = data.traverse(sc, b.node.database, b.node.table,
-                  b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()), p.name);
+              Object traverse =
+                  data.traverse(sc, b.node.database, b.node.table, pkToString(b.node), p.name);
               traverse(b, pattern, traverse, res, p.name);
             }
           } else {
@@ -208,7 +209,13 @@ public class OpenCypher {
         if (pattern.relation.left2right == null || !pattern.relation.left2right) {
           if (pattern.relation.name == null) {
             // any incoming
-            throw new RuntimeException("not implemented");
+            List<Origin> inc = data.incoming(sc, b.node.database, b.node.table,
+                b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()), 0, 100);
+            for (Origin o : inc) {
+              Map<String, Object> value =
+                  data.read(sc, o.id.database, o.id.table, pkToString(o.id));
+              traverse(b, pattern, value, res, o.fk);
+            }
           } else {
             // fixed incoming
             Object traverse = data.traverse(sc, b.node.database, b.node.table,
@@ -297,6 +304,13 @@ public class OpenCypher {
         if (p.ref != null)
           list.add(p);
       return list;
+    }
+
+    /**
+     * toString pk list
+     */
+    List<String> pkToString(Resource id) {
+      return id.pk.stream().map(i -> i.toString()).collect(Collectors.toList());
     }
   }
 }
