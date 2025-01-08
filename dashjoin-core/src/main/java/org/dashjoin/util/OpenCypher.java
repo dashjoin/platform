@@ -22,6 +22,8 @@ public class OpenCypher {
     String db;
     String table;
     String variable;
+    String key;
+    String value;
   }
 
   /**
@@ -98,6 +100,8 @@ public class OpenCypher {
       p.relation.name = i.edge.name;
       p.relation.variable = i.edge.variable;
       p.right = parseTable(i.table);
+      p.right.key = i.table.key;
+      p.right.value = i.table.value;
       left = p.right;
     }
     patterns.get(patterns.size() - 1).isLast = true;
@@ -207,7 +211,10 @@ public class OpenCypher {
             throw new RuntimeException("not implemented");
           } else {
             // fixed incoming
-            throw new RuntimeException("not implemented");
+            Object traverse = data.traverse(sc, b.node.database, b.node.table,
+                b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
+                pattern.relation.name);
+            traverse(b, pattern, traverse, res, pattern.relation.name);
           }
         }
       }
@@ -223,6 +230,16 @@ public class OpenCypher {
       List<Map<String, Object>> list = traverse instanceof List ? (List) traverse
           : Arrays.asList((Map<String, Object>) traverse);
       for (Map<String, Object> item : list) {
+
+        // check condition
+        if (pattern.right.key != null) {
+          String val = pattern.right.value;
+          if (val.startsWith("'") && val.endsWith("'"))
+            val = val.substring(1, val.length() - 1);
+          if (!("" + item.get(pattern.right.key)).equals(val))
+            continue;
+        }
+
         Binding nb = newBinding(b, pattern, item, relName);
 
         Path np = new Path();
@@ -260,8 +277,9 @@ public class OpenCypher {
      * given a FK, return db / table it points to
      */
     Table targetType(Resource from, String prop) {
-      String ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
-          .get(prop).ref;
+      String ref = prop.contains("/") ? prop
+          : OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
+              .get(prop).ref;
       String[] arr = Escape.parseColumnID(ref);
       Table res = new Table();
       res.db = arr[1];
