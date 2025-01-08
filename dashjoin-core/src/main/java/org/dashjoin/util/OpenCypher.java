@@ -249,6 +249,9 @@ public class OpenCypher {
 
         Binding nb = newBinding(b, pattern, item, relName);
 
+        if (nb == null)
+          continue;
+
         Path np = new Path();
         np.bindings = new ArrayList<>(bindings);
         np.bindings.add(nb);
