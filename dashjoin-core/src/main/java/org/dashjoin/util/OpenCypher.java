@@ -14,6 +14,9 @@ import org.dashjoin.service.Services;
 import org.dashjoin.util.OpenCypherQuery.Chain;
 import jakarta.ws.rs.core.SecurityContext;
 
+/**
+ * simple opencypher query engine
+ */
 public class OpenCypher {
 
   /**
@@ -156,13 +159,24 @@ public class OpenCypher {
   class Path {
     List<Binding> bindings;
 
+    Binding lastBinding() {
+      return bindings.get(bindings.size() - 1);
+    }
+
+    Pattern lastPattern() {
+      return lastBinding().pattern;
+    }
+
+    /**
+     * we're at the last pattern and satisfied the lower "from" count
+     */
     boolean isSolution() {
-      Pattern last = bindings.get(bindings.size() - 1).pattern;
+      Pattern last = lastPattern();
       if (last.isLast)
         if (last.relation != null)
           if (numberOfMatches() < last.relation.from)
             return false;
-      return bindings.get(bindings.size() - 1).pattern.isLast;
+      return last.isLast;
     }
 
     /**
@@ -170,7 +184,7 @@ public class OpenCypher {
      */
     int numberOfMatches() {
 
-      Pattern last = bindings.get(bindings.size() - 1).pattern;
+      Pattern last = lastPattern();
 
       int count = 0;
       for (Binding b : bindings)
@@ -186,13 +200,10 @@ public class OpenCypher {
      */
     List<Pattern> candidatePatterns() {
 
-      Pattern last = bindings.get(bindings.size() - 1).pattern;
+      Pattern last = lastPattern();
       Pattern next = last.next;
 
-      int count = 0;
-      for (Binding b : bindings)
-        if (b.pattern == last)
-          count++;
+      int count = numberOfMatches();
 
       if (last.relation == null)
         // we are at the start, return next if there is one
@@ -233,7 +244,7 @@ public class OpenCypher {
       for (Pattern pattern : candidatePatterns()) {
         if (pattern == null)
           continue;
-        Binding b = bindings.get(bindings.size() - 1);
+        Binding b = lastBinding();
 
         if (pattern.relation.left2right == null || pattern.relation.left2right) {
           if (pattern.relation.name == null) {
