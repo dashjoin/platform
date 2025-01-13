@@ -659,8 +659,13 @@ public class Data {
       return read(sc, parts[1], parts[2], "" + o.get(fk));
     } else {
       String[] parts = fk.split("/");
+      if (parts.length < 3)
+        throw new IllegalArgumentException(
+            "Foreign key must either be a column name (outgoing FK) or a column ID like dj/db/table/col (incoming FK)");
       AbstractDatabase db2 = services.getConfig().getDatabase(dj(parts[1]));
       Table m2 = db2.tables.get(parts[2]);
+      if (m2 == null)
+        throw new IllegalArgumentException("Unknown table: " + parts[2]);
       // get all of the related table where fk = pk
       return all(sc, parts[1], parts[2], null, null, null, false,
           MapUtil.of(fk(m2, pk(m).ID).name, o.get(pk(m).name)));
