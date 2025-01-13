@@ -240,7 +240,7 @@ public class OpenCypherQuery {
     public Map<String, Object> edge;
   }
 
-  public boolean newEngine = false;
+  public boolean newEngine = true;
 
   /**
    * name of the path variable: MATCH path=(...

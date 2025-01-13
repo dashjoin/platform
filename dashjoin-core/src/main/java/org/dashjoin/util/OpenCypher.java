@@ -34,6 +34,8 @@ public class OpenCypher {
     String name;
     String variable;
     Boolean left2right;
+    Integer from;
+    Integer to;
   }
 
   /**
@@ -81,7 +83,6 @@ public class OpenCypher {
    * query constructor - parsing is done in old code
    */
   public OpenCypher(OpenCypherQuery query) {
-    System.out.println(query);
     this.query = query;
 
     patterns = new ArrayList<>();
@@ -103,6 +104,13 @@ public class OpenCypher {
       p.right = parseTable(i.table);
       p.right.key = i.table.key;
       p.right.value = i.table.value;
+      if (i.edge.star) {
+        p.relation.from = i.edge.from == null ? 1 : i.edge.from;
+        p.relation.to = i.edge.to == null ? 5 : i.edge.to;
+      } else {
+        p.relation.from = 1;
+        p.relation.to = 1;
+      }
       left = p.right;
     }
     patterns.get(patterns.size() - 1).isLast = true;
@@ -149,7 +157,27 @@ public class OpenCypher {
     List<Binding> bindings;
 
     boolean isSolution() {
+      Pattern last = bindings.get(bindings.size() - 1).pattern;
+      if (last.isLast)
+        if (last.relation != null)
+          if (numberOfMatches() < last.relation.from)
+            return false;
       return bindings.get(bindings.size() - 1).pattern.isLast;
+    }
+
+    /**
+     * how often did the last pattern match
+     */
+    int numberOfMatches() {
+
+      Pattern last = bindings.get(bindings.size() - 1).pattern;
+
+      int count = 0;
+      for (Binding b : bindings)
+        if (b.pattern == last)
+          count++;
+
+      return count;
     }
 
     /**
@@ -157,12 +185,28 @@ public class OpenCypher {
      * can be a list, because there are constructs like "traverse this link 1 or 2 times"
      */
     List<Pattern> candidatePatterns() {
-      // TODO: only take next pattern for now
-      Pattern next = bindings.get(bindings.size() - 1).pattern.next;
-      if (next == null)
-        return Arrays.asList();
-      else
+
+      Pattern last = bindings.get(bindings.size() - 1).pattern;
+      Pattern next = last.next;
+
+      int count = 0;
+      for (Binding b : bindings)
+        if (b.pattern == last)
+          count++;
+
+      if (last.relation == null)
+        // we are at the start, return next if there is one
         return Arrays.asList(next);
+
+      if (last.relation.from < count)
+        // we still need more edges with this relation
+        return Arrays.asList(last);
+
+      if (count < last.relation.to)
+        // we can either add another hop of the last relation or jump to the next
+        return Arrays.asList(last, next);
+
+      return Arrays.asList(next);
     }
 
     /**
@@ -187,6 +231,8 @@ public class OpenCypher {
         res.add(OpenCypher.this.query.project(r, path));
       }
       for (Pattern pattern : candidatePatterns()) {
+        if (pattern == null)
+          continue;
         Binding b = bindings.get(bindings.size() - 1);
 
         if (pattern.relation.left2right == null || pattern.relation.left2right) {
