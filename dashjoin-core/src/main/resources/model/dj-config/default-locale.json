@@ -1,6 +1,0 @@
-{
-	"ID": "default-locale",
-	"description": "Default locale. Choose 'browser' to pick the browser locale.",
-	"category": "ui",
-	"type": "string"
-}
