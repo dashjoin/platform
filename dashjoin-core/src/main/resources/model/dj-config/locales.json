@@ -1,0 +1,6 @@
+{
+	"ID": "locales",
+	"description": "List of i18n locales active",
+	"category": "ui",
+	"type": "list"
+}

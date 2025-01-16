@@ -1,0 +1,18 @@
+{
+	"ID": "de",
+	"description": "Deutsch",
+	"category": "i18n",
+	"type": "map",
+	"map": {
+        "Home": "Start",
+        "Edit Record": "Datensatz editieren",
+        "New Record": "Neuer Datensatz",
+        "Table: ${value.name}": "Tabelle: ${value.name}",
+        "Related Records": "Verwandte Datensätze",
+        "Apply": "Anwenden",
+        "Run": "Ausführen",
+        "Connection Information": "Informationen zur Verbindung",
+        "Database Information": "Informationen zur Datenbank",
+        "Search Results": "Suchergebnisse"
+	}
+}
