@@ -44,7 +44,15 @@ select @res;
 
 * **Does the platform cache results?** Yes, all HTTP GET requests are cached by the browser UI. The cache is purged if 1) five minutes have passed since the last time the data was retrieved, 2) the data is changed in via the UI (e.g. by saving / updating a value), or 3) F5 / reload is pressed.
 
-* **How can I download data from the platform?** This can be achieved via the HTML widget. And example can be found [here](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/html.json). The download happens via a JavaScript function that calls saveAs(new Blob([data]), filename).
+* **How can I download data from the platform?** The download happens via a JavaScript function that calls saveAs(new Blob([data]), filename). This snippet can be added as a client side expression with the // JavaScript marker:
+
+```
+// JavaScript
+var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+saveAs(blob, "hello world.txt");
+```
+
+Alternatively, the script can also be added to the HTML widget. And example can be found [here](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/html.json).  
 
 * **How can I download binary data such as PDFs or images?** This works like the regular download. You usually have a JSONata expression that loads the data in the backend. You can use $openText(url, "BASE_64") to get a base64 encoded representation. In the HTML widget, you can use this code to have the browser download the data:
 
@@ -153,6 +161,7 @@ Let's assume $openJson(url) is called on several array elements. Simply change i
     "initScripts": [
         "upload/init.sql",
     ],
+    ...
 ```
 
 These scripts are run when the database is connected. To setup a DB schema, you can use:
@@ -166,8 +175,8 @@ Furthermore, the H2 database (select it using the JDBC URL jdbc:h2:mem:...) offe
 This way, you can present static data to the user via SQL while being able to have a CSV version of the data as part of the app.
 
 ```
+DROP TABLE IF EXISTS TEST;
 CREATE TABLE TEST (ID INT PRIMARY KEY, NAME VARCHAR(255)) AS SELECT * FROM CSVREAD('dashjoin-demo/upload/test.csv');
-CREATE TABLE IF NOT EXISTS TEST2(ID INT PRIMARY KEY)
 ```
 
 Note that the CSVREAD function uses the working directory and not the app home directory. Therefore, we also append the app name, "dashjoin-demo" in this example.
