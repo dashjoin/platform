@@ -357,6 +357,17 @@ Displays custom HTML
 
 As in the Markdown widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
+Please note that if you are displaying multiple HTML widgets on a page, these widgets share (and subsequently overwrite) the contents of context. If you only display the context in the widget, this is no problem. If you use context from an event handled (e.g. onClick), you have the use the following workaround that uses a session varable. This allows you to choose different variables for each widget:
+
+```
+{
+  "html": "<button onClick='go()'>",
+  "script": "function go(){ console.log(JSON.parse(sessionStorage.variable).x) }",
+  "context": "$setVariable('x', 'my value')",
+  "widget": "html"
+}
+```
+
 #### icon
 
 Displays a hyperlink icon with tooltip
