@@ -312,6 +312,14 @@ public class ExpressionService {
     }
   }
 
+  @SuppressWarnings("rawtypes")
+  static List<String> pks(List arg) {
+    List<String> res = new ArrayList<>();
+    for (int i = 2; i < arg.size(); i++)
+      res.add(arg.get(i) == null ? null : arg.get(i).toString());
+    return res;
+  }
+
   /**
    * data.read(database, table, pk1)
    */
@@ -321,7 +329,7 @@ public class ExpressionService {
     @Override
     public Object run(List arg) throws Exception {
       return this.expressionService.getData().read(sc, (String) arg.get(0), (String) arg.get(1),
-          "" + arg.get(2));
+          pks(arg));
     }
 
     @Override
@@ -331,7 +339,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ss(bns):o?>";
+      return "<ss(bns)(bns)?(bns)?(bns)?:o?>";
     }
   }
 
@@ -474,7 +482,7 @@ public class ExpressionService {
     @Override
     public Object run(List arg) throws Exception {
       this.expressionService.getData().delete(sc, (String) arg.get(0), (String) arg.get(1),
-          "" + arg.get(2));
+          pks(arg));
       return null;
     }
 
@@ -490,7 +498,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ss(bns):o?>";
+      return "<ss(bns)(bns)?(bns)?(bns)?:o?>";
     }
   }
 

@@ -1259,7 +1259,7 @@ public class Data {
     delete(sc, database, table, Arrays.asList(objectId1, objectId2, objectId3, objectId4));
   }
 
-  void delete(SecurityContext sc, String database, String table, List<String> objectId)
+  public void delete(SecurityContext sc, String database, String table, List<String> objectId)
       throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
     Table m = db.tables.get(table);
