@@ -3,6 +3,7 @@ package org.dashjoin.service;
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.CREATE;
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.DELETE_ROW;
 import static org.dashjoin.service.ACLContainerRequestFilter.Operation.UPDATE_ROW;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -593,6 +594,8 @@ public class Data {
     }
 
     Map<String, Object> context = new HashMap<>();
+    Principal principal = sc.getUserPrincipal();
+    context.put("user", principal == null ? null : principal.getName());
     context.put("command", command);
     context.put("database", database);
     context.put("table", table);

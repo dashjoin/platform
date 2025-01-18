@@ -331,6 +331,7 @@ In this case, the context is defined as follows:
 
 ```text
 {
+  user: name of the user on whose behalf the trigger is called
   command: create, update or delete
   database: CRUD on this DB
   table: CRUD on this table
