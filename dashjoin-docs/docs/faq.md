@@ -180,3 +180,32 @@ CREATE TABLE TEST (ID INT PRIMARY KEY, NAME VARCHAR(255)) AS SELECT * FROM CSVRE
 ```
 
 Note that the CSVREAD function uses the working directory and not the app home directory. Therefore, we also append the app name, "dashjoin-demo" in this example.
+
+* **Can I define a JSON database column to be an array of foreign keys?** Yes, using Dashjoin Studio, you can define the column metadata as follows:
+
+```
+"ID": "dj/pg",
+...
+"tables": {
+    "test": {
+        "properties": {
+            "arr": {
+                "type": "array",
+                "items": {
+                    "ref": "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+                    "type": "string",
+                    "displayWith": "fk"
+                }
+            }
+        }
+    }
+}
+```
+
+Using the following create table statement and insert JSONata statement, the record in the test table shows links to the customer table.
+
+```
+create table test (id int primary key, arr jsonb)
+$create("pg", "test", {"id":1, "arr": ['BLAUS', 'ALFKI']})
+```
+
