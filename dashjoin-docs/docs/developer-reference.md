@@ -49,6 +49,7 @@ Collapsible container with nested widgets
 
 * text: card title
 * roles: show container only if user is in one of these roles
+* expression: optional expression to compute whether the widget's initial expansion state
 
 #### page
 
