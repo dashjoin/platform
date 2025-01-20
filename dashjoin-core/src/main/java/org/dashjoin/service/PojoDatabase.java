@@ -1176,14 +1176,27 @@ public class PojoDatabase extends UnionDatabase implements Config {
     return value.contains(db.name);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Collection<Table> searchTables(AbstractDatabase db) throws Exception {
+    Map<String, Object> include =
+        read(Table.ofName("dj-config"), MapUtil.of("ID", "include-table-in-search"));
+    if (include != null) {
+      List<String> includeTable = (List<String>) include.get("list");
+      if (includeTable != null) {
+        List<Table> list = new ArrayList<>();
+        for (Table t : db.tables.values())
+          if (includeTable.contains(t.name))
+            list.add(t);
+        return prioritize(list);
+      }
+    }
+
     Map<String, Object> res =
         read(Table.ofName("dj-config"), MapUtil.of("ID", "exclude-table-from-search"));
 
     if (res == null)
       return prioritize(db.tables.values());
-    @SuppressWarnings("unchecked")
     List<String> excludeTable = (List<String>) res.get("list");
     if (excludeTable == null)
       return prioritize(db.tables.values());

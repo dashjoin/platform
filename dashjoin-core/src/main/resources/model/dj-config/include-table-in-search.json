@@ -1,0 +1,6 @@
+{
+	"ID": "include-table-in-search",
+	"description": "List of table names that are searched",
+	"category": "query",
+	"type": "list"
+}

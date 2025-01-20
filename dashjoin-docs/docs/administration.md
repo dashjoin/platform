@@ -223,9 +223,9 @@ select 'PRJ', ID, NAME from PRJ where NAME=${search}
 Note that the query must have a single parameter "search" in order to be used this way.
 The platform will run this query by replacing the search parameter with the contents of the search field.
 
-### Excluding Tables and Databases from Searches
+### Including / Excluding Tables and Databases from Searches
 
-Besides custom queries, you can also entirely exclude databases and tables from
+Besides custom queries, you can also include or exclude tables from
 searches using the system configuration page (/table/config/dj-config).
 
 ### Prioritizing Results
