@@ -534,3 +534,17 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Support for externalizing JSONata into separate files
   * JSONata text to speech function
   * curl supports socket timeout
+
+### 5.4 (Jan 2025)
+
+* UI
+  * Stepper and Tab widgets
+  * Support wide tables by aligning table controls to the right side of the screen
+* Platform
+  * I18N Support
+  * Smart externalization of multi line JSONata
+  * Allow forms to be configured dynamically via data and expressions
+  * JavaScript as an alternative to JSONata
+* SDK
+  * GenerateExcel function
+  * Functions to display progress and modal dialogs
