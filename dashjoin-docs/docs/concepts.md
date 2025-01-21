@@ -212,6 +212,7 @@ On table pages, the context looks like this:
   user: the ID of the user that's currently logged in
   roles: the roles the user is in
   email: the user's email address (not set for local users)
+  locale: the user's locale
   href: the current URL
   value: schema information of the current table in JSON Schema format
   variable: the session variables (see below)
@@ -231,6 +232,7 @@ Dashboard pages provide the following context:
   user: the ID of the user that's currently logged in
   roles: the roles the user is in
   email: the user's email address (not set for local users)
+  locale: the user's locale
   href: the current URL
   variable: the session variables (see below)
   form: data entered via a form (see below)

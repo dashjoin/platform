@@ -36,7 +36,8 @@ The default config is:
     "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
     "openIdConfigs": [],                     // OpenID provider configurations such as O365, Keycloak, etc.
     "defaultLocale": "en",                   // default I18N locale to use, choose "browser" to select the browser's preferred locale,
-    "locales": ["en"]                        // languages supported by the platform (see I18N section for more information)
+    "locales": ["en"]                        // languages supported by the platform
+    "i18n": ...                              // texts and translations for the login screen and cookie banner (see I18N section for more information)
 }
 ```
 
