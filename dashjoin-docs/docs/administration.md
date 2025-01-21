@@ -34,7 +34,9 @@ The default config is:
     "guestLoginEnabled": false,              // allows login with user guest@dashjoin.com (this user must be assigned a suitable role in the tenant user page), if this is the only login option, users are automatically logged in as guests
     "providers": "google",                   // space-separated list of identity providers like twitter, github, facebook, and google - currently, only google is supported
     "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
-    "openIdConfigs": []                      // OpenID provider configurations such as O365, Keycloak, etc.
+    "openIdConfigs": [],                     // OpenID provider configurations such as O365, Keycloak, etc.
+    "defaultLocale": "en",                   // default I18N locale to use, choose "browser" to select the browser's preferred locale,
+    "locales": ["en"]                        // languages supported by the platform (see I18N section for more information)
 }
 ```
 
@@ -167,7 +169,7 @@ With this config the login dialog will look similar to this:
 ## Query / Expression Performance
 
 When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
-The query and expression performance page (/table/config/dj-query-performance) is linked from the main database page and helps you
+The query and expression performance page (/config/dj-query-performance) is linked from the main database page and helps you
 with this task. It shows recent query statistics in a table. The columns are defined as follows:
 
 * query: shows the JSONata expression or the query that was run along with the database prefixed
@@ -226,7 +228,7 @@ The platform will run this query by replacing the search parameter with the cont
 ### Including / Excluding Tables and Databases from Searches
 
 Besides custom queries, you can also include or exclude tables from
-searches using the system configuration page (/table/config/dj-config).
+searches using the system configuration page (/config/dj-config).
 
 ### Prioritizing Results
 
@@ -238,11 +240,11 @@ up in the search results.
 
 Finally, the system configuration page allows setting some global contraints that prevent
 "rogue" queries to deteriorate the overall system and database performance.
-Please see the descriptions on the system configuration page (/table/config/dj-config) for more details.
+Please see the descriptions on the system configuration page (/config/dj-config) for more details.
 
 ## UI Customizations
 
-The system configuration page (/table/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:
+The system configuration page (/config/dj-config) allows defining some UI settings that are applied globally to all UI pages. The settings allow controlling the following aspects of the UI:
 
 * homepage:	Application home page that is displayed when home is pressed and after login
 * on-login:	Expression to be evaluated upon login - it typically sets session variables via setVariable

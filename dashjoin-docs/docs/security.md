@@ -58,7 +58,7 @@ Finally, you can use the tenant id "@EVERYONE" to define roles for all users tha
 Roles can be assigned to the following elements:
 
 * Container widgets and the top level page widget: In the layout editor, you can specify that a container or page is only shown if the user is in a given role. Note that this feature does not replace the backend checks listed below. Containers are simply hidden. The page shows an error message on the bottom.
-* Toolbar elements: You can customize which elements are visible on the toolbar by editing the toolbar widget at /#/resource/config/widget/dj-toolbar. Roles can be assigned to icons, the sidenav toggle, the page edit button, and the search box
+* Toolbar elements: You can customize which elements are visible on the toolbar by editing the toolbar widget at /#/config/widget/dj-toolbar. Roles can be assigned to icons, the sidenav toggle, the page edit button, and the search box
 * Functions: Functions can be restricted to be executable only to users in certain roles
 * Queries: Queries can be restricted to be runnable only to users in certain roles
 * Tables

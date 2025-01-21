@@ -105,7 +105,7 @@ In the "x-dashjoin" section, we specify that the function "add" is to be added t
 
 Once this file is saved, follow these steps:
 
-* Connect the template with the platform, by adding "url": "file:upload/openapi.yaml" to the "openapi" system configuration setting (/#/resource/config/dj-config/openapi)
+* Connect the template with the platform, by adding "url": "file:upload/openapi.yaml" to the "openapi" system configuration setting (/#/config/dj-config/openapi)
 * Open the platform Swagger-UI (/swagger-ui/)
 * In the text field at the top, change "/openapi" to "/rest/manage/openapi"
 * Authorize using your credentials
@@ -171,7 +171,7 @@ The second use case highlights a scenario where we work in an API centric fashio
 of being generated from existing code.
 
 As an example, we will implement the Petstore example that is featured in the [Swagger Editor](https://editor.swagger.io/). Simply select "Save as YAML"
-and place the file in "upload/petstore.yaml". Then, change the openapi config (/#/resource/config/dj-config/openapi) to "url": "file:upload/petstore.yaml".
+and place the file in "upload/petstore.yaml". Then, change the openapi config (/#/config/dj-config/openapi) to "url": "file:upload/petstore.yaml".
 
 #### Creating Tables
 

@@ -33,7 +33,7 @@ Login using admin / djdjdj
 http://localhost:8080/
 ```
 
-On the main system, use this database config (http://localhost:8080/#/table/config/dj-database) to access the remote container (use url http://localhost:8082/database if you're not using docker):
+On the main system, use this database config (http://localhost:8080/#/config/dj-database) to access the remote container (use url http://localhost:8082/database if you're not using docker):
 
 ```
 {

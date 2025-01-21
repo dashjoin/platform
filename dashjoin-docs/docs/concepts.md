@@ -17,7 +17,7 @@ Dashjoin connects to these databases and maps the data using coordinates for eac
 
 These coordinates (DJ, DB, TABLE, PK) translate to RESTful URLs:
 
-* Visualizing a record: `https://dashjoin.host.name/#/resource/DB/TABLE/PK`
+* Visualizing a record: `https://dashjoin.host.name/#/DB/TABLE/PK`
 * API access to the record: `https://dashjoin.host.name/rest/database/crud/DB/TABLE/PK`
 
 ### Tables and Columns
@@ -42,8 +42,8 @@ uses this metadata to hyperlink records between databases and logical Dashjoin i
 
 The Dashjoin user interface concept is inspired by the Semantic MediaWiki. The database is thought of as a large linked data cloud. Dashjoin user interface pages can be one of the following types:
 
-1. Record page: Assume the user navigates to the page /resource/DB/TABLE/PK. The system displays a page that corresponds to this record.
-2. Table page: Assume the user navigates to the page /table/DB/TABLE. The system displays a page that corresponds to this concept / table.
+1. Record page: Assume the user navigates to the page /DB/TABLE/PK. The system displays a page that corresponds to this record.
+2. Table page: Assume the user navigates to the page /DB/TABLE. The system displays a page that corresponds to this concept / table.
 3. Dashboard page: Assume the user navigates to the page /page/Page. The system displays this page which has no direct related context in the database.
 
 Unless the low code developer specifies otherwise, table and record pages are displayed as follows:

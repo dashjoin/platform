@@ -60,7 +60,7 @@ The visit the first request. You will notice that the browser window title now d
 
 Go back to the requests table and enter the letter 'a' in the customer field of the create form. You will see the autocomplete options with the customer IDs starting with 'a'.
 The customer IDs are five letter strings. This is better than a plain number, but let's also choose a display name for customers.
-Again, we can do this by navigating to the customer table (/table/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label `${COMPANY_NAME}`.
+Again, we can do this by navigating to the customer table (/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label `${COMPANY_NAME}`.
 Reload the browser and go back to the requests table. If you type 'a' into the customers create field, you will see the list of customer display names that start with 'a'.
 Note that the tooltip shows the underlying five letter primary key. This feature is very useful if tables use unreadable keys.
 
