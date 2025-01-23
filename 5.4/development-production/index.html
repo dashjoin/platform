@@ -1,0 +1,1195 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../administration/">
+      
+      
+        <link rel="next" href="../security/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Development / Production - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#development-production" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Development / Production
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    I18N
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI &amp; ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin Studio
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin Studio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-folder-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      App Folder Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developing-a-custom-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing a Custom Widget
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Developing a Custom Widget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-3rd-party-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a 3rd Party Library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a new Widget
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packaging-the-widget-and-deploying-it-to-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Packaging the Widget and Deploying it to Production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#making-changes-to-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making Changes to the Platform
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-line-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi Line JSON
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-to-the-configuration-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload to the Configuration Database
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-git-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatic Git Checkout
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Git Checkout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#private-github-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Private GitHub Repositories
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-app-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual App Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-development-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specifying Development Resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Testing
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin Studio
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin Studio">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#app-folder-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      App Folder Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developing-a-custom-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing a Custom Widget
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Developing a Custom Widget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-3rd-party-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a 3rd Party Library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-a-new-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a new Widget
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packaging-the-widget-and-deploying-it-to-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Packaging the Widget and Deploying it to Production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#making-changes-to-the-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Making Changes to the Platform
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-line-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi Line JSON
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-to-the-configuration-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Upload to the Configuration Database
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-git-checkout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatic Git Checkout
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Git Checkout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#private-github-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Private GitHub Repositories
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-app-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual App Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-development-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specifying Development Resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unit Testing
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="development-production">Development / Production</h1>
+<p>If you use a Dashjoin system in production, we do not recommend making configuration changes
+like defining new queries or registering new user roles using the editors on the production
+system. Instead, you can setup multiple development systems where these changes are
+developed and tested.</p>
+<h2 id="dashjoin-studio">Dashjoin Studio</h2>
+<p>The most convenient way to setup a development system is by using the Dashjoin Studio container.
+This container includes all the required tools and setup.
+To start the container, run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj dashjoin/studio
+</code></pre></div>
+<p>If you would like to work on an existing app that is located on a Git repository, also specify the DASHJOIN_HOME and
+DASHJOIN_APPURL parameters (see section automatic Git checkout below)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker run -p 3000:3000 -p 8080:8080 -p 8081:8081 -e DJ_ADMIN_PASS=djdjdj -e DASHJOIN_HOME=dashjoin-demo -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/studio
+</code></pre></div>
+<p>Dashjoin Studio works like the platform container, but offers two additional services.
+On port 8081, it allows connecting a browser based integrated development environment to the container.
+On port 3000 an additional web service provides access to the user interface that includes
+custom widgets you add to the app.</p>
+<p>To open Dashjoin Studio, navigate to the general information page and follow the Dashjoin Studio link under "App".
+To log in, please use the password you specified for the admin user (djdjdj in our examples).
+This opens VS Code in your browser. For more information about VS Code, please refer to
+<a href="https://code.visualstudio.com/docs">this documentation</a>.</p>
+<p>The project that is open in VS Code represents the app you are writing.
+Adding a query in the query catalog, for example, will create a JSON file in
+model/dj-query-catalog. If you change the file in VS Code, the change will be
+visible immediately in the query catalog as well.</p>
+<h3 id="app-folder-structure">App Folder Structure</h3>
+<p>The contains the following folders:</p>
+<ul>
+<li>assets: any media that should be available via http(s)://<app url>/assets</li>
+<li>model</li>
+<li>dj-config: Contains any system configuration</li>
+<li>dj-database: All connected databases and any table and record page layouts. If a database JSON file is open in the editor, you can test connecting to it via the "Connect to this database" button at the top of the file</li>
+<li>dj-function: All functions defined on the functions page. Also offers the ability to "Run this function". Note that passing parameters to the function is not supported. You can use the JSONata notebook for this.</li>
+<li>dj-query-catalog: All queries in the catalog. Offers the "Run this query" and "Run this query metadata" commands. Note that passing query parameters is not supported. You can use the JSONata notebook for this.</li>
+<li>dj-role: All roles defined in the system</li>
+<li>page: All app dashboard pages. Offers the "Open this page in the browser" button.</li>
+<li>tenantusers: All tenant users</li>
+<li>widget: Custom toolbar and sidebar are located here</li>
+<li>upload: this folder can contain files that can be accessed from JSONata functions like openJson("file:upload/...")</li>
+</ul>
+<h3 id="source-control">Source Control</h3>
+<p>If you would like to commit and publish your changes to the production system, you can
+switch to the source control tab on the left. The usual workflow is to:</p>
+<ul>
+<li>review your changes in the diff editor</li>
+<li>stage your change by adding the file via the + icon</li>
+<li>entering a message describing your change and committing the change</li>
+<li>publishing your change to the remote Git repository</li>
+</ul>
+<p>For more details, please refer to <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">this guide</a>.</p>
+<h2 id="developing-a-custom-widget">Developing a Custom Widget</h2>
+<p>One of the most powerful features of Dashjoin Studio is the ability to write your own widgets.
+Let's assume we have a database containing chemical molecules. One of the columns contains the <a href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system">SMILES string</a>. We're going to write a widget, that draws a 2D representation of the molecule
+based off this information.</p>
+<h3 id="adding-a-3rd-party-library">Adding a 3rd Party Library</h3>
+<p>The first step is to find a 3rd party library that is suitable for the task. The Dashjoin UI is written
+in <a href="https://react.dev/">React</a>, therefore, keep this in mind when selecting a library.
+For this example, we'll use <a href="https://github.com/reymond-group/smilesDrawer">smilesDrawer</a>.</p>
+<p>In VS Code, open a terminal (on the top left, click the menu, then terminal, and finally new terminal. When prompted where to open the terminal, please select "Dashjoin Platform UI") and enter:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>yarn add smiles-drawer
+</code></pre></div>
+<p>Yarn is a JavaScript package manager, that will retrieve the latest version of the library and all other required components. Depending on your internet connection speed, this command might take a while to complete.
+Now we can start the development webserver that will run on port 3000:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>yarn dev
+</code></pre></div>
+<h3 id="adding-a-new-widget">Adding a new Widget</h3>
+<p>Adding a new widget requires three changes: First, create the file Smiles.tsx in src/widgets:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>import { Icon } from &quot;@mui/material&quot;
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>import { Widget } from &quot;../model/widget&quot;
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>import { text, title } from &quot;../api/Const&quot;
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>import { useEffect, useRef } from &quot;react&quot;
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>const SmilesDrawer = require(&#39;smiles-drawer&#39;)
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>export const Smiles = ({ widget }: { widget: Widget }) =&gt; {
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    const imgRef = useRef&lt;HTMLImageElement&gt;(null);
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    const drawer = new SmilesDrawer.SmiDrawer();
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    useEffect(() =&gt; {
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        drawer.draw(widget.text ? widget.text : &#39;C&#39;, imgRef.current, &#39;light&#39;);
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    });
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    return (
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        &lt;div&gt;
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>            &lt;img ref={imgRef} width={300}&gt;&lt;/img&gt;
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>        &lt;/div&gt;
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    );
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>}
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>export const config = {
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    id: &#39;smiles&#39;,
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    title: &#39;Smiles&#39;,
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>    description: &#39;Renders a SMILES string as a 3D molecule&#39;,
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>    version: 1,
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    icon: &lt;Icon&gt;science&lt;/Icon&gt;,
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>    controls: {
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>        type: &#39;autoform&#39;,
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>        schema: {
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>            properties: {
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>                title: title,
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>                text: text
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>            }
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        }
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>    }
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>}
+</code></pre></div>
+<p>This code contains two blocks. The first block is the actual widget. It gets the parameter "widget",
+which is a JSON structure to configure the widget. The rest of the code is taken from the 
+library's documentation. The key point is in line 13, where widget.text is passed as the parameter
+to the draw function. This parameter contains the SMILES string passed to the widget.</p>
+<p>The second part defines how the widget edit dialog looks like. It contains an icon, some description, and
+a list of controls. In this case, we allow editing the widget title (this is a property shared by all
+widgets) and the text to contain the SMILES string. You could add other properties. For instance,
+the width of the generated image is fixed at 300 pixels. This could be replaced with a widget parameter.</p>
+<p>The demo application contains a <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/custom-widget/Smiles.tsx">version of this widget</a> that computes the SMILES string via JSONata. It uses the "useExpression" React hook. This allows reading SMILES data from a DB or a RESTful web service.</p>
+<p>Now edit the file CustomWidgets.tsx in src and add the following lines:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>import { config } from &quot;./widgets/Smiles&quot;;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>import { Smiles } from &quot;./widgets/Smiles&quot;;
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>export const customWidgets = [
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    {
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        widget: Smiles,
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        config: config
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    }
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>]
+</code></pre></div>
+<p>Custom widgets is an array. Therefore, you can add other custom widgets as well.
+Now we're all set. We can create a test page and add the widget with the following parameters in order to <a href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#/media/File:Beta-D-Glucose.svg">see the molecule in all its glory</a>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;smiles&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Glucose&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)1&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>An example is available in the <a href="https://demo.my.dashjoin.com/#/page/Smiles">demo app</a> as well.</p>
+<h3 id="packaging-the-widget-and-deploying-it-to-production">Packaging the Widget and Deploying it to Production</h3>
+<p>Once you are done with your widget development, you can start the build process via the terminal
+and deploy the result to your app:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>yarn build
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>yarn deploy
+</code></pre></div></p>
+<p>This command will create a folder with the compiled user interface in the folder
+of your app. You can commit these assets along with the query catalog and the other files in your app.
+You can view an example in the <a href="https://github.com/dashjoin/dashjoin-demo/tree/main/assets/public_html">demo app</a>.
+If the app is deployed onto a production system, the user interface containing the new widget
+will be active.</p>
+<p>Note that this process must be repeated when the platform is updated to a newer version.</p>
+<h3 id="making-changes-to-the-platform">Making Changes to the Platform</h3>
+<p>Dashjoin Studio gives you full access to the entire user interface. 
+Therefore, you can not only add widgets, but also make changes to the core UI. For instance,
+you can make changes to the login screen or the legal cookie and data privacy disclaimer
+presented to new users.</p>
+<p>Any of these changes are picked up by the build and deploy process described in the previous section.
+Please note however, that changes to the core platform must be re-applied manually
+once a new version of Dashjoin is released.</p>
+<h2 id="multi-line-json">Multi Line JSON</h2>
+<p>Markdown, queries, and JSONata expressions can be hard to read if they are stored in JSON files.
+You can externalize strings in separate text files which are linked
+from the JSON data as follows:</p>
+<p>test.json:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>{
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  &quot;ID&quot;: &quot;test&quot;,
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  &quot;query-pointer&quot;: &quot;0.sql&quot;
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>}
+</code></pre></div>
+<p>test.0.sql:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>select * from test
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  where id=4
+</code></pre></div>
+<p>These two files are equivalent to:</p>
+<p>test.json:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>{
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  &quot;ID&quot;: &quot;test&quot;,
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  &quot;query&quot;: &quot;select * from test\n  where id=4&quot;
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>}
+</code></pre></div>
+<p>You can use this mechanism anytime when you're editing the files manually.
+When making changes via the platform, by default, only the query strings of
+the query catalog are externalized.</p>
+<p>This is controlled by the "externalize-config-strings" setting.
+If you'd like to also externalize widget markdown for instance, simply add "page: markdown" to "externalize-config-strings".
+This specifies the table and the (possibly nested) key containing the string to be externalized.</p>
+<p>On the production system, there are three ways of deploying an application:</p>
+<h2 id="upload-to-the-configuration-database">Upload to the Configuration Database</h2>
+<p>You can upload an entire model folder to the config DB. On the database page, select "Configuration Database".
+Open the "Database Management" tab and select "Upload". Select the model folder there and either append or replace
+the contents of the config database.</p>
+<h2 id="automatic-git-checkout">Automatic Git Checkout</h2>
+<p>You can specify the DASHJOIN_APPURL environment variable and have it point to your app repository.
+Upon startup, the system will perform a git clone if the model folder is empty or a git pull if the model has content already.
+Note that you can specify credentials via the URL (http://user:password@domain.com/).
+Please refer to the <a href="https://github.com/dashjoin/dashjoin-demo">demo application</a> for an example of how to run
+Dashjoin with the demo application installed.
+If the git operation fails (e.g. due to incorrect credentials or illegal filenames), the platform will log the error and resume the startup process.</p>
+<h3 id="private-github-repositories">Private GitHub Repositories</h3>
+<p>If you would like to launch an App that is stored in a private GitHub repository, you can use
+a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">personal access token</a>. You can assign the right to clone the repository to the token and add it to the DASHJOIN_APPURL as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>https://user:token@github.com/org/project
+</code></pre></div>
+<h2 id="manual-app-installation">Manual App Installation</h2>
+<p>Last but not least, you can also copy the app into the Dashoin working directory using other means
+before starting the platform. 
+If you are using containers, you can mount the model folder under /deployments/model.</p>
+<h2 id="specifying-development-resources">Specifying Development Resources</h2>
+<p>Resources like databases and REST endpoints are critical resources when working with Dashjoin.
+Therefore, it is quite common to use different sets of resources for development and production.
+As described in the section on automatic Git checkout above, the production credentials are usually
+checked into the code repository. During development, you can use <a href="../installation/#environment">environment</a>
+variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:</p>
+<ul>
+<li>dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)</li>
+<li>dashjoin.function.NAME OF THE FUNCTION.url: URL to use to connect to the REST service (overrides the url field in the function's json file)</li>
+</ul>
+<p>To change the username / password, simply replace url with username / password in the examples above.
+Note that the development passwords are provided in plain text.</p>
+<h2 id="unit-testing">Unit Testing</h2>
+<p>Unit tests are an important asset to ensure the quality of your app. Dashjoin leverages the <a href="https://junit.org/">JUnit framework</a> and allows you to perform the following default tests to make sure that</p>
+<ul>
+<li>all JSON files can be parsed</li>
+<li>layout uses legal widget names</li>
+<li>all JSONata expressions are syntactically correct</li>
+</ul>
+<p>In addition to these syntactical checks, it is possible to run JSONata expressions and provide desired outputs. </p>
+<p>To setup unit tests in your app, follow these steps:</p>
+<ul>
+<li>Open Dashjoin Studio</li>
+<li>Copy this <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/pom.xml">maven project file</a> to your app's root directory</li>
+<li>Copy this <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/src/test/java/org/dashjoin/app/AppTest.java">JUnit test file</a> to "src/test/java/org/dashjoin/app"</li>
+<li>If you would like to test a JSONata expression, create a <a href="https://github.com/dashjoin/dashjoin-demo/blob/main/test.json">JSON test file</a> that describes the file containing the expression, where the expression is located, which test cases should be run, and which outputs are to be expected. The file is structured as follows:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>{
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    &quot;test&quot;: {
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        &quot;file&quot;: path to the file containing the expression to be checked
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        &quot;expression&quot;: JSONata expression that selects the expression to be checked
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    },
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    &quot;basedata&quot;: optional common test data for the test cases
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    &quot;cases&quot;: {
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        &quot;name&quot;: {
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>            &quot;data&quot;: test data (will be merged with the base data)
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>            &quot;expected&quot;: expected JSONata output
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        }
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>        ...
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>    }
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>}
+</code></pre></div>
+<p>To run the unit test:</p>
+<ul>
+<li>Via the VS Code extensions tab, install the <a href="https://open-vsx.org/extension/vscjava/vscode-java-debug">Debugger for Java</a> and the <a href="https://open-vsx.org/extension/vscjava/vscode-java-test">Test Runner for Java</a> plugins</li>
+<li>Press run in the new JUnit tab to run all the tests</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
