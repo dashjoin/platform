@@ -44,7 +44,7 @@ mike deploy VERSION
 
 to deploy the currently edited version as VERSION (i.e. 2.5).
 
-The publish-docs.sh script will do the publishing to latest (basically: ```mike deploy --push VERSION latest```)
+The publish-docs.sh script will do the publishing to latest (basically: ```mike deploy --push VERSION latest --allow-empty```)
 
 ## Legacy Documentation (versions before 2.5)
 

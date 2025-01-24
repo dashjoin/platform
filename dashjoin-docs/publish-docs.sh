@@ -14,4 +14,4 @@ then
 fi
 
 mike deploy --push $(cat ../../VERSION)
-mike alias -u $(cat ../../VERSION) latest
+mike alias -u $(cat ../../VERSION) latest --allow-empty
