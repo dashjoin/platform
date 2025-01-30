@@ -232,3 +232,13 @@ create table test (id int primary key, arr jsonb)
 $create("pg", "test", {"id":1, "arr": ['BLAUS', 'ALFKI']})
 ```
 
+* **On a page, can I programmatically scroll to a certain widget?** Yes, you can use a JavaScript expression to do this. All widgets that specify a title, get the DOM id "dj-" + widget.title. Note that you can also use spaces as the title in case you do not want to display a widget title.
+The following expression makes sure the widget is in view:
+
+```
+// JavaScript
+document.getElementById('dj-mytitle')?.scrollIntoView())
+```
+
+Make sure to use the question mark to avoid runtime errors if the DOM node is not (yet) present. If you want to use this expression in
+the onRender handler (i.e. to auto scroll to the widget when the page loads), you need to add a timer that makes sure the page is fully loaded and all DOM nodes are there. Add the timer (e.g. 1 second) by wrapping the call in setTimer(()=>document..., 1000).
