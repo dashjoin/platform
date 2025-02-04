@@ -237,8 +237,20 @@ The following expression makes sure the widget is in view:
 
 ```
 // JavaScript
-document.getElementById('dj-mytitle')?.scrollIntoView())
+document.getElementById('dj-mytitle')?.scrollIntoView( <options> ))
 ```
 
 Make sure to use the question mark to avoid runtime errors if the DOM node is not (yet) present. If you want to use this expression in
 the onRender handler (i.e. to auto scroll to the widget when the page loads), you need to add a timer that makes sure the page is fully loaded and all DOM nodes are there. Add the timer (e.g. 1 second) by wrapping the call in setTimer(()=>document..., 1000).
+
+You can control the behavior using options, please refer [to the documentation here.](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView)
+
+In (client side) Jsonata expressions you can use
+```
+$navigate( {
+  "id": "dj-mytitle",
+  "options": { <scrollIntoView options> } 
+);
+```
+
+Options can be left out, the default is the browser default behavior.
