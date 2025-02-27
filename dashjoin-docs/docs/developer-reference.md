@@ -90,6 +90,7 @@ used as the key in the resulting JSON structure. Inputs can be of the following 
 * file with metadata: like file but includes file metadata
 * binary file with metadata: like binary file but includes file metadata
 * voice: like string, but offers a speech to text input option (language option is available via Dashjoin Studio)
+* qrcode: like string, but offers a QR Code scanner
 
 Further options include:
 * an optional title for the input element
@@ -125,6 +126,10 @@ This example displays a form to enter an object with a field emails which is an 
 If you choose one of the file upload widgets, you can add the attribute multiple: true via Dashjoin
 Studio. This allows you to upload multiple files at once. Note that the return value changes from
 a single value to an array if you do so.
+
+In addition to the attribute multiple, you can specify capture: user or capture: environment.
+This setting allows taking and uploading a foto using the inward or outward camera.
+Setting accept: video/* takes a video instead of a photo.
 
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
@@ -282,6 +287,7 @@ Depending on the result of the evaluation, one of the following cases applies:
 * an array of objects is displayed as a table
 * if the object has exactly the key "img" (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
 * if the object has exactly the key "href" or the keys "href" and "label", the object is displayed as a hyperlink (note that absolute or relative links to another page in the app are specified without the "slash hash" part of the URL - for instance, the href "Info" or "/page/Info" links to the Info page)
+* if the object has exactly the key "qrcode", the string is displayed as a QR code
 
 Example:
 ```
