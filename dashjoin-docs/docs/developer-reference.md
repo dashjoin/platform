@@ -496,7 +496,7 @@ Displays a tree based on a recursive query
 
 * database: database to run the query on
 * query: query that projects a single column with the keys of the current node's children. The primary key of the current node (null for the tree root) is passed as a query argument. The query typically has the form: select id from recursiveTable where fk=parameter
-* expression: allows configuring the widget via JSONata. The result must be a node or an array of nodes. A node has the fields data and an optional field children. The widget displays the contents of data similar to the display widget. 
+* expression: allows configuring the widget via JSONata. The result must be a node or an array of nodes. A node has the fields data and an optional field children. The widget displays the contents of data similar to the display widget. If data includes an icon field, the tree is displayed [like this](https://mui.com/material-ui/react-list/#nested-list).
 
 ## Functions
 
