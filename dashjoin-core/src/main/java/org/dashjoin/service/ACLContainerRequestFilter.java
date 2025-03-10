@@ -189,9 +189,24 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
    */
   static void checkRow(SecurityContext sc, Table table, Map<String, Object> row) {
     if (hasTenantFilter(sc, table))
-      if (!tenantValue(sc, table).equals(row.get(table.tenantColumn)))
+      if (!eq(tenantValue(sc, table), row.get(table.tenantColumn)))
         ACLContainerRequestFilter
             .throwNotAuthorizedException("User does not have access to this record");
+  }
+
+  /**
+   * equality of DB col to current user: if col is array or list, use IN instead of =
+   */
+  static boolean eq(Object tenantValue, Object col) {
+    if (col instanceof String[]) {
+      for (String i : (String[]) col)
+        if (tenantValue.equals(i))
+          return true;
+      return false;
+    }
+    if (col instanceof List)
+      return ((List<?>) col).contains(tenantValue);
+    return tenantValue.equals(col);
   }
 
   /**
@@ -238,7 +253,8 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       Map<String, Object> arguments) {
     if (!hasTenantFilter(sc, table))
       return arguments;
-    if (arguments != null && arguments.containsKey(table.tenantColumn))
+    if (arguments != null && arguments.containsKey(table.tenantColumn)
+        && (!feq(tenantValue(sc, table), arguments.get(table.tenantColumn))))
       throw new RuntimeException("Row level ACL is defined on " + table.tenantColumn
           + ". Cannot define an additional filter on this column.");
 
@@ -248,5 +264,17 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       arguments.put(table.tenantColumn, tenantValue(sc, table));
 
     return arguments;
+  }
+
+  /**
+   * equality of filter to current user: if filter is string[1] (from cast), unwrap
+   */
+  static boolean feq(Object tenantValue, Object filter) {
+    if (filter instanceof String[]) {
+      String[] a = (String[]) filter;
+      if (a.length == 1)
+        filter = a[0];
+    }
+    return tenantValue.equals(filter);
   }
 }

@@ -78,7 +78,10 @@ Row-Level Security allows restricting access to certain table rows depending on 
 Using the table metadata editor, we can define "owner" to be the "tenantColumn", i.e. the column that defines the row-level security.
 If user mike logs in, he will only see item 2 on the item table.
 
-Row-level security can also be defined users being in a certain role. Consider this customer table:
+If the owner column contains an array of strings, the platform checks whether the current user appears in the array. This way,
+a row can be exposed to different users.
+
+Row-level security can also be defined by users being in a certain role. Consider this customer table:
 
 | id | name       | region |
 |----|------------|--------|
