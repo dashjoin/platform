@@ -870,6 +870,7 @@ progress | $progress({message?, linear?, value?, variant?}) | Shows progress mes
 sleep | $sleep(millisecs) | Sleep for x milliseconds
 speak | $speak(message, language?) | Text to speech
 stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
+translate | $translate(text) | Lookup the text in the translation file and return the match for the current locale
 
 ### Backend Expressions
 
