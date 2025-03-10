@@ -907,7 +907,7 @@ public class SQLDatabase extends AbstractDatabase {
           if (value instanceof List)
             if (((List<?>) value).size() == 1)
               firstValue = ((List<?>) value).get(0);
-          if (value.getClass().isArray())
+          if (value != null && value.getClass().isArray())
             if (Array.getLength(value) == 1)
               firstValue = Array.get(value, 0);
           if (url.startsWith("jdbc:postgresql:") && s.properties.get(k).dbType.equals("jsonb")) {
