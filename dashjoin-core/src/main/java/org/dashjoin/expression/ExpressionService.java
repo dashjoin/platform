@@ -236,7 +236,9 @@ public class ExpressionService {
         JException je = (JException) e;
         if ("T1006".equals(je.getError())) {
           for (String s : Arrays.asList("confirm", "setVariable", "prompt", "alert", "notify",
-              "refresh", "reload", "log", "navigate", "clearCache"))
+              "refresh", "reload", "log", "navigate", "clearCache", "log", "translate",
+              "stopSpeech", "speak", "sleep", "dialog", "progress", "setActiveStep", "stepForward",
+              "stepBack"))
             if (expression.contains("$" + s))
               throw new Exception("Function $" + s + " can only be used in the browser");
         }
@@ -248,6 +250,8 @@ public class ExpressionService {
                 if (f.getHelp() != null)
                   throw new Exception(f.getHelp());
         }
+        if ("T1006".equals(je.getError()))
+          throw new Exception(e.getMessage() + ": $" + je.getCurrent());
         error = e.toString();
         throw e;
       } catch (Exception e) {
