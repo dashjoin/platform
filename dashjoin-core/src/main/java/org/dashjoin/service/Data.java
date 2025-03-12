@@ -883,7 +883,7 @@ public class Data {
    * analytics filters
    */
   public static enum Filter {
-    EQUALS, NOT_EQUALS, LIKE, IS_NULL, IS_NOT_NULL, SMALLER_EQUAL, GREATER_EQUAL, BETWEEN
+    EQUALS, NOT_EQUALS, LIKE, IS_NULL, IS_NOT_NULL, SMALLER_EQUAL, GREATER_EQUAL, BETWEEN, IN
   }
 
   public static class Analytics {

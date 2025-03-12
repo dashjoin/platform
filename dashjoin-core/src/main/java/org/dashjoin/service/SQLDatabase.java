@@ -636,6 +636,14 @@ public class SQLDatabase extends AbstractDatabase {
             if (arg1 != null)
               where.add(col + " <= " + arg1);
             break;
+          case IN:
+            if (arg1 != null)
+              where.add(col + " IN " + arg1.toString()
+                .replace('[', '(')
+                .replace(']', ')'));
+            break;
+          default:
+            break;
         }
       }
 
