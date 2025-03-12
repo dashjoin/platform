@@ -251,7 +251,7 @@ public abstract class AbstractDatabase implements Database {
             try {
               return Double.parseDouble(s);
             } catch (Exception e3) {
-              throw new NumberFormatException("Expecting a numerical value: " + s);
+              throw new NumberFormatException("Expecting a numerical value: " + s + " Property: " + p.ID + " / " + p.name);
             }
           }
         }
