@@ -43,7 +43,9 @@ import net.sf.jsqlparser.expression.operators.relational.Between;
 import net.sf.jsqlparser.expression.operators.relational.ComparisonOperator;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
+import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
+import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.schema.Column;
@@ -878,6 +880,22 @@ public class SQLEditor implements QueryEditorInternal {
       res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()),
           o.getStringExpression() + " " + o.getRightExpression().toString());
       return;
+    }
+    if (expr instanceof InExpression) {
+      InExpression o = (InExpression) expr;
+      Column left = getColumnFromExpression(ignoreUnknown, o.getLeftExpression(), from);
+      ItemsList items = o.getRightItemsList();
+      if (items instanceof ExpressionList) {
+        ExpressionList el = (ExpressionList) items;
+        boolean onlySimple = true;
+        for (Expression item : el.getExpressions())
+          if (!item.getClass().getSimpleName().endsWith("Value"))
+            onlySimple = false;
+        if (onlySimple) {
+          res.put(colNoQuotes(left.getTable().getName(), left.getColumnName()), "IN " + items);
+          return;
+        }
+      }
     }
     if (expr instanceof Between) {
       Between o = (Between) expr;
