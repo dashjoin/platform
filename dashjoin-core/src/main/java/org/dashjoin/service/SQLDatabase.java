@@ -638,9 +638,13 @@ public class SQLDatabase extends AbstractDatabase {
             break;
           case IN:
             if (arg1 != null)
+            // Check if this safe w.r.t. SQL injection
+            // arg1 is not List but a PGObject which contains the concatenated string
               where.add(col + " IN " + arg1.toString()
                 .replace('[', '(')
-                .replace(']', ')'));
+                .replace(']', ')')
+                .replace('"', '\'')
+                );
             break;
           default:
             break;
