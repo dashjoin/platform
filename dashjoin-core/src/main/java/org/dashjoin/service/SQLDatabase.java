@@ -637,7 +637,7 @@ public class SQLDatabase extends AbstractDatabase {
               where.add(col + " <= " + arg1);
             break;
           case IN:
-            if (arg1 != null)
+            if (arg1 != null && !arg1.toString().equals("[]")) {
             // Check if this safe w.r.t. SQL injection
             // arg1 is not List but a PGObject which contains the concatenated string
               where.add(col + " IN " + arg1.toString()
@@ -645,6 +645,7 @@ public class SQLDatabase extends AbstractDatabase {
                 .replace(']', ')')
                 .replace('"', '\'')
                 );
+            }
             break;
           default:
             break;
