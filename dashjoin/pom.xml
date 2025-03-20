@@ -20,13 +20,6 @@
   </dependencyManagement>
 
   <dependencies>
- 		<dependency>
-			<groupId>org.dashjoin</groupId>
-			<artifactId>angular</artifactId>
-			<version>${revision}</version>
-			<type>pom</type>
-		</dependency>
-
 	  	<dependency>
 	  		<groupId>org.dashjoin</groupId>
 	  		<artifactId>dashjoin-core</artifactId>
