@@ -11,7 +11,8 @@ systems, this folder can be found under USER_HOME/.dashjoin/model.
 
 ## Configuring OpenID
 
-The Dashjoin platform can be setup to delegate identity management to an OpenID provider such as Google, Microsoft Azure AD, Okta, or Keycloak.
+The Dashjoin platform can be setup to delegate identity management to an OpenID provider such as Microsoft Azure AD (now Entra ID), Okta, Auth0 or Keycloak,
+or social identity providers like Google, Github etc.
 
 ### Registering the Dashjoin Application
 
@@ -38,6 +39,7 @@ The default config is:
     "defaultLocale": "en",                   // default I18N locale to use, choose "browser" to select the browser's preferred locale,
     "locales": ["en"]                        // languages supported by the platform
     "i18n": ...                              // texts and translations for the login screen and cookie banner (see I18N section for more information)
+    "autoLogin": ...                         // auto login settings (see section for details)
 }
 ```
 
@@ -116,6 +118,47 @@ relative to the current working directory of the platform.
 Note that the current working directory depends on the OS and the way the platform is installed / started.
 
 The next sections list the locations on different operating systems.
+
+### Multifactor authentication (MFA)
+
+To use MFA, configure an OpenID provider or a social identity provider that has MFA enabled.
+
+Optionally auto login can be used to reduce the number of clicks for the user to log in.
+
+
+### Use auto login to OpenID or a social identity provider
+
+Important to know: 
+Auto login does not automatically log in the user, but forwards to the social or OpenID login dialog automatically for a seamless user experience.
+
+This is useful if you use an OpenID provider for the organization (i.e. Okta or AzureAD or Keycloak) or a social provider (like Google) and do not want the users to use the integrated identity mechanisms.
+
+Settings:
+
+```
+  "autoLogin": {
+    "timeout": <timeout in milliseconds>,
+    "target": <optional target, defaults to first configured OpenID>
+  }
+```
+
+Examples:
+
+```
+  "autoLogin": { "timeout": 2000 }
+```
+Automatically forwards to the first configured OpenID provider after 2 seconds.
+
+```
+  "autoLogin": { "timeout": 5000, "target": {"key: 1} }
+```
+Automatically forwards to the second OpenID provider after 5 seconds.
+
+```
+  "autoLogin": { "timeout": 0, "target": {"provider": "google"} }
+```
+Automatically forwards to Google social identity login.
+
 
 #### Installed Dashjoin application
 
