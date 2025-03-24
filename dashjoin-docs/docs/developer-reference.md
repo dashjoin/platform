@@ -909,6 +909,9 @@ openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON.
 openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 generateExcel | $generateExcel(table or map of sheetname to table) | Generates a base64 encoded Excel file which can be downloaded from the browser (see FAQ)
+generateYaml | $generateYaml(data) | Converts data to a YAML string
+generateXml | $generateXml(data) | Converts data to an XML string
+generateCsv | $generateCsv(data, options) | Converts a table to CSV (for options see openCsv)
 openText | $openText(url, encoding) | Parses the url and converts it to a string. Possible encodings are: UTF_8 (default), BASE_64, ISO_8859_1
 parseJson | $parseJson(json) | Parses JSON (see openJson)
 parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see openCsv)
