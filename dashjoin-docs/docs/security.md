@@ -104,6 +104,12 @@ The role mappings on the customer are translated to a JSONata expression:
 * query: select * from customer where region = ${tenant}
 * query parameter expression: { "tenant": "sales-south" in roles ? "south" : ("sales-north" in roles ? "north") }
 
+When using queries, there is no guarantee that the client sends the correct user information.
+Rather than using { "tenant": user }, where "user" is the current user's email address, the client
+could also send { "tenant": "other@example.org" } to spy on another user.
+To prevent this, use the parameter name "_dj_email". This parameter is set from the caller's security context by the backend,
+overriding any other parameter value sent from the client.
+
 ### User Dashboard
 
 As the platform admin, the user dashboard shows all the users that have already logged into the system, along with

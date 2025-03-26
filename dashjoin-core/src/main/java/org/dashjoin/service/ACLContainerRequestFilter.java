@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.dashjoin.function.EveryoneFunction;
+import org.dashjoin.function.Function;
+import org.dashjoin.model.AbstractDatabase;
+import org.dashjoin.model.QueryMeta;
+import org.dashjoin.model.Table;
+import org.dashjoin.service.tenant.TenantManager;
+import org.dashjoin.util.MapUtil;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.inject.Inject;
 import jakarta.json.JsonString;
 import jakarta.ws.rs.NotAuthorizedException;
@@ -13,14 +21,6 @@ import jakarta.ws.rs.container.PreMatching;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
-import org.dashjoin.function.EveryoneFunction;
-import org.dashjoin.function.Function;
-import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.QueryMeta;
-import org.dashjoin.model.Table;
-import org.dashjoin.service.tenant.TenantManager;
-import org.dashjoin.util.MapUtil;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
 /**
  * REST Filter that enforces query catalog level RBAC
@@ -49,9 +49,8 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       return;
 
     if (path.startsWith("/_ah/") || path.startsWith("/rest/info/")
-        || path.equals("/rest/manage/openapi")
-        || path.startsWith("/login") || path.startsWith("auth-callback")
-    )
+        || path.equals("/rest/manage/openapi") || path.startsWith("/login")
+        || path.startsWith("auth-callback"))
       return;
 
     SecurityContext sc = requestContext.getSecurityContext();
@@ -222,28 +221,34 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
         }
       }
     } else {
-      // Note: keep logic in sync with TenantService.updateUserProfileFromJWT
-      if (sc.getUserPrincipal() instanceof JsonWebToken) {
-        JsonWebToken p = (JsonWebToken) sc.getUserPrincipal();
-        v = p.getClaim("email");
-        // If the JWT has no user info, it is a custom token
-        if (v == null) {
-          // In a token created with FirebaseAuth.createCustomToken,
-          // we have to put the data in the sub-claim "claims"
-          Map<String, Object> claims = p.getClaim("claims");
-          // Strings are of type JsonStringImpl
-          v = ((JsonString) claims.get("email")).getString();
-        }
-      } else {
-        // Local user's email
-        v = sc.getUserPrincipal().getName() + "@localhost";
-      }
+      v = getEmail(sc);
     }
 
     if (v == null)
       ACLContainerRequestFilter.throwNotAuthorizedException(
           "User role does not map to a tenant filter on table " + table.name);
     return v;
+  }
+
+  public static String getEmail(SecurityContext sc) {
+    // Note: keep logic in sync with TenantService.updateUserProfileFromJWT
+    Object v = null;
+    if (sc.getUserPrincipal() instanceof JsonWebToken) {
+      JsonWebToken p = (JsonWebToken) sc.getUserPrincipal();
+      v = p.getClaim("email");
+      // If the JWT has no user info, it is a custom token
+      if (v == null) {
+        // In a token created with FirebaseAuth.createCustomToken,
+        // we have to put the data in the sub-claim "claims"
+        Map<String, Object> claims = p.getClaim("claims");
+        // Strings are of type JsonStringImpl
+        v = ((JsonString) claims.get("email")).getString();
+      }
+    } else if (sc.getUserPrincipal() != null) {
+      // Local user's email
+      v = sc.getUserPrincipal().getName() + "@localhost";
+    }
+    return "" + v;
   }
 
   /**

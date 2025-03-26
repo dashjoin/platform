@@ -310,6 +310,8 @@ public class Data {
       String queryId, Map<String, Object> arguments, boolean readOnly) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
+    if (sc != null)
+      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
 
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
@@ -402,6 +404,8 @@ public class Data {
       @PathParam("queryId") String queryId, Map<String, Object> arguments) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
+    if (sc != null)
+      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
 
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
