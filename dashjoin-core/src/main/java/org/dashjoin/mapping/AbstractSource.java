@@ -168,7 +168,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
             // table does not exist of only contains some bootstrapped metadata like dj-label
             dirty = true;
             ddl.createTable(table.getKey(), mappingpk, type(mappingpk, table.getValue()));
-            for (String col : cols(table.getValue(), true))
+            for (String col : cols(table.getValue(), "Refresh".equals(oldData)))
               if (!col.equals(mappingpk)) {
                 ddl.createColumn(table.getKey(), col, type(col, table.getValue()));
               }
@@ -246,7 +246,8 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
       int counter = 0;
       MergeBatch mbatch = db.openMergeBatch(t);
       for (Map<String, Object> row : table.getValue()) {
-        row.put("_dj_source", ID);
+        if ("Refresh".equals(oldData))
+          row.put("_dj_source", ID);
         db.castArray(t, row);
         db.cast(t, row);
         mbatch.merge(row);
