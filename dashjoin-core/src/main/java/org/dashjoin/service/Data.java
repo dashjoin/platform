@@ -22,6 +22,7 @@ import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Database.QueryAndParams;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.OpenCypherQuery;
@@ -313,8 +314,12 @@ public class Data {
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
       Analytics analytics = om.convertValue(arguments, Analytics.class);
-      String query = getAnalytics(sc, db, analytics);
-      return db.query(QueryMeta.ofQuery(query, false), analytics.arguments);
+      QueryAndParams query = getAnalytics(sc, db, analytics);
+      if (analytics.arguments == null)
+        analytics.arguments = query.params;
+      else
+        analytics.arguments.putAll(query.params);
+      return db.query(QueryMeta.ofQuery(query.query, false), analytics.arguments);
     }
 
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
@@ -327,7 +332,8 @@ public class Data {
     return db.query(info, arguments);
   }
 
-  String getAnalytics(SecurityContext sc, AbstractDatabase db, Analytics a) throws Exception {
+  QueryAndParams getAnalytics(SecurityContext sc, AbstractDatabase db, Analytics a)
+      throws Exception {
 
     QueryMeta info = null;
     if (a.query != null) {
@@ -344,9 +350,21 @@ public class Data {
 
     for (ColInfo e : a.cols) {
       if (e.arg1 != null) {
-        Map<String, Object> tmp = MapUtil.of(e.name, e.arg1);
-        db.cast(m, tmp);
-        e.arg1 = tmp.get(e.name);
+        if (e.arg1 instanceof List) {
+          @SuppressWarnings("unchecked")
+          List<Object> list = (List<Object>) e.arg1;
+          List<Object> newlist = new ArrayList<>();
+          for (Object o : list) {
+            Map<String, Object> tmp = MapUtil.of(e.name, o);
+            db.cast(m, tmp);
+            newlist.add(tmp.get(e.name));
+          }
+          e.arg1 = newlist;
+        } else {
+          Map<String, Object> tmp = MapUtil.of(e.name, e.arg1);
+          db.cast(m, tmp);
+          e.arg1 = tmp.get(e.name);
+        }
       }
       if (e.arg2 != null) {
         Map<String, Object> tmp = MapUtil.of(e.name, e.arg2);
@@ -388,8 +406,12 @@ public class Data {
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
       Analytics analytics = om.convertValue(arguments, Analytics.class);
-      String query = getAnalytics(sc, db, analytics);
-      return db.queryMeta(QueryMeta.ofQuery(query, false), analytics.arguments);
+      QueryAndParams query = getAnalytics(sc, db, analytics);
+      if (analytics.arguments == null)
+        analytics.arguments = query.params;
+      else
+        analytics.arguments.putAll(query.params);
+      return db.queryMeta(QueryMeta.ofQuery(query.query, false), analytics.arguments);
     }
 
     QueryMeta info = services.getConfig().getQueryMeta(queryId);

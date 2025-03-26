@@ -20,7 +20,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -536,7 +535,7 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @Override
-  public String analytics(QueryMeta info, Table s, List<ColInfo> arguments) {
+  public QueryAndParams analytics(QueryMeta info, Table s, List<ColInfo> arguments) {
     List<String> project = new ArrayList<>();
 
     boolean isGroupBy = false;
@@ -546,6 +545,10 @@ public class SQLDatabase extends AbstractDatabase {
           isGroupBy = true;
 
     for (ColInfo a : arguments) {
+
+      check(a.alias);
+      check(a.name);
+
       String col = q(a.name);
       if (a.project) {
         String add = col;
@@ -591,17 +594,14 @@ public class SQLDatabase extends AbstractDatabase {
       }
     }
 
+    Map<String, Object> params = new LinkedHashMap<>();
+    int counter = 0;
     List<String> where = new ArrayList<>();
     for (ColInfo a : arguments)
       if (a.filter != null) {
         String col = q(a.name);
-        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
-        if (a.arg1 instanceof Date)
-          a.arg1 = sm.format((Date) a.arg1);
-        if (a.arg2 instanceof Date)
-          a.arg2 = sm.format((Date) a.arg2);
-        Object arg1 = a.arg1 instanceof String ? "'" + a.arg1 + "'" : a.arg1;
-        Object arg2 = a.arg2 instanceof String ? "'" + a.arg2 + "'" : a.arg2;
+        Object arg1 = param(params, counter, a.arg1);
+        Object arg2 = param(params, counter, a.arg2);
         switch (a.filter) {
           case BETWEEN:
             if (arg1 != null && arg2 != null)
@@ -637,14 +637,8 @@ public class SQLDatabase extends AbstractDatabase {
               where.add(col + " <= " + arg1);
             break;
           case IN:
-            if (arg1 != null && !arg1.toString().equals("[]")) {
-            // Check if this safe w.r.t. SQL injection
-            // arg1 is not List but a PGObject which contains the concatenated string
-              where.add(col + " IN " + arg1.toString()
-                .replace('[', '(')
-                .replace(']', ')')
-                .replace('"', '\'')
-                );
+            if (arg1 != null) {
+              where.add(col + " IN " + arg1);
             }
             break;
           default:
@@ -670,7 +664,28 @@ public class SQLDatabase extends AbstractDatabase {
 
     // System.out.println(select);
 
-    return select + " limit 1000";
+    QueryAndParams res = new QueryAndParams();
+    res.query = select + " limit 1000";
+    res.params = params;
+    return res;
+  }
+
+  @SuppressWarnings("unchecked")
+  String param(Map<String, Object> params, int counter, Object arg) {
+    if (arg == null)
+      return null;
+    if (arg instanceof List) {
+      List<String> l = new ArrayList<>();
+      for (Object item : (List<Object>) arg) {
+        String name = "_dj_" + (counter++);
+        params.put(name, item);
+        l.add("${" + name + "}");
+      }
+      return '(' + String.join(",", l) + ')';
+    }
+    String name = "_dj_" + (counter++);
+    params.put(name, arg);
+    return "${" + name + "}";
   }
 
   @Override
@@ -1505,5 +1520,24 @@ public class SQLDatabase extends AbstractDatabase {
         return date.toInstant().atOffset(ZoneOffset.UTC);
     }
     return date;
+  }
+
+  void check(String s) {
+    if (s == null)
+      return;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (c == ' ')
+        continue;
+      if (c == '_')
+        continue;
+      if ('A' <= c && c <= 'Z')
+        continue;
+      if ('a' <= c && c <= 'z')
+        continue;
+      if ('0' <= c && c <= '9')
+        continue;
+      throw new IllegalArgumentException("Illegal column name or alias: " + s);
+    }
   }
 }
