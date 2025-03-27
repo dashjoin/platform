@@ -310,8 +310,6 @@ public class Data {
       String queryId, Map<String, Object> arguments, boolean readOnly) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
-    if (sc != null)
-      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
 
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
@@ -331,6 +329,8 @@ public class Data {
 
     ACLContainerRequestFilter.check(sc, info);
     Database db = services.getConfig().getDatabase(dj(database));
+    if (sc != null)
+      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
     return db.query(info, arguments);
   }
 
@@ -404,8 +404,6 @@ public class Data {
       @PathParam("queryId") String queryId, Map<String, Object> arguments) throws Exception {
     if (arguments == null)
       arguments = new HashMap<>();
-    if (sc != null)
-      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
 
     if ("__dj_analytics".equals(queryId)) {
       AbstractDatabase db = services.getConfig().getDatabase(dj(database));
@@ -421,6 +419,8 @@ public class Data {
     QueryMeta info = services.getConfig().getQueryMeta(queryId);
     ACLContainerRequestFilter.check(sc, info);
     Database db = services.getConfig().getDatabase(dj(database));
+    if (sc != null)
+      arguments.put("_dj_email", ACLContainerRequestFilter.getEmail(sc));
     return db.queryMeta(info, arguments);
   }
 
