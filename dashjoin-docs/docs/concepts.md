@@ -192,6 +192,8 @@ If expressions are run on a record page, the context is structured as follows:
   roles: the roles the user is in
   email: the user's email address (not set for local users)
   href: the current URL
+  width: screen width in pixels
+  theme: current theme (light / dark)
   value: the current record
   variable: the session variables (see below)
   form: data entered via a form (see below)
