@@ -232,6 +232,30 @@ Examples:
 * [chart-stacked-bar](https://demo.my.dashjoin.com/#/page/chart-stacked-bar)
 * [chart-timeline](https://demo.my.dashjoin.com/#/page/chart-timeline)
 
+#### datagrid
+
+Allows editing records from a grid.
+
+* expression: Expression that returns a table (list of objects) that populates the grid
+onchange: Expression to run when a value is changed. The expression gets passed "id", which is the primary key of the row and "updatedRow" which is the new row value object.
+ondelete: Expression to run when a row is deleted. The expression gets passed "id", which is the primary key of the row
+oncreate: Expression to run when a row is created.
+columns: Optional array of column description objects. The object can use the fields described [here](https://mui.com/x/react-data-grid/column-definition/). Defaults to an editable column with the name and type found in the data. 
+idColumn: Optional name of the column that serves as the primary key. Note that the primary key column is removed from the display and cannot be edited. Any column name containing the substring "id" is used as the default.
+
+Consider this example to edit the northwind employee table. Note that the oncreate expression must create a unique primary key (select max + 1) and also provide default values for the values required by the database constraints:
+
+```
+{
+  "widget": "datagrid",
+  "expression": "$all('northwind', 'EMPLOYEES')",
+  "onchange": "$update('northwind', 'EMPLOYEES', id, updatedRow)",
+  "ondelete": "$delete('northwind', 'EMPLOYEES', id)",
+  "oncreate": "$create('northwind', 'EMPLOYEES', {'EMPLOYEE_ID': $adHocQuery('northwind', 'select max(EMPLOYEE_ID)+1 as X from EMPLOYEES').X, 'LAST_NAME': ' ', 'FIRST_NAME': ' '})",
+  "idColumn": "EMPLOYEE_ID",
+}
+```
+
 #### [diagram](https://demo.my.dashjoin.com/#/page/diagram)
 
 Allows displaying and editing data as a graph of nodes and edges.
