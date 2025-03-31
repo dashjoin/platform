@@ -522,6 +522,14 @@ Displays a tree based on a recursive query
 * query: query that projects a single column with the keys of the current node's children. The primary key of the current node (null for the tree root) is passed as a query argument. The query typically has the form: select id from recursiveTable where fk=parameter
 * expression: allows configuring the widget via JSONata. The result must be a node or an array of nodes. A node has the fields data and an optional field children. The widget displays the contents of data similar to the display widget. If data includes an icon field, the tree is displayed [like this](https://mui.com/material-ui/react-list/#nested-list).
 
+### uploadfile
+
+Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment
+variable (see Installation - Environment).
+
+* allowFolderSelectionRecursive: Recursively get subdirectories
+* preserveFolders: Preserve recursive folder structure at the destination
+
 ## Functions
 
 Apart from changing data in databases, Dashjoin can call functions on the backend. Functions come in two flavors: First, there are functions that simply extend
