@@ -53,6 +53,10 @@ In this case any user id ending with this domain suffix gets the roles defined i
 
 Finally, you can use the tenant id "@EVERYONE" to define roles for all users that are defined in the IDM, regardless of the roles they are assigned in the IDM.
 
+Note that email addresses are case sensitive in this context. For example, if a user uses
+both Joe@example.org and joe@example.org, both versions of the email will show up
+in the tenants table and both will have to be activated and assigned roles.
+
 ### Assigning Roles
 
 Roles can be assigned to the following elements:
