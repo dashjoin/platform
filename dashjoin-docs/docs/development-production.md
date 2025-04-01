@@ -41,7 +41,7 @@ visible immediately in the query catalog as well.
 
 The contains the following folders:
 
-* assets: any media that should be available via http(s)://<app url>/assets
+* assets: any media that should be available via http(s)://<app url>/assets. To customize the favicon, for instance, add your favicon to assets/public_html/favicon.ico.
 * model
   * dj-config: Contains any system configuration
   * dj-database: All connected databases and any table and record page layouts. If a database JSON file is open in the editor, you can test connecting to it via the "Connect to this database" button at the top of the file
