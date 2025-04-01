@@ -50,7 +50,7 @@ public class ExMapper implements ExceptionMapper<Throwable> {
    */
   public static String getMessage(Throwable t) {
     if (t.getMessage() != null)
-      return t.getMessage();
+      return t.getMessage().replace('\n', ' ');
     if (t instanceof EncryptionOperationNotPossibleException)
       return "Error decrypting. Please re-enter the credentials.";
     if (t.getCause() != null)

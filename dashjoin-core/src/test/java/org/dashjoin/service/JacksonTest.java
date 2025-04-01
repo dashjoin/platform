@@ -70,4 +70,9 @@ public class JacksonTest {
     Assertions.assertEquals("Error decrypting. Please re-enter the credentials.",
         ExMapper.getMessage(new EncryptionOperationNotPossibleException()));
   }
+
+  @Test
+  public void testGetMessageNoNewline() {
+    Assertions.assertEquals("a b", ExMapper.getMessage(new Exception("a\nb")));
+  }
 }
