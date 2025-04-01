@@ -481,6 +481,74 @@ which set the element margin to 1em to 5em.
 
 As in the HTML widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
+#### mdxeditor
+
+This component offers a full fledged WYSIWYG markdown editor that can be extended with custom menus to call
+any JSONata or JavaScript expressions.
+
+* markdown: markdown to display
+* context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
+* card: determines if the editor is shown on a card (paper background)
+* expression: an optional expression to compute the structure of additional menus that call expresions defined using "properties". Please see the example below.
+* properties: a set of key value pairs composing the widget's expression library. The keys are the expression names, the values are the actual expression to be called
+
+Consider the following example. The markdown and context work just like the markdown widget above. This widget
+allows the user to edit the text and call expressions via the custom menu.
+
+```json
+{
+  "widget": "mdxeditor"
+  "markdown": "# Hello ${user} ${context}",
+  "context": "'my context expression'",
+  "properties": {
+    "alert": "$alert('selection: ' & selection & '. markdown: ' & markdown)",
+    "log": "$log($)",
+    "sleep": "($progress({'message': 'working'});$sleep(1000))"
+  },
+  "expression": "{... see below}",
+}
+```
+
+The widget defines three expressions:
+
+* alert: shows that we can use the context fields markdown and selection to access the entire document (with the user's changes) or the text selected in the editor
+* log: simply logs th entire expression context in the console
+* sleep: an example for how to provide feedback for operations with a longer runtime
+
+The menu structure is defined by an expression the yields the following JSON:
+
+```json
+{
+  "menu": [
+    {
+      "type": "select",
+      "title": "tooltip",
+      "label": "longer operation",
+      "value": "sleep",
+      "items": [{}]
+    },
+    {
+      "type": "select",
+      "title": "tooltip",
+      "label": "Label",
+      "items": [
+        {
+          "label": "alert popup",
+          "value": "alert"
+        },
+        {
+          "label": "doc to console",
+          "value": "log"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The first menu items displays clickable button in the menu bar that runs expression "sleep".
+The second item displays the menu "Label" that has two submenus, calling "alert" and "log" respectively.
+
 #### notebook
 
 This widget is the JSONata equivalent of a Jupyter notebook. It allows composing and running several expressions.
