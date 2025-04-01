@@ -9,10 +9,11 @@ Note that all widgets have the title option:
 
 * title: when the widget is a direct child of the page container, the widget is placed in a card with this title
 
-Apart from title, all widgets support the following two options:
+Apart from title, all widgets support the following options:
 
 * roles: show container only if user is in one of these roles
 * if: show the widget if the expression is true
+* style: CSS widget styles (e.g. width and height of the widget)
 
 These can be edited using Dashjoin Studio. Some widgets, like the container, expose them via the layout editor as well.
 
@@ -286,7 +287,6 @@ Edges are represented by the following JSON structure:
 }
 ```
 
-* style: CSS widget styles (e.g. width and height of the widget)
 * nodes: JSONata that generates a list of nodes
 * edges: JSONata that generates a list of edges
 * moveNode: optional JSONata to persist new coordinates (e.g. $update("northwind", "EMPLOYEES", node.id, {"Y": node.position.y}))
