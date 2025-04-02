@@ -139,7 +139,7 @@ Runs / evaluates an expression when clicked.
 * text: text shown for the run button (default is "Run")
 * print: evaluates this expression when clicked
 * expression: optional expression - the form fields are initialized with the result of this expression
-* schemaExpression: optional JSONata expression that computes a JSON Schema driving the input form (this option is only available in Dashjoin Studio)
+* schemaExpression: optional JSONata expression that computes a JSON Schema driving the input form (this option is only available in Dashjoin Studio). Note that forms drawn using schemaExpression do not use the layout editor. You can arrange input elements using the "order" field explained in [this example](https://dashjoin.github.io/#/example/order).
 * deleteConfirmation: optional confirmation message before performing the action (this option is only available in Dashjoin Studio - you can prompt the user via JSONata as follows):
 * icon: icon to show left of the text (this option is only available in Dashjoin Studio)
 
