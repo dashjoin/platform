@@ -69,6 +69,8 @@ widgets are responsible for advancing the current page via the JSONata functions
 The tabs widget displays its children in a container which allows selecting the current tab on top.
 The child titles are used as a label. Only the active tab is shown.
 
+* foreach: expression that evaluates to an array of objects. The first child of the container is rendered for each object, with the "value" context set to the respective array item (Dashjoin Studio only)
+
 ### Form Widgets
 
 Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
