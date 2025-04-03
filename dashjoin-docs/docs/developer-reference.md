@@ -573,6 +573,16 @@ Displays query results as a table
 * columns: if no query or expression is specified, this array allows specifying the columns to be projected. Note that this option is only available in Dashjoin Studio
 * perPage: default number of rows to display
 * deleteConfirmation: optional confirmation message before bulk deleting records (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)
+* mode: defines how the table is displayed. 'desktop' shows the normal wide table with all columns (this is the default). 'mobile' shows a narrow list view with up to three column values and an icon. 'auto' uses the other two modes depending on the user's device
+
+The following options are only available in Dashjoin Studio. The define how the narrow table version is populated.
+The text properties are optional. If omitted, the platform chooses a table column to display in the respective slot.
+To choose a specific column, specify the column name. To make sure the slot stays empty, please choose a non-existing name.
+
+* primaryText: Text to be displayed on the upper left of the list
+* secondaryText: Text to be displayed on the lower left of the list 
+* tertiaryText: Text to be displayed on the right of the list
+* leftIcon: Optional name of the column that contains the icon name
 
 Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
