@@ -189,6 +189,8 @@ The key specifies the action button's label, the value contains the expression t
 * properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  
 * perPage: default number of rows to display
 * columns: columns to display. Use this option if you need certain fields to be included in the selection value but don't want those values to be included in the table. Note that this option is only available in Dashjoin Studio
+* hideTablePagination: if true, hide table pagination (Dashjoin Studio only)
+* hideTableActions: if true, hide export and filter buttons on the table (Dashjoin Studio only)
 
 #### aichat
 
@@ -210,6 +212,8 @@ Like chart and table, but allows exposing query filters to the user. The query c
 * style: see chart widget
 * columns: a list of columns to project / aggregate from the table or query
 * filter: a list of filters to expose to the user
+* hideTablePagination: if true, hide table pagination (Dashjoin Studio only)
+* hideTableActions: if true, hide export and filter buttons on the table (Dashjoin Studio only)
 
 The following settings are available in Dashjoin Studio only:
 
@@ -303,6 +307,8 @@ Displays the result of an expression:
 
 * display: expression to display
 * icons: if display evaluates to an object, icons maps the object keys to [material icons](https://fonts.google.com/icons)
+* hideTablePagination: if true, hide table pagination (Dashjoin Studio only)
+* hideTableActions: if true, hide export and filter buttons on the table (Dashjoin Studio only)
 
 Depending on the result of the evaluation, one of the following cases applies:
 
@@ -574,6 +580,8 @@ Displays query results as a table
 * perPage: default number of rows to display
 * deleteConfirmation: optional confirmation message before bulk deleting records (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)
 * mode: defines how the table is displayed. 'desktop' shows the normal wide table with all columns (this is the default). 'mobile' shows a narrow list view with up to three column values and an icon. 'auto' uses the other two modes depending on the user's device
+* hideTablePagination: if true, hide table pagination (Dashjoin Studio only)
+* hideTableActions: if true, hide export and filter buttons on the table (Dashjoin Studio only)
 
 The following options are only available in Dashjoin Studio. The define how the narrow table version is populated.
 The text properties are optional. If omitted, the platform chooses a table column to display in the respective slot.
