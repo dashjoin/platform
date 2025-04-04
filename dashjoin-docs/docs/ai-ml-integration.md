@@ -250,19 +250,35 @@ This section shows some minimal configuration examples (relying on defaults wher
 Run the container in production without app:
 
 ```shell
-docker run -p 8001:8001 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e DJAI_OPENAI_API_KEY=your_mistral_key dashjoin/ai-llm-kb
+docker run 
+  -p 8001:8001 
+  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
+  -e DJAI_OPENAI_API_KEY=your_mistral_key 
+  dashjoin/ai-llm-kb
 ```
 
 Run the container in production with app:
 
 ```shell
-docker run -p 8001:8001 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e DJAI_OPENAI_API_KEY=your_mistral_key -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/ai-llm-kb
+docker run 
+  -p 8001:8001 
+  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
+  -e DJAI_OPENAI_API_KEY=your_mistral_key 
+  -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
+  dashjoin/ai-llm-kb
 ```
 
 Run the container to develop an app. We export the Jupyter port 8080 to 8002 outside the container:
 
 ```shell
-docker run -p 8001:8001 -p 8002:8080 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e JUPYTER_TOKEN=djdjdj -e DASHJOIN_DEVMODE=1 -e DJAI_OPENAI_API_KEY=your_mistral_key -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/ai-llm-kb
+docker run 
+  -p 8001:8001 
+  -p 8002:8080 
+  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
+  -e JUPYTER_TOKEN=djdjdj -e DASHJOIN_DEVMODE=1 
+  -e DJAI_OPENAI_API_KEY=your_mistral_key 
+  -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
+  dashjoin/ai-llm-kb
 ```
 
 ### Admin UI
@@ -452,13 +468,190 @@ def info() -> object:
     }
 ```
 
+The new service is available right after the files are added. You can view the [OpenAPI definition](http://localhost:8001/docs#/Custom%20App%20API/info_app_v1_info_get) and test it using this curl command:
+
+```
+curl -u admin:djdjdj -X 'GET' \
+  'http://localhost:8001/app/v1/info' \
+  -H 'accept: application/json'
+```
+
 ### Adding LlamaIndex AI Code
+
+The LlamaIndex AI library is already installed on the system. You can add your custom code in your REST service. Consider this minimal OpenAI chat example:
+
+```
+import os
+from llama_index.llms.openai import OpenAI
+
+...
+
+# set the OpenAI key
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+# instantiate the OpenAI llm
+llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
+
+# expose it via REST
+@app_router.get("/prompt", description="Simple prompt completion")
+def complete(prompt: str) -> str:
+    return str(llm.complete(prompt))
+```
 
 ### Using Jupyter Notebooks
 
-### Calling Jupyter Notebooks over REST
+The most convenient way to experiment with Python and AI are Jupyter Notebooks that allow you to interactively
+run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming you started the container with the command shown above, simply point your browser to http://localhost:8002 and log in.
+Create a new notebook and enter the following example:
+
+```
+import os
+import requests
+from llama_index.core.agent import ReActAgent
+from llama_index.core.tools import FunctionTool
+from llama_index.llms.openai import OpenAI
+from requests.auth import HTTPBasicAuth
+
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
+
+def get_employee_by_last_name(lastname: str) -> object:
+    """Looks up an employee by last name"""
+    return requests.post(
+        "http://your-dashjoin-platform-address:8080/rest/function/tool",
+        json={ "lastname": lastname },
+        auth=HTTPBasicAuth("admin", "djdjdj")
+    )
+
+tool = FunctionTool.from_defaults(
+    get_employee_by_last_name
+)
+
+agent = ReActAgent.from_tools(
+    [tool],
+    llm=llm,
+    verbose=True,
+)
+
+agent.chat("what is the first name of our employee 'fuller'?")
+```
+
+This code answer's the question "what is the first name of our employee 'fuller'?" by using the LLM and equipping it with a tool
+to fulfill the task. The tool textually describes what it can do in order to advertise its capabilities to the LLM.
+The tool makes a REST call back to the Dashjoin Platform and runs a JSONata invoke function called "tool". It is defined as:
+
+```
+{
+    "ID": "tool",
+    "djClassName": "org.dashjoin.function.Invoke",
+    "expression": "$all('northwind', 'EMPLOYEES', {'LAST_NAME': lastname})"
+}
+```
+
+Running the Notebook shows the following trace:
+
+```
+> Running step 0a830c4e-e2c9-479b-b020-bdd027df3ad3. Step input: what is the first name of our employee 'fuller'?
+Thought: The current language of the user is English. I need to use a tool to help me answer the question.
+Action: get_employee_by_last_name
+Action Input: {'lastname': 'Fuller'}
+Observation: <Response [200]>
+> Running step 31fa0f53-a975-4861-9fd2-89078616a27e. Step input: None
+Thought: I can answer without using any more tools. I'll use the user's language to answer
+Answer: The first name of the employee with the last name 'Fuller' is 'Andrew'.
+```
+
+### Adding LLM Tool Calls to the App
+
+Once we get everything working in Jupyter, we can either parameterize the Notebook and call it via REST (see next section) or we can
+convert it to a regular REST endpoint as shown below:
+
+```
+import os
+import requests
+from requests.auth import HTTPBasicAuth
+from fastapi import APIRouter, Depends, Request
+from private_gpt.server.utils.auth import authenticated
+from llama_index.llms.openai import OpenAI
+from llama_index.core.agent import ReActAgent
+from llama_index.core.tools import FunctionTool
+
+app_router = APIRouter(prefix="/app/v1", dependencies=[Depends(authenticated)])
+
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
+
+def get_employee_by_last_name(lastname: str) -> object:
+    """Looks up an employee by last name and returns the information as a JSON object"""
+    return requests.post(
+        "http://host.docker.internal:8080/rest/function/tool",
+        json={ "lastname": lastname },
+        auth=HTTPBasicAuth("admin", "djdjdj")
+    )
+
+tool = FunctionTool.from_defaults(
+    get_employee_by_last_name
+)
+
+agent = ReActAgent.from_tools(
+    [tool],
+    llm=llm,
+    verbose=True,
+)
+
+@app_router.get("/tool", description="Find employees using LLM and tool")
+def complete(lastname: str) -> str:
+    return str(agent.chat("what is the first name of our employee '"+lastname+"'?"))
+```
 
 ### Installing Python Libraries
+
+Python offers a wide ecosystem of libraries. In case you would like to use a library that is not already included
+in Dashjoin AI Assistant, you can install it using Jupyter by running this command:
+
+```
+!pip install missing-lib
+```
+
+You can add the Notebook to your app and make sure it is run upon container initialization by adding this line to your app.py startup hook:
+
+```
+from dashjoin.aikb.util import executeNotebook
+
+...
+
+executeNotebook("dashjoin/aikb/install.ipynb")
+```
+
+### Calling Jupyter Notebooks over REST
+
+The tools example aboce showed how code can be developed and tested in Jupyter and how it is then moved to Python.
+Using the executeNotebook function, you can even expose the Notebook directly as a REST service:
+
+```
+import NotebookArgs .... TODO
+
+# REST APIfication of a Jupyter Notebook
+@app_router.post("/nb", name="Jupyter Notebook as a Service", description="Jupyter Notebook as Service", tags=["Custom App API"])
+def notebook(args: NotebookArgs) -> object:
+    import os
+    os.environ["DJ_INPUT_ARGS"] = args.model_dump_json()
+    return executeNotebook("app/aikb/dashjoin/aikb/nb.ipynb")
+```
+
+In the Notebook, you can access the REST parameters as follows:
+
+```
+import os
+args = os.environ.get("DJ_INPUT_ARGS")
+print(args)
+```
+
+### Committing Changes to the App
+
+Jupyter comes with a full fledged GIT client. Therefore, you can commit your Python and Jupyter code to the Dashjoin App's GIT repository directly.
 
 ## Entity Reconciliation
 
