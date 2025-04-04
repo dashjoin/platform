@@ -208,20 +208,73 @@ $openJson("http://.../language_detection?text=example")
 The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
 text embedding technology into your low code application. The functionality is available via an easy to use
 administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
-via JSONata.
+via JSONata. Please refer to the documentation of the aichat widget in the developer reference for information
+about how the chat widget can be configured. The API section below also shows examples of how to
+call the REST services directly.
 
-Please refer to the documentation of the aichat widget in the developer reference for information
-about how the chat widget can be configured.
+Dashjoin AI Assistant is available via the docker image dashjoin/ai-llm-kb and offers a range of powerful features around
+large language models (LLMs):
 
-### Large Language Model Chat
+* access APIs such as OpenAPI or Mistral in a uniform and secure way
+* run LLMs locally and expose them via the same API
+* Builtin and convenient retrieval augmented generation (RAG)
+* Powerful Jupyter development environment for deploying custom AI code based on LlamaIndex
+* Auto-deployment of custom AI code from a Dashjoin app
+* Seamless integration of Dashjoin functions as LLM tools for integrating local structured data into the reasoning process
 
-The large language model chat exposes the generative language capabilities of the underlying model.
+### Configuration
+
+The following environment variables can be used to configure the container:
+
+* DJAI_OPENAI_API_BASE: URL of the LLM API (default https://api.mistral.ai/v1)
+* DJAI_OPENAI_API_KEY: API key for Mistral or OpenAI if these services are used
+* DJAI_OPENAI_MODEL: LLM model used (default open-mistral-7b)
+* DJAI_OPENAI_EMBEDDING_MODEL: embedding model used (defaukt mistral-embed)
+* DJAI_AUTH_SECRET: Basic authentication header required to use the container API. The sample value "Basic YWRtaW46ZGpkamRq" sets user and password to admin and djdjdj (user:password is base64 encoded).
+* DJAI_UI_PASSWORD: Password for the admin user when connecting to the container's admin UI (default djdjdj)
+* DJAI_LLM_MODE: llm used (possible values are: ollama, llama-cpp, sagemaker, openai, openailike, azopenai, gemini, default openailike)
+* DJAI_EMBEDDING_MODE: embedding mode (possible values are: ollama, huggingface, openai, sagemaker, azopenai, gemini, default openailike)
+* DJAI_OLLAMA_URL: URL of the ollama service
+* DJAI_DATA_QDRANT_PATH: path of the vector database (default dashjoin/data/default/qdrant)
+* DJAI_DATA_PATH: path to local data (default dashjoin/data/default)
+
+* DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
+* JUPYTER_TOKEN: password of the Juyper development environment
+* DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
+* DASHJOIN_APPURL_BRANCH: optional GIT branch to use
+
+### Running AI Assistant
+
+This section shows some minimal configuration examples (relying on defaults wherever possible).
+
+Run the container in production without app:
+
+```shell
+docker run -p 8001:8001 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e DJAI_OPENAI_API_KEY=your_mistral_key dashjoin/ai-llm-kb
+```
+
+Run the container in production with app:
+
+```shell
+docker run -p 8001:8001 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e DJAI_OPENAI_API_KEY=your_mistral_key -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/ai-llm-kb
+```
+
+Run the container to develop an app. We export the Jupyter port 8080 to 8002 outside the container:
+
+```shell
+docker run -p 8001:8001 -p 8002:8080 -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" -e JUPYTER_TOKEN=djdjdj -e DASHJOIN_DEVMODE=1 -e DJAI_OPENAI_API_KEY=your_mistral_key -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo dashjoin/ai-llm-kb
+```
+
+### Admin UI
+
+The admin UI allows adding files to and deleting them from the vector database.
+You can also test chatting with the LLM (Chat) and retrieval augmented generation (Query KB).
+
+Large Language Model Chat: The large language model chat exposes the generative language capabilities of the underlying model.
 The model is trained using a large collection of documents and books. It is able to summarize text,
 answer questions you pose, and much more. In the admin UI, use the mode "LLM Chat" to work in this mode.
 
-### Retrieval Augmented Generation (RAG)
-
-Retrieval augmented generation allows inserting knowledge around a specific use case into the large language
+Retrieval Augmented Generation (RAG): RAG allows inserting knowledge around a specific use case into the large language
 model - even if was not trained on these documents. You can upload your documents using the admin
 UI. The LLM is then able to answer your questions about these documents.
 In the admin UI, select the button "Query KB" to use this mode.
@@ -356,6 +409,56 @@ You can book a private instance along with your Dashjoin tenant. Please refer to
 to access the shop page.
 Note that the services all comply with european GDPR regulations.
 Please contact us if you are interested in deploying your own copy using GPU resources in your datacenter.
+
+## Extending AI Assistant
+
+You can package AI functionality into your Dashjoin app and deploy it to Dashjoin AI Assistant.
+
+### Adding Custom AI to an App
+
+Within your app, create a folder "aikb/dashjoin/aikb" with a Python hook "app.py".
+This hook is called upon startup where initializations can be performed and custom REST endpoints can be added.
+Consider the following example:
+
+```
+import logging
+from fastapi import FastAPI
+from private_gpt.settings.settings import Settings
+from private_gpt.ui.ui import PrivateGptUi
+from dashjoin.aikb.app_router import app_router
+
+logger = logging.getLogger(__name__)
+
+def initializeApp(app: FastAPI, settings: Settings, ui: PrivateGptUi):
+    logger.info("Dashjoin App - initializing")
+    app.include_router(app_router)
+```
+
+This example simply registers this custom REST service:
+
+```
+from fastapi import APIRouter, Depends, Request
+from private_gpt.server.utils.auth import authenticated
+
+# Expose the App's REST service
+app_router = APIRouter(prefix="/app/v1", dependencies=[Depends(authenticated)])
+
+# Simple REST API that returns an info object
+@app_router.get("/info", description="App Version Info", tags=["Custom App API"])
+def info() -> object:
+    return {
+        "name": "Custom App",
+        "version": "1.0"
+    }
+```
+
+### Adding LlamaIndex AI Code
+
+### Using Jupyter Notebooks
+
+### Calling Jupyter Notebooks over REST
+
+### Installing Python Libraries
 
 ## Entity Reconciliation
 
