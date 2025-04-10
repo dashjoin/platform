@@ -378,7 +378,7 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 * App development / lifecycle: apps can be written collaboratively on GitHub, auto-installed upon platform launch
 * Functions and databases can be deployed as micro-services using the RemoteDatabase driver
 
-### 2.1 (April 2022)
+### 2.1 (Apr 2022)
 
 * UI: HTML component, icons editor and display icon specification, run write queries from catalog, JSONata editor, MAP widget, PDF export
 * ETL: streaming XML, YAML, transparent HTTP caching
@@ -549,3 +549,26 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
 * SDK
   * GenerateExcel function
   * Functions to display progress and modal dialogs
+
+### 6.0 (Apr 2025)
+
+* Dashjoin AI Assistant
+  * Write Python / AI code in an embedded Jupyter environment
+  * Add custom AI code to your Dashjoin app and deploy it in production
+  * Leverage Dashjoin functions as AI tools for agentic reasoning
+  * API support for RAG document collections
+* Security
+  * Login with 2FA and Passkey
+* UI
+  * Datagrid widget to allow excel-style editing of multiple records
+  * WYSIWYG editor with custom menus to run AI & actions
+  * QR code and camera access from forms
+  * Mobile UI Enhancements
+  * Mobile / responsive table layout
+  * Tree widget can display a nested icon list (e.g. for use in the side bar)
+  * Analytics widget supports IN operator
+* SDK
+  * Upload files widget plus platform WebDAV support
+  * Faster build process for custom widgets
+  * New functions to generate CSV, YAML, and CSV
+  * Row based access control supports queries and list of owners for a record

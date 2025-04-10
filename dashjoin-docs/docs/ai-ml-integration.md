@@ -230,7 +230,7 @@ The following environment variables can be used to configure the container:
 * DJAI_OPENAI_API_KEY: API key for Mistral or OpenAI if these services are used
 * DJAI_OPENAI_MODEL: LLM model used (default open-mistral-7b)
 * DJAI_OPENAI_EMBEDDING_MODEL: embedding model used (defaukt mistral-embed)
-* DJAI_AUTH_SECRET: Basic authentication header required to use the container API. The sample value "Basic YWRtaW46ZGpkamRq" sets user and password to admin and djdjdj (user:password is base64 encoded).
+* DJAI_AUTH_SECRET: Basic authentication header required to use the container API (default is "Basic YWRtaW46ZGpkamRq" which is base64 encoded authentication header for user admin and password djdjdj)
 * DJAI_UI_PASSWORD: Password for the admin user when connecting to the container's admin UI (default djdjdj)
 * DJAI_LLM_MODE: llm used (possible values are: ollama, llama-cpp, sagemaker, openai, openailike, azopenai, gemini, default openailike)
 * DJAI_EMBEDDING_MODE: embedding mode (possible values are: ollama, huggingface, openai, sagemaker, azopenai, gemini, default openailike)
@@ -252,7 +252,6 @@ Run the container in production without app:
 ```shell
 docker run 
   -p 8001:8001 
-  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
   -e DJAI_OPENAI_API_KEY=your_mistral_key 
   dashjoin/ai-llm-kb
 ```
@@ -262,7 +261,6 @@ Run the container in production with app:
 ```shell
 docker run 
   -p 8001:8001 
-  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
   -e DJAI_OPENAI_API_KEY=your_mistral_key 
   -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
   dashjoin/ai-llm-kb
@@ -274,7 +272,6 @@ Run the container to develop an app. We export the Jupyter port 8080 to 8002 out
 docker run 
   -p 8001:8001 
   -p 8002:8080 
-  -e "DJAI_AUTH_SECRET=Basic YWRtaW46ZGpkamRq" 
   -e JUPYTER_TOKEN=djdjdj -e DASHJOIN_DEVMODE=1 
   -e DJAI_OPENAI_API_KEY=your_mistral_key 
   -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
@@ -631,7 +628,7 @@ The tools example aboce showed how code can be developed and tested in Jupyter a
 Using the executeNotebook function, you can even expose the Notebook directly as a REST service:
 
 ```
-import NotebookArgs .... TODO
+from dashjoin.aikb.util import executeNotebook
 
 # REST APIfication of a Jupyter Notebook
 @app_router.post("/nb", name="Jupyter Notebook as a Service", description="Jupyter Notebook as Service", tags=["Custom App API"])
@@ -647,6 +644,33 @@ In the Notebook, you can access the REST parameters as follows:
 import os
 args = os.environ.get("DJ_INPUT_ARGS")
 print(args)
+```
+
+The executeNotebook code must be placed in util.py:
+
+```
+import logging
+
+logger = logging.getLogger(__name__)
+
+def executeNotebook(nb: str):
+    """
+    Executes the given Jupyter Notebook and returns the result
+    """
+    import nbformat
+    from nbconvert.preprocessors import ExecutePreprocessor
+    import json
+
+    with open(nb) as ff:
+        nb_in = nbformat.read(ff, nbformat.NO_CONVERT)
+        
+    ep = ExecutePreprocessor(timeout=600) #, kernel_name='python3')
+
+    logger.info("Notebook execution", nb)
+    nb_out = ep.preprocess(nb_in)
+    logger.info("Notebook executed", nb)
+    print(json.dumps(nb_out, indent=2))
+    return nb_out
 ```
 
 ### Committing Changes to the App
