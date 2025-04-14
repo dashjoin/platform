@@ -272,7 +272,8 @@ Run the container to develop an app. We export the Jupyter port 8080 to 8002 out
 docker run 
   -p 8001:8001 
   -p 8002:8080 
-  -e JUPYTER_TOKEN=djdjdj -e DASHJOIN_DEVMODE=1 
+  -e JUPYTER_TOKEN=djdjdj 
+  -e DASHJOIN_DEVMODE=1 
   -e DJAI_OPENAI_API_KEY=your_mistral_key 
   -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
   dashjoin/ai-llm-kb
