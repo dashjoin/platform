@@ -87,7 +87,7 @@ Yarn is a JavaScript package manager, that will retrieve the latest version of t
 Now we can start the development webserver that will run on port 3000:
 
 ```
-yarn dev
+yarn rsbuild dev
 ```
 
 ### Adding a new Widget
