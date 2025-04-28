@@ -601,9 +601,9 @@ public class SQLDatabase extends AbstractDatabase {
       if (a.filter != null) {
         String col = q(a.name);
         Object arg1 = param(params, counter, a.arg1);
-        Object arg2 = param(params, counter, a.arg2);
         switch (a.filter) {
           case BETWEEN:
+            Object arg2 = param(params, counter + 1, a.arg2);
             if (arg1 != null && arg2 != null)
               where.add(col + " between " + arg1 + " and " + arg2);
             break;
