@@ -85,6 +85,11 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
         Table.ofName("EMP"), Arrays.asList(col("ID", Filter.IN, Arrays.asList(1, 2, 3), null)))));
     Assertions.assertEquals("[{EMP.ID=1}]", "" + go(db().analytics(null, Table.ofName("EMP"),
         Arrays.asList(col("ID", Filter.EQUALS, 1, null)))));
+    Assertions
+        .assertEquals("[{EMP.ID=2}]",
+            "" + go(db().analytics(null, Table.ofName("EMP"),
+                Arrays.asList(col("ID", Filter.GREATER_EQUAL, 2, null),
+                    col("ID", Filter.GREATER_EQUAL, 1, null)))));
     Assertions.assertEquals("[{EMP.ID=1}, {EMP.ID=2}]", "" + go(db().analytics(null,
         Table.ofName("EMP"), Arrays.asList(col("ID", Filter.GREATER_EQUAL, 1, null)))));
     Assertions.assertEquals("[{EMP.ID=1}]", "" + go(db().analytics(null, Table.ofName("EMP"),

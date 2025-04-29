@@ -534,6 +534,14 @@ public class SQLDatabase extends AbstractDatabase {
     return ret;
   }
 
+  static class Counter {
+    public int value;
+
+    public int getAndInc() {
+      return value++;
+    }
+  }
+
   @Override
   public QueryAndParams analytics(QueryMeta info, Table s, List<ColInfo> arguments) {
     List<String> project = new ArrayList<>();
@@ -595,7 +603,7 @@ public class SQLDatabase extends AbstractDatabase {
     }
 
     Map<String, Object> params = new LinkedHashMap<>();
-    int counter = 0;
+    Counter counter = new Counter();
     List<String> where = new ArrayList<>();
     for (ColInfo a : arguments)
       if (a.filter != null) {
@@ -603,7 +611,7 @@ public class SQLDatabase extends AbstractDatabase {
         Object arg1 = param(params, counter, a.arg1);
         switch (a.filter) {
           case BETWEEN:
-            Object arg2 = param(params, counter + 1, a.arg2);
+            Object arg2 = param(params, counter, a.arg2);
             if (arg1 != null && arg2 != null)
               where.add(col + " between " + arg1 + " and " + arg2);
             break;
@@ -671,19 +679,19 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   @SuppressWarnings("unchecked")
-  String param(Map<String, Object> params, int counter, Object arg) {
+  String param(Map<String, Object> params, Counter counter, Object arg) {
     if (arg == null)
       return null;
     if (arg instanceof List) {
       List<String> l = new ArrayList<>();
       for (Object item : (List<Object>) arg) {
-        String name = "_dj_" + (counter++);
+        String name = "_dj_" + counter.getAndInc();
         params.put(name, item);
         l.add("${" + name + "}");
       }
       return '(' + String.join(",", l) + ')';
     }
-    String name = "_dj_" + (counter++);
+    String name = "_dj_" + counter.getAndInc();
     params.put(name, arg);
     return "${" + name + "}";
   }
