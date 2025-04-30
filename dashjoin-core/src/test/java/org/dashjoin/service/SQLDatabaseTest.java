@@ -1,5 +1,6 @@
 package org.dashjoin.service;
 
+import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -14,8 +15,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * some basic tests for SQL Database
@@ -23,6 +27,9 @@ import jakarta.inject.Inject;
 @QuarkusTest
 @TestInstance(Lifecycle.PER_CLASS)
 public class SQLDatabaseTest extends AbstractDatabaseTest {
+
+  @Inject
+  Data data;
 
   @Inject
   Services services;
@@ -167,5 +174,23 @@ public class SQLDatabaseTest extends AbstractDatabaseTest {
     Assertions.assertThrows(IllegalArgumentException.class, () -> db().analytics(null,
         Table.ofName("EMP"), Arrays.asList(col("äää", null, null, null))));
     db().analytics(null, Table.ofName("EMP"), Arrays.asList(col("_a A 1", null, null, null)));
+  }
+
+  @Test
+  public void testFkArr() throws Exception {
+    SecurityContext sc = Mockito.mock(SecurityContext.class);
+    when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
+
+    // incoming: 2 <-kids- 1
+    Assertions.assertEquals(1,
+        data.incoming(sc, "junit", "ARR", "2", null, null).get(0).id.pk.get(0));
+
+    // traverse: 1 -kids-> 2
+    Assertions.assertEquals("[{ID=2, KIDS=null}]",
+        data.traverse(sc, "junit", "ARR", "1", "KIDS").toString());
+
+    // traverse: 2 -dj(junit/arr/kids-> 1
+    Assertions.assertEquals("[{ID=1, KIDS=2}]",
+        data.traverse(sc, "junit", "ARR", "2", "dj/junit/ARR/KIDS").toString());
   }
 }

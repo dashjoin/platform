@@ -77,6 +77,8 @@ public class ModelTest {
       for (Entry<String, Map<String, Object>> e : ((Map<String, Map<String, Object>>) map
           .get("tables")).entrySet()) {
 
+        if (e.getKey().equals("ARR"))
+          continue;
         if (e.getKey().equals("PRJ"))
           continue;
         if (e.getKey().equals("EMP"))

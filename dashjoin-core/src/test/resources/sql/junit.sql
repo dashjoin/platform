@@ -5,6 +5,7 @@ drop table if exists "EMP";
 drop table if exists "PRJ";
 drop table if exists "NOKEY";
 drop table if exists "NODE";
+drop table if exists "ARR";
 
 create table "T"("ID" int, "FK" int, "A" int, "B" int, "C" int);
 create table "U"("ID" int, "C" int);
@@ -21,3 +22,7 @@ insert into "NODE" values (1,null);
 insert into "NODE" values (2,1);
 insert into "NODE" values (3,1);
 insert into "NODE" values (4,3);
+
+create table "ARR"("ID" int primary key, "KIDS" varchar(255));
+insert into "ARR" values (1,'2');
+insert into "ARR" values (2,null);

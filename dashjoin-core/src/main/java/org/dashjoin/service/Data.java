@@ -674,6 +674,7 @@ public class Data {
     return traverse(sc, database, table, Arrays.asList(objectId1, objectId2), fk);
   }
 
+  @SuppressWarnings("unchecked")
   public Object traverse(SecurityContext sc, String database, String table, List<String> objectId,
       String fk) throws Exception {
     Map<String, Object> o = read(sc, database, table, objectId);
@@ -686,6 +687,17 @@ public class Data {
       if (o.get(fk) == null)
         return null;
       return read(sc, parts[1], parts[2], "" + o.get(fk));
+    } else if (p != null && p.items != null && p.items.ref != null) {
+      String[] parts = m.properties.get(fk).items.ref.split("/");
+      if (o.get(fk) == null)
+        return null;
+      Object arr = o.get(fk);
+      if (!(arr instanceof List))
+        arr = Arrays.asList(arr);
+      List<Object> res = new ArrayList<>();
+      for (Object item : (List<Object>) arr)
+        res.add(read(sc, parts[1], parts[2], "" + item));
+      return res;
     } else {
       String[] parts = fk.split("/");
       if (parts.length < 3)
@@ -710,7 +722,7 @@ public class Data {
 
   Property fk(Table t, String ref) {
     for (Property p : t.properties.values())
-      if (ref.equals(p.ref))
+      if (ref.equals(p.ref) || (p.items != null && ref.equals(p.items.ref)))
         return p;
     return null;
   }

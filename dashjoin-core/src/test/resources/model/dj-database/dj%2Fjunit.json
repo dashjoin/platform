@@ -54,6 +54,20 @@
 			"roleMappings": {
 				"authenticated": "dev-project"
 			}
+		},
+		"ARR": {
+			"properties": {
+				"KIDS": {
+					"type": "array",
+					"items": {
+						"ID": "dj/junit/ARR/KIDS",
+						"parent": "dj/junit/ARR",
+						"name": "KIDS",
+						"type": "string",
+						"ref": "dj/junit/ARR/ID"
+					}
+				}
+			}
 		}
 	}
 }
