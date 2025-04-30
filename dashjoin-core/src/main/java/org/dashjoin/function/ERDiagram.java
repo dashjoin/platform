@@ -32,6 +32,10 @@ public class ERDiagram extends AbstractFunction<String, String> {
           res.append("  " + q(prop.name) + " " + t(prop.dbType != null ? prop.dbType : prop.type));
           if (prop.pkpos != null && prop.pkpos == 0 && comp == null)
             res.append(" [primary key]");
+          if (prop.items != null)
+            if (prop.items.ref != null)
+              res.append(" [ref: > " + q(Escape.parseColumnID(prop.items.ref)[2]) + '.'
+                  + Escape.parseColumnID(prop.items.ref)[3] + "]");
           if (prop.ref != null)
             res.append(" [ref: > " + q(Escape.parseColumnID(prop.ref)[2]) + '.'
                 + Escape.parseColumnID(prop.ref)[3] + "]");
