@@ -246,25 +246,16 @@ public class OpenCypher {
           continue;
         Binding b = lastBinding();
 
-        if (pattern.relation.left2right == null || pattern.relation.left2right) {
-          if (pattern.relation.name == null) {
+        if (pattern.relation.name == null) {
+          if (pattern.relation.left2right == null || pattern.relation.left2right) {
             // any outgoing rel
             for (Property p : allFKs(b.node)) {
               Object traverse =
                   data.traverse(sc, b.node.database, b.node.table, pkToString(b.node), p.name);
               traverse(b, pattern, traverse, res, p.name);
             }
-          } else {
-            // fixed outgoing rel, traverse FK
-            Object traverse = data.traverse(sc, b.node.database, b.node.table,
-                b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
-                pattern.relation.name);
-            traverse(b, pattern, traverse, res, pattern.relation.name);
           }
-        }
-
-        if (pattern.relation.left2right == null || !pattern.relation.left2right) {
-          if (pattern.relation.name == null) {
+          if (pattern.relation.left2right == null || !pattern.relation.left2right) {
             // any incoming
             List<Origin> inc = data.incoming(sc, b.node.database, b.node.table,
                 b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()), 0, 100);
@@ -273,13 +264,13 @@ public class OpenCypher {
                   data.read(sc, o.id.database, o.id.table, pkToString(o.id));
               traverse(b, pattern, value, res, o.fk);
             }
-          } else {
-            // fixed incoming
-            Object traverse = data.traverse(sc, b.node.database, b.node.table,
-                b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
-                pattern.relation.name);
-            traverse(b, pattern, traverse, res, pattern.relation.name);
           }
+        } else {
+          // fixed outgoing rel, traverse FK
+          Object traverse = data.traverse(sc, b.node.database, b.node.table,
+              b.node.pk.stream().map(i -> i.toString()).collect(Collectors.toList()),
+              pattern.relation.name);
+          traverse(b, pattern, traverse, res, pattern.relation.name);
         }
       }
     }
