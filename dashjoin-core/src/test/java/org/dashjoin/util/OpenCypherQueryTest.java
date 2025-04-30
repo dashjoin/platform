@@ -147,6 +147,42 @@ public class OpenCypherQueryTest {
   }
 
   @Test
+  public void testTraverseInc() throws Exception {
+    List<Map<String, Object>> res;
+
+    // with prop specified, direction does not matter
+    res = run("MATCH (e:EMP)-[edge:WORKSON]->(p) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("edge"));
+    res = run("MATCH (e:EMP)-[edge:WORKSON]-(p) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("edge"));
+    res = run("MATCH (e:EMP)<-[edge:WORKSON]-(p) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("edge"));
+
+    res = run("MATCH (p:PRJ)-[edge:`dj/junit/EMP/WORKSON`]->(e) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=false}", "" + res.get(0).get("edge"));
+    res = run("MATCH (p:PRJ)<-[edge:`dj/junit/EMP/WORKSON`]-(e) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=false}", "" + res.get(0).get("edge"));
+    res = run("MATCH (p:PRJ)-[edge:`dj/junit/EMP/WORKSON`]-(e) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=false}", "" + res.get(0).get("edge"));
+
+    // wildcard: incoming yields empty result
+    res = run("MATCH (e:EMP)-[edge]->(p) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("edge"));
+    res = run("MATCH (e:EMP)-[edge]-(p) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + res.get(0).get("edge"));
+    res = run("MATCH (e:EMP)<-[edge]-(p) RETURN e, edge, p");
+    Assertions.assertEquals(0, res.size());
+
+    // wildcard: outgoing yields empty result
+    res = run("MATCH (p:PRJ)-[edge]->(e) RETURN e, edge, p");
+    Assertions.assertEquals(0, res.size());
+    res = run("MATCH (p:PRJ)<-[edge]-(e) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=false}", "" + res.get(0).get("edge"));
+    res = run("MATCH (p:PRJ)-[edge]-(e) RETURN e, edge, p");
+    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=false}", "" + res.get(0).get("edge"));
+  }
+
+  @Test
   public void testTraverseAllOut() throws Exception {
     List<Map<String, Object>> res = run("MATCH (p:EMP {ID:1})-->(project) RETURN project.ID");
     Assertions.assertEquals("[{project.ID=1000}]", "" + res);

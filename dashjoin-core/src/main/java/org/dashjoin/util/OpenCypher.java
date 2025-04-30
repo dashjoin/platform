@@ -326,7 +326,10 @@ public class OpenCypher {
       nb.pattern = pattern;
       nb.value = item;
 
-      nb.link = MapUtil.of("_dj_edge", relName, "_dj_outbound", pattern.relation.left2right);
+      if (relName.contains("/"))
+        nb.link = MapUtil.of("_dj_edge", Escape.parseColumnID(relName)[3], "_dj_outbound", false);
+      else
+        nb.link = MapUtil.of("_dj_edge", relName, "_dj_outbound", true);
 
       Table targetType = targetType(b.node, relName);
       nb.node = OpenCypher.this.query.getResource(targetType.db, targetType.table, item);
