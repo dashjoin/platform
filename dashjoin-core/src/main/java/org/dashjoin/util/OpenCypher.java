@@ -348,6 +348,9 @@ public class OpenCypher {
       String ref = prop.contains("/") ? prop
           : OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
               .get(prop).ref;
+      if (ref == null)
+        ref = OpenCypher.this.query.dbs.get(from.database).tables.get(from.table).properties
+            .get(prop).items.ref;
       String[] arr = Escape.parseColumnID(ref);
       Table res = new Table();
       res.db = arr[1];
@@ -362,7 +365,7 @@ public class OpenCypher {
       List<Property> list = new ArrayList<>();
       for (Property p : OpenCypher.this.query.dbs.get(from.database).tables
           .get(from.table).properties.values())
-        if (p.ref != null)
+        if (p.ref != null || (p.items != null && p.items.ref != null))
           list.add(p);
       return list;
     }

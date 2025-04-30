@@ -295,4 +295,14 @@ public class OpenCypherQueryTest {
         "MATCH (from:`dj/junit/NODE` {ID:1})<-[`dj/junit/NODE/REL`*2..2]-(to) RETURN from.ID, to.ID");
     Assertions.assertEquals("[{from.ID=1, to.ID=4}]", res.toString());
   }
+
+  @Test
+  public void testArrFk() throws Exception {
+    List<Map<String, Object>> res = run("MATCH (from:`ARR`)-->(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=1, to.ID=2}]", res.toString());
+    res = run("MATCH (from:`ARR`)<--(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=2, to.ID=1}]", res.toString());
+    res = run("MATCH (from:`ARR`)--(to) RETURN from.ID, to.ID");
+    Assertions.assertEquals("[{from.ID=1, to.ID=2}, {from.ID=2, to.ID=1}]", res.toString());
+  }
 }
