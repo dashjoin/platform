@@ -5,7 +5,7 @@ import org.dashjoin.service.ACLContainerRequestFilter;
 /**
  * expose sc.getUserPrincipal().getName() as a function
  */
-public class DjUser extends AbstractEveryoneFunction<Void, String> {
+public class DjUser extends AbstractFunction<Void, String> {
 
   @Override
   public String run(Void arg) throws Exception {

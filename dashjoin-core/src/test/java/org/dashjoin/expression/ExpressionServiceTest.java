@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.dashjoin.function.AbstractEveryoneFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Data.Origin;
@@ -75,7 +74,7 @@ public class ExpressionServiceTest {
       s.resolve(sc, "$sqlDate(x) & '  '", of("x", i));
   }
 
-  public static class SqlDate extends AbstractEveryoneFunction<Integer, Object> {
+  public static class SqlDate extends AbstractFunction<Integer, Object> {
 
     @Override
     public Object run(Integer arg) throws Exception {

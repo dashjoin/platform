@@ -3,7 +3,7 @@ package org.dashjoin.function;
 /**
  * test / demo function
  */
-public class ConsoleLog extends AbstractEveryoneFunction<Object, Object> {
+public class ConsoleLog extends AbstractFunction<Object, Object> {
 
   @Override
   public Object run(Object arg) throws Exception {

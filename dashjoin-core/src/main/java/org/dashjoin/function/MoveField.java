@@ -10,7 +10,7 @@ import java.util.Map;
  * array element (if that is an object)
  */
 @SuppressWarnings("rawtypes")
-public class MoveField extends AbstractVarArgFunction<Object> implements EveryoneFunction {
+public class MoveField extends AbstractVarArgFunction<Object> {
 
   @SuppressWarnings("unchecked")
   @Override

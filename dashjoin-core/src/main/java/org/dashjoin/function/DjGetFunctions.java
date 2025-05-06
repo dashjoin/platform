@@ -6,7 +6,7 @@ import org.dashjoin.service.Manage.FunctionVersion;
 /**
  * function to list the available jsonata functions
  */
-public class DjGetFunctions extends AbstractEveryoneFunction<Void, List<FunctionVersion>> {
+public class DjGetFunctions extends AbstractFunction<Void, List<FunctionVersion>> {
 
   @Override
   public List<FunctionVersion> run(Void arg) throws Exception {

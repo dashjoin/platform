@@ -5,7 +5,7 @@ import org.dashjoin.service.Manage.Version;
 /**
  * function to return the platform version information
  */
-public class DjVersion extends AbstractEveryoneFunction<Void, Version> {
+public class DjVersion extends AbstractFunction<Void, Version> {
 
   @Override
   public Version run(Void arg) throws Exception {

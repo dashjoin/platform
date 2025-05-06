@@ -1,6 +1,6 @@
 package org.dashjoin.function;
 
-public class UUID extends AbstractEveryoneFunction<Void, String> {
+public class UUID extends AbstractFunction<Void, String> {
 
   @Override
   public String run(Void arg) throws Exception {

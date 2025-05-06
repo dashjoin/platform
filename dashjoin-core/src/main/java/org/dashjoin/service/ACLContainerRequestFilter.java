@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.dashjoin.function.EveryoneFunction;
 import org.dashjoin.function.Function;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.QueryMeta;
@@ -63,8 +62,6 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
    */
   public static void check(SecurityContext sc, Function<?, ?> function) {
     if (sc.isUserInRole("admin"))
-      return;
-    if (function instanceof EveryoneFunction)
       return;
     if (function.getRoles() != null)
       for (String role : function.getRoles()) {

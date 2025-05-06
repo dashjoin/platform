@@ -3,7 +3,7 @@ package org.dashjoin.function;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ParseUrl extends AbstractEveryoneFunction<String, ParseUrl.Result> {
+public class ParseUrl extends AbstractFunction<String, ParseUrl.Result> {
 
   public static class Result {
     public String authority;
