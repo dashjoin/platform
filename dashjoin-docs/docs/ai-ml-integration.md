@@ -238,6 +238,30 @@ The following environment variables can be used to configure the container:
 * DJAI_DATA_QDRANT_PATH: path of the vector database (default dashjoin/data/default/qdrant)
 * DJAI_DATA_PATH: path to local data (default dashjoin/data/default)
 
+Vector DB settings
+
+* DJAI_VECTORDB: vector DB to use (default is qdrant)
+* DJAI_PGVECTOR_HOST: rag DB hostname (default postgres)
+* DJAI_PGVECTOR_PORT: rag DB port (default 5432)
+* DJAI_PGVECTOR_USER: rag DB username (default postgres)
+* DJAI_PGVECTOR_PASSWORD: rag DB pwd (default postgres)
+* DJAI_PGVECTOR_EMBED_DIM: vector DB dimension (default 768)
+* DJAI_PGVECTOR_SCHEMA: rag schema (default public)
+* DJAI_PGVECTOR_TABLE: rag table name (default aiembeddings)
+
+Local model settings
+
+* DJAI_OLLAMA_MODEL: llm model (default mistral)
+* DJAI_OLLAMA_EMBEDDING_MODEL: embedding model (default nomic-embed-text)
+* DJAI_OLLAMA_URL: ollama url (default http://ollama:11434)
+* DJAI_OLLAMA_TFS_Z: Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting (default 1.0)
+* DJAI_OLLAMA_TOP_K: Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative (default 40)
+* DJAI_OLLAMA_TOP_P: Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text (default 0.9)
+* DJAI_OLLAMA_REPEAT_LAST_N: Sets how far back for the model to look back to prevent repetition (default 64)
+* DJAI_OLLAMA_REPEAT_PENALTY: Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient (default 1.2)
+* DJAI_OLLAMA_REQUEST_TIMEOUT: Time elapsed until ollama times out the request (default 600.0)
+* DJAI_OLLAMA_AUTOPULL_MODELS: automatically pull models as needed (default true)
+
 * DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
 * JUPYTER_TOKEN: password of the Juyper development environment
 * DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
