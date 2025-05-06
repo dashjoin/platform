@@ -11,15 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Cache node modules
-      uses: c-hive/gha-yarn-cache@v2
-      with:
-        directory: angular
+    - uses: actions/checkout@v4
 
     - name: Set up JDK
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '21'
