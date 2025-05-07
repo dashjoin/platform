@@ -462,6 +462,7 @@ public class Metadata {
       case "TEXT": // Postgres
         return "string";
       case "SERIAL": // Postgres
+      case "BIGSERIAL": // Postgres
         return "number";
       case "BYTEA":
         return "binary";
@@ -470,6 +471,10 @@ public class Metadata {
       case "JSON": // Postgres
         return "string";
       case "JSONB": // Postgres
+        return "string";
+      case "UUID": // Postgres
+        return "string";
+      case "VECTOR": // Postgres
         return "string";
       case "POINT": // Postgres
         return "string";
