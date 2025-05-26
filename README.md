@@ -4,7 +4,7 @@
 
 # Open Source Low Code & AI Development Platform
 
-[![Dashjoin Angular and Java build](https://github.com/dashjoin/platform/workflows/Dashjoin%20CI%20build/badge.svg)](https://github.com/dashjoin/platform/actions)
+[![Dashjoin](https://github.com/dashjoin/platform/workflows/Dashjoin%20CI%20build/badge.svg)](https://github.com/dashjoin/platform/actions)
 [![junit-coverage](https://img.shields.io/badge/junit_coverage-84%25-brightgreen)](https://github.com/dashjoin/platform/tree/master/dashjoin-core/src/test/java/org/dashjoin/service)
 [![GitHub issues](https://img.shields.io/github/issues/dashjoin/platform)](https://github.com/dashjoin/platform/issues)
 [![GitHub stars](https://img.shields.io/github/stars/dashjoin/platform)](https://github.com/dashjoin/platform/stargazers)

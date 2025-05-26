@@ -4,7 +4,7 @@ This section is comprised of two parts. First, we look at the API that ships wit
 
 ## Platform API
 
-The Dashjoin architecture features an Angular Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
+The Dashjoin architecture features an Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
 The OpenAPI description is available at <https://demo.my.dashjoin.com/openapi>. Dashjoin also ships the Swagger GUI at <https://demo.my.dashjoin.com/swagger-ui>.
 Please note that the API is subject to change.
 
