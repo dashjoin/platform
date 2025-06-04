@@ -102,4 +102,50 @@ public class MapUtil {
     m.put(key6, value6);
     return m;
   }
+
+  public static <V> Map<String, V> ofNull(String key, V value) {
+    Map<String, V> m = new LinkedHashMap<>();
+    if (value != null)
+      m.put(key, value);
+    return m;
+  }
+
+  public static <V> Map<String, V> ofNull(String key, V value, String key2, V value2) {
+    Map<String, V> m = ofNull(key, value);
+    if (value2 != null)
+      m.put(key2, value2);
+    return m;
+  }
+
+  public static <V> Map<String, V> ofNull(String key, V value, String key2, V value2, String key3,
+      V value3) {
+    Map<String, V> m = ofNull(key, value, key2, value2);
+    if (value3 != null)
+      m.put(key3, value3);
+    return m;
+  }
+
+  public static <V> Map<String, V> ofNull(String key, V value, String key2, V value2, String key3,
+      V value3, String key4, V value4) {
+    Map<String, V> m = ofNull(key, value, key2, value2, key3, value3);
+    if (value4 != null)
+      m.put(key4, value4);
+    return m;
+  }
+
+  public static <V> Map<String, V> ofNull(String key, V value, String key2, V value2, String key3,
+      V value3, String key4, V value4, String key5, V value5) {
+    Map<String, V> m = ofNull(key, value, key2, value2, key3, value3, key4, value4);
+    if (value5 != null)
+      m.put(key5, value5);
+    return m;
+  }
+
+  public static <V> Map<String, V> ofNull(String key, V value, String key2, V value2, String key3,
+      V value3, String key4, V value4, String key5, V value5, String key6, V value6) {
+    Map<String, V> m = ofNull(key, value, key2, value2, key3, value3, key4, value4, key5, value5);
+    if (value6 != null)
+      m.put(key6, value6);
+    return m;
+  }
 }

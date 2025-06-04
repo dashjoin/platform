@@ -18,8 +18,10 @@ import java.util.Map;
 import java.util.Set;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.Function;
+import org.dashjoin.mapping.Mapping;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.JsonSchema;
+import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.Sorter;
@@ -281,14 +283,33 @@ public class PolymorphismDatabase extends JSONDatabase {
         res.putAll(array(String.class));
     } else if (Map.class.isAssignableFrom(c)) {
       res.put("type", "object");
+      Map<String, Object> properties = new HashMap<>();
       String type = "string";
       if (genericType instanceof ParameterizedType) {
         ParameterizedType pt = (ParameterizedType) genericType;
         if (pt.getActualTypeArguments().length == 2)
-          if (pt.getActualTypeArguments()[1].getTypeName().startsWith("org.dashjoin"))
+          if (pt.getActualTypeArguments()[1].getTypeName().startsWith("org.dashjoin")) {
             type = "object";
+            Type t = pt.getActualTypeArguments()[1];
+            if (t instanceof Class)
+              if (!t.equals(Table.class))
+                if (!t.equals(Property.class))
+                  if (!t.equals(Mapping.class))
+                    for (Field f : ((Class<?>) t).getFields()) {
+                      Map<String, Object> x = newHashMap(of("type",
+                          Number.class.isAssignableFrom(f.getType()) ? "number"
+                              : (Boolean.class.isAssignableFrom(f.getType()) ? "boolean"
+                                  : "string")));
+                      if (f.getAnnotation(JsonSchema.class) != null)
+                        put(x, f.getAnnotation(JsonSchema.class));
+                      properties.put(f.getName(), x);
+                    }
+          }
       }
-      res.put("additionalProperties", newHashMap(of("type", type)));
+      if (properties.isEmpty())
+        res.put("additionalProperties", newHashMap(of("type", type)));
+      else
+        res.put("additionalProperties", newHashMap(of("type", type, "properties", properties)));
     } else if (Number.class.isAssignableFrom(c))
       res.put("type", "number");
     else if (Boolean.class.equals(c))
