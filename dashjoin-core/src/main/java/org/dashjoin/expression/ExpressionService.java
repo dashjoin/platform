@@ -433,8 +433,18 @@ public class ExpressionService {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Object run(List arg) throws Exception {
+      Map<String, Object> object = null;
+      for (int i = 2; i < arg.size(); i++)
+        if (arg.get(i) instanceof Map) {
+          object = (Map<String, Object>) arg.get(i);
+          arg.set(i, null);
+        }
+
+      if (object == null)
+        throw new Exception("Update object cannot be null");
+
       this.expressionService.getData().update(sc, (String) arg.get(0), (String) arg.get(1),
-          "" + arg.get(2), (Map<String, Object>) arg.get(3));
+          pks(arg), (Map<String, Object>) object);
       return null;
     }
 
@@ -450,7 +460,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ss(bns)o:l>";
+      return "<ss(bns)(bnso)(bnso)?(bnso)?o?:l>";
     }
   }
 
