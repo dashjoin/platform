@@ -683,6 +683,7 @@ Allows saving an expression on the server. When run, we evaluate / apply the exp
 Configuration
 
 * expression: The expression to save and run when invoked
+* parameters: optional JSON Schema describing the objects expected by the function
 
 Invocation parameter
 
