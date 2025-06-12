@@ -345,7 +345,9 @@ an ETL job is defined as "etl", the following expression would create the table 
 
 The expression is run with admin credentials. Any errors are ignored and the result is logged to the console.
 
-Another use case is the customization of an app. Assume you have two instances of an app running, but you would like
+## App Customization
+
+Assume you have two instances of an app running, but you would like
 to customize the theme color. One approach would be to fork the repository, change the setting there and
 start the second instance using the new app URL. This works, but it is a bit cumbersome to handle subsequent
 changes in both repositories. For small changes, you can use the startup expression. The expression is called
@@ -354,4 +356,44 @@ Let's assume, every instance gets the value of its theme color. We can use the s
 
 ```
 $update('config', 'dj-config', 'theme', {'map': {'pallette.primary.main': onStart}})
+```
+
+If your app instances need to have different login configs, favicons, or other web assets such as logos, you
+can use the DASHJOIN_WEBROOT environment variable to serve different content.
+An might have the following folder structure:
+
+```
+assets
+  logincfg.json
+  public_html
+    assets
+      logo.png
+```
+
+If you need to have two instances of the app with different logo and login config, you can move logincfg.json into
+the public_html/assets folder, create a copy of that folder for each app instance:
+
+```
+assets
+  public_html
+    assets
+      logincfg.json
+      logo.png
+  public_html2
+    assets
+      logincfg.json
+      logo.png
+```
+
+The second instance can be lauched with this environment variable:
+
+```
+DASHJOIN_WEBROOT=assets/public_html2
+```
+
+If DASHJOIN_HOME is set, please prepend it as follows:
+
+```
+DASHJOIN_HOME=MYHOME
+DASHJOIN_WEBROOT=MYHOME/assets/public_html2
 ```

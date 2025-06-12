@@ -168,6 +168,7 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_SID: optional system ID (contents of the file .secretid)
 * WEBDEV_ENABLED: turn WebDAV on / off (required for the upload widget)
 * DASHJOIN_ONSTART: If a on-start expression is defined (see system configuration), this expression gets passed the string value {"onStart": VALUE}
+* DASHJOIN_WEBROOT: path to the folder containing the web application (prepend DASHJOIN_HOME if set)
 
 By default, the service will be bound to 0.0.0.0 (all IP addresses) and serve HTTP on port 8080.
 
