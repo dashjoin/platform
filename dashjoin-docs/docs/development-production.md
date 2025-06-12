@@ -328,3 +328,30 @@ To run the unit test:
 
 * Via the VS Code extensions tab, install the [Debugger for Java](https://open-vsx.org/extension/vscjava/vscode-java-debug) and the [Test Runner for Java](https://open-vsx.org/extension/vscjava/vscode-java-test) plugins
 * Press run in the new JUnit tab to run all the tests
+
+## Start Expression
+
+The platform allows defining an expression that is run whenever the platform starts. This expression can be defined via the
+on-startup setting in the system configuration. A typical use case is setting up the database and maybe running an ETL.
+Let's assume a "create table if not exists MyTable(...)" is located in the query catalog under the name "create" and
+an ETL job is defined as "etl", the following expression would create the table and run the ETL job:
+
+```
+(
+  $query('postgres', 'create');
+  $call('etl');
+)
+```
+
+The expression is run with admin credentials. Any errors are ignored and the result is logged to the console.
+
+Another use case is the customization of an app. Assume you have two instances of an app running, but you would like
+to customize the theme color. One approach would be to fork the repository, change the setting there and
+start the second instance using the new app URL. This works, but it is a bit cumbersome to handle subsequent
+changes in both repositories. For small changes, you can use the startup expression. The expression is called
+with the value of the DASHJOIN_ONSTART environment variable string: {"onStart": VALUE}.
+Let's assume, every instance gets the value of its theme color. We can use the start expression to set the color:
+
+```
+$update('config', 'dj-config', 'theme', {'map': {'pallette.primary.main': onStart}})
+```

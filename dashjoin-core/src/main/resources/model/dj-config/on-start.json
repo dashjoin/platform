@@ -1,0 +1,6 @@
+{
+	"ID": "on-start",
+	"description": "Expression to be evaluated when system starts",
+	"category": "app",
+	"type": "string"
+}
