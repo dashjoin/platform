@@ -38,8 +38,16 @@ The default config is:
     "openIdConfigs": [],                     // OpenID provider configurations such as O365, Keycloak, etc.
     "defaultLocale": "en",                   // default I18N locale to use, choose "browser" to select the browser's preferred locale,
     "locales": ["en"]                        // languages supported by the platform
+}
+```
+
+Further config fields are:
+
+```text
+{
     "i18n": ...                              // texts and translations for the login screen and cookie banner (see I18N section for more information)
     "autoLogin": ...                         // auto login settings (see section for details)
+    "primaryColor": "#......"                // primary color for theming to make sure the login page uses the same color as the theme defined in the system config
 }
 ```
 
