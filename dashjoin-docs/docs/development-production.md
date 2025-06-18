@@ -65,6 +65,70 @@ switch to the source control tab on the left. The usual workflow is to:
 
 For more details, please refer to [this guide](https://code.visualstudio.com/docs/sourcecontrol/overview).
 
+## Installing the App on the Users' Operating Systems
+
+Dashjoin Apps can be accessed via the web on desktop and mobile devices. In some situations, it may be useful
+to install an App on the users' operating systems (Windows, MacOS, iOS, Android, etc.). This might enable some
+offline capabilities, preserve logon sessions, or simplify quick access using the App icon on the homescreen.
+
+Dashjoin supports this functionality out of the box by serving this default manifest:
+
+```
+{
+    "name": "Dashjoin",
+    "short_name": "Dashjoin",
+    "start_url": "/",
+    "display": "standalone",
+    "display_override": ["fullscreen", "minimal-ui"],
+    "id": "dashjoin",
+    "background_color": "#fff",
+    "theme_color": "#1976d2",
+    "description": "Rapidly Build Apps Driven by Data and AI",
+    "dashjoin": {
+        "show_install_dialog": false
+    },
+    "icons": [
+        {
+            "src": "djlogo192.webp",
+            "type": "image/webp",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "djlogo512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        }
+    ],
+	"screenshots": [
+		{
+			"src": "djscreenshot.avif",
+			"sizes": "1200x627",
+			"type": "image/avif"
+		},
+		{
+			"src": "djscreenshot.avif",
+			"sizes": "1200x627",
+			"type": "image/avif",
+            "form_factor": "wide"
+		},
+		{
+			"src": "djscreenshot.avif",
+			"sizes": "1200x627",
+			"type": "image/avif",
+            "form_factor": "narrow"
+		}
+	]
+}
+```
+
+The installation process depends on your operating system and browser. The Chrome browser for instance,
+displays an "Install" icon to the right of the URL textfield. Safari requires you to click the "share"
+button and select "Add to Dock". You can customize the manifest by changing the default values above and
+saving the file in assets/manifest/manifest.json. If you set the show_install_dialog flag to true,
+the app will display installation instructions depending on your device and browser.
+
 ## Developing a Custom Widget
 
 One of the most powerful features of Dashjoin Studio is the ability to write your own widgets.
