@@ -129,6 +129,17 @@ button and select "Add to Dock". You can customize the manifest by changing the 
 saving the file in assets/manifest/manifest.json. If you set the show_install_dialog flag to true,
 the app will display installation instructions depending on your device and browser.
 
+## Adding Custom JavaScript
+
+Dashjoin provides an extension point in index.html that allows you to add JavaScript to your app.
+This might be required if you would like to add features like Google Analytics to your app.
+Your app can modify the following file in "assets/extensions/main.js".
+
+```
+// Module for web site extensions
+place your JS code here (without script tags)
+```
+
 ## Developing a Custom Widget
 
 One of the most powerful features of Dashjoin Studio is the ability to write your own widgets.
