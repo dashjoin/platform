@@ -7,6 +7,9 @@
 				"widget": "card",
 				"layout": "vertical",
 				"size": 3,
+				"style": {
+				    "height": "100%"
+				},
 				"children": [
 					{
 						"widget": "display",
@@ -55,6 +58,9 @@
 				"layout": "vertical",
 				"title": "App",
 				"size": 3,
+				"style": {
+				    "height": "100%"
+				},
 				"children": [
 					{
                         "markdown": "&nbsp;&nbsp;&nbsp;&nbsp;<span class='material-icons'>terminal</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target='expert' href='${context}'>Dashjoin Studio</a>",
@@ -86,6 +92,9 @@
 				"layout": "vertical",
 				"title": "Configuration",
 				"size": 3,
+				"style": {
+				    "height": "100%"
+				},
 				"children": [
 					{
 						"widget": "text",
@@ -106,6 +115,9 @@
 				"layout": "vertical",
 				"title": "Databases",
 				"size": 3,
+				"style": {
+				    "height": "100%"
+				},
 				"children": [
 					{
 						"widget": "text",
