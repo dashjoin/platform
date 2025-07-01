@@ -407,7 +407,7 @@ To run the unit test:
 ## Start Expression
 
 The platform allows defining an expression that is run whenever the platform starts. This expression can be defined via the
-on-startup setting in the system configuration. A typical use case is setting up the database and maybe running an ETL.
+on-start setting in the system configuration. A typical use case is setting up the database and maybe running an ETL.
 Let's assume a "create table if not exists MyTable(...)" is located in the query catalog under the name "create" and
 an ETL job is defined as "etl", the following expression would create the table and run the ETL job:
 
@@ -435,7 +435,7 @@ $update('config', 'dj-config', 'theme', {'map': {'pallette.primary.main': onStar
 
 If your app instances need to have different login configs, favicons, or other web assets such as logos, you
 can use the DASHJOIN_WEBROOT environment variable to serve different content.
-An might have the following folder structure:
+An app might have the following folder structure:
 
 ```
 assets
