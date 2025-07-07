@@ -13,6 +13,8 @@
         "Run": "Ausführen",
         "Connection Information": "Informationen zur Verbindung",
         "Database Information": "Informationen zur Datenbank",
-        "Search Results": "Suchergebnisse"
+        "Search Results": "Suchergebnisse",
+		"Sources": "Quellen",
+		"page": "Seite"
 	}
 }
