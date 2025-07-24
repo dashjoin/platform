@@ -23,6 +23,7 @@ public class Invoke extends AbstractConfigurableFunction<Object, Object> {
   /**
    * parameters that provide metadata on how to call the function (to be used by AI / OpenAPI)
    */
+  @JsonSchema(style = {"width", "800px"})
   public Map<String, Prop> parameters;
 
   @Override
