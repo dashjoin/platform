@@ -574,3 +574,16 @@ The Quarkus launcher supports hot loading of resources, i.e. any changes made wi
   * Faster build process for custom widgets
   * New functions to generate CSV, YAML, and CSV
   * Row based access control supports queries and list of owners for a record
+
+### 6.1 (July 2025)
+
+* UI
+  * Dashjoin Apps are installable as Apps on all Operating Systems (Windows, MacOS, iOS, Android)
+  * Revamped AIChat widget
+* Platform
+  * Improved loading time over small bandwidth
+* SDK
+  * chat function for simplified LLM calls / leveraging Dashjoin functions as tools
+  * Parameter metadata for Invoke function allow for better interoperability with LLMs and use in OpenAPIs
+  * Easy extensibility of Apps on HTML/JS level (e.g. for adding Google Analytics)
+  * Ability to customizing multiple instances of an App
