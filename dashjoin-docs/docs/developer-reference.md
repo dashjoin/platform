@@ -194,13 +194,47 @@ The key specifies the action button's label, the value contains the expression t
 
 #### aichat
 
-Chatbot widget for interacting with large language models.
+Chatbot widget for interacting with large language models. This widget displays chat contents which are represented
+by an array of messages. The messages contain a role (system, user, assistant) and a content. The content is usually
+a string, but may also contain images and documents (see the OpenAI documentation).
 
-* url: LLM Service URL or function name
-* name: Chatbot name
-* tagline: Chatbot tagline
-* logo: Logo URL
-* system_prompt: AI system prompt
+The widget displays the chat and calls expressions when
+
+* a new question is asked
+* a file is uploaded
+* a file is deleted
+
+The expressions must handle the event, perform any kind of desired DB updates and return data to the widget.
+
+* expression: an expression to compute the initial state of the widget:
+
+```
+{
+  "messages": [{role, content}],                    // the chat messages
+  "query": string                                   // contents of the text field
+  "files": {name: {value: dataURL, metadata: any}}  // files associated with the chat (e.g. for RAG)
+  "queryFiles":                                     // like files, represents files that will be sent with the next message (e.g. a pic to be sent to OCR)
+  "tools": [string]                                 // names of Invoke functions to be used as tools
+  "toolsSelectable": boolean                        // like the widget setting, allows the setting to be dynamic
+  "uploadEnabled": boolean                          // like the widget setting, allows the setting to be dynamic
+}
+```
+
+* onChat: called when the send button (or CTRL Enter) is pressed. Sends the state as a parameter. Expects the new value for messages. Usually, this is the user's query and the LLM answer appended to messages
+* onUpload: called when the user uploads a file. The 'upload' parameter contains {name (the file name), value (the file encoded as a data URL)}. The expression must return a structure {type, metadata}. Type 'files' describes whether the file is associated with the entire chat (e.g. for RAG) or 'queryFiles' is to be sent with the next message. Metadata can be any data the expression computes for the file. An example might be document IDs returned from a RAG vector DB.
+* onDelete: called when the user deletes a file. The 'delete' parameter contains {name, value, metadata, type (files or queryFiles)} 
+* toolsSelectable: allow user to (de)select tools
+* uploadEnabled: allow user to upload files
+
+The following example shows a minimal configuration with the "always answer yes" AI.
+
+```
+{
+    "widget": "aichat"
+    "onChat": "messages ~> $append({'role': 'user', 'content': query}) ~> $append({'role': 'assistant', 'content': 'yes'})",
+    "expression": "{'messages': [{'role': 'system', 'content': 'the system prompt of the say yes AI'}]}",
+}
+```
 
 #### analytics
 
@@ -1024,6 +1058,7 @@ streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 streamDb | $streamDb(database, table) | Streams records from the database table specified
 curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout other than the default of 10s. Use header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1. Use header {"dj-produces": "text/plain"} to return plain text rather than JSON. Use header {"Content-Type": "multipart/form-data"} to upload files encoded in data URLs in the data object (see Input widget)
+chat | $chat(url, query, messages, tools?, options?, headers?) | Encapsulates API calls to LLMs running at url. Query is the next user message. messages is an array of role / content containing the previous chat interactions. Tools is an array of strings referencing Invoke functions in the function catalog that should be used as tools during the LLM call. Options contains additional LLM parameters like "model": "gpt-4o-mini", etc. Finally, headers works like with the curl function. 
 openJson | $openJson(url) | Parses JSON at the url
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
