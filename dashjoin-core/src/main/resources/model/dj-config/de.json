@@ -17,6 +17,7 @@
 		"Sources": "Quellen",
 		"page": "Seite",
 		"Add files": "Dateien hinzufügen",
-		"ra.action.select_all_button": "Alles auswählen"
+		"ra.action.select_all_button": "Alles auswählen",
+		"ra.message.select_all_limit_reached": "Es sind zu viele Elemente vorhanden, um alle auszuwählen. Es wurden nur die ersten %{max} Elemente ausgewählt."
 	}
 }
