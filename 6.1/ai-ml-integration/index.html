@@ -1,0 +1,1763 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../i18n/">
+      
+      
+        <link rel="next" href="../installation/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>AI & ML Integration - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ai-ml-integration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AI &amp; ML Integration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    I18N
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    AI &amp; ML Integration
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    AI &amp; ML Integration
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jsonata-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata Notebooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optical-character-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optical Character Recognition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image Classification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#face-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Face Recognition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Translation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-ai-assistant-large-language-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin AI Assistant / Large Language Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin AI Assistant / Large Language Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running AI Assistant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Admin UI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-access-to-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Access to AI Assistant
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extending AI Assistant
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending AI Assistant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-custom-ai-to-an-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Custom AI to an App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-llamaindex-ai-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding LlamaIndex AI Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-jupyter-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Jupyter Notebooks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-llm-tool-calls-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding LLM Tool Calls to the App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-python-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Python Libraries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-jupyter-notebooks-over-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling Jupyter Notebooks over REST
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committing-changes-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Committing Changes to the App
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-reconciliation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity Reconciliation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity Classification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-distance-and-soundex-similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Distance and Soundex Similarity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-to-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document to Text
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jsonata-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSONata Notebooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optical-character-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optical Character Recognition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image Classification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#face-recognition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Face Recognition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Translation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dashjoin-ai-assistant-large-language-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashjoin AI Assistant / Large Language Model
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dashjoin AI Assistant / Large Language Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running AI Assistant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Admin UI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-access-to-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Access to AI Assistant
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extending-ai-assistant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extending AI Assistant
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extending AI Assistant">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-custom-ai-to-an-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Custom AI to an App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-llamaindex-ai-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding LlamaIndex AI Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-jupyter-notebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Jupyter Notebooks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-llm-tool-calls-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding LLM Tool Calls to the App
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installing-python-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing Python Libraries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calling-jupyter-notebooks-over-rest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calling Jupyter Notebooks over REST
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committing-changes-to-the-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Committing Changes to the App
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-reconciliation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity Reconciliation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entity-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Entity Classification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-distance-and-soundex-similarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Text Distance and Soundex Similarity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-to-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document to Text
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="ai-ml-integration">AI &amp; ML Integration</h1>
+<p>The Artificial Intelligence and Machine Learning features of the Dashjoin Platform is
+delivered as a set of Docker containers that package models and external runtime components as
+well as JSONata functions that make these features usable within any part of an application.</p>
+<p>The previous developer reference section already lists some of the AI &amp; ML capabilities, however, this
+section explains the features in more detail and provides a comprehensive overview.</p>
+<h2 id="jsonata-notebooks">JSONata Notebooks</h2>
+<p>Applying AI &amp; ML functionality usually requires some degree of experimentation. 
+The JSONata Notebooks provide this flexibility. A notebook is the combination of
+a page with a single notebook widget. The platform ships with a default notebook
+available at /page/Notebook. Note that you can create as many notebook pages as you like.</p>
+<p>A Notebook consists of a sequence of code blocks that can be run individually via the run icon
+or by pressing CTRL ENTER. The result of the call is also stored in the notebook and displayed below the
+code block.</p>
+<p>The default way of displaying data is JSON. You can display the data as a value, table, on a map,
+or as a chart using the following syntax:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;img&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://dashjoin.com/img/fav.png&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span><span class="err">```</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="err">```jso</span><span class="kc">n</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">{</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">$query(</span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;group&quot;</span><span class="err">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;map&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">$adHocQuery(</span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;select distinct CITY from EMPLOYEES&quot;</span><span class="err">).</span><span class="s2">&quot;EMPLOYEES.CITY&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chart&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;chart&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">$query(</span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;group&quot;</span><span class="err">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>If a code block starts with a variable assignment ($variable := ...), the variable can be used
+in other code blocks as $variable.</p>
+<p>It is possible to upload one or more files into the notebook. This creates new code block,
+where the variable $upload is set to a map of file name to file content. This variable
+can be used in other code blocks. Assume you upload a file.txt, then the contents of the file
+is avaiable as $upload.file_txt. Note that dot is replaced with underscore to avoid having to
+escape the field name.</p>
+<p>The code block and its result is saved to the browser session, which is lost if the browser
+is closed. You can save the current state of the notebook with the save button.
+This writes the code blocks to the notebook's page and makes the notebook
+available to other users.</p>
+<h2 id="optical-character-recognition">Optical Character Recognition</h2>
+<p>The optical character recognition (OCR) functionality is available in the dashjoin/ai-image Docker container. It exposes a
+REST API on port 8080 where you provide an image URL such as this picture: </p>
+<p><img width="400px" src="https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg"></p>
+<p>To start the container, run the following command (we use the host port 8083 to avoid 
+clashing with the platform port):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8083</span>:8080<span class="w"> </span>dashjoin/ai-image
+</code></pre></div>
+<p>The URL is passed in a GET request https://.../image-ocr?url=... and returns the extracted text:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">$parseJson</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nx">$openJson</span><span class="p">(</span><span class="s2">&quot;http://.../image-ocr?url=https://d207ibygpg2z1x.cloudfront.net/image/upload/v1540973697/articles_upload/content/ibttqvywe6gihhcu1zzf.jpg&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="s2">&quot;HEY YOU YES YOU\n\nYOU CANDO IT\n&quot;</span>
+</code></pre></div>
+<h2 id="image-classification">Image Classification</h2>
+<p>The image classification functionality is also available in the dashjoin/ai-image Docker container. It exposes a
+REST API where you provide an image URL such as this picture of a bird (https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg).</p>
+<p><img width="400px" src="https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg"></p>
+<p>The URL is passed in a GET request https://.../image-classify?url=... and returns an array of
+classifications and probabilities:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nx">$parseJson</span><span class="p">(</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nx">$openJson</span><span class="p">(</span><span class="s2">&quot;http://.../image-classify?url=https://mein-vogelhaus.com/wp-content/uploads/2020/04/Einheimische-Vogelarten-Stieglitz.jpg&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">).{</span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">$</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;prob&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">$</span><span class="p">[</span><span class="mf">2</span><span class="p">]}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">[</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;goldfinch&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">&quot;prob&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9761154055595398</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulbul&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">&quot;prob&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.017567412927746773</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;coucal&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">&quot;prob&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0015972057590261102</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="p">]</span>
+</code></pre></div>
+<h2 id="face-recognition">Face Recognition</h2>
+<p>The optical character recognition (OCR) functionality is also available in the dashjoin/ai-image Docker container. It exposes a
+REST API where you provide an image URL such as this picture:</p>
+<p><img width="400px" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg"></p>
+<p>The URL is passed in a GET request https://.../image-face?url=... and returns the extracted text along with the
+coordinates of the face within the image:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nx">$parseJson</span><span class="p">(</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nx">$openJson</span><span class="p">(</span><span class="s2">&quot;http://.../image-face?url=https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">[</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">&quot;faceid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Kristen Welker&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">&quot;top&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">206</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">&quot;left&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">705</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">&quot;bottom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">527</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">&quot;right&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1026</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="p">]</span>
+</code></pre></div>
+<h2 id="text-translation">Text Translation</h2>
+<p>The translation services base on a large language model and are available via REST API in the
+dashjoin/ai-translation container. You can start the container using the following command
+(the REST service runs on port 8080, we use 8084 to avoid port collisions):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8084</span>:8080<span class="w"> </span>dashjoin/ai-translation
+</code></pre></div>
+<p>The OpenAPI specification can be accessed at 
+http://.../docs.
+It offers a number of services, which the most important ones being "translate" and "language_detection". 
+Translate takes the following parameters:</p>
+<ul>
+<li>target_lang: the code of the language, the text is supposed to be translated to</li>
+<li>text: an array of strings with the original text to be translated</li>
+<li>source_lang: code of the language, text is written in</li>
+<li>beam_size: can be used to trade-off translation time and search accuracy</li>
+<li>perform_sentence_splitting: determines whether the sentences are split into a string array</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">$openJson</span><span class="p">(</span><span class="s2">&quot;http://.../translate?target_lang=de&amp;text=This%20is%20an%20awesome%20translation%20service&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;target_lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;de&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;source_lang&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">&quot;detected_langs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="s2">&quot;en&quot;</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nt">&quot;translated&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="s2">&quot;Das ist ein toller Übersetzungsdienst&quot;</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">  </span><span class="nt">&quot;translation_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">3.5702028274536133</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>Language detection takes a single text parameter with the sample text and works as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nx">$openJson</span><span class="p">(</span><span class="s2">&quot;http://.../language_detection?text=example&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="s2">&quot;en&quot;</span>
+</code></pre></div>
+<h2 id="dashjoin-ai-assistant-large-language-model">Dashjoin AI Assistant / Large Language Model</h2>
+<p>The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
+text embedding technology into your low code application. The functionality is available via an easy to use
+administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
+via JSONata. Please refer to the documentation of the aichat widget in the developer reference for information
+about how the chat widget can be configured. The API section below also shows examples of how to
+call the REST services directly.</p>
+<p>Dashjoin AI Assistant is available via the docker image dashjoin/ai-llm-kb and offers a range of powerful features around
+large language models (LLMs):</p>
+<ul>
+<li>access APIs such as OpenAPI or Mistral in a uniform and secure way</li>
+<li>run LLMs locally and expose them via the same API</li>
+<li>Builtin and convenient retrieval augmented generation (RAG)</li>
+<li>Powerful Jupyter development environment for deploying custom AI code based on LlamaIndex</li>
+<li>Auto-deployment of custom AI code from a Dashjoin app</li>
+<li>Seamless integration of Dashjoin functions as LLM tools for integrating local structured data into the reasoning process</li>
+</ul>
+<h3 id="configuration">Configuration</h3>
+<p>The following environment variables can be used to configure the container:</p>
+<ul>
+<li>DJAI_OPENAI_API_BASE: URL of the LLM API (default https://api.mistral.ai/v1)</li>
+<li>DJAI_OPENAI_API_KEY: API key for Mistral or OpenAI if these services are used</li>
+<li>DJAI_OPENAI_MODEL: LLM model used (default open-mistral-7b)</li>
+<li>DJAI_OPENAI_EMBEDDING_MODEL: embedding model used (defaukt mistral-embed)</li>
+<li>DJAI_AUTH_SECRET: Basic authentication header required to use the container API (default is "Basic YWRtaW46ZGpkamRq" which is base64 encoded authentication header for user admin and password djdjdj)</li>
+<li>DJAI_UI_PASSWORD: Password for the admin user when connecting to the container's admin UI (default djdjdj)</li>
+<li>DJAI_LLM_MODE: llm used (possible values are: ollama, llama-cpp, sagemaker, openai, openailike, azopenai, gemini, default openailike)</li>
+<li>DJAI_EMBEDDING_MODE: embedding mode (possible values are: ollama, huggingface, openai, sagemaker, azopenai, gemini, default openailike)</li>
+<li>DJAI_OLLAMA_URL: URL of the ollama service</li>
+<li>DJAI_DATA_QDRANT_PATH: path of the vector database (default dashjoin/data/default/qdrant)</li>
+<li>DJAI_DATA_PATH: path to local data (default dashjoin/data/default)</li>
+</ul>
+<p>Vector DB settings</p>
+<ul>
+<li>DJAI_VECTORDB: vector DB to use (default is qdrant)</li>
+<li>DJAI_PGVECTOR_HOST: rag DB hostname (default postgres)</li>
+<li>DJAI_PGVECTOR_PORT: rag DB port (default 5432)</li>
+<li>DJAI_PGVECTOR_USER: rag DB username (default postgres)</li>
+<li>DJAI_PGVECTOR_PASSWORD: rag DB pwd (default postgres)</li>
+<li>DJAI_PGVECTOR_EMBED_DIM: vector DB dimension (default 768)</li>
+<li>DJAI_PGVECTOR_SCHEMA: rag schema (default public)</li>
+<li>DJAI_PGVECTOR_TABLE: rag table name (default aiembeddings)</li>
+</ul>
+<p>Local model settings</p>
+<ul>
+<li>DJAI_OLLAMA_MODEL: llm model (default mistral)</li>
+<li>DJAI_OLLAMA_EMBEDDING_MODEL: embedding model (default nomic-embed-text)</li>
+<li>DJAI_OLLAMA_URL: ollama url (default http://ollama:11434)</li>
+<li>DJAI_OLLAMA_TFS_Z: Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting (default 1.0)</li>
+<li>DJAI_OLLAMA_TOP_K: Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative (default 40)</li>
+<li>DJAI_OLLAMA_TOP_P: Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text (default 0.9)</li>
+<li>DJAI_OLLAMA_REPEAT_LAST_N: Sets how far back for the model to look back to prevent repetition (default 64)</li>
+<li>DJAI_OLLAMA_REPEAT_PENALTY: Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient (default 1.2)</li>
+<li>DJAI_OLLAMA_REQUEST_TIMEOUT: Time elapsed until ollama times out the request (default 600.0)</li>
+<li>
+<p>DJAI_OLLAMA_AUTOPULL_MODELS: automatically pull models as needed (default true)</p>
+</li>
+<li>
+<p>DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active</p>
+</li>
+<li>JUPYTER_TOKEN: password of the Juyper development environment</li>
+<li>DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container</li>
+<li>DASHJOIN_APPURL_BRANCH: optional GIT branch to use</li>
+</ul>
+<h3 id="running-ai-assistant">Running AI Assistant</h3>
+<p>This section shows some minimal configuration examples (relying on defaults wherever possible).</p>
+<p>Run the container in production without app:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>docker<span class="w"> </span>run<span class="w"> </span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">8001</span>:8001<span class="w"> </span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DJAI_OPENAI_API_KEY</span><span class="o">=</span>your_mistral_key<span class="w"> </span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>dashjoin/ai-llm-kb
+</code></pre></div>
+<p>Run the container in production with app:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>docker<span class="w"> </span>run<span class="w"> </span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">8001</span>:8001<span class="w"> </span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DJAI_OPENAI_API_KEY</span><span class="o">=</span>your_mistral_key<span class="w"> </span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DASHJOIN_APPURL</span><span class="o">=</span>https://github.com/dashjoin/dashjoin-demo<span class="w"> </span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span>dashjoin/ai-llm-kb
+</code></pre></div>
+<p>Run the container to develop an app. We export the Jupyter port 8080 to 8002 outside the container:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>docker<span class="w"> </span>run<span class="w"> </span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">8001</span>:8001<span class="w"> </span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">8002</span>:8080<span class="w"> </span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">JUPYTER_TOKEN</span><span class="o">=</span>djdjdj<span class="w"> </span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DASHJOIN_DEVMODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DJAI_OPENAI_API_KEY</span><span class="o">=</span>your_mistral_key<span class="w"> </span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">DASHJOIN_APPURL</span><span class="o">=</span>https://github.com/dashjoin/dashjoin-demo<span class="w"> </span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">  </span>dashjoin/ai-llm-kb
+</code></pre></div>
+<h3 id="admin-ui">Admin UI</h3>
+<p>The admin UI allows adding files to and deleting them from the vector database.
+You can also test chatting with the LLM (Chat) and retrieval augmented generation (Query KB).</p>
+<p>Large Language Model Chat: The large language model chat exposes the generative language capabilities of the underlying model.
+The model is trained using a large collection of documents and books. It is able to summarize text,
+answer questions you pose, and much more. In the admin UI, use the mode "LLM Chat" to work in this mode.</p>
+<p>Retrieval Augmented Generation (RAG): RAG allows inserting knowledge around a specific use case into the large language
+model - even if was not trained on these documents. You can upload your documents using the admin
+UI. The LLM is then able to answer your questions about these documents.
+In the admin UI, select the button "Query KB" to use this mode.</p>
+<p>Choosing "Search in KB", only performs a semantic search on the uploaded documents without involving the LLM to answer your query.</p>
+<h3 id="api">API</h3>
+<p>The API of both the vector database and the large language model are available via the following
+<a href="https://aikb.run.dashjoin.com/docs">OpenAPI Definition</a>.</p>
+<p>In order to access the API, we recommend registering a credential set with the service's username and password.
+The following examples assume you have setup these credentials under the name "ai".</p>
+<p>List all document added to the vector database:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>$curl(&quot;GET&quot;, &quot;https://aikb.run.dashjoin.com/v1/ingest/list&quot;, null, {&quot;Authorization&quot;: &quot;ai&quot;})
+</code></pre></div>
+<p>Invoke LLM chat:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>$curl(&quot;POST&quot;, &quot;https://aikb.run.dashjoin.com/v1/completions&quot;, {
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>  &quot;include_sources&quot;: false,
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>  &quot;prompt&quot;: &quot;How do you fry an egg?&quot;,
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>  &quot;stream&quot;: false,
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  &quot;system_prompt&quot;: &quot;You are a rapper. Always answer with a rap.&quot;,
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>  &quot;use_context&quot;: false
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>}, {&quot;Authorization&quot;: &quot;ai&quot;})
+</code></pre></div>
+<p>Invoke RAG:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$curl(&quot;POST&quot;, &quot;https://aikb.run.dashjoin.com/v1/completions&quot;, {
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>  &quot;include_sources&quot;: true,
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>  &quot;prompt&quot;: &quot;wie muss die firewall bei SAP systemen konfiguriert werden?&quot;,
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>  &quot;stream&quot;: false,
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>  &quot;system_prompt&quot;: &quot;You can only answer questions about the provided context. If you know the answer but it is not based in the provided context, don&#39;t provide the answer, just state the answer is not in the context provided. Answer in German.&quot;,
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>  &quot;use_context&quot;: true
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>}, {&quot;Authorization&quot;: &quot;ai&quot;})
+</code></pre></div>
+<p>Upload a Document:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>$curl(
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  &quot;POST&quot;, 
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>  &quot;https://aikb.run.dashjoin.com/v1/ingest/file&quot;,
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>  {
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    &quot;file&quot;: base64 encoded data URL
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>  },
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>  {
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>    &quot;Content-Type&quot;: &quot;multipart/form-data&quot;,
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>    &quot;Authorization&quot;: &quot;ai&quot;
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>  }
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>)
+</code></pre></div>
+<p>The base64 encoded data URL can easily be generated by using this button and input widget:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">      </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;binary file with metadata&quot;</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="nt">&quot;print&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$curl(&#39;POST&#39;, &#39;https://aikb.run.dashjoin.com/v1/ingest/file&#39;, form, {&#39;Content-Type&#39;: &#39;multipart/form-data&#39;, &#39;Authorization&#39;: &#39;ai&#39;})&quot;</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>The ingest call returns the following result. Every files gets split into a number of documents:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;list&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;private-gpt&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">      </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ingest.document&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">      </span><span class="nt">&quot;doc_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c202d5e6-7b69-4869-81cc-dd574ee8ee11&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">      </span><span class="nt">&quot;doc_metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">        </span><span class="nt">&quot;file_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sales Report Q3 2023.pdf&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">        </span><span class="nt">&quot;page_label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="p">}</span>
+</code></pre></div>
+<p>You can create a database to keep track of files, owners, and the related document ids. 
+A possible schema would be a table called doc with fields id, owner, and filename.
+This allows your app to define collections of documents that are associated to specific users:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>$res := $curl(... ingest);
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>$email := email;
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>$res.data.{
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>  &#39;id&#39;, doc_id,
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>  &#39;owner&#39;: $email,
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>  &#39;filename&#39;: doc_metadata.file_name
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>}.$create(&#39;database&#39;, &#39;doc&#39;, $)
+</code></pre></div>
+<p>To use a user's documents, you can retrieve the doc ids from the database and pass them to the LLM as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>$curl(&#39;POST&#39;, &#39;https://aikb.run.dashjoin.com/v1/completions&#39;, {
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>  &quot;include_sources&quot;: false,
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>  &quot;prompt&quot;: &quot;A question that can only be answered with information contained in an uploaded file&quot;,
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>  &quot;stream&quot;: false,
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>  &quot;use_context&quot;: true,
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>  &quot;context_filter&quot;: {
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    &quot;docs_ids&quot;: [$all(&#39;sqlite&#39;, &#39;PART&#39;, {&#39;OWNER&#39;: email}).ID]
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>  }
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>},
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>{&#39;Authorization&#39;: &#39;ai&#39;}
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>)
+</code></pre></div>
+<h3 id="getting-access-to-ai-assistant">Getting Access to AI Assistant</h3>
+<p>AI Assistant is available for demo purposes in the playground app.
+You can book a private instance along with your Dashjoin tenant. Please refer to the <a href="http://dashjoin.com">website</a> 
+to access the shop page.
+Note that the services all comply with european GDPR regulations.
+Please contact us if you are interested in deploying your own copy using GPU resources in your datacenter.</p>
+<h2 id="extending-ai-assistant">Extending AI Assistant</h2>
+<p>You can package AI functionality into your Dashjoin app and deploy it to Dashjoin AI Assistant.</p>
+<h3 id="adding-custom-ai-to-an-app">Adding Custom AI to an App</h3>
+<p>Within your app, create a folder "aikb/dashjoin/aikb" with a Python hook "app.py".
+This hook is called upon startup where initializations can be performed and custom REST endpoints can be added.
+Consider the following example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>import logging
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>from fastapi import FastAPI
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>from private_gpt.settings.settings import Settings
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>from private_gpt.ui.ui import PrivateGptUi
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>from dashjoin.aikb.app_router import app_router
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>logger = logging.getLogger(__name__)
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>def initializeApp(app: FastAPI, settings: Settings, ui: PrivateGptUi):
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>    logger.info(&quot;Dashjoin App - initializing&quot;)
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>    app.include_router(app_router)
+</code></pre></div>
+<p>This example simply registers this custom REST service:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>from fastapi import APIRouter, Depends, Request
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>from private_gpt.server.utils.auth import authenticated
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a># Expose the App&#39;s REST service
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>app_router = APIRouter(prefix=&quot;/app/v1&quot;, dependencies=[Depends(authenticated)])
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a># Simple REST API that returns an info object
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>@app_router.get(&quot;/info&quot;, description=&quot;App Version Info&quot;, tags=[&quot;Custom App API&quot;])
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>def info() -&gt; object:
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>    return {
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>        &quot;name&quot;: &quot;Custom App&quot;,
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>        &quot;version&quot;: &quot;1.0&quot;
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>    }
+</code></pre></div>
+<p>The new service is available right after the files are added. You can view the <a href="http://localhost:8001/docs#/Custom%20App%20API/info_app_v1_info_get">OpenAPI definition</a> and test it using this curl command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>curl -u admin:djdjdj -X &#39;GET&#39; \
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>  &#39;http://localhost:8001/app/v1/info&#39; \
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>  -H &#39;accept: application/json&#39;
+</code></pre></div>
+<h3 id="adding-llamaindex-ai-code">Adding LlamaIndex AI Code</h3>
+<p>The LlamaIndex AI library is already installed on the system. You can add your custom code in your REST service. Consider this minimal OpenAI chat example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>import os
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>from llama_index.llms.openai import OpenAI
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>...
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a># set the OpenAI key
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-...&quot;
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a># instantiate the OpenAI llm
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>llm = OpenAI(model=&quot;gpt-3.5-turbo&quot;,temperature=0)
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a># expose it via REST
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>@app_router.get(&quot;/prompt&quot;, description=&quot;Simple prompt completion&quot;)
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>def complete(prompt: str) -&gt; str:
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>    return str(llm.complete(prompt))
+</code></pre></div>
+<h3 id="using-jupyter-notebooks">Using Jupyter Notebooks</h3>
+<p>The most convenient way to experiment with Python and AI are Jupyter Notebooks that allow you to interactively
+run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming you started the container with the command shown above, simply point your browser to http://localhost:8002 and log in.
+Create a new notebook and enter the following example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>import os
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>import requests
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>from llama_index.core.agent import ReActAgent
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>from llama_index.core.tools import FunctionTool
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>from llama_index.llms.openai import OpenAI
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>from requests.auth import HTTPBasicAuth
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-...&quot;
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>llm = OpenAI(model=&quot;gpt-3.5-turbo&quot;,temperature=0)
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a>def get_employee_by_last_name(lastname: str) -&gt; object:
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a>    &quot;&quot;&quot;Looks up an employee by last name&quot;&quot;&quot;
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>    return requests.post(
+<a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a>        &quot;http://your-dashjoin-platform-address:8080/rest/function/tool&quot;,
+<a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a>        json={ &quot;lastname&quot;: lastname },
+<a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a>        auth=HTTPBasicAuth(&quot;admin&quot;, &quot;djdjdj&quot;)
+<a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a>    )
+<a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a>
+<a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>tool = FunctionTool.from_defaults(
+<a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a>    get_employee_by_last_name
+<a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a>)
+<a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a>
+<a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a>agent = ReActAgent.from_tools(
+<a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a>    [tool],
+<a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a>    llm=llm,
+<a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a>    verbose=True,
+<a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a>)
+<a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a>
+<a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a>agent.chat(&quot;what is the first name of our employee &#39;fuller&#39;?&quot;)
+</code></pre></div>
+<p>This code answer's the question "what is the first name of our employee 'fuller'?" by using the LLM and equipping it with a tool
+to fulfill the task. The tool textually describes what it can do in order to advertise its capabilities to the LLM.
+The tool makes a REST call back to the Dashjoin Platform and runs a JSONata invoke function called "tool". It is defined as:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>{
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    &quot;ID&quot;: &quot;tool&quot;,
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>    &quot;djClassName&quot;: &quot;org.dashjoin.function.Invoke&quot;,
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>    &quot;expression&quot;: &quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;, {&#39;LAST_NAME&#39;: lastname})&quot;
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>}
+</code></pre></div>
+<p>Running the Notebook shows the following trace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>&gt; Running step 0a830c4e-e2c9-479b-b020-bdd027df3ad3. Step input: what is the first name of our employee &#39;fuller&#39;?
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>Thought: The current language of the user is English. I need to use a tool to help me answer the question.
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>Action: get_employee_by_last_name
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>Action Input: {&#39;lastname&#39;: &#39;Fuller&#39;}
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>Observation: &lt;Response [200]&gt;
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>&gt; Running step 31fa0f53-a975-4861-9fd2-89078616a27e. Step input: None
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a>Thought: I can answer without using any more tools. I&#39;ll use the user&#39;s language to answer
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a>Answer: The first name of the employee with the last name &#39;Fuller&#39; is &#39;Andrew&#39;.
+</code></pre></div>
+<h3 id="adding-llm-tool-calls-to-the-app">Adding LLM Tool Calls to the App</h3>
+<p>Once we get everything working in Jupyter, we can either parameterize the Notebook and call it via REST (see next section) or we can
+convert it to a regular REST endpoint as shown below:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>import os
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>import requests
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>from requests.auth import HTTPBasicAuth
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>from fastapi import APIRouter, Depends, Request
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>from private_gpt.server.utils.auth import authenticated
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>from llama_index.llms.openai import OpenAI
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>from llama_index.core.agent import ReActAgent
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>from llama_index.core.tools import FunctionTool
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>app_router = APIRouter(prefix=&quot;/app/v1&quot;, dependencies=[Depends(authenticated)])
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;sk-...&quot;
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a>
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a>llm = OpenAI(model=&quot;gpt-3.5-turbo&quot;,temperature=0)
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a>
+<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a>def get_employee_by_last_name(lastname: str) -&gt; object:
+<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a>    &quot;&quot;&quot;Looks up an employee by last name and returns the information as a JSON object&quot;&quot;&quot;
+<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a>    return requests.post(
+<a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a>        &quot;http://host.docker.internal:8080/rest/function/tool&quot;,
+<a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a>        json={ &quot;lastname&quot;: lastname },
+<a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a>        auth=HTTPBasicAuth(&quot;admin&quot;, &quot;djdjdj&quot;)
+<a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a>    )
+<a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a>
+<a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a>tool = FunctionTool.from_defaults(
+<a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a>    get_employee_by_last_name
+<a id="__codelineno-33-26" name="__codelineno-33-26" href="#__codelineno-33-26"></a>)
+<a id="__codelineno-33-27" name="__codelineno-33-27" href="#__codelineno-33-27"></a>
+<a id="__codelineno-33-28" name="__codelineno-33-28" href="#__codelineno-33-28"></a>agent = ReActAgent.from_tools(
+<a id="__codelineno-33-29" name="__codelineno-33-29" href="#__codelineno-33-29"></a>    [tool],
+<a id="__codelineno-33-30" name="__codelineno-33-30" href="#__codelineno-33-30"></a>    llm=llm,
+<a id="__codelineno-33-31" name="__codelineno-33-31" href="#__codelineno-33-31"></a>    verbose=True,
+<a id="__codelineno-33-32" name="__codelineno-33-32" href="#__codelineno-33-32"></a>)
+<a id="__codelineno-33-33" name="__codelineno-33-33" href="#__codelineno-33-33"></a>
+<a id="__codelineno-33-34" name="__codelineno-33-34" href="#__codelineno-33-34"></a>@app_router.get(&quot;/tool&quot;, description=&quot;Find employees using LLM and tool&quot;)
+<a id="__codelineno-33-35" name="__codelineno-33-35" href="#__codelineno-33-35"></a>def complete(lastname: str) -&gt; str:
+<a id="__codelineno-33-36" name="__codelineno-33-36" href="#__codelineno-33-36"></a>    return str(agent.chat(&quot;what is the first name of our employee &#39;&quot;+lastname+&quot;&#39;?&quot;))
+</code></pre></div>
+<h3 id="installing-python-libraries">Installing Python Libraries</h3>
+<p>Python offers a wide ecosystem of libraries. In case you would like to use a library that is not already included
+in Dashjoin AI Assistant, you can install it using Jupyter by running this command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>!pip install missing-lib
+</code></pre></div>
+<p>You can add the Notebook to your app and make sure it is run upon container initialization by adding this line to your app.py startup hook:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>from dashjoin.aikb.util import executeNotebook
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>...
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>executeNotebook(&quot;dashjoin/aikb/install.ipynb&quot;)
+</code></pre></div>
+<h3 id="calling-jupyter-notebooks-over-rest">Calling Jupyter Notebooks over REST</h3>
+<p>The tools example aboce showed how code can be developed and tested in Jupyter and how it is then moved to Python.
+Using the executeNotebook function, you can even expose the Notebook directly as a REST service:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>from dashjoin.aikb.util import executeNotebook
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a># REST APIfication of a Jupyter Notebook
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>@app_router.post(&quot;/nb&quot;, name=&quot;Jupyter Notebook as a Service&quot;, description=&quot;Jupyter Notebook as Service&quot;, tags=[&quot;Custom App API&quot;])
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>def notebook(args: NotebookArgs) -&gt; object:
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>    import os
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>    os.environ[&quot;DJ_INPUT_ARGS&quot;] = args.model_dump_json()
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>    return executeNotebook(&quot;app/aikb/dashjoin/aikb/nb.ipynb&quot;)
+</code></pre></div>
+<p>In the Notebook, you can access the REST parameters as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>import os
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>args = os.environ.get(&quot;DJ_INPUT_ARGS&quot;)
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>print(args)
+</code></pre></div>
+<p>The executeNotebook code must be placed in util.py:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>import logging
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>logger = logging.getLogger(__name__)
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>def executeNotebook(nb: str):
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>    &quot;&quot;&quot;
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>    Executes the given Jupyter Notebook and returns the result
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>    &quot;&quot;&quot;
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>    import nbformat
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a>    from nbconvert.preprocessors import ExecutePreprocessor
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>    import json
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>    with open(nb) as ff:
+<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a>        nb_in = nbformat.read(ff, nbformat.NO_CONVERT)
+<a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a>
+<a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a>    ep = ExecutePreprocessor(timeout=600) #, kernel_name=&#39;python3&#39;)
+<a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a>
+<a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a>    logger.info(&quot;Notebook execution&quot;, nb)
+<a id="__codelineno-38-19" name="__codelineno-38-19" href="#__codelineno-38-19"></a>    nb_out = ep.preprocess(nb_in)
+<a id="__codelineno-38-20" name="__codelineno-38-20" href="#__codelineno-38-20"></a>    logger.info(&quot;Notebook executed&quot;, nb)
+<a id="__codelineno-38-21" name="__codelineno-38-21" href="#__codelineno-38-21"></a>    print(json.dumps(nb_out, indent=2))
+<a id="__codelineno-38-22" name="__codelineno-38-22" href="#__codelineno-38-22"></a>    return nb_out
+</code></pre></div>
+<h3 id="committing-changes-to-the-app">Committing Changes to the App</h3>
+<p>Jupyter comes with a full fledged GIT client. Therefore, you can commit your Python and Jupyter code to the Dashjoin App's GIT repository directly.</p>
+<h2 id="entity-reconciliation">Entity Reconciliation</h2>
+<p>When integrating data from different sources, entity reconciliation describes the process
+of aligning different identifiers for the same entity that are used across the various sources.</p>
+<p>There are various approaches that can be applied. In this section, we describe the
+reconcileEntity JSONata function. It uses the <a href="https://www.wikidata.org/">Wikidata</a>
+search API in order to reconcile a text with a standardized Wikidata ID.
+Wikidata is the database equivalent of Wikipedia, i.e. it is a crowd-sourced
+database of entites that can also be found in wikipedia.
+Consequently this function should not be used if the texts are very specific
+or if the texts are unsuitable to be sent to a 3rd party service.</p>
+<p>The function takes three parameters:</p>
+<ul>
+<li>entity: the entity string</li>
+<li>entity-language: the optional language of the entity string (default is en)</li>
+<li>limit: the number of ranked search results (default is 1)</li>
+</ul>
+<p>Consider the reconciliation results for "Apple". The term is ambiguous since it can
+refer to Apple the fruit and Apple, the tech company.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="nx">$reconcileEntity</span><span class="p">(</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;en&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="p">[</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Q89&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">    </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;apple&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fruit of the apple tree&quot;</span>
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Q312&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-9" name="__codelineno-40-9" href="#__codelineno-40-9"></a><span class="w">    </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-10" name="__codelineno-40-10" href="#__codelineno-40-10"></a><span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;American multinational technology company&quot;</span>
+<a id="__codelineno-40-11" name="__codelineno-40-11" href="#__codelineno-40-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-40-12" name="__codelineno-40-12" href="#__codelineno-40-12"></a><span class="p">]</span>
+</code></pre></div>
+<p>Note that the most likely match comes first. If the call is repeated with "Apple Inc.", the Wikidata
+ID Q312 is the first result.</p>
+<h2 id="entity-classification">Entity Classification</h2>
+<p>When examining an unknown datasource, it is useful to generate a classification
+of the values found in a column. This functionality is offered by the classifyEntities function.</p>
+<p>This function extends reconcileEntity by also querying the Wikidata categories.
+Given a list of entities, this function retrieves the Wikidata types and
+returns all types that are common for all entities. This function has the following parameters:</p>
+<ul>
+<li>entities: the list of entity strings</li>
+<li>entity-language: the optional language of the entity string (default is en)</li>
+<li>limit: the number of ranked search results (default is 1)</li>
+<li>subclass-depth: this number indicates whether superclasses of Wikidata classes should be included (default is 1). Given depth 1, "Gone with the wind" would be classified as a movie. A movie is also a piece of art. Therefore, piece of art would be another potential classification tested with the other entities.</li>
+</ul>
+<p>Consider this example. This call tries to find a common classification for "Unicef" and "Apple". The search limit
+must be set to 2 in order to get Apple the company and the fruit. Both of these are classified as organizations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nx">$classifyEntities</span><span class="p">([</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Unicef&quot;</span><span class="p">],</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">[</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="s2">&quot;organization&quot;</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="p">]</span>
+</code></pre></div>
+<p>If the call is repeated with IBM instead of Unicef, the results are business, enterprise, public company, and technology company.</p>
+<h2 id="text-distance-and-soundex-similarity">Text Distance and Soundex Similarity</h2>
+<p>When matching entities, text similarity and distance metrics can also be useful.
+Consider an example where many different sources include company names.
+When matching these names, typical problems arise from simple typos and different spellings ("Apple" vs. "Apple Inc.").</p>
+<p>Similarity and distance metrics can be useful in these circumstances.
+Given two sets of strings, the synonym function allows applying these metrics.
+It returns a list of matches that can be used as a synonym lookup table. Hence the name. It takes the following parameters:</p>
+<ul>
+<li>algorithms: A map of algorithm name to limit determining whether to include a term / variant pair. The algorithm names can be chosen from <a href="https://commons.apache.org/proper/commons-text/apidocs/org/apache/commons/text/similarity/package-summary.html">this list</a>. Alternatively, you can use "SoundexSimilarity"</li>
+<li>terms: A list of names to test against all variants</li>
+<li>variants: A list of names to test against all terms</li>
+<li>ignoreCase: ignore case when computing the distance (defaults to false)</li>
+<li>ignoreEquality: include term / variant pairs that are equal in the result</li>
+</ul>
+<p>The soundex similarity is higher for a pair of strings that sound similar in the english language:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="nx">$synonym</span><span class="p">({</span><span class="s2">&quot;SoundexSimilarity&quot;</span><span class="o">:</span><span class="mf">2</span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;roast&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;ghost&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;boast&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">[</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nt">&quot;synonym&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ghost&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">    </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;roast&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">    </span><span class="nt">&quot;algotithm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SoundexSimilarity&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="w">    </span><span class="nt">&quot;synonym&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;boast&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a><span class="w">    </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;roast&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="w">    </span><span class="nt">&quot;algotithm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SoundexSimilarity&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-12" name="__codelineno-44-12" href="#__codelineno-44-12"></a><span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-44-13" name="__codelineno-44-13" href="#__codelineno-44-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-44-14" name="__codelineno-44-14" href="#__codelineno-44-14"></a><span class="p">]</span>
+</code></pre></div>
+<p>Note that the pair "roast" and "hello" do not sound alike and, therefore, is not included.</p>
+<p>The Levenshtein Distance calculates the minimal number of edits that is required to transform one
+string into the other. The smaller this number, the more similar the strings are.
+This is a good metric to match strings despite typos.
+Compared to apple, apples is included with a limit of 1, appl is too different and is not included.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nx">$synonym</span><span class="p">({</span><span class="s2">&quot;LevenshteinDistance&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;apples&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;appl&quot;</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">[</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nt">&quot;synonym&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;apples&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;apple&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">    </span><span class="nt">&quot;algotithm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LevenshteinDistance&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-46-9" name="__codelineno-46-9" href="#__codelineno-46-9"></a><span class="w">    </span><span class="nt">&quot;synonym&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;appl&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-10" name="__codelineno-46-10" href="#__codelineno-46-10"></a><span class="w">    </span><span class="nt">&quot;term&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;apple&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-11" name="__codelineno-46-11" href="#__codelineno-46-11"></a><span class="w">    </span><span class="nt">&quot;algotithm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LevenshteinDistance&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-12" name="__codelineno-46-12" href="#__codelineno-46-12"></a><span class="w">    </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-46-13" name="__codelineno-46-13" href="#__codelineno-46-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-46-14" name="__codelineno-46-14" href="#__codelineno-46-14"></a><span class="p">]</span>
+</code></pre></div>
+<h2 id="document-to-text">Document to Text</h2>
+<p>In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dasjoin NLP container. You can run it as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8081</span>:8081<span class="w"> </span>dashjoin/nlp
+</code></pre></div>
+<p>The container offers a conversion service that can be called as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span><span class="s1">&#39;http://localhost:8081/function/run/doc2text&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;&quot;https://pdfobject.com/pdf/sample.pdf&quot;&#39;</span>
+</code></pre></div>
+<p>This example passes a URL to a PDF document. In turn, the extracted text is returned.</p>
+<p>If the document is not available directly via a public URL, you can obtain it via some other means and pass it via a <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data">data URL</a> as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">  </span><span class="s1">&#39;http://localhost:8081/function/run/doc2text&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;&quot;data:application/pdf;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg==&quot;&#39;</span>
+</code></pre></div>
+<p>Note that the data URL has the prefix: data:application/pdf;base64,
+The following data is a base 64 encoded HTML page.</p>
+<p>In order to send a document from your upload folder, you can use the following JSONata code:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>$curl(&quot;POST&quot;, &quot;http://localhost:8081/function/run/doc2text&quot;, &quot;data:application/pdf;base64,&quot; &amp; $openText(&quot;file:upload/test.html&quot;, &quot;BASE_64&quot;))
+</code></pre></div>
+<p>The document is loaded via the openText function using base64 encoding. The data URL prefix is appended and fed into the curl command.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
