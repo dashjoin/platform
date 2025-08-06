@@ -251,7 +251,8 @@ public abstract class AbstractDatabase implements Database {
             try {
               return Double.parseDouble(s);
             } catch (Exception e3) {
-              throw new NumberFormatException("Expecting a numerical value: " + s + " Property: " + p.ID + " / " + p.name);
+              throw new NumberFormatException(
+                  "Expecting a numerical value: " + s + " Property: " + p.ID + " / " + p.name);
             }
           }
         }
@@ -506,5 +507,15 @@ public abstract class AbstractDatabase implements Database {
       }
     }
     return res;
+  }
+
+  /**
+   * centralized null safe map.get(name)
+   */
+  public Table table(String table) {
+    Table m = tables.get(table);
+    if (m == null)
+      throw new IllegalArgumentException("Unknown table: " + table);
+    return m;
   }
 }

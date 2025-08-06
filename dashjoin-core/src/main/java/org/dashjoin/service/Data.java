@@ -176,7 +176,7 @@ public class Data {
       @PathParam("search") String search, @QueryParam("limit") Integer limit) throws Exception {
 
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m);
     return db.search(sc, m, search, limit);
   }
@@ -345,9 +345,7 @@ public class Data {
       ACLContainerRequestFilter.check(sc, info);
     }
 
-    Table m = db.tables.get(a.table);
-    if (m == null)
-      throw new IllegalArgumentException("Unknown table: " + a.table);
+    Table m = db.table(a.table);
     ACLContainerRequestFilter.check(sc, db, m);
 
     for (ColInfo e : a.cols) {
@@ -441,11 +439,7 @@ public class Data {
       @QueryParam("sort") String sort, @QueryParam("descending") boolean descending,
       Map<String, Object> arguments) throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
-
-    if (m == null)
-      throw new IllegalArgumentException("Unknown table: " + table);
-
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m);
     db.cast(m, arguments);
     return db.all(m, offset, limit, sort, descending,
@@ -484,7 +478,7 @@ public class Data {
           example = "EMPLOYEES") @PathParam("table") String table,
       @QueryParam("prefix") String prefix, @QueryParam("limit") Integer limit) throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m);
 
     if (m.properties != null) {
@@ -566,7 +560,7 @@ public class Data {
       Map<String, Object> object) throws Exception {
     MapUtil.clean(object);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m, CREATE);
     ACLContainerRequestFilter.checkRow(sc, m, object);
 
@@ -679,7 +673,7 @@ public class Data {
       String fk) throws Exception {
     Map<String, Object> o = read(sc, database, table, objectId);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     Property p = m.properties.get(fk);
     if (p != null && p.ref != null) {
       // fk is an outgoing fk
@@ -805,7 +799,7 @@ public class Data {
   public Map<String, Object> read(@Context SecurityContext sc, String database, String table,
       List<String> objectId) throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m);
     Map<String, Object> search = key(m, objectId);
     db.cast(m, search);
@@ -1062,7 +1056,7 @@ public class Data {
     Integer timeout = services.getConfig().getAllTimeoutMs();
 
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
     ACLContainerRequestFilter.check(sc, db, m);
     String objectId = objectIds.get(0);
 
@@ -1106,7 +1100,7 @@ public class Data {
         if (Boolean.TRUE.equals(ignoreMissing)) {
           // record not found - add the {pk=search} to the result
           AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-          Table m = db.tables.get(table);
+          Table m = db.table(table);
           Map<String, Object> search = key(m, Arrays.asList(objectId));
           db.cast(m, search);
           res.put(objectId, search);
@@ -1200,7 +1194,7 @@ public class Data {
       Map<String, Object> object) throws Exception {
     MapUtil.clean(object);
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
 
     if (m.tenantColumn != null)
       read(sc, database, table, objectId);
@@ -1300,7 +1294,7 @@ public class Data {
   public void delete(SecurityContext sc, String database, String table, List<String> objectId)
       throws Exception {
     AbstractDatabase db = services.getConfig().getDatabase(dj(database));
-    Table m = db.tables.get(table);
+    Table m = db.table(table);
 
     if (m.tenantColumn != null)
       read(sc, database, table, objectId);
