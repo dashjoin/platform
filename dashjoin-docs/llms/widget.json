@@ -194,14 +194,106 @@
 		{
 			"title": "button widget",
 			"description": "shows a button to trigger an action with an optional set of inputs. This example prints the contents of the form input",
-			"print": "form.name",
 			"code": {
 				"widget": "button",
+				"print": "form.name",
 				"schema": {
 					"type": "object",
 					"properties": {
 						"name": {
 							"widget": "string"
+						}
+					}
+				}
+			}
+		}
+	],
+	"create": [
+		{
+			"title": "create widget",
+			"description": "Shows a form on the database table page to create a new database record",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"tableLayout": {
+							"widget": "page",
+							"children": [
+								{
+									"widget": "create",
+									"schema": {
+										"type": "object",
+										"properties": {
+											"ID": {
+												"ID": "dj/sqlite/REQUESTS/ID",
+												"parent": "dj/sqlite/REQUESTS",
+												"dbType": "INTEGER",
+												"type": "number",
+												"pkpos": 0,
+												"createOnly": true
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	],
+	"edit": [
+		{
+			"title": "edit widget",
+			"description": "Shows a form on the instance page to edit or delete the instance",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"instanceLayout": {
+							"widget": "page",
+							"children": [
+								{
+									"widget": "edit",
+									"schema": {
+										"type": "object",
+										"properties": {
+											"ID": {
+												"ID": "dj/sqlite/REQUESTS/ID",
+												"parent": "dj/sqlite/REQUESTS",
+												"dbType": "INTEGER",
+												"type": "number",
+												"pkpos": 0,
+												"createOnly": true,
+												"size": 6
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"title": "variable widget",
+			"description": "Shows a form that sets session variables. This example sets the variable 'field'",
+			"code": {
+				"widget": "variable",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"field": {
+							"widget": "number"
 						}
 					}
 				}
