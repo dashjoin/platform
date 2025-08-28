@@ -1,0 +1,60 @@
+{
+    "boolean": [
+        {
+            "title": "boolean input",
+            "description": "Boolean inputs show a on/off toggle. In this example, the toggle has the label 'Opt in'",
+            "code": {
+                "widget": "boolean",
+                "title": "Opt in"
+            }
+        }
+    ],
+    "string": [
+        {
+            "title": "string input",
+            "description": "String inputs show a text input",
+            "code": {
+                "widget": "string"
+            }
+        }
+    ],
+    "number": [
+        {
+            "title": "number input",
+            "description": "Number inputs show a text input that is restricted to entering numbers",
+            "code": {
+                "widget": "number"
+            }
+        }
+    ],
+    "auto complete": [
+        {
+            "title": "autocomplete input",
+            "description": "Autocomplete inputs show a text input that autocompletes to the options specified in the jsonata expression",
+            "code": {
+                "widget": "auto complete",
+                "options": "['one', 'two', 'three']"
+            }
+        }
+    ],
+    "select": [
+        {
+            "title": "select input",
+            "description": "Select inputs show a drop-down selection with the options specified in the jsonata expression",
+            "code": {
+                "widget": "select",
+                "options": "['one', 'two', 'three']"
+            }
+        }
+    ],
+    "multi select": [
+        {
+            "title": "multi select input",
+            "description": "Multi Select inputs show a drop-down selection with the options specified in the jsonata expression. Multiple options can be selected yielding an array of values",
+            "code": {
+                "widget": "multi select",
+                "options": "['one', 'two', 'three']"
+            }
+        }
+    ]
+}

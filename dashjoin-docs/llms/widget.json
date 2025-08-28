@@ -1,0 +1,211 @@
+{
+	"display": [
+		{
+			"title": "display widget simple value",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display the value of the session variable x",
+			"code": {
+				"widget": "display",
+				"print": "variable.x"
+			}
+		},
+		{
+			"title": "display widget showing object",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list",
+			"code": {
+				"widget": "display",
+				"print": "{'time': $now()}"
+			}
+		},
+		{
+			"title": "display widget showing link",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display a link to a record in the database",
+			"code": {
+				"display": "{'database': 'northwind', 'table': 'EMPLOYEES', 'pk1':2}",
+				"widget": "display"
+			}
+		},
+		{
+			"title": "display widget showing table",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display a list of objects as a table",
+			"code": {
+				"display": "[{'x':1, 'y':1}, {'x':2, 'y':2}]",
+				"widget": "display"
+			}
+		},
+		{
+			"title": "display widget on dashboard page",
+			"description": "shows how a display widget is added on a dashboard page",
+			"file": "model/page/test.json",
+			"code": {
+				"ID": "test",
+				"layout": {
+					"widget": "page",
+					"children": [
+						{
+							"display": "{'database': 'northwind', 'table': 'EMPLOYEES', 'pk1':2}",
+							"widget": "display"
+						}
+					]
+				}
+			}
+		},
+		{
+			"title": "display widget on instance page",
+			"description": "shows how a display widget is added on a database instance page",
+			"file": "model/dj-database/dj%2Fsqlite.json",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"instanceLayout": {
+							"widget": "page",
+							"children": [
+								{
+									"display": "$now()",
+									"widget": "display"
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"title": "display widget on table page",
+			"description": "shows how a display widget is added on a table page",
+			"file": "model/dj-database/dj%2Fsqlite.json",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"tableLayout": {
+							"widget": "page",
+							"children": [
+								{
+									"display": "$now()",
+									"widget": "display"
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	],
+	"card": [
+		{
+			"title": "card widget",
+			"description": "The card widget shows its children within a card",
+			"language": "json",
+			"code": {
+				"widget": "card"
+			}
+		}
+	],
+	"container": [
+		{
+			"title": "container widget for authenticated role",
+			"description": "Provides a logical container for its children. This example displays children only if the user in the the role 'authenticated'",
+			"code": {
+				"roles": [
+					"authenticated"
+				],
+				"widget": "container"
+			}
+		},
+		{
+			"title": "container widget conditionally showing contents",
+			"description": "Provides a logical container for its children. This example displays children only if the jsonata expression is true",
+			"code": {
+				"if": "email = 'admin@localhost'",
+				"widget": "container"
+			}
+		},
+		{
+			"title": "container widget showing contents for each value",
+			"description": "Provides a logical container for its children. This example shows the child for each value of the foreach expression",
+			"code": {
+				"foreach": "[1..5]",
+				"widget": "container",
+				"children": [
+					{
+						"display": "value",
+						"widget": "display"
+					}
+				]
+			}
+		}
+	],
+	"expansion": [
+		{
+			"title": "expansion widget shows children in an expansion panel",
+			"description": "Provides a logical container for its children and shows them in an expansion panel",
+			"code": {
+				"text": "Open Me",
+				"widget": "expansion"
+			}
+		}
+	],
+	"stepper": [
+		{
+			"title": "stepper widget displays its children as a wizard",
+			"description": "allows stepping through its children. It displays the step number and title along with the child at the current step position",
+			"code": {
+				"widget": "stepper",
+				"children": [
+					{
+						"title": "One",
+						"text": "Next",
+						"print": "$stepForward()",
+						"widget": "button"
+					},
+					{
+						"text": "Back",
+						"title": "Two",
+						"print": "$stepBack()",
+						"widget": "button"
+					}
+				]
+			}
+		}
+	],
+	"tabs": [
+		{
+			"title": "tabs widget displays its children as tabs",
+			"description": "displays its children in a tab container which allows selecting the current tab on top",
+			"code": {
+				"widget": "tabs",
+				"children": [
+					{
+						"title": "First",
+						"widget": "text"
+					}
+				]
+			}
+		}
+	],
+	"button": [
+		{
+			"title": "button widget",
+			"description": "shows a button to trigger an action with an optional set of inputs. This example prints the contents of the form input",
+			"print": "form.name",
+			"code": {
+				"widget": "button",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"widget": "string"
+						}
+					}
+				}
+			}
+		}
+	]
+}
