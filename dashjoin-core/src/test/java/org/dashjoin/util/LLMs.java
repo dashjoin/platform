@@ -1,9 +1,11 @@
 package org.dashjoin.util;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,10 +23,12 @@ public class LLMs {
     public String language;
     public String file;
     public Object code;
+    public Object output;
   }
 
+  static ObjectMapper om = new ObjectMapper();
+
   public static void main(String[] args) throws Exception {
-    ObjectMapper om = new ObjectMapper();
 
     StringBuffer b = new StringBuffer();
     b.append("========================\n");
@@ -49,6 +53,32 @@ public class LLMs {
               "CODE: " + om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n\n");
         }
     }
-    System.out.println(b);
+
+    FileUtils.write(new File("../llms.txt"), b, Charset.defaultCharset());
+
+    writeInput();
+  }
+
+  static void writeInput() throws Exception {
+    StringBuffer b = new StringBuffer();
+    b.append("# Appendix: Form Input Types\n");
+    b.append("These are possible children of the create, edit, button, and variable widgets.");
+    Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/input.json"),
+        new TypeReference<Map<String, List<Example>>>() {});
+
+    for (Entry<String, List<Example>> entry : list.entrySet())
+      for (Example e : entry.getValue()) {
+        if (e.language == null)
+          e.language = e.code instanceof String ? "jsonata" : "json";
+        b.append("## " + e.title + "\n");
+        b.append(e.description + "\n");
+        b.append("```json\n");
+        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
+        b.append("Sample output: \n```json\n");
+        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.output) + "\n```\n");
+      }
+
+    FileUtils.write(new File("../dashjoin-docs/docs/appendix-inputs.md"), b,
+        Charset.defaultCharset());
   }
 }

@@ -74,7 +74,7 @@ The child titles are used as a label. Only the active tab is shown.
 ### Form Widgets
 
 Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
-used as the key in the resulting JSON structure. Inputs can be of the following type:
+used as the key in the resulting JSON structure. See [environment](appendix-inputs.md) for examples. Inputs can be of the following type:
 
 * boolean: displays an on/off toggle and returns a boolean value
 * string; a regular text box that returns a string

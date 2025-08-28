@@ -6,7 +6,8 @@
             "code": {
                 "widget": "boolean",
                 "title": "Opt in"
-            }
+            },
+            "output": true
         }
     ],
     "string": [
@@ -15,7 +16,8 @@
             "description": "String inputs show a text input",
             "code": {
                 "widget": "string"
-            }
+            },
+            "output": "test"
         }
     ],
     "number": [
@@ -24,7 +26,8 @@
             "description": "Number inputs show a text input that is restricted to entering numbers",
             "code": {
                 "widget": "number"
-            }
+            },
+            "output": 123
         }
     ],
     "auto complete": [
@@ -34,7 +37,8 @@
             "code": {
                 "widget": "auto complete",
                 "options": "['one', 'two', 'three']"
-            }
+            },
+            "output": "one"
         }
     ],
     "select": [
@@ -44,7 +48,8 @@
             "code": {
                 "widget": "select",
                 "options": "['one', 'two', 'three']"
-            }
+            },
+            "output": "one"
         }
     ],
     "multi select": [
@@ -54,7 +59,11 @@
             "code": {
                 "widget": "multi select",
                 "options": "['one', 'two', 'three']"
-            }
+            },
+            "output": [
+                "one",
+                "two"
+            ]
         }
     ],
     "key value": [
@@ -63,6 +72,9 @@
             "description": "key value inputs display a two column table to enter keys and values. Returns a JSON object",
             "code": {
                 "widget": "key value"
+            },
+            "output": {
+                "key": "value"
             }
         }
     ],
@@ -72,7 +84,8 @@
             "description": "Shows a password input field",
             "code": {
                 "widget": "password"
-            }
+            },
+            "output": "secret"
         }
     ],
     "textarea": [
@@ -81,16 +94,18 @@
             "description": "Shows a multi line input field (textarea)",
             "code": {
                 "widget": "textarea"
-            }
+            },
+            "output": "line1\nline2"
         }
     ],
     "date": [
         {
             "title": "date input",
-            "description": "Shows a date picker input. Returns an ISO 8601 date string with the selected date at midnight",
+            "description": "Shows a date picker input. Returns a YYYY-MM-DD string with the selected date",
             "code": {
                 "widget": "date"
-            }
+            },
+            "output": "2025-08-08"
         }
     ],
     "time": [
@@ -99,7 +114,8 @@
             "description": "Shows a time picker input. Returns a ISO 8601 date string with the current day and the selected time",
             "code": {
                 "widget": "time"
-            }
+            },
+            "output": "2025-08-28T04:03:05.972Z"
         }
     ],
     "datetime": [
@@ -108,7 +124,8 @@
             "description": "Shows a datetime picker input",
             "code": {
                 "widget": "datetime"
-            }
+            },
+            "output": "2025-08-28T04:03:05.972Z"
         }
     ],
     "file": [
@@ -117,7 +134,8 @@
             "description": "Allows uploading a file. returns the file contents",
             "code": {
                 "widget": "file"
-            }
+            },
+            "output": "file contents"
         }
     ],
     "binary file": [
@@ -126,7 +144,8 @@
             "description": "Allows uploading a file. returns the file contents as a base 64 encoded data URL",
             "code": {
                 "widget": " binary file"
-            }
+            },
+            "output": "data:text/plain;base64,ZmlsZSBjb250ZW50cw=="
         }
     ],
     "file with metadata": [
@@ -134,7 +153,14 @@
             "title": "file with metadata input",
             "description": "Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents)",
             "code": {
-                "widget": " file with metadata"
+                "widget": "file with metadata"
+            },
+            "output": {
+                "name": "test.txt",
+                "lastModified": 1756398020293,
+                "size": 13,
+                "type": "text/plain",
+                "value": "file contents"
             }
         }
     ],
@@ -144,6 +170,13 @@
             "description": "Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)",
             "code": {
                 "widget": " binary file with metadata"
+            },
+            "output": {
+                "name": "test.txt",
+                "lastModified": 1756398020293,
+                "size": 13,
+                "type": "text/plain",
+                "value": "data:text/plain;base64,ZmlsZSBjb250ZW50cw=="
             }
         }
     ],
@@ -153,7 +186,8 @@
             "description": "Shows a text input field with a voice option",
             "code": {
                 "widget": " voice"
-            }
+            },
+            "output": "you spoke into the mic"
         }
     ],
     "qrcode": [
@@ -162,7 +196,8 @@
             "description": "Allows scanning a QR Code into the form field",
             "code": {
                 "widget": " qrcode"
-            }
+            },
+            "output": "whatever was encoded in the QR code"
         }
     ]
 }

@@ -1,0 +1,395 @@
+========================
+CODE SNIPPETS
+========================
+
+TITLE: display widget simple value
+DESCRIPTION: Used to visualize the result of any jsonata expression. Here, we display the value of the session variable x
+LANGUAGE: json
+CODE: {
+  "widget" : "display",
+  "print" : "variable.x"
+}
+
+TITLE: display widget showing object
+DESCRIPTION: Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list
+LANGUAGE: json
+CODE: {
+  "widget" : "display",
+  "print" : "{'time': $now()}"
+}
+
+TITLE: display widget showing link
+DESCRIPTION: Used to visualize the result of any jsonata expression. Here, we display a link to a record in the database
+LANGUAGE: json
+CODE: {
+  "display" : "{'database': 'northwind', 'table': 'EMPLOYEES', 'pk1':2}",
+  "widget" : "display"
+}
+
+TITLE: display widget showing table
+DESCRIPTION: Used to visualize the result of any jsonata expression. Here, we display a list of objects as a table
+LANGUAGE: json
+CODE: {
+  "display" : "[{'x':1, 'y':1}, {'x':2, 'y':2}]",
+  "widget" : "display"
+}
+
+TITLE: display widget on dashboard page
+DESCRIPTION: shows how a display widget is added on a dashboard page
+FILE: model/page/test.json
+LANGUAGE: json
+CODE: {
+  "ID" : "test",
+  "layout" : {
+    "widget" : "page",
+    "children" : [ {
+      "display" : "{'database': 'northwind', 'table': 'EMPLOYEES', 'pk1':2}",
+      "widget" : "display"
+    } ]
+  }
+}
+
+TITLE: display widget on instance page
+DESCRIPTION: shows how a display widget is added on a database instance page
+FILE: model/dj-database/dj%2Fsqlite.json
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "instanceLayout" : {
+        "widget" : "page",
+        "children" : [ {
+          "display" : "$now()",
+          "widget" : "display"
+        } ]
+      }
+    }
+  }
+}
+
+TITLE: display widget on table page
+DESCRIPTION: shows how a display widget is added on a table page
+FILE: model/dj-database/dj%2Fsqlite.json
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "tableLayout" : {
+        "widget" : "page",
+        "children" : [ {
+          "display" : "$now()",
+          "widget" : "display"
+        } ]
+      }
+    }
+  }
+}
+
+TITLE: card widget
+DESCRIPTION: The card widget shows its children within a card
+LANGUAGE: json
+CODE: {
+  "widget" : "card"
+}
+
+TITLE: container widget for authenticated role
+DESCRIPTION: Provides a logical container for its children. This example displays children only if the user in the the role 'authenticated'
+LANGUAGE: json
+CODE: {
+  "roles" : [ "authenticated" ],
+  "widget" : "container"
+}
+
+TITLE: container widget conditionally showing contents
+DESCRIPTION: Provides a logical container for its children. This example displays children only if the jsonata expression is true
+LANGUAGE: json
+CODE: {
+  "if" : "email = 'admin@localhost'",
+  "widget" : "container"
+}
+
+TITLE: container widget showing contents for each value
+DESCRIPTION: Provides a logical container for its children. This example shows the child for each value of the foreach expression
+LANGUAGE: json
+CODE: {
+  "foreach" : "[1..5]",
+  "widget" : "container",
+  "children" : [ {
+    "display" : "value",
+    "widget" : "display"
+  } ]
+}
+
+TITLE: expansion widget shows children in an expansion panel
+DESCRIPTION: Provides a logical container for its children and shows them in an expansion panel
+LANGUAGE: json
+CODE: {
+  "text" : "Open Me",
+  "widget" : "expansion"
+}
+
+TITLE: stepper widget displays its children as a wizard
+DESCRIPTION: allows stepping through its children. It displays the step number and title along with the child at the current step position
+LANGUAGE: json
+CODE: {
+  "widget" : "stepper",
+  "children" : [ {
+    "title" : "One",
+    "text" : "Next",
+    "print" : "$stepForward()",
+    "widget" : "button"
+  }, {
+    "text" : "Back",
+    "title" : "Two",
+    "print" : "$stepBack()",
+    "widget" : "button"
+  } ]
+}
+
+TITLE: tabs widget displays its children as tabs
+DESCRIPTION: displays its children in a tab container which allows selecting the current tab on top
+LANGUAGE: json
+CODE: {
+  "widget" : "tabs",
+  "children" : [ {
+    "title" : "First",
+    "widget" : "text"
+  } ]
+}
+
+TITLE: button widget
+DESCRIPTION: shows a button to trigger an action with an optional set of inputs. This example prints the contents of the form input
+LANGUAGE: json
+CODE: {
+  "widget" : "button",
+  "print" : "form.name",
+  "schema" : {
+    "type" : "object",
+    "properties" : {
+      "name" : {
+        "widget" : "string"
+      }
+    }
+  }
+}
+
+TITLE: create widget
+DESCRIPTION: Shows a form on the database table page to create a new database record
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "tableLayout" : {
+        "widget" : "page",
+        "children" : [ {
+          "widget" : "create",
+          "schema" : {
+            "type" : "object",
+            "properties" : {
+              "ID" : {
+                "ID" : "dj/sqlite/REQUESTS/ID",
+                "parent" : "dj/sqlite/REQUESTS",
+                "dbType" : "INTEGER",
+                "type" : "number",
+                "pkpos" : 0,
+                "createOnly" : true
+              }
+            }
+          }
+        } ]
+      }
+    }
+  }
+}
+
+TITLE: edit widget
+DESCRIPTION: Shows a form on the instance page to edit or delete the instance
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "instanceLayout" : {
+        "widget" : "page",
+        "children" : [ {
+          "widget" : "edit",
+          "schema" : {
+            "type" : "object",
+            "properties" : {
+              "ID" : {
+                "ID" : "dj/sqlite/REQUESTS/ID",
+                "parent" : "dj/sqlite/REQUESTS",
+                "dbType" : "INTEGER",
+                "type" : "number",
+                "pkpos" : 0,
+                "createOnly" : true,
+                "size" : 6
+              }
+            }
+          }
+        } ]
+      }
+    }
+  }
+}
+
+TITLE: variable widget
+DESCRIPTION: Shows a form that sets session variables. This example sets the variable 'field'
+LANGUAGE: json
+CODE: {
+  "widget" : "variable",
+  "schema" : {
+    "type" : "object",
+    "properties" : {
+      "field" : {
+        "widget" : "number"
+      }
+    }
+  }
+}
+
+TITLE: boolean input
+DESCRIPTION: Boolean inputs show a on/off toggle. In this example, the toggle has the label 'Opt in'
+LANGUAGE: json
+CODE: {
+  "widget" : "boolean",
+  "title" : "Opt in"
+}
+
+TITLE: string input
+DESCRIPTION: String inputs show a text input
+LANGUAGE: json
+CODE: {
+  "widget" : "string"
+}
+
+TITLE: number input
+DESCRIPTION: Number inputs show a text input that is restricted to entering numbers
+LANGUAGE: json
+CODE: {
+  "widget" : "number"
+}
+
+TITLE: autocomplete input
+DESCRIPTION: Autocomplete inputs show a text input that autocompletes to the options specified in the jsonata expression
+LANGUAGE: json
+CODE: {
+  "widget" : "auto complete",
+  "options" : "['one', 'two', 'three']"
+}
+
+TITLE: select input
+DESCRIPTION: Select inputs show a drop-down selection with the options specified in the jsonata expression
+LANGUAGE: json
+CODE: {
+  "widget" : "select",
+  "options" : "['one', 'two', 'three']"
+}
+
+TITLE: multi select input
+DESCRIPTION: Multi Select inputs show a drop-down selection with the options specified in the jsonata expression. Multiple options can be selected yielding an array of values
+LANGUAGE: json
+CODE: {
+  "widget" : "multi select",
+  "options" : "['one', 'two', 'three']"
+}
+
+TITLE: key value input
+DESCRIPTION: key value inputs display a two column table to enter keys and values. Returns a JSON object
+LANGUAGE: json
+CODE: {
+  "widget" : "key value"
+}
+
+TITLE: password input
+DESCRIPTION: Shows a password input field
+LANGUAGE: json
+CODE: {
+  "widget" : "password"
+}
+
+TITLE: textarea input
+DESCRIPTION: Shows a multi line input field (textarea)
+LANGUAGE: json
+CODE: {
+  "widget" : "textarea"
+}
+
+TITLE: date input
+DESCRIPTION: Shows a date picker input. Returns a YYYY-MM-DD string with the selected date
+LANGUAGE: json
+CODE: {
+  "widget" : "date"
+}
+
+TITLE: time input
+DESCRIPTION: Shows a time picker input. Returns a ISO 8601 date string with the current day and the selected time
+LANGUAGE: json
+CODE: {
+  "widget" : "time"
+}
+
+TITLE: datetime input
+DESCRIPTION: Shows a datetime picker input
+LANGUAGE: json
+CODE: {
+  "widget" : "datetime"
+}
+
+TITLE: file input
+DESCRIPTION: Allows uploading a file. returns the file contents
+LANGUAGE: json
+CODE: {
+  "widget" : "file"
+}
+
+TITLE: binary file input
+DESCRIPTION: Allows uploading a file. returns the file contents as a base 64 encoded data URL
+LANGUAGE: json
+CODE: {
+  "widget" : " binary file"
+}
+
+TITLE: file with metadata input
+DESCRIPTION: Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents)
+LANGUAGE: json
+CODE: {
+  "widget" : "file with metadata"
+}
+
+TITLE: binary file with metadata input
+DESCRIPTION: Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)
+LANGUAGE: json
+CODE: {
+  "widget" : " binary file with metadata"
+}
+
+TITLE: voice input
+DESCRIPTION: Shows a text input field with a voice option
+LANGUAGE: json
+CODE: {
+  "widget" : " voice"
+}
+
+TITLE: qrcode input
+DESCRIPTION: Allows scanning a QR Code into the form field
+LANGUAGE: json
+CODE: {
+  "widget" : " qrcode"
+}
+
