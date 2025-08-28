@@ -56,5 +56,113 @@
                 "options": "['one', 'two', 'three']"
             }
         }
+    ],
+    "key value": [
+        {
+            "title": "key value input",
+            "description": "key value inputs display a two column table to enter keys and values. Returns a JSON object",
+            "code": {
+                "widget": "key value"
+            }
+        }
+    ],
+    "password": [
+        {
+            "title": "password input",
+            "description": "Shows a password input field",
+            "code": {
+                "widget": "password"
+            }
+        }
+    ],
+    "textarea": [
+        {
+            "title": "textarea input",
+            "description": "Shows a multi line input field (textarea)",
+            "code": {
+                "widget": "textarea"
+            }
+        }
+    ],
+    "date": [
+        {
+            "title": "date input",
+            "description": "Shows a date picker input. Returns an ISO 8601 date string with the selected date at midnight",
+            "code": {
+                "widget": "date"
+            }
+        }
+    ],
+    "time": [
+        {
+            "title": "time input",
+            "description": "Shows a time picker input. Returns a ISO 8601 date string with the current day and the selected time",
+            "code": {
+                "widget": "time"
+            }
+        }
+    ],
+    "datetime": [
+        {
+            "title": "datetime input",
+            "description": "Shows a datetime picker input",
+            "code": {
+                "widget": "datetime"
+            }
+        }
+    ],
+    "file": [
+        {
+            "title": "file input",
+            "description": "Allows uploading a file. returns the file contents",
+            "code": {
+                "widget": "file"
+            }
+        }
+    ],
+    "binary file": [
+        {
+            "title": "binary file input",
+            "description": "Allows uploading a file. returns the file contents as a base 64 encoded data URL",
+            "code": {
+                "widget": " binary file"
+            }
+        }
+    ],
+    "file with metadata": [
+        {
+            "title": "file with metadata input",
+            "description": "Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents)",
+            "code": {
+                "widget": " file with metadata"
+            }
+        }
+    ],
+    "binary file with metadata": [
+        {
+            "title": "binary file with metadata input",
+            "description": "Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)",
+            "code": {
+                "widget": " binary file with metadata"
+            }
+        }
+    ],
+    "voice": [
+        {
+            "title": "voice input",
+            "description": "Shows a text input field with a voice option",
+            "code": {
+                "widget": " voice"
+            }
+        }
+    ],
+    "qrcode": [
+        {
+            "title": "qrcode input",
+            "description": "Allows scanning a QR Code into the form field",
+            "code": {
+                "widget": " qrcode"
+            }
+        }
     ]
 }
