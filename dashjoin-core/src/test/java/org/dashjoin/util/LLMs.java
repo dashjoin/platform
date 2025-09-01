@@ -57,6 +57,7 @@ public class LLMs {
     FileUtils.write(new File("../llms.txt"), b, Charset.defaultCharset());
 
     writeInput();
+    writeWidget();
   }
 
   static void writeInput() throws Exception {
@@ -79,6 +80,26 @@ public class LLMs {
       }
 
     FileUtils.write(new File("../dashjoin-docs/docs/appendix-inputs.md"), b,
+        Charset.defaultCharset());
+  }
+
+  static void writeWidget() throws Exception {
+    StringBuffer b = new StringBuffer();
+    b.append("# Appendix: Form Input Types\n");
+    Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/widget.json"),
+        new TypeReference<Map<String, List<Example>>>() {});
+
+    for (Entry<String, List<Example>> entry : list.entrySet())
+      for (Example e : entry.getValue()) {
+        if (e.language == null)
+          e.language = e.code instanceof String ? "jsonata" : "json";
+        b.append("## " + e.title + "\n");
+        b.append(e.description + "\n");
+        b.append("```json\n");
+        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
+      }
+
+    FileUtils.write(new File("../dashjoin-docs/docs/appendix-widgets.md"), b,
         Charset.defaultCharset());
   }
 }

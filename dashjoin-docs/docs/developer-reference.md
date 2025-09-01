@@ -18,6 +18,7 @@ Apart from title, all widgets support the following options:
 These can be edited using Dashjoin Studio. Some widgets, like the container, expose them via the layout editor as well.
 
 Widgets can be grouped into the following three categories.
+See [appendix inputs](appendix-widgets.md) for examples. 
 
 ### Container Widgets
 
