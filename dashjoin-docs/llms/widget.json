@@ -33,6 +33,30 @@
 			}
 		},
 		{
+			"title": "display widget showing an image",
+			"description": "if the object has exactly the key 'img' (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute",
+			"code": {
+				"display": "{'img': 'https://dashjoin.com/img/fav.png'}",
+				"widget": "display"
+			}
+		},
+		{
+			"title": "display widget showing a hyperlink",
+			"description": "if the object has exactly the key 'href' or the keys 'href' and 'label', the object is displayed as a hyperlink",
+			"code": {
+				"display": "{'href':'http://dashjoin.com', 'label':'DJ Homepage'}",
+				"widget": "display"
+			}
+		},
+		{
+			"title": "display widget showing a hyperlink",
+			"description": "absolute or relative links to another page in the app are specified without the 'slash hash' part of the URL - for instance, the href 'Info' or '/page/Info' links to the Info page",
+			"code": {
+				"display": "{'href':'/#/page/Home', 'label':'Home'}",
+				"widget": "display"
+			}
+		},
+		{
 			"title": "display widget on dashboard page",
 			"description": "shows how a display widget is added on a dashboard page",
 			"file": "model/page/test.json",
@@ -297,6 +321,312 @@
 						}
 					}
 				}
+			}
+		}
+	],
+	"actionTable": [
+		{
+			"title": "action table",
+			"description": "Visualizes 'expression' as a table. The 'properties' field contains an object where the keys are button labels and the values contain actions to be performed when the button is pressed. The action expression gets the context passed which includes the selected objects in the 'selected' field",
+			"code": {
+				"expression": "$all('sqlite', 'REQUESTS')",
+				"properties": {
+					"print": "selected.$echo($)"
+				},
+				"widget": "actionTable"
+			}
+		}
+	],
+	"aichat": [
+		{
+			"title": "aichat widget",
+			"description": "chat widget that allows you to react to user inputs and file uploads. this example answers (without AI) by simply repeating what the user asks.",
+			"code": {
+				"onChat": "$append(messages, [{'role':'user', 'content': query}, {'role':'assistant', 'content': 'you said: ' & query}])",
+				"widget": "aichat"
+			}
+		},
+		{
+			"title": "aichat widget",
+			"description": "chat widget that allows you to react to user inputs and file uploads. this example chats with OpenAI's gpt-4o-mini model. The API key must be provided using the 'openai' credentials in the function catalog. The onChat callback passes messages (the chat history) and the new user query to the $chat function. The widget is configured using 'expression'. This expression specifies the initial messages - in this case the system message containing the system prompt",
+			"code": {
+				"onChat": "$chat('https://api.openai.com/v1/chat/completions', query, messages, [], {'model':'gpt-4o-mini'}, {'Authorization': 'openai', 'dj-timeout-seconds': 60})",
+				"expression": "{'messages': [{'role': 'system', 'content': 'always answer in a funny way'}]}",
+				"widget": "aichat"
+			}
+		}
+	],
+	"analytics": [
+		{
+			"title": "analytics widget",
+			"description": "displays the results of a SQL query as a chart or table. Allows placing filters on the widget that the user can set when viewing the widget. The database, table, columns, and filter fields determine the SQL query: in this case, it is 'select user, count(ID) from REQUESTS where submitted >= ?' on the database 'sqlite'. Possible filter input widgets are: text, slider, switch, date, select, and selectmultiple.",
+			"code": {
+				"columns": [
+					{
+						"name": "user",
+						"aggregation": "GROUP_BY"
+					},
+					{
+						"name": "ID",
+						"aggregation": "COUNT"
+					}
+				],
+				"filter": [
+					{
+						"name": "submitted",
+						"operator": ">=",
+						"input": "date"
+					}
+				],
+				"database": "sqlite",
+				"table": "REQUESTS",
+				"chart": "bar",
+				"widget": "analytics"
+			}
+		}
+	],
+	"chart": [
+		{
+			"title": "chart widget",
+			"description": "displays a chart based on a query or expression. the first column is used as labels for the X-axis. The second column holds the Y-Values. This example shows the results of the 'group' query from the query catalog run on the northwind database. The chart is a bar chart.",
+			"code": {
+				"database": "northwind",
+				"query": "group",
+				"chart": "bar",
+				"widget": "chart"
+			}
+		},
+		{
+			"title": "chart widget",
+			"description": "displays a chart based on a query or expression. the first column is used as labels for the X-axis. The second column holds the Y-Values. This example uses a JSONata expression to compute a table using two columns in order to display it as a line chart.",
+			"code": {
+				"chart": "line",
+				"expression": "[{'name':'joe', 'age':11}, {'name':'jane', 'age': 22}]",
+				"arguments": "",
+				"widget": "chart"
+			}
+		}
+	],
+	"datagrid": [
+		{
+			"title": "datagrid widget",
+			"description": "Displays the result of a JSONata expression as an editable table. We have callbacks ondelete (context 'id' contains the primary key of the row to be deleted), onchange (updatedRow contains the new value of the row), and oncreate (no context is given - in this example, the code computes a new unique primary key by running select max(id) from table)",
+			"code": {
+				"widget": "datagrid",
+				"expression": "$all('northwind', 'EMPLOYEES')",
+				"onchange": "$update('northwind', 'EMPLOYEES', id, updatedRow)",
+				"ondelete": "$delete('northwind', 'EMPLOYEES', id)",
+				"oncreate": "$create('northwind', 'EMPLOYEES', {'EMPLOYEE_ID': $adHocQuery('northwind', 'select max(EMPLOYEE_ID)+1 as X from EMPLOYEES').X, 'LAST_NAME': ' ', 'FIRST_NAME': ' '})",
+				"idColumn": "EMPLOYEE_ID"
+			}
+		}
+	],
+	"diagram": [
+		{
+			"title": "diagram widget",
+			"description": "displays a boxes and lines diagram where each box represents a database record. The expression 'nodes' computes the boxes. The fields database, table, and id denote the database record (in the example an EMPLOYEE). Optionally, you can specify the box label (data.label) and the box position (position.x and position.y)",
+			"code": {
+				"nodes": "$all('northwind', 'EMPLOYEES').{'database': 'northwind', 'table': 'EMPLOYEES', 'id': EMPLOYEE_ID, 'data': {'label': LAST_NAME}}",
+				"edges": "$all('northwind', 'EMPLOYEES').{'source': EMPLOYEE_ID, 'target': REPORTS_TO}",
+				"widget": "diagram"
+			}
+		}
+	],
+	"editRelated": [
+		{
+			"title": "edit related widget",
+			"description": "Allows editing related records of a database record. In this example, the order instance page allows editing all the order details directly. The link between the tables is established via the 'prop' field, which contains the column ID of the foreign key",
+			"code": {
+				"ID": "dj/northwind",
+				"name": "northwind",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:h2:mem:northwind",
+				"tables": {
+					"ORDERS": {
+						"instanceLayout": {
+							"widget": "page",
+							"children": [
+								{
+									"columns": [
+										"ORDER_ID",
+										"PRODUCT_ID",
+										"UNIT_PRICE",
+										"QUANTITY",
+										"DISCOUNT"
+									],
+									"prop": "dj/northwind/ORDER_DETAILS/ORDER_ID",
+									"widget": "editRelated"
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	],
+	"graph": [
+		{
+			"title": "graph widget",
+			"description": "display a directed labelled graph showing the result of an OpenCypher query",
+			"code": {
+				"nodes": "$adHocQueryGraph('northwind', 'match p=(x:EMPLOYEES)-[:REPORTS_TO]->(y) return p').p",
+				"widget": "graph"
+			}
+		},
+		{
+			"title": "graph widget",
+			"description": "display a directed labelled graph showing the nodes specified by a JSONata expression. Initially, this graph has no edges",
+			"code": {
+				"nodes": "$all('northwind', 'EMPLOYEES').EMPLOYEE_ID.{  'database': 'northwind',  'table': 'EMPLOYEES',  'pk': [$]}",
+				"widget": "graph"
+			}
+		}
+	],
+	"html": [
+		{
+			"title": "html widget",
+			"description": "Allows you to specify HTML. The context expression can be used to inject dynamic content into the HTML via the template ${context}. You can also provide JavaScript functions that can be called from your HTML code (e.g. function 'go')",
+			"code": {
+				"title": "HTML Widgets",
+				"html": "<html lang=\"en\"><style>.card {padding:2em;background:#fff;border-radius:1em;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}</style><body><div class=\"card\"><h1>Hello \uD83D\uDC4B</h1><p><a href='javascript:go()'>${context.x}</a></p></div></body></html>",
+				"context": "{'x': 'Hello World!'}",
+				"script": "function go(){alert('Hi')}",
+				"widget": "html"
+			}
+		}
+	],
+	"icon": [
+		{
+			"title": "icon widget",
+			"description": "shows a material icon with an optional link (href) and tooltip text",
+			"code": {
+				"icon": "verified_user",
+				"href": "/page/Home",
+				"tooltip": "tooltip text",
+				"widget": "icon"
+			}
+		}
+	],
+	"links": [
+		{
+			"title": "links widget",
+			"description": "on an instance page, shows links to all other related records and the corresponding table page",
+			"code": {
+				"widget": "links"
+			}
+		}
+	],
+	"map": [
+		{
+			"title": "map widget showing a list of addresses",
+			"description": "The address can be as simple as 'jp' for Japan, or it can be a specific street address. The widget chooses the appropriate center and zoom level automatically",
+			"code": {
+				"display": "['paris', 'berlin']",
+				"widget": "map"
+			}
+		},
+		{
+			"title": "map widget showing a specific address with a popup linking to a record",
+			"description": "Using the points field, you can specify a popup which display the data like the display widget. In this case, we show a link to a database record",
+			"code": {
+				"display": "{'points': [{'address': 'London','popup': {'database': 'northwind','table': 'CUSTOMERS','pk': [ 'AROUT' ]}}]}",
+				"widget": "map"
+			}
+		}
+	],
+	"markdown": [
+		{
+			"title": "markdown widget",
+			"description": "shows markdown that can be fed dynamic content via the 'context' JSONata expression",
+			"code": {
+				"markdown": "# Hello ${user} ${context}",
+				"context": "42",
+				"widget": "markdown"
+			}
+		}
+	],
+	"mdxeditor": [
+		{
+			"title": "mdxeditor widget",
+			"description": "a WYSIWYG editor that can be extended with custom menus. 'properties' defines the actions, 'expression' defines the menu structure",
+			"code": {
+				"markdown": "# Hello ${user} ${context}",
+				"context": "42",
+				"properties": {
+					"alert": "$alert('selection: ' & selection & '. markdown: ' & markdown)",
+					"log": "$log($)",
+					"sleep": "($progress({'message': 'working'});$sleep(1000))"
+				},
+				"expression": "{'menu': [{'type': 'select','title': 'tooltip','label': 'longer operation','value': 'sleep','items': [{}]},{'type': 'select','title': 'tooltip','label': 'Label','items': [{'label': 'alert popup','value': 'alert'},{'label': 'doc to console','value': 'log'}]}]}",
+				"widget": "mdxeditor"
+			}
+		}
+	],
+	"table": [
+		{
+			"title": "table widget",
+			"description": "shows the result of a query. this example uses mode auto which chooses a mobile friendly table layout when viewed on small devices",
+			"code": {
+				"mode": "auto",
+				"database": "northwind",
+				"query": "group",
+				"widget": "table"
+			}
+		},
+		{
+			"title": "table widget",
+			"description": "shows the result of a JSONata expression as a table",
+			"code": {
+				"expression": "[{'x':1}]",
+				"widget": "table"
+			}
+		}
+	],
+	"text": [
+		{
+			"title": "text widget",
+			"description": "shows a simple static text",
+			"code": {
+				"text": "Hello World!",
+				"widget": "text"
+			}
+		},
+		{
+			"title": "text widget",
+			"description": "shows a hyperlink with an icon in front",
+			"code": {
+				"href": "/page/Home",
+				"text": "Homepage",
+				"icon": "home",
+				"widget": "text"
+			}
+		}
+	],
+	"tree": [
+		{
+			"title": "tree widget",
+			"description": "shows a tree using a recursive query 'orgchart'. The query must have a parameter 'node' and is evaluated every time a node is opened in the tree view",
+			"code": {
+				"widget": "tree",
+				"query": "orgchart",
+				"database": "northwind"
+			}
+		},
+		{
+			"title": "tree widget",
+			"description": "shows a static tree that is suitable for a side navigation. The tree nodes can provide an icon, text, href, and nested child nodes",
+			"code": {
+				"expression": "[{'data': {'text': 'Menu','icon': 'person'},'children': [{'text': 'Info', 'icon': 'info', 'href': '/page/Info'}, {'text': 'Home', 'icon': 'home', 'href': '/page/Info'}]}]",
+				"widget": "tree"
+			}
+		}
+	],
+	"uploadfile": [
+		{
+			"title": "uploadfile widget",
+			"description": "Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment variable",
+			"code": {
+				"widget": "uploadfile"
 			}
 		}
 	]
