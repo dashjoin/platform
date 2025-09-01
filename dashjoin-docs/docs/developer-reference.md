@@ -74,7 +74,7 @@ The child titles are used as a label. Only the active tab is shown.
 ### Form Widgets
 
 Like containers, form widgets allow adding input elements. Every input widget must use a unique name which is in turn
-used as the key in the resulting JSON structure. See [environment](appendix-inputs.md) for examples. Inputs can be of the following type:
+used as the key in the resulting JSON structure. See [appendix inputs](appendix-inputs.md) for examples. Inputs can be of the following type:
 
 * boolean: displays an on/off toggle and returns a boolean value
 * string; a regular text box that returns a string
@@ -380,7 +380,7 @@ When icons is "*": "icon", all icons will be mapped to that same specified icon.
 Allows editing related records of a database record:
 
 * prop: foreign key column on the related table
-* columns: columns to display in the editRelated table display. Note that this option is only available in Dashjoin Studio
+* columns: columns to display in the editRelated table display
 
 #### graph
 
@@ -539,7 +539,7 @@ allows the user to edit the text and call expressions via the custom menu.
 
 ```json
 {
-  "widget": "mdxeditor"
+  "widget": "mdxeditor",
   "markdown": "# Hello ${user} ${context}",
   "context": "'my context expression'",
   "properties": {
@@ -644,7 +644,7 @@ Displays a tree based on a recursive query
 * query: query that projects a single column with the keys of the current node's children. The primary key of the current node (null for the tree root) is passed as a query argument. The query typically has the form: select id from recursiveTable where fk=parameter
 * expression: allows configuring the widget via JSONata. The result must be a node or an array of nodes. A node has the fields data and an optional field children. The widget displays the contents of data similar to the display widget. If data includes an icon field, the tree is displayed [like this](https://mui.com/material-ui/react-list/#nested-list).
 
-### uploadfile
+#### uploadfile
 
 Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment
 variable (see Installation - Environment).
