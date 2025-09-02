@@ -674,3 +674,126 @@ CODE: {
   "widget" : " qrcode"
 }
 
+TITLE: query catalog
+DESCRIPTION: a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role
+FILE: model/dj-query-catalog/group.json
+LANGUAGE: json
+CODE: {
+  "ID" : "group",
+  "database" : "dj/northwind",
+  "query" : "SELECT CUSTOMERS.COUNTRY, COUNT(*) AS \"Number of Customers\" FROM CUSTOMERS GROUP BY CUSTOMERS.COUNTRY",
+  "roles" : [ "authenticated" ],
+  "type" : "read"
+}
+
+TITLE: query catalog
+DESCRIPTION: a query on database 'dj/northwind' called 'list'. Parameters limit and offset can be passed to the query
+FILE: model/dj-query-catalog/list.json
+LANGUAGE: json
+CODE: {
+  "ID" : "list",
+  "database" : "dj/northwind",
+  "query" : "select * from CATEGORIES limit ${limit} offset ${offset}",
+  "type" : "read",
+  "arguments" : {
+    "limit" : {
+      "type" : "number",
+      "sample" : "5"
+    },
+    "offset" : {
+      "type" : "number",
+      "sample" : "0"
+    }
+  }
+}
+
+TITLE: database definition
+DESCRIPTION: postgres database connection information with encrypted password
+FILE: model/dj-database/dj%2Fpostgres.json
+LANGUAGE: json
+CODE: {
+  "name" : "postgres",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "username" : "postgres",
+  "url" : "jdbc:postgresql://localhost:5432/postgres",
+  "ID" : "dj/postgres",
+  "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
+}
+
+TITLE: Function catalog: Invoke
+DESCRIPTION: Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
+FILE: model/dj-function/add.json
+LANGUAGE: json
+CODE: {
+  "ID" : "add",
+  "djClassName" : "org.dashjoin.function.Invoke",
+  "expression" : "{'result': x+y}",
+  "roles" : [ "authenticated" ],
+  "type" : "read"
+}
+
+TITLE: Function catalog: RestJson
+DESCRIPTION: Function that calls a web service. The fields of the function argument are used to construct the URL via from string template
+FILE: model/dj-function/address.json
+LANGUAGE: json
+CODE: {
+  "djClassName" : "org.dashjoin.function.RestJson",
+  "url" : "https://api.geoapify.com/v1/geocode/search?street=${street}&postcode=${postcode}&city=${city}&country=${country}&apiKey=...",
+  "method" : "GET",
+  "contentType" : "application/json",
+  "ID" : "address"
+}
+
+TITLE: Function catalog: Credentials
+DESCRIPTION: Encrypted credentials for OpenAI to be used in $curl and $chat functions
+FILE: model/dj-function/openai.json
+LANGUAGE: json
+CODE: {
+  "ID" : "openai",
+  "djClassName" : "org.dashjoin.function.Credentials",
+  "username" : "Authorization",
+  "password" : "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
+  "apiKey" : true
+}
+
+TITLE: Function catalog: ETL
+DESCRIPTION: Extract load transform function. Loads the result of 'expression' into the database sqlite. The data is mapped using 'mappings'
+FILE: model/dj-function/misp.json
+LANGUAGE: json
+CODE: {
+  "djClassName" : "com.dashjoin.function.ETL",
+  "database" : "sqlite",
+  "ID" : "misp",
+  "type" : "write",
+  "oldData" : "Delete All",
+  "createSchema" : true,
+  "mappings" : {
+    "MISP_Event" : {
+      "sourceTable" : "table",
+      "extractColumn" : null,
+      "extractKey" : null,
+      "pk" : "uuid",
+      "rowMapping" : null,
+      "rowFilter" : null
+    }
+  },
+  "expressions" : {
+    "expression" : "$openJson(\"https://www.circl.lu/doc/misp/feed-osint/0b988513-9535-42f0-9ebc-5d6aec2e1c79.json\").Event.Attribute"
+  }
+}
+
+TITLE: Function catalog: Email
+DESCRIPTION: Configures an SMTP server
+FILE: model/dj-function/email.json
+LANGUAGE: json
+CODE: {
+  "djClassName" : "org.dashjoin.function.Email",
+  "ID" : "email",
+  "type" : "write",
+  "properties" : {
+    "mail.smtp.port" : "25"
+  },
+  "username" : "user",
+  "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
+}
+

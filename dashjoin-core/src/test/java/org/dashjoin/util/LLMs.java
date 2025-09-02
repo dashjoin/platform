@@ -36,7 +36,8 @@ public class LLMs {
     b.append("========================\n\n");
 
     for (File f : new File[] {new File("../dashjoin-docs/llms/widget.json"),
-        new File("../dashjoin-docs/llms/input.json")}) {
+        new File("../dashjoin-docs/llms/input.json"),
+        new File("../dashjoin-docs/llms/config.json")}) {
       Map<String, List<Example>> list =
           om.readValue(f, new TypeReference<Map<String, List<Example>>>() {});
 
@@ -58,6 +59,7 @@ public class LLMs {
 
     writeInput();
     writeWidget();
+    writeConfig();
   }
 
   static void writeInput() throws Exception {
@@ -80,6 +82,27 @@ public class LLMs {
       }
 
     FileUtils.write(new File("../dashjoin-docs/docs/appendix-inputs.md"), b,
+        Charset.defaultCharset());
+  }
+
+  static void writeConfig() throws Exception {
+    StringBuffer b = new StringBuffer();
+    b.append("# Appendix: Databases, Queries, Functions, and Configurations\n");
+    b.append("These are possible children of the create, edit, button, and variable widgets.");
+    Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/config.json"),
+        new TypeReference<Map<String, List<Example>>>() {});
+
+    for (Entry<String, List<Example>> entry : list.entrySet())
+      for (Example e : entry.getValue()) {
+        if (e.language == null)
+          e.language = e.code instanceof String ? "jsonata" : "json";
+        b.append("## " + e.title + "\n");
+        b.append(e.description + "\n");
+        b.append("```json\n");
+        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
+      }
+
+    FileUtils.write(new File("../dashjoin-docs/docs/appendix-configurations.md"), b,
         Charset.defaultCharset());
   }
 

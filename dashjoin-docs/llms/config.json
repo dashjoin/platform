@@ -1,0 +1,135 @@
+{
+	"dj-query-catalog": [
+		{
+			"title": "query catalog",
+			"description": "a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role",
+			"file": "model/dj-query-catalog/group.json",
+			"code": {
+				"ID": "group",
+				"database": "dj/northwind",
+				"query": "SELECT CUSTOMERS.COUNTRY, COUNT(*) AS \"Number of Customers\" FROM CUSTOMERS GROUP BY CUSTOMERS.COUNTRY",
+				"roles": [
+					"authenticated"
+				],
+				"type": "read"
+			}
+		},
+		{
+			"title": "query catalog",
+			"description": "a query on database 'dj/northwind' called 'list'. Parameters limit and offset can be passed to the query",
+			"file": "model/dj-query-catalog/list.json",
+			"code": {
+				"ID": "list",
+				"database": "dj/northwind",
+				"query": "select * from CATEGORIES limit ${limit} offset ${offset}",
+				"type": "read",
+				"arguments": {
+					"limit": {
+						"type": "number",
+						"sample": "5"
+					},
+					"offset": {
+						"type": "number",
+						"sample": "0"
+					}
+				}
+			}
+		}
+	],
+	"dj-database": [
+		{
+			"title": "database definition",
+			"description": "postgres database connection information with encrypted password",
+			"file": "model/dj-database/dj%2Fpostgres.json",
+			"code": {
+				"name": "postgres",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"username": "postgres",
+				"url": "jdbc:postgresql://localhost:5432/postgres",
+				"ID": "dj/postgres",
+				"password": "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
+			}
+		}
+	],
+	"dj-function": [
+		{
+			"title": "Function catalog: Invoke",
+			"description": "Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST",
+			"file": "model/dj-function/add.json",
+			"code": {
+				"ID": "add",
+				"djClassName": "org.dashjoin.function.Invoke",
+				"expression": "{'result': x+y}",
+				"roles": [
+					"authenticated"
+				],
+				"type": "read"
+			}
+		},
+		{
+			"title": "Function catalog: RestJson",
+			"description": "Function that calls a web service. The fields of the function argument are used to construct the URL via from string template",
+			"file": "model/dj-function/address.json",
+			"code": {
+				"djClassName": "org.dashjoin.function.RestJson",
+				"url": "https://api.geoapify.com/v1/geocode/search?street=${street}&postcode=${postcode}&city=${city}&country=${country}&apiKey=...",
+				"method": "GET",
+				"contentType": "application/json",
+				"ID": "address"
+			}
+		},
+		{
+			"title": "Function catalog: Credentials",
+			"description": "Encrypted credentials for OpenAI to be used in $curl and $chat functions",
+			"file": "model/dj-function/openai.json",
+			"code": {
+				"ID": "openai",
+				"djClassName": "org.dashjoin.function.Credentials",
+				"username": "Authorization",
+				"password": "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
+				"apiKey": true
+			}
+		},
+		{
+			"title": "Function catalog: ETL",
+			"description": "Extract load transform function. Loads the result of 'expression' into the database sqlite. The data is mapped using 'mappings'",
+			"file": "model/dj-function/misp.json",
+			"code": {
+				"djClassName": "com.dashjoin.function.ETL",
+				"database": "sqlite",
+				"ID": "misp",
+				"type": "write",
+				"oldData": "Delete All",
+				"createSchema": true,
+				"mappings": {
+					"MISP_Event": {
+						"sourceTable": "table",
+						"extractColumn": null,
+						"extractKey": null,
+						"pk": "uuid",
+						"rowMapping": null,
+						"rowFilter": null
+					}
+				},
+				"expressions": {
+					"expression": "$openJson(\"https://www.circl.lu/doc/misp/feed-osint/0b988513-9535-42f0-9ebc-5d6aec2e1c79.json\").Event.Attribute"
+				}
+			}
+		},
+		{
+			"title": "Function catalog: Email",
+			"description": "Configures an SMTP server",
+			"file": "model/dj-function/email.json",
+			"code": {
+				"djClassName": "org.dashjoin.function.Email",
+				"ID": "email",
+				"type": "write",
+				"properties": {
+					"mail.smtp.port": "25"
+				},
+				"username": "user",
+				"password": "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
+			}
+		}
+	]
+}
