@@ -83,6 +83,7 @@ public class LLMs {
         Charset.defaultCharset());
   }
 
+  @SuppressWarnings("unchecked")
   static void writeWidget() throws Exception {
     StringBuffer b = new StringBuffer();
     b.append("# Appendix: Form Input Types\n");
@@ -97,6 +98,17 @@ public class LLMs {
         b.append(e.description + "\n");
         b.append("```json\n");
         b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
+        if (e.code instanceof Map) {
+          Map<String, Object> map = (Map<String, Object>) e.code;
+          for (Entry<String, Object> field : map.entrySet())
+            if (field.getValue() instanceof String)
+              if (((String) field.getValue()).contains("\n")) {
+                b.append(field.getKey() + "\n");
+                b.append("```\n");
+                b.append(field.getValue() + "\n");
+                b.append("```\n");
+              }
+        }
       }
 
     FileUtils.write(new File("../dashjoin-docs/docs/appendix-widgets.md"), b,
