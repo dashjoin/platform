@@ -1,5 +1,5 @@
 # Appendix: Databases, Queries, Functions, and Configurations
-These are possible children of the create, edit, button, and variable widgets.## query catalog
+## query catalog
 a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role
 ```json
 {

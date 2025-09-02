@@ -1,5 +1,6 @@
 # Appendix: Form Input Types
-These are possible children of the create, edit, button, and variable widgets.## boolean input
+These are possible children of the create, edit, button, and variable widgets.
+## boolean input
 Boolean inputs show a on/off toggle. In this example, the toggle has the label 'Opt in'
 ```json
 {

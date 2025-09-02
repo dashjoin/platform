@@ -1005,6 +1005,7 @@ These functions can be classified as frontend and backend functions. Frontend fu
 and can be used to trigger a screen popup or to set a browser session variable.
 Backend functions typically access backend data.
 You can mix both kinds in a single JSONata expression tree. 
+See [appendix JSONata](appendix-jsonata.md) for examples. 
 
 ### Frontend Expressions
 

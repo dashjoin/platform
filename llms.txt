@@ -797,3 +797,95 @@ CODE: {
   "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
 }
 
+TITLE: confirm
+DESCRIPTION: displays a confirmation dialog and returns true if the user clicked yes
+LANGUAGE: jsonata
+CODE: $confirm('Are you sure') ? 'you clicked yes'
+
+TITLE: setVariable
+DESCRIPTION: Sets the browser session variable x to 1. The new value can be read in other places via variable.x
+LANGUAGE: jsonata
+CODE: $setVariable('x', 1)
+
+TITLE: prompt
+DESCRIPTION: Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
+LANGUAGE: jsonata
+CODE: (
+  $name := $prompt('What is your name?');
+  $name ? ('Hello ' & $name);
+)
+
+TITLE: alert
+DESCRIPTION: Shows a model popup with a message
+LANGUAGE: jsonata
+CODE: $alert('FYI')
+
+TITLE: dialog
+DESCRIPTION: Shows a dialog to enter 'to' and 'text'. If the user submits via 'ok', an object with these fields is returned
+LANGUAGE: jsonata
+CODE: $dialog({
+  'title':'Send Message', 
+  'message':'Please enter your message', 
+  'inputs':['to', 'content'], 
+  'buttons':[{'label':'ok', 'type':'submit'},'cancel'], 
+  'options':{'alert':'info'}
+})
+
+TITLE: notify
+DESCRIPTION: Shows a message in the snackbar at the bottom of the screen
+LANGUAGE: jsonata
+CODE: $notify('Hi from the snackbar!')
+
+TITLE: refresh
+DESCRIPTION: refreshes the screen just (just like hitting the refresh icon in the toolbar)
+LANGUAGE: jsonata
+CODE: $refresh()
+
+TITLE: reload
+DESCRIPTION: reloads the browser page
+LANGUAGE: jsonata
+CODE: $reload()
+
+TITLE: navigate
+DESCRIPTION: points the browser to the URL
+LANGUAGE: jsonata
+CODE: $navigate('http://dashjoin.com')
+
+TITLE: navigate
+DESCRIPTION: scrolls the page to the DOM element with the given id. In this case, we scroll to the widget that has the title 'Top'
+LANGUAGE: jsonata
+CODE: $navigate({'id': 'dj-Top'})
+
+TITLE: clearCache
+DESCRIPTION: clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
+LANGUAGE: jsonata
+CODE: $clearCache()
+
+TITLE: progress
+DESCRIPTION: shows a progress indicator with the message 'working...' for 1 second until the expression execution completes
+LANGUAGE: jsonata
+CODE: (
+  $progress({'message':'working...'});
+  $sleep(1000)
+)
+
+TITLE: sleep
+DESCRIPTION: sleeps for 1000 milliseconds
+LANGUAGE: jsonata
+CODE: $sleep(1000)
+
+TITLE: speak
+DESCRIPTION: performs a text to english speech for 'Test'
+LANGUAGE: jsonata
+CODE: $speak('Test', 'en')
+
+TITLE: stopSpeech
+DESCRIPTION: stops any text to speech that's in progress
+LANGUAGE: jsonata
+CODE: $stopSpeech()
+
+TITLE: translate
+DESCRIPTION: Lookup the text in the translation file and return the match for the current locale
+LANGUAGE: jsonata
+CODE: $translate('ra.action.select_all_button')
+
