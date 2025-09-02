@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.JSONFileDatabase.FileUsed;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.Home;
@@ -241,9 +242,8 @@ public class JSONFileDatabase extends JSONDatabase {
       // second, in case we're creating for the first time, check the fields that should be ext.
       final boolean autoExternalize = externalizeFields.contains("*");
       for (Entry<String, Object> e : new ArrayList<>(map.entrySet())) {
-        if (externalizeFields.contains(e.getKey())
-          || (autoExternalize && e.getValue() instanceof String
-          && ((String)e.getValue()).contains("\n")))
+        if (externalizeFields.contains(e.getKey()) || (autoExternalize
+            && e.getValue() instanceof String && ((String) e.getValue()).contains("\n")))
           writeString(id, e.getKey(), file, map, generatePointer(s, id, e));
       }
     }
@@ -282,10 +282,10 @@ public class JSONFileDatabase extends JSONDatabase {
   /**
    * pick good defaults for file extensions
    */
-  String ext(Entry<String,Object> e) {
+  String ext(Entry<String, Object> e) {
     String field = e.getKey();
 
-    String val = ((String)e.getValue()).toLowerCase();
+    String val = ((String) e.getValue()).toLowerCase();
     // Check if the value contains language hint
     // Usually first line like "// Javascript" or "/* Jsonata */"
     if (val.contains("javascript"))
@@ -298,10 +298,43 @@ public class JSONFileDatabase extends JSONDatabase {
       return "js";
     if (field.endsWith("jsonata") || field.endsWith("jn"))
       return "jsonata";
-    
+
     switch (field) {
       case "query":
         return "sql";
+
+      // datagrid
+      case "onchange":
+        return "jsonata";
+      case "ondelete":
+        return "jsonata";
+      case "oncreate":
+        return "jsonata";
+
+      // aichat
+      case "onDelete":
+        return "jsonata";
+      case "onUpload":
+        return "jsonata";
+      case "onChat":
+        return "jsonata";
+
+      // diagram
+      case "nodes":
+        return "jsonata";
+      case "edges":
+        return "jsonata";
+      case "moveNode":
+        return "jsonata";
+      case "addNode":
+        return "jsonata";
+      case "removeNode":
+        return "jsonata";
+      case "addEdge":
+        return "jsonata";
+      case "removeEdge":
+        return "jsonata";
+
       case "expression":
         return "jsonata";
       case "foreach":
@@ -317,10 +350,6 @@ public class JSONFileDatabase extends JSONDatabase {
       case "arguments":
         return "jsonata";
       case "schemaExpression":
-        return "jsonata";
-      case "nodes":
-        return "jsonata";
-      case "edges":
         return "jsonata";
       case "display":
         return "jsonata";
@@ -338,14 +367,15 @@ public class JSONFileDatabase extends JSONDatabase {
   /**
    * generate an unused pointer name with a suitable file extension
    */
-  String generatePointer(Table s, Object id, Entry<String,Object> e) throws UnsupportedEncodingException {
+  String generatePointer(Table s, Object id, Entry<String, Object> e)
+      throws UnsupportedEncodingException {
     String field = e.getKey();
     List<String> names = new ArrayList<>();
     for (File f : secondaryFiles(s, id))
       names.add(f.getName());
 
-      for (int counter = 0; counter < 1000; counter++) {
-      String pointer = field + (counter>0 ? "-" + counter : "" ) + "." + ext(e);
+    for (int counter = 0; counter < 1000; counter++) {
+      String pointer = field + (counter > 0 ? "-" + counter : "") + "." + ext(e);
       if (!names.contains(Escape.filename("" + id) + "." + pointer))
         return pointer;
     }
