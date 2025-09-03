@@ -889,3 +889,294 @@ DESCRIPTION: Lookup the text in the translation file and return the match for th
 LANGUAGE: jsonata
 CODE: $translate('ra.action.select_all_button')
 
+TITLE: create
+DESCRIPTION: create a new record in database 'sqlite', table 'REQUESTS'
+LANGUAGE: jsonata
+CODE: $create('sqlite', 'REQUESTS', {'ID': 7, 'name':'new request'})
+
+TITLE: upsert
+DESCRIPTION: inserts or updates record in database 'sqlite', table 'REQUESTS'
+LANGUAGE: jsonata
+CODE: $upsert('sqlite', 'REQUESTS', {'ID': 7, 'name':'updated request'})
+
+TITLE: all
+DESCRIPTION: get all records of the REQUESTS table in the database 'sqlite'
+LANGUAGE: jsonata
+CODE: $all('sqlite', 'REQUESTS')
+
+TITLE: all
+DESCRIPTION: get the first ten records of the REQUESTS table in the database 'sqlite', sort by 'ID', descending=true, with the filter customer='ALFKI'
+LANGUAGE: jsonata
+CODE: $all('sqlite', 'REQUESTS', 1, 10, 'ID', true, {'customer':'ALFKI'})
+
+TITLE: read
+DESCRIPTION: read the records with primary key 7 from table 'REQUESTS' in database 'sqlite'
+LANGUAGE: jsonata
+CODE: $read('sqlite', 'REQUESTS', 7)
+
+TITLE: traverse
+DESCRIPTION: gets all related records for ORDER 10250 from the ORDER_DETAILS table (via foreign key ORDER_DETAILS.ORDER_ID)
+LANGUAGE: jsonata
+CODE: $traverse('northwind', 'ORDERS', '10250', 'dj/northwind/ORDER_DETAILS/ORDER_ID')
+
+TITLE: traverse
+DESCRIPTION: get the related customer for ORDER 10250 from the CUSTOMER table (via foreign key CUSTOMER_ID)
+LANGUAGE: jsonata
+CODE: $traverse('northwind', 'ORDERS', '10250', 'CUSTOMER_ID')
+
+TITLE: update
+DESCRIPTION: update REQUEST 7 in the database 'sqlite'
+LANGUAGE: jsonata
+CODE: $update('sqlite', 'REQUESTS', 7, {'name':'updated request'})
+
+TITLE: delete
+DESCRIPTION: delete REQUEST 7 in the database 'sqlite'
+LANGUAGE: jsonata
+CODE: $delete('sqlite', 'REQUESTS', 7)
+
+TITLE: call
+DESCRIPTION: call function 'add' from the function catalog using the provided parameter
+LANGUAGE: jsonata
+CODE: $call('add', {'x':1, 'y':2})
+
+TITLE: query
+DESCRIPTION: run query 'group' on database 'northwind'
+LANGUAGE: jsonata
+CODE: $query('northwind', 'group')
+
+TITLE: query
+DESCRIPTION: run query 'list' on datanase 'northwind' using query parameters limit 1 and offset 3
+LANGUAGE: jsonata
+CODE: $query('northwind', 'list', {'limit':1, 'offset':'3'})
+
+TITLE: queryGraph
+DESCRIPTION: run graph query cypher on over all databases
+LANGUAGE: jsonata
+CODE: $queryGraph('*', 'cypher')
+
+TITLE: adHocQuery
+DESCRIPTION: Run query 'select * from EMPLOYEES' on database 'northwind'
+LANGUAGE: jsonata
+CODE: $adHocQuery('northwind', 'select * from EMPLOYEES')
+
+TITLE: search
+DESCRIPTION: 
+LANGUAGE: jsonata
+CODE: $search('Fuller')
+
+TITLE: search
+DESCRIPTION: run a full text search for 'Fuller'over the EMPLOYEES table in the 'northwind' database. Limit the result size to 5.
+LANGUAGE: jsonata
+CODE: $search('Fuller', 5, 'northwind', 'EMPLOYEES')
+
+TITLE: incoming
+DESCRIPTION: get all records from all databases that point to northwind EMPLOYEE 2
+LANGUAGE: jsonata
+CODE: $incoming('northwind', 'EMPLOYEES', 2)
+
+TITLE: echo
+DESCRIPTION: prints 'hi' to the log and returns 'hi'
+LANGUAGE: jsonata
+CODE: $echo('hi')
+
+TITLE: index
+DESCRIPTION: In ETL mapping expressions, generates a unique row index ID
+LANGUAGE: jsonata
+CODE: $index()
+
+TITLE: djVersion
+DESCRIPTION: Returns the platform version information
+LANGUAGE: jsonata
+CODE: $djVersion()
+
+TITLE: djRoles
+DESCRIPTION: Returns the roles of the current user
+LANGUAGE: jsonata
+CODE: $djRoles()
+
+TITLE: djUser
+DESCRIPTION: Returns the current user
+LANGUAGE: jsonata
+CODE: $djUser()
+
+TITLE: isRecursiveTrigger
+DESCRIPTION: checks if a trigger expression (e.g. onUpdate) calls itself in order to avoid endless recursions
+LANGUAGE: jsonata
+CODE: $isRecursiveTrigger()
+
+TITLE: ls
+DESCRIPTION: Lists all URLs found at file:upload
+LANGUAGE: jsonata
+CODE: $ls('file:upload')
+
+TITLE: streamJson
+DESCRIPTION: open file:upload/test.json, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression
+LANGUAGE: jsonata
+CODE: $streamJson(''file:upload/test.json, '/data')
+
+TITLE: streamXml
+DESCRIPTION: open file:upload/test.xml, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression
+LANGUAGE: jsonata
+CODE: $streamJson(''file:upload/test.xml, '/data')
+
+TITLE: streamCsv
+DESCRIPTION: open semi-colon delimited file file:upload/test.csv and stream the records into the ETL queue from the foreach expression
+LANGUAGE: jsonata
+CODE: $streamCsv('file:upload/test.csv', {'withDelimiter': ';'})
+
+TITLE: streamDb
+DESCRIPTION: stream the records of the ORDERS table of the northwind database into the ETL queue from the foreach expression
+LANGUAGE: jsonata
+CODE: $streamDb('northwind', 'ORDERS')
+
+TITLE: curl
+DESCRIPTION: open the HTTP GET service at the given URL and pass the authorization header
+LANGUAGE: jsonata
+CODE: $curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'Basic YWRtaW46ZGpkamRq'})
+
+TITLE: chat
+DESCRIPTION: Call the LLM comlpetion API of OpenAI with the query 'hi', the system prompt 'be funny', and the 'openai' credential
+LANGUAGE: jsonata
+CODE: $chat('https://api.openai.com/v1/chat/completions', 'hi', [{'role': 'system', 'content': 'be funny!'}], [], {'model':'gpt-4o-mini'}, {'Authorization': 'openai', 'dj-timeout-seconds': 60})
+
+TITLE: openJson
+DESCRIPTION: Open 'file:upload/test.json', parse the JSON content and return it
+LANGUAGE: jsonata
+CODE: $openJson('file:upload/test.json')
+
+TITLE: openCsv
+DESCRIPTION: Open 'file:upload/test.csv', parse the semi-colon delimited CSV, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $openCsv('file:upload/test.csv', {'withDelimiter': ';'})
+
+TITLE: openXml
+DESCRIPTION: Open 'file:upload/test.xml', parse the XML content, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $openXml('file:upload/test.xml')
+
+TITLE: openYaml
+DESCRIPTION: Open 'file:upload/test.yaml', parse the YAML content, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $openYaml('file:upload/test.yaml')
+
+TITLE: openExcel
+DESCRIPTION: Open 'file:upload/test.xlsx', and return a JSON map of all sheets
+LANGUAGE: jsonata
+CODE: $openExcel('file:upload/test.xlsx')
+
+TITLE: openText
+DESCRIPTION: Open 'file:upload/test.json' and return it base64 encoded
+LANGUAGE: jsonata
+CODE: $openText('file:upload/test.json', 'BASE_64')
+
+TITLE: openText
+DESCRIPTION: Open 'file:upload/test.json' using ISO_8859_1 encoding
+LANGUAGE: jsonata
+CODE: $openText('file:upload/test.json', 'ISO_8859_1')
+
+TITLE: parseJson
+DESCRIPTION: Parse a string to JSON and return it
+LANGUAGE: jsonata
+CODE: $parseJson('{"x":1}')
+
+TITLE: parseCsv
+DESCRIPTION: Parse a string to CSV, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $parseCsv('id,name
+1,joe')
+
+TITLE: parseHtml
+DESCRIPTION: Open the dashjoin website, parse the HTML and extract all h1 elements
+LANGUAGE: jsonata
+CODE: $parseHtml($openText('https://dashjoin.com'), '//h1')
+
+TITLE: parseXml
+DESCRIPTION: Parse a string to XML, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $parseXml('<x>1</x>')
+
+TITLE: parseYaml
+DESCRIPTION: Parse a string to YAML, convert it to JSON and return it
+LANGUAGE: jsonata
+CODE: $parseYaml('x: 1')
+
+TITLE: parseExcel
+DESCRIPTION: Parses a base64 data URL to Excel, converts that to JSON and return it
+LANGUAGE: jsonata
+CODE: $parseExcel('data:;base64,' & $openText('file:upload/test.xlsx', 'BASE_64'))
+
+TITLE: parseUrl
+DESCRIPTION: Parses a URL and return an object describing it
+LANGUAGE: jsonata
+CODE: $parseUrl('https://dashjoin.com/s?q')
+
+TITLE: uuid
+DESCRIPTION: Generates a random UUID
+LANGUAGE: jsonata
+CODE: $uuid()
+
+TITLE: exec
+DESCRIPTION: run the script 'bin/test.sh'
+LANGUAGE: jsonata
+CODE: $exec('bin/test.sh', 'call echo $*')
+
+TITLE: erDiagram
+DESCRIPTION: generate database schema information for database 'sqlite'
+LANGUAGE: jsonata
+CODE: $erDiagram('sqlite')
+
+TITLE: stats
+DESCRIPTION: return database statistics
+LANGUAGE: jsonata
+CODE: $stats('sqlite', 'REQUESTS')
+
+TITLE: gitStatus
+DESCRIPTION: return the git status of the dashjoin app
+LANGUAGE: jsonata
+CODE: $gitStatus()
+
+TITLE: gitPull
+DESCRIPTION: Pull the dashjoin app
+LANGUAGE: jsonata
+CODE: $gitPull()
+
+TITLE: gitRestore
+DESCRIPTION: git restore 'dashjoin-demo.db'
+LANGUAGE: jsonata
+CODE: $gitRestore('dashjoin-demo.db')
+
+TITLE: gitCommit
+DESCRIPTION: git commit a set of files
+LANGUAGE: jsonata
+CODE: $gitCommit('db change', ['dashjoin-demo.db'])
+
+TITLE: saveTable
+DESCRIPTION: save the data (with primary key id) to the test table in the sqlite database
+LANGUAGE: jsonata
+CODE: $saveTable('Delete All', 'sqlite', 'test', [{'id':1, 'name':'joe'}], 'id')
+
+TITLE: reconcileEntity
+DESCRIPTION: Uses the wikidata query service to reconcile a string to a wikidata id
+LANGUAGE: jsonata
+CODE: $reconcileEntity('Apple')
+
+TITLE: classifyEntities
+DESCRIPTION: Reconciles entities and finds common classifications that all entities are an instance of
+LANGUAGE: jsonata
+CODE: $classifyEntities(['VW', 'Tesla'])
+
+TITLE: urlExists
+DESCRIPTION: checks if a URL exists
+LANGUAGE: jsonata
+CODE: $urlExists('https://dashjoin.com')
+
+TITLE: etl
+DESCRIPTION: Run an ETL that loads data into the sqlite database with createSchema set to true
+LANGUAGE: jsonata
+CODE: $etl('', '[{"id":1, "name":"mike"}]', 'sqlite', null, null, true)
+
+TITLE: etlSync
+DESCRIPTION: Compares two tables with URL / file information to determine which files changed. These can be used for a delta ETL.
+LANGUAGE: jsonata
+CODE: $etlSync([{'url':'file:a', 'version': 2}], [{'url':'file:a', 'version': 1}], 'url')
+

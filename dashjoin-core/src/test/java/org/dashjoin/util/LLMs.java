@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.io.FileUtils;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,6 +18,7 @@ public class LLMs {
   /**
    * example record
    */
+  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Example {
     public String title;
     public String description;
@@ -123,6 +125,8 @@ public class LLMs {
         b.append(e.description + "\n");
         b.append("```\n");
         b.append(e.code + "\n```\n");
+        b.append("Sample output: \n```json\n");
+        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.output) + "\n```\n");
       }
 
     FileUtils.write(new File("../dashjoin-docs/docs/appendix-jsonata.md"), b,

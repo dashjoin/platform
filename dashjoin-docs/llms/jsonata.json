@@ -2,7 +2,8 @@
     "confirm": [
         {
             "description": "displays a confirmation dialog and returns true if the user clicked yes",
-            "code": "$confirm('Are you sure') ? 'you clicked yes'"
+            "code": "$confirm('Are you sure') ? 'you clicked yes'",
+            "output": true
         }
     ],
     "setVariable": [
@@ -14,19 +15,25 @@
     "prompt": [
         {
             "description": "Prompts the user for an input. Returns the input or undefined if the prompt is cancelled",
-            "code": "(\n  $name := $prompt('What is your name?');\n  $name ? ('Hello ' & $name);\n)"
+            "code": "(\n  $name := $prompt('What is your name?');\n  $name ? ('Hello ' & $name);\n)",
+            "output": "Joe"
         }
     ],
     "alert": [
         {
             "description": "Shows a model popup with a message",
-            "code": "$alert('FYI')"
+            "code": "$alert('FYI')",
+            "output": "OK"
         }
     ],
     "dialog": [
         {
             "description": "Shows a dialog to enter 'to' and 'text'. If the user submits via 'ok', an object with these fields is returned",
-            "code": "$dialog({\n  'title':'Send Message', \n  'message':'Please enter your message', \n  'inputs':['to', 'content'], \n  'buttons':[{'label':'ok', 'type':'submit'},'cancel'], \n  'options':{'alert':'info'}\n})"
+            "code": "$dialog({\n  'title':'Send Message', \n  'message':'Please enter your message', \n  'inputs':['to', 'content'], \n  'buttons':[{'label':'ok', 'type':'submit'},'cancel'], \n  'options':{'alert':'info'}\n})",
+            "oputput": {
+                "to": "joe@example.org",
+                "content": "Hi!"
+            }
         }
     ],
     "notify": [
@@ -90,7 +97,615 @@
     "translate": [
         {
             "description": "Lookup the text in the translation file and return the match for the current locale",
-            "code": "$translate('ra.action.select_all_button')"
+            "code": "$translate('ra.action.select_all_button')",
+            "output": "Select all"
+        }
+    ],
+    "create": [
+        {
+            "description": "create a new record in database 'sqlite', table 'REQUESTS'",
+            "code": "$create('sqlite', 'REQUESTS', {'ID': 7, 'name':'new request'})",
+            "output": {
+                "database": "sqlite",
+                "table": "REQUESTS",
+                "pk": [
+                    7
+                ]
+            }
+        }
+    ],
+    "upsert": [
+        {
+            "description": "inserts or updates record in database 'sqlite', table 'REQUESTS'",
+            "code": "$upsert('sqlite', 'REQUESTS', {'ID': 7, 'name':'updated request'})"
+        }
+    ],
+    "all": [
+        {
+            "description": "get all records of the REQUESTS table in the database 'sqlite'",
+            "code": "$all('sqlite', 'REQUESTS')",
+            "output": [
+                {
+                    "ID": 1,
+                    "name": "Can you please send me an offer",
+                    "submitted": "2021-01-01 10:20",
+                    "customer": "ALFKI",
+                    "user": "user"
+                }
+            ]
+        },
+        {
+            "description": "get the first ten records of the REQUESTS table in the database 'sqlite', sort by 'ID', descending=true, with the filter customer='ALFKI'",
+            "code": "$all('sqlite', 'REQUESTS', 1, 10, 'ID', true, {'customer':'ALFKI'})",
+            "output": [
+                {
+                    "ID": 1,
+                    "name": "Can you please send me an offer",
+                    "submitted": "2021-01-01 10:20",
+                    "customer": "ALFKI",
+                    "user": "user"
+                }
+            ]
+        }
+    ],
+    "read": [
+        {
+            "description": "read the records with primary key 7 from table 'REQUESTS' in database 'sqlite'",
+            "code": "$read('sqlite', 'REQUESTS', 7)",
+            "output": {
+                "ID": 7,
+                "name": "updated request",
+                "submitted": null,
+                "customer": null,
+                "user": null
+            }
+        }
+    ],
+    "traverse": [
+        {
+            "description": "gets all related records for ORDER 10250 from the ORDER_DETAILS table (via foreign key ORDER_DETAILS.ORDER_ID)",
+            "code": "$traverse('northwind', 'ORDERS', '10250', 'dj/northwind/ORDER_DETAILS/ORDER_ID')",
+            "output": [
+                {
+                    "ORDER_ID": 10250,
+                    "PRODUCT_ID": 41,
+                    "UNIT_PRICE": 7.7,
+                    "QUANTITY": 10,
+                    "DISCOUNT": 0
+                }
+            ]
+        },
+        {
+            "description": "get the related customer for ORDER 10250 from the CUSTOMER table (via foreign key CUSTOMER_ID)",
+            "code": "$traverse('northwind', 'ORDERS', '10250', 'CUSTOMER_ID')",
+            "output": {
+                "CUSTOMER_ID": "HANAR",
+                "COMPANY_NAME": "Hanari Carnes",
+                "CITY": "Rio de Janeiro",
+                "PHONE": "(21) 555-0091"
+            }
+        }
+    ],
+    "update": [
+        {
+            "description": "update REQUEST 7 in the database 'sqlite'",
+            "code": "$update('sqlite', 'REQUESTS', 7, {'name':'updated request'})"
+        }
+    ],
+    "delete": [
+        {
+            "description": "delete REQUEST 7 in the database 'sqlite'",
+            "code": "$delete('sqlite', 'REQUESTS', 7)"
+        }
+    ],
+    "call": [
+        {
+            "description": "call function 'add' from the function catalog using the provided parameter",
+            "code": "$call('add', {'x':1, 'y':2})",
+            "output": {
+                "result": 3
+            }
+        }
+    ],
+    "query": [
+        {
+            "description": "run query 'group' on database 'northwind'",
+            "code": "$query('northwind', 'group')",
+            "output": [
+                {
+                    "CUSTOMERS.COUNTRY": "Argentina",
+                    "Number of Customers": 3
+                }
+            ]
+        },
+        {
+            "description": "run query 'list' on datanase 'northwind' using query parameters limit 1 and offset 3",
+            "code": "$query('northwind', 'list', {'limit':1, 'offset':'3'})",
+            "output": [
+                {
+                    "CATEGORIES.CATEGORY_ID": 4,
+                    "CATEGORIES.CATEGORY_NAME": "Dairy Products",
+                    "CATEGORIES.DESCRIPTION": "Cheeses",
+                    "CATEGORIES.PICTURE": ""
+                }
+            ]
+        }
+    ],
+    "queryGraph": [
+        {
+            "description": "run graph query cypher on over all databases",
+            "code": "$queryGraph('*', 'cypher')"
+        }
+    ],
+    "adHocQuery": [
+        {
+            "description": "Run query 'select * from EMPLOYEES' on database 'northwind'",
+            "code": "$adHocQuery('northwind', 'select * from EMPLOYEES')",
+            "output": [
+                {
+                    "EMPLOYEES.EMPLOYEE_ID": 1,
+                    "EMPLOYEES.LAST_NAME": "Davolio",
+                    "EMPLOYEES.FIRST_NAME": "Nancy"
+                }
+            ]
+        }
+    ],
+    "search": [
+        {
+            "description": "",
+            "code": "$search('Fuller')",
+            "output": [
+                {
+                    "id": {
+                        "database": "northwind",
+                        "table": "EMPLOYEES",
+                        "pk": [
+                            2
+                        ]
+                    },
+                    "column": "LAST_NAME",
+                    "match": "Fuller"
+                }
+            ]
+        },
+        {
+            "description": "run a full text search for 'Fuller'over the EMPLOYEES table in the 'northwind' database. Limit the result size to 5.",
+            "code": "$search('Fuller', 5, 'northwind', 'EMPLOYEES')",
+            "output": [
+                {
+                    "id": {
+                        "database": "northwind",
+                        "table": "EMPLOYEES",
+                        "pk": [
+                            2
+                        ]
+                    },
+                    "column": "LAST_NAME",
+                    "match": "Fuller"
+                }
+            ]
+        }
+    ],
+    "incoming": [
+        {
+            "description": "get all records from all databases that point to northwind EMPLOYEE 2",
+            "code": "$incoming('northwind', 'EMPLOYEES', 2)",
+            "output": [
+                {
+                    "id": {
+                        "database": "northwind",
+                        "table": "EMPLOYEES",
+                        "pk": [
+                            1
+                        ]
+                    },
+                    "pk": "dj/northwind/EMPLOYEES/EMPLOYEE_ID",
+                    "fk": "dj/northwind/EMPLOYEES/REPORTS_TO"
+                }
+            ]
+        }
+    ],
+    "echo": [
+        {
+            "description": "prints 'hi' to the log and returns 'hi'",
+            "code": "$echo('hi')",
+            "output": "hi"
+        }
+    ],
+    "index": [
+        {
+            "description": "In ETL mapping expressions, generates a unique row index ID",
+            "code": "$index()",
+            "output": 42
+        }
+    ],
+    "djVersion": [
+        {
+            "description": "Returns the platform version information",
+            "code": "$djVersion()",
+            "output": {
+                "version": "6.1.0-d26fc67-6f4f682",
+                "title": "dashjoin-platform",
+                "vendor": "Dashjoin",
+                "name": "Dashjoin Low Code Development and Integration Platform",
+                "buildTime": "2025-07-31T11:22:48+0000",
+                "runtime": "21.0.6",
+                "workingDir": "/deployments",
+                "home": "/mnt/dashjoin/app",
+                "appurl": "https://github.com/dashjoin/dashjoin-demo"
+            }
+        }
+    ],
+    "djRoles": [
+        {
+            "description": "Returns the roles of the current user",
+            "code": "$djRoles()",
+            "output": [
+                "authenticated",
+                "admin"
+            ]
+        }
+    ],
+    "djUser": [
+        {
+            "description": "Returns the current user",
+            "code": "$djUser()",
+            "output": "admin@localhost"
+        }
+    ],
+    "isRecursiveTrigger": [
+        {
+            "description": "checks if a trigger expression (e.g. onUpdate) calls itself in order to avoid endless recursions",
+            "code": "$isRecursiveTrigger()",
+            "output": false
+        }
+    ],
+    "ls": [
+        {
+            "description": "Lists all URLs found at file:upload",
+            "code": "$ls('file:upload')",
+            "output": [
+                {
+                    "url": "file:upload/openapi.yaml",
+                    "folder": false,
+                    "size": 480,
+                    "modified": 1737640794571,
+                    "etag": null
+                }
+            ]
+        }
+    ],
+    "streamJson": [
+        {
+            "description": "open file:upload/test.json, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression",
+            "code": "$streamJson(''file:upload/test.json, '/data')"
+        }
+    ],
+    "streamXml": [
+        {
+            "description": "open file:upload/test.xml, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression",
+            "code": "$streamJson(''file:upload/test.xml, '/data')"
+        }
+    ],
+    "streamCsv": [
+        {
+            "description": "open semi-colon delimited file file:upload/test.csv and stream the records into the ETL queue from the foreach expression",
+            "code": "$streamCsv('file:upload/test.csv', {'withDelimiter': ';'})"
+        }
+    ],
+    "streamDb": [
+        {
+            "description": "stream the records of the ORDERS table of the northwind database into the ETL queue from the foreach expression",
+            "code": "$streamDb('northwind', 'ORDERS')"
+        }
+    ],
+    "curl": [
+        {
+            "description": "open the HTTP GET service at the given URL and pass the authorization header",
+            "code": "$curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'Basic YWRtaW46ZGpkamRq'})",
+            "output": {
+                "vendor": "Dashjoin",
+                "name": "Dashjoin Low Code Development and Integration Platform"
+            }
+        }
+    ],
+    "chat": [
+        {
+            "description": "Call the LLM comlpetion API of OpenAI with the query 'hi', the system prompt 'be funny', and the 'openai' credential",
+            "code": "$chat('https://api.openai.com/v1/chat/completions', 'hi', [{'role': 'system', 'content': 'be funny!'}], [], {'model':'gpt-4o-mini'}, {'Authorization': 'openai', 'dj-timeout-seconds': 60})",
+            "output": [
+                {
+                    "role": "system",
+                    "content": "be funny!"
+                },
+                {
+                    "content": "hi",
+                    "role": "user"
+                },
+                {
+                    "role": "assistant",
+                    "content": "Hello! How can I tickle your funny bone today?",
+                    "refusal": null,
+                    "annotations": []
+                }
+            ]
+        }
+    ],
+    "openJson": [
+        {
+            "description": "Open 'file:upload/test.json', parse the JSON content and return it",
+            "code": "$openJson('file:upload/test.json')",
+            "output": {
+                "x": 3.1415
+            }
+        }
+    ],
+    "openCsv": [
+        {
+            "description": "Open 'file:upload/test.csv', parse the semi-colon delimited CSV, convert it to JSON and return it",
+            "code": "$openCsv('file:upload/test.csv', {'withDelimiter': ';'})",
+            "output": [
+                {
+                    "id": "1",
+                    "name": "Joe"
+                }
+            ]
+        }
+    ],
+    "openXml": [
+        {
+            "description": "Open 'file:upload/test.xml', parse the XML content, convert it to JSON and return it",
+            "code": "$openXml('file:upload/test.xml')",
+            "output": {
+                "x": 3.1415
+            }
+        }
+    ],
+    "openYaml": [
+        {
+            "description": "Open 'file:upload/test.yaml', parse the YAML content, convert it to JSON and return it",
+            "code": "$openYaml('file:upload/test.yaml')",
+            "output": {
+                "x": 3.1415
+            }
+        }
+    ],
+    "openExcel": [
+        {
+            "description": "Open 'file:upload/test.xlsx', and return a JSON map of all sheets",
+            "code": "$openExcel('file:upload/test.xlsx')",
+            "output": {
+                "Sheet2": [
+                    {
+                        "id": 1,
+                        "name": "Joe"
+                    }
+                ]
+            }
+        }
+    ],
+    "openText": [
+        {
+            "description": "Open 'file:upload/test.json' and return it base64 encoded",
+            "code": "$openText('file:upload/test.json', 'BASE_64')",
+            "output": "ewoJIngiOiAzLjE0MTUKfQ=="
+        },
+        {
+            "description": "Open 'file:upload/test.json' using ISO_8859_1 encoding",
+            "code": "$openText('file:upload/test.json', 'ISO_8859_1')",
+            "output": "{\"x\": 3.1415}"
+        }
+    ],
+    "parseJson": [
+        {
+            "description": "Parse a string to JSON and return it",
+            "code": "$parseJson('{\"x\":1}')",
+            "output": {
+                "x": 1
+            }
+        }
+    ],
+    "parseCsv": [
+        {
+            "description": "Parse a string to CSV, convert it to JSON and return it",
+            "code": "$parseCsv('id,name\n1,joe')",
+            "output": [
+                {
+                    "id": "1",
+                    "name": "joe"
+                }
+            ]
+        }
+    ],
+    "parseHtml": [
+        {
+            "description": "Open the dashjoin website, parse the HTML and extract all h1 elements",
+            "code": "$parseHtml($openText('https://dashjoin.com'), '//h1')",
+            "output": [
+                "<h1 class=\"text-white\">Rapidly Build Apps Driven by Data and AI</h1>"
+            ]
+        }
+    ],
+    "parseXml": [
+        {
+            "description": "Parse a string to XML, convert it to JSON and return it",
+            "code": "$parseXml('<x>1</x>')",
+            "output": {
+                "x": "1"
+            }
+        }
+    ],
+    "parseYaml": [
+        {
+            "description": "Parse a string to YAML, convert it to JSON and return it",
+            "code": "$parseYaml('x: 1')",
+            "output": {
+                "x": "1"
+            }
+        }
+    ],
+    "parseExcel": [
+        {
+            "description": "Parses a base64 data URL to Excel, converts that to JSON and return it",
+            "code": "$parseExcel('data:;base64,' & $openText('file:upload/test.xlsx', 'BASE_64'))",
+            "output": {
+                "Sheet2": [
+                    {
+                        "id": 1,
+                        "name": "Joe"
+                    }
+                ]
+            }
+        }
+    ],
+    "parseUrl": [
+        {
+            "description": "Parses a URL and return an object describing it",
+            "code": "$parseUrl('https://dashjoin.com/s?q')",
+            "output": {
+                "authority": "dashjoin.com",
+                "defaultPort": 443,
+                "file": "/s?q",
+                "host": "dashjoin.com",
+                "path": "/s",
+                "port": -1,
+                "protocol": "https",
+                "query": "q",
+                "userInfo": null
+            }
+        }
+    ],
+    "uuid": [
+        {
+            "description": "Generates a random UUID",
+            "code": "$uuid()",
+            "output": "2b10beb5-d83d-4733-a67d-b6c5e4315a29"
+        }
+    ],
+    "exec": [
+        {
+            "description": "run the script 'bin/test.sh'",
+            "code": "$exec('bin/test.sh', 'call echo $*')",
+            "output": {
+                "out": "\"call echo $*\"\n",
+                "err": "",
+                "code": 0
+            }
+        }
+    ],
+    "erDiagram": [
+        {
+            "description": "generate database schema information for database 'sqlite'",
+            "code": "$erDiagram('sqlite')",
+            "output": "Table REQUESTS{\n  ID INTEGER [primary key]\n  name VARCHAR\n  submitted VARCHAR\n  customer VARCHAR [ref: > CUSTOMERS.CUSTOMER_ID]\n  user VARCHAR\n}"
+        }
+    ],
+    "stats": [
+        {
+            "description": "return database statistics",
+            "code": "$stats('sqlite', 'REQUESTS')",
+            "output": [
+                {
+                    "ID": "dj/sqlite/REQUESTS/ID",
+                    "count": 6,
+                    "nulls": 0,
+                    "countdistinct": 6,
+                    "min": 1,
+                    "max": 8,
+                    "dbType": "INTEGER",
+                    "type": "number",
+                    "detectedType": "string"
+                }
+            ]
+        }
+    ],
+    "gitStatus": [
+        {
+            "description": "return the git status of the dashjoin app",
+            "code": "$gitStatus()",
+            "output": [
+                {
+                    "path": "dashjoin-demo.db",
+                    "type": "modified",
+                    "diff": "diff --git a/dashjoin-demo.db b/dashjoin-demo.db\nindex 6fdb4ce..d29b8f1 100644\n--- a/dashjoin-demo.db\n+++ b/dashjoin-demo.db\nBinary files differ\n"
+                }
+            ]
+        }
+    ],
+    "gitPull": [
+        {
+            "description": "Pull the dashjoin app",
+            "code": "$gitPull()"
+        }
+    ],
+    "gitRestore": [
+        {
+            "description": "git restore 'dashjoin-demo.db'",
+            "code": "$gitRestore('dashjoin-demo.db')"
+        }
+    ],
+    "gitCommit": [
+        {
+            "description": "git commit a set of files",
+            "code": "$gitCommit('db change', ['dashjoin-demo.db'])"
+        }
+    ],
+    "saveTable": [
+        {
+            "description": "save the data (with primary key id) to the test table in the sqlite database",
+            "code": "$saveTable('Delete All', 'sqlite', 'test', [{'id':1, 'name':'joe'}], 'id')"
+        }
+    ],
+    "reconcileEntity": [
+        {
+            "description": "Uses the wikidata query service to reconcile a string to a wikidata id",
+            "code": "$reconcileEntity('Apple')",
+            "output": [
+                {
+                    "id": "Q312",
+                    "label": "Apple Inc.",
+                    "description": "American multinational technology company based in Cupertino, California"
+                }
+            ]
+        }
+    ],
+    "classifyEntities": [
+        {
+            "description": "Reconciles entities and finds common classifications that all entities are an instance of",
+            "code": "$classifyEntities(['VW', 'Tesla'])",
+            "output": [
+                "business",
+                "enterprise",
+                "juridical person",
+                "organization",
+                "economic entity",
+                "group"
+            ]
+        }
+    ],
+    "urlExists": [
+        {
+            "description": "checks if a URL exists",
+            "code": "$urlExists('https://dashjoin.com')",
+            "output": true
+        }
+    ],
+    "etl": [
+        {
+            "description": "Run an ETL that loads data into the sqlite database with createSchema set to true",
+            "code": "$etl('', '[{\"id\":1, \"name\":\"mike\"}]', 'sqlite', null, null, true)"
+        }
+    ],
+    "etlSync": [
+        {
+            "description": "Compares two tables with URL / file information to determine which files changed. These can be used for a delta ETL.",
+            "code": "$etlSync([{'url':'file:a', 'version': 2}], [{'url':'file:a', 'version': 1}], 'url')",
+            "output": [
+                {
+                    "url": "file:a",
+                    "version": 2
+                }
+            ]
         }
     ]
 }
