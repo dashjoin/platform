@@ -198,7 +198,7 @@ If expressions are run on a record page, the context is structured as follows:
   variable: the session variables (see below)
   form: data entered via a form (see below)
   selected: selected table rows if used in an action table (see below) 
-  context: result of the expression in the map / markdown widgets (see below)
+  context: result of the expression in the html / markdown widgets (see below)
 }
 ```
 
@@ -220,7 +220,7 @@ On table pages, the context looks like this:
   variable: the session variables (see below)
   form: data entered via a form (see below)
   selected: selected table rows if used in an action table (see below)
-  context: result of the expression in the map / markdown widgets (see below)
+  context: result of the expression in the html / markdown widgets (see below)
 }
 ```
 
@@ -239,7 +239,7 @@ Dashboard pages provide the following context:
   variable: the session variables (see below)
   form: data entered via a form (see below)
   selected: selected table rows if used in an action table (see below) 
-  context: result of the expression in the map / markdown widgets (see below)
+  context: result of the expression in the html / markdown widgets (see below)
 }
 ```
 
@@ -298,7 +298,7 @@ which is then passed as:
 ```json
 {
   ...
-  "context": result of the expression in the map / markdown widgets
+  "context": result of the expression in the html / markdown widgets
 }
 ```
 
