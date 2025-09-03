@@ -190,7 +190,7 @@ If expressions are run on a record page, the context is structured as follows:
   loc: location information about the current page
   user: the ID of the user that's currently logged in
   roles: the roles the user is in
-  email: the user's email address (not set for local users)
+  email: the user's email address
   href: the current URL
   width: screen width in pixels
   theme: current theme (light / dark)
@@ -213,7 +213,7 @@ On table pages, the context looks like this:
   loc: location information about the current page
   user: the ID of the user that's currently logged in
   roles: the roles the user is in
-  email: the user's email address (not set for local users)
+  email: the user's email address
   locale: the user's locale
   href: the current URL
   value: schema information of the current table in JSON Schema format
@@ -233,7 +233,7 @@ Dashboard pages provide the following context:
   loc: location information about the current page
   user: the ID of the user that's currently logged in
   roles: the roles the user is in
-  email: the user's email address (not set for local users)
+  email: the user's email address
   locale: the user's locale
   href: the current URL
   variable: the session variables (see below)
