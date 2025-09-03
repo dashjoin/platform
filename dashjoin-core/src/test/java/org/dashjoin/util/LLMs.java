@@ -101,7 +101,7 @@ public class LLMs {
       for (Example e : entry.getValue()) {
         if (e.language == null)
           e.language = e.code instanceof String ? "jsonata" : "json";
-        b.append("## " + e.title + "\n");
+        b.append("## " + (e.title != null ? e.title : entry.getKey()) + "\n");
         b.append(e.description + "\n");
         b.append("```json\n");
         b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");

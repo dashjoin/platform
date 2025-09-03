@@ -131,5 +131,221 @@
 				"password": "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
 			}
 		}
+	],
+	"logincfg": [
+		{
+			"title": "login configuration",
+			"description": "Login configuration for ACME Corp. App with a specific login screen background image. Users can choose between the 'de' and 'en' locales. The default is the browser locale.",
+			"file": "assets/logincfg.json",
+			"code": {
+				"signInTabText": "ACME Corp. App",
+				"defaultLocale": "browser",
+				"locales": [
+					"en",
+					"de"
+				],
+				"backgroundImage": "https://example.org/logo.jpg"
+			}
+		}
+	],
+	"theme": [
+		{
+			"description": "sets the UI theme. in this example, we set the primary and secondary color",
+			"file": "model/dj-config/theme.json",
+			"code": {
+				"ID": "theme",
+				"map": {
+					"palette.primary.main": "#3d7dbc",
+					"palette.secondary.main": "#3d7dbc"
+				}
+			}
+		}
+	],
+	"dark-theme": [
+		{
+			"description": "sets the UI dark theme. in this example, we set the primary and secondary color",
+			"file": "model/dj-config/dark-theme.json",
+			"code": {
+				"ID": "theme",
+				"map": {
+					"palette.primary.main": "#3d7dbc",
+					"palette.secondary.main": "#3d7dbc"
+				}
+			}
+		}
+	],
+	"sidenav-width-px": [
+		{
+			"description": "sets the sidenav width to 100px. 0 hides the sidenav",
+			"file": "model/dj-config/sidenav-width-px.json",
+			"code": {
+				"ID": "authenticated",
+				"properties": {
+					"sidenav-width-px": "100"
+				}
+			}
+		}
+	],
+	"sidenav-open": [
+		{
+			"description": "sidenav is closed by default",
+			"file": "model/dj-config/sidenav-open.json",
+			"code": {
+				"ID": "sidenav-open",
+				"boolean": false
+			}
+		}
+	],
+	"search-timeout-ms": [
+		{
+			"description": "Query timeout in milliseconds for queries issued when searching data. To disable the timeout, set to 0",
+			"file": "model/dj-config/search-timeout-ms.json",
+			"code": {
+				"ID": "search-timeout-ms",
+				"integer": 200
+			}
+		}
+	],
+	"prioritize-table-in-search": [
+		{
+			"description": "Tables in this list are searched first",
+			"file": "model/dj-config/prioritize-table-in-search.json",
+			"code": {
+				"ID": "prioritize-table-in-search",
+				"list": [
+					"EMPLOYEES"
+				]
+			}
+		}
+	],
+	"on-start": [
+		{
+			"description": "Expression to run when the system starts. Can be used to initialize the database, etc...",
+			"file": "model/dj-config/on-start.json",
+			"code": {
+				"ID": "on-start",
+				"string": "$log('starting...')"
+			}
+		}
+	],
+	"on-login": [
+		{
+			"description": "Expression run whenever a user logs in. In this example, only allow the admin user to login",
+			"file": "model/dj-config/on-login.json",
+			"code": {
+				"ID": "on-login",
+				"string": "email != 'admin@localhost' ? $error('Only user admin allowed')"
+			}
+		}
+	],
+	"logo-url": [
+		{
+			"description": "specifies the logo to show in the toolbar",
+			"file": "model/dj-config/logo-url.json",
+			"code": {
+				"ID": "logo-url",
+				"string": "/assets/logo.svg"
+			}
+		}
+	],
+	"include-table-in-search": [
+		{
+			"description": "Only search the EMPLOYEES table",
+			"file": "model/dj-config/include-table-in-search.json",
+			"code": {
+				"ID": "include-table-in-search",
+				"list": [
+					"EMPLOYEES"
+				]
+			}
+		}
+	],
+	"homepage": [
+		{
+			"description": "Page to open after the user logs in",
+			"file": "model/dj-config/homepage.json",
+			"code": {
+				"ID": "homepage",
+				"string": "/page/Info"
+			}
+		}
+	],
+	"exclude-table-from-search": [
+		{
+			"description": "Do not search the EMPLOYEES tables",
+			"file": "model/dj-config/exclude-table-from-search.json",
+			"code": {
+				"ID": "exclude-table-from-search",
+				"list": [
+					"EMPLOYEES"
+				]
+			}
+		}
+	],
+	"exclude-database-from-search": [
+		{
+			"description": "do not search the sqlite database",
+			"file": "model/dj-config/exclude-database-from-search.json",
+			"code": {
+				"ID": "exclude-database-from-search",
+				"list": [
+					"sqlite"
+				]
+			}
+		}
+	],
+	"i18n": [
+		{
+			"description": "Specify german translations for strings appearing in the app",
+			"file": "model/dj-config/de.json",
+			"code": {
+				"ID": "de",
+				"map": {
+					"Search Results": "Suchergebnisse"
+				}
+			}
+		}
+	],
+	"database-search-query": [
+		{
+			"description": "Configures searches on the northwind DB to use the query 'search' from the query catalog (select * from EMPLOYEES where LAST_NAME like CONCAT(${search}, '%'))",
+			"file": "model/dj-config/database-search-query.json",
+			"code": {
+				"ID": "database-search-query",
+				"map": {
+					"northwind": "search"
+				}
+			}
+		}
+	],
+	"allow-dark-mode": [
+		{
+			"description": "disallow dark mode",
+			"file": "model/dj-config/allow-dark-mode.json",
+			"code": {
+				"ID": "allow-dark-mode",
+				"boolean": false
+			}
+		}
+	],
+	"autocomplete-timeout-ms": [
+		{
+			"description": "sets the timeout for autocomplete queries to 1 second",
+			"file": "model/dj-config/autocomplete-timeout-ms.json",
+			"code": {
+				"ID": "autocomplete-timeout-ms",
+				"integer": 1000
+			}
+		}
+	],
+	"all-timeout-ms": [
+		{
+			"description": "Query timeout in milliseconds for queries issued when browsing data. To disable the timeout, set to 0.",
+			"file": "model/dj-config/all-timeout-ms.json",
+			"code": {
+				"ID": "all-timeout-ms",
+				"integer": 1000
+			}
+		}
 	]
 }

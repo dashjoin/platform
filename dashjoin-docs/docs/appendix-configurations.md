@@ -114,3 +114,169 @@ Configures an SMTP server
   "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
 }
 ```
+## login configuration
+Login configuration for ACME Corp. App with a specific login screen background image. Users can choose between the 'de' and 'en' locales. The default is the browser locale.
+```json
+{
+  "signInTabText" : "ACME Corp. App",
+  "defaultLocale" : "browser",
+  "locales" : [ "en", "de" ],
+  "backgroundImage" : "https://example.org/logo.jpg"
+}
+```
+## theme
+sets the UI theme. in this example, we set the primary and secondary color
+```json
+{
+  "ID" : "theme",
+  "map" : {
+    "palette.primary.main" : "#3d7dbc",
+    "palette.secondary.main" : "#3d7dbc"
+  }
+}
+```
+## dark-theme
+sets the UI dark theme. in this example, we set the primary and secondary color
+```json
+{
+  "ID" : "theme",
+  "map" : {
+    "palette.primary.main" : "#3d7dbc",
+    "palette.secondary.main" : "#3d7dbc"
+  }
+}
+```
+## sidenav-width-px
+sets the sidenav width to 100px. 0 hides the sidenav
+```json
+{
+  "ID" : "authenticated",
+  "properties" : {
+    "sidenav-width-px" : "100"
+  }
+}
+```
+## sidenav-open
+sidenav is closed by default
+```json
+{
+  "ID" : "sidenav-open",
+  "boolean" : false
+}
+```
+## search-timeout-ms
+Query timeout in milliseconds for queries issued when searching data. To disable the timeout, set to 0
+```json
+{
+  "ID" : "search-timeout-ms",
+  "integer" : 200
+}
+```
+## prioritize-table-in-search
+Tables in this list are searched first
+```json
+{
+  "ID" : "prioritize-table-in-search",
+  "list" : [ "EMPLOYEES" ]
+}
+```
+## on-start
+Expression to run when the system starts. Can be used to initialize the database, etc...
+```json
+{
+  "ID" : "on-start",
+  "string" : "$log('starting...')"
+}
+```
+## on-login
+Expression run whenever a user logs in. In this example, only allow the admin user to login
+```json
+{
+  "ID" : "on-login",
+  "string" : "email != 'admin@localhost' ? $error('Only user admin allowed')"
+}
+```
+## logo-url
+specifies the logo to show in the toolbar
+```json
+{
+  "ID" : "logo-url",
+  "string" : "/assets/logo.svg"
+}
+```
+## include-table-in-search
+Only search the EMPLOYEES table
+```json
+{
+  "ID" : "include-table-in-search",
+  "list" : [ "EMPLOYEES" ]
+}
+```
+## homepage
+Page to open after the user logs in
+```json
+{
+  "ID" : "homepage",
+  "string" : "/page/Info"
+}
+```
+## exclude-table-from-search
+Do not search the EMPLOYEES tables
+```json
+{
+  "ID" : "exclude-table-from-search",
+  "list" : [ "EMPLOYEES" ]
+}
+```
+## exclude-database-from-search
+do not search the sqlite database
+```json
+{
+  "ID" : "exclude-database-from-search",
+  "list" : [ "sqlite" ]
+}
+```
+## i18n
+Specify german translations for strings appearing in the app
+```json
+{
+  "ID" : "de",
+  "map" : {
+    "Search Results" : "Suchergebnisse"
+  }
+}
+```
+## database-search-query
+Configures searches on the northwind DB to use the query 'search' from the query catalog (select * from EMPLOYEES where LAST_NAME like CONCAT(${search}, '%'))
+```json
+{
+  "ID" : "database-search-query",
+  "map" : {
+    "northwind" : "search"
+  }
+}
+```
+## allow-dark-mode
+disallow dark mode
+```json
+{
+  "ID" : "allow-dark-mode",
+  "boolean" : false
+}
+```
+## autocomplete-timeout-ms
+sets the timeout for autocomplete queries to 1 second
+```json
+{
+  "ID" : "autocomplete-timeout-ms",
+  "integer" : 1000
+}
+```
+## all-timeout-ms
+Query timeout in milliseconds for queries issued when browsing data. To disable the timeout, set to 0.
+```json
+{
+  "ID" : "all-timeout-ms",
+  "integer" : 1000
+}
+```

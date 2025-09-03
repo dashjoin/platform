@@ -1,6 +1,7 @@
 # Administration
 
 This section describes administration and operating procedures for the Dashjoin platform.
+See [appendix](appendix-configurations.md) for examples. 
 
 ## Configuration Changes
 
