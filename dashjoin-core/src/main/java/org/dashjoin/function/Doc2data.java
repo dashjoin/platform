@@ -78,7 +78,7 @@ public class Doc2data extends AbstractFunction<String, Object> {
   public Object run(String arg) throws Exception {
 
     if (readOnly)
-      throw new Exception("$doc2data is deprecated. Please use $openJson, $openXml, etl. instead.");
+      throw new Exception("$doc2data is deprecated. Please use $openJson, $openXml, etc. instead.");
 
     try {
       // url?

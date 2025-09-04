@@ -16,6 +16,10 @@ public class MoveField extends AbstractVarArgFunction<Object> {
   @Override
   public Object run(List arg) throws Exception {
 
+    if (readOnly)
+      throw new Exception(
+          "$moveField is deprecated. Please use {'x':1} ~> | $ | {'y':{'x':x}},'x' | instead.");
+
     Map object = (Map) arg.get(0);
     String from = (String) arg.get(1);
     String to = (String) arg.get(2);
