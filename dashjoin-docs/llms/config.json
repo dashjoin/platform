@@ -16,7 +16,7 @@
 		},
 		{
 			"title": "query catalog",
-			"description": "a query on database 'dj/northwind' called 'list'. Parameters limit and offset can be passed to the query",
+			"description": "a query on database 'northwind' called 'list'. Parameters limit and offset can be passed to the query",
 			"file": "model/dj-query-catalog/list.json",
 			"code": {
 				"ID": "list",
@@ -33,6 +33,17 @@
 						"sample": "0"
 					}
 				}
+			}
+		},
+		{
+			"title": "query catalog: stored procedure",
+			"description": "stored procedure 'sp' on database 'postgres' called with parameter 'test'",
+			"file": "model/dj-query-catalog/sp.json",
+			"code": {
+				"ID": "sp",
+				"database": "dj/postgres",
+				"query": "CALL my_sp('test')",
+				"type": "read"
 			}
 		}
 	],
@@ -345,6 +356,19 @@
 			"code": {
 				"ID": "all-timeout-ms",
 				"integer": 1000
+			}
+		}
+	],
+	"tenantusers": [
+		{
+			"description": "user@example.org is allowed (active) on the platform and is in the role 'authenticated'",
+			"file": "model/tenantusers/user%40example.org.json",
+			"code": {
+				"ID": "user@example.org",
+				"active": true,
+				"roles": [
+					"authenticated"
+				]
 			}
 		}
 	]
