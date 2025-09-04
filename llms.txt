@@ -117,6 +117,14 @@ CODE: {
   }
 }
 
+TITLE: display widget with JSON keys containing special characters
+DESCRIPTION: SQL queries create JSON with field names 'table.column'. In JSONata, enclose the field name in backticks (`)
+LANGUAGE: json
+CODE: {
+  "display" : "$adHocQuery('sqlite', 'select ID from REQUESTS').`REQUESTS.ID`",
+  "widget" : "display"
+}
+
 TITLE: card widget
 DESCRIPTION: The card widget shows its children within a card
 LANGUAGE: json
@@ -203,6 +211,57 @@ CODE: {
       }
     }
   }
+}
+
+TITLE: button widget: Dynamically compute form fields
+DESCRIPTION: schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically
+LANGUAGE: json
+CODE: {
+  "schemaExpression" : "{'properties':{'name': {'type':'string'}}}",
+  "print" : "form.name",
+  "widget" : "button"
+}
+
+TITLE: button widget: show a form field conditionally
+DESCRIPTION: schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically: The 'type' field is defined as the switch. Other fields can specify 'case' with the type value of when they are shown
+LANGUAGE: json
+CODE: {
+  "widget" : "button",
+  "print" : "form",
+  "schemaExpression" : "{'switch':'type', 'properties': {'type': {'widget': 'select', 'options':'[\"circle\"]'}, 'radius': {'case': 'circle'}}}"
+}
+
+TITLE: button widget: computing select options
+DESCRIPTION: The button form has a select field to input 'id'. The select options are computed from the database
+LANGUAGE: json
+CODE: {
+  "widget" : "button",
+  "print" : "form.field",
+  "schema" : {
+    "type" : "object",
+    "properties" : {
+      "id" : {
+        "widget" : "select",
+        "options" : "$all('northwind', 'EMPLOYEES').{'value':EMPLOYEE_ID, 'name': LAST_NAME}"
+      }
+    }
+  }
+}
+
+TITLE: button widget: JavaScript expressions
+DESCRIPTION: Expressions that start with // JavaScript can use JavaScript. This example triggers a file download
+LANGUAGE: json
+CODE: {
+  "widget" : "button",
+  "print" : "// JavaScript\nvar blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});\nsaveAs(blob, 'hello world.txt');"
+}
+
+TITLE: button widget: JavaScript expressions
+DESCRIPTION: Expressions that start with // JavaScript can use JavaScript. This example calls the $read() function and returns the result
+LANGUAGE: json
+CODE: {
+  "widget" : "button",
+  "print" : "// JavaScript\nreturn await read('sqlite', 'REQUESTS', 1)"
 }
 
 TITLE: create widget
@@ -687,7 +746,7 @@ CODE: {
 }
 
 TITLE: query catalog
-DESCRIPTION: a query on database 'dj/northwind' called 'list'. Parameters limit and offset can be passed to the query
+DESCRIPTION: a query on database 'northwind' called 'list'. Parameters limit and offset can be passed to the query
 FILE: model/dj-query-catalog/list.json
 LANGUAGE: json
 CODE: {
@@ -707,6 +766,17 @@ CODE: {
   }
 }
 
+TITLE: query catalog: stored procedure
+DESCRIPTION: stored procedure 'sp' on database 'postgres' called with parameter 'test'
+FILE: model/dj-query-catalog/sp.json
+LANGUAGE: json
+CODE: {
+  "ID" : "sp",
+  "database" : "dj/postgres",
+  "query" : "CALL my_sp('test')",
+  "type" : "read"
+}
+
 TITLE: database definition
 DESCRIPTION: postgres database connection information with encrypted password
 FILE: model/dj-database/dj%2Fpostgres.json
@@ -718,6 +788,94 @@ CODE: {
   "url" : "jdbc:postgresql://localhost:5432/postgres",
   "ID" : "dj/postgres",
   "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
+}
+
+TITLE: database definition with audit log
+DESCRIPTION: sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "before-update" : "$create('db', 'audit', {'timestamp': $now(), 'user': user, 'operation': command, 'payload': object})"
+    }
+  }
+}
+
+TITLE: database definition with initial create table
+DESCRIPTION: sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "initScripts" : [ "upload/init.sql" ]
+}
+
+TITLE: database definition with foreign key
+DESCRIPTION: sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database
+LANGUAGE: json
+CODE: {
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "properties" : {
+        "customer" : {
+          "ref" : "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+          "displayWith" : "fk"
+        }
+      }
+    }
+  }
+}
+
+TITLE: database definition with foreign key array
+DESCRIPTION: postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database
+LANGUAGE: json
+CODE: {
+  "name" : "postgres",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "username" : "postgres",
+  "password" : "DJ1#\bApQHRIfZwu6WSIJrlI2aBqbMhnLRPlsg",
+  "url" : "jdbc:postgresql://localhost:5432/postgres",
+  "ID" : "dj/postgres",
+  "tables" : {
+    "test" : {
+      "properties" : {
+        "arr" : {
+          "type" : "array",
+          "items" : {
+            "ref" : "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+            "type" : "string",
+            "displayWith" : "fk"
+          }
+        }
+      }
+    }
+  }
+}
+
+TITLE: database definition with record label
+DESCRIPTION: EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels
+LANGUAGE: json
+CODE: {
+  "ID" : "dj/northwind",
+  "name" : "northwind",
+  "parent" : "dj",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:h2:mem:northwind",
+  "tables" : {
+    "EMPLOYEES" : {
+      "dj-label" : "${LAST_NAME}"
+    }
+  }
 }
 
 TITLE: Function catalog: Invoke
@@ -980,6 +1138,38 @@ LANGUAGE: json
 CODE: {
   "ID" : "all-timeout-ms",
   "integer" : 1000
+}
+
+TITLE: tenantusers
+DESCRIPTION: user@example.org is allowed (active) on the platform and is in the role 'authenticated'
+FILE: model/tenantusers/user%40example.org.json
+LANGUAGE: json
+CODE: {
+  "ID" : "user@example.org",
+  "active" : true,
+  "roles" : [ "authenticated" ]
+}
+
+TITLE: tenantusers
+DESCRIPTION: Sets the 'homepage' variable (the initial page after login) to '/page/test' for user@example.org (overrides the global and role setting for 'homepage')
+FILE: model/tenantusers/user%40example.org.json
+LANGUAGE: json
+CODE: {
+  "ID" : "user@example.org",
+  "properties" : {
+    "homepage" : "/page/test"
+  }
+}
+
+TITLE: dj-role
+DESCRIPTION: defines the role 'admin'. Sets the 'homepage' variable (the initial page after login) is set to '/page/Info' for all users in this role (overrides the global setting 'homepage')
+FILE: model/dj-role/admin.json
+LANGUAGE: json
+CODE: {
+  "ID" : "admin",
+  "properties" : {
+    "homepage" : "/page/Info"
+  }
 }
 
 TITLE: confirm

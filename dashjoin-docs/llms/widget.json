@@ -120,6 +120,14 @@
 					}
 				}
 			}
+		},
+		{
+			"title": "display widget with JSON keys containing special characters",
+			"description": "SQL queries create JSON with field names 'table.column'. In JSONata, enclose the field name in backticks (`)",
+			"code": {
+				"display": "$adHocQuery('sqlite', 'select ID from REQUESTS').`REQUESTS.ID`",
+				"widget": "display"
+			}
 		}
 	],
 	"card": [
@@ -455,6 +463,24 @@
 				"expression": "[{'name':'joe', 'age':11}, {'name':'jane', 'age': 22}]",
 				"arguments": "",
 				"widget": "chart"
+			}
+		},
+		{
+			"title": "chart widget",
+			"description": "chart with style options (see ChartJS)",
+			"code": {
+				"widget": "chart",
+				"query": "orders-over-time",
+				"database": "northwind",
+				"chart": "bar",
+				"style": {
+					"elements.bar.backgroundColor": "green",
+					"plugins.title.text": "Orders in February",
+					"plugins.title.display": "true",
+					"scales.x.type": "time",
+					"scales.x.min": "1998-02-01",
+					"scales.x.max": "1998-02-28"
+				}
 			}
 		}
 	],

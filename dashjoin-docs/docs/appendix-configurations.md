@@ -11,7 +11,7 @@ a query on database 'dj/northwind' called 'group', executable for the 'authentic
 }
 ```
 ## query catalog
-a query on database 'dj/northwind' called 'list'. Parameters limit and offset can be passed to the query
+a query on database 'northwind' called 'list'. Parameters limit and offset can be passed to the query
 ```json
 {
   "ID" : "list",
@@ -30,6 +30,16 @@ a query on database 'dj/northwind' called 'list'. Parameters limit and offset ca
   }
 }
 ```
+## query catalog: stored procedure
+stored procedure 'sp' on database 'postgres' called with parameter 'test'
+```json
+{
+  "ID" : "sp",
+  "database" : "dj/postgres",
+  "query" : "CALL my_sp('test')",
+  "type" : "read"
+}
+```
 ## database definition
 postgres database connection information with encrypted password
 ```json
@@ -40,6 +50,94 @@ postgres database connection information with encrypted password
   "url" : "jdbc:postgresql://localhost:5432/postgres",
   "ID" : "dj/postgres",
   "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
+}
+```
+## database definition with audit log
+sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit
+```json
+{
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "before-update" : "$create('db', 'audit', {'timestamp': $now(), 'user': user, 'operation': command, 'payload': object})"
+    }
+  }
+}
+```
+## database definition with initial create table
+sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))
+```json
+{
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "initScripts" : [ "upload/init.sql" ]
+}
+```
+## database definition with foreign key
+sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database
+```json
+{
+  "name" : "sqlite",
+  "ID" : "dj/sqlite",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:sqlite:dashjoin-demo.db",
+  "tables" : {
+    "REQUESTS" : {
+      "properties" : {
+        "customer" : {
+          "ref" : "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+          "displayWith" : "fk"
+        }
+      }
+    }
+  }
+}
+```
+## database definition with foreign key array
+postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database
+```json
+{
+  "name" : "postgres",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "username" : "postgres",
+  "password" : "DJ1#\bApQHRIfZwu6WSIJrlI2aBqbMhnLRPlsg",
+  "url" : "jdbc:postgresql://localhost:5432/postgres",
+  "ID" : "dj/postgres",
+  "tables" : {
+    "test" : {
+      "properties" : {
+        "arr" : {
+          "type" : "array",
+          "items" : {
+            "ref" : "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+            "type" : "string",
+            "displayWith" : "fk"
+          }
+        }
+      }
+    }
+  }
+}
+```
+## database definition with record label
+EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels
+```json
+{
+  "ID" : "dj/northwind",
+  "name" : "northwind",
+  "parent" : "dj",
+  "djClassName" : "org.dashjoin.service.SQLDatabase",
+  "url" : "jdbc:h2:mem:northwind",
+  "tables" : {
+    "EMPLOYEES" : {
+      "dj-label" : "${LAST_NAME}"
+    }
+  }
 }
 ```
 ## Function catalog: Invoke
@@ -278,5 +376,34 @@ Query timeout in milliseconds for queries issued when browsing data. To disable 
 {
   "ID" : "all-timeout-ms",
   "integer" : 1000
+}
+```
+## tenantusers
+user@example.org is allowed (active) on the platform and is in the role 'authenticated'
+```json
+{
+  "ID" : "user@example.org",
+  "active" : true,
+  "roles" : [ "authenticated" ]
+}
+```
+## tenantusers
+Sets the 'homepage' variable (the initial page after login) to '/page/test' for user@example.org (overrides the global and role setting for 'homepage')
+```json
+{
+  "ID" : "user@example.org",
+  "properties" : {
+    "homepage" : "/page/test"
+  }
+}
+```
+## dj-role
+defines the role 'admin'. Sets the 'homepage' variable (the initial page after login) is set to '/page/Info' for all users in this role (overrides the global setting 'homepage')
+```json
+{
+  "ID" : "admin",
+  "properties" : {
+    "homepage" : "/page/Info"
+  }
 }
 ```

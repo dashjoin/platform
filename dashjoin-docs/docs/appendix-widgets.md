@@ -111,6 +111,14 @@ shows how a display widget is added on a table page
   }
 }
 ```
+## display widget with JSON keys containing special characters
+SQL queries create JSON with field names 'table.column'. In JSONata, enclose the field name in backticks (`)
+```json
+{
+  "display" : "$adHocQuery('sqlite', 'select ID from REQUESTS').`REQUESTS.ID`",
+  "widget" : "display"
+}
+```
 ## card widget
 The card widget shows its children within a card
 ```json
@@ -198,6 +206,68 @@ shows a button to trigger an action with an optional set of inputs. This example
     }
   }
 }
+```
+## button widget: Dynamically compute form fields
+schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically
+```json
+{
+  "schemaExpression" : "{'properties':{'name': {'type':'string'}}}",
+  "print" : "form.name",
+  "widget" : "button"
+}
+```
+## button widget: show a form field conditionally
+schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically: The 'type' field is defined as the switch. Other fields can specify 'case' with the type value of when they are shown
+```json
+{
+  "widget" : "button",
+  "print" : "form",
+  "schemaExpression" : "{'switch':'type', 'properties': {'type': {'widget': 'select', 'options':'[\"circle\"]'}, 'radius': {'case': 'circle'}}}"
+}
+```
+## button widget: computing select options
+The button form has a select field to input 'id'. The select options are computed from the database
+```json
+{
+  "widget" : "button",
+  "print" : "form.field",
+  "schema" : {
+    "type" : "object",
+    "properties" : {
+      "id" : {
+        "widget" : "select",
+        "options" : "$all('northwind', 'EMPLOYEES').{'value':EMPLOYEE_ID, 'name': LAST_NAME}"
+      }
+    }
+  }
+}
+```
+## button widget: JavaScript expressions
+Expressions that start with // JavaScript can use JavaScript. This example triggers a file download
+```json
+{
+  "widget" : "button",
+  "print" : "// JavaScript\nvar blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});\nsaveAs(blob, 'hello world.txt');"
+}
+```
+print
+```
+// JavaScript
+var blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});
+saveAs(blob, 'hello world.txt');
+```
+## button widget: JavaScript expressions
+Expressions that start with // JavaScript can use JavaScript. This example calls the $read() function and returns the result
+```json
+{
+  "widget" : "button",
+  "print" : "// JavaScript\nreturn await read('sqlite', 'REQUESTS', 1)"
+}
+```
+print
+```
+// JavaScript
+return await read('sqlite', 'REQUESTS', 1)
 ```
 ## create widget
 Shows a form on the database table page to create a new database record
