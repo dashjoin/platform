@@ -78,7 +78,7 @@ public class LLMs {
     Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/input.json"),
         new TypeReference<Map<String, List<Example>>>() {});
 
-    for (Entry<String, List<Example>> entry : list.entrySet())
+    for (Entry<String, List<Example>> entry : new TreeMap<>(list).entrySet())
       for (Example e : entry.getValue()) {
         if (e.language == null)
           e.language = e.code instanceof String ? "jsonata" : "json";
