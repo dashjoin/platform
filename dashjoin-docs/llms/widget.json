@@ -17,6 +17,14 @@
 			}
 		},
 		{
+			"title": "display widget UI state",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display current URL, theme (light/dark), screen width, and location info",
+			"code": {
+				"display": "[href, theme, width, loc]",
+				"widget": "display"
+			}
+		},
+		{
 			"title": "display widget showing object",
 			"description": "Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list",
 			"code": {

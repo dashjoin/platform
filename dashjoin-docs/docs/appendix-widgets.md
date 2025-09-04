@@ -15,6 +15,14 @@ Used to visualize the result of any jsonata expression. Here, we display the cur
   "display" : "value"
 }
 ```
+## display widget UI state
+Used to visualize the result of any jsonata expression. Here, we display current URL, theme (light/dark), screen width, and location info
+```json
+{
+  "display" : "[href, theme, width, loc]",
+  "widget" : "display"
+}
+```
 ## display widget showing object
 Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list
 ```json
