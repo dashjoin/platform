@@ -40,7 +40,8 @@ public class LLMs {
     b.append("========================\n\n");
 
     for (File f : new File[] {new File("../dashjoin-docs/llms/widget.json"),
-        new File("../dashjoin-docs/llms/input.json"), new File("../dashjoin-docs/llms/config.json"),
+        new File("../dashjoin-docs/llms/input.json"), new File("../dashjoin-docs/llms/query.json"),
+        new File("../dashjoin-docs/llms/config.json"),
         new File("../dashjoin-docs/llms/jsonata-client.json"),
         new File("../dashjoin-docs/llms/jsonata.json")}) {
       Map<String, List<Example>> list =
@@ -97,21 +98,29 @@ public class LLMs {
   static void writeConfig() throws Exception {
     StringBuffer b = new StringBuffer();
     b.append("# Appendix: Databases, Queries, Functions, and Configurations\n");
-    Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/config.json"),
+    Map<String, List<Example>> query = om.readValue(new File("../dashjoin-docs/llms/query.json"),
+        new TypeReference<Map<String, List<Example>>>() {});
+    Map<String, List<Example>> config = om.readValue(new File("../dashjoin-docs/llms/config.json"),
         new TypeReference<Map<String, List<Example>>>() {});
 
-    for (Entry<String, List<Example>> entry : list.entrySet())
-      for (Example e : entry.getValue()) {
-        if (e.language == null)
-          e.language = e.code instanceof String ? "jsonata" : "json";
-        b.append("## " + (e.title != null ? e.title : entry.getKey()) + "\n");
-        b.append(e.description + "\n");
-        b.append("```json\n");
-        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
-      }
+    for (Map<String, List<Example>> list : Arrays.asList(query, config)) {
+      if (list == query)
+        b.append("## Query Catalog\n");
+      else
+        b.append("## Configuration\n");
+      for (Entry<String, List<Example>> entry : list.entrySet())
+        for (Example e : entry.getValue()) {
+          if (e.language == null)
+            e.language = e.code instanceof String ? "jsonata" : "json";
+          b.append("### " + (e.title != null ? e.title : entry.getKey()) + "\n");
+          b.append(e.description + "\n");
+          b.append("```json\n");
+          b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.code) + "\n```\n");
+        }
 
-    FileUtils.write(new File("../dashjoin-docs/docs/appendix-configurations.md"), b,
-        Charset.defaultCharset());
+      FileUtils.write(new File("../dashjoin-docs/docs/appendix-configurations.md"), b,
+          Charset.defaultCharset());
+    }
   }
 
   static void writeJsonata() throws Exception {

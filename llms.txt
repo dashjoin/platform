@@ -767,7 +767,7 @@ CODE: {
   "widget" : " qrcode"
 }
 
-TITLE: query catalog
+TITLE: Query with permissions
 DESCRIPTION: a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role
 FILE: model/dj-query-catalog/group.json
 LANGUAGE: json
@@ -779,7 +779,7 @@ CODE: {
   "type" : "read"
 }
 
-TITLE: query catalog
+TITLE: Query with parameters
 DESCRIPTION: a query on database 'northwind' called 'list'. Parameters limit and offset can be passed to the query
 FILE: model/dj-query-catalog/list.json
 LANGUAGE: json
@@ -800,7 +800,7 @@ CODE: {
   }
 }
 
-TITLE: query catalog: stored procedure
+TITLE: Calling a stored procedure
 DESCRIPTION: stored procedure 'sp' on database 'postgres' called with parameter 'test'
 FILE: model/dj-query-catalog/sp.json
 LANGUAGE: json

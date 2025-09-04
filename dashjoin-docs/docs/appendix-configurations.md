@@ -1,5 +1,6 @@
 # Appendix: Databases, Queries, Functions, and Configurations
-## query catalog
+## Query Catalog
+### Query with permissions
 a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role
 ```json
 {
@@ -10,7 +11,7 @@ a query on database 'dj/northwind' called 'group', executable for the 'authentic
   "type" : "read"
 }
 ```
-## query catalog
+### Query with parameters
 a query on database 'northwind' called 'list'. Parameters limit and offset can be passed to the query
 ```json
 {
@@ -30,7 +31,7 @@ a query on database 'northwind' called 'list'. Parameters limit and offset can b
   }
 }
 ```
-## query catalog: stored procedure
+### Calling a stored procedure
 stored procedure 'sp' on database 'postgres' called with parameter 'test'
 ```json
 {
@@ -40,7 +41,8 @@ stored procedure 'sp' on database 'postgres' called with parameter 'test'
   "type" : "read"
 }
 ```
-## database definition
+## Configuration
+### database definition
 postgres database connection information with encrypted password
 ```json
 {
@@ -52,7 +54,7 @@ postgres database connection information with encrypted password
   "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
 }
 ```
-## database definition with audit log
+### database definition with audit log
 sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit
 ```json
 {
@@ -67,7 +69,7 @@ sqlite database definition. The before-update trigger is called accordingly and 
   }
 }
 ```
-## database definition with initial create table
+### database definition with initial create table
 sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))
 ```json
 {
@@ -78,7 +80,7 @@ sqlite database definition with init script that contains: CREATE TABLE IF NOT E
   "initScripts" : [ "upload/init.sql" ]
 }
 ```
-## database definition with foreign key
+### database definition with foreign key
 sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database
 ```json
 {
@@ -98,7 +100,7 @@ sqlite database definition with a foreign key pointing to the CUSTOMERS table in
   }
 }
 ```
-## database definition with foreign key array
+### database definition with foreign key array
 postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database
 ```json
 {
@@ -124,7 +126,7 @@ postgres database definition with an array of foreign keys pointing to the CUSTO
   }
 }
 ```
-## database definition with record label
+### database definition with record label
 EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels
 ```json
 {
@@ -140,7 +142,7 @@ EMPLOYEES table defines the record label to be the LAST_NAME. All links and page
   }
 }
 ```
-## Function catalog: Invoke
+### Function catalog: Invoke
 Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
 ```json
 {
@@ -151,7 +153,7 @@ Function that adds two numbers passed in the argument object. It can be called v
   "type" : "read"
 }
 ```
-## Function catalog: RestJson
+### Function catalog: RestJson
 Function that calls a web service. The fields of the function argument are used to construct the URL via from string template
 ```json
 {
@@ -162,7 +164,7 @@ Function that calls a web service. The fields of the function argument are used 
   "ID" : "address"
 }
 ```
-## Function catalog: Credentials
+### Function catalog: Credentials
 Encrypted credentials for OpenAI to be used in $curl and $chat functions
 ```json
 {
@@ -173,7 +175,7 @@ Encrypted credentials for OpenAI to be used in $curl and $chat functions
   "apiKey" : true
 }
 ```
-## Function catalog: ETL
+### Function catalog: ETL
 Extract load transform function. Loads the result of 'expression' into the database sqlite. The data is mapped using 'mappings'
 ```json
 {
@@ -198,7 +200,7 @@ Extract load transform function. Loads the result of 'expression' into the datab
   }
 }
 ```
-## Function catalog: Email
+### Function catalog: Email
 Configures an SMTP server
 ```json
 {
@@ -212,7 +214,7 @@ Configures an SMTP server
   "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
 }
 ```
-## login configuration
+### login configuration
 Login configuration for ACME Corp. App with a specific login screen background image. Users can choose between the 'de' and 'en' locales. The default is the browser locale.
 ```json
 {
@@ -222,7 +224,7 @@ Login configuration for ACME Corp. App with a specific login screen background i
   "backgroundImage" : "https://example.org/logo.jpg"
 }
 ```
-## theme
+### theme
 sets the UI theme. in this example, we set the primary and secondary color
 ```json
 {
@@ -233,7 +235,7 @@ sets the UI theme. in this example, we set the primary and secondary color
   }
 }
 ```
-## dark-theme
+### dark-theme
 sets the UI dark theme. in this example, we set the primary and secondary color
 ```json
 {
@@ -244,7 +246,7 @@ sets the UI dark theme. in this example, we set the primary and secondary color
   }
 }
 ```
-## sidenav-width-px
+### sidenav-width-px
 sets the sidenav width to 100px. 0 hides the sidenav
 ```json
 {
@@ -254,7 +256,7 @@ sets the sidenav width to 100px. 0 hides the sidenav
   }
 }
 ```
-## sidenav-open
+### sidenav-open
 sidenav is closed by default
 ```json
 {
@@ -262,7 +264,7 @@ sidenav is closed by default
   "boolean" : false
 }
 ```
-## search-timeout-ms
+### search-timeout-ms
 Query timeout in milliseconds for queries issued when searching data. To disable the timeout, set to 0
 ```json
 {
@@ -270,7 +272,7 @@ Query timeout in milliseconds for queries issued when searching data. To disable
   "integer" : 200
 }
 ```
-## prioritize-table-in-search
+### prioritize-table-in-search
 Tables in this list are searched first
 ```json
 {
@@ -278,7 +280,7 @@ Tables in this list are searched first
   "list" : [ "EMPLOYEES" ]
 }
 ```
-## on-start
+### on-start
 Expression to run when the system starts. Can be used to initialize the database, etc...
 ```json
 {
@@ -286,7 +288,7 @@ Expression to run when the system starts. Can be used to initialize the database
   "string" : "$log('starting...')"
 }
 ```
-## on-login
+### on-login
 Expression run whenever a user logs in. In this example, only allow the admin user to login
 ```json
 {
@@ -294,7 +296,7 @@ Expression run whenever a user logs in. In this example, only allow the admin us
   "string" : "email != 'admin@localhost' ? $error('Only user admin allowed')"
 }
 ```
-## logo-url
+### logo-url
 specifies the logo to show in the toolbar
 ```json
 {
@@ -302,7 +304,7 @@ specifies the logo to show in the toolbar
   "string" : "/assets/logo.svg"
 }
 ```
-## include-table-in-search
+### include-table-in-search
 Only search the EMPLOYEES table
 ```json
 {
@@ -310,7 +312,7 @@ Only search the EMPLOYEES table
   "list" : [ "EMPLOYEES" ]
 }
 ```
-## homepage
+### homepage
 Page to open after the user logs in
 ```json
 {
@@ -318,7 +320,7 @@ Page to open after the user logs in
   "string" : "/page/Info"
 }
 ```
-## exclude-table-from-search
+### exclude-table-from-search
 Do not search the EMPLOYEES tables
 ```json
 {
@@ -326,7 +328,7 @@ Do not search the EMPLOYEES tables
   "list" : [ "EMPLOYEES" ]
 }
 ```
-## exclude-database-from-search
+### exclude-database-from-search
 do not search the sqlite database
 ```json
 {
@@ -334,7 +336,7 @@ do not search the sqlite database
   "list" : [ "sqlite" ]
 }
 ```
-## i18n
+### i18n
 Specify german translations for strings appearing in the app
 ```json
 {
@@ -344,7 +346,7 @@ Specify german translations for strings appearing in the app
   }
 }
 ```
-## database-search-query
+### database-search-query
 Configures searches on the northwind DB to use the query 'search' from the query catalog (select * from EMPLOYEES where LAST_NAME like CONCAT(${search}, '%'))
 ```json
 {
@@ -354,7 +356,7 @@ Configures searches on the northwind DB to use the query 'search' from the query
   }
 }
 ```
-## allow-dark-mode
+### allow-dark-mode
 disallow dark mode
 ```json
 {
@@ -362,7 +364,7 @@ disallow dark mode
   "boolean" : false
 }
 ```
-## autocomplete-timeout-ms
+### autocomplete-timeout-ms
 sets the timeout for autocomplete queries to 1 second
 ```json
 {
@@ -370,7 +372,7 @@ sets the timeout for autocomplete queries to 1 second
   "integer" : 1000
 }
 ```
-## all-timeout-ms
+### all-timeout-ms
 Query timeout in milliseconds for queries issued when browsing data. To disable the timeout, set to 0.
 ```json
 {
@@ -378,7 +380,7 @@ Query timeout in milliseconds for queries issued when browsing data. To disable 
   "integer" : 1000
 }
 ```
-## tenantusers
+### tenantusers
 user@example.org is allowed (active) on the platform and is in the role 'authenticated'
 ```json
 {
@@ -387,7 +389,7 @@ user@example.org is allowed (active) on the platform and is in the role 'authent
   "roles" : [ "authenticated" ]
 }
 ```
-## tenantusers
+### tenantusers
 Sets the 'homepage' variable (the initial page after login) to '/page/test' for user@example.org (overrides the global and role setting for 'homepage')
 ```json
 {
@@ -397,7 +399,7 @@ Sets the 'homepage' variable (the initial page after login) to '/page/test' for 
   }
 }
 ```
-## dj-role
+### dj-role
 defines the role 'admin'. Sets the 'homepage' variable (the initial page after login) is set to '/page/Info' for all users in this role (overrides the global setting 'homepage')
 ```json
 {
