@@ -230,6 +230,57 @@
 					}
 				}
 			}
+		},
+		{
+			"title": "button widget: Dynamically compute form fields",
+			"description": "schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically",
+			"code": {
+				"schemaExpression": "{'properties':{'name': {'type':'string'}}}",
+				"print": "form.name",
+				"widget": "button"
+			}
+		},
+		{
+			"title": "button widget: show a form field conditionally",
+			"description": "schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically: The 'type' field is defined as the switch. Other fields can specify 'case' with the type value of when they are shown",
+			"code": {
+				"widget": "button",
+				"print": "form",
+				"schemaExpression": "{'switch':'type', 'properties': {'type': {'widget': 'select', 'options':'[\"circle\"]'}, 'radius': {'case': 'circle'}}}"
+			}
+		},
+		{
+			"title": "button widget: computing select options",
+			"description": "The button form has a select field to input 'id'. The select options are computed from the database",
+			"code": {
+				"widget": "button",
+				"print": "form.field",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"widget": "select",
+							"options": "$all('northwind', 'EMPLOYEES').{'value':EMPLOYEE_ID, 'name': LAST_NAME}"
+						}
+					}
+				}
+			}
+		},
+		{
+			"title": "button widget: JavaScript expressions",
+			"description": "Expressions that start with // JavaScript can use JavaScript. This example triggers a file download",
+			"code": {
+				"widget": "button",
+				"print": "// JavaScript\nvar blob = new Blob(['Hello, world!'], {type: 'text/plain;charset=utf-8'});\nsaveAs(blob, 'hello world.txt');"
+			}
+		},
+		{
+			"title": "button widget: JavaScript expressions",
+			"description": "Expressions that start with // JavaScript can use JavaScript. This example calls the $read() function and returns the result",
+			"code": {
+				"widget": "button",
+				"print": "// JavaScript\nreturn await read('sqlite', 'REQUESTS', 1)"
+			}
 		}
 	],
 	"create": [
