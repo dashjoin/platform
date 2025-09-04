@@ -60,6 +60,21 @@
 				"ID": "dj/postgres",
 				"password": "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
 			}
+		},
+		{
+			"title": "database definition with audit log",
+			"description": "sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"before-update": "$create('db', 'audit', {'timestamp': $now(), 'user': user, 'operation': command, 'payload': object})"
+					}
+				}
+			}
 		}
 	],
 	"dj-function": [
@@ -369,6 +384,28 @@
 				"roles": [
 					"authenticated"
 				]
+			}
+		},
+		{
+			"description": "Sets the 'homepage' variable (the initial page after login) to '/page/test' for user@example.org (overrides the global and role setting for 'homepage')",
+			"file": "model/tenantusers/user%40example.org.json",
+			"code": {
+				"ID": "user@example.org",
+				"properties": {
+					"homepage": "/page/test"
+				}
+			}
+		}
+	],
+	"dj-role": [
+		{
+			"description": "defines the role 'admin'. Sets the 'homepage' variable (the initial page after login) is set to '/page/Info' for all users in this role (overrides the global setting 'homepage')",
+			"file": "model/dj-role/admin.json",
+			"code": {
+				"ID": "admin",
+				"properties": {
+					"homepage": "/page/Info"
+				}
 			}
 		}
 	]
