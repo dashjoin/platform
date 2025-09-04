@@ -254,3 +254,6 @@ $navigate( {
 ```
 
 Options can be left out, the default is the browser default behavior.
+
+* **How can I process a DB CLOB in JSONata?** DB BLOBs and CLOBs are converted to byte arrays which cannot be processed with JSONata. You can use the openText function and pass the CLOB as the first parameter, along with the respective encoding: $all('northwind', 'EMPLOYEES').$openText(PHOTO, 'ISO_8859_1')
+
