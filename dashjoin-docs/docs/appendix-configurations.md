@@ -41,8 +41,8 @@ stored procedure 'sp' on database 'postgres' called with parameter 'test'
   "type" : "read"
 }
 ```
-## Configuration
-### database definition
+## Databases
+### Database connection
 postgres database connection information with encrypted password
 ```json
 {
@@ -54,7 +54,7 @@ postgres database connection information with encrypted password
   "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
 }
 ```
-### database definition with audit log
+### Database audit log trigger
 sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit
 ```json
 {
@@ -69,7 +69,7 @@ sqlite database definition. The before-update trigger is called accordingly and 
   }
 }
 ```
-### database definition with initial create table
+### Database with initial create table
 sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))
 ```json
 {
@@ -80,7 +80,7 @@ sqlite database definition with init script that contains: CREATE TABLE IF NOT E
   "initScripts" : [ "upload/init.sql" ]
 }
 ```
-### database definition with foreign key
+### Database with foreign key
 sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database
 ```json
 {
@@ -100,7 +100,7 @@ sqlite database definition with a foreign key pointing to the CUSTOMERS table in
   }
 }
 ```
-### database definition with foreign key array
+### Database with foreign key array
 postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database
 ```json
 {
@@ -126,7 +126,7 @@ postgres database definition with an array of foreign keys pointing to the CUSTO
   }
 }
 ```
-### database definition with record label
+### Database with record label
 EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels
 ```json
 {
@@ -142,6 +142,7 @@ EMPLOYEES table defines the record label to be the LAST_NAME. All links and page
   }
 }
 ```
+## Configuration
 ### Function catalog: Invoke
 Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
 ```json

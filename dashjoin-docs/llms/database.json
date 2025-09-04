@@ -1,0 +1,107 @@
+{
+    "dj-database": [
+        {
+            "title": "Database connection",
+            "description": "postgres database connection information with encrypted password",
+            "file": "model/dj-database/dj%2Fpostgres.json",
+            "code": {
+                "name": "postgres",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "username": "postgres",
+                "url": "jdbc:postgresql://localhost:5432/postgres",
+                "ID": "dj/postgres",
+                "password": "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
+            }
+        },
+        {
+            "title": "Database audit log trigger",
+            "description": "sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit",
+            "code": {
+                "name": "sqlite",
+                "ID": "dj/sqlite",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "url": "jdbc:sqlite:dashjoin-demo.db",
+                "tables": {
+                    "REQUESTS": {
+                        "before-update": "$create('db', 'audit', {'timestamp': $now(), 'user': user, 'operation': command, 'payload': object})"
+                    }
+                }
+            }
+        },
+        {
+            "title": "Database with initial create table",
+            "description": "sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))",
+            "code": {
+                "name": "sqlite",
+                "ID": "dj/sqlite",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "url": "jdbc:sqlite:dashjoin-demo.db",
+                "initScripts": [
+                    "upload/init.sql"
+                ]
+            }
+        },
+        {
+            "title": "Database with foreign key",
+            "description": "sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database",
+            "code": {
+                "name": "sqlite",
+                "ID": "dj/sqlite",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "url": "jdbc:sqlite:dashjoin-demo.db",
+                "tables": {
+                    "REQUESTS": {
+                        "properties": {
+                            "customer": {
+                                "ref": "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+                                "displayWith": "fk"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Database with foreign key array",
+            "description": "postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database",
+            "code": {
+                "name": "postgres",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "username": "postgres",
+                "password": "DJ1#\bApQHRIfZwu6WSIJrlI2aBqbMhnLRPlsg",
+                "url": "jdbc:postgresql://localhost:5432/postgres",
+                "ID": "dj/postgres",
+                "tables": {
+                    "test": {
+                        "properties": {
+                            "arr": {
+                                "type": "array",
+                                "items": {
+                                    "ref": "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+                                    "type": "string",
+                                    "displayWith": "fk"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "title": "Database with record label",
+            "description": "EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels",
+            "code": {
+                "ID": "dj/northwind",
+                "name": "northwind",
+                "parent": "dj",
+                "djClassName": "org.dashjoin.service.SQLDatabase",
+                "url": "jdbc:h2:mem:northwind",
+                "tables": {
+                    "EMPLOYEES": {
+                        "dj-label": "${LAST_NAME}"
+                    }
+                }
+            }
+        }
+    ]
+}

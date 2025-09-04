@@ -41,6 +41,7 @@ public class LLMs {
 
     for (File f : new File[] {new File("../dashjoin-docs/llms/widget.json"),
         new File("../dashjoin-docs/llms/input.json"), new File("../dashjoin-docs/llms/query.json"),
+        new File("../dashjoin-docs/llms/database.json"),
         new File("../dashjoin-docs/llms/config.json"),
         new File("../dashjoin-docs/llms/jsonata-client.json"),
         new File("../dashjoin-docs/llms/jsonata.json")}) {
@@ -102,10 +103,15 @@ public class LLMs {
         new TypeReference<Map<String, List<Example>>>() {});
     Map<String, List<Example>> config = om.readValue(new File("../dashjoin-docs/llms/config.json"),
         new TypeReference<Map<String, List<Example>>>() {});
+    Map<String, List<Example>> database =
+        om.readValue(new File("../dashjoin-docs/llms/database.json"),
+            new TypeReference<Map<String, List<Example>>>() {});
 
-    for (Map<String, List<Example>> list : Arrays.asList(query, config)) {
+    for (Map<String, List<Example>> list : Arrays.asList(query, database, config)) {
       if (list == query)
         b.append("## Query Catalog\n");
+      else if (list == database)
+        b.append("## Databases\n");
       else
         b.append("## Configuration\n");
       for (Entry<String, List<Example>> entry : list.entrySet())

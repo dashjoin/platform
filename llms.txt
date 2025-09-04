@@ -811,7 +811,7 @@ CODE: {
   "type" : "read"
 }
 
-TITLE: database definition
+TITLE: Database connection
 DESCRIPTION: postgres database connection information with encrypted password
 FILE: model/dj-database/dj%2Fpostgres.json
 LANGUAGE: json
@@ -824,7 +824,7 @@ CODE: {
   "password" : "DJ1#\b/gbzX8DDZa1lVaiLat0HdX9cDST2KHJk"
 }
 
-TITLE: database definition with audit log
+TITLE: Database audit log trigger
 DESCRIPTION: sqlite database definition. The before-update trigger is called accordingly and logs an audit record to the table audit
 LANGUAGE: json
 CODE: {
@@ -839,7 +839,7 @@ CODE: {
   }
 }
 
-TITLE: database definition with initial create table
+TITLE: Database with initial create table
 DESCRIPTION: sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))
 LANGUAGE: json
 CODE: {
@@ -850,7 +850,7 @@ CODE: {
   "initScripts" : [ "upload/init.sql" ]
 }
 
-TITLE: database definition with foreign key
+TITLE: Database with foreign key
 DESCRIPTION: sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database
 LANGUAGE: json
 CODE: {
@@ -870,7 +870,7 @@ CODE: {
   }
 }
 
-TITLE: database definition with foreign key array
+TITLE: Database with foreign key array
 DESCRIPTION: postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database
 LANGUAGE: json
 CODE: {
@@ -896,7 +896,7 @@ CODE: {
   }
 }
 
-TITLE: database definition with record label
+TITLE: Database with record label
 DESCRIPTION: EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels
 LANGUAGE: json
 CODE: {
