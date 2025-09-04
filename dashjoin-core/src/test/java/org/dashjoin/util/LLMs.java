@@ -28,7 +28,6 @@ public class LLMs {
     public String file;
     public Object code;
     public Object output;
-    public Boolean client;
   }
 
   static ObjectMapper om = new ObjectMapper();
@@ -42,6 +41,7 @@ public class LLMs {
 
     for (File f : new File[] {new File("../dashjoin-docs/llms/widget.json"),
         new File("../dashjoin-docs/llms/input.json"), new File("../dashjoin-docs/llms/config.json"),
+        new File("../dashjoin-docs/llms/jsonata-client.json"),
         new File("../dashjoin-docs/llms/jsonata.json")}) {
       Map<String, List<Example>> list =
           om.readValue(f, new TypeReference<Map<String, List<Example>>>() {});
@@ -117,16 +117,12 @@ public class LLMs {
   static void writeJsonata() throws Exception {
     StringBuffer b = new StringBuffer();
     b.append("# Appendix: JSONata function library\n");
-    Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/jsonata.json"),
-        new TypeReference<Map<String, List<Example>>>() {});
-
-    TreeMap<String, List<Example>> client = new TreeMap<>();
-    TreeMap<String, List<Example>> server = new TreeMap<>();
-    for (Entry<String, List<Example>> entry : list.entrySet())
-      if (entry.getValue().get(0).client != null)
-        client.put(entry.getKey(), entry.getValue());
-      else
-        server.put(entry.getKey(), entry.getValue());
+    TreeMap<String, List<Example>> server =
+        new TreeMap<>(om.readValue(new File("../dashjoin-docs/llms/jsonata.json"),
+            new TypeReference<Map<String, List<Example>>>() {}));
+    TreeMap<String, List<Example>> client =
+        new TreeMap<>(om.readValue(new File("../dashjoin-docs/llms/jsonata-client.json"),
+            new TypeReference<Map<String, List<Example>>>() {}));
 
     for (TreeMap<String, List<Example>> map : Arrays.asList(client, server)) {
       b.append("## " + (client == map ? "Frontend" : "Backend") + "\n");
