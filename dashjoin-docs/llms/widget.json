@@ -5,7 +5,15 @@
 			"description": "Used to visualize the result of any jsonata expression. Here, we display the value of the session variable x",
 			"code": {
 				"widget": "display",
-				"print": "variable.x"
+				"display": "variable.x"
+			}
+		},
+		{
+			"title": "display widget current database record",
+			"description": "Used to visualize the result of any jsonata expression. Here, we display the current record on an instance page",
+			"code": {
+				"widget": "display",
+				"display": "value"
 			}
 		},
 		{
@@ -13,7 +21,7 @@
 			"description": "Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list",
 			"code": {
 				"widget": "display",
-				"print": "{'time': $now()}"
+				"display": "{'time': $now()}"
 			}
 		},
 		{

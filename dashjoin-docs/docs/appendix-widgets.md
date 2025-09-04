@@ -4,7 +4,15 @@ Used to visualize the result of any jsonata expression. Here, we display the val
 ```json
 {
   "widget" : "display",
-  "print" : "variable.x"
+  "display" : "variable.x"
+}
+```
+## display widget current database record
+Used to visualize the result of any jsonata expression. Here, we display the current record on an instance page
+```json
+{
+  "widget" : "display",
+  "display" : "value"
 }
 ```
 ## display widget showing object
@@ -12,7 +20,7 @@ Used to visualize the result of any jsonata expression. Here, we display the cur
 ```json
 {
   "widget" : "display",
-  "print" : "{'time': $now()}"
+  "display" : "{'time': $now()}"
 }
 ```
 ## display widget showing link
@@ -429,6 +437,24 @@ displays a chart based on a query or expression. the first column is used as lab
   "expression" : "[{'name':'joe', 'age':11}, {'name':'jane', 'age': 22}]",
   "arguments" : "",
   "widget" : "chart"
+}
+```
+## chart widget
+chart with style options (see ChartJS)
+```json
+{
+  "widget" : "chart",
+  "query" : "orders-over-time",
+  "database" : "northwind",
+  "chart" : "bar",
+  "style" : {
+    "elements.bar.backgroundColor" : "green",
+    "plugins.title.text" : "Orders in February",
+    "plugins.title.display" : "true",
+    "scales.x.type" : "time",
+    "scales.x.min" : "1998-02-01",
+    "scales.x.max" : "1998-02-28"
+  }
 }
 ```
 ## datagrid widget
