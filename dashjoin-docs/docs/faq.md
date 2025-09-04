@@ -173,7 +173,8 @@ Let's assume $openJson(url) is called on several array elements. Simply change i
 
 * **How can I realize an audit log that keeps track of all changes to a table?** You can define a triggers for create, update, and delete operations on the table that must be audited. Create an audit log table with the following columns: autoincrementing ID, user, timestamp, operation, and payload. The trigger `$create("db", "audit", {"timestamp": $now(), "user": user, "operation": "update", "payload": $})` will log changes to the table.
 
-* **Can I compute the homepage based who is logged in?** Yes, you can use the on-login expression and do some computation based on the email and user context values. The result can be fed into the setVariable function: `$setVariable("homepage", some computation using user or email)`
+* **Can I compute the homepage based who is logged in?** Yes, you can use the on-login expression and do some computation based on the email and user context values. The result can be fed into the setVariable function: `$setVariable("homepage", some computation using user or email)`.
+Alternatively, in the properties for the tenantUser, you can set homepage to the desired value or in dj-role do the same for all users in a role.
 
 * **Can I initialize a SQL database with schema and data?** Yes, in Dashjoin Studio, you can add SQL scripts to your database:
 
