@@ -11,6 +11,7 @@ import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
+import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
@@ -267,6 +268,7 @@ public class SQLDatabase extends AbstractDatabase {
   public static class PreparedStmt {
     public String query;
     public Object[] arguments;
+    public Map<String, Object> callargs = new LinkedHashMap<>();
 
     /**
      * handle common casting issues when JSON parameters are fed into SQL
@@ -311,6 +313,7 @@ public class SQLDatabase extends AbstractDatabase {
 
       String x = m.group().substring(2, m.group().length() - 1);
       args.add(arguments == null ? null : arguments.get(x));
+      ps.callargs.put(x, arguments == null ? null : arguments.get(x));
       ps.query = m.replaceFirst("?");
     }
     ps.arguments = args.toArray();
@@ -717,6 +720,55 @@ public class SQLDatabase extends AbstractDatabase {
     List<Map<String, Object>> data = new ArrayList<>();
     List<Map<String, Object>> multidata = null;
     try (Connection con = getConnection(info)) {
+
+      // if one of the parameters has output=true, use CallableStatement API
+      if (info.arguments != null)
+        for (Object i : info.arguments.values())
+          if (i instanceof Map) {
+            @SuppressWarnings({"unchecked"})
+            Map<String, Object> m = (Map<String, Object>) i;
+            if (Boolean.TRUE.equals(m.get("output"))) {
+              try (CallableStatement pstmt = con.prepareCall(ps.query)) {
+                if (limit != null)
+                  pstmt.setMaxRows(limit);
+                int idx = 1;
+                for (Entry<String, Object> x : ps.callargs.entrySet())
+                  if (x.getValue() == null) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> o = (Map<String, Object>) info.arguments.get(x.getKey());
+                    String type = (String) o.get("type");
+                    switch (type) {
+                      case "integer":
+                        pstmt.registerOutParameter(idx++, Types.INTEGER);
+                        break;
+                      case "number":
+                        pstmt.registerOutParameter(idx++, Types.DOUBLE);
+                        break;
+                      case "boolean":
+                        pstmt.registerOutParameter(idx++, Types.BOOLEAN);
+                        break;
+                      case "date":
+                        pstmt.registerOutParameter(idx++, Types.DATE);
+                        break;
+                      default:
+                        pstmt.registerOutParameter(idx++, Types.VARCHAR);
+                    }
+                  } else
+                    pstmt.setObject(idx++, x.getValue());
+                idx = 1;
+                pstmt.execute();
+                Map<String, Object> row = new HashMap<>();
+                data.add(row);
+                for (Entry<String, Object> x : ps.callargs.entrySet()) {
+                  if (x.getValue() == null)
+                    row.put(x.getKey(), pstmt.getObject(idx));
+                  idx++;
+                }
+              }
+              return data;
+            }
+          }
+
       try (PreparedStatement pstmt = con.prepareStatement(ps.query)) {
         ps.cast(pstmt.getParameterMetaData());
         if (limit != null)
