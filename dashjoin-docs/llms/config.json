@@ -75,6 +75,81 @@
 					}
 				}
 			}
+		},
+		{
+			"title": "database definition with initial create table",
+			"description": "sqlite database definition with init script that contains: CREATE TABLE IF NOT EXISTS MY_TABLE(ID INT PRIMARY KEY, NAME VARCHAR(255))",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"initScripts": [
+					"upload/init.sql"
+				]
+			}
+		},
+		{
+			"title": "database definition with foreign key",
+			"description": "sqlite database definition with a foreign key pointing to the CUSTOMERS table in the northwind database",
+			"code": {
+				"name": "sqlite",
+				"ID": "dj/sqlite",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:sqlite:dashjoin-demo.db",
+				"tables": {
+					"REQUESTS": {
+						"properties": {
+							"customer": {
+								"ref": "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+								"displayWith": "fk"
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"title": "database definition with foreign key array",
+			"description": "postgres database definition with an array of foreign keys pointing to the CUSTOMERS table in the northwind database",
+			"code": {
+				"name": "postgres",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"username": "postgres",
+				"password": "DJ1#\bApQHRIfZwu6WSIJrlI2aBqbMhnLRPlsg",
+				"url": "jdbc:postgresql://localhost:5432/postgres",
+				"ID": "dj/postgres",
+				"tables": {
+					"test": {
+						"properties": {
+							"arr": {
+								"type": "array",
+								"items": {
+									"ref": "dj/northwind/CUSTOMERS/CUSTOMER_ID",
+									"type": "string",
+									"displayWith": "fk"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		{
+			"title": "database definition with record label",
+			"description": "EMPLOYEES table defines the record label to be the LAST_NAME. All links and page titles for EMPLOYEE records use the LAST_NAME column as labels",
+			"code": {
+				"ID": "dj/northwind",
+				"name": "northwind",
+				"parent": "dj",
+				"djClassName": "org.dashjoin.service.SQLDatabase",
+				"url": "jdbc:h2:mem:northwind",
+				"tables": {
+					"EMPLOYEES": {
+						"dj-label": "${LAST_NAME}"
+					}
+				}
+			}
 		}
 	],
 	"dj-function": [
