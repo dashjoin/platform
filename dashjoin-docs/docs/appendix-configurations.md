@@ -142,8 +142,8 @@ EMPLOYEES table defines the record label to be the LAST_NAME. All links and page
   }
 }
 ```
-## Configuration
-### Function catalog: Invoke
+## Function Catalog
+### Invoke
 Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
 ```json
 {
@@ -154,7 +154,7 @@ Function that adds two numbers passed in the argument object. It can be called v
   "type" : "read"
 }
 ```
-### Function catalog: RestJson
+### RestJson
 Function that calls a web service. The fields of the function argument are used to construct the URL via from string template
 ```json
 {
@@ -165,7 +165,7 @@ Function that calls a web service. The fields of the function argument are used 
   "ID" : "address"
 }
 ```
-### Function catalog: Credentials
+### Credentials
 Encrypted credentials for OpenAI to be used in $curl and $chat functions
 ```json
 {
@@ -176,7 +176,7 @@ Encrypted credentials for OpenAI to be used in $curl and $chat functions
   "apiKey" : true
 }
 ```
-### Function catalog: ETL
+### ETL
 Extract load transform function. Loads the result of 'expression' into the database sqlite. The data is mapped using 'mappings'
 ```json
 {
@@ -201,7 +201,7 @@ Extract load transform function. Loads the result of 'expression' into the datab
   }
 }
 ```
-### Function catalog: Email
+### Email
 Configures an SMTP server
 ```json
 {
@@ -215,6 +215,7 @@ Configures an SMTP server
   "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
 }
 ```
+## Configuration
 ### login configuration
 Login configuration for ACME Corp. App with a specific login screen background image. Users can choose between the 'de' and 'en' locales. The default is the browser locale.
 ```json

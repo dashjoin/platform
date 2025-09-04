@@ -912,7 +912,7 @@ CODE: {
   }
 }
 
-TITLE: Function catalog: Invoke
+TITLE: Invoke
 DESCRIPTION: Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
 FILE: model/dj-function/add.json
 LANGUAGE: json
@@ -924,7 +924,7 @@ CODE: {
   "type" : "read"
 }
 
-TITLE: Function catalog: RestJson
+TITLE: RestJson
 DESCRIPTION: Function that calls a web service. The fields of the function argument are used to construct the URL via from string template
 FILE: model/dj-function/address.json
 LANGUAGE: json
@@ -936,7 +936,7 @@ CODE: {
   "ID" : "address"
 }
 
-TITLE: Function catalog: Credentials
+TITLE: Credentials
 DESCRIPTION: Encrypted credentials for OpenAI to be used in $curl and $chat functions
 FILE: model/dj-function/openai.json
 LANGUAGE: json
@@ -948,7 +948,7 @@ CODE: {
   "apiKey" : true
 }
 
-TITLE: Function catalog: ETL
+TITLE: ETL
 DESCRIPTION: Extract load transform function. Loads the result of 'expression' into the database sqlite. The data is mapped using 'mappings'
 FILE: model/dj-function/misp.json
 LANGUAGE: json
@@ -974,7 +974,7 @@ CODE: {
   }
 }
 
-TITLE: Function catalog: Email
+TITLE: Email
 DESCRIPTION: Configures an SMTP server
 FILE: model/dj-function/email.json
 LANGUAGE: json

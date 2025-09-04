@@ -36,3 +36,7 @@ nav:
   - 'api.md'
   - 'faq.md'
   - 'contribute.md'
+  - 'appendix-configurations.md'
+  - 'appendix-input.md'
+  - 'appendix-jsonata.md'
+  - 'appendix-widgets.md'
