@@ -1589,3 +1589,8 @@ DESCRIPTION: Compares two tables with URL / file information to determine which 
 LANGUAGE: jsonata
 CODE: $etlSync([{'url':'file:a', 'version': 2}], [{'url':'file:a', 'version': 1}], 'url')
 
+TITLE: wait
+DESCRIPTION: Waits before returning the parameter (server-side equivalent of $sleep)
+LANGUAGE: jsonata
+CODE: $wait('delayed by 1 second', 1000)
+

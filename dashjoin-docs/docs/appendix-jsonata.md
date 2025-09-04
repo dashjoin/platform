@@ -842,3 +842,12 @@ Sample output:
   "version" : 2
 } ]
 ```
+## wait
+Waits before returning the parameter (server-side equivalent of $sleep)
+```
+$wait('delayed by 1 second', 1000)
+```
+Sample output: 
+```json
+"delayed by 1 second"
+```
