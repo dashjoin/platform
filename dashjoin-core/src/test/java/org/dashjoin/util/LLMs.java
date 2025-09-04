@@ -2,9 +2,11 @@ package org.dashjoin.util;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,6 +28,7 @@ public class LLMs {
     public String file;
     public Object code;
     public Object output;
+    public Boolean client;
   }
 
   static ObjectMapper om = new ObjectMapper();
@@ -117,17 +120,28 @@ public class LLMs {
     Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/jsonata.json"),
         new TypeReference<Map<String, List<Example>>>() {});
 
+    TreeMap<String, List<Example>> client = new TreeMap<>();
+    TreeMap<String, List<Example>> server = new TreeMap<>();
     for (Entry<String, List<Example>> entry : list.entrySet())
-      for (Example e : entry.getValue()) {
-        if (e.language == null)
-          e.language = e.code instanceof String ? "jsonata" : "json";
-        b.append("## " + (e.title != null ? e.title : entry.getKey()) + "\n");
-        b.append(e.description + "\n");
-        b.append("```\n");
-        b.append(e.code + "\n```\n");
-        b.append("Sample output: \n```json\n");
-        b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.output) + "\n```\n");
-      }
+      if (entry.getValue().get(0).client != null)
+        client.put(entry.getKey(), entry.getValue());
+      else
+        server.put(entry.getKey(), entry.getValue());
+
+    for (TreeMap<String, List<Example>> map : Arrays.asList(client, server)) {
+      b.append("## " + (client == map ? "Frontend" : "Backend") + "\n");
+      for (Entry<String, List<Example>> entry : map.entrySet())
+        for (Example e : entry.getValue()) {
+          if (e.language == null)
+            e.language = e.code instanceof String ? "jsonata" : "json";
+          b.append("### " + (e.title != null ? e.title : entry.getKey()) + "\n");
+          b.append(e.description + "\n");
+          b.append("```\n");
+          b.append(e.code + "\n```\n");
+          b.append("Sample output: \n```json\n");
+          b.append(om.writerWithDefaultPrettyPrinter().writeValueAsString(e.output) + "\n```\n");
+        }
+    }
 
     FileUtils.write(new File("../dashjoin-docs/docs/appendix-jsonata.md"), b,
         Charset.defaultCharset());
