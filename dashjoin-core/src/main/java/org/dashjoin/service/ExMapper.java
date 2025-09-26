@@ -1,8 +1,12 @@
 package org.dashjoin.service;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dashjoin.model.Table;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -17,9 +21,13 @@ public class ExMapper implements ExceptionMapper<Throwable> {
 
   final static Logger logger = Logger.getLogger(ExMapper.class.getName());
 
+  @Inject
+  Services services;
+
   /**
    * convert exception to response code
    */
+  @SuppressWarnings("unchecked")
   @Override
   public Response toResponse(Throwable throwable) {
 
@@ -32,8 +40,20 @@ public class ExMapper implements ExceptionMapper<Throwable> {
     if (msg == null || msg.isEmpty())
       msg = throwable.getClass().getSimpleName();
 
-    if (msg.startsWith("org.dashjoin.expression.WrappedException: "))
-      msg = msg.substring("org.dashjoin.expression.WrappedException: ".length());
+    try {
+      Map<String, Object> r = services.getConfig().getConfigDatabase()
+          .read(Table.ofName("dj-config"), Map.of("ID", "exception-mapper"));
+      if (r != null) {
+        r = (Map<String, Object>) r.get("map");
+        for (Entry<String, Object> e : r.entrySet()) {
+          if (msg.contains(e.getKey())) {
+            msg = "" + e.getValue();
+            break;
+          }
+        }
+      }
+    } catch (Exception ignore) {
+    }
 
     return toResponse(msg);
   }

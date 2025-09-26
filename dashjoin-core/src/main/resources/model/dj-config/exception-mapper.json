@@ -1,0 +1,6 @@
+{
+	"ID": "exception-mapper",
+	"description": "Error messages containing the key are replaced with the value",
+	"category": "app",
+	"type": "map"
+}
