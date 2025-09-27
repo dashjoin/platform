@@ -1023,7 +1023,7 @@ log | $log(value) | logs value to the developer console
 navigate | $navigate(url) | points the browser to the URL
 navigate | $navigate( {id, options} ) | scrolls the page to the [DOM element with the id](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView)
 clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
-progress | $progress({message?, linear?, value?, variant?}) | Shows progress message during long running operations. If the variant is set to determinate, the progress shows the value between 0 and 100. If linear is true, the progress is shown using a linear bar.
+progress | $progress({message?, linear?, value?, variant?}) | Shows progress message during long running operations. If the variant is set to determinate, the progress shows the value between 0 and 100. If linear is true, the progress is shown using a linear bar. If progress is called without parameter, the progress display disappears.
 sleep | $sleep(millisecs) | Sleep for x milliseconds
 speak | $speak(message, language?) | Text to speech
 stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
