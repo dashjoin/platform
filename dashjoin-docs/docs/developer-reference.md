@@ -226,6 +226,8 @@ The expressions must handle the event, perform any kind of desired DB updates an
 * onDelete: called when the user deletes a file. The 'delete' parameter contains {name, value, metadata, type (files or queryFiles)} 
 * toolsSelectable: allow user to (de)select tools
 * uploadEnabled: allow user to upload files
+* extensions: supported upload file extensions
+* limit: maximum file size (MB)
 
 The following example shows a minimal configuration with the "always answer yes" AI.
 
