@@ -107,7 +107,7 @@ Further options include:
 
 Not all form options can be edited in the form edit dialog. If you would like to create a form for
 nested objects and arrays, you can add the JSON schema to the form in Dashjoin Studio.
-This example displays a form to enter an object with a field emails which is an array of strings: 
+This example displays a form to enter an object with a field emails which is an array of strings (setting reorder: true, also displays controls to change the order of the array elements): 
 
 ```text
             {
@@ -218,6 +218,7 @@ The expressions must handle the event, perform any kind of desired DB updates an
   "tools": [string]                                 // names of Invoke functions to be used as tools
   "toolsSelectable": boolean                        // like the widget setting, allows the setting to be dynamic
   "uploadEnabled": boolean                          // like the widget setting, allows the setting to be dynamic
+  "placeholder": string                             // shows an input placeholder for the initial user input (e.g. like How may I help?)
 }
 ```
 
