@@ -237,17 +237,22 @@ The following environment variables can be used to configure the container:
 * DJAI_OLLAMA_URL: URL of the ollama service
 * DJAI_DATA_QDRANT_PATH: path of the vector database (default dashjoin/data/default/qdrant)
 * DJAI_DATA_PATH: path to local data (default dashjoin/data/default)
+* DJAI_LOG_LEVEL: log level (default INFO)
+* DJAI_CORS_ENABLED: web server cors setting (default true)
 
 Vector DB settings
 
 * DJAI_VECTORDB: vector DB to use (default is qdrant)
-* DJAI_PGVECTOR_HOST: rag DB hostname (default postgres)
-* DJAI_PGVECTOR_PORT: rag DB port (default 5432)
-* DJAI_PGVECTOR_USER: rag DB username (default postgres)
-* DJAI_PGVECTOR_PASSWORD: rag DB pwd (default postgres)
-* DJAI_PGVECTOR_EMBED_DIM: vector DB dimension (default 768)
-* DJAI_PGVECTOR_SCHEMA: rag schema (default public)
-* DJAI_PGVECTOR_TABLE: rag table name (default aiembeddings)
+* DJAI_POSTGRES_HOST: rag DB hostname (default postgres)
+* DJAI_POSTGRES_PORT: rag DB port (default 5432)
+* DJAI_POSTGRES_USER: rag DB username (default postgres)
+* DJAI_POSTGRES_PASSWORD: rag DB pwd (default postgres)
+* DJAI_POSTGRES_EMBED_DIM: vector DB dimension (default 768)
+* DJAI_POSTGRES_SCHEMA: rag schema (default public)
+* DJAI_INGESTION_MODE: (default simple)
+* DJAI_INGESTION_WORKERS: (default 2)
+* DJAI_NODESTORE: defines how the system associates files to embeddings (default simple)
+* DJAI_VECTORSTORE: defines how the system associates files to embeddings (default qdrant)
 
 Local model settings
 
@@ -261,11 +266,38 @@ Local model settings
 * DJAI_OLLAMA_REPEAT_PENALTY: Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient (default 1.2)
 * DJAI_OLLAMA_REQUEST_TIMEOUT: Time elapsed until ollama times out the request (default 600.0)
 * DJAI_OLLAMA_AUTOPULL_MODELS: automatically pull models as needed (default true)
+* DJAI_OLLAMA_KEEP_ALIVE: defines how long a model stays loaded in memory (default 5 minutes)
 
 * DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
 * JUPYTER_TOKEN: password of the Juyper development environment
 * DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
 * DASHJOIN_APPURL_BRANCH: optional GIT branch to use
+
+Configuring Multiple Models
+
+The settings above define the default model to be used. You can configure additional models or the same model with different settings
+using a YAML configuration file like this:
+
+```
+#
+# Configure additional models (settings-x-models.yaml)
+#
+models:
+  openai-gpt4mini:
+    llm:
+      mode: openai
+    openai:
+      api_key: ...
+      model: o4-mini
+```
+
+On the API, the model to be used can be specified by passing model: name (here: openai-gpt4mini) along with the request.
+To load the additional model settings, you need to map the file into the container folder /app
+and set the following environment:
+
+```
+PGPT_PROFILES=x-models
+```
 
 ### Running AI Assistant
 
@@ -442,11 +474,119 @@ $curl('POST', 'https://aikb.run.dashjoin.com/v1/completions', {
 
 ### Getting Access to AI Assistant
 
-AI Assistant is available for demo purposes in the playground app.
+AI Assistant and the Dashjoin MCP Server (see below) are available for demo purposes in the playground app.
 You can book a private instance along with your Dashjoin tenant. Please refer to the [website](http://dashjoin.com) 
 to access the shop page.
 Note that the services all comply with european GDPR regulations.
 Please contact us if you are interested in deploying your own copy using GPU resources in your datacenter.
+
+## MCP / Tool Support (Beta)
+
+AI Assistant provides a new API endpoint /mcp to support model context protocol (MCP).
+It comes with a default MCP server. To find out which MCP tools are available, use this API:
+
+```
+GET http://localhost:8001/mcp/v1/info
+```
+
+To instruct the AI to use MCP, use the mcp_servers field:
+
+```
+POST http://localhost:8001/mcp/v1/chat/completions
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
+{
+  "mcp_servers": [
+    {
+      "name": "websearch",
+      "type": "url",
+      "url": "https://mcp.dashjoin.local/fetch"
+    }
+  ],
+  "messages": [
+    {
+      "content": "What are the headlines on NY Times today?",
+      "role": "user"
+    }
+  ]
+}
+```
+
+The URL mcp.dashjoin.local causes AI Assistant to use the default Dashjoin MCP server.
+You can also specify your own URL. In addition to mcp_servers, you can also provide "options":
+
+```
+  ...
+  "options": {
+    "max_iterations": 10,
+    "agent_mode": "react",
+    "debug": true
+  }
+  ...
+```
+
+
+Apart from MCP, you can also provide REST services as follows (in this case we call a Dashjoin function called "tool"):
+
+```
+POST http://localhost:8001/mcp/v1/chat/completions
+Authorization: Basic admin:djdjdj
+Content-Type: application/json
+
+{
+  "tools": [
+    {
+      "name": "get_stock_price",
+      "description": "Get the current stock price for a given ticker symbol.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "The stock ticker symbol, e.g. AAPL for Apple Inc."
+          }
+        },
+        "required": [
+          "ticker"
+        ]
+      },
+      "rest": {
+        "method": "post",
+        "url": "http://host.docker.internal:8080/rest/function/tool",
+        "headers": {
+          "Authorization": "Basic YWRtaW46ZGpkamRq",
+          "Content-Type": "Application/JSON"
+        }
+      }
+    }
+  ],
+  "messages": [
+    {
+      "content": "Current stock price of Nvidia?",
+      "role": "user"
+    }
+  ]
+}
+```
+
+The MCP server can also be called from JSONata:
+
+```
+$curl('POST', 'https://.../fetch/mcp', {
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "tools/call",
+  "params": {
+    "name": "fetch",
+    "arguments": {
+      "url": "https://dashjoin.com"
+    }
+  }
+}, {
+  "Authorization": "..."
+})
+```
 
 ## Extending AI Assistant
 
