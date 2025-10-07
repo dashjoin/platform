@@ -159,7 +159,7 @@ yarn add smiles-drawer
 ```
 
 Yarn is a JavaScript package manager, that will retrieve the latest version of the library and all other required components. Depending on your internet connection speed, this command might take a while to complete.
-Now we can start the development webserver that will run on port 3000:
+Now we can start the development webserver that will run on port 3000 (note that this is not supported in a cloud tenant as the dev port is not reachable over the Internet):
 
 ```
 yarn rsbuild dev
