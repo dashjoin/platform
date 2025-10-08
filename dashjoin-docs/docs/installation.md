@@ -521,3 +521,20 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * Parameter metadata for Invoke function allow for better interoperability with LLMs and use in OpenAPIs
   * Easy extensibility of Apps on HTML/JS level (e.g. for adding Google Analytics)
   * Ability to customizing multiple instances of an App
+
+### 6.2 (Oct 2025)
+
+* UI
+  * Extended support for form styling and validation
+  * Support for ordering arrays in forms
+  * Support for scanning several bar code and data matrix formats
+  * Graph widget can show / hide node and link labels
+* SDK
+  * Dashjoin vibe coding / AI friendly documentation
+* Dashjoin AI Assistant
+  * MCP tool support
+  * Allow exposing platform functions to AI
+  * Whisper support
+  * Support for uploading several new file formats
+  * Improved RAG performance
+  * Allow configuring multiple models and model options
