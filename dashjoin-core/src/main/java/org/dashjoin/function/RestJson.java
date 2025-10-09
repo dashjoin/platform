@@ -2,11 +2,15 @@ package org.dashjoin.function;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import org.dashjoin.model.JsonSchema;
+import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
 import org.dashjoin.util.Template;
@@ -64,6 +68,8 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   @JsonSchema(title = "Optional HTTP timeout (s)")
   public Integer timeoutSeconds;
 
+  public List<String> insertCredentials;
+
   transient boolean stream;
 
   @SuppressWarnings("unchecked")
@@ -88,10 +94,12 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
     if (contentType != null)
       request = request.header("Content-Type", contentType);
     if ("POST".equals(method))
-      if ("application/json".equals(contentType))
+      if ("application/json".equals(contentType)) {
+        if (insertCredentials != null)
+          obj = replace(obj, insertCredentials);
         request = request.post(RequestBody.create(null,
             objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj)));
-      else {
+      } else {
         Builder fb = new Builder();
         for (Object key : map.keySet())
           fb.add((String) key, (String) map.get(key));
@@ -143,5 +151,41 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   @Override
   public Class<Object> getArgumentClass() {
     return Object.class;
+  }
+
+  @SuppressWarnings("unchecked")
+  public Object replace(Object o, List<String> insertCredentials) throws Exception {
+    if (o instanceof Map) {
+      Map<String, Object> map = (Map<String, Object>) o;
+      Map<String, Object> copy = new LinkedHashMap<>();
+      for (Entry<String, Object> e : map.entrySet())
+        if (insertCredentials.contains(e.getKey()) && e.getValue() instanceof String) {
+          copy.put(e.getKey(), cred((String) e.getValue()));
+        } else
+          copy.put(e.getKey(), replace(e.getValue(), insertCredentials));
+      return copy;
+    }
+    if (o instanceof List) {
+      List<Object> copy = new ArrayList<>();
+      for (Object item : (List<Object>) o)
+        copy.add(replace(item, insertCredentials));
+      return copy;
+    }
+    return o;
+  }
+
+  String cred(String name) throws Exception {
+    try {
+      AbstractConfigurableFunction f =
+          services != null ? services.getConfig().getFunction(name) : null;
+      if (f instanceof Credentials) {
+        ACLContainerRequestFilter.check(sc, f);
+        f.init(sc, services, expressionService, readOnly);
+        return f.password();
+      }
+    } catch (IllegalArgumentException notCredential) {
+      // ignore
+    }
+    return name;
   }
 }
