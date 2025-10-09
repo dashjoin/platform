@@ -181,7 +181,12 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
       if (f instanceof Credentials) {
         ACLContainerRequestFilter.check(sc, f);
         f.init(sc, services, expressionService, readOnly);
-        return f.password();
+        Credentials c = (Credentials) f;
+        if (c.apiKey != null && c.apiKey)
+          return f.password();
+        else
+          return "Basic "
+              + Base64.getEncoder().encodeToString((c.username + ":" + f.password()).getBytes());
       }
     } catch (IllegalArgumentException notCredential) {
       // ignore
