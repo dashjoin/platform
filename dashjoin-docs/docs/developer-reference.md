@@ -684,6 +684,7 @@ Configuration
 * contentType: content-type header application/json or url-form-encoded
 * apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
 * timeoutSeconds: Optional HTTP timeout in seconds (default is 10s)
+* insertCredentials: array of field names. If set, any key:value found in the object passed is replaced with key:value of the credential with name "value" (Dashjoin Studio only)
 
 Invocation parameter
 
