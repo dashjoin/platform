@@ -248,8 +248,8 @@ Vector DB settings
 * DJAI_POSTGRES_USER: rag DB username (default postgres)
 * DJAI_POSTGRES_PASSWORD: rag DB pwd (default postgres)
 * DJAI_POSTGRES_EMBED_DIM: vector DB dimension (default 768)
-* DJAI_POSTGRES_SCHEMA: rag schema (default public)
-* DJAI_INGESTION_MODE: (default simple)
+* DJAI_POSTGRES_SCHEMA: rag DB schema (default public)
+* DJAI_INGESTION_MODE: (default batch)
 * DJAI_INGESTION_WORKERS: (default 2)
 * DJAI_NODESTORE: defines how the system associates files to embeddings (default simple)
 * DJAI_VECTORSTORE: defines how the system associates files to embeddings (default qdrant)
@@ -293,10 +293,15 @@ models:
 
 On the API, the model to be used can be specified by passing model: name (here: openai-gpt4mini) along with the request.
 To load the additional model settings, you need to map the file into the container folder /app
-and set the following environment:
+and set the following environment.
+
+Note that profile `x-models` must match the name settings-`x-models`.yaml, multiple configs can be specified
+using this mechanism, which will all be merged.
+
+Profile `djdocker` contains the default settings and should always be set:
 
 ```
-PGPT_PROFILES=x-models
+PGPT_PROFILES=djdocker,x-models
 ```
 
 ### Running AI Assistant
