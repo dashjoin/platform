@@ -1099,3 +1099,4 @@ urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwi
 wait| $wait(object, millisecs) | Wait millisecs provided before returning object
 etl | $etl(foreach, expression, database) | Run an ETL process programmatically
 etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
+validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords

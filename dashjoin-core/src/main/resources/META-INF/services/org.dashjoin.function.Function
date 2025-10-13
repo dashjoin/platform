@@ -48,3 +48,4 @@ org.dashjoin.function.GitStatus
 org.dashjoin.function.GitClone
 org.dashjoin.function.SaveTable
 org.dashjoin.function.ParseUrl
+org.dashjoin.function.Validate
