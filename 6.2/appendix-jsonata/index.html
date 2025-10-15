@@ -1,0 +1,2831 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../appendix-inputs/">
+      
+      
+        <link rel="next" href="../appendix-widgets/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Appendix: JSONata function library - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#appendix-jsonata-function-library" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Appendix: JSONata function library
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    I18N
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI &amp; ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Databases, Queries, Functions, and Configurations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-inputs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Form Input Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Appendix: JSONata function library
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: JSONata function library
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearcache" class="md-nav__link">
+    <span class="md-ellipsis">
+      clearCache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      confirm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialog" class="md-nav__link">
+    <span class="md-ellipsis">
+      dialog
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      navigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigate_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      navigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notify" class="md-nav__link">
+    <span class="md-ellipsis">
+      notify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      progress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      refresh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload" class="md-nav__link">
+    <span class="md-ellipsis">
+      reload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setvariable" class="md-nav__link">
+    <span class="md-ellipsis">
+      setVariable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      sleep
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speak" class="md-nav__link">
+    <span class="md-ellipsis">
+      speak
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopspeech" class="md-nav__link">
+    <span class="md-ellipsis">
+      stopSpeech
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#translate" class="md-nav__link">
+    <span class="md-ellipsis">
+      translate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adhocquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      adHocQuery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    <span class="md-ellipsis">
+      all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call" class="md-nav__link">
+    <span class="md-ellipsis">
+      call
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      chat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classifyentities" class="md-nav__link">
+    <span class="md-ellipsis">
+      classifyEntities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    <span class="md-ellipsis">
+      create
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      curl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      delete
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djroles" class="md-nav__link">
+    <span class="md-ellipsis">
+      djRoles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      djUser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      djVersion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      echo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erdiagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      erDiagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      etl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etlsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      etlSync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec" class="md-nav__link">
+    <span class="md-ellipsis">
+      exec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitcommit" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitCommit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitpull" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitPull
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitrestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitRestore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitStatus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incoming" class="md-nav__link">
+    <span class="md-ellipsis">
+      incoming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isrecursivetrigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      isRecursiveTrigger
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls" class="md-nav__link">
+    <span class="md-ellipsis">
+      ls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opencsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      openCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openexcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      openExcel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      openJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opentext" class="md-nav__link">
+    <span class="md-ellipsis">
+      openText
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opentext_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      openText
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      openXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      openYaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsecsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseexcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseExcel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsehtml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseHtml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsejson" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseurl" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseUrl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseYaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query" class="md-nav__link">
+    <span class="md-ellipsis">
+      query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querygraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      queryGraph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read" class="md-nav__link">
+    <span class="md-ellipsis">
+      read
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconcileentity" class="md-nav__link">
+    <span class="md-ellipsis">
+      reconcileEntity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#savetable" class="md-nav__link">
+    <span class="md-ellipsis">
+      saveTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    <span class="md-ellipsis">
+      search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      stats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamcsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamDb
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      traverse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traverse_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      traverse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      upsert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urlexists" class="md-nav__link">
+    <span class="md-ellipsis">
+      urlExists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uuid" class="md-nav__link">
+    <span class="md-ellipsis">
+      uuid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      wait
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-widgets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Form Input Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frontend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frontend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearcache" class="md-nav__link">
+    <span class="md-ellipsis">
+      clearCache
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      confirm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialog" class="md-nav__link">
+    <span class="md-ellipsis">
+      dialog
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      navigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigate_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      navigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#notify" class="md-nav__link">
+    <span class="md-ellipsis">
+      notify
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      progress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      refresh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reload" class="md-nav__link">
+    <span class="md-ellipsis">
+      reload
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setvariable" class="md-nav__link">
+    <span class="md-ellipsis">
+      setVariable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sleep" class="md-nav__link">
+    <span class="md-ellipsis">
+      sleep
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#speak" class="md-nav__link">
+    <span class="md-ellipsis">
+      speak
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopspeech" class="md-nav__link">
+    <span class="md-ellipsis">
+      stopSpeech
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#translate" class="md-nav__link">
+    <span class="md-ellipsis">
+      translate
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backend
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adhocquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      adHocQuery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all" class="md-nav__link">
+    <span class="md-ellipsis">
+      all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#all_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      all
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call" class="md-nav__link">
+    <span class="md-ellipsis">
+      call
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chat" class="md-nav__link">
+    <span class="md-ellipsis">
+      chat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classifyentities" class="md-nav__link">
+    <span class="md-ellipsis">
+      classifyEntities
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    <span class="md-ellipsis">
+      create
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      curl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      delete
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djroles" class="md-nav__link">
+    <span class="md-ellipsis">
+      djRoles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djuser" class="md-nav__link">
+    <span class="md-ellipsis">
+      djUser
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#djversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      djVersion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      echo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erdiagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      erDiagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      etl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etlsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      etlSync
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec" class="md-nav__link">
+    <span class="md-ellipsis">
+      exec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitcommit" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitCommit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitpull" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitPull
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitrestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitRestore
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      gitStatus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incoming" class="md-nav__link">
+    <span class="md-ellipsis">
+      incoming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index" class="md-nav__link">
+    <span class="md-ellipsis">
+      index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isrecursivetrigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      isRecursiveTrigger
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls" class="md-nav__link">
+    <span class="md-ellipsis">
+      ls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opencsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      openCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openexcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      openExcel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      openJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opentext" class="md-nav__link">
+    <span class="md-ellipsis">
+      openText
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opentext_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      openText
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      openXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      openYaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsecsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseexcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseExcel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsehtml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseHtml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsejson" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseurl" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseUrl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parseyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      parseYaml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query" class="md-nav__link">
+    <span class="md-ellipsis">
+      query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#query_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querygraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      queryGraph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read" class="md-nav__link">
+    <span class="md-ellipsis">
+      read
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconcileentity" class="md-nav__link">
+    <span class="md-ellipsis">
+      reconcileEntity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#savetable" class="md-nav__link">
+    <span class="md-ellipsis">
+      saveTable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search" class="md-nav__link">
+    <span class="md-ellipsis">
+      search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      stats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamcsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamCsv
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamDb
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamJson
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streamxml" class="md-nav__link">
+    <span class="md-ellipsis">
+      streamXml
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      traverse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traverse_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      traverse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update" class="md-nav__link">
+    <span class="md-ellipsis">
+      update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#upsert" class="md-nav__link">
+    <span class="md-ellipsis">
+      upsert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urlexists" class="md-nav__link">
+    <span class="md-ellipsis">
+      urlExists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uuid" class="md-nav__link">
+    <span class="md-ellipsis">
+      uuid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      wait
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="appendix-jsonata-function-library">Appendix: JSONata function library</h1>
+<h2 id="frontend">Frontend</h2>
+<h3 id="alert">alert</h3>
+<p>Shows a model popup with a message
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$alert(&#39;FYI&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="s2">&quot;OK&quot;</span>
+</code></pre></div></p>
+<h3 id="clearcache">clearCache</h3>
+<p>clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$clearCache()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="confirm">confirm</h3>
+<p>displays a confirmation dialog and returns true if the user clicked yes
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$confirm(&#39;Are you sure&#39;) ? &#39;you clicked yes&#39;
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kc">true</span>
+</code></pre></div></p>
+<h3 id="dialog">dialog</h3>
+<p>Shows a dialog to enter 'to' and 'text'. If the user submits via 'ok', an object with these fields is returned
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$dialog({
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  &#39;title&#39;:&#39;Send Message&#39;, 
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  &#39;message&#39;:&#39;Please enter your message&#39;, 
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  &#39;inputs&#39;:[&#39;to&#39;, &#39;content&#39;], 
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  &#39;buttons&#39;:[{&#39;label&#39;:&#39;ok&#39;, &#39;type&#39;:&#39;submit&#39;},&#39;cancel&#39;], 
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  &#39;options&#39;:{&#39;alert&#39;:&#39;info&#39;}
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="navigate">navigate</h3>
+<p>points the browser to the URL
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$navigate(&#39;http://dashjoin.com&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="navigate_1">navigate</h3>
+<p>scrolls the page to the DOM element with the given id. In this case, we scroll to the widget that has the title 'Top'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$navigate({&#39;id&#39;: &#39;dj-Top&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="notify">notify</h3>
+<p>Shows a message in the snackbar at the bottom of the screen
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$notify(&#39;Hi from the snackbar!&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="progress">progress</h3>
+<p>shows a progress indicator with the message 'working...' for 1 second until the expression execution completes
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>(
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  $progress({&#39;message&#39;:&#39;working...&#39;});
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  $sleep(1000)
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="prompt">prompt</h3>
+<p>Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>(
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>  $name := $prompt(&#39;What is your name?&#39;);
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  $name ? (&#39;Hello &#39; &amp; $name);
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="s2">&quot;Joe&quot;</span>
+</code></pre></div></p>
+<h3 id="refresh">refresh</h3>
+<p>refreshes the screen just (just like hitting the refresh icon in the toolbar)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>$refresh()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="reload">reload</h3>
+<p>reloads the browser page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$reload()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="setvariable">setVariable</h3>
+<p>Sets the browser session variable x to 1. The new value can be read in other places via variable.x
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>$setVariable(&#39;x&#39;, 1)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="sleep">sleep</h3>
+<p>sleeps for 1000 milliseconds
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>$sleep(1000)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="speak">speak</h3>
+<p>performs a text to english speech for 'Test'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>$speak(&#39;Test&#39;, &#39;en&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="stopspeech">stopSpeech</h3>
+<p>stops any text to speech that's in progress
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>$stopSpeech()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="translate">translate</h3>
+<p>Lookup the text in the translation file and return the match for the current locale
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>$translate(&#39;ra.action.select_all_button&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="s2">&quot;Select all&quot;</span>
+</code></pre></div></p>
+<h2 id="backend">Backend</h2>
+<h3 id="adhocquery">adHocQuery</h3>
+<p>Run query 'select * from EMPLOYEES' on database 'northwind'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>$adHocQuery(&#39;northwind&#39;, &#39;select * from EMPLOYEES&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">&quot;EMPLOYEES.EMPLOYEE_ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="nt">&quot;EMPLOYEES.LAST_NAME&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Davolio&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">  </span><span class="nt">&quot;EMPLOYEES.FIRST_NAME&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nancy&quot;</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="all">all</h3>
+<p>get all records of the REQUESTS table in the database 'sqlite'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>$all(&#39;sqlite&#39;, &#39;REQUESTS&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Can you please send me an offer&quot;</span><span class="p">,</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">&quot;submitted&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2021-01-01 10:20&quot;</span><span class="p">,</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">  </span><span class="nt">&quot;customer&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALFKI&quot;</span><span class="p">,</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">  </span><span class="nt">&quot;user&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="all_1">all</h3>
+<p>get the first ten records of the REQUESTS table in the database 'sqlite', sort by 'ID', descending=true, with the filter customer='ALFKI'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>$all(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 1, 10, &#39;ID&#39;, true, {&#39;customer&#39;:&#39;ALFKI&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Can you please send me an offer&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">  </span><span class="nt">&quot;submitted&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2021-01-01 10:20&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">  </span><span class="nt">&quot;customer&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALFKI&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">  </span><span class="nt">&quot;user&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="call">call</h3>
+<p>call function 'add' from the function catalog using the provided parameter
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>$call(&#39;add&#39;, {&#39;x&#39;:1, &#39;y&#39;:2})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">{</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="chat">chat</h3>
+<p>Call the LLM comlpetion API of OpenAI with the query 'hi', the system prompt 'be funny', and the 'openai' credential
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>$chat(&#39;https://api.openai.com/v1/chat/completions&#39;, &#39;hi&#39;, [{&#39;role&#39;: &#39;system&#39;, &#39;content&#39;: &#39;be funny!&#39;}], [], {&#39;model&#39;:&#39;gpt-4o-mini&#39;}, {&#39;Authorization&#39;: &#39;openai&#39;, &#39;dj-timeout-seconds&#39;: 60})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;system&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;be funny!&quot;</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hi&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">  </span><span class="nt">&quot;role&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello! How can I tickle your funny bone today?&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">  </span><span class="nt">&quot;refusal&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">  </span><span class="nt">&quot;annotations&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="classifyentities">classifyEntities</h3>
+<p>Reconciles entities and finds common classifications that all entities are an instance of
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>$classifyEntities([&#39;VW&#39;, &#39;Tesla&#39;])
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">[</span><span class="w"> </span><span class="s2">&quot;business&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;juridical person&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;organization&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;economic entity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;group&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="create">create</h3>
+<p>create a new record in database 'sqlite', table 'REQUESTS'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>$create(&#39;sqlite&#39;, &#39;REQUESTS&#39;, {&#39;ID&#39;: 7, &#39;name&#39;:&#39;new request&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">{</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span><span class="nt">&quot;table&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUESTS&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">  </span><span class="nt">&quot;pk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="curl">curl</h3>
+<p>open the HTTP GET service at the given URL and pass the authorization header
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>$curl(&#39;GET&#39;, &#39;http://localhost:8080/rest/manage/version&#39;, null, {&#39;Authorization&#39;: &#39;Basic YWRtaW46ZGpkamRq&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="p">{</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">  </span><span class="nt">&quot;vendor&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dashjoin&quot;</span><span class="p">,</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dashjoin Low Code Development and Integration Platform&quot;</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="delete">delete</h3>
+<p>delete REQUEST 7 in the database 'sqlite'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>$delete(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 7)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="djroles">djRoles</h3>
+<p>Returns the roles of the current user
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>$djRoles()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="p">[</span><span class="w"> </span><span class="s2">&quot;authenticated&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="djuser">djUser</h3>
+<p>Returns the current user
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>$djUser()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="s2">&quot;admin@localhost&quot;</span>
+</code></pre></div></p>
+<h3 id="djversion">djVersion</h3>
+<p>Returns the platform version information
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>$djVersion()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="p">{</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6.1.0-d26fc67-6f4f682&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dashjoin-platform&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="w">  </span><span class="nt">&quot;vendor&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dashjoin&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dashjoin Low Code Development and Integration Platform&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="w">  </span><span class="nt">&quot;buildTime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-07-31T11:22:48+0000&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a><span class="w">  </span><span class="nt">&quot;runtime&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;21.0.6&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-8" name="__codelineno-55-8" href="#__codelineno-55-8"></a><span class="w">  </span><span class="nt">&quot;workingDir&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/deployments&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-9" name="__codelineno-55-9" href="#__codelineno-55-9"></a><span class="w">  </span><span class="nt">&quot;home&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/mnt/dashjoin/app&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-10" name="__codelineno-55-10" href="#__codelineno-55-10"></a><span class="w">  </span><span class="nt">&quot;appurl&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://github.com/dashjoin/dashjoin-demo&quot;</span>
+<a id="__codelineno-55-11" name="__codelineno-55-11" href="#__codelineno-55-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="echo">echo</h3>
+<p>prints 'hi' to the log and returns 'hi'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>$echo(&#39;hi&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="s2">&quot;hi&quot;</span>
+</code></pre></div></p>
+<h3 id="erdiagram">erDiagram</h3>
+<p>generate database schema information for database 'sqlite'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>$erDiagram(&#39;sqlite&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="s2">&quot;Table REQUESTS{\n  ID INTEGER [primary key]\n  name VARCHAR\n  submitted VARCHAR\n  customer VARCHAR [ref: &gt; CUSTOMERS.CUSTOMER_ID]\n  user VARCHAR\n}&quot;</span>
+</code></pre></div></p>
+<h3 id="etl">etl</h3>
+<p>Run an ETL that loads data into the sqlite database with createSchema set to true
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>$etl(&#39;&#39;, &#39;[{&quot;id&quot;:1, &quot;name&quot;:&quot;mike&quot;}]&#39;, &#39;sqlite&#39;, null, null, true)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="etlsync">etlSync</h3>
+<p>Compares two tables with URL / file information to determine which files changed. These can be used for a delta ETL.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>$etlSync([{&#39;url&#39;:&#39;file:a&#39;, &#39;version&#39;: 2}], [{&#39;url&#39;:&#39;file:a&#39;, &#39;version&#39;: 1}], &#39;url&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file:a&quot;</span><span class="p">,</span>
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="exec">exec</h3>
+<p>run the script 'bin/test.sh'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>$exec(&#39;bin/test.sh&#39;, &#39;call echo $*&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="p">{</span>
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a><span class="w">  </span><span class="nt">&quot;out&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;\&quot;call echo $*\&quot;\n&quot;</span><span class="p">,</span>
+<a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a><span class="w">  </span><span class="nt">&quot;err&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="gitcommit">gitCommit</h3>
+<p>git commit a set of files
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>$gitCommit(&#39;db change&#39;, [&#39;dashjoin-demo.db&#39;])
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="gitpull">gitPull</h3>
+<p>Pull the dashjoin app
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>$gitPull()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="gitrestore">gitRestore</h3>
+<p>git restore 'dashjoin-demo.db'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>$gitRestore(&#39;dashjoin-demo.db&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="gitstatus">gitStatus</h3>
+<p>return the git status of the dashjoin app
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>$gitStatus()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a><span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dashjoin-demo.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-73-3" name="__codelineno-73-3" href="#__codelineno-73-3"></a><span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;modified&quot;</span><span class="p">,</span>
+<a id="__codelineno-73-4" name="__codelineno-73-4" href="#__codelineno-73-4"></a><span class="w">  </span><span class="nt">&quot;diff&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diff --git a/dashjoin-demo.db b/dashjoin-demo.db\nindex 6fdb4ce..d29b8f1 100644\n--- a/dashjoin-demo.db\n+++ b/dashjoin-demo.db\nBinary files differ\n&quot;</span>
+<a id="__codelineno-73-5" name="__codelineno-73-5" href="#__codelineno-73-5"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="incoming">incoming</h3>
+<p>get all records from all databases that point to northwind EMPLOYEE 2
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>$incoming(&#39;northwind&#39;, &#39;EMPLOYEES&#39;, 2)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-75-2" name="__codelineno-75-2" href="#__codelineno-75-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-75-3" name="__codelineno-75-3" href="#__codelineno-75-3"></a><span class="w">    </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-75-4" name="__codelineno-75-4" href="#__codelineno-75-4"></a><span class="w">    </span><span class="nt">&quot;table&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EMPLOYEES&quot;</span><span class="p">,</span>
+<a id="__codelineno-75-5" name="__codelineno-75-5" href="#__codelineno-75-5"></a><span class="w">    </span><span class="nt">&quot;pk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-75-6" name="__codelineno-75-6" href="#__codelineno-75-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-75-7" name="__codelineno-75-7" href="#__codelineno-75-7"></a><span class="w">  </span><span class="nt">&quot;pk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/northwind/EMPLOYEES/EMPLOYEE_ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-75-8" name="__codelineno-75-8" href="#__codelineno-75-8"></a><span class="w">  </span><span class="nt">&quot;fk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/northwind/EMPLOYEES/REPORTS_TO&quot;</span>
+<a id="__codelineno-75-9" name="__codelineno-75-9" href="#__codelineno-75-9"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="index">index</h3>
+<p>In ETL mapping expressions, generates a unique row index ID
+<div class="highlight"><pre><span></span><code><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a>$index()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="mi">42</span>
+</code></pre></div></p>
+<h3 id="isrecursivetrigger">isRecursiveTrigger</h3>
+<p>checks if a trigger expression (e.g. onUpdate) calls itself in order to avoid endless recursions
+<div class="highlight"><pre><span></span><code><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a>$isRecursiveTrigger()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a><span class="kc">false</span>
+</code></pre></div></p>
+<h3 id="ls">ls</h3>
+<p>Lists all URLs found at file:upload
+<div class="highlight"><pre><span></span><code><a id="__codelineno-80-1" name="__codelineno-80-1" href="#__codelineno-80-1"></a>$ls(&#39;file:upload&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-81-1" name="__codelineno-81-1" href="#__codelineno-81-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-81-2" name="__codelineno-81-2" href="#__codelineno-81-2"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file:upload/openapi.yaml&quot;</span><span class="p">,</span>
+<a id="__codelineno-81-3" name="__codelineno-81-3" href="#__codelineno-81-3"></a><span class="w">  </span><span class="nt">&quot;folder&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-81-4" name="__codelineno-81-4" href="#__codelineno-81-4"></a><span class="w">  </span><span class="nt">&quot;size&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">480</span><span class="p">,</span>
+<a id="__codelineno-81-5" name="__codelineno-81-5" href="#__codelineno-81-5"></a><span class="w">  </span><span class="nt">&quot;modified&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1737640794571</span><span class="p">,</span>
+<a id="__codelineno-81-6" name="__codelineno-81-6" href="#__codelineno-81-6"></a><span class="w">  </span><span class="nt">&quot;etag&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-81-7" name="__codelineno-81-7" href="#__codelineno-81-7"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="opencsv">openCsv</h3>
+<p>Open 'file:upload/test.csv', parse the semi-colon delimited CSV, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-82-1" name="__codelineno-82-1" href="#__codelineno-82-1"></a>$openCsv(&#39;file:upload/test.csv&#39;, {&#39;withDelimiter&#39;: &#39;;&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-83-1" name="__codelineno-83-1" href="#__codelineno-83-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-83-2" name="__codelineno-83-2" href="#__codelineno-83-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<a id="__codelineno-83-3" name="__codelineno-83-3" href="#__codelineno-83-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Joe&quot;</span>
+<a id="__codelineno-83-4" name="__codelineno-83-4" href="#__codelineno-83-4"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="openexcel">openExcel</h3>
+<p>Open 'file:upload/test.xlsx', and return a JSON map of all sheets
+<div class="highlight"><pre><span></span><code><a id="__codelineno-84-1" name="__codelineno-84-1" href="#__codelineno-84-1"></a>$openExcel(&#39;file:upload/test.xlsx&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-85-1" name="__codelineno-85-1" href="#__codelineno-85-1"></a><span class="p">{</span>
+<a id="__codelineno-85-2" name="__codelineno-85-2" href="#__codelineno-85-2"></a><span class="w">  </span><span class="nt">&quot;Sheet2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-85-3" name="__codelineno-85-3" href="#__codelineno-85-3"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-85-4" name="__codelineno-85-4" href="#__codelineno-85-4"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Joe&quot;</span>
+<a id="__codelineno-85-5" name="__codelineno-85-5" href="#__codelineno-85-5"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-85-6" name="__codelineno-85-6" href="#__codelineno-85-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="openjson">openJson</h3>
+<p>Open 'file:upload/test.json', parse the JSON content and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-86-1" name="__codelineno-86-1" href="#__codelineno-86-1"></a>$openJson(&#39;file:upload/test.json&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-87-1" name="__codelineno-87-1" href="#__codelineno-87-1"></a><span class="p">{</span>
+<a id="__codelineno-87-2" name="__codelineno-87-2" href="#__codelineno-87-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">3.1415</span>
+<a id="__codelineno-87-3" name="__codelineno-87-3" href="#__codelineno-87-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="opentext">openText</h3>
+<p>Open 'file:upload/test.json' and return it base64 encoded
+<div class="highlight"><pre><span></span><code><a id="__codelineno-88-1" name="__codelineno-88-1" href="#__codelineno-88-1"></a>$openText(&#39;file:upload/test.json&#39;, &#39;BASE_64&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-89-1" name="__codelineno-89-1" href="#__codelineno-89-1"></a><span class="s2">&quot;ewoJIngiOiAzLjE0MTUKfQ==&quot;</span>
+</code></pre></div></p>
+<h3 id="opentext_1">openText</h3>
+<p>Open 'file:upload/test.json' using ISO_8859_1 encoding
+<div class="highlight"><pre><span></span><code><a id="__codelineno-90-1" name="__codelineno-90-1" href="#__codelineno-90-1"></a>$openText(&#39;file:upload/test.json&#39;, &#39;ISO_8859_1&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-91-1" name="__codelineno-91-1" href="#__codelineno-91-1"></a><span class="s2">&quot;{\&quot;x\&quot;: 3.1415}&quot;</span>
+</code></pre></div></p>
+<h3 id="openxml">openXml</h3>
+<p>Open 'file:upload/test.xml', parse the XML content, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-92-1" name="__codelineno-92-1" href="#__codelineno-92-1"></a>$openXml(&#39;file:upload/test.xml&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-93-1" name="__codelineno-93-1" href="#__codelineno-93-1"></a><span class="p">{</span>
+<a id="__codelineno-93-2" name="__codelineno-93-2" href="#__codelineno-93-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">3.1415</span>
+<a id="__codelineno-93-3" name="__codelineno-93-3" href="#__codelineno-93-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="openyaml">openYaml</h3>
+<p>Open 'file:upload/test.yaml', parse the YAML content, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-94-1" name="__codelineno-94-1" href="#__codelineno-94-1"></a>$openYaml(&#39;file:upload/test.yaml&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-95-1" name="__codelineno-95-1" href="#__codelineno-95-1"></a><span class="p">{</span>
+<a id="__codelineno-95-2" name="__codelineno-95-2" href="#__codelineno-95-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">3.1415</span>
+<a id="__codelineno-95-3" name="__codelineno-95-3" href="#__codelineno-95-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="parsecsv">parseCsv</h3>
+<p>Parse a string to CSV, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-96-1" name="__codelineno-96-1" href="#__codelineno-96-1"></a>$parseCsv(&#39;id,name
+<a id="__codelineno-96-2" name="__codelineno-96-2" href="#__codelineno-96-2"></a>1,joe&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-97-1" name="__codelineno-97-1" href="#__codelineno-97-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-97-2" name="__codelineno-97-2" href="#__codelineno-97-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<a id="__codelineno-97-3" name="__codelineno-97-3" href="#__codelineno-97-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;joe&quot;</span>
+<a id="__codelineno-97-4" name="__codelineno-97-4" href="#__codelineno-97-4"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="parseexcel">parseExcel</h3>
+<p>Parses a base64 data URL to Excel, converts that to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-98-1" name="__codelineno-98-1" href="#__codelineno-98-1"></a>$parseExcel(&#39;data:;base64,&#39; &amp; $openText(&#39;file:upload/test.xlsx&#39;, &#39;BASE_64&#39;))
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-99-1" name="__codelineno-99-1" href="#__codelineno-99-1"></a><span class="p">{</span>
+<a id="__codelineno-99-2" name="__codelineno-99-2" href="#__codelineno-99-2"></a><span class="w">  </span><span class="nt">&quot;Sheet2&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-99-3" name="__codelineno-99-3" href="#__codelineno-99-3"></a><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-99-4" name="__codelineno-99-4" href="#__codelineno-99-4"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Joe&quot;</span>
+<a id="__codelineno-99-5" name="__codelineno-99-5" href="#__codelineno-99-5"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-99-6" name="__codelineno-99-6" href="#__codelineno-99-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="parsehtml">parseHtml</h3>
+<p>Open the dashjoin website, parse the HTML and extract all h1 elements
+<div class="highlight"><pre><span></span><code><a id="__codelineno-100-1" name="__codelineno-100-1" href="#__codelineno-100-1"></a>$parseHtml($openText(&#39;https://dashjoin.com&#39;), &#39;//h1&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-101-1" name="__codelineno-101-1" href="#__codelineno-101-1"></a><span class="p">[</span><span class="w"> </span><span class="s2">&quot;&lt;h1 class=\&quot;text-white\&quot;&gt;Rapidly Build Apps Driven by Data and AI&lt;/h1&gt;&quot;</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="parsejson">parseJson</h3>
+<p>Parse a string to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-102-1" name="__codelineno-102-1" href="#__codelineno-102-1"></a>$parseJson(&#39;{&quot;x&quot;:1}&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-103-1" name="__codelineno-103-1" href="#__codelineno-103-1"></a><span class="p">{</span>
+<a id="__codelineno-103-2" name="__codelineno-103-2" href="#__codelineno-103-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-103-3" name="__codelineno-103-3" href="#__codelineno-103-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="parseurl">parseUrl</h3>
+<p>Parses a URL and return an object describing it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-104-1" name="__codelineno-104-1" href="#__codelineno-104-1"></a>$parseUrl(&#39;https://dashjoin.com/s?q&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-105-1" name="__codelineno-105-1" href="#__codelineno-105-1"></a><span class="p">{</span>
+<a id="__codelineno-105-2" name="__codelineno-105-2" href="#__codelineno-105-2"></a><span class="w">  </span><span class="nt">&quot;authority&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dashjoin.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-3" name="__codelineno-105-3" href="#__codelineno-105-3"></a><span class="w">  </span><span class="nt">&quot;defaultPort&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span>
+<a id="__codelineno-105-4" name="__codelineno-105-4" href="#__codelineno-105-4"></a><span class="w">  </span><span class="nt">&quot;file&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/s?q&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-5" name="__codelineno-105-5" href="#__codelineno-105-5"></a><span class="w">  </span><span class="nt">&quot;host&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dashjoin.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-6" name="__codelineno-105-6" href="#__codelineno-105-6"></a><span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/s&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-7" name="__codelineno-105-7" href="#__codelineno-105-7"></a><span class="w">  </span><span class="nt">&quot;port&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span>
+<a id="__codelineno-105-8" name="__codelineno-105-8" href="#__codelineno-105-8"></a><span class="w">  </span><span class="nt">&quot;protocol&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-9" name="__codelineno-105-9" href="#__codelineno-105-9"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;q&quot;</span><span class="p">,</span>
+<a id="__codelineno-105-10" name="__codelineno-105-10" href="#__codelineno-105-10"></a><span class="w">  </span><span class="nt">&quot;userInfo&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-105-11" name="__codelineno-105-11" href="#__codelineno-105-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="parsexml">parseXml</h3>
+<p>Parse a string to XML, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-106-1" name="__codelineno-106-1" href="#__codelineno-106-1"></a>$parseXml(&#39;&lt;x&gt;1&lt;/x&gt;&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-107-1" name="__codelineno-107-1" href="#__codelineno-107-1"></a><span class="p">{</span>
+<a id="__codelineno-107-2" name="__codelineno-107-2" href="#__codelineno-107-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span>
+<a id="__codelineno-107-3" name="__codelineno-107-3" href="#__codelineno-107-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="parseyaml">parseYaml</h3>
+<p>Parse a string to YAML, convert it to JSON and return it
+<div class="highlight"><pre><span></span><code><a id="__codelineno-108-1" name="__codelineno-108-1" href="#__codelineno-108-1"></a>$parseYaml(&#39;x: 1&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-109-1" name="__codelineno-109-1" href="#__codelineno-109-1"></a><span class="p">{</span>
+<a id="__codelineno-109-2" name="__codelineno-109-2" href="#__codelineno-109-2"></a><span class="w">  </span><span class="nt">&quot;x&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span>
+<a id="__codelineno-109-3" name="__codelineno-109-3" href="#__codelineno-109-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="query">query</h3>
+<p>run query 'group' on database 'northwind'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-110-1" name="__codelineno-110-1" href="#__codelineno-110-1"></a>$query(&#39;northwind&#39;, &#39;group&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-111-1" name="__codelineno-111-1" href="#__codelineno-111-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-111-2" name="__codelineno-111-2" href="#__codelineno-111-2"></a><span class="w">  </span><span class="nt">&quot;CUSTOMERS.COUNTRY&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Argentina&quot;</span><span class="p">,</span>
+<a id="__codelineno-111-3" name="__codelineno-111-3" href="#__codelineno-111-3"></a><span class="w">  </span><span class="nt">&quot;Number of Customers&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-111-4" name="__codelineno-111-4" href="#__codelineno-111-4"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="query_1">query</h3>
+<p>run query 'list' on datanase 'northwind' using query parameters limit 1 and offset 3
+<div class="highlight"><pre><span></span><code><a id="__codelineno-112-1" name="__codelineno-112-1" href="#__codelineno-112-1"></a>$query(&#39;northwind&#39;, &#39;list&#39;, {&#39;limit&#39;:1, &#39;offset&#39;:&#39;3&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-113-1" name="__codelineno-113-1" href="#__codelineno-113-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-113-2" name="__codelineno-113-2" href="#__codelineno-113-2"></a><span class="w">  </span><span class="nt">&quot;CATEGORIES.CATEGORY_ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<a id="__codelineno-113-3" name="__codelineno-113-3" href="#__codelineno-113-3"></a><span class="w">  </span><span class="nt">&quot;CATEGORIES.CATEGORY_NAME&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dairy Products&quot;</span><span class="p">,</span>
+<a id="__codelineno-113-4" name="__codelineno-113-4" href="#__codelineno-113-4"></a><span class="w">  </span><span class="nt">&quot;CATEGORIES.DESCRIPTION&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cheeses&quot;</span><span class="p">,</span>
+<a id="__codelineno-113-5" name="__codelineno-113-5" href="#__codelineno-113-5"></a><span class="w">  </span><span class="nt">&quot;CATEGORIES.PICTURE&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<a id="__codelineno-113-6" name="__codelineno-113-6" href="#__codelineno-113-6"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="querygraph">queryGraph</h3>
+<p>run graph query cypher on over all databases
+<div class="highlight"><pre><span></span><code><a id="__codelineno-114-1" name="__codelineno-114-1" href="#__codelineno-114-1"></a>$queryGraph(&#39;*&#39;, &#39;cypher&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-115-1" name="__codelineno-115-1" href="#__codelineno-115-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="read">read</h3>
+<p>read the records with primary key 7 from table 'REQUESTS' in database 'sqlite'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-116-1" name="__codelineno-116-1" href="#__codelineno-116-1"></a>$read(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 7)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-117-1" name="__codelineno-117-1" href="#__codelineno-117-1"></a><span class="p">{</span>
+<a id="__codelineno-117-2" name="__codelineno-117-2" href="#__codelineno-117-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<a id="__codelineno-117-3" name="__codelineno-117-3" href="#__codelineno-117-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;updated request&quot;</span><span class="p">,</span>
+<a id="__codelineno-117-4" name="__codelineno-117-4" href="#__codelineno-117-4"></a><span class="w">  </span><span class="nt">&quot;submitted&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-117-5" name="__codelineno-117-5" href="#__codelineno-117-5"></a><span class="w">  </span><span class="nt">&quot;customer&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-117-6" name="__codelineno-117-6" href="#__codelineno-117-6"></a><span class="w">  </span><span class="nt">&quot;user&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-117-7" name="__codelineno-117-7" href="#__codelineno-117-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="reconcileentity">reconcileEntity</h3>
+<p>Uses the wikidata query service to reconcile a string to a wikidata id
+<div class="highlight"><pre><span></span><code><a id="__codelineno-118-1" name="__codelineno-118-1" href="#__codelineno-118-1"></a>$reconcileEntity(&#39;Apple&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-119-1" name="__codelineno-119-1" href="#__codelineno-119-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-119-2" name="__codelineno-119-2" href="#__codelineno-119-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Q312&quot;</span><span class="p">,</span>
+<a id="__codelineno-119-3" name="__codelineno-119-3" href="#__codelineno-119-3"></a><span class="w">  </span><span class="nt">&quot;label&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Apple Inc.&quot;</span><span class="p">,</span>
+<a id="__codelineno-119-4" name="__codelineno-119-4" href="#__codelineno-119-4"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;American multinational technology company based in Cupertino, California&quot;</span>
+<a id="__codelineno-119-5" name="__codelineno-119-5" href="#__codelineno-119-5"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="savetable">saveTable</h3>
+<p>save the data (with primary key id) to the test table in the sqlite database
+<div class="highlight"><pre><span></span><code><a id="__codelineno-120-1" name="__codelineno-120-1" href="#__codelineno-120-1"></a>$saveTable(&#39;Delete All&#39;, &#39;sqlite&#39;, &#39;test&#39;, [{&#39;id&#39;:1, &#39;name&#39;:&#39;joe&#39;}], &#39;id&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-121-1" name="__codelineno-121-1" href="#__codelineno-121-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="search">search</h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-122-1" name="__codelineno-122-1" href="#__codelineno-122-1"></a>$search(&#39;Fuller&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-123-1" name="__codelineno-123-1" href="#__codelineno-123-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-123-2" name="__codelineno-123-2" href="#__codelineno-123-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-123-3" name="__codelineno-123-3" href="#__codelineno-123-3"></a><span class="w">    </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-123-4" name="__codelineno-123-4" href="#__codelineno-123-4"></a><span class="w">    </span><span class="nt">&quot;table&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EMPLOYEES&quot;</span><span class="p">,</span>
+<a id="__codelineno-123-5" name="__codelineno-123-5" href="#__codelineno-123-5"></a><span class="w">    </span><span class="nt">&quot;pk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-123-6" name="__codelineno-123-6" href="#__codelineno-123-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-123-7" name="__codelineno-123-7" href="#__codelineno-123-7"></a><span class="w">  </span><span class="nt">&quot;column&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LAST_NAME&quot;</span><span class="p">,</span>
+<a id="__codelineno-123-8" name="__codelineno-123-8" href="#__codelineno-123-8"></a><span class="w">  </span><span class="nt">&quot;match&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fuller&quot;</span>
+<a id="__codelineno-123-9" name="__codelineno-123-9" href="#__codelineno-123-9"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="search_1">search</h3>
+<p>run a full text search for 'Fuller'over the EMPLOYEES table in the 'northwind' database. Limit the result size to 5.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-124-1" name="__codelineno-124-1" href="#__codelineno-124-1"></a>$search(&#39;Fuller&#39;, 5, &#39;northwind&#39;, &#39;EMPLOYEES&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-125-1" name="__codelineno-125-1" href="#__codelineno-125-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-125-2" name="__codelineno-125-2" href="#__codelineno-125-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-125-3" name="__codelineno-125-3" href="#__codelineno-125-3"></a><span class="w">    </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-125-4" name="__codelineno-125-4" href="#__codelineno-125-4"></a><span class="w">    </span><span class="nt">&quot;table&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EMPLOYEES&quot;</span><span class="p">,</span>
+<a id="__codelineno-125-5" name="__codelineno-125-5" href="#__codelineno-125-5"></a><span class="w">    </span><span class="nt">&quot;pk&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-125-6" name="__codelineno-125-6" href="#__codelineno-125-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-125-7" name="__codelineno-125-7" href="#__codelineno-125-7"></a><span class="w">  </span><span class="nt">&quot;column&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LAST_NAME&quot;</span><span class="p">,</span>
+<a id="__codelineno-125-8" name="__codelineno-125-8" href="#__codelineno-125-8"></a><span class="w">  </span><span class="nt">&quot;match&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fuller&quot;</span>
+<a id="__codelineno-125-9" name="__codelineno-125-9" href="#__codelineno-125-9"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="stats">stats</h3>
+<p>return database statistics
+<div class="highlight"><pre><span></span><code><a id="__codelineno-126-1" name="__codelineno-126-1" href="#__codelineno-126-1"></a>$stats(&#39;sqlite&#39;, &#39;REQUESTS&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-127-1" name="__codelineno-127-1" href="#__codelineno-127-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-127-2" name="__codelineno-127-2" href="#__codelineno-127-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite/REQUESTS/ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-127-3" name="__codelineno-127-3" href="#__codelineno-127-3"></a><span class="w">  </span><span class="nt">&quot;count&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-127-4" name="__codelineno-127-4" href="#__codelineno-127-4"></a><span class="w">  </span><span class="nt">&quot;nulls&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-127-5" name="__codelineno-127-5" href="#__codelineno-127-5"></a><span class="w">  </span><span class="nt">&quot;countdistinct&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<a id="__codelineno-127-6" name="__codelineno-127-6" href="#__codelineno-127-6"></a><span class="w">  </span><span class="nt">&quot;min&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-127-7" name="__codelineno-127-7" href="#__codelineno-127-7"></a><span class="w">  </span><span class="nt">&quot;max&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-127-8" name="__codelineno-127-8" href="#__codelineno-127-8"></a><span class="w">  </span><span class="nt">&quot;dbType&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span>
+<a id="__codelineno-127-9" name="__codelineno-127-9" href="#__codelineno-127-9"></a><span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<a id="__codelineno-127-10" name="__codelineno-127-10" href="#__codelineno-127-10"></a><span class="w">  </span><span class="nt">&quot;detectedType&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-127-11" name="__codelineno-127-11" href="#__codelineno-127-11"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="streamcsv">streamCsv</h3>
+<p>open semi-colon delimited file file:upload/test.csv and stream the records into the ETL queue from the foreach expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-128-1" name="__codelineno-128-1" href="#__codelineno-128-1"></a>$streamCsv(&#39;file:upload/test.csv&#39;, {&#39;withDelimiter&#39;: &#39;;&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-129-1" name="__codelineno-129-1" href="#__codelineno-129-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="streamdb">streamDb</h3>
+<p>stream the records of the ORDERS table of the northwind database into the ETL queue from the foreach expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-130-1" name="__codelineno-130-1" href="#__codelineno-130-1"></a>$streamDb(&#39;northwind&#39;, &#39;ORDERS&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-131-1" name="__codelineno-131-1" href="#__codelineno-131-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="streamjson">streamJson</h3>
+<p>open file:upload/test.json, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-132-1" name="__codelineno-132-1" href="#__codelineno-132-1"></a>$streamJson(&#39;&#39;file:upload/test.json, &#39;/data&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-133-1" name="__codelineno-133-1" href="#__codelineno-133-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="streamxml">streamXml</h3>
+<p>open file:upload/test.xml, locate the array at the JSON Pointer /data and stream the array items into the ETL queue from the foreach expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-134-1" name="__codelineno-134-1" href="#__codelineno-134-1"></a>$streamJson(&#39;&#39;file:upload/test.xml, &#39;/data&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-135-1" name="__codelineno-135-1" href="#__codelineno-135-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="traverse">traverse</h3>
+<p>gets all related records for ORDER 10250 from the ORDER_DETAILS table (via foreign key ORDER_DETAILS.ORDER_ID)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-136-1" name="__codelineno-136-1" href="#__codelineno-136-1"></a>$traverse(&#39;northwind&#39;, &#39;ORDERS&#39;, &#39;10250&#39;, &#39;dj/northwind/ORDER_DETAILS/ORDER_ID&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-137-1" name="__codelineno-137-1" href="#__codelineno-137-1"></a><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-137-2" name="__codelineno-137-2" href="#__codelineno-137-2"></a><span class="w">  </span><span class="nt">&quot;ORDER_ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10250</span><span class="p">,</span>
+<a id="__codelineno-137-3" name="__codelineno-137-3" href="#__codelineno-137-3"></a><span class="w">  </span><span class="nt">&quot;PRODUCT_ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">41</span><span class="p">,</span>
+<a id="__codelineno-137-4" name="__codelineno-137-4" href="#__codelineno-137-4"></a><span class="w">  </span><span class="nt">&quot;UNIT_PRICE&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">7.7</span><span class="p">,</span>
+<a id="__codelineno-137-5" name="__codelineno-137-5" href="#__codelineno-137-5"></a><span class="w">  </span><span class="nt">&quot;QUANTITY&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<a id="__codelineno-137-6" name="__codelineno-137-6" href="#__codelineno-137-6"></a><span class="w">  </span><span class="nt">&quot;DISCOUNT&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-137-7" name="__codelineno-137-7" href="#__codelineno-137-7"></a><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+</code></pre></div></p>
+<h3 id="traverse_1">traverse</h3>
+<p>get the related customer for ORDER 10250 from the CUSTOMER table (via foreign key CUSTOMER_ID)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-138-1" name="__codelineno-138-1" href="#__codelineno-138-1"></a>$traverse(&#39;northwind&#39;, &#39;ORDERS&#39;, &#39;10250&#39;, &#39;CUSTOMER_ID&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-139-1" name="__codelineno-139-1" href="#__codelineno-139-1"></a><span class="p">{</span>
+<a id="__codelineno-139-2" name="__codelineno-139-2" href="#__codelineno-139-2"></a><span class="w">  </span><span class="nt">&quot;CUSTOMER_ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HANAR&quot;</span><span class="p">,</span>
+<a id="__codelineno-139-3" name="__codelineno-139-3" href="#__codelineno-139-3"></a><span class="w">  </span><span class="nt">&quot;COMPANY_NAME&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hanari Carnes&quot;</span><span class="p">,</span>
+<a id="__codelineno-139-4" name="__codelineno-139-4" href="#__codelineno-139-4"></a><span class="w">  </span><span class="nt">&quot;CITY&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rio de Janeiro&quot;</span><span class="p">,</span>
+<a id="__codelineno-139-5" name="__codelineno-139-5" href="#__codelineno-139-5"></a><span class="w">  </span><span class="nt">&quot;PHONE&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(21) 555-0091&quot;</span>
+<a id="__codelineno-139-6" name="__codelineno-139-6" href="#__codelineno-139-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="update">update</h3>
+<p>update REQUEST 7 in the database 'sqlite'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-140-1" name="__codelineno-140-1" href="#__codelineno-140-1"></a>$update(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 7, {&#39;name&#39;:&#39;updated request&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-141-1" name="__codelineno-141-1" href="#__codelineno-141-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="upsert">upsert</h3>
+<p>inserts or updates record in database 'sqlite', table 'REQUESTS'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-142-1" name="__codelineno-142-1" href="#__codelineno-142-1"></a>$upsert(&#39;sqlite&#39;, &#39;REQUESTS&#39;, {&#39;ID&#39;: 7, &#39;name&#39;:&#39;updated request&#39;})
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-143-1" name="__codelineno-143-1" href="#__codelineno-143-1"></a><span class="kc">null</span>
+</code></pre></div></p>
+<h3 id="urlexists">urlExists</h3>
+<p>checks if a URL exists
+<div class="highlight"><pre><span></span><code><a id="__codelineno-144-1" name="__codelineno-144-1" href="#__codelineno-144-1"></a>$urlExists(&#39;https://dashjoin.com&#39;)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-145-1" name="__codelineno-145-1" href="#__codelineno-145-1"></a><span class="kc">true</span>
+</code></pre></div></p>
+<h3 id="uuid">uuid</h3>
+<p>Generates a random UUID
+<div class="highlight"><pre><span></span><code><a id="__codelineno-146-1" name="__codelineno-146-1" href="#__codelineno-146-1"></a>$uuid()
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-147-1" name="__codelineno-147-1" href="#__codelineno-147-1"></a><span class="s2">&quot;2b10beb5-d83d-4733-a67d-b6c5e4315a29&quot;</span>
+</code></pre></div></p>
+<h3 id="wait">wait</h3>
+<p>Waits before returning the parameter (server-side equivalent of $sleep)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-148-1" name="__codelineno-148-1" href="#__codelineno-148-1"></a>$wait(&#39;delayed by 1 second&#39;, 1000)
+</code></pre></div>
+Sample output: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-149-1" name="__codelineno-149-1" href="#__codelineno-149-1"></a><span class="s2">&quot;delayed by 1 second&quot;</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>

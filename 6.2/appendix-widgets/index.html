@@ -1,0 +1,2300 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../appendix-jsonata/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Appendix: Form Input Types - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a40c8224.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#appendix-form-input-types" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),outdated=__md_get("__outdated",sessionStorage);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Appendix: Form Input Types
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started: 15 Minute Tour
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concepts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-reference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    I18N
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AI &amp; ML Integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Administration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development / Production
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security and Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supported Databases
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-configurations/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Databases, Queries, Functions, and Configurations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-inputs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Form Input Types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-jsonata/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: JSONata function library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Appendix: Form Input Types
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Appendix: Form Input Types
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-simple-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget simple value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-current-database-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget current database record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-ui-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget UI state
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing object
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing link
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing an image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-a-hyperlink" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing a hyperlink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-a-hyperlink_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing a hyperlink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-dashboard-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on dashboard page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-instance-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on instance page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-table-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on table page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-with-json-keys-containing-special-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget with JSON keys containing special characters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#card-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      card widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-for-authenticated-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget for authenticated role
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-conditionally-showing-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget conditionally showing contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-showing-contents-for-each-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget showing contents for each value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expansion-widget-shows-children-in-an-expansion-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      expansion widget shows children in an expansion panel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stepper-widget-displays-its-children-as-a-wizard" class="md-nav__link">
+    <span class="md-ellipsis">
+      stepper widget displays its children as a wizard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabs-widget-displays-its-children-as-tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      tabs widget displays its children as tabs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-dynamically-compute-form-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: Dynamically compute form fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-show-a-form-field-conditionally" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: show a form field conditionally
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-computing-select-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: computing select options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-javascript-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: JavaScript expressions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-javascript-expressions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: JavaScript expressions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      create widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      variable widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      action table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aichat-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aichat-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analytics-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      analytics widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datagrid-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      datagrid widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagram-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      diagram widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-related-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit related widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      html widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icon-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      links widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-widget-showing-a-list-of-addresses" class="md-nav__link">
+    <span class="md-ellipsis">
+      map widget showing a list of addresses
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-widget-showing-a-specific-address-with-a-popup-linking-to-a-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      map widget showing a specific address with a popup linking to a record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      markdown widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdxeditor-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      mdxeditor widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      table widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      table widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      text widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      text widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uploadfile-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      uploadfile widget
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-simple-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget simple value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-current-database-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget current database record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-ui-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget UI state
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing object
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing link
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-an-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing an image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-a-hyperlink" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing a hyperlink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-showing-a-hyperlink_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget showing a hyperlink
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-dashboard-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on dashboard page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-instance-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on instance page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-on-table-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget on table page
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#display-widget-with-json-keys-containing-special-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      display widget with JSON keys containing special characters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#card-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      card widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-for-authenticated-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget for authenticated role
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-conditionally-showing-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget conditionally showing contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-widget-showing-contents-for-each-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      container widget showing contents for each value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expansion-widget-shows-children-in-an-expansion-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      expansion widget shows children in an expansion panel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stepper-widget-displays-its-children-as-a-wizard" class="md-nav__link">
+    <span class="md-ellipsis">
+      stepper widget displays its children as a wizard
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabs-widget-displays-its-children-as-tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      tabs widget displays its children as tabs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-dynamically-compute-form-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: Dynamically compute form fields
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-show-a-form-field-conditionally" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: show a form field conditionally
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-computing-select-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: computing select options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-javascript-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: JavaScript expressions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-widget-javascript-expressions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      button widget: JavaScript expressions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      create widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      variable widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#action-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      action table
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aichat-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aichat-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      aichat widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analytics-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      analytics widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chart-widget_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      chart widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datagrid-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      datagrid widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diagram-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      diagram widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-related-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      edit related widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      graph widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      html widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#icon-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      icon widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      links widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-widget-showing-a-list-of-addresses" class="md-nav__link">
+    <span class="md-ellipsis">
+      map widget showing a list of addresses
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-widget-showing-a-specific-address-with-a-popup-linking-to-a-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      map widget showing a specific address with a popup linking to a record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#markdown-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      markdown widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mdxeditor-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      mdxeditor widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      table widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      table widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      text widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      text widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tree-widget_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      tree widget
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uploadfile-widget" class="md-nav__link">
+    <span class="md-ellipsis">
+      uploadfile widget
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="appendix-form-input-types">Appendix: Form Input Types</h1>
+<h2 id="display-widget-simple-value">display widget simple value</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display the value of the session variable x
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;variable.x&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-current-database-record">display widget current database record</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display the current record on an instance page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-ui-state">display widget UI state</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display current URL, theme (light/dark), screen width, and location info
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[href, theme, width, loc]&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-object">display widget showing object</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display the current time as a key-value list
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;time&#39;: $now()}&quot;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-link">display widget showing link</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display a link to a record in the database
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;database&#39;: &#39;northwind&#39;, &#39;table&#39;: &#39;EMPLOYEES&#39;, &#39;pk1&#39;:2}&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-table">display widget showing table</h2>
+<p>Used to visualize the result of any jsonata expression. Here, we display a list of objects as a table
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[{&#39;x&#39;:1, &#39;y&#39;:1}, {&#39;x&#39;:2, &#39;y&#39;:2}]&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-an-image">display widget showing an image</h2>
+<p>if the object has exactly the key 'img' (with optional width and height), the result is displayed as an HTML image with the value of the img field being used as the image src attribute
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;img&#39;: &#39;https://dashjoin.com/img/fav.png&#39;}&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-a-hyperlink">display widget showing a hyperlink</h2>
+<p>if the object has exactly the key 'href' or the keys 'href' and 'label', the object is displayed as a hyperlink
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;href&#39;:&#39;http://dashjoin.com&#39;, &#39;label&#39;:&#39;DJ Homepage&#39;}&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-showing-a-hyperlink_1">display widget showing a hyperlink</h2>
+<p>absolute or relative links to another page in the app are specified without the 'slash hash' part of the URL - for instance, the href 'Info' or '/page/Info' links to the Info page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;href&#39;:&#39;/#/page/Home&#39;, &#39;label&#39;:&#39;Home&#39;}&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-on-dashboard-page">display widget on dashboard page</h2>
+<p>shows how a display widget is added on a dashboard page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">&quot;layout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;database&#39;: &#39;northwind&#39;, &#39;table&#39;: &#39;EMPLOYEES&#39;, &#39;pk1&#39;:2}&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-on-instance-page">display widget on instance page</h2>
+<p>shows how a display widget is added on a database instance page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.service.SQLDatabase&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jdbc:sqlite:dashjoin-demo.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nt">&quot;tables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nt">&quot;REQUESTS&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="nt">&quot;instanceLayout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">          </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$now()&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">          </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-on-table-page">display widget on table page</h2>
+<p>shows how a display widget is added on a table page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.service.SQLDatabase&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jdbc:sqlite:dashjoin-demo.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">&quot;tables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="nt">&quot;REQUESTS&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">      </span><span class="nt">&quot;tableLayout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">          </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$now()&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">          </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="display-widget-with-json-keys-containing-special-characters">display widget with JSON keys containing special characters</h2>
+<p>SQL queries create JSON with field names 'table.column'. In JSONata, enclose the field name in backticks (`)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$adHocQuery(&#39;sqlite&#39;, &#39;select ID from REQUESTS&#39;).`REQUESTS.ID`&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="card-widget">card widget</h2>
+<p>The card widget shows its children within a card
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;card&quot;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="container-widget-for-authenticated-role">container widget for authenticated role</h2>
+<p>Provides a logical container for its children. This example displays children only if the user in the the role 'authenticated'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">&quot;roles&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;authenticated&quot;</span><span class="w"> </span><span class="p">],</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="container-widget-conditionally-showing-contents">container widget conditionally showing contents</h2>
+<p>Provides a logical container for its children. This example displays children only if the jsonata expression is true
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">&quot;if&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email = &#39;admin@localhost&#39;&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="container-widget-showing-contents-for-each-value">container widget showing contents for each value</h2>
+<p>Provides a logical container for its children. This example shows the child for each value of the foreach expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">&quot;foreach&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[1..5]&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;display&quot;</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="expansion-widget-shows-children-in-an-expansion-panel">expansion widget shows children in an expansion panel</h2>
+<p>Provides a logical container for its children and shows them in an expansion panel
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Open Me&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;expansion&quot;</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="stepper-widget-displays-its-children-as-a-wizard">stepper widget displays its children as a wizard</h2>
+<p>allows stepping through its children. It displays the step number and title along with the child at the current step position
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stepper&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;One&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Next&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$stepForward()&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="nt">&quot;text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Back&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Two&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$stepBack()&quot;</span><span class="p">,</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="tabs-widget-displays-its-children-as-tabs">tabs widget displays its children as tabs</h2>
+<p>displays its children in a tab container which allows selecting the current tab on top
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabs&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;First&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="button-widget">button widget</h2>
+<p>shows a button to trigger an action with an optional set of inputs. This example prints the contents of the form input
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;form.name&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">&quot;schema&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="button-widget-dynamically-compute-form-fields">button widget: Dynamically compute form fields</h2>
+<p>schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;schemaExpression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;properties&#39;:{&#39;name&#39;: {&#39;type&#39;:&#39;string&#39;}}}&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;form.name&quot;</span><span class="p">,</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="button-widget-show-a-form-field-conditionally">button widget: show a form field conditionally</h2>
+<p>schemaExpression is an expression that computes JSON Schema which in turn defines the form fields dynamically: The 'type' field is defined as the switch. Other fields can specify 'case' with the type value of when they are shown
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;form&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">&quot;schemaExpression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;switch&#39;:&#39;type&#39;, &#39;properties&#39;: {&#39;type&#39;: {&#39;widget&#39;: &#39;select&#39;, &#39;options&#39;:&#39;[\&quot;circle\&quot;]&#39;}, &#39;radius&#39;: {&#39;case&#39;: &#39;circle&#39;}}}&quot;</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="button-widget-computing-select-options">button widget: computing select options</h2>
+<p>The button form has a select field to input 'id'. The select options are computed from the database
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;form.field&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">&quot;schema&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;select&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">        </span><span class="nt">&quot;options&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;).{&#39;value&#39;:EMPLOYEE_ID, &#39;name&#39;: LAST_NAME}&quot;</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="button-widget-javascript-expressions">button widget: JavaScript expressions</h2>
+<p>Expressions that start with // JavaScript can use JavaScript. This example triggers a file download
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;// JavaScript\nvar blob = new Blob([&#39;Hello, world!&#39;], {type: &#39;text/plain;charset=utf-8&#39;});\nsaveAs(blob, &#39;hello world.txt&#39;);&quot;</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">}</span>
+</code></pre></div>
+print
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>// JavaScript
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>var blob = new Blob([&#39;Hello, world!&#39;], {type: &#39;text/plain;charset=utf-8&#39;});
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>saveAs(blob, &#39;hello world.txt&#39;);
+</code></pre></div></p>
+<h2 id="button-widget-javascript-expressions_1">button widget: JavaScript expressions</h2>
+<p>Expressions that start with // JavaScript can use JavaScript. This example calls the $read() function and returns the result
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;// JavaScript\nreturn await read(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 1)&quot;</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="p">}</span>
+</code></pre></div>
+print
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>// JavaScript
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>return await read(&#39;sqlite&#39;, &#39;REQUESTS&#39;, 1)
+</code></pre></div></p>
+<h2 id="create-widget">create widget</h2>
+<p>Shows a form on the database table page to create a new database record
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.service.SQLDatabase&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jdbc:sqlite:dashjoin-demo.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="w">  </span><span class="nt">&quot;tables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="w">    </span><span class="nt">&quot;REQUESTS&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="w">      </span><span class="nt">&quot;tableLayout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="w">          </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;create&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a><span class="w">          </span><span class="nt">&quot;schema&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a><span class="w">              </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="w">                </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite/REQUESTS/ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="w">                </span><span class="nt">&quot;parent&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite/REQUESTS&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a><span class="w">                </span><span class="nt">&quot;dbType&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a><span class="w">                </span><span class="nt">&quot;pkpos&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a><span class="w">                </span><span class="nt">&quot;createOnly&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="w">              </span><span class="p">}</span>
+<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a><span class="w">          </span><span class="p">}</span>
+<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="edit-widget">edit widget</h2>
+<p>Shows a form on the instance page to edit or delete the instance
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">{</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.service.SQLDatabase&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jdbc:sqlite:dashjoin-demo.db&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">  </span><span class="nt">&quot;tables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">    </span><span class="nt">&quot;REQUESTS&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">      </span><span class="nt">&quot;instanceLayout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a><span class="w">          </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;edit&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a><span class="w">          </span><span class="nt">&quot;schema&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a><span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a><span class="w">            </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a><span class="w">              </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a><span class="w">                </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite/REQUESTS/ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a><span class="w">                </span><span class="nt">&quot;parent&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/sqlite/REQUESTS&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a><span class="w">                </span><span class="nt">&quot;dbType&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INTEGER&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a><span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<a id="__codelineno-29-20" name="__codelineno-29-20" href="#__codelineno-29-20"></a><span class="w">                </span><span class="nt">&quot;pkpos&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-29-21" name="__codelineno-29-21" href="#__codelineno-29-21"></a><span class="w">                </span><span class="nt">&quot;createOnly&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-29-22" name="__codelineno-29-22" href="#__codelineno-29-22"></a><span class="w">                </span><span class="nt">&quot;size&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<a id="__codelineno-29-23" name="__codelineno-29-23" href="#__codelineno-29-23"></a><span class="w">              </span><span class="p">}</span>
+<a id="__codelineno-29-24" name="__codelineno-29-24" href="#__codelineno-29-24"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-29-25" name="__codelineno-29-25" href="#__codelineno-29-25"></a><span class="w">          </span><span class="p">}</span>
+<a id="__codelineno-29-26" name="__codelineno-29-26" href="#__codelineno-29-26"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-29-27" name="__codelineno-29-27" href="#__codelineno-29-27"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-29-28" name="__codelineno-29-28" href="#__codelineno-29-28"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-29-29" name="__codelineno-29-29" href="#__codelineno-29-29"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-29-30" name="__codelineno-29-30" href="#__codelineno-29-30"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="variable-widget">variable widget</h2>
+<p>Shows a form that sets session variables. This example sets the variable 'field'
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">{</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;variable&quot;</span><span class="p">,</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">  </span><span class="nt">&quot;schema&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">      </span><span class="nt">&quot;field&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="action-table">action table</h2>
+<p>Visualizes 'expression' as a table. The 'properties' field contains an object where the keys are button labels and the values contain actions to be performed when the button is pressed. The action expression gets the context passed which includes the selected objects in the 'selected' field
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;sqlite&#39;, &#39;REQUESTS&#39;)&quot;</span><span class="p">,</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">    </span><span class="nt">&quot;print&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;selected.$echo($)&quot;</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;actionTable&quot;</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="aichat-widget">aichat widget</h2>
+<p>chat widget that allows you to react to user inputs and file uploads. this example answers (without AI) by simply repeating what the user asks.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">{</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">&quot;onChat&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$append(messages, [{&#39;role&#39;:&#39;user&#39;, &#39;content&#39;: query}, {&#39;role&#39;:&#39;assistant&#39;, &#39;content&#39;: &#39;you said: &#39; &amp; query}])&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aichat&quot;</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="aichat-widget_1">aichat widget</h2>
+<p>chat widget that allows you to react to user inputs and file uploads. this example chats with OpenAI's gpt-4o-mini model. The API key must be provided using the 'openai' credentials in the function catalog. The onChat callback passes messages (the chat history) and the new user query to the $chat function. The widget is configured using 'expression'. This expression specifies the initial messages - in this case the system message containing the system prompt
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">&quot;onChat&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/* called when a new question is entered in the chat */\n$chat(&#39;https://api.openai.com/v1/chat/completions&#39;, query, messages, [], {&#39;model&#39;:&#39;gpt-4o-mini&#39;}, {&#39;Authorization&#39;: &#39;openai&#39;, &#39;dj-timeout-seconds&#39;: 60})&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/* initial chat state with system prompt in messages */\n{&#39;messages&#39;: [{&#39;role&#39;: &#39;system&#39;, &#39;content&#39;: &#39;always answer in a funny way&#39;}]}&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aichat&quot;</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="p">}</span>
+</code></pre></div>
+onChat
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>/* called when a new question is entered in the chat */
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>$chat(&#39;https://api.openai.com/v1/chat/completions&#39;, query, messages, [], {&#39;model&#39;:&#39;gpt-4o-mini&#39;}, {&#39;Authorization&#39;: &#39;openai&#39;, &#39;dj-timeout-seconds&#39;: 60})
+</code></pre></div>
+expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>/* initial chat state with system prompt in messages */
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>{&#39;messages&#39;: [{&#39;role&#39;: &#39;system&#39;, &#39;content&#39;: &#39;always answer in a funny way&#39;}]}
+</code></pre></div></p>
+<h2 id="analytics-widget">analytics widget</h2>
+<p>displays the results of a SQL query as a chart or table. Allows placing filters on the widget that the user can set when viewing the widget. The database, table, columns, and filter fields determine the SQL query: in this case, it is 'select user, count(ID) from REQUESTS where submitted &gt;= ?' on the database 'sqlite'. Possible filter input widgets are: text, slider, switch, date, select, and selectmultiple.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="p">{</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span><span class="nt">&quot;columns&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span><span class="nt">&quot;aggregation&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GROUP_BY&quot;</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">    </span><span class="nt">&quot;aggregation&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;COUNT&quot;</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">],</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submitted&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="w">    </span><span class="nt">&quot;operator&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="w">    </span><span class="nt">&quot;input&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date&quot;</span>
+<a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">],</span>
+<a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sqlite&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="w">  </span><span class="nt">&quot;table&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;REQUESTS&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="w">  </span><span class="nt">&quot;chart&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+<a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;analytics&quot;</span>
+<a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="chart-widget">chart widget</h2>
+<p>displays a chart based on a query or expression. the first column is used as labels for the X-axis. The second column holds the Y-Values. This example shows the results of the 'group' query from the query catalog run on the northwind database. The chart is a bar chart.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">{</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;group&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">  </span><span class="nt">&quot;chart&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chart&quot;</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="chart-widget_1">chart widget</h2>
+<p>displays a chart based on a query or expression. the first column is used as labels for the X-axis. The second column holds the Y-Values. This example uses a JSONata expression to compute a table using two columns in order to display it as a line chart.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">  </span><span class="nt">&quot;chart&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[{&#39;name&#39;:&#39;joe&#39;, &#39;age&#39;:11}, {&#39;name&#39;:&#39;jane&#39;, &#39;age&#39;: 22}]&quot;</span><span class="p">,</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chart&quot;</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="chart-widget_2">chart widget</h2>
+<p>chart with style options (see ChartJS)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">{</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chart&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orders-over-time&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">  </span><span class="nt">&quot;chart&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="w">  </span><span class="nt">&quot;style&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="w">    </span><span class="nt">&quot;elements.bar.backgroundColor&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="w">    </span><span class="nt">&quot;plugins.title.text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Orders in February&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a><span class="w">    </span><span class="nt">&quot;plugins.title.display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="w">    </span><span class="nt">&quot;scales.x.type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="w">    </span><span class="nt">&quot;scales.x.min&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1998-02-01&quot;</span><span class="p">,</span>
+<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="w">    </span><span class="nt">&quot;scales.x.max&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1998-02-28&quot;</span>
+<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="datagrid-widget">datagrid widget</h2>
+<p>Displays the result of a JSONata expression as an editable table. We have callbacks ondelete (context 'id' contains the primary key of the row to be deleted), onchange (updatedRow contains the new value of the row), and oncreate (no context is given - in this example, the code computes a new unique primary key by running select max(id) from table)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="p">{</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;datagrid&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;)&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">  </span><span class="nt">&quot;onchange&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$update(&#39;northwind&#39;, &#39;EMPLOYEES&#39;, id, updatedRow)&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="w">  </span><span class="nt">&quot;ondelete&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$delete(&#39;northwind&#39;, &#39;EMPLOYEES&#39;, id)&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="w">  </span><span class="nt">&quot;oncreate&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$create(&#39;northwind&#39;, &#39;EMPLOYEES&#39;, {&#39;EMPLOYEE_ID&#39;: $adHocQuery(&#39;northwind&#39;, &#39;select max(EMPLOYEE_ID)+1 as X from EMPLOYEES&#39;).X, &#39;LAST_NAME&#39;: &#39; &#39;, &#39;FIRST_NAME&#39;: &#39; &#39;})&quot;</span><span class="p">,</span>
+<a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a><span class="w">  </span><span class="nt">&quot;idColumn&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EMPLOYEE_ID&quot;</span>
+<a id="__codelineno-40-8" name="__codelineno-40-8" href="#__codelineno-40-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="diagram-widget">diagram widget</h2>
+<p>displays a boxes and lines diagram where each box represents a database record. The expression 'nodes' computes the boxes. The fields database, table, and id denote the database record (in the example an EMPLOYEE). Optionally, you can specify the box label (data.label) and the box position (position.x and position.y)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">{</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">  </span><span class="nt">&quot;nodes&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;).{&#39;database&#39;: &#39;northwind&#39;, &#39;table&#39;: &#39;EMPLOYEES&#39;, &#39;id&#39;: EMPLOYEE_ID, &#39;data&#39;: {&#39;label&#39;: LAST_NAME}}&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">  </span><span class="nt">&quot;edges&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;).{&#39;source&#39;: EMPLOYEE_ID, &#39;target&#39;: REPORTS_TO}&quot;</span><span class="p">,</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagram&quot;</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="edit-related-widget">edit related widget</h2>
+<p>Allows editing related records of a database record. In this example, the order instance page allows editing all the order details directly. The link between the tables is established via the 'prop' field, which contains the column ID of the foreign key
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="nt">&quot;ID&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">  </span><span class="nt">&quot;djClassName&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.dashjoin.service.SQLDatabase&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;jdbc:h2:mem:northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">  </span><span class="nt">&quot;tables&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">    </span><span class="nt">&quot;ORDERS&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">      </span><span class="nt">&quot;instanceLayout&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="w">        </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;page&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-10" name="__codelineno-42-10" href="#__codelineno-42-10"></a><span class="w">        </span><span class="nt">&quot;children&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-11" name="__codelineno-42-11" href="#__codelineno-42-11"></a><span class="w">          </span><span class="nt">&quot;columns&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;ORDER_ID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PRODUCT_ID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;UNIT_PRICE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;QUANTITY&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;DISCOUNT&quot;</span><span class="w"> </span><span class="p">],</span>
+<a id="__codelineno-42-12" name="__codelineno-42-12" href="#__codelineno-42-12"></a><span class="w">          </span><span class="nt">&quot;prop&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dj/northwind/ORDER_DETAILS/ORDER_ID&quot;</span><span class="p">,</span>
+<a id="__codelineno-42-13" name="__codelineno-42-13" href="#__codelineno-42-13"></a><span class="w">          </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;editRelated&quot;</span>
+<a id="__codelineno-42-14" name="__codelineno-42-14" href="#__codelineno-42-14"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="p">]</span>
+<a id="__codelineno-42-15" name="__codelineno-42-15" href="#__codelineno-42-15"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-42-16" name="__codelineno-42-16" href="#__codelineno-42-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-42-17" name="__codelineno-42-17" href="#__codelineno-42-17"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-42-18" name="__codelineno-42-18" href="#__codelineno-42-18"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="graph-widget">graph widget</h2>
+<p>display a directed labelled graph showing the result of an OpenCypher query
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">{</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">  </span><span class="nt">&quot;nodes&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$adHocQueryGraph(&#39;northwind&#39;, &#39;match p=(x:EMPLOYEES)-[:REPORTS_TO]-&gt;(y) return p&#39;).p&quot;</span><span class="p">,</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph&quot;</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="graph-widget_1">graph widget</h2>
+<p>display a directed labelled graph showing the nodes specified by a JSONata expression. Initially, this graph has no edges
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">{</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">  </span><span class="nt">&quot;nodes&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$all(&#39;northwind&#39;, &#39;EMPLOYEES&#39;).EMPLOYEE_ID.{  &#39;database&#39;: &#39;northwind&#39;,  &#39;table&#39;: &#39;EMPLOYEES&#39;,  &#39;pk&#39;: [$]}&quot;</span><span class="p">,</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph&quot;</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="html-widget">html widget</h2>
+<p>Allows you to specify HTML. The context expression can be used to inject dynamic content into the HTML via the template ${context}. You can also provide JavaScript functions that can be called from your HTML code (e.g. function 'go')
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">{</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HTML Widgets&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">  </span><span class="nt">&quot;html&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;html lang=\&quot;en\&quot;&gt;&lt;style&gt;.card {padding:2em;background:#fff;border-radius:1em;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}&lt;/style&gt;&lt;body&gt;&lt;div class=\&quot;card\&quot;&gt;&lt;h1&gt;Hello 👋&lt;/h1&gt;&lt;p&gt;&lt;a href=&#39;javascript:go()&#39;&gt;${context.x}&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">  </span><span class="nt">&quot;context&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;x&#39;: &#39;Hello World!&#39;}&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">  </span><span class="nt">&quot;script&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;function go(){alert(&#39;Hi&#39;)}&quot;</span><span class="p">,</span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;html&quot;</span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="icon-widget">icon widget</h2>
+<p>shows a material icon with an optional link (href) and tooltip text
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="p">{</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="nt">&quot;icon&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;verified_user&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">  </span><span class="nt">&quot;href&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/page/Home&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">  </span><span class="nt">&quot;tooltip&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tooltip text&quot;</span><span class="p">,</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;icon&quot;</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="links-widget">links widget</h2>
+<p>on an instance page, shows links to all other related records and the corresponding table page
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="p">{</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;links&quot;</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="map-widget-showing-a-list-of-addresses">map widget showing a list of addresses</h2>
+<p>The address can be as simple as 'jp' for Japan, or it can be a specific street address. The widget chooses the appropriate center and zoom level automatically
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="p">{</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[&#39;paris&#39;, &#39;berlin&#39;]&quot;</span><span class="p">,</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;map&quot;</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="map-widget-showing-a-specific-address-with-a-popup-linking-to-a-record">map widget showing a specific address with a popup linking to a record</h2>
+<p>Using the points field, you can specify a popup which display the data like the display widget. In this case, we show a link to a database record
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="p">{</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">  </span><span class="nt">&quot;display&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;points&#39;: [{&#39;address&#39;: &#39;London&#39;,&#39;popup&#39;: {&#39;database&#39;: &#39;northwind&#39;,&#39;table&#39;: &#39;CUSTOMERS&#39;,&#39;pk&#39;: [ &#39;AROUT&#39; ]}}]}&quot;</span><span class="p">,</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;map&quot;</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="markdown-widget">markdown widget</h2>
+<p>shows markdown that can be fed dynamic content via the 'context' JSONata expression
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="p">{</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">  </span><span class="nt">&quot;markdown&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;# Hello ${user} ${context}&quot;</span><span class="p">,</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">  </span><span class="nt">&quot;context&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;markdown&quot;</span>
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="mdxeditor-widget">mdxeditor widget</h2>
+<p>a WYSIWYG editor that can be extended with custom menus. 'properties' defines the actions, 'expression' defines the menu structure
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="p">{</span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="w">  </span><span class="nt">&quot;markdown&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;# Hello ${user} ${context}&quot;</span><span class="p">,</span>
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="w">  </span><span class="nt">&quot;context&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;42&quot;</span><span class="p">,</span>
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="w">  </span><span class="nt">&quot;properties&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="w">    </span><span class="nt">&quot;alert&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$alert(&#39;selection: &#39; &amp; selection &amp; &#39;. markdown: &#39; &amp; markdown)&quot;</span><span class="p">,</span>
+<a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="w">    </span><span class="nt">&quot;log&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$log($)&quot;</span><span class="p">,</span>
+<a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a><span class="w">    </span><span class="nt">&quot;sleep&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;($progress({&#39;message&#39;: &#39;working&#39;});$sleep(1000))&quot;</span>
+<a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{&#39;menu&#39;: [{&#39;type&#39;: &#39;select&#39;,&#39;title&#39;: &#39;tooltip&#39;,&#39;label&#39;: &#39;longer operation&#39;,&#39;value&#39;: &#39;sleep&#39;,&#39;items&#39;: [{}]},{&#39;type&#39;: &#39;select&#39;,&#39;title&#39;: &#39;tooltip&#39;,&#39;label&#39;: &#39;Label&#39;,&#39;items&#39;: [{&#39;label&#39;: &#39;alert popup&#39;,&#39;value&#39;: &#39;alert&#39;},{&#39;label&#39;: &#39;doc to console&#39;,&#39;value&#39;: &#39;log&#39;}]}]}&quot;</span><span class="p">,</span>
+<a id="__codelineno-51-10" name="__codelineno-51-10" href="#__codelineno-51-10"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mdxeditor&quot;</span>
+<a id="__codelineno-51-11" name="__codelineno-51-11" href="#__codelineno-51-11"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="table-widget">table widget</h2>
+<p>shows the result of a query. this example uses mode auto which chooses a mobile friendly table layout when viewed on small devices
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="p">{</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">  </span><span class="nt">&quot;mode&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span><span class="p">,</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;group&quot;</span><span class="p">,</span>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;table&quot;</span>
+<a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="table-widget_1">table widget</h2>
+<p>shows the result of a JSONata expression as a table
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="p">{</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[{&#39;x&#39;:1}]&quot;</span><span class="p">,</span>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;table&quot;</span>
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="text-widget">text widget</h2>
+<p>shows a simple static text
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="p">{</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello World!&quot;</span><span class="p">,</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span>
+<a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="text-widget_1">text widget</h2>
+<p>shows a hyperlink with an icon in front
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="p">{</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">  </span><span class="nt">&quot;href&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/page/Home&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="w">  </span><span class="nt">&quot;text&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Homepage&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="w">  </span><span class="nt">&quot;icon&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;home&quot;</span><span class="p">,</span>
+<a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span>
+<a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="tree-widget">tree widget</h2>
+<p>shows a tree using a recursive query 'orgchart'. The query must have a parameter 'node' and is evaluated every time a node is opened in the tree view
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="p">{</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span><span class="p">,</span>
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="w">  </span><span class="nt">&quot;query&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;orgchart&quot;</span><span class="p">,</span>
+<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="w">  </span><span class="nt">&quot;database&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;northwind&quot;</span>
+<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="tree-widget_1">tree widget</h2>
+<p>shows a static tree that is suitable for a side navigation. The tree nodes can provide an icon, text, href, and nested child nodes
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="p">{</span>
+<a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a><span class="w">  </span><span class="nt">&quot;expression&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[{&#39;data&#39;: {&#39;text&#39;: &#39;Menu&#39;,&#39;icon&#39;: &#39;person&#39;},&#39;children&#39;: [{&#39;text&#39;: &#39;Info&#39;, &#39;icon&#39;: &#39;info&#39;, &#39;href&#39;: &#39;/page/Info&#39;}, {&#39;text&#39;: &#39;Home&#39;, &#39;icon&#39;: &#39;home&#39;, &#39;href&#39;: &#39;/page/Info&#39;}]}]&quot;</span><span class="p">,</span>
+<a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span>
+<a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="uploadfile-widget">uploadfile widget</h2>
+<p>Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment variable
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="p">{</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">  </span><span class="nt">&quot;widget&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uploadfile&quot;</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="p">}</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+    
+  </body>
+</html>
