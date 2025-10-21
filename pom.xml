@@ -11,18 +11,18 @@
 		<!-- Default for local builds (no revision property passed from the commandline) -->
 		<revision>0.0.1-SNAPSHOT</revision>
 
-		<compiler-plugin.version>3.13.0</compiler-plugin.version>
+		<compiler-plugin.version>3.14.1</compiler-plugin.version>
 	    <maven.compiler.parameters>true</maven.compiler.parameters>
-	    <maven.compiler.release>21</maven.compiler.release>
+	    <maven.compiler.release>25</maven.compiler.release>
 		<maven.compiler.proc>full</maven.compiler.proc>
 
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
 	    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-	    <quarkus.platform.version>3.15.2</quarkus.platform.version>
+	    <quarkus.platform.version>3.27.0</quarkus.platform.version>
     
-	    <surefire-plugin.version>3.1.2</surefire-plugin.version>
+	    <surefire-plugin.version>3.5.4</surefire-plugin.version>
     
 	</properties>
 
@@ -90,23 +90,27 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
+      <artifactId>quarkus-cache</artifactId>
     </dependency>
     
     <dependency>
-		<groupId>io.rest-assured</groupId>
-		<artifactId>rest-assured</artifactId>
+		<groupId>io.quarkus</groupId>
+		<artifactId>quarkus-junit5</artifactId>
 		<scope>test</scope>
 	</dependency>
 	
 	
 	<dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-			<version>1.18.38</version>
-        <scope>provided</scope>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <scope>test</scope>
     </dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.38</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -155,7 +159,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.4.2</version>
 			    <configuration>
 			        <archive>
 			            <manifest>

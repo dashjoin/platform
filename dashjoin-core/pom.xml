@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>com.dashjoin</groupId>
 			<artifactId>jsonata</artifactId>
-			<version>0.9.8</version>
+			<version>0.9.9</version>
 		</dependency>
 
 		<!-- dev dependencies -->
@@ -212,7 +212,7 @@
 		<dependency>
 			<groupId>com.github.spotbugs</groupId>
 			<artifactId>spotbugs-annotations</artifactId>
-			<version>4.1.4</version>
+			<version>4.9.3</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.eclipse.microprofile.jwt/microprofile-jwt-auth-api -->
@@ -232,7 +232,7 @@
     <dependency>
       <groupId>io.quarkiverse.jgit</groupId>
       <artifactId>quarkus-jgit</artifactId>
-      <version>3.3.3</version>
+      <version>3.6.0</version>
       <exclusions>
       <!-- required to make maven-enforcer happy. Seems to be an error in Quarkus BOM -->
 	      <exclusion>
@@ -280,7 +280,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.4.2</version>
 				<executions>
 					<execution>
 						<goals>

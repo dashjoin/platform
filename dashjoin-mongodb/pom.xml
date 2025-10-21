@@ -57,14 +57,14 @@
 		<dependency>
 			<groupId>com.github.spotbugs</groupId>
 			<artifactId>spotbugs-annotations</artifactId>
-			<version>4.1.4</version>
+			<version>4.9.3</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/de.bwaldvogel/mongo-java-server -->
 		<dependency>
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
-			<version>1.43.0</version>
+			<version>1.47.0</version>
 		</dependency>
 	
 		<dependency>
