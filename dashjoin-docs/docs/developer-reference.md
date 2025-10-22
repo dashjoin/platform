@@ -133,7 +133,8 @@ a single value to an array if you do so.
 
 In addition to the attribute multiple, you can specify capture: user or capture: environment.
 This setting allows taking and uploading a foto using the inward or outward camera.
-Setting accept: video/* takes a video instead of a photo.
+Setting accept: video/* takes a video instead of a photo. The field accept can also be set to a comma-seperated list
+of file allowed extensions. Finally, the field limit can be used to restrict the maximum file size in MB.
 
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
