@@ -15,6 +15,7 @@ public class ParseUrl extends AbstractFunction<String, ParseUrl.Result> {
     public String protocol;
     public String query;
     public String userInfo;
+    public String ref;
   }
 
   @Override
@@ -33,6 +34,7 @@ public class ParseUrl extends AbstractFunction<String, ParseUrl.Result> {
       res.protocol = url.getProtocol();
       res.query = url.getQuery();
       res.userInfo = url.getUserInfo();
+      res.ref = url.getRef();
       return res;
     } catch (MalformedURLException e) {
       return null;
