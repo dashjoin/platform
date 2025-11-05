@@ -195,6 +195,16 @@
 			}
 		}
 	],
+	"base-theme": [
+		{
+			"description": "change the base theme",
+			"file": "model/dj-config/base-theme.json",
+			"code": {
+				"ID": "base-theme",
+				"string": "B&W"
+			}
+		}
+	],
 	"autocomplete-timeout-ms": [
 		{
 			"description": "sets the timeout for autocomplete queries to 1 second",

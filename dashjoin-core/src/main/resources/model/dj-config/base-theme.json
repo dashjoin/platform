@@ -1,0 +1,6 @@
+{
+	"ID": "base-theme",
+	"description": "Base Theme (one of the theme names listed here https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)",
+	"category": "ui",
+	"type": "string"
+}
