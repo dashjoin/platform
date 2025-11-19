@@ -329,7 +329,7 @@ public class OpenCypher {
         if (!pattern.right.table.equals(targetType.table))
           return null;
       if (pattern.right.db != null)
-        if (!pattern.right.table.equals(targetType.db))
+        if (!pattern.right.db.equals(targetType.db))
           return null;
 
       return nb;
