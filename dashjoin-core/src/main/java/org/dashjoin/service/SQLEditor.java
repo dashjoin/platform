@@ -371,8 +371,14 @@ public class SQLEditor implements QueryEditorInternal {
             func.setDistinct(false);
           }
 
-          func.setName(x.condition);
-          func.setParameters(params);
+          if (db.url.startsWith("jdbc:postgresql:") && "GROUP_CONCAT".equals(x.condition)) {
+            func.setName("string_agg");
+            params.getExpressions().add(new StringValue(","));
+            func.setParameters(params);
+          } else {
+            func.setName(x.condition);
+            func.setParameters(params);
+          }
           se.setExpression(func);
         }
       }
