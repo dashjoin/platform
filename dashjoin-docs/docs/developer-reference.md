@@ -1017,6 +1017,7 @@ See [appendix JSONata](appendix-jsonata.md) for examples.
 Function | Syntax |  Returns
 ---|---|---
 confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmation was given, false otherwise
+getVariable | $getVariable(key) | Gets the value of the variable key. Note that this is similar to accessing variable.key in the context. The difference is that getVariable will get the last value set whereas variable.key gets the value while the page loaded.
 setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
 prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
 alert | $alert(message) | Shows a modal alert message
