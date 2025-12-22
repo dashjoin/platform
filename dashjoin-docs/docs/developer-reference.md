@@ -1099,6 +1099,6 @@ classifyEntities | $classifyEntities([entities], entity-language?, limit?, subcl
 synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see chapter AI & ML)
 urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
 wait| $wait(object, millisecs) | Wait millisecs provided before returning object
-etl | $etl(foreach, expression, database) | Run an ETL process programmatically
+etl | $etl(foreach, expression, database) | Run an ETL process programmatically. The function requires an expression string. If you want to pass data directly, simply convert the data to a string by using the expression $string(data)
 etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
 validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
