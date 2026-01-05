@@ -191,6 +191,7 @@ The key specifies the action button's label, the value contains the expression t
 * properties: a set of key value pairs. For every key, an action button with the key used as its label is displayed. When the button is pressed, the JSONata expression specified in the value is run  
 * perPage: default number of rows to display
 * columns: columns to display. Use this option if you need certain fields to be included in the selection value but don't want those values to be included in the table. Note that this option is only available in Dashjoin Studio
+* hideColumns: columns to hide on the display. Use this option if you need certain fields to be included in the selection value but don't want those values to be included in the table. Note that this option is only available in Dashjoin Studio
 * hideTablePagination: if true, hide table pagination (Dashjoin Studio only)
 * hideTableActions: if true, hide export and filter buttons on the table (Dashjoin Studio only)
 
@@ -616,6 +617,7 @@ Displays query results as a table
 * graph: specifies whether the query is a graph query
 * expression: allows configuring the widget data via JSONata which must evaluate to an array of objects. Note that the table is able to display links, images, and lists thereof. Please refer to the display widget for information on how the JSON data must be structured. If omitted, the widget uses $query(database, query, arguments)
 * columns: if no query or expression is specified, this array allows specifying the columns to be projected. Note that this option is only available in Dashjoin Studio
+* hideColumns: if no query or expression is specified, this array allows specifying the columns to be hidden. Note that this option is only available in Dashjoin Studio
 * perPage: default number of rows to display
 * deleteConfirmation: optional confirmation message before bulk deleting records (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)
 * mode: defines how the table is displayed. 'desktop' shows the normal wide table with all columns (this is the default). 'mobile' shows a narrow list view with up to three column values and an icon. 'auto' uses the other two modes depending on the user's device
