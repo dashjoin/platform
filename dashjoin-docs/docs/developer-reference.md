@@ -104,6 +104,7 @@ Further options include:
 * Read only flag (input is inactive)
 * Required flag
 * An optional format validation
+* An expression to determine whether to show the input
 
 Not all form options can be edited in the form edit dialog. If you would like to create a form for
 nested objects and arrays, you can add the JSON schema to the form in Dashjoin Studio.
@@ -135,6 +136,37 @@ In addition to the attribute multiple, you can specify capture: user or capture:
 This setting allows taking and uploading a foto using the inward or outward camera.
 Setting accept: video/* takes a video instead of a photo. The field accept can also be set to a comma-seperated list
 of file allowed extensions. Finally, the field limit can be used to restrict the maximum file size in MB.
+
+There may be cases, where parts of a form should be shown or hidden depending on other inputs.
+This can be achieved via the "if" expression. Consider the following example:
+
+```text
+            {
+                "print": "form",
+                "widget": "button",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "has_foreign_income": {
+                            "widget": "boolean",
+                            "title": "Did you have foreign income?"
+                        },
+                        "foreign_income": {
+                            "if": "form.has_foreign_income",
+                            "widget": "textarea",
+                            "title": "Please describe your foreign income"
+                        }
+                    }
+                }
+            }
+
+```
+
+The notes input is only shown once the "has_foreign_income" switch is set to "true".
+Note that you can only use simple expressions to lookup values, similar to the
+template variables in the HTML and markdown widgets.
+The expression evaluates to true if the result is true, a non empty string, or
+a number other than 0.
 
 #### [button](https://demo.my.dashjoin.com/#/page/button)
 
