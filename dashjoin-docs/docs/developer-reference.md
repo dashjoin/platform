@@ -178,6 +178,7 @@ Runs / evaluates an expression when clicked.
 * schemaExpression: optional JSONata expression that computes a JSON Schema driving the input form (this option is only available in Dashjoin Studio). Note that forms drawn using schemaExpression do not use the layout editor. You can arrange input elements using the "order" field explained in [this example](https://dashjoin.github.io/#/example/order).
 * deleteConfirmation: optional confirmation message before performing the action (this option is only available in Dashjoin Studio - you can prompt the user via JSONata as follows):
 * icon: icon to show left of the text (this option is only available in Dashjoin Studio)
+* onScan: allows filling out the form using a QR code - onScan contains an expression that is called when the data is scanned. The expression can compute a value similar to the "expression" above. The QR code is passed in the context field "scanned" (this option is only available in Dashjoin Studio)
 
 ```
 $prompt('Are you sure?' ? perform action : 'cancelled')
