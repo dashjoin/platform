@@ -167,7 +167,7 @@ public class LLMs {
   @SuppressWarnings("unchecked")
   static void writeWidget() throws Exception {
     StringBuffer b = new StringBuffer();
-    b.append("# Appendix: Form Input Types\n");
+    b.append("# Appendix: Widgets\n");
     Map<String, List<Example>> list = om.readValue(new File("../dashjoin-docs/llms/widget.json"),
         new TypeReference<Map<String, List<Example>>>() {});
 

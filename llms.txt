@@ -1156,6 +1156,15 @@ CODE: {
   "boolean" : false
 }
 
+TITLE: base-theme
+DESCRIPTION: change the base theme
+FILE: model/dj-config/base-theme.json
+LANGUAGE: json
+CODE: {
+  "ID" : "base-theme",
+  "string" : "B&W"
+}
+
 TITLE: autocomplete-timeout-ms
 DESCRIPTION: sets the timeout for autocomplete queries to 1 second
 FILE: model/dj-config/autocomplete-timeout-ms.json

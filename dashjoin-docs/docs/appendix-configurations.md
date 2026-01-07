@@ -366,6 +366,14 @@ disallow dark mode
   "boolean" : false
 }
 ```
+### base-theme
+change the base theme
+```json
+{
+  "ID" : "base-theme",
+  "string" : "B&W"
+}
+```
 ### autocomplete-timeout-ms
 sets the timeout for autocomplete queries to 1 second
 ```json

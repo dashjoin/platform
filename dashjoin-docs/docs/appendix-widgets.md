@@ -1,4 +1,4 @@
-# Appendix: Form Input Types
+# Appendix: Widgets
 ## display widget simple value
 Used to visualize the result of any jsonata expression. Here, we display the value of the session variable x
 ```json
