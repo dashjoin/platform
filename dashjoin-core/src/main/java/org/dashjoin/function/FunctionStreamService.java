@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Method;
+import java.util.List;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Services;
@@ -14,6 +16,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -24,6 +27,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.StreamingOutput;
+import jakarta.ws.rs.sse.Sse;
+import jakarta.ws.rs.sse.SseEventSink;
 
 /**
  * REST API for streaming function calls
@@ -76,5 +81,30 @@ public class FunctionStreamService {
       }
     };
     return Response.ok(stream).build();
+  }
+
+  @POST
+  @Path("/sse/{function}")
+  @Operation(summary = "streams a predefined function with the provided argument")
+  @APIResponse(description = "Returns the function result")
+  @Produces(MediaType.SERVER_SENT_EVENTS)
+  public void toString(@Context SseEventSink eventSink, @Context Sse sse,
+      @Context SecurityContext sc, @HeaderParam("Authorization") String authHeader,
+      @Parameter(description = "name of the function to run",
+          example = "echo") @PathParam("function") String function,
+      Object argument) throws Exception {
+    try (SseEventSink sink = eventSink) {
+
+      AbstractFunction<Object, Object> a = services.getConfig().getFunction(function);
+      a.init(sc, services, data.getExpressionService(), false);
+      ACLContainerRequestFilter.check(sc, a);
+
+      if (!a.getClass().getName().equals("com.dashjoin.ai.AIApp"))
+        throw new Exception("Only AIApp supports server sent events");
+
+      Method m = a.getClass().getMethod("sse",
+          new Class[] {Sse.class, SseEventSink.class, String.class, List.class});
+      m.invoke(a, sse, sink, authHeader, argument);
+    }
   }
 }

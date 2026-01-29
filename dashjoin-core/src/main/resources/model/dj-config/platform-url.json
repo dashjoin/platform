@@ -1,0 +1,7 @@
+{
+	"ID": "platform-url",
+	"description": "Platform URL to be used from the AI service",
+	"category": "app",
+	"type": "string",
+	"string": "http://localhost:8080"
+}
