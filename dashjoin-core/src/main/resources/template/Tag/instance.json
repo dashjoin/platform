@@ -1,0 +1,10 @@
+{
+    "widget": "page",
+    "children": [
+        {
+            "display": "($id := value.id; [$all('kb', 'Document')[$id in tags].{'ID': {'database': 'kb', 'table': 'Document', 'pk1': id}, 'tags': tags, 'text': text, 'owner': owner, 'size': size}])",
+            "title": "Documents with this tag",
+            "widget": "display"
+        }
+    ]
+}

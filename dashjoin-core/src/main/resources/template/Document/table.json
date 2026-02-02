@@ -1,0 +1,52 @@
+{
+    "widget": "page",
+    "children": [
+        {
+            "title": "Table: ${value.name}",
+            "hideColumns": [
+                "path"
+            ],
+            "widget": "table"
+        },
+        {
+            "title": "New Document",
+            "widget": "create",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "readOnly": true,
+                        "parent": "dj/kb/Document",
+                        "ID": "dj/kb/Document/id",
+                        "pkpos": 0
+                    },
+                    "tags": {
+                        "ID": "dj/kb/Document/tags",
+                        "layout": "select",
+                        "choicesVerb": "GET",
+                        "jsonata": "id",
+                        "choicesUrl": "/rest/database/crud/kb/Tag",
+                        "parent": "dj/kb/Document",
+                        "items": {
+                            "widget": "auto complete",
+                            "ref": "dj/kb/Tag/id",
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "document": {
+                        "ID": "dj/kb/Document/document",
+                        "parent": "dj/kb/Document",
+                        "widget": "binary file with metadata",
+                        "multiple": true,
+                        "required": true
+                    }
+                }
+            }
+        },
+        {
+            "widget": "dj-table-metadata"
+        }
+    ]
+}

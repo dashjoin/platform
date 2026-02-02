@@ -1,0 +1,28 @@
+{
+    "widget": "page",
+    "children": [
+        {
+            "title": "Edit Tags",
+            "widget": "edit"
+        },
+        {
+            "text": "Add new tag",
+            "expression": "",
+            "print": "($update('kb', 'Document', value.id, {'tags': $append(value.tags, form.tag)});$reload())",
+            "widget": "button",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "tag": {
+                        "required": true
+                    }
+                }
+            }
+        },
+        {
+            "display": "value",
+            "title": "Document Info",
+            "widget": "display"
+        }
+    ]
+}

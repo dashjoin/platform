@@ -1,0 +1,12 @@
+{
+    "widget": "page",
+    "children": [
+        {
+            "title": "Table: ${value.name}",
+            "widget": "table"
+        },
+        {
+            "widget": "dj-table-metadata"
+        }
+    ]
+}

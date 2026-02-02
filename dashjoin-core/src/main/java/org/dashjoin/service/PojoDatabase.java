@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -350,7 +351,34 @@ public class PojoDatabase extends UnionDatabase implements Config {
     if (qi.query.equals("Table") || qi.query.startsWith("Table/"))
       for (Map<String, Object> o : res)
         cleanTable(o);
+    if (qi.query.equals("dj-database"))
+      for (Map<String, Object> o : res)
+        if ("com.dashjoin.ai.KnowledgeBase".equals(o.get("djClassName"))) {
+          // KB default pages are different from other DBs - add defaults if not present
+          String db = (String) o.get("name");
+          Map<String, Map<String, Object>> t = (Map<String, Map<String, Object>>) o.get("tables");
+          if (t != null) {
+            Map<String, Object> tag = t.get("Tag");
+            if (tag.get("instanceLayout") == null)
+              tag.put("instanceLayout", template("/template/Tag/instance.json", db));
+            if (tag.get("tableLayout") == null)
+              tag.put("tableLayout", template("/template/Tag/table.json", db));
+
+            Map<String, Object> document = t.get("Document");
+            if (document.get("instanceLayout") == null)
+              document.put("instanceLayout", template("/template/Document/instance.json", db));
+            if (document.get("tableLayout") == null)
+              document.put("tableLayout", template("/template/Document/table.json", db));
+          }
+        }
     return res;
+  }
+
+  Map<String, Object> template(String name, String db) throws Exception {
+    String content = IOUtils.toString(getClass().getResourceAsStream(name), StandardCharsets.UTF_8);
+    content = content.replace("'kb'", "'" + db + "'");
+    content = content.replace("/kb", "/" + db);
+    return objectMapper.readValue(content, JSONDatabase.tr);
   }
 
   /**
