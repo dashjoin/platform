@@ -124,13 +124,13 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
 
   AbstractDatabase ddl(AbstractDatabase db, Map<String, List<Map<String, Object>>> tables)
       throws Exception {
-    SchemaChange ddl = db.getSchemaChange();
     boolean dirty = false;
 
     try {
       for (Entry<String, List<Map<String, Object>>> table : tables.entrySet()) {
         if (createSchema != null && createSchema) {
 
+          SchemaChange ddl = db.getSchemaChange();
           Mapping mapping = mappings == null ? null : mappings.get(table.getKey());
           String mappingpk = null;
           if (mapping == null || mapping.pk == null) {
