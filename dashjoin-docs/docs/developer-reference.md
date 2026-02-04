@@ -1006,7 +1006,7 @@ files, that are mapped to the database using this expression:
 Now we can compute the urls and modified timestamps that are in the database:
 
 ```
-$all(db, table) // please use a native distinct query for large datasets
+$all(db, table).{'url': url, 'modified': modified} // please use a native distinct query for large datasets
 ```
 
 The platform offers the etlSync function that computes the set of URLs that must be loaded
@@ -1014,16 +1014,29 @@ for the next run and the records that might have been deleted using the URLs and
 pairs:
 
 ```
-$etlSync($ls("file:upload"), $all(db, table), "url")
+$etlSync($ls("file:upload"), $all(db, table).{'url': url, 'modified': modified}, "url")
 ```
 
-The third parameter specifies the name of the database column that contains the source URL.
-You can use this as the foreach expression. If you choose the mode "Ignore", new files will
-be added, unchanged files will be skipped, and deleted file remain in the database.
+This example compares the files in the upload folder to the records in the database table, matching them using the 'url' field.
+If the modified / etag / version field of the filesystem is greater than the respective field in the database, the file
+will be included in the result. Consider the example below that shows a sync ETL function:
 
-If you choose mode "Sync", deleted and modified files will be removed from the DB first.
-Note that if you do not have a modified timestamp available, you can also use some sort of
-version string or etag to notify the system about a change in a source file.
+```
+{
+    "ID": "sync",
+    "djClassName": "com.dashjoin.function.ETL",
+    "expressions": {
+        "foreach": "$etlSync($ls('file:upload'), $all('db', 'table'), 'url')",
+        "expression": "{'url': url, 'modified': modified, 'content': $openText(url)}"
+    },
+    "oldData": "Sync",
+}
+```
+
+We use the etlSync function in the foreach expression to compute the list of files that needs to be loaded.
+The expression maps the file to the database record as usual.
+The etlSync function can also determine which files are in the database but no longer on the filesystem.
+The mode "Sync" indicates, that deleted and modified files will be removed from the DB first.
 
 #### Receive
 
