@@ -143,7 +143,7 @@
             "title": "binary file input",
             "description": "Allows uploading a file. returns the file contents as a base 64 encoded data URL",
             "code": {
-                "widget": " binary file"
+                "widget": "binary file"
             },
             "output": "data:text/plain;base64,ZmlsZSBjb250ZW50cw=="
         }
@@ -169,7 +169,7 @@
             "title": "binary file with metadata input",
             "description": "Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)",
             "code": {
-                "widget": " binary file with metadata"
+                "widget": "binary file with metadata"
             },
             "output": {
                 "name": "test.txt",
@@ -185,7 +185,7 @@
             "title": "voice input",
             "description": "Shows a text input field with a voice option",
             "code": {
-                "widget": " voice"
+                "widget": "voice"
             },
             "output": "you spoke into the mic"
         }
@@ -195,7 +195,7 @@
             "title": "qrcode input",
             "description": "Allows scanning a QR Code into the form field",
             "code": {
-                "widget": " qrcode"
+                "widget": "qrcode"
             },
             "output": "whatever was encoded in the QR code"
         }

@@ -736,7 +736,7 @@ TITLE: binary file input
 DESCRIPTION: Allows uploading a file. returns the file contents as a base 64 encoded data URL
 LANGUAGE: json
 CODE: {
-  "widget" : " binary file"
+  "widget" : "binary file"
 }
 
 TITLE: file with metadata input
@@ -750,21 +750,21 @@ TITLE: binary file with metadata input
 DESCRIPTION: Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)
 LANGUAGE: json
 CODE: {
-  "widget" : " binary file with metadata"
+  "widget" : "binary file with metadata"
 }
 
 TITLE: voice input
 DESCRIPTION: Shows a text input field with a voice option
 LANGUAGE: json
 CODE: {
-  "widget" : " voice"
+  "widget" : "voice"
 }
 
 TITLE: qrcode input
 DESCRIPTION: Allows scanning a QR Code into the form field
 LANGUAGE: json
 CODE: {
-  "widget" : " qrcode"
+  "widget" : "qrcode"
 }
 
 TITLE: Query with permissions

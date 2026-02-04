@@ -16,7 +16,7 @@ Sample output:
 Allows uploading a file. returns the file contents as a base 64 encoded data URL
 ```json
 {
-  "widget" : " binary file"
+  "widget" : "binary file"
 }
 ```
 Sample output: 
@@ -27,7 +27,7 @@ Sample output:
 Allows uploading a file. returns an object with name, lastModified, size, type, and value (containing the file contents as a base 64 encoded data URL)
 ```json
 {
-  "widget" : " binary file with metadata"
+  "widget" : "binary file with metadata"
 }
 ```
 Sample output: 
@@ -153,7 +153,7 @@ Sample output:
 Allows scanning a QR Code into the form field
 ```json
 {
-  "widget" : " qrcode"
+  "widget" : "qrcode"
 }
 ```
 Sample output: 
@@ -209,7 +209,7 @@ Sample output:
 Shows a text input field with a voice option
 ```json
 {
-  "widget" : " voice"
+  "widget" : "voice"
 }
 ```
 Sample output: 
