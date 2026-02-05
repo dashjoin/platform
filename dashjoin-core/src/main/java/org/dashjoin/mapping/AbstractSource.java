@@ -49,7 +49,7 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
    * default is Ignore
    */
   @JsonSchema(enums = {"Ignore", "Refresh", "Delete All", "Sync"}, title = "Handle existing data",
-      description = "Ignore: simply add the data. Refresh: data that was created by this function and is no longer present in this run is deleted. Delete All: all records from the target tables are deleted.")
+      description = "Ignore: simply add the data. Refresh: data that was created by this function and is no longer present in this run is deleted. Delete All: all records from the target tables are deleted. Sync: can sync modified URLs to the database.")
   public String oldData;
 
   public Date start;
