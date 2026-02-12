@@ -1049,6 +1049,42 @@ This sample data is used to edit the mapping.
 Note that Receive always appends the new data like the Ignore mode in the ETL case. The difference is that there
 is no expression that fetches data. Instead, the data is passed via the API call.
 
+### Scheduling
+
+Functions can be scheduled to run periodically. Using Dashjoin Studio, you can either set an interval or a cron schedule.
+Use cron if your jobs should run based on a calendar, every weeknight at 2am, for instance. Use intervals for
+simple schedules like: run every hour.
+
+When a function is run by the scheduler, it uses the role "scheduler". Therefore, make sure that the function roles include this role.
+Consider the following example that runs an invoke function every hour (note that the function is run without input parameter):
+
+```
+{
+    "ID": "interval",
+    "djClassName": "org.dashjoin.function.Invoke",
+    "expression": "...",
+    "every": "1h",
+    "roles": [
+        "scheduler"
+    ]
+}
+```
+
+Please refer to this [documentation](https://quarkus.io/guides/scheduler-reference#intervals) for information about the interval string format.
+The next example uses the [cron](https://quarkus.io/guides/scheduler-reference#cron) syntax to run the function every day at 10:15:
+
+```
+{
+    "ID": "interval",
+    "djClassName": "org.dashjoin.function.Invoke",
+    "expression": "...",
+    "cron": "0 15 10 * * ?",
+    "roles": [
+        "scheduler"
+    ]
+}
+```
+
 ## Dashjoin Expression Reference
 
 In addition to the default JSONata built-in functions ([see Function Library](https://docs.jsonata.org/overview.html)), the following Dashjoin functions are added
