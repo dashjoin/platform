@@ -1,0 +1,4 @@
+{
+	"ID": "scheduler",
+	"description": "Role to run scheduled functions"
+}

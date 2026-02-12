@@ -107,6 +107,9 @@ public class Manage {
   @Inject
   Data data;
 
+  @Inject
+  Cron cron;
+
   /**
    * describes a column when client calls detect
    */
@@ -980,6 +983,16 @@ public class Manage {
     }
     return Sorter.sortByPackageName(res,
         (java.util.function.Function<FunctionVersion, String>) x -> x.name);
+  }
+
+  @GET
+  @Path("/resetSchedule")
+  @Operation(summary = "reloads function schedules")
+  @APIResponse(description = "job to next execution time or cron syntax error")
+  public Map<String, Object> resetSchedule(@Context SecurityContext sc) throws Exception {
+    if (!sc.isUserInRole("admin"))
+      throw new Exception("must be admin to reset scheduled");
+    return cron.resetSchedule();
   }
 
   /**
