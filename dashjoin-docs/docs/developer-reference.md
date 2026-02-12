@@ -1075,7 +1075,7 @@ The next example uses the [cron](https://quarkus.io/guides/scheduler-reference#c
 
 ```
 {
-    "ID": "interval",
+    "ID": "cron",
     "djClassName": "org.dashjoin.function.Invoke",
     "expression": "...",
     "cron": "0 15 10 * * ?",
