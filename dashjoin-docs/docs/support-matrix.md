@@ -33,3 +33,9 @@ RDF4J | rdf4j-runtime  | 3.7.4 | beta / must be deployed as a remote database - 
 ArangoDB | arangodb-java-driver  | 6.14.0 | beta |
 
 [Click here](https://www.youtube.com/watch?v=_itCZjvw9D8) for a demo video.
+
+## Vector Databases
+
+| Database  | Driver class  | Driver version | Status |
+|---|---|---|---|
+pgvector | org.postgresql.Driver | 42.5.0 | Use via the KnowledgeBase database |

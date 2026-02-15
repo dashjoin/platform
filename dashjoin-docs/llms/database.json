@@ -102,6 +102,16 @@
                     }
                 }
             }
-        }
+        },
+		{
+		    "title": "KnowledgeBase",
+		    "description": "Expose the RAG document knowledge base to the platform",
+		    "code": {
+		        "ID": "dj/kb",
+		        "name": "kb",
+				"djClassName": "com.dashjoin.ai.KnowledgeBase",
+				"url": "http://localhost:8001"
+		    }
+		}
     ]
 }
