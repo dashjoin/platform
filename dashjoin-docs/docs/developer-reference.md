@@ -230,48 +230,50 @@ The key specifies the action button's label, the value contains the expression t
 
 #### aichat
 
-Chatbot widget for interacting with large language models. This widget displays chat contents which are represented
-by an array of messages. The messages contain a role (system, user, assistant) and a content. The content is usually
-a string, but may also contain images and documents (see the OpenAI documentation).
+Chat widget for interacting with large language models. 
 
-The widget displays the chat and calls expressions when
-
-* a new question is asked
-* a file is uploaded
-* a file is deleted
-
-The expressions must handle the event, perform any kind of desired DB updates and return data to the widget.
-
-* expression: an expression to compute the initial state of the widget:
+* expression: an expression to compute the initial state of the widget. This is an object with the following fields:
 
 ```
 {
   "messages": [{role, content}],                    // the chat messages
-  "query": string                                   // contents of the text field
-  "files": {name: {value: dataURL, metadata: any}}  // files associated with the chat (e.g. for RAG)
-  "queryFiles":                                     // like files, represents files that will be sent with the next message (e.g. a pic to be sent to OCR)
-  "tools": [string]                                 // names of Invoke functions to be used as tools
-  "toolsSelectable": boolean                        // like the widget setting, allows the setting to be dynamic
   "uploadEnabled": boolean                          // like the widget setting, allows the setting to be dynamic
   "placeholder": string                             // shows an input placeholder for the initial user input (e.g. like How may I help?)
 }
 ```
 
-* onChat: called when the send button (or CTRL Enter) is pressed. Sends the state as a parameter. Expects the new value for messages. Usually, this is the user's query and the LLM answer appended to messages
-* onUpload: called when the user uploads a file. The 'upload' parameter contains {name (the file name), value (the file encoded as a data URL)}. The expression must return a structure {type, metadata}. Type 'files' describes whether the file is associated with the entire chat (e.g. for RAG) or 'queryFiles' is to be sent with the next message. Metadata can be any data the expression computes for the file. An example might be document IDs returned from a RAG vector DB.
-* onDelete: called when the user deletes a file. The 'delete' parameter contains {name, value, metadata, type (files or queryFiles)} 
-* toolsSelectable: allow user to (de)select tools
+The content is usually a string, but may also contain images and documents (see the OpenAI documentation).
+Messages can also contain hints to the tools and sources that were used to compute the answer.
+
+* onChat: an expression that is called when the user sends a request. The expression is called with the context: messages and newMessage.
+Messages represent the current conversation state of the widget. NewMessage is the message sent by the user.
+The expression returns the AI's answer. Usually you can use "$call('aia', $append(messages, newMessage))" and "$sse('aia', $append(messages, newMessage))", where "aia" is the name of the AIApp function to call. The function sse will stream the answer, call works synchronously.
+
+* voice: true if voice input and output is activated
+* language: language to use for voice (defaults to i18n setting)
 * uploadEnabled: allow user to upload files
 * extensions: supported upload file extensions
 * limit: maximum file size (MB)
+* placeholder: shows an input placeholder for the initial user input (e.g. like How may I help?)
 
-The following example shows a minimal configuration with the "always answer yes" AI.
+The following example shows a minimal configuration with the parrot AI showing an initial message.
 
 ```
 {
-    "widget": "aichat"
-    "onChat": "messages ~> $append({'role': 'user', 'content': query}) ~> $append({'role': 'assistant', 'content': 'yes'})",
-    "expression": "{'messages': [{'role': 'system', 'content': 'the system prompt of the say yes AI'}]}",
+    "onChat": "newMessage.content",
+    "expression": "{'messages': [{'role': 'assistant', 'content': 'I am a parrot'}]}",
+	"widget": "aichat"
+}
+```
+
+This is a normal configuration using an AIApp:
+
+```
+{
+    "onChat": "$sse('aia', $append(messages, newMessage))",
+    "uploadEnabled": true,
+    "widget": "aichat",
+    "voice": true
 }
 ```
 
