@@ -708,6 +708,24 @@ register an instance of email service with specific parameters and call it email
 
 The system supports the following functions. Each section lists the function configuration parameters that are constant any time this function is called as well as the parameters that are specific for each invocation.
 
+#### AIApp
+
+Allows configuring an AI application that can be called from the AIChat widget or any other JSONata expression:
+
+Configuration
+
+* systemPrompt: the AI system prompt to instruct AI behaviour
+* ai: URL of the KnowledgeBase database. Only required if there are multiple KnowledgeBases.
+* model: name of the AI model to use - those can be configured in settings.yml (see AI & ML integration for details)
+* tools: names of the tools the AI is allowed to use
+* tags: all documents with these tags are used as the RAG source
+* documents: individual documents to be used as the RAG source
+
+Invocation parameter
+
+* array: array of messages containing role and content. Note that if the last content contains #full, the entire RAG corpus will be added to the request. This is called Cache-Augmented Generation (CAG) and is suitable for smaller document sets that fit in the LLM context.
+If the content contains #query, the text behind the query marker is used as a RAG query. Consider the following example: can you explain the difference between RAG and CAG #query RAG CAG. In this case the documents would be search using the term "RAG CAG" rather than the entire question. This can be used to optimize RAG retrieval accuracy.
+
 #### RestJson
 
 Calls an external REST service. If you need more control over the how the call is performed, please use the JSONata function curl.
