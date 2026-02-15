@@ -100,5 +100,11 @@
             "code": "$translate('ra.action.select_all_button')",
             "output": "Select all"
         }
-    ]
+    ],
+	"sse": [
+	    {
+	        "description": "Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression",
+	        "code": "$sse('aia', [{'role': 'user', 'content': 'hi there'}])"
+	    }
+	]
 }

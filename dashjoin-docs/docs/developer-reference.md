@@ -1120,6 +1120,7 @@ sleep | $sleep(millisecs) | Sleep for x milliseconds
 speak | $speak(message, language?) | Text to speech
 stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
 translate | $translate(text) | Lookup the text in the translation file and return the match for the current locale
+sse | $sse(aiapp name, [{role, content}]) | Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
 
 ### Backend Expressions
 
