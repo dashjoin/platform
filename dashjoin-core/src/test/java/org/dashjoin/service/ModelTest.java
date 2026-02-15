@@ -144,7 +144,7 @@ public class ModelTest {
     if (tree.get("widget") != null) {
       // System.out.println(tree.get("widget"));
       Assertions.assertTrue(Arrays
-          .asList("button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
+          .asList("aichat", "button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
               "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
               "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
               "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
@@ -154,14 +154,17 @@ public class ModelTest {
 
     for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
       // System.out.println(e);
-      Assertions.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
-          "tooltip", "icon", "icons", "href", "children", "database", "table", "schema", "chart",
-          "query", "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",
-          "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
-          "layout", "style", "class", /* schema info in config.json */ "name", "parent",
-          /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
-          "expression", "html", "script", "hideframe", "clearCache", "card", "size", "cached")
-          .contains(e.getKey()));
+      Assertions
+          .assertTrue(Arrays
+              .asList("ID", "widget", "text", "title", "pageLayout", "readOnly", "tooltip", "icon",
+                  "icons", "href", "children", "database", "table", "schema", "chart", "query",
+                  "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",
+                  "if", "context", "properties", "deleteConfirmation", "print", "navigate",
+                  "markdown", "layout", "style", "class", /* schema info in config.json */ "name",
+                  "parent", /* gridster stuff */ "x", "y", "rows", "cols",
+                  /* redraw container */ "redrawInterval", "expression", "html", "script",
+                  "hideframe", "clearCache", "card", "size", "cached", "onChat")
+              .contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }
