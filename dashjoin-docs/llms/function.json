@@ -91,6 +91,23 @@
 				"password": "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
 				"apiKey": true
 		    }
+		},
+		{
+		    "title": "AIApp",
+		    "description": "Configures an AI application with system prompt, tools, and RAG",
+		    "file": "model/dj-function/aia.json",
+		    "code": {
+				"ID": "aia",
+				"djClassName": "com.dashjoin.ai.AIApp",
+				"systemPrompt": "You are a helpful assistant",
+				"tools": [
+				    "time:get_current_time"
+				],
+				"model": "mistral",
+				"documents": [
+				    "rag.txt"
+				]
+		    }
 		}
     ]
 }

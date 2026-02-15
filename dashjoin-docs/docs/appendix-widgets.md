@@ -379,31 +379,21 @@ Visualizes 'expression' as a table. The 'properties' field contains an object wh
 }
 ```
 ## aichat widget
-chat widget that allows you to react to user inputs and file uploads. this example answers (without AI) by simply repeating what the user asks.
+chat widget that allows you to react to user inputs and file uploads. this example answers (without AI) by simply repeating what the user asks. the chat is initialized with a simple message
 ```json
 {
-  "onChat" : "$append(messages, [{'role':'user', 'content': query}, {'role':'assistant', 'content': 'you said: ' & query}])",
+  "onChat" : "newMessage.content",
+  "expression" : "{'messages': [{'role': 'assistant', 'content': 'I am a parrot'}]}",
   "widget" : "aichat"
 }
 ```
 ## aichat widget
-chat widget that allows you to react to user inputs and file uploads. this example chats with OpenAI's gpt-4o-mini model. The API key must be provided using the 'openai' credentials in the function catalog. The onChat callback passes messages (the chat history) and the new user query to the $chat function. The widget is configured using 'expression'. This expression specifies the initial messages - in this case the system message containing the system prompt
+chat widget that allows you to react to user inputs and file uploads. this example calls a AIApp function called aia
 ```json
 {
-  "onChat" : "/* called when a new question is entered in the chat */\n$chat('https://api.openai.com/v1/chat/completions', query, messages, [], {'model':'gpt-4o-mini'}, {'Authorization': 'openai', 'dj-timeout-seconds': 60})",
-  "expression" : "/* initial chat state with system prompt in messages */\n{'messages': [{'role': 'system', 'content': 'always answer in a funny way'}]}",
+  "onChat" : "$sse('aia', $append(messages, newMessage))",
   "widget" : "aichat"
 }
-```
-onChat
-```
-/* called when a new question is entered in the chat */
-$chat('https://api.openai.com/v1/chat/completions', query, messages, [], {'model':'gpt-4o-mini'}, {'Authorization': 'openai', 'dj-timeout-seconds': 60})
-```
-expression
-```
-/* initial chat state with system prompt in messages */
-{'messages': [{'role': 'system', 'content': 'always answer in a funny way'}]}
 ```
 ## analytics widget
 displays the results of a SQL query as a chart or table. Allows placing filters on the widget that the user can set when viewing the widget. The database, table, columns, and filter fields determine the SQL query: in this case, it is 'select user, count(ID) from REQUESTS where submitted >= ?' on the database 'sqlite'. Possible filter input widgets are: text, slider, switch, date, select, and selectmultiple.

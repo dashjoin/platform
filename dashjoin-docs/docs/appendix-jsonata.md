@@ -138,6 +138,15 @@ Sample output:
 ```json
 null
 ```
+### sse
+Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
+```
+$sse('aia', [{'role': 'user', 'content': 'hi there'}])
+```
+Sample output: 
+```json
+null
+```
 ### stopSpeech
 stops any text to speech that's in progress
 ```

@@ -142,6 +142,16 @@ EMPLOYEES table defines the record label to be the LAST_NAME. All links and page
   }
 }
 ```
+### KnowledgeBase
+Expose the RAG document knowledge base to the platform
+```json
+{
+  "ID" : "dj/kb",
+  "name" : "kb",
+  "djClassName" : "com.dashjoin.ai.KnowledgeBase",
+  "url" : "http://localhost:8001"
+}
+```
 ## Function Catalog
 ### Invoke
 Function that adds two numbers passed in the argument object. It can be called via $call('add') or via REST
@@ -213,6 +223,30 @@ Configures an SMTP server
   },
   "username" : "user",
   "password" : "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
+}
+```
+### MCPServer
+Configures an MCP server
+```json
+{
+  "djClassName" : "org.dashjoin.function.MCPServer",
+  "ID" : "mcp",
+  "url" : "https://mcp.notion.com/mcp",
+  "username" : "Authorization",
+  "password" : "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
+  "apiKey" : true
+}
+```
+### AIApp
+Configures an AI application with system prompt, tools, and RAG
+```json
+{
+  "ID" : "aia",
+  "djClassName" : "com.dashjoin.ai.AIApp",
+  "systemPrompt" : "You are a helpful assistant",
+  "tools" : [ "time:get_current_time" ],
+  "model" : "mistral",
+  "documents" : [ "rag.txt" ]
 }
 ```
 ## Configuration
