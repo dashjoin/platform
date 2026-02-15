@@ -22,6 +22,13 @@
         {
             "display": "value",
             "title": "Document Info",
+			"icons": {
+			    "text": "text_snippet",
+			    "owner": "person",
+			    "path": "terminal",
+			    "size": "data_usage",
+			    "tags": "tag"
+			},
             "widget": "display"
         }
     ]
