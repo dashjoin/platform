@@ -78,6 +78,19 @@
                 "username": "user",
                 "password": "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
             }
-        }
+        },
+		{
+		    "title": "MCPServer",
+		    "description": "Configures an MCP server",
+		    "file": "model/dj-function/mcp.json",
+		    "code": {
+		        "djClassName": "org.dashjoin.function.MCPServer",
+		        "ID": "mcp",
+				"url": "https://mcp.notion.com/mcp",
+				"username": "Authorization",
+				"password": "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
+				"apiKey": true
+		    }
+		}
     ]
 }

@@ -787,6 +787,17 @@ Configuration:
 * password: credential password
 * apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
 
+#### MCPServer
+
+Allows configuring an external MCP server. Tools offered by this server can be attached to AIApp.
+
+Configuration
+
+* url: MCP server URL
+* username: credential username
+* password: credential password
+* apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
+
 ### Mapping Functions
 
 Mapping functions are specialized functions that have no invocation parameters and outputs.
