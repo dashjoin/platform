@@ -919,7 +919,14 @@
             "widget": "edit",
             "title": "Edit Record"
           },
+		  {
+		    "if": "value.djClassName = 'com.dashjoin.ai.AIApp'",
+			"title": "Chat",
+		    "widget": "aichat",
+		    "onChat": "$sse(value.ID, $append(messages, newMessage))"
+		  },
           {
+			"if": "value.djClassName != 'com.dashjoin.ai.AIApp'",
             "widget": "container",
             "title": "Run Function",
             "children": [
