@@ -717,7 +717,7 @@ Configuration
 * systemPrompt: the AI system prompt to instruct AI behaviour
 * ai: URL of the KnowledgeBase database. Only required if there are multiple KnowledgeBases.
 * model: name of the AI model to use - those can be configured in settings.yml (see AI & ML integration for details)
-* tools: names of the tools the AI is allowed to use
+* tools: names of the tools the AI is allowed to use. Tools can be Invoke functions with comment and parameter annotations, builtin MCP tools configured in the MCP proxy, or tools of an external MCPServer
 * tags: all documents with these tags are used as the RAG source
 * documents: individual documents to be used as the RAG source
 

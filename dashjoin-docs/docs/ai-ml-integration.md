@@ -208,274 +208,82 @@ $openJson("http://.../language_detection?text=example")
 The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
 text embedding technology into your low code application. The functionality is available via an easy to use
 administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
-via JSONata. Please refer to the documentation of the aichat widget in the developer reference for information
+via JSONata. Please refer to the documentation of the aichat widget and the AIApp / MCPServer functions in the developer reference for information
 about how the chat widget can be configured. The API section below also shows examples of how to
 call the REST services directly.
 
-Dashjoin AI Assistant is available via the docker image dashjoin/ai-llm-kb and offers a range of powerful features around
+Dashjoin AI Assistant is available via the docker image dashjoin/aia and offers a range of powerful features around
 large language models (LLMs):
 
 * access APIs such as OpenAPI or Mistral in a uniform and secure way
 * run LLMs locally and expose them via the same API
 * Builtin and convenient retrieval augmented generation (RAG)
-* Powerful Jupyter development environment for deploying custom AI code based on LlamaIndex
+* Powerful Jupyter development environment for deploying custom AI code
 * Auto-deployment of custom AI code from a Dashjoin app
-* Seamless integration of Dashjoin functions as LLM tools for integrating local structured data into the reasoning process
+* Seamless integration of MCP and Dashjoin functions as LLM tools for integrating local structured data into the reasoning process
 
 ### Configuration
 
 The following environment variables can be used to configure the container:
 
-* DJAI_OPENAI_API_BASE: URL of the LLM API (default https://api.mistral.ai/v1)
-* DJAI_OPENAI_API_KEY: API key for Mistral or OpenAI if these services are used
-* DJAI_OPENAI_MODEL: LLM model used (default open-mistral-7b)
-* DJAI_OPENAI_EMBEDDING_MODEL: embedding model used (defaukt mistral-embed)
-* DJAI_AUTH_SECRET: Basic authentication header required to use the container API (default is "Basic YWRtaW46ZGpkamRq" which is base64 encoded authentication header for user admin and password djdjdj)
-* DJAI_UI_PASSWORD: Password for the admin user when connecting to the container's admin UI (default djdjdj)
-* DJAI_LLM_MODE: llm used (possible values are: ollama, llama-cpp, sagemaker, openai, openailike, azopenai, gemini, default openailike)
-* DJAI_EMBEDDING_MODE: embedding mode (possible values are: ollama, huggingface, openai, sagemaker, azopenai, gemini, default openailike)
-* DJAI_OLLAMA_URL: URL of the ollama service
-* DJAI_DATA_QDRANT_PATH: path of the vector database (default dashjoin/data/default/qdrant)
-* DJAI_DATA_PATH: path to local data (default dashjoin/data/default)
-* DJAI_LOG_LEVEL: log level (default INFO)
-* DJAI_CORS_ENABLED: web server cors setting (default true)
-
-Vector DB settings
-
-* DJAI_VECTORDB: vector DB to use (default is qdrant)
-* DJAI_POSTGRES_HOST: rag DB hostname (default postgres)
-* DJAI_POSTGRES_PORT: rag DB port (default 5432)
-* DJAI_POSTGRES_USER: rag DB username (default postgres)
-* DJAI_POSTGRES_PASSWORD: rag DB pwd (default postgres)
-* DJAI_POSTGRES_EMBED_DIM: vector DB dimension (default 768)
-* DJAI_POSTGRES_SCHEMA: rag DB schema (default public)
-* DJAI_INGESTION_MODE: (default batch)
-* DJAI_INGESTION_WORKERS: (default 2)
-* DJAI_NODESTORE: defines how the system associates files to embeddings (default simple)
-* DJAI_VECTORSTORE: defines how the system associates files to embeddings (default qdrant)
-
-Local model settings
-
-* DJAI_OLLAMA_MODEL: llm model (default mistral)
-* DJAI_OLLAMA_EMBEDDING_MODEL: embedding model (default nomic-embed-text)
-* DJAI_OLLAMA_URL: ollama url (default http://ollama:11434)
-* DJAI_OLLAMA_TFS_Z: Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting (default 1.0)
-* DJAI_OLLAMA_TOP_K: Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative (default 40)
-* DJAI_OLLAMA_TOP_P: Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text (default 0.9)
-* DJAI_OLLAMA_REPEAT_LAST_N: Sets how far back for the model to look back to prevent repetition (default 64)
-* DJAI_OLLAMA_REPEAT_PENALTY: Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalize repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient (default 1.2)
-* DJAI_OLLAMA_REQUEST_TIMEOUT: Time elapsed until ollama times out the request (default 600.0)
-* DJAI_OLLAMA_AUTOPULL_MODELS: automatically pull models as needed (default true)
-* DJAI_OLLAMA_KEEP_ALIVE: defines how long a model stays loaded in memory (default 5 minutes)
-
+* MCP_BUILTIN_URL: URL of the MCP proxy (default: http://mcp-proxy:9090)
+* MCP_BUILTIN_AUTH: Password of the MCP proxy (prefix with "Bearer ")
 * DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
 * JUPYTER_TOKEN: password of the Juyper development environment
 * DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
 * DASHJOIN_APPURL_BRANCH: optional GIT branch to use
+* DJAI_POSTGRES_USER: username of the pgvector database
+* DJAI_POSTGRES_PASSWORD: password of the pgvector database
+* DJAI_UI_AUTH_PASS: Password for the admin user when connecting to the container's admin UI
 
-Configuring Multiple Models
+In addition, you can set these 3rd party API keys:
+      
+* FIREWORKS_API_KEY: see https://fireworks.ai/
+* OPENAI_API_KEY: see https://platform.openai.com/api-keys
+* MISTRAL_API_KEY: see https://admin.mistral.ai/organization/api-keys
+* SERPER_API_KEY: see https://serpapi.com/
 
-The settings above define the default model to be used. You can configure additional models or the same model with different settings
-using a YAML configuration file like this:
+These are the settings for the [Docker MCP Gateway](https://docs.docker.com/ai/mcp-catalog-and-toolkit/mcp-gateway/):
 
-```
-#
-# Configure additional models (settings-x-models.yaml)
-#
-models:
-  openai-gpt4mini:
-    llm:
-      mode: openai
-    openai:
-      api_key: ...
-      model: o4-mini
-```
+* DOCKER_MCP_GATEWAY_URL: gateway URL (default: http://host.docker.internal:8811)
+* MCP_GATEWAY_AUTH_TOKEN: auth token specified for the gateway
 
-On the API, the model to be used can be specified by passing model: name (here: openai-gpt4mini) along with the request.
-To load the additional model settings, you need to map the file into the container folder /app
-and set the following environment.
+Vector embedding and large language models are configured via the file /app/config/settings.yml.
+Note that multiple LLMs and multiple instances of the same model (e.g. with different temperatures) can be defined.
+Only a single embedding model is allowed per instance.
+For an example, please refer to the Docker Compose section in the Installation chapter.
 
-Note that profile `x-models` must match the name settings-`x-models`.yaml, multiple configs can be specified
-using this mechanism, which will all be merged.
-
-Profile `djdocker` contains the default settings and should always be set:
-
-```
-PGPT_PROFILES=djdocker,x-models
-```
-
-### Running AI Assistant
-
-This section shows some minimal configuration examples (relying on defaults wherever possible).
-
-Run the container in production without app:
-
-```shell
-docker run 
-  -p 8001:8001 
-  -e DJAI_OPENAI_API_KEY=your_mistral_key 
-  dashjoin/ai-llm-kb
-```
-
-Run the container in production with app:
-
-```shell
-docker run 
-  -p 8001:8001 
-  -e DJAI_OPENAI_API_KEY=your_mistral_key 
-  -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
-  dashjoin/ai-llm-kb
-```
-
-Run the container to develop an app. We export the Jupyter port 8080 to 8002 outside the container:
-
-```shell
-docker run 
-  -p 8001:8001 
-  -p 8002:8080 
-  -e JUPYTER_TOKEN=djdjdj 
-  -e DASHJOIN_DEVMODE=1 
-  -e DJAI_OPENAI_API_KEY=your_mistral_key 
-  -e DASHJOIN_APPURL=https://github.com/dashjoin/dashjoin-demo 
-  dashjoin/ai-llm-kb
-```
+MCP tools can be registered in the MCP proxy container. The definitions are loaded from the file
+/mcp/config/mcp-proxy-config.json.
+For an example, please refer to the Docker Compose section in the Installation chapter.
 
 ### Admin UI
 
 The admin UI allows adding files to and deleting them from the vector database.
-You can also test chatting with the LLM (Chat) and retrieval augmented generation (Query KB).
+You can also test chatting with the LLM.
 
-Large Language Model Chat: The large language model chat exposes the generative language capabilities of the underlying model.
-The model is trained using a large collection of documents and books. It is able to summarize text,
-answer questions you pose, and much more. In the admin UI, use the mode "LLM Chat" to work in this mode.
+### Loading Documents via ETL
 
-Retrieval Augmented Generation (RAG): RAG allows inserting knowledge around a specific use case into the large language
-model - even if was not trained on these documents. You can upload your documents using the admin
-UI. The LLM is then able to answer your questions about these documents.
-In the admin UI, select the button "Query KB" to use this mode.
+Since the RAG document store is modeled like a normal Dashjoin database, you can use the standard ETL to load documents.
+Creating a document requires only the field "document" which is an object containing the file name and the value
+which is a base64 encoded string. Consider the following expression:
 
-Choosing "Search in KB", only performs a semantic search on the uploaded documents without involving the LLM to answer your query.
+```
+{
+  'Document': $ls('file:upload/kb').{
+    'tags': ['etl'],
+    'document': [{ 'value': $openText(url, 'BASE_64'), 'name': url }]
+  }
+}
+```
+
+It scans all files in the upload/kb folder, reads their contents using the openText function with as BASE_64.
+Optionally, you can provide tags.
 
 ### API
 
-The API of both the vector database and the large language model are available via the following
-[OpenAPI Definition](https://aikb.run.dashjoin.com/docs).
-
-In order to access the API, we recommend registering a credential set with the service's username and password.
-The following examples assume you have setup these credentials under the name "ai".
-
-List all document added to the vector database:
-
-```text
-$curl("GET", "https://aikb.run.dashjoin.com/v1/ingest/list", null, {"Authorization": "ai"})
-```
-
-Invoke LLM chat:
-
-```text
-$curl("POST", "https://aikb.run.dashjoin.com/v1/completions", {
-  "include_sources": false,
-  "prompt": "How do you fry an egg?",
-  "stream": false,
-  "system_prompt": "You are a rapper. Always answer with a rap.",
-  "use_context": false
-}, {"Authorization": "ai"})
-```
-
-Invoke RAG:
-
-```text
-$curl("POST", "https://aikb.run.dashjoin.com/v1/completions", {
-  "include_sources": true,
-  "prompt": "wie muss die firewall bei SAP systemen konfiguriert werden?",
-  "stream": false,
-  "system_prompt": "You can only answer questions about the provided context. If you know the answer but it is not based in the provided context, don't provide the answer, just state the answer is not in the context provided. Answer in German.",
-  "use_context": true
-}, {"Authorization": "ai"})
-```
-
-Upload a Document:
-
-```text
-$curl(
-  "POST", 
-  "https://aikb.run.dashjoin.com/v1/ingest/file",
-  {
-    "file": base64 encoded data URL
-  },
-  {
-    "Content-Type": "multipart/form-data",
-    "Authorization": "ai"
-  }
-)
-```
-
-The base64 encoded data URL can easily be generated by using this button and input widget:
-
-```json
-{
-  "widget": "button",
-  "schema": {
-    "type": "object",
-    "properties": {
-      "file": {
-        "widget": "binary file with metadata"
-      }
-    },
-    "print": "$curl('POST', 'https://aikb.run.dashjoin.com/v1/ingest/file', form, {'Content-Type': 'multipart/form-data', 'Authorization': 'ai'})"
-  }
-}
-```
-
-The ingest call returns the following result. Every files gets split into a number of documents:
-
-```json
-{
-  "object": "list",
-  "model": "private-gpt",
-  "data": [
-    {
-      "object": "ingest.document",
-      "doc_id": "c202d5e6-7b69-4869-81cc-dd574ee8ee11",
-      "doc_metadata": {
-        "file_name": "Sales Report Q3 2023.pdf",
-        "page_label": "2"
-      }
-    }
-  ]
-}
-```
-
-You can create a database to keep track of files, owners, and the related document ids. 
-A possible schema would be a table called doc with fields id, owner, and filename.
-This allows your app to define collections of documents that are associated to specific users:
-
-```text
-$res := $curl(... ingest);
-$email := email;
-
-$res.data.{
-  'id', doc_id,
-  'owner': $email,
-  'filename': doc_metadata.file_name
-}.$create('database', 'doc', $)
-```
-
-To use a user's documents, you can retrieve the doc ids from the database and pass them to the LLM as follows:
-
-```text
-$curl('POST', 'https://aikb.run.dashjoin.com/v1/completions', {
-  "include_sources": false,
-  "prompt": "A question that can only be answered with information contained in an uploaded file",
-  "stream": false,
-  "use_context": true,
-  "context_filter": {
-    "docs_ids": [$all('sqlite', 'PART', {'OWNER': email}).ID]
-  }
-},
-{'Authorization': 'ai'}
-)
-```
+The API of both the vector database and the large language model are available via the 
+OpenAPI Definition at http://localhost:8001/docs.
 
 ### Getting Access to AI Assistant
 
@@ -484,114 +292,6 @@ You can book a private instance along with your Dashjoin tenant. Please refer to
 to access the shop page.
 Note that the services all comply with european GDPR regulations.
 Please contact us if you are interested in deploying your own copy using GPU resources in your datacenter.
-
-## MCP / Tool Support (Beta)
-
-AI Assistant provides a new API endpoint /mcp to support model context protocol (MCP).
-It comes with a default MCP server. To find out which MCP tools are available, use this API:
-
-```
-GET http://localhost:8001/mcp/v1/info
-```
-
-To instruct the AI to use MCP, use the mcp_servers field:
-
-```
-POST http://localhost:8001/mcp/v1/chat/completions
-Authorization: Basic admin:djdjdj
-Content-Type: application/json
-
-{
-  "mcp_servers": [
-    {
-      "name": "websearch",
-      "type": "url",
-      "url": "https://mcp.dashjoin.local/fetch"
-    }
-  ],
-  "messages": [
-    {
-      "content": "What are the headlines on NY Times today?",
-      "role": "user"
-    }
-  ]
-}
-```
-
-The URL mcp.dashjoin.local causes AI Assistant to use the default Dashjoin MCP server.
-You can also specify your own URL. In addition to mcp_servers, you can also provide "options":
-
-```
-  ...
-  "options": {
-    "max_iterations": 10,
-    "agent_mode": "react",
-    "debug": true
-  }
-  ...
-```
-
-
-Apart from MCP, you can also provide REST services as follows (in this case we call a Dashjoin function called "tool"):
-
-```
-POST http://localhost:8001/mcp/v1/chat/completions
-Authorization: Basic admin:djdjdj
-Content-Type: application/json
-
-{
-  "tools": [
-    {
-      "name": "get_stock_price",
-      "description": "Get the current stock price for a given ticker symbol.",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string",
-            "description": "The stock ticker symbol, e.g. AAPL for Apple Inc."
-          }
-        },
-        "required": [
-          "ticker"
-        ]
-      },
-      "rest": {
-        "method": "post",
-        "url": "http://host.docker.internal:8080/rest/function/tool",
-        "headers": {
-          "Authorization": "Basic YWRtaW46ZGpkamRq",
-          "Content-Type": "Application/JSON"
-        }
-      }
-    }
-  ],
-  "messages": [
-    {
-      "content": "Current stock price of Nvidia?",
-      "role": "user"
-    }
-  ]
-}
-```
-
-The MCP server can also be called from JSONata:
-
-```
-$curl('POST', 'https://.../fetch/mcp', {
-  "jsonrpc": "2.0",
-  "id": "1",
-  "method": "tools/call",
-  "params": {
-    "name": "fetch",
-    "arguments": {
-      "url": "https://dashjoin.com"
-    }
-  }
-}, {
-  "Authorization": "..."
-})
-```
 
 ## Extending AI Assistant
 
@@ -643,135 +343,10 @@ curl -u admin:djdjdj -X 'GET' \
   -H 'accept: application/json'
 ```
 
-### Adding LlamaIndex AI Code
-
-The LlamaIndex AI library is already installed on the system. You can add your custom code in your REST service. Consider this minimal OpenAI chat example:
-
-```
-import os
-from llama_index.llms.openai import OpenAI
-
-...
-
-# set the OpenAI key
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-# instantiate the OpenAI llm
-llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
-
-# expose it via REST
-@app_router.get("/prompt", description="Simple prompt completion")
-def complete(prompt: str) -> str:
-    return str(llm.complete(prompt))
-```
-
 ### Using Jupyter Notebooks
 
 The most convenient way to experiment with Python and AI are Jupyter Notebooks that allow you to interactively
 run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming you started the container with the command shown above, simply point your browser to http://localhost:8002 and log in.
-Create a new notebook and enter the following example:
-
-```
-import os
-import requests
-from llama_index.core.agent import ReActAgent
-from llama_index.core.tools import FunctionTool
-from llama_index.llms.openai import OpenAI
-from requests.auth import HTTPBasicAuth
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
-
-def get_employee_by_last_name(lastname: str) -> object:
-    """Looks up an employee by last name"""
-    return requests.post(
-        "http://your-dashjoin-platform-address:8080/rest/function/tool",
-        json={ "lastname": lastname },
-        auth=HTTPBasicAuth("admin", "djdjdj")
-    )
-
-tool = FunctionTool.from_defaults(
-    get_employee_by_last_name
-)
-
-agent = ReActAgent.from_tools(
-    [tool],
-    llm=llm,
-    verbose=True,
-)
-
-agent.chat("what is the first name of our employee 'fuller'?")
-```
-
-This code answer's the question "what is the first name of our employee 'fuller'?" by using the LLM and equipping it with a tool
-to fulfill the task. The tool textually describes what it can do in order to advertise its capabilities to the LLM.
-The tool makes a REST call back to the Dashjoin Platform and runs a JSONata invoke function called "tool". It is defined as:
-
-```
-{
-    "ID": "tool",
-    "djClassName": "org.dashjoin.function.Invoke",
-    "expression": "$all('northwind', 'EMPLOYEES', {'LAST_NAME': lastname})"
-}
-```
-
-Running the Notebook shows the following trace:
-
-```
-> Running step 0a830c4e-e2c9-479b-b020-bdd027df3ad3. Step input: what is the first name of our employee 'fuller'?
-Thought: The current language of the user is English. I need to use a tool to help me answer the question.
-Action: get_employee_by_last_name
-Action Input: {'lastname': 'Fuller'}
-Observation: <Response [200]>
-> Running step 31fa0f53-a975-4861-9fd2-89078616a27e. Step input: None
-Thought: I can answer without using any more tools. I'll use the user's language to answer
-Answer: The first name of the employee with the last name 'Fuller' is 'Andrew'.
-```
-
-### Adding LLM Tool Calls to the App
-
-Once we get everything working in Jupyter, we can either parameterize the Notebook and call it via REST (see next section) or we can
-convert it to a regular REST endpoint as shown below:
-
-```
-import os
-import requests
-from requests.auth import HTTPBasicAuth
-from fastapi import APIRouter, Depends, Request
-from private_gpt.server.utils.auth import authenticated
-from llama_index.llms.openai import OpenAI
-from llama_index.core.agent import ReActAgent
-from llama_index.core.tools import FunctionTool
-
-app_router = APIRouter(prefix="/app/v1", dependencies=[Depends(authenticated)])
-
-os.environ["OPENAI_API_KEY"] = "sk-..."
-
-llm = OpenAI(model="gpt-3.5-turbo",temperature=0)
-
-def get_employee_by_last_name(lastname: str) -> object:
-    """Looks up an employee by last name and returns the information as a JSON object"""
-    return requests.post(
-        "http://host.docker.internal:8080/rest/function/tool",
-        json={ "lastname": lastname },
-        auth=HTTPBasicAuth("admin", "djdjdj")
-    )
-
-tool = FunctionTool.from_defaults(
-    get_employee_by_last_name
-)
-
-agent = ReActAgent.from_tools(
-    [tool],
-    llm=llm,
-    verbose=True,
-)
-
-@app_router.get("/tool", description="Find employees using LLM and tool")
-def complete(lastname: str) -> str:
-    return str(agent.chat("what is the first name of our employee '"+lastname+"'?"))
-```
 
 ### Installing Python Libraries
 
