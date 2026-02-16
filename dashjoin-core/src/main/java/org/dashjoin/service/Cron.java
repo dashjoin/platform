@@ -47,6 +47,10 @@ public class Cron {
     // map of job to error / next runtime
     Map<String, Object> res = new HashMap<>();
 
+    if (!scheduler.isStarted())
+      // we are in a unit test
+      return res;
+
     // unschedule all jobs
     for (Trigger t : scheduler.getScheduledJobs())
       scheduler.unscheduleJob(t.getId());
