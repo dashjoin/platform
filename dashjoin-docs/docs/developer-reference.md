@@ -585,17 +585,17 @@ allows the user to edit the text and call expressions via the custom menu.
   "context": "'my context expression'",
   "properties": {
     "alert": "$alert('selection: ' & selection & '. markdown: ' & markdown)",
-    "log": "$log($)",
+    "replace": "selection ? {'selection': 'replace'} : {'markdown': 'replace'}",
     "sleep": "($progress({'message': 'working'});$sleep(1000))"
   },
-  "expression": "{... see below}",
+  "expression": "{... see below}"
 }
 ```
 
 The widget defines three expressions:
 
 * alert: shows that we can use the context fields markdown and selection to access the entire document (with the user's changes) or the text selected in the editor
-* log: simply logs th entire expression context in the console
+* replace: if a text is selected, replaces the text with "replace", otherwise, replaces the entire text with "replace"
 * sleep: an example for how to provide feedback for operations with a longer runtime
 
 The menu structure is defined by an expression the yields the following JSON:
@@ -620,8 +620,8 @@ The menu structure is defined by an expression the yields the following JSON:
           "value": "alert"
         },
         {
-          "label": "doc to console",
-          "value": "log"
+          "label": "replace",
+          "value": "replace"
         }
       ]
     }
