@@ -279,6 +279,25 @@ which is a base64 encoded string. Consider the following expression:
 
 It scans all files in the upload/kb folder, reads their contents using the openText function with as BASE_64.
 Optionally, you can provide tags.
+The ETL configuration is as follows:
+
+```
+{
+    "djClassName": "com.dashjoin.function.ETL",
+    "ID": "etl",
+    "expressions": {
+        "expression": see above...
+    },
+    "database": "kb",
+    "oldData": "Ignore",
+    "createSchema": false
+}
+```
+
+Create schema must be set to false, since the knowledge base tables Document and Tag are static.
+Handle existing data (oldData) is set the ignore. This is the recommended setting, since the system
+will detect whether a document was changed and only perform the embedding then.
+Setting it to "delete all" will delete all documents and re-ingest them again.
 
 ### API
 
