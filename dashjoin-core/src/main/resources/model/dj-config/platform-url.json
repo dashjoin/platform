@@ -3,5 +3,5 @@
 	"description": "Platform URL to be used from the AI service",
 	"category": "app",
 	"type": "string",
-	"string": "http://localhost:8080"
+	"string": "http://dashjoin:8080"
 }
