@@ -923,6 +923,7 @@
 		    "if": "value.djClassName = 'com.dashjoin.ai.AIApp'",
 			"title": "Chat",
 		    "widget": "aichat",
+			"uploadEnabled": true,
 		    "onChat": "$sse(value.ID, $append(messages, newMessage))"
 		  },
           {
