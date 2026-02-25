@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
-import java.util.List;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.Data;
 import org.dashjoin.service.Services;
@@ -103,7 +102,7 @@ public class FunctionStreamService {
         throw new Exception("Only AIApp supports server sent events");
 
       Method m = a.getClass().getMethod("sse",
-          new Class[] {Sse.class, SseEventSink.class, String.class, List.class});
+          new Class[] {Sse.class, SseEventSink.class, String.class, Object.class});
       m.invoke(a, sse, sink, authHeader, argument);
     }
   }
