@@ -91,6 +91,7 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 ## Getting Started
 
 * Docker: ```docker run -p 8080:8080 -e DJ_ADMIN_PASS=djdjdj dashjoin/platform```
+* [Docker Compose](https://github.com/dashjoin/docker-compose) including out of the box AI features
 * [Download](https://download.dashjoin.com/)
 * [Playground](https://playground.dashjoin.com/)
 * [Book your fully managed PaaS tenant (Platform plus PostgreSQL)](https://dashjoin.com/#getstarted)
