@@ -601,7 +601,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * Dashjoin AI Assistant
   * Vector / RAG database is exposed as a Dashjoin database
   * AIApps allow defining combinations of prompts, tools, documents, and models for various use cases
-  * Anthropic support
+  * Support for local LLMs, Anthropic, OpenAI, Mistral, etc.
   * Multimodal chat
   * Ability to automatically sync documents into the RAG database
 * UI
