@@ -595,3 +595,23 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * Support for uploading several new file formats
   * Improved RAG performance
   * Allow configuring multiple models and model options
+
+### 7.0 (Mar 2026)
+
+* Dashjoin AI Assistant
+  * Vector / RAG database is exposed as a Dashjoin database
+  * AIApps allow defining combinations of prompts, tools, documents, and models for various use cases
+  * Anthropic support
+  * Multimodal chat
+  * Ability to automatically sync documents into the RAG database
+* UI
+  * Streaming support in chat widget
+  * Chat widget allows Context augmented generation
+  * Modal dialog supports all form features
+  * Chat visualizes sources and tools
+  * Graph widget usability improvements
+  * Conditional form elements
+  * Ability to process complex data structures embedded in a QR code
+* Platform
+  * Docker compose deployment including out of the box Vector DB and MCP server
+  * Ability to schedule ETLs & functions
