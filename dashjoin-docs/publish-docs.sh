@@ -13,5 +13,6 @@ then
     exit 0
 fi
 
-mike deploy --push $(cat ../../VERSION)
-mike alias -u $(cat ../../VERSION) latest --allow-empty
+mike deploy --push --update-aliases $(cat ../../VERSION) latest
+#mike alias -u $(cat ../../VERSION) latest --allow-empty
+mike list
