@@ -1,0 +1,53 @@
+{
+    "ID": "DataCatalog",
+    "layout": {
+        "widget": "page",
+        "onRender": "$count($all('config', 'dj-function', {'ID': 'dj-copilot'})) = 0 ? $notify('Please configure an AIApp function called dj-copilot in order to use the suggest feature')",
+        "children": [
+            {
+                "title": "Database Descriptions",
+                "expression": "$all('config', 'dj-database')[name != 'config'].{'ID': ID, 'name': name, 'database': $substring(parent,3), 'title': title, 'comment': comment}",
+                "hideColumns": [
+                    "ID"
+                ],
+                "properties": {
+                    "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'dj-database', ID, {'comment': $d}); $refresh())",
+                    "Suggest Table Descriptions": "selected.($db := $read('config', 'dj-database', ID); $comment := $parseJson($call('dj-copilot', {'response_format': { 'properties': {'res': {'items': {'properties': {'table':{}, 'description':{}}}}} }, 'messages':[{'role':'user', 'content': 'Generate descriptions for the following tables in a database on \"'&comment&'\". The table names are: ' & $join($db.tables.*.name, ', ')}]}).choices.message.content).res; $ID := ID; $comment.($setIfAbsent('config', 'Table', $ID & '/' & table, {'comment': description})); $refresh())",
+                    "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'dj-database', ID, {'comment': null}); $refresh())"
+                },
+                "widget": "actionTable"
+            },
+            {
+                "title": "Table Descriptions",
+                "expression": "$all('config', 'Table')[parent != 'dj/config'].{'ID': ID, 'name': name, 'database': $substring(parent,3), 'title': title, 'comment': comment}",
+                "properties": {
+                    "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'Table', ID, {'comment': $d}); $refresh())",
+                    "Suggest Column Descriptions": "selected.($table := $read('config', 'Table', ID); $content := 'Generate very short descriptions for the columns of this table: ' & ($table.{name: {'description': comment, 'columns': properties.*.{'name': name, 'type': dbType, 'constraint': pkpos = 0 ? 'primary key' : (ref ? 'foreign key: ' & ref)}}} ~> $generateYaml); $comment := $parseJson($call('dj-copilot', {'response_format': { 'properties': {'res': {'items': {'properties': {'column':{}, 'description':{}}}}} }, 'messages':[{'role':'user', 'content': $content}]}).choices.message.content).res; $ID := ID; $comment.($setIfAbsent('config', 'Property', $ID & '/' & column, {'comment': description})); $refresh())",
+                    "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'Table', ID, {'comment': null}); $refresh())"
+                },
+                "hideColumns": [
+                    "ID"
+                ],
+                "widget": "actionTable"
+            },
+            {
+                "foreach": "$all('config', 'Table')[parent != 'dj/config']",
+                "widget": "container",
+                "children": [
+                    {
+                        "title": "${value.name}",
+                        "expression": "value.properties.*.{'ID':ID, 'name':name, 'dbType':dbType, 'comment':comment}",
+                        "properties": {
+                            "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'Property', ID, {'comment': $d}); $refresh())",
+                            "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'Property', ID, {'comment': null}); $refresh())"
+                        },
+                        "hideColumns": [
+                            "ID"
+                        ],
+                        "widget": "actionTable"
+                    }
+                ]
+            }
+        ]
+    }
+}
