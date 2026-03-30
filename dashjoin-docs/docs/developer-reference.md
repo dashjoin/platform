@@ -1162,6 +1162,7 @@ all| $all(database, table, offset, limit, sort, descending, filter) | array of a
 read|  $read(database, table, pk1) | The record
 traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
 update| $update(database, table, pk1, object)
+setIfAbsent| $setIfAbsent(database, table, pk1, object) | like update, but only sets fields that are not yet set
 delete| $delete(database, table, pk1)
 call| $call(function, argument) |   Dashjoin function result
 query| $query(database, queryId, arguments) |Query result table

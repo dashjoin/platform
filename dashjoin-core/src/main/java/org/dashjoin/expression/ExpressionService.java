@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ServiceLoader;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
@@ -371,6 +372,41 @@ public class ExpressionService {
     @Override
     public String getSignature() {
       return "<sso:o?>";
+    }
+  }
+
+  /**
+   * data.setIfAbsent(database, table, pk1, object)
+   */
+  public static class SetIfAbsent extends Update {
+
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Object run(List arg) throws Exception {
+      Map<String, Object> object = null;
+      for (int i = 2; i < arg.size(); i++)
+        if (arg.get(i) instanceof Map)
+          object = (Map<String, Object>) arg.get(i);
+
+      if (object == null)
+        throw new Exception("SetIfAbsent object cannot be null");
+
+      Read read = new Read();
+      read.init(sc, services, expressionService, readOnly);
+
+      Map<String, Object> res = (Map<String, Object>) read.run(arg);
+      for (Entry<String, Object> entry : res.entrySet())
+        if (entry.getValue() != null)
+          object.remove(entry.getKey());
+
+      Update update = new Update();
+      update.init(sc, services, expressionService, readOnly);
+      return update.run(arg);
+    }
+
+    @Override
+    public String getHelp() {
+      return "Arguments required: $setIfAbsent(database, table, pk1, object)";
     }
   }
 
