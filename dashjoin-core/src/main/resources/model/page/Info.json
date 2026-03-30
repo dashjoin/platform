@@ -130,6 +130,18 @@
 						"href": "/page/ERDiagram",
 						"icon": "schema",
 						"text": "ER Diagram"
+					},
+					{
+						"widget": "text",
+						"href": "/page/DataCatalog",
+						"icon": "library_books",
+						"text": "Data Catalog"
+					},
+					{
+						"widget": "text",
+						"href": "/page/BusinessLogicCatalog",
+						"icon": "functions",
+						"text": "Business Logic Catalog"
 					}
 				]
 			},

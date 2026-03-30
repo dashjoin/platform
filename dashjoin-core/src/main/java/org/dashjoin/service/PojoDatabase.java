@@ -898,6 +898,10 @@ public class PojoDatabase extends UnionDatabase implements Config {
         continue;
       if ("App".equals(page.get("ID")))
         continue;
+      if ("DataCatalog".equals(page.get("ID")))
+        continue;
+      if ("BusinessLogicCatalog".equals(page.get("ID")))
+        continue;
       if ("ERDiagram".equals(page.get("ID")))
         continue;
       if ("Notebook".equals(page.get("ID")))

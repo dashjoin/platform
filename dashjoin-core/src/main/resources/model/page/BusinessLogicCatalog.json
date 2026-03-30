@@ -1,0 +1,39 @@
+{
+    "ID": "BusinessLogicCatalog",
+    "layout": {
+        "widget": "page",
+		"onRender": "$count($all('config', 'dj-function', {'ID': 'dj-copilot'})) = 0 ? $notify('Please configure an AIApp function called dj-copilot in order to use the suggest feature')",
+        "children": [
+            {
+                "expression": "$all('config', 'dj-query-catalog').{'ID':ID, 'query': query, 'comment':comment}",
+                "title": "Query Catalog Descriptions",
+                "properties": {
+                    "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'dj-query-catalog', ID, {'comment': $d}); $refresh())",
+                    "Suggest": "selected.($comment := $parseJson($call('dj-copilot', {'response_format': { 'properties': {'res': {}} }, 'messages':[{'role':'user', 'content':'Create a very short description for this query called ' & ID & ': ' & query}]}).choices.message.content).res; $setIfAbsent('config', 'dj-query-catalog', ID, {'comment': $comment}); $refresh())",
+                    "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'dj-query-catalog', ID, {'comment': null}); $refresh())"
+                },
+                "widget": "actionTable"
+            },
+            {
+                "expression": "$all('config', 'dj-function')[djClassName = 'com.dashjoin.function.ETL'].{'ID':ID, 'foreach':expressions.foreach, 'expression': expressions.expression, 'table': $keys(mappings),'comment': comment}",
+                "title": "ETL Descriptions",
+                "properties": {
+                    "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'dj-function', ID, {'comment': $d}); $refresh())",
+                    "Suggest": "selected.($comment := $parseJson($call('dj-copilot', {'response_format': { 'properties': {'res': {}} }, 'messages':[{'role':'user', 'content':'Create a very short description for this ETL called ' & ID & ' that loads data into the table ' & table & ': ' & foreach & '\n' & expression }]}).choices.message.content).res; $setIfAbsent('config', 'dj-function', ID, {'comment': $comment}); $refresh())",
+                    "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'dj-function', ID, {'comment': null}); $refresh())"
+                },
+                "widget": "actionTable"
+            },
+            {
+                "expression": "$all('config', 'dj-function')[djClassName = 'org.dashjoin.function.Invoke'].{'ID':ID, 'foreach':expressions.foreach, 'expression':expression, 'comment': comment}",
+                "title": "Invoke Descriptions",
+                "properties": {
+                    "Enter": "($d := $prompt('Description'); $d ? selected.$update('config', 'dj-function', ID, {'comment': $d}); $refresh())",
+                    "Suggest": "selected.($comment := $parseJson($call('dj-copilot', {'response_format': { 'properties': {'res': {}} }, 'messages':[{'role':'user', 'content':'Create a very short description for this function called ' & ID & ': ' & expression }]}).choices.message.content).res; $setIfAbsent('config', 'dj-function', ID, {'comment': $comment}); $refresh())",
+                    "Delete": "($confirm('Delete descriptions?') ? selected.$update('config', 'dj-function', ID, {'comment': null}); $refresh())"
+                },
+                "widget": "actionTable"
+            }
+        ]
+    }
+}
