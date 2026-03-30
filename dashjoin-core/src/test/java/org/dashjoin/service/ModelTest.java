@@ -162,7 +162,7 @@ public class ModelTest {
               "layout", "style", "class", /* schema info in config.json */ "name", "parent",
               /* gridster stuff */ "x", "y", "rows", "cols",
               /* redraw container */ "redrawInterval", "expression", "html", "script", "hideframe",
-              "clearCache", "card", "size", "cached", "onChat", "uploadEnabled")
+              "clearCache", "card", "size", "cached", "onChat", "uploadEnabled", "onRender")
           .contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
@@ -185,6 +185,7 @@ public class ModelTest {
 
           if (!(kid.getValue() instanceof ObjectNode)) {
             Jsonata jsonata = Jsonata.jsonata(expr);
+            // System.out.println(expr);
             JFunction x = new JFunction(new JFunctionCallable() {
               @Override
               public Object call(Object input, @SuppressWarnings("rawtypes") List args)
@@ -221,6 +222,8 @@ public class ModelTest {
             jsonata.registerFunction("all", x);
             jsonata.registerFunction("djSubscription", x);
             jsonata.registerFunction("clearCache", x);
+            jsonata.registerFunction("notify", x);
+            jsonata.registerFunction("setIfAbsent", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
