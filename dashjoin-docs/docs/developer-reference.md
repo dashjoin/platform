@@ -726,6 +726,44 @@ Invocation parameter
 * array: array of messages containing role and content. Note that if the last content contains #full, the entire RAG corpus will be added to the request. This is called Cache-Augmented Generation (CAG) and is suitable for smaller document sets that fit in the LLM context.
 If the content contains #query, the text behind the query marker is used as a RAG query. Consider the following example: can you explain the difference between RAG and CAG #query RAG CAG. In this case the documents would be search using the term "RAG CAG" rather than the entire question. This can be used to optimize RAG retrieval accuracy.
 
+If you would like to invoke the LLM using JSON mode, you can pass the target JSON Schema as follows:
+
+
+```
+$parseJson(
+  $call('aia', {
+    'response_format': { 
+      'properties': {
+        'res': {
+          'type': 'array'
+        }
+      }
+    },
+    'messages': [
+      {
+        'role':'user', 
+        'content': 'list of European capitals with a population of at least 3 million'
+      }
+    ]
+  }).choices.message.content
+)
+```
+
+This returns the following JSON structure:
+
+```
+{
+  "res": [
+    "Berlin",
+    "Madrid",
+    "Rome",
+  ...
+```
+
+Note that the top level schema must contain "properties" and the returned value is always an object. 
+The AIApp function makes sure the schema is compatible with the LLM requirements. 
+For instance, if "type" is omitted, it is assumed to be "string".
+
 #### RestJson
 
 Calls an external REST service. If you need more control over the how the call is performed, please use the JSONata function curl.
