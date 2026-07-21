@@ -1,6 +1,9 @@
 package org.dashjoin.util;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.logging.Level;
 import org.eclipse.jgit.api.CloneCommand;
@@ -91,6 +94,13 @@ public class Home {
 
   public File getFile(String path) {
     return new File(fileHome, path);
+  }
+
+  /**
+   * call this instead of getHome(url.getPath()) in order to decode # etc
+   */
+  public File getFile(URL url) {
+    return new File(fileHome, URLDecoder.decode(url.getPath(), Charset.defaultCharset()));
   }
 
   static class UrlBranch {

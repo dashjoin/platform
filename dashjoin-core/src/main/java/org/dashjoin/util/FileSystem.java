@@ -15,7 +15,7 @@ public class FileSystem {
    */
   public static void checkFileAccess(URL url) throws IOException {
     if (url.getProtocol().equals("file")) {
-      checkFileAccess(Home.get().getFile(url.getPath()));
+      checkFileAccess(Home.get().getFile(url));
     }
   }
 
@@ -56,7 +56,7 @@ public class FileSystem {
   public static URL getUploadURL(String name) throws IOException {
     URL url = new URL(name);
     if (url.getProtocol().equals("file")) {
-      url = new URL("file:" + Home.get().getFile(url.getPath()).getCanonicalPath()
+      url = new URL("file:" + Home.get().getFile(url).getCanonicalPath()
           + (url.getQuery() != null ? "?" + url.getQuery() : ""));
       checkFileAccess(new File(url.getPath()));
     }

@@ -213,7 +213,7 @@ public class OpenAPI {
     // open URL, if file, take Home into account
     InputStream in = null;
     if ("file".equals(url.getProtocol())) {
-      File file = Home.get().getFile(url.getPath());
+      File file = Home.get().getFile(url);
       in = new FileInputStream(file);
     } else {
       Map<String, Object> config = services.getConfig().getConfigDatabase()
@@ -243,7 +243,7 @@ public class OpenAPI {
     if (!sc.isUserInRole("admin"))
       throw new Exception("must be admin to save API spec");
     if ("file".equals(url.getProtocol())) {
-      File file = Home.get().getFile(url.getPath());
+      File file = Home.get().getFile(url);
       FileUtils.writeStringToFile(file, generate, Charset.defaultCharset());
     } else {
       Map<String, Object> config = services.getConfig().getConfigDatabase()
