@@ -359,16 +359,20 @@ public class PojoDatabase extends UnionDatabase implements Config {
           Map<String, Map<String, Object>> t = (Map<String, Map<String, Object>>) o.get("tables");
           if (t != null) {
             Map<String, Object> tag = t.get("Tag");
-            if (tag.get("instanceLayout") == null)
-              tag.put("instanceLayout", template("/template/Tag/instance.json", db));
-            if (tag.get("tableLayout") == null)
-              tag.put("tableLayout", template("/template/Tag/table.json", db));
+            if (tag != null) {
+              if (tag.get("instanceLayout") == null)
+                tag.put("instanceLayout", template("/template/Tag/instance.json", db));
+              if (tag.get("tableLayout") == null)
+                tag.put("tableLayout", template("/template/Tag/table.json", db));
+            }
 
             Map<String, Object> document = t.get("Document");
-            if (document.get("instanceLayout") == null)
-              document.put("instanceLayout", template("/template/Document/instance.json", db));
-            if (document.get("tableLayout") == null)
-              document.put("tableLayout", template("/template/Document/table.json", db));
+            if (document != null) {
+              if (document.get("instanceLayout") == null)
+                document.put("instanceLayout", template("/template/Document/instance.json", db));
+              if (document.get("tableLayout") == null)
+                document.put("tableLayout", template("/template/Document/table.json", db));
+            }
           }
         }
     return res;
