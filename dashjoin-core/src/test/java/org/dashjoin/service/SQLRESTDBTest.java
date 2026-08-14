@@ -40,6 +40,10 @@ public class SQLRESTDBTest {
 
     ps = SQLDatabase.prepareStatement("select ${a}, ${a}", Map.of("a", 1));
     Assertions.assertArrayEquals(new Object[] {1, 1}, ps.arguments);
+    Assertions.assertEquals("a", ps.callargs.get(0).getKey());
+    Assertions.assertEquals(1, ps.callargs.get(0).getValue());
+    Assertions.assertEquals("a", ps.callargs.get(1).getKey());
+    Assertions.assertEquals(1, ps.callargs.get(1).getValue());
     Assertions.assertEquals("select ?, ?", ps.query);
   }
 
