@@ -263,12 +263,35 @@ public class SQLDatabase extends AbstractDatabase {
   }
 
   /**
+   * prepared statement callargs must not be a Map since call args may be repeated. use List of
+   * CallArg instead with CallArg signature similar to Map.Entry
+   */
+  static class CallArg {
+
+    String key;
+    Object value;
+
+    public CallArg(String key, Object value) {
+      this.key = key;
+      this.value = value;
+    }
+
+    public String getKey() {
+      return key;
+    }
+
+    public Object getValue() {
+      return value;
+    }
+  }
+
+  /**
    * tuple holder class to return prepared statement with the arguments array - passed to JDBC
    */
   public static class PreparedStmt {
     public String query;
     public Object[] arguments;
-    public Map<String, Object> callargs = new LinkedHashMap<>();
+    public List<CallArg> callargs = new ArrayList<>();
 
     /**
      * handle common casting issues when JSON parameters are fed into SQL
@@ -313,7 +336,7 @@ public class SQLDatabase extends AbstractDatabase {
 
       String x = m.group().substring(2, m.group().length() - 1);
       args.add(arguments == null ? null : arguments.get(x));
-      ps.callargs.put(x, arguments == null ? null : arguments.get(x));
+      ps.callargs.add(new CallArg(x, arguments == null ? null : arguments.get(x)));
       ps.query = m.replaceFirst("?");
     }
     ps.arguments = args.toArray();
@@ -732,7 +755,7 @@ public class SQLDatabase extends AbstractDatabase {
                 if (limit != null)
                   pstmt.setMaxRows(limit);
                 int idx = 1;
-                for (Entry<String, Object> x : ps.callargs.entrySet())
+                for (CallArg x : ps.callargs)
                   if (x.getValue() == null) {
                     @SuppressWarnings("unchecked")
                     Map<String, Object> o = (Map<String, Object>) info.arguments.get(x.getKey());
@@ -759,7 +782,7 @@ public class SQLDatabase extends AbstractDatabase {
                 pstmt.execute();
                 Map<String, Object> row = new HashMap<>();
                 data.add(row);
-                for (Entry<String, Object> x : ps.callargs.entrySet()) {
+                for (CallArg x : ps.callargs) {
                   if (x.getValue() == null)
                     row.put(x.getKey(), pstmt.getObject(idx));
                   idx++;

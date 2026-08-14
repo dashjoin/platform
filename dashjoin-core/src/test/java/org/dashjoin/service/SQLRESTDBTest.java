@@ -37,6 +37,10 @@ public class SQLRESTDBTest {
         SQLDatabase.prepareStatement("select * from t limit ${limit} offset ${offset}", arguments);
     Assertions.assertArrayEquals(new Object[] {10, 20}, ps.arguments);
     Assertions.assertEquals("select * from t limit ? offset ?", ps.query);
+
+    ps = SQLDatabase.prepareStatement("select ${a}, ${a}", Map.of("a", 1));
+    Assertions.assertArrayEquals(new Object[] {1, 1}, ps.arguments);
+    Assertions.assertEquals("select ?, ?", ps.query);
   }
 
   @Test
