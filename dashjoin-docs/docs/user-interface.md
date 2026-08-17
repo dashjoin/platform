@@ -387,3 +387,8 @@ upload system tables (e.g. for importing users).
 
 The databases section shows a link to the query performance table. This table helps you to identify
 performance problems in your app. The ER diagram is a convenient way of visualizing your database schemata.
+Data Catalog is a central place to either enter or have AI suggest table and column descriptions.
+The Business Logic Catalog provides the same functionality for documenting queries and functions.
+These descriptions are key whenever you would like AI to generate queries, create sample data,
+or use business logic via MCP tools. Note that in order to have AI suggest descriptions, you
+need to have AI assistant configured along with a dj-copilot AI App.
