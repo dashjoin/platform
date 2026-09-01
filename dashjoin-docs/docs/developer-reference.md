@@ -1237,6 +1237,7 @@ parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see ope
 parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
 parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
+parseFrontmatter | $parseFrontmatter(markdown) | Parses markdown containing YAML frontmatter metadata
 parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
 parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query, etc.
 uuid | $uuid() | Generates a random UUID

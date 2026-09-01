@@ -441,6 +441,17 @@ def executeNotebook(nb: str):
 
 Jupyter comes with a full fledged GIT client. Therefore, you can commit your Python and Jupyter code to the Dashjoin App's GIT repository directly.
 
+## Open Knowledge Format
+
+Google's [Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md) (OKF) is
+a technical standard to structure organizational information using a wiki of markdown and YAML for both humans and AI agents.
+Dashjoin can easily load OKF knowledge bundles. This allows displaying the wiki along with its metadata.
+You can search the information and display the graph of concepts. The information can also be linked to existing
+data sources, bridging the gap between the knowledge base and enterprise systems.
+Please refer to the [AI sample app](https://github.com/dashjoin/djapp-aia) which contains
+examples for an ETL function to [load](https://github.com/dashjoin/djapp-aia/blob/main/model/dj-function/okf.expression.jsonata) OKF and an AI chat mechanism to [query](https://github.com/dashjoin/djapp-aia/blob/main/model/page/OKF.onChat.jsonata) the knowledge base.
+The easiest way to explore this functionality is via the [docker compose](https://github.com/dashjoin/docker-compose) mechanism.
+
 ## Entity Reconciliation
 
 When integrating data from different sources, entity reconciliation describes the process
