@@ -615,3 +615,17 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * Platform
   * Docker compose deployment including out of the box Vector DB and MCP server
   * Ability to schedule ETLs & functions
+
+### 7.1 (Sep 2026)
+
+* Dashjoin AI Assistant
+  * Support Open Knowledge Format
+  * Broaden RAG file support
+  * Support LLM JSON / thinking mode
+* UI
+  * AI assisted data catalog
+* Platform
+  * Copilot active in Dashjoin Studio
+  * New setIfAbsent function
+  * Support reusing query parameter
+  * Enhanced CORS support
