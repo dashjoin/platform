@@ -146,7 +146,7 @@ public class DBTest {
     check(res);
     res = db.search(sc, "junit", "mike", null);
     check(res);
-    res = db.search(sc, "junit", "EMP", "mike", null);
+    res = db.search(sc, "junit", toID("EMP"), "mike", null);
     check(res);
   }
 
@@ -207,7 +207,7 @@ public class DBTest {
 
     Assertions.assertThrows(NotAuthorizedException.class, () -> {
       // emp table is restricted
-      db.search(sc, "junit", "EMP", "mike", null);
+      db.search(sc, "junit", toID("EMP"), "mike", null);
     });
   }
 
