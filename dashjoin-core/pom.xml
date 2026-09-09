@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<compiler-plugin.version>3.13.0</compiler-plugin.version>
-		<maven.compiler.release>21</maven.compiler.release>
+		<maven.compiler.release>25</maven.compiler.release>
 		<maven.compiler.proc>full</maven.compiler.proc>
 	</properties>
 
@@ -50,7 +50,7 @@
 		<dependency>
 		    <groupId>org.reflections</groupId>
 		    <artifactId>reflections</artifactId>
-		    <!-- version not provided by Quarkus 1.13 -->
+		    <!-- version not provided by Quarkus -->
 		    <version>0.9.11</version>
 		</dependency>
 

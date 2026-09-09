@@ -21,7 +21,7 @@
           
 		<compiler-plugin.version>3.14.1</compiler-plugin.version>
 	    <maven.compiler.parameters>true</maven.compiler.parameters>
-	    <maven.compiler.release>21</maven.compiler.release>
+	    <maven.compiler.release>25</maven.compiler.release>
 		<maven.compiler.proc>full</maven.compiler.proc>
 
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,7 +53,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.7.3</version>
+				<version>1.8.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>

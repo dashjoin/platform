@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.46</version>
+			<version>1.18.48</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -125,8 +125,23 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.6.3</version>
 				<executions>
+					<execution>
+						<id>enforce-maven-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<!-- Defines the minimum acceptable Maven version -->
+									<version>[3.6.3,)</version> 
+									<message>CRITICAL: This project requires Apache Maven 3.6.3 or higher!</message>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
 					<execution>
 						<id>enforce</id>
 						<configuration>
@@ -204,7 +219,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.7.3</version>
+				<version>1.8.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>

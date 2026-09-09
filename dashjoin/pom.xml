@@ -96,7 +96,7 @@
     <dependency>
 		<groupId>org.projectlombok</groupId>
 		<artifactId>lombok</artifactId>
-		<version>1.18.46</version>
+		<version>1.18.48</version>
 		<scope>provided</scope>
 	</dependency>
 	
@@ -131,31 +131,15 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-      
-      
-      <plugin>
-      <groupId>org.jboss.jandex</groupId>
-      <artifactId>jandex-maven-plugin</artifactId>
-      <version>1.2.3</version>
-      <executions>
-        <execution>
-          <id>make-index</id>
-          <goals>
-            <goal>jandex</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-    
-    
-    		<!-- In order to make this POM consumable when installed or published,
+        
+    	<!-- In order to make this POM consumable when installed or published,
 			we need to make sure all variables like ${revision} are set to their actual values.
 			Note that Eclipse does not know how to handle this plugin, therefore there is
 			an exclusion in "lifecycle-mapping" (otherwise it shows an error in Eclipse) -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.7.3</version>
+				<version>1.8.0</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>
