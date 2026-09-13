@@ -140,24 +140,17 @@
 		    <version>2.7.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/net.sf.ucanaccess/ucanaccess -->
+		<!-- https://github.com/spannm/ucanaccess -->
 		<dependency>
-		    <groupId>net.sf.ucanaccess</groupId>
+		    <groupId>io.github.spannm</groupId>
 		    <artifactId>ucanaccess</artifactId>
-		    <version>5.0.1</version>
+		    <version>5.1.8</version>
 		    <exclusions>
 				<exclusion>
 					<groupId>org.hsqldb</groupId>
 					<artifactId>hsqldb</artifactId>
 				</exclusion>
 		    </exclusions>
-		</dependency>
-
-		<!-- Use newer version for ucanaccess, as it's also required by dashjoin-nlp -->
-		<dependency>
-	   		<groupId>com.healthmarketscience.jackcess</groupId>
-	   		<artifactId>jackcess</artifactId>
-	   		<version>3.0.1</version>
 		</dependency>
 
 		<dependency>
