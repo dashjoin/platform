@@ -670,6 +670,20 @@ To choose a specific column, specify the column name. To make sure the slot stay
 
 Database and table can be omitted on table pages. In this case, the widget displays the equivalent of a select all from the respective table.
 
+Tables allow the user to add filters to specific columns. If a filter value is provided,
+the table will only show rows where the respective cell is equal to the filter value.
+If the cell contains an array, the row is shown if the array contains the filter value.
+If the table displays the result of a query or an expression, the filters are only applied on the results (i.e. they are not
+pushed down to the database). In turn, you can prefix the filter with one of these operators:
+
+* < less than
+* \> greater than
+* <= less than or equal
+* \>= greater than or equal
+* <> not equal
+* != not equal
+* ~ contains substring
+
 #### text
 
 Displays a simple text
