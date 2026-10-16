@@ -5,7 +5,6 @@
 		"children": [
 			{
 				"widget": "card",
-				"layout": "vertical",
 				"size": 3,
 				"style": {
 				    "height": "100%"
@@ -55,7 +54,6 @@
 			},
 			{
 				"widget": "card",
-				"layout": "vertical",
 				"title": "App",
 				"size": 3,
 				"style": {
@@ -75,6 +73,12 @@
 					},
 					{
 						"widget": "text",
+						"href": "/page/Lint",
+						"icon": "report",
+						"text": "Lint"
+					},
+					{
+						"widget": "text",
 						"text": "Notebook",
 						"href": "/page/Notebook",
 						"icon": "edit_note"
@@ -89,7 +93,6 @@
 			},
 			{
 				"widget": "card",
-				"layout": "vertical",
 				"title": "Configuration",
 				"size": 3,
 				"style": {
@@ -112,7 +115,6 @@
 			},
 			{
 				"widget": "card",
-				"layout": "vertical",
 				"title": "Databases",
 				"size": 3,
 				"style": {
@@ -178,7 +180,6 @@
 				"expression": "$djGetFunctions()",
 				"title": "Functions"
 			}
-		],
-		"pageLayout": "2 column"
+		]
 	}
 }

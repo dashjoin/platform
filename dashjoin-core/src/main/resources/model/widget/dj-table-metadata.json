@@ -2,7 +2,6 @@
   "ID": "dj-table-metadata",
   "layout": {
     "widget": "container",
-    "layout" : "vertical",
     "if": "$not($contains(pk1, \"/config/\"))",
     "children": [
       {
