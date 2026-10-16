@@ -81,9 +81,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         if (folder.equals("dj-query-catalog"))
           om.convertValue(tree, QueryMeta.class);
         if (folder.equals("widget"))
-          checkTopLayout(tree.get("layout"));
+          checkLayout(tree.get("layout"));
         if (folder.equals("page"))
-          checkTopLayout(tree.get("layout"));
+          checkLayout(tree.get("layout"));
         if (folder.equals("dj-database")) {
           checkDatabaseLayout(tree);
           check(item);
@@ -144,15 +144,10 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
   void checkDatabaseLayout(JsonNode tree) {
     for (String layout : new String[] {"instanceLayout", "tableLayout"})
-      checkTopLayout(tree.get(layout));
+      if (tree.get(layout) != null)
+        checkLayout(tree.get(layout));
     for (JsonNode i : tree)
       checkDatabaseLayout(i);
-  }
-
-  void checkTopLayout(JsonNode tree) {
-    assertTrue(tree != null, "no layout found", tree);
-    if (tree != null)
-      checkLayout(tree);
   }
 
   @SuppressWarnings("unchecked")
@@ -187,6 +182,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if (field.equals("card"))
         continue;
       if (field.equals("style"))
+        continue;
+      if (field.equals("if"))
         continue;
       if (field.equals("cached"))
         continue;

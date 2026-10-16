@@ -119,7 +119,6 @@
       "required": [
         "name"
       ],
-      "layout": "vertical",
       "order": [
 		  ["ID", "name", "dj-label"],
 		  ["title", "comment"],
@@ -267,7 +266,6 @@
       "type": "object",
       "tableLayout": {
         "widget": "page",
-        "pageLayout": "1 column",
         "children": [
           {
             "widget": "table",
@@ -355,7 +353,6 @@
             "properties": {
               "properties": {
                 "type": "object",
-                "layout": "vertical",
                 "readOnly": true,
                 "additionalProperties": {
                   "type": "object",
@@ -606,7 +603,6 @@
           "name": "map",
           "parent": "dj/config/dj-config",
           "type": "object",
-          "layout": "vertical",
           "case": [
             "map"
           ],
@@ -626,7 +622,6 @@
           "items": {
             "type": "string"
           },
-          "layout": "vertical",
           "case": [
             "list"
           ]
@@ -667,7 +662,6 @@
           },
           {
             "widget": "container",
-            "text": "New Widget",
             "if": "value.type = \"write\"",
             "children": [
               {
@@ -747,7 +741,6 @@
           "name": "arguments",
           "parent": "dj/config/dj-query-catalog",
           "type": "object",
-          "layout": "vertical",
 	      "size": 12,
           "additionalProperties": {
             "type": "object",
@@ -895,7 +888,6 @@
       },
       "tableLayout": {
         "widget": "page",
-        "pageLayout": "1 column",
         "children": [
             {
               "widget": "container",
@@ -945,7 +937,6 @@
                 }
               }
             ],
-            "layout": "vertical",
             "redrawInterval": 5
           }
         ]
