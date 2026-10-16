@@ -14,12 +14,13 @@ import org.dashjoin.model.QueryMeta;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
+import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -29,7 +30,8 @@ import com.fasterxml.jackson.databind.node.TextNode;
  */
 public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
-  private static ObjectMapper om = new ObjectMapper();
+  private static ObjectMapper om =
+      new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   public static List<String> CLIENT_FUNCTIONS =
       Arrays.asList("confirm", "setVariable", "prompt", "alert", "notify", "refresh", "reload",
@@ -163,7 +165,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (widget != null) {
       if (!Arrays.asList("activity-status", "layout-edit-switch", "toolbar", "page", "${pk1}")
           .contains(widget)) {
-        assertTrue(widgets.keySet().contains(widget), "unknown widget value", widget);
+        assertTrue(widgets.keySet().contains(widget), "unknown widget ", widget);
         props = (List<String>) widgets.get(widget);
         if (studio.get(widget) != null)
           props = Stream.concat(props.stream(), ((Collection<String>) studio.get(widget)).stream())
@@ -224,37 +226,41 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     return null;
   }
 
-  void checkExpressions(JsonNode tree) throws Exception {
+  void checkExpressions(JsonNode tree) {
     Iterator<JsonNode> items = tree.iterator();
     while (items.hasNext())
       checkExpressions(items.next());
     for (Entry<String, JsonNode> kid : tree.properties()) {
-      if (kid.getKey().equals("object"))
-        assertTrue(kid.getValue() instanceof ArrayNode, "object value must be an array",
-            kid.getValue());
-      checkExpressions(kid.getValue());
       for (String field : PojoDatabase.EXPRESSION_FIELDS)
         if (kid.getKey().equals(field)) {
           String expr = kid.getValue().asText();
 
+          if (expr.toLowerCase().startsWith("//javascript")
+              || expr.toLowerCase().startsWith("// javascript"))
+            continue;
+
           if (!(kid.getValue() instanceof ObjectNode)) {
-            Jsonata jsonata = Jsonata.jsonata(expr);
-            JFunction x = new JFunction(new JFunctionCallable() {
-              @Override
-              public Object call(Object input, @SuppressWarnings("rawtypes") List args)
-                  throws Throwable {
-                return null;
-              }
-            }, null);
-            jsonata.registerFunction("error", x);
-            for (String f : CLIENT_FUNCTIONS)
-              jsonata.registerFunction(f, x);
-            for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
-              jsonata.registerFunction(inst.getID(), x);
             try {
-              jsonata.evaluate(null);
-            } catch (Exception e) {
-              throw e;
+              Jsonata jsonata = Jsonata.jsonata(expr);
+              JFunction x = new JFunction(new JFunctionCallable() {
+                @Override
+                public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                    throws Throwable {
+                  return null;
+                }
+              }, null);
+              jsonata.registerFunction("error", x);
+              for (String f : CLIENT_FUNCTIONS)
+                jsonata.registerFunction(f, x);
+              for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
+                jsonata.registerFunction(inst.getID(), x);
+              try {
+                jsonata.evaluate(null);
+              } catch (Exception e) {
+                fail("Error running expression " + expr + ": " + e.getMessage());
+              }
+            } catch (JException je) {
+              fail("Error parsing expression " + expr + ": " + je.getMessage());
             }
           }
         }
