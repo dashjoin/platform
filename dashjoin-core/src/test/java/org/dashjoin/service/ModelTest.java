@@ -222,6 +222,7 @@ public class ModelTest {
             jsonata.registerFunction("clearCache", x);
             jsonata.registerFunction("notify", x);
             jsonata.registerFunction("setIfAbsent", x);
+            jsonata.registerFunction("djLint", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
