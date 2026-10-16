@@ -1,0 +1,210 @@
+{
+    "aichat": [
+        "title",
+        "expression",
+        "onChat",
+        "placeholder",
+        "uploadEnabled",
+        "limit",
+        "extensions"
+    ],
+    "actionTable": [
+        "title",
+        "expression",
+        "properties",
+        "perPage"
+    ],
+    "analytics": [
+        "title",
+        "database",
+        "table",
+        "onchange",
+        "chart",
+        "style",
+        "columns",
+        "filter"
+    ],
+    "button": [
+        "title",
+        "text",
+        "expression",
+        "print"
+    ],
+    "card": [
+        "title",
+        "roles",
+        "text"
+    ],
+    "chart": [
+        "title",
+        "card",
+        "database",
+        "query",
+        "graph",
+        "chart",
+        "expression",
+        "arguments",
+        "style"
+    ],
+    "container": [
+        "title",
+        "if",
+        "roles",
+        "redrawInterval",
+        "style"
+    ],
+    "create": [
+        "title"
+    ],
+    "datagrid": [
+        "title",
+        "expression",
+        "onchange",
+        "ondelete",
+        "oncreate",
+        "columns",
+        "idColumn"
+    ],
+    "diagram": [
+        "title",
+        "style",
+        "nodes",
+        "edges",
+        "moveNode",
+        "addNode",
+        "removeNode",
+        "addEdge",
+        "removeEdge"
+    ],
+    "display": [
+        "title",
+        "card",
+        "display",
+        "icons"
+    ],
+    "edit": [
+        "title",
+        "noDelete"
+    ],
+    "editRelated": [
+        "title",
+		"text",
+        "prop",
+        "columns"
+    ],
+    "expansion": [
+        "title",
+        "text",
+        "expression",
+        "roles"
+    ],
+    "graph": [
+        "title",
+        "nodes",
+        "style",
+        "_3d"
+    ],
+    "html": [
+        "title",
+        "context",
+        "html",
+        "script"
+    ],
+    "icon": [
+        "title",
+        "href",
+        "tooltip",
+        "roles",
+        "icon"
+    ],
+    "input": [
+        "name",
+        "title",
+        "description",
+        "widget",
+        "options",
+        "style",
+        "readOnly",
+        "required",
+        "format"
+    ],
+    "layout-switch": [],
+    "links": [
+        "title"
+    ],
+    "map": [
+        "title",
+        "card",
+        "display",
+        "style"
+    ],
+    "markdown": [
+        "title",
+        "card",
+        "markdown",
+        "context"
+    ],
+    "mdxeditor": [
+        "title",
+        "card",
+        "markdown",
+        "context",
+        "expression",
+        "properties"
+    ],
+    "notebook": [
+        "title"
+    ],
+    "search": [],
+    "sidenav-switch": [],
+    "spacer": [],
+    "spreadsheet": [
+        "title",
+        "url",
+        "extraArgs"
+    ],
+    "stepper": [
+        "title",
+        "roles",
+        "expression"
+    ],
+    "table": [
+        "title",
+        "mode",
+        "database",
+        "query",
+        "graph",
+        "expression",
+        "arguments",
+        "perPage"
+    ],
+    "tabs": [
+        "title",
+        "roles"
+    ],
+    "text": [
+        "title",
+        "text",
+        "icon",
+        "href"
+    ],
+    "tree": [
+        "title",
+        "database",
+        "query",
+        "expression"
+    ],
+    "upload": [
+        "title"
+    ],
+    "uploadfile": [
+        "title",
+        "allowFolderSelectionRecursive",
+        "preserveFolders"
+    ],
+    "variable": [
+        "title",
+        "text"
+    ],
+    "dj-table-metadata": []
+}

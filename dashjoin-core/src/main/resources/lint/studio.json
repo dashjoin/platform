@@ -1,0 +1,12 @@
+{
+    "actionTable": [
+        "hideColumns"
+    ],
+    "table": [
+        "hideColumns",
+		"primaryText",
+		"secondaryText",
+		"tertiaryText",
+		"leftIcon"
+    ]
+}

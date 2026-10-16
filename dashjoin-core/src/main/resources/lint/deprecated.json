@@ -1,0 +1,7 @@
+{
+    "button": [
+		{
+			"navigate": "use $navigate(url) instead"
+		}
+    ]
+}
