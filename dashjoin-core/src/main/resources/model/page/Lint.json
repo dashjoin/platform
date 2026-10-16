@@ -1,0 +1,14 @@
+{
+    "ID": "Lint",
+    "layout": {
+        "widget": "page",
+        "children": [
+            {
+                "html": "<pre>${context}</pre>",
+                "context": "$djLint()",
+                "title": "Analysis of the Current Dashjoin App",
+                "widget": "html"
+            }
+        ]
+    }
+}

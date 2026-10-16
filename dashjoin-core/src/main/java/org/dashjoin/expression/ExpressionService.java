@@ -1,7 +1,6 @@
 package org.dashjoin.expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import java.util.ServiceLoader;
 import org.dashjoin.function.AbstractConfigurableFunction;
 import org.dashjoin.function.AbstractFunction;
 import org.dashjoin.function.AbstractVarArgFunction;
+import org.dashjoin.function.DjLint;
 import org.dashjoin.function.FunctionService;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -236,10 +236,7 @@ public class ExpressionService {
         // intercept the exception
         JException je = (JException) e;
         if ("T1006".equals(je.getError())) {
-          for (String s : Arrays.asList("confirm", "setVariable", "prompt", "alert", "notify",
-              "refresh", "reload", "log", "navigate", "clearCache", "log", "translate",
-              "stopSpeech", "speak", "sleep", "dialog", "progress", "setActiveStep", "stepForward",
-              "stepBack"))
+          for (String s : DjLint.CLIENT_FUNCTIONS)
             if (expression.contains("$" + s))
               throw new Exception("Function $" + s + " can only be used in the browser");
         }

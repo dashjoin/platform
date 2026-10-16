@@ -25,6 +25,7 @@ org.dashjoin.function.Invoke
 org.dashjoin.function.Search
 org.dashjoin.mapping.Receive
 org.dashjoin.function.DjVersion
+org.dashjoin.function.DjLint
 org.dashjoin.function.DjRoles
 org.dashjoin.function.DjUser
 org.dashjoin.function.DjGetDrivers
