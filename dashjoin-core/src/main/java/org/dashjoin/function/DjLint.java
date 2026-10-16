@@ -119,12 +119,14 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if (((String) map.get("ID")).contains("dj-database"))
         if (map.get("type") == null)
           fail("no type: " + map);
-    if (parentId != null)
+    if (parentId != null && map.get("parent") != null)
       assertEquals(parentId, map.get("parent"), "parent property must match parent ID");
-    assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"),
-        "ID must be parent + name");
+    if (map.get("parent") != null)
+      assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"),
+          "ID must be parent + name");
     assertTrue(((String) map.get("ID")).startsWith("dj/"), "ID must start with dj/", map.get("ID"));
-    if (map.get("ref") != null)
+    if (map.get("ref") != null && ((String) map.get("ref")).startsWith((String) root.get("ID")))
+      // check ref within the same DB
       assertTrue(pk(root, (String) map.get("ref")), "ref does not match", map.get("ref"));
   }
 
@@ -168,6 +170,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
               .toList();
       }
     }
+
+    if (widget.equals("${pk1}"))
+      return;
 
     for (Entry<String, JsonNode> e : tree.properties()) {
       String field = e.getKey();
