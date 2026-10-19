@@ -82,8 +82,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         current = "model/" + folder + "/" + item.get("ID") + ".json";
         currentID = "" + item.get("ID");
 
-        if (folder.equals("dj-query-catalog"))
+        if (folder.equals("dj-query-catalog")) {
+          checkDanglingPointers(tree);
           om.convertValue(tree, QueryMeta.class);
+        }
+        if (folder.equals("dj-function"))
+          checkDanglingPointers(tree);
         if (folder.equals("widget"))
           checkLayout(tree.get("layout"));
         if (folder.equals("page"))
@@ -154,6 +158,21 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         checkLayout(tree.get(layout));
     for (JsonNode i : tree)
       checkDatabaseLayout(i);
+  }
+
+  void checkDanglingPointers(JsonNode tree) {
+    for (JsonNode i : tree)
+      checkDanglingPointers(i);
+    for (Entry<String, JsonNode> e : tree.properties()) {
+      String field = e.getKey();
+      if (field.endsWith("-pointer")) {
+        String org = field.substring(0, field.length() - "-pointer".length());
+        if (tree.get(org) == null)
+          fail("The field value for " + org + " cannot be found via the reference " + field
+              + ". There must be a file called " + currentID + '.' + e.getValue().asText());
+        continue;
+      }
+    }
   }
 
   @SuppressWarnings("unchecked")
