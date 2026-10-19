@@ -59,6 +59,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
   List<String> messages = new ArrayList<String>();
   String current;
+  String currentID;
   Map<String, Object> widgets;
 
   @Override
@@ -79,6 +80,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         JsonNode tree = om.valueToTree(item);
 
         current = "model/" + folder + "/" + item.get("ID") + ".json";
+        currentID = "" + item.get("ID");
 
         if (folder.equals("dj-query-catalog"))
           om.convertValue(tree, QueryMeta.class);
@@ -161,16 +163,20 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         checkLayout(i);
 
     List<String> props = Arrays.asList();
+
+    if (tree.get("widget") == null) {
+      fail("Missing widget: " + tree);
+      return;
+    }
+
     String widget = tree.get("widget").asText();
-    if (widget != null) {
-      if (!Arrays.asList("activity-status", "layout-edit-switch", "toolbar", "page", "${pk1}")
-          .contains(widget)) {
-        assertTrue(widgets.keySet().contains(widget), "unknown widget ", widget);
-        props = (List<String>) widgets.get(widget);
-        if (studio.get(widget) != null)
-          props = Stream.concat(props.stream(), ((Collection<String>) studio.get(widget)).stream())
-              .toList();
-      }
+    if (!Arrays.asList("activity-status", "layout-edit-switch", "toolbar", "page", "${pk1}")
+        .contains(widget)) {
+      assertTrue(widgets.keySet().contains(widget), "unknown widget ", widget);
+      props = (List<String>) widgets.get(widget);
+      if (studio.get(widget) != null)
+        props = Stream.concat(props.stream(), ((Collection<String>) studio.get(widget)).stream())
+            .toList();
     }
 
     if (widget.equals("${pk1}"))
@@ -178,8 +184,13 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     for (Entry<String, JsonNode> e : tree.properties()) {
       String field = e.getKey();
-      if (field.endsWith("-pointer"))
+      if (field.endsWith("-pointer")) {
+        String org = field.substring(0, field.length() - "-pointer".length());
+        if (tree.get(org) == null)
+          fail("The field value for " + org + " cannot be found via the reference " + field
+              + ". There must be a file called " + currentID + '.' + e.getValue().asText());
         continue;
+      }
       if (field.equals("widget"))
         continue;
       if (field.equals("size"))

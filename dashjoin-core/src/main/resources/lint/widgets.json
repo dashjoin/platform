@@ -54,7 +54,8 @@
         "style"
     ],
     "create": [
-        "title"
+        "title",
+		"text"
     ],
     "datagrid": [
         "title",
