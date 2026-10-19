@@ -900,6 +900,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         continue;
       if ("OpenAPI".equals(page.get("ID")))
         continue;
+      if ("Lint".equals(page.get("ID")))
+        continue;
       if ("App".equals(page.get("ID")))
         continue;
       if ("DataCatalog".equals(page.get("ID")))
