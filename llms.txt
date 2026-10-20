@@ -1644,3 +1644,13 @@ DESCRIPTION: Waits before returning the parameter (server-side equivalent of $sl
 LANGUAGE: jsonata
 CODE: $wait('delayed by 1 second', 1000)
 
+TITLE: djLint
+DESCRIPTION: Scans the current app for errors and warnings
+LANGUAGE: jsonata
+CODE: $djLint()
+
+TITLE: collectMetadata
+DESCRIPTION: Reconnects the database and picks up any schema changes
+LANGUAGE: jsonata
+CODE: $collectMetadata('dj/postgres')
+

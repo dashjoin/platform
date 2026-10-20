@@ -612,5 +612,18 @@
             "code": "$wait('delayed by 1 second', 1000)",
             "output": "delayed by 1 second"
         }
-    ]
+    ],
+	"djLint": [
+		{
+		    "description": "Scans the current app for errors and warnings",
+		    "code": "$djLint()",
+		    "output": "errors and warnings"
+		}
+	],
+	"collectMetadata": [
+		{
+		    "description": "Reconnects the database and picks up any schema changes",
+		    "code": "$collectMetadata('dj/postgres')"
+		}
+	]
 }

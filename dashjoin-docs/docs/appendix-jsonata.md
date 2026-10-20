@@ -249,6 +249,15 @@ Sample output:
 ```json
 [ "business", "enterprise", "juridical person", "organization", "economic entity", "group" ]
 ```
+### collectMetadata
+Reconnects the database and picks up any schema changes
+```
+$collectMetadata('dj/postgres')
+```
+Sample output: 
+```json
+null
+```
 ### create
 create a new record in database 'sqlite', table 'REQUESTS'
 ```
@@ -282,6 +291,15 @@ $delete('sqlite', 'REQUESTS', 7)
 Sample output: 
 ```json
 null
+```
+### djLint
+Scans the current app for errors and warnings
+```
+$djLint()
+```
+Sample output: 
+```json
+"errors and warnings"
 ```
 ### djRoles
 Returns the roles of the current user

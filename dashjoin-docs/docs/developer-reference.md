@@ -1272,3 +1272,5 @@ wait| $wait(object, millisecs) | Wait millisecs provided before returning object
 etl | $etl(foreach, expression, database) | Run an ETL process programmatically. The function requires an expression string. If you want to pass data directly, simply convert the data to a string by using the expression $string(data)
 etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
 validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
+collectMetadata | $collectMetadata(id) | Reconnects database with id and updates and schema changes
+djLint | $djLint() | Scans the app for errors and warnings
