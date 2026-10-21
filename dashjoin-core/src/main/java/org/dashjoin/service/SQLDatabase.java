@@ -859,7 +859,7 @@ public class SQLDatabase extends AbstractDatabase {
   public Map<String, Property> queryMeta(QueryMeta info, Map<String, Object> arguments)
       throws SQLException {
 
-    if (!"read".equals(info.type)) {
+    if ("write".equals(info.type)) {
       throw new IllegalArgumentException("Can only determine column meta for read queries");
     }
 
