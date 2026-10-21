@@ -175,7 +175,7 @@ $call("openai", {
 * **Can I compute the homepage based who is logged in?** Yes, you can use the on-login expression and do some computation based on the email and user context values. The result can be fed into the setVariable function: `$setVariable("homepage", some computation using user or email)`.
 Alternatively, in the properties for the tenantUser, you can set homepage to the desired value or in dj-role do the same for all users in a role.
 
-* **Can I initialize a SQL database with schema and data?** Yes, in Dashjoin Studio, you can add SQL scripts to your database:
+* **Can I initialize a SQL database with schema and data?** Yes, in Dashjoin Studio, you can add SQL scripts containing create table and other DDL statements to your database:
 
 ```
 {
