@@ -257,3 +257,4 @@ Options can be left out, the default is the browser default behavior.
 
 * **How can I process a DB CLOB in JSONata?** DB BLOBs and CLOBs are converted to byte arrays which cannot be processed with JSONata. You can use the openText function and pass the CLOB as the first parameter, along with the respective encoding: $all('northwind', 'EMPLOYEES').$openText(PHOTO, 'ISO_8859_1')
 
+* **How can I avoid getting JSON keys with the table name when running a SQL query?** When you run a select query, the JSON keys are table.column in order to avoid name collisions when tables are joined. For some databases (e.g. PostgreSQL), you can use "select col as name ..." in order to choose a simpler name. Note that "select table.col as col ..." has no effect. You can either change the keys with a subsequent JSONata expression or you can change the projection to an expression like "select number+0 as name ..." or "select concat(string, '') as name ..."
