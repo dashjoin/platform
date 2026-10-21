@@ -257,6 +257,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   }
 
   void checkExpressions(JsonNode tree) {
+    if (tree.get("widget") != null)
+      if (tree.get("widget").asText().equals("actionTable"))
+        if (tree.get("properties") != null)
+          for (JsonNode p : tree.get("properties"))
+            checkExpressions(om.createObjectNode().set("expression", p));
     Iterator<JsonNode> items = tree.iterator();
     while (items.hasNext())
       checkExpressions(items.next());

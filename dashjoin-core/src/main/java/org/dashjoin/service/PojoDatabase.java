@@ -1311,9 +1311,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
   /**
    * JSON fields that contain JSONata expressions
    */
-  public static final String[] EXPRESSION_FIELDS = {"if", "context", "display", "expression",
-      "onClick", "before-create", "after-create", "before-update", "after-update", "before-delete",
-      "after-delete", "print", "navigate", "onRender", "options"};
+  public static final String[] EXPRESSION_FIELDS = {"arguments", "if", "context", "display",
+      "expression", "onClick", "before-create", "after-create", "before-update", "after-update",
+      "before-delete", "after-delete", "print", "navigate", "onRender", "options"};
 
   /**
    * returns true if this tree contains expression / display / ... ="...$fn(.."arg"..)"
