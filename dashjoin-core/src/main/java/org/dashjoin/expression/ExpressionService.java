@@ -238,7 +238,8 @@ public class ExpressionService {
         if ("T1006".equals(je.getError())) {
           for (String s : DjLint.CLIENT_FUNCTIONS)
             if (expression.contains("$" + s))
-              throw new Exception("Function $" + s + " can only be used in the browser");
+              throw new JsonataException("Function $" + s + " can only be used in the browser",
+                  je.getLocation());
         }
         if ("T0410".equals(je.getError())) {
           for (org.dashjoin.function.Function f : ServiceLoader
@@ -246,10 +247,10 @@ public class ExpressionService {
             if (!(f instanceof AbstractConfigurableFunction))
               if (je.getExpected().equals(f.getID()))
                 if (f.getHelp() != null)
-                  throw new Exception(f.getHelp());
+                  throw new JsonataException(f.getHelp(), je.getLocation());
         }
         if ("T1006".equals(je.getError()))
-          throw new Exception(e.getMessage() + ": $" + je.getCurrent());
+          throw new JsonataException(e.getMessage() + ": $" + je.getCurrent(), je.getLocation());
         error = e.toString();
         throw e;
       } catch (Exception e) {

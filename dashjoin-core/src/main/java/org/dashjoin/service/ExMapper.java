@@ -4,8 +4,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.dashjoin.expression.JsonataException;
 import org.dashjoin.model.Table;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import com.dashjoin.jsonata.JException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
@@ -55,6 +57,12 @@ public class ExMapper implements ExceptionMapper<Throwable> {
     } catch (Exception ignore) {
     }
 
+    if (throwable instanceof JException)
+      return Response.serverError().entity(msg)
+          .header("x-jsonata-location", ((JException) throwable).getLocation()).build();
+    if (throwable instanceof JsonataException)
+      return Response.serverError().entity(msg)
+          .header("x-jsonata-location", ((JsonataException) throwable).getLocation()).build();
     return toResponse(msg);
   }
 
