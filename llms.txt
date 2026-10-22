@@ -631,7 +631,7 @@ CODE: {
 }
 
 TITLE: uploadfile widget
-DESCRIPTION: Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment variable
+DESCRIPTION: Allows uploading files to the upload directory. Note that WebDAV must be turned on using the DASHJOIN_WEBDAV_ENABLED environment variable
 LANGUAGE: json
 CODE: {
   "widget" : "uploadfile"

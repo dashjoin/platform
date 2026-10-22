@@ -636,7 +636,7 @@ shows a static tree that is suitable for a side navigation. The tree nodes can p
 }
 ```
 ## uploadfile widget
-Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment variable
+Allows uploading files to the upload directory. Note that WebDAV must be turned on using the DASHJOIN_WEBDAV_ENABLED environment variable
 ```json
 {
   "widget" : "uploadfile"

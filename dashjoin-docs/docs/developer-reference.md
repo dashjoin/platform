@@ -702,7 +702,7 @@ Displays a tree based on a recursive query
 
 #### uploadfile
 
-Allows uploading files to the upload directory. Note that WebDAV must be turned on using the WEBDEV_ENABLED environment
+Allows uploading files to the upload directory. Note that WebDAV must be turned on using the DASHJOIN_WEBDAV_ENABLED environment
 variable (see Installation - Environment).
 
 * allowFolderSelectionRecursive: Recursively get subdirectories
