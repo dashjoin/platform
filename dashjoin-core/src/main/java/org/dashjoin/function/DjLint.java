@@ -96,7 +96,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           checkDatabaseLayout(tree);
           check(item);
         }
-        checkExpressions(tree);
+        checkExpressions(tree, folder.equals("dj-function"));
       }
     }
 
@@ -256,15 +256,15 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     return null;
   }
 
-  void checkExpressions(JsonNode tree) {
+  void checkExpressions(JsonNode tree, boolean backendOnly) {
     if (tree.get("widget") != null)
       if (tree.get("widget").asText().equals("actionTable"))
         if (tree.get("properties") != null)
           for (JsonNode p : tree.get("properties"))
-            checkExpressions(om.createObjectNode().set("expression", p));
+            checkExpressions(om.createObjectNode().set("expression", p), backendOnly);
     Iterator<JsonNode> items = tree.iterator();
     while (items.hasNext())
-      checkExpressions(items.next());
+      checkExpressions(items.next(), backendOnly);
     for (Entry<String, JsonNode> kid : tree.properties()) {
       for (String field : PojoDatabase.EXPRESSION_FIELDS)
         if (kid.getKey().equals(field)) {
@@ -285,21 +285,32 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 }
               }, null);
               jsonata.registerFunction("error", x);
-              for (String f : CLIENT_FUNCTIONS)
-                jsonata.registerFunction(f, x);
+              if (!backendOnly)
+                for (String f : CLIENT_FUNCTIONS)
+                  jsonata.registerFunction(f, x);
               for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
                 jsonata.registerFunction(inst.getID(), x);
               try {
                 jsonata.evaluate(null);
+              } catch (JException e) {
+                fail("Error running expression\n" + insertError(expr, e));
               } catch (Exception e) {
-                fail("Error running expression " + expr + ": " + e.getMessage());
+                fail("Error running expression\n" + expr + ": " + e.getMessage());
               }
             } catch (JException je) {
-              fail("Error parsing expression " + expr + ": " + je.getMessage());
+              fail("Error parsing expression\n" + insertError(expr, je));
             }
           }
         }
     }
+  }
+
+  String insertError(String expr, JException e) {
+    if (e.getLocation() >= 0)
+      return expr.substring(0, e.getLocation()) + "<mark>" + e.getMessage() + "</mark>"
+          + expr.substring(e.getLocation());
+    else
+      return expr;
   }
 
   void fail(String message) {
