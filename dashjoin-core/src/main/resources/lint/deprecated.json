@@ -3,5 +3,10 @@
 		{
 			"navigate": "use $navigate(url) instead"
 		}
-    ]
+    ],
+	"aichat":[
+		{
+		    "onUpload": "uploaded files are passed via onChat"
+		}
+	]
 }

@@ -55,7 +55,7 @@
     ],
     "create": [
         "title",
-		"text"
+        "text"
     ],
     "datagrid": [
         "title",
@@ -89,7 +89,7 @@
     ],
     "editRelated": [
         "title",
-		"text",
+        "text",
         "prop",
         "columns"
     ],
