@@ -275,6 +275,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
             continue;
 
           if (!(kid.getValue() instanceof ObjectNode)) {
+            if (expr.isBlank()) {
+              fail("Empty expression " + kid);
+              continue;
+            }
+
             try {
               Jsonata jsonata = Jsonata.jsonata(expr);
               JFunction x = new JFunction(new JFunctionCallable() {
