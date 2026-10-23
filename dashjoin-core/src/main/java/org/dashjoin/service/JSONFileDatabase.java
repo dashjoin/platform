@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
-import org.dashjoin.service.JSONFileDatabase.FileUsed;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.Home;
@@ -90,7 +90,25 @@ public class JSONFileDatabase extends JSONDatabase {
     String[] parts = info.query.split("/");
     if (parts.length == 1) {
       String path = "model/" + parts[0];
-      File[] files = getFile(path).listFiles();
+      File[] files;
+      if (arguments != null && arguments.get("ID") instanceof String) {
+        // $all('config', 'table', {'ID': 'abc'}) - avoid table scan and read file directly instead
+        String id = (String) arguments.get("ID");
+        // make sure there are no special characters
+        if (id.equals(FilenameUtils.getName(id))) {
+          File f = getFile(path + "/" + id + ".json");
+          if (f.exists())
+            // searched ID exists - read it
+            files = new File[] {f};
+          else
+            // searched ID does not exist - empty result
+            files = new File[0];
+        } else
+          // ID search includes / or . - empty result
+          files = new File[0];
+      } else
+        // no ID pushdown - scan table
+        files = getFile(path).listFiles();
       if (files != null) {
         // Use the same order independent of file system or OS
         Arrays.sort(files, NameFileComparator.NAME_INSENSITIVE_COMPARATOR);
