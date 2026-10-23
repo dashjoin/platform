@@ -260,8 +260,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (tree.get("widget") != null)
       if (tree.get("widget").asText().equals("actionTable"))
         if (tree.get("properties") != null)
-          for (JsonNode p : tree.get("properties"))
-            checkExpressions(om.createObjectNode().set("expression", p), backendOnly);
+          for (Entry<String, JsonNode> e : tree.get("properties").properties())
+            if (!e.getKey().endsWith("-pointer"))
+              checkExpressions(om.createObjectNode().set("expression", e.getValue()), backendOnly);
     Iterator<JsonNode> items = tree.iterator();
     while (items.hasNext())
       checkExpressions(items.next(), backendOnly);
