@@ -625,5 +625,14 @@
 		    "description": "Reconnects the database and picks up any schema changes",
 		    "code": "$collectMetadata('dj/postgres')"
 		}
+	],
+	"try": [
+		{
+			"description": "try-catch: calls the first function and returns the result. In case of an error, calls the second function",
+			"code": "$try( function(){$error('throw')}, function($ex){$ex} )",
+			"output": 			{
+			  "message": "throw"
+			}
+		}		
 	]
 }

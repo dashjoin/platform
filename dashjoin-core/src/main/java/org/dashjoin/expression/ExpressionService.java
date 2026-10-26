@@ -1,6 +1,7 @@
 package org.dashjoin.expression;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.dashjoin.service.Services;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import com.dashjoin.jsonata.Functions;
 import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
@@ -141,6 +143,21 @@ public class ExpressionService {
       return new ParsedJsonata();
 
     Jsonata expr = Jsonata.jsonata(expression);
+
+    expr.registerFunction("try", new JFunction(new JFunctionCallable() {
+      @Override
+      public Object call(Object input, List args) throws Throwable {
+        try {
+          return Functions.funcApply(args.get(0), Arrays.asList());
+        } catch (Throwable ex) {
+          if (args.get(1) != null)
+            return Functions.funcApply(args.get(1),
+                Arrays.asList(Map.of("message", ex.getMessage())));
+          else
+            return null;
+        }
+      }
+    }, "<ff?>"));
 
     for (org.dashjoin.function.Function f : ServiceLoader
         .load(org.dashjoin.function.Function.class)) {

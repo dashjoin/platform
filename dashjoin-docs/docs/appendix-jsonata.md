@@ -835,6 +835,17 @@ Sample output:
   "PHONE" : "(21) 555-0091"
 }
 ```
+### try
+try-catch: calls the first function and returns the result. In case of an error, calls the second function
+```
+$try( function(){$error('throw')}, function($ex){$ex} )
+```
+Sample output: 
+```json
+{
+  "message" : "throw"
+}
+```
 ### update
 update REQUEST 7 in the database 'sqlite'
 ```

@@ -1274,3 +1274,4 @@ etlSync | $etlSync(source, target, url column) | Compute the files changed since
 validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
 collectMetadata | $collectMetadata(id) | Reconnects database with id and updates and schema changes
 djLint | $djLint() | Scans the app for errors and warnings
+try | $try(function(){...}, function($ex){...}) | Try-catch with the second function being called when there's an error thrown by the first function. If the second function is omitted, the try function returns undefined upon an error

@@ -1654,3 +1654,8 @@ DESCRIPTION: Reconnects the database and picks up any schema changes
 LANGUAGE: jsonata
 CODE: $collectMetadata('dj/postgres')
 
+TITLE: try
+DESCRIPTION: try-catch: calls the first function and returns the result. In case of an error, calls the second function
+LANGUAGE: jsonata
+CODE: $try( function(){$error('throw')}, function($ex){$ex} )
+
