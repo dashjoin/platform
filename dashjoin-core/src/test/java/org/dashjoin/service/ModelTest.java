@@ -223,6 +223,8 @@ public class ModelTest {
             jsonata.registerFunction("notify", x);
             jsonata.registerFunction("setIfAbsent", x);
             jsonata.registerFunction("djLint", x);
+            jsonata.registerFunction("gitCheckout", x);
+            jsonata.registerFunction("prompt", x);
             try {
               jsonata.evaluate(null);
             } catch (Exception e) {
