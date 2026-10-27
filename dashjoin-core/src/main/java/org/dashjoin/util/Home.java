@@ -6,11 +6,10 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.logging.Level;
+import org.dashjoin.function.GitCheckout;
 import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
@@ -68,7 +67,7 @@ public class Home {
             UrlBranch ub = getUrlBranch(appurl.get());
             if (ub.branch != null)
               if (!ub.branch.equals(git.getRepository().getBranch()))
-                switchBranch(git, ub.branch);
+                GitCheckout.switchBranch(git, ub.branch);
           }
         } else {
           log.info("git clone ...");
@@ -86,21 +85,6 @@ public class Home {
     }
 
     Home.instance = this;
-  }
-
-  void switchBranch(Git git, String targetBranch) throws Exception {
-    git.fetch().setRemote("origin").call();
-    var checkoutCmd = git.checkout().setName(targetBranch);
-    if (isBranchRemoteOnly(git.getRepository(), targetBranch))
-      checkoutCmd.setCreateBranch(true).setStartPoint("origin/" + targetBranch)
-          .setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK);
-    checkoutCmd.call();
-  }
-
-  boolean isBranchRemoteOnly(Repository repository, String branchName) throws Exception {
-    boolean localExists = repository.findRef("refs/heads/" + branchName) != null;
-    boolean remoteExists = repository.findRef("refs/remotes/origin/" + branchName) != null;
-    return !localExists && remoteExists;
   }
 
   void ensureHomeExists() {
