@@ -79,35 +79,52 @@
                 "password": "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
             }
         },
-		{
-		    "title": "MCPServer",
-		    "description": "Configures an MCP server",
-		    "file": "model/dj-function/mcp.json",
-		    "code": {
-		        "djClassName": "org.dashjoin.function.MCPServer",
-		        "ID": "mcp",
-				"url": "https://mcp.notion.com/mcp",
-				"username": "Authorization",
-				"password": "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
-				"apiKey": true
-		    }
-		},
-		{
-		    "title": "AIApp",
-		    "description": "Configures an AI application with system prompt, tools, and RAG",
-		    "file": "model/dj-function/aia.json",
-		    "code": {
-				"ID": "aia",
-				"djClassName": "com.dashjoin.ai.AIApp",
-				"systemPrompt": "You are a helpful assistant",
-				"tools": [
-				    "time:get_current_time"
-				],
-				"model": "mistral",
-				"documents": [
-				    "rag.txt"
-				]
-		    }
-		}
+        {
+            "title": "MCPServer",
+            "description": "Configures an MCP server",
+            "file": "model/dj-function/mcp.json",
+            "code": {
+                "djClassName": "org.dashjoin.function.MCPServer",
+                "ID": "mcp",
+                "url": "https://mcp.notion.com/mcp",
+                "username": "Authorization",
+                "password": "DJ1#\b7Zw3EGtmVKaDuwwOtwXfWDG1y+awbon7WNQp9NmJ6EgUXEpYUMC8O7zRUw2kSnDxyATO0R3ke3NxjaT9zCwYyDGS5VDgYt/L",
+                "apiKey": true
+            }
+        },
+        {
+            "title": "Receive",
+            "description": "Function can be called by clients to feed data into a table. Basically an ETL where the extract part is done on the REST client",
+            "file": "model/dj-function/receive.json",
+            "code": {
+                "ID": "receive",
+                "djClassName": "org.dashjoin.mapping.Receive",
+                "sample": "{\"name\": \"tester\"}",
+                "mappings": {
+                    "REQUESTS": {
+                        "sourceTable": "table"
+                    }
+                },
+                "createSchema": false,
+                "database": "sqlite"
+            }
+        },
+        {
+            "title": "AIApp",
+            "description": "Configures an AI application with system prompt, tools, and RAG",
+            "file": "model/dj-function/aia.json",
+            "code": {
+                "ID": "aia",
+                "djClassName": "com.dashjoin.ai.AIApp",
+                "systemPrompt": "You are a helpful assistant",
+                "tools": [
+                    "time:get_current_time"
+                ],
+                "model": "mistral",
+                "documents": [
+                    "rag.txt"
+                ]
+            }
+        }
     ]
 }

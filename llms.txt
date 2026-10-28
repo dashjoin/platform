@@ -1012,6 +1012,23 @@ CODE: {
   "apiKey" : true
 }
 
+TITLE: Receive
+DESCRIPTION: Function can be called by clients to feed data into a table. Basically an ETL where the extract part is done on the REST client
+FILE: model/dj-function/receive.json
+LANGUAGE: json
+CODE: {
+  "ID" : "receive",
+  "djClassName" : "org.dashjoin.mapping.Receive",
+  "sample" : "{\"name\": \"tester\"}",
+  "mappings" : {
+    "REQUESTS" : {
+      "sourceTable" : "table"
+    }
+  },
+  "createSchema" : false,
+  "database" : "sqlite"
+}
+
 TITLE: AIApp
 DESCRIPTION: Configures an AI application with system prompt, tools, and RAG
 FILE: model/dj-function/aia.json

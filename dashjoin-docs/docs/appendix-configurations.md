@@ -237,6 +237,22 @@ Configures an MCP server
   "apiKey" : true
 }
 ```
+### Receive
+Function can be called by clients to feed data into a table. Basically an ETL where the extract part is done on the REST client
+```json
+{
+  "ID" : "receive",
+  "djClassName" : "org.dashjoin.mapping.Receive",
+  "sample" : "{\"name\": \"tester\"}",
+  "mappings" : {
+    "REQUESTS" : {
+      "sourceTable" : "table"
+    }
+  },
+  "createSchema" : false,
+  "database" : "sqlite"
+}
+```
 ### AIApp
 Configures an AI application with system prompt, tools, and RAG
 ```json
