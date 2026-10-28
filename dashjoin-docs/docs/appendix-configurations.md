@@ -469,3 +469,31 @@ defines the role 'admin'. Sets the 'homepage' variable (the initial page after l
   }
 }
 ```
+### platform-url
+Platform URL to be used from the AI service
+```json
+{
+  "ID" : "platform-url",
+  "string" : "http://localhost:8080"
+}
+```
+### exception-mapper
+Error messages containing the key are replaced with the value
+```json
+{
+  "ID" : "exception-mapper",
+  "map" : {
+    "ERROR: duplicate key value violates unique constraint \"Prompt_pkey\"" : "This ID is already in use. Please use another one."
+  }
+}
+```
+### de
+Contains I18N mappings. Use any ISO 3166-1 alpha-2 code instead of 'de'
+```json
+{
+  "ID" : "de",
+  "map" : {
+    "Home" : "Start"
+  }
+}
+```

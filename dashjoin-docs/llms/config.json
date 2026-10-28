@@ -259,5 +259,39 @@
 				}
 			}
 		}
+	],
+	"platform-url": [
+		{
+			"description": "Platform URL to be used from the AI service",
+			"file": "model/dj-config/platform-url.json",
+			"code": {
+				"ID": "platform-url",
+				"string": "http://localhost:8080"
+			}
+		}
+	],
+	"exception-mapper": [
+		{
+			"description": "Error messages containing the key are replaced with the value",
+			"file": "model/dj-config/exception-mapper.json",
+			"code": {
+				"ID": "exception-mapper",
+				"map": {
+					"ERROR: duplicate key value violates unique constraint \"Prompt_pkey\"": "This ID is already in use. Please use another one."
+				}
+			}
+		}
+	],
+	"de": [
+		{
+			"description": "Contains I18N mappings. Use any ISO 3166-1 alpha-2 code instead of 'de'",
+			"file": "model/dj-config/de.json",
+			"code": {
+				"ID": "de",
+				"map": {
+					"Home": "Start"
+				}
+			}
+		}
 	]
 }

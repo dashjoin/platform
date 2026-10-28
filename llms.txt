@@ -1268,6 +1268,37 @@ CODE: {
   }
 }
 
+TITLE: platform-url
+DESCRIPTION: Platform URL to be used from the AI service
+FILE: model/dj-config/platform-url.json
+LANGUAGE: json
+CODE: {
+  "ID" : "platform-url",
+  "string" : "http://localhost:8080"
+}
+
+TITLE: exception-mapper
+DESCRIPTION: Error messages containing the key are replaced with the value
+FILE: model/dj-config/exception-mapper.json
+LANGUAGE: json
+CODE: {
+  "ID" : "exception-mapper",
+  "map" : {
+    "ERROR: duplicate key value violates unique constraint \"Prompt_pkey\"" : "This ID is already in use. Please use another one."
+  }
+}
+
+TITLE: de
+DESCRIPTION: Contains I18N mappings. Use any ISO 3166-1 alpha-2 code instead of 'de'
+FILE: model/dj-config/de.json
+LANGUAGE: json
+CODE: {
+  "ID" : "de",
+  "map" : {
+    "Home" : "Start"
+  }
+}
+
 TITLE: confirm
 DESCRIPTION: displays a confirmation dialog and returns true if the user clicked yes
 LANGUAGE: jsonata
