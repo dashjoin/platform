@@ -39,6 +39,10 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           "reload", "log", "navigate", "clearCache", "log", "translate", "stopSpeech", "speak",
           "sleep", "dialog", "progress", "setActiveStep", "stepForward", "stepBack", "sse");
 
+  public static List<String> INPUTS = Arrays.asList("boolean", "string", "number", "auto complete",
+      "select", "multi select", "key value", "password", "textarea", "date", "time", "datetime",
+      "file", "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode");
+
   private static Map<String, Object> deprecated;
   private static Map<String, Object> studio;
   private static Map<String, Object> _widgets;
@@ -257,13 +261,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     String type = schema.get("type") == null ? "string" : schema.get("type").asText();
     String widget = schema.get("widget") == null ? "string" : schema.get("widget").asText();
-    assertTrue(
-        Arrays
-            .asList("te", "boolean", "string", "number", "auto complete", "select", "multi select",
-                "key value", "password", "textarea", "date", "time", "datetime", "file",
-                "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode")
-            .contains(widget),
-        "unnknown widget type", widget);
+    assertTrue(INPUTS.contains(widget), "unnknown widget type", widget);
     for (Entry<String, JsonNode> e : schema.properties()) {
       String key = e.getKey();
       if (key.equals("examples") && e.getValue().getNodeType().equals(JsonNodeType.ARRAY))
