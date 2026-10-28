@@ -42,6 +42,24 @@ Sample output:
 ```json
 null
 ```
+### getVariable
+Reads a browser session variable
+```
+$getVariable('homepage')
+```
+Sample output: 
+```json
+"/page/Home"
+```
+### log
+Same as console.log()
+```
+$log('browser')
+```
+Sample output: 
+```json
+null
+```
 ### navigate
 points the browser to the URL
 ```
@@ -111,6 +129,15 @@ Sample output:
 ```json
 null
 ```
+### setActiveStep
+Sets the current step of any stepper widget on the page
+```
+$setActiveStep(1)
+```
+Sample output: 
+```json
+null
+```
 ### setVariable
 Sets the browser session variable x to 1. The new value can be read in other places via variable.x
 ```
@@ -142,6 +169,24 @@ null
 Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
 ```
 $sse('aia', [{'role': 'user', 'content': 'hi there'}])
+```
+Sample output: 
+```json
+null
+```
+### stepBack
+Sets back the current step of any stepper widget on the page
+```
+$stepBack()
+```
+Sample output: 
+```json
+null
+```
+### stepForward
+Advances the current step of any stepper widget on the page
+```
+$stepForward()
 ```
 Sample output: 
 ```json

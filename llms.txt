@@ -1261,6 +1261,11 @@ DESCRIPTION: Sets the browser session variable x to 1. The new value can be read
 LANGUAGE: jsonata
 CODE: $setVariable('x', 1)
 
+TITLE: getVariable
+DESCRIPTION: Reads a browser session variable
+LANGUAGE: jsonata
+CODE: $getVariable('homepage')
+
 TITLE: prompt
 DESCRIPTION: Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
 LANGUAGE: jsonata
@@ -1347,6 +1352,26 @@ TITLE: sse
 DESCRIPTION: Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
 LANGUAGE: jsonata
 CODE: $sse('aia', [{'role': 'user', 'content': 'hi there'}])
+
+TITLE: log
+DESCRIPTION: Same as console.log()
+LANGUAGE: jsonata
+CODE: $log('browser')
+
+TITLE: setActiveStep
+DESCRIPTION: Sets the current step of any stepper widget on the page
+LANGUAGE: jsonata
+CODE: $setActiveStep(1)
+
+TITLE: stepForward
+DESCRIPTION: Advances the current step of any stepper widget on the page
+LANGUAGE: jsonata
+CODE: $stepForward()
+
+TITLE: stepBack
+DESCRIPTION: Sets back the current step of any stepper widget on the page
+LANGUAGE: jsonata
+CODE: $stepBack()
 
 TITLE: create
 DESCRIPTION: create a new record in database 'sqlite', table 'REQUESTS'

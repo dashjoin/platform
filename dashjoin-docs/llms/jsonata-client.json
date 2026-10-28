@@ -12,6 +12,13 @@
             "code": "$setVariable('x', 1)"
         }
     ],
+    "getVariable": [
+        {
+            "description": "Reads a browser session variable",
+            "code": "$getVariable('homepage')",
+            "output": "/page/Home"
+        }
+    ],
     "prompt": [
         {
             "description": "Prompts the user for an input. Returns the input or undefined if the prompt is cancelled",
@@ -101,10 +108,34 @@
             "output": "Select all"
         }
     ],
-	"sse": [
-	    {
-	        "description": "Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression",
-	        "code": "$sse('aia', [{'role': 'user', 'content': 'hi there'}])"
-	    }
-	]
+    "sse": [
+        {
+            "description": "Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression",
+            "code": "$sse('aia', [{'role': 'user', 'content': 'hi there'}])"
+        }
+    ],
+    "log": [
+        {
+            "description": "Same as console.log()",
+            "code": "$log('browser')"
+        }
+    ],
+    "setActiveStep": [
+        {
+            "description": "Sets the current step of any stepper widget on the page",
+            "code": "$setActiveStep(1)"
+        }
+    ],
+    "stepForward": [
+        {
+            "description": "Advances the current step of any stepper widget on the page",
+            "code": "$stepForward()"
+        }
+    ],
+    "stepBack": [
+        {
+            "description": "Sets back the current step of any stepper widget on the page",
+            "code": "$stepBack()"
+        }
+    ]
 }
