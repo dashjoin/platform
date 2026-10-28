@@ -1184,95 +1184,95 @@ See [appendix JSONata](appendix-jsonata.md) for examples.
 
 Function | Syntax |  Returns
 ---|---|---
-confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmation was given, false otherwise
-getVariable | $getVariable(key) | Gets the value of the variable key. Note that this is similar to accessing variable.key in the context. The difference is that getVariable will get the last value set whereas variable.key gets the value while the page loaded.
-setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
-prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
 alert | $alert(message) | Shows a modal alert message
+clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
+confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmation was given, false otherwise
 dialog | $dialog({title, message, inputs, buttons, options, schema, value}) | Shows a model dialog with title and message. The inputs and buttons arrays denote which input fields and buttons are shown. The result of the call is defined as follows. If the dialog is closed, the result is undefined. If a button is pressed, the result is the button id or - if the button is an object with label and type: submit - an object with the inputs. If options is set to an object with alert: info / warning / error, the dialog message is shows with the respective label. If you want to display a more complex form, you can specify form elements via schema (see section "Form Widgets"). A schema allows you to optionally pre-fill the form via the value field.
-notify | $notify(message) | Shows the message at the bottom of the screen
-refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
-reload | $reload() | reloads the browser page
+getVariable | $getVariable(key) | Gets the value of the variable key. Note that this is similar to accessing variable.key in the context. The difference is that getVariable will get the last value set whereas variable.key gets the value while the page loaded.
 log | $log(value) | logs value to the developer console
 navigate | $navigate(url) | points the browser to the URL
 navigate | $navigate( {id, options} ) | scrolls the page to the [DOM element with the id](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView)
-clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
+notify | $notify(message) | Shows the message at the bottom of the screen
 progress | $progress({message?, linear?, value?, variant?}) | Shows progress message during long running operations. If the variant is set to determinate, the progress shows the value between 0 and 100. If linear is true, the progress is shown using a linear bar. If progress is called without parameter, the progress display disappears.
+prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
+refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
+reload | $reload() | reloads the browser page
+setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
 sleep | $sleep(millisecs) | Sleep for x milliseconds
 speak | $speak(message, language?) | Text to speech
+sse | $sse(aiapp name, [{role, content}]) | Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
 stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
 translate | $translate(text) | Lookup the text in the translation file and return the match for the current locale
-sse | $sse(aiapp name, [{role, content}]) | Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
 
 ### Backend Expressions
 
 Function | Syntax |  Returns
 ---|---|---
-create| $create(database, table, object) | ID of the new record
-upsert| $upsert(database, table, object) | first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update
+adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
 all| $all(database, table) | array of all table records
 all| $all(database, table, offset, limit, sort, descending, filter) | array of all table records whose columns match the filter key's values
-read|  $read(database, table, pk1) | The record
-traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
-update| $update(database, table, pk1, object)
-setIfAbsent| $setIfAbsent(database, table, pk1, object) | like update, but only sets fields that are not yet set
-delete| $delete(database, table, pk1)
 call| $call(function, argument) |   Dashjoin function result
-query| $query(database, queryId, arguments) |Query result table
-queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
-adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
-search| $search(term, limit?, database?, table?) | Searches the databases(s)
-incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
-echo | $echo(any) | Prints the parameter to the log
-index | $index() | Generates a unique row index ID
-djVersion | $djVersion() | Returns the platform version information
+chat | $chat(url, query, messages, tools?, options?, headers?) | Encapsulates API calls to LLMs running at url. Query is the next user message. messages is an array of role / content containing the previous chat interactions. Tools is an array of strings referencing Invoke functions in the function catalog that should be used as tools during the LLM call. Options contains additional LLM parameters like "model": "gpt-4o-mini", etc. Finally, headers works like with the curl function. 
+classifyEntities | $classifyEntities([entities], entity-language?, limit?, subclass-depth?) | Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results (see chapter AI & ML)
+collectMetadata | $collectMetadata(id) | Reconnects database with id and updates and schema changes
+create| $create(database, table, object) | ID of the new record
+curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout other than the default of 10s. Use header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1. Use header {"dj-produces": "text/plain"} to return plain text rather than JSON. Use header {"Content-Type": "multipart/form-data"} to upload files encoded in data URLs in the data object (see Input widget)
+delete| $delete(database, table, pk1)
+djLint | $djLint() | Scans the app for errors and warnings
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
-isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
-moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
-ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
-streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
-streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
-streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
-streamDb | $streamDb(database, table) | Streams records from the database table specified
-curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout other than the default of 10s. Use header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1. Use header {"dj-produces": "text/plain"} to return plain text rather than JSON. Use header {"Content-Type": "multipart/form-data"} to upload files encoded in data URLs in the data object (see Input widget)
-chat | $chat(url, query, messages, tools?, options?, headers?) | Encapsulates API calls to LLMs running at url. Query is the next user message. messages is an array of role / content containing the previous chat interactions. Tools is an array of strings referencing Invoke functions in the function catalog that should be used as tools during the LLM call. Options contains additional LLM parameters like "model": "gpt-4o-mini", etc. Finally, headers works like with the curl function. 
-openJson | $openJson(url) | Parses JSON at the url
-openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
-openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
-openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
-openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
-generateExcel | $generateExcel(table or map of sheetname to table) | Generates a base64 encoded Excel file which can be downloaded from the browser (see FAQ)
-generateYaml | $generateYaml(data) | Converts data to a YAML string
-generateXml | $generateXml(data) | Converts data to an XML string
-generateCsv | $generateCsv(data, options) | Converts a table to CSV (for options see openCsv)
-openText | $openText(url, encoding) | Parses the url and converts it to a string. Possible encodings are: UTF_8 (default), BASE_64, ISO_8859_1
-parseJson | $parseJson(json) | Parses JSON (see openJson)
-parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see openCsv)
-parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
-parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
-parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
-parseFrontmatter | $parseFrontmatter(markdown) | Parses markdown containing YAML frontmatter metadata
-parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
-parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query, etc.
-uuid | $uuid() | Generates a random UUID
-exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
+djVersion | $djVersion() | Returns the platform version information
+echo | $echo(any) | Prints the parameter to the log
 erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
-stats| $stats(database, table, limit?) | Generate statistics for a database table (type, min, max, count, distinct values, etc.)
-gitStatus| $gitStatus() | Run git status
-gitPull| $gitPull() | Run git pull
-gitRestore| $gitRestore(path) | Revert a change
-gitCommit| $gitCommit(message, [paths]) | Run git commit and push
-gitClone| $gitClone(url) | Run git clone url - only available in the DJ playground
-saveTable| $saveTable(Ignore \| Refresh \| Delete All, database, table, data, pk?) | Allows performing an ad hoc ETL operation (note that createSchema is true)
-reconcileEntity | $reconcileEntity(entity, entity-language?, limit?) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see chapter AI & ML)
-classifyEntities | $classifyEntities([entities], entity-language?, limit?, subclass-depth?) | Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results (see chapter AI & ML)
-synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see chapter AI & ML)
-urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
-wait| $wait(object, millisecs) | Wait millisecs provided before returning object
 etl | $etl(foreach, expression, database) | Run an ETL process programmatically. The function requires an expression string. If you want to pass data directly, simply convert the data to a string by using the expression $string(data)
 etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
-validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
-collectMetadata | $collectMetadata(id) | Reconnects database with id and updates and schema changes
-djLint | $djLint() | Scans the app for errors and warnings
+exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV
+generateCsv | $generateCsv(data, options) | Converts a table to CSV (for options see openCsv)
+generateExcel | $generateExcel(table or map of sheetname to table) | Generates a base64 encoded Excel file which can be downloaded from the browser (see FAQ)
+generateXml | $generateXml(data) | Converts data to an XML string
+generateYaml | $generateYaml(data) | Converts data to a YAML string
+gitClone| $gitClone(url) | Run git clone url - only available in the DJ playground
+gitCommit| $gitCommit(message, [paths]) | Run git commit and push
+gitPull| $gitPull() | Run git pull
+gitRestore| $gitRestore(path) | Revert a change
+gitStatus| $gitStatus() | Run git status
+incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
+index | $index() | Generates a unique row index ID
+isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
+ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
+moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
+openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
+openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
+openJson | $openJson(url) | Parses JSON at the url
+openText | $openText(url, encoding) | Parses the url and converts it to a string. Possible encodings are: UTF_8 (default), BASE_64, ISO_8859_1
+openXml | $openXml(url, arrays) | Parses XML at the url and converts it to JSON. In this process, openXml guesses which XML tags need to be converted to arrays and which become simple fields. This process might produce inconsistent results when the XML tree contains lists with single entries. To avoid this, you can optionally pass a list of tag names that must be arrays.
+openYaml | $openYaml(url) | Parses YAML at the url and converts it to JSON
+parseCsv | $parseCsv(csv, options) | Parses CSV and converts it to JSON (see openCsv)
+parseExcel | $parseExcel(base64) | Parses Excel and converts it to JSON (see openExcel). The parameter must be a base64 encoded data URL (RFC 2397)
+parseFrontmatter | $parseFrontmatter(markdown) | Parses markdown containing YAML frontmatter metadata
+parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
+parseJson | $parseJson(json) | Parses JSON (see openJson)
+parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query, etc.
+parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
+parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
+query| $query(database, queryId, arguments) |Query result table
+queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
+read|  $read(database, table, pk1) | The record
+reconcileEntity | $reconcileEntity(entity, entity-language?, limit?) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see chapter AI & ML)
+saveTable| $saveTable(Ignore \| Refresh \| Delete All, database, table, data, pk?) | Allows performing an ad hoc ETL operation (note that createSchema is true)
+search| $search(term, limit?, database?, table?) | Searches the databases(s)
+setIfAbsent| $setIfAbsent(database, table, pk1, object) | like update, but only sets fields that are not yet set
+stats| $stats(database, table, limit?) | Generate statistics for a database table (type, min, max, count, distinct values, etc.)
+streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
+streamDb | $streamDb(database, table) | Streams records from the database table specified
+streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
+synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see chapter AI & ML)
+traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
 try | $try(function(){...}, function($ex){...}) | Try-catch with the second function being called when there's an error thrown by the first function. If the second function is omitted, the try function returns undefined upon an error
+update| $update(database, table, pk1, object)
+upsert| $upsert(database, table, object) | first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update
+urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
+uuid | $uuid() | Generates a random UUID
+validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
+wait| $wait(object, millisecs) | Wait millisecs provided before returning object
