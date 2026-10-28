@@ -1197,10 +1197,13 @@ progress | $progress({message?, linear?, value?, variant?}) | Shows progress mes
 prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
 refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
 reload | $reload() | reloads the browser page
+setActiveStep | $setActiveStep(i) | Sets the current step of any stepper widget on the page
 setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
 sleep | $sleep(millisecs) | Sleep for x milliseconds
 speak | $speak(message, language?) | Text to speech
 sse | $sse(aiapp name, [{role, content}]) | Calls the AIApp function called aia with messages. Use only in the AIChat widget's onChat expression
+stepBack | $stepBack() | Sets back the current step of any stepper widget on the page
+stepForward | $stepForward() | Advances the current step of any stepper widget on the page
 stopSpeech | $stopSpeech() | Stop any text to speech that is still in progress
 translate | $translate(text) | Lookup the text in the translation file and return the match for the current locale
 
@@ -1231,7 +1234,6 @@ generateCsv | $generateCsv(data, options) | Converts a table to CSV (for options
 generateExcel | $generateExcel(table or map of sheetname to table) | Generates a base64 encoded Excel file which can be downloaded from the browser (see FAQ)
 generateXml | $generateXml(data) | Converts data to an XML string
 generateYaml | $generateYaml(data) | Converts data to a YAML string
-gitClone| $gitClone(url) | Run git clone url - only available in the DJ playground
 gitCommit| $gitCommit(message, [paths]) | Run git commit and push
 gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change
@@ -1240,7 +1242,6 @@ incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link
 index | $index() | Generates a unique row index ID
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
 ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
-moveField | $moveField(object, 'from', 'to') | Moves the object's from key into the to key, where to must be an object or array
 openCsv | $openCsv(url, options) | Parses CSV at the url and converts it to JSON. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 openExcel | $openExcel(url) | Parses Excel at the url and converts it to JSON
 openJson | $openJson(url) | Parses JSON at the url
