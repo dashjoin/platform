@@ -1388,6 +1388,11 @@ DESCRIPTION: update REQUEST 7 in the database 'sqlite'
 LANGUAGE: jsonata
 CODE: $update('sqlite', 'REQUESTS', 7, {'name':'updated request'})
 
+TITLE: setIfAbsent
+DESCRIPTION: like update, but only sets fields that are not yet set: update REQUEST 7 in the database 'sqlite' if name not yet set
+LANGUAGE: jsonata
+CODE: $setIfAbsent('sqlite', 'REQUESTS', 7, {'name':'updated request'})
+
 TITLE: delete
 DESCRIPTION: delete REQUEST 7 in the database 'sqlite'
 LANGUAGE: jsonata
@@ -1533,6 +1538,14 @@ DESCRIPTION: Open 'file:upload/test.json' using ISO_8859_1 encoding
 LANGUAGE: jsonata
 CODE: $openText('file:upload/test.json', 'ISO_8859_1')
 
+TITLE: parseFrontmatter
+DESCRIPTION: Parse frontmatter and returns markdown and YAML metadata
+LANGUAGE: jsonata
+CODE: $parseFrontmatter('---
+title: test
+---
+# heading')
+
 TITLE: parseJson
 DESCRIPTION: Parse a string to JSON and return it
 LANGUAGE: jsonata
@@ -1658,4 +1671,34 @@ TITLE: try
 DESCRIPTION: try-catch: calls the first function and returns the result. In case of an error, calls the second function
 LANGUAGE: jsonata
 CODE: $try( function(){$error('throw')}, function($ex){$ex} )
+
+TITLE: generateYaml
+DESCRIPTION: Returns the parameter as a YAML string
+LANGUAGE: jsonata
+CODE: $generateYaml({'x': [1,2], 'y': 'test'})
+
+TITLE: generateCsv
+DESCRIPTION: Returns the parameter as a CSV string
+LANGUAGE: jsonata
+CODE: $generateCsv([{'x':1}, {'x':2}])
+
+TITLE: generateXml
+DESCRIPTION: Returns the parameter as an XML string
+LANGUAGE: jsonata
+CODE: $generateXml('test')
+
+TITLE: generateExcel
+DESCRIPTION: Returns the parameter as a Base64 encoded Excel file that can be downloaded via the browser
+LANGUAGE: jsonata
+CODE: $generateExcel([{'x':1}, {'x':2}])
+
+TITLE: synonym
+DESCRIPTION: Computes similarity and distance metric between terms
+LANGUAGE: jsonata
+CODE: $synonym({'SoundexSimilarity':2}, ['roast'], ['ghost', 'boast', 'hello'])
+
+TITLE: validate
+DESCRIPTION: validates a JSON input against a JSON schema (type, required, properties supported)
+LANGUAGE: jsonata
+CODE: $validate({'required': ['x'], 'properties':{'x': {'type':boolean}}}, {})
 

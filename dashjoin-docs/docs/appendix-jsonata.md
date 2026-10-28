@@ -390,6 +390,42 @@ Sample output:
   "code" : 0
 }
 ```
+### generateCsv
+Returns the parameter as a CSV string
+```
+$generateCsv([{'x':1}, {'x':2}])
+```
+Sample output: 
+```json
+"x\n1\n2"
+```
+### generateExcel
+Returns the parameter as a Base64 encoded Excel file that can be downloaded via the browser
+```
+$generateExcel([{'x':1}, {'x':2}])
+```
+Sample output: 
+```json
+"UEsDBBQACAgIANZ..."
+```
+### generateXml
+Returns the parameter as an XML string
+```
+$generateXml('test')
+```
+Sample output: 
+```json
+"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<root>test</root>"
+```
+### generateYaml
+Returns the parameter as a YAML string
+```
+$generateYaml({'x': [1,2], 'y': 'test'})
+```
+Sample output: 
+```json
+"x: [1, 2]\ny: test"
+```
 ### gitCommit
 git commit a set of files
 ```
@@ -584,6 +620,23 @@ Sample output:
   } ]
 }
 ```
+### parseFrontmatter
+Parse frontmatter and returns markdown and YAML metadata
+```
+$parseFrontmatter('---
+title: test
+---
+# heading')
+```
+Sample output: 
+```json
+{
+  "frontmatter" : {
+    "title" : "test"
+  },
+  "markdown" : "# heading"
+}
+```
 ### parseHtml
 Open the dashjoin website, parse the HTML and extract all h1 elements
 ```
@@ -751,6 +804,15 @@ Sample output:
   "match" : "Fuller"
 } ]
 ```
+### setIfAbsent
+like update, but only sets fields that are not yet set: update REQUEST 7 in the database 'sqlite' if name not yet set
+```
+$setIfAbsent('sqlite', 'REQUESTS', 7, {'name':'updated request'})
+```
+Sample output: 
+```json
+null
+```
 ### stats
 return database statistics
 ```
@@ -805,6 +867,25 @@ $streamJson(''file:upload/test.xml, '/data')
 Sample output: 
 ```json
 null
+```
+### synonym
+Computes similarity and distance metric between terms
+```
+$synonym({'SoundexSimilarity':2}, ['roast'], ['ghost', 'boast', 'hello'])
+```
+Sample output: 
+```json
+[ {
+  "synonym" : "ghost",
+  "term" : "roast",
+  "algotithm" : "SoundexSimilarity",
+  "value" : 3
+}, {
+  "synonym" : "boast",
+  "term" : "roast",
+  "algotithm" : "SoundexSimilarity",
+  "value" : 3
+} ]
 ```
 ### traverse
 gets all related records for ORDER 10250 from the ORDER_DETAILS table (via foreign key ORDER_DETAILS.ORDER_ID)
@@ -881,6 +962,15 @@ $uuid()
 Sample output: 
 ```json
 "2b10beb5-d83d-4733-a67d-b6c5e4315a29"
+```
+### validate
+validates a JSON input against a JSON schema (type, required, properties supported)
+```
+$validate({'required': ['x'], 'properties':{'x': {'type':boolean}}}, {})
+```
+Sample output: 
+```json
+"x is reuqired"
 ```
 ### wait
 Waits before returning the parameter (server-side equivalent of $sleep)
