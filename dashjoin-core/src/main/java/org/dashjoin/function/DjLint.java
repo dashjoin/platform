@@ -34,9 +34,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   public static List<String> CLIENT_FUNCTIONS =
-      Arrays.asList("confirm", "setVariable", "prompt", "alert", "notify", "refresh", "reload",
-          "log", "navigate", "clearCache", "log", "translate", "stopSpeech", "speak", "sleep",
-          "dialog", "progress", "setActiveStep", "stepForward", "stepBack");
+      Arrays.asList("confirm", "setVariable", "getVariable", "prompt", "alert", "notify", "refresh",
+          "reload", "log", "navigate", "clearCache", "log", "translate", "stopSpeech", "speak",
+          "sleep", "dialog", "progress", "setActiveStep", "stepForward", "stepBack", "sse");
 
   private static Map<String, Object> deprecated;
   private static Map<String, Object> studio;
