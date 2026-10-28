@@ -97,6 +97,7 @@ used as the key in the resulting JSON structure. See [appendix inputs](appendix-
 * qrcode: like string, but offers a QR Code scanner
 
 Further options include:
+
 * an optional title for the input element
 * a description which shows up as a tooltip
 * an optional expression to compute select options (must return an array of strings or an array of objects containing name and value)
