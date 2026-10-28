@@ -21,6 +21,7 @@ import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
@@ -227,11 +228,14 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if (field.equals("onRender") && widget.equals("page"))
         continue;
       if (field.equals("children")
-          && Arrays.asList("container", "card", "toolbar", "expansion", "page").contains(widget))
+          && Arrays.asList("container", "card", "toolbar", "expansion", "page", "stepper", "tabs")
+              .contains(widget))
         continue;
       if (field.equals("schema")
-          && Arrays.asList("button", "edit", "create", "variable").contains(widget))
+          && Arrays.asList("button", "edit", "create", "variable").contains(widget)) {
+        checkSchema(e.getValue());
         continue;
+      }
       if (field.equals("foreach") && Arrays.asList("container", "tabs").contains(widget))
         continue;
       if (field.equals("fxHide") && current.equals("model/widget/dj-toolbar.json"))
@@ -244,6 +248,62 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if (field.equals("url"))
         assertTrue(e.getValue() instanceof TextNode, "url property must be a string", e);
     }
+  }
+
+  void checkSchema(JsonNode schema) {
+
+    assertTrue(schema.getNodeType().equals(JsonNodeType.OBJECT), "schema must be an object",
+        schema);
+
+    String type = schema.get("type") == null ? "string" : schema.get("type").asText();
+    String widget = schema.get("widget") == null ? "string" : schema.get("widget").asText();
+    assertTrue(
+        Arrays
+            .asList("te", "boolean", "string", "number", "auto complete", "select", "multi select",
+                "key value", "password", "textarea", "date", "time", "datetime", "file",
+                "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode")
+            .contains(widget),
+        "unnknown widget type", widget);
+    for (Entry<String, JsonNode> e : schema.properties()) {
+      String key = e.getKey();
+      if (key.equals("examples") && e.getValue().getNodeType().equals(JsonNodeType.ARRAY))
+        continue;
+      if (key.equals("style") && e.getValue().getNodeType().equals(JsonNodeType.OBJECT))
+        continue;
+      if (key.equals("title") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
+        continue;
+      if (key.equals("description") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
+        continue;
+      if (key.equals("size") && e.getValue().getNodeType().equals(JsonNodeType.NUMBER))
+        continue;
+      if (key.equals("required") && e.getValue().getNodeType().equals(JsonNodeType.BOOLEAN))
+        continue;
+      if ((key.equals("readOnly") || key.equals("createOnly"))
+          && e.getValue().getNodeType().equals(JsonNodeType.BOOLEAN))
+        continue;
+      if (key.equals("options"))
+        continue;
+      if (key.equals("type"))
+        continue;
+      if (key.equals("multiple"))
+        continue;
+      if (key.equals("capture"))
+        continue;
+      if (key.equals("accept"))
+        continue;
+      if (key.equals("widget"))
+        continue;
+      if (key.equals("properties") && type.equals("object"))
+        continue;
+      fail("unknown property", e);
+    }
+
+    // check subschema
+    if (schema.get("properties") != null)
+      for (Entry<String, JsonNode> p : schema.get("properties").properties())
+        checkSchema(p.getValue());
+    if (schema.get("items") != null)
+      checkSchema(schema.get("items"));
   }
 
   @SuppressWarnings("unchecked")
@@ -321,6 +381,10 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
   void fail(String message) {
     messages.add(current + ": " + message);
+  }
+
+  void fail(String message, Object value) {
+    assertTrue(false, message, value);
   }
 
   void assertEquals(Object expected, Object actual, String message) {
