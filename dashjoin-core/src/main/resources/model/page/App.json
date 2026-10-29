@@ -3,11 +3,25 @@
     "layout": {
         "widget": "page",
         "children": [
-            {
-                "text": "Pull",
-                "print": "$gitPull()",
-                "widget": "button"
-            },
+			{
+				"widget": "display",
+				"display": "{'Current Branch': $gitCheckout()}",
+				"icons": {
+					"Current Branch": "call_split"
+				}
+			},
+			{
+			    "text": "Pull",
+			    "print": "($gitPull();$refresh())",
+			    "widget": "button",
+				"size": 2
+			},
+			{
+			    "text": "Checkout Branch ...",
+			    "print": "($x := $prompt('Enter the name of the branch to checkout'); $x ? ($gitCheckout($x);$refresh()))",
+			    "widget": "button",
+				"size": 10
+			},
             {
                 "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff}",
                 "title": "Changes",

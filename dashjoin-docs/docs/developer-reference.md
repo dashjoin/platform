@@ -1234,6 +1234,7 @@ generateCsv | $generateCsv(data, options) | Converts a table to CSV (for options
 generateExcel | $generateExcel(table or map of sheetname to table) | Generates a base64 encoded Excel file which can be downloaded from the browser (see FAQ)
 generateXml | $generateXml(data) | Converts data to an XML string
 generateYaml | $generateYaml(data) | Converts data to a YAML string
+gitCheckout| $gitCheckout() | Checkout and switch to branch
 gitCommit| $gitCommit(message, [paths]) | Run git commit and push
 gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change

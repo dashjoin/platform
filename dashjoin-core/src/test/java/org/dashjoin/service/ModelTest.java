@@ -191,7 +191,10 @@ public class ModelTest {
                 return null;
               }
             }, null);
+            jsonata.registerFunction("refresh", x);
+            jsonata.registerFunction("prompt", x);
             jsonata.registerFunction("gitPull", x);
+            jsonata.registerFunction("gitCheckout", x);
             jsonata.registerFunction("gitStatus", x);
             jsonata.registerFunction("djRoles", new JFunction(new JFunctionCallable() {
               @Override
