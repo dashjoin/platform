@@ -3,9 +3,6 @@
   "name": "config",
   "parent": "dj",
   "djClassName": "org.dashjoin.service.PojoDatabase",
-  "readRoles": [
-    "authenticated"
-  ],
   "tables": {
     "Property": {
       "ID": "dj/config/Property",
@@ -13,6 +10,9 @@
       "parent": "dj/config",
       "type": "object",
       "dj-label": "${title}",
+	  "readRoles": [
+	    "authenticated"
+	  ],
       "before-create": "$alterColumnTrigger()",
       "before-update": "$alterColumnTrigger()",
       "before-delete": "$alterColumnTrigger()",
@@ -97,6 +97,9 @@
       "parent": "dj/config",
       "type": "object",
       "dj-label": "${title}",
+	  "readRoles": [
+	    "authenticated"
+	  ],
       "before-create": "$alterTableTrigger()",
       "before-update": "$alterTableTrigger()",
       "before-delete": "$alterTableTrigger()",
@@ -768,6 +771,9 @@
       "name": "widget",
       "parent": "dj/config",
       "type": "object",
+	  "readRoles": [
+	    "authenticated"
+	  ],
       "instanceLayout": {
         "widget": "page",
         "children": [
@@ -806,6 +812,9 @@
       "name": "page",
       "parent": "dj/config",
       "type": "object",
+	  "readRoles": [
+	    "authenticated"
+	  ],
       "required": [
         "ID"
       ],

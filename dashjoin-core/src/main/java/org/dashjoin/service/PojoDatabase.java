@@ -848,7 +848,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
   /**
    * custom query. generates the navigation tree
    */
-  @ConfigQuery(query = "dj-navigation", table = "dj-database")
+  @ConfigQuery(query = "dj-navigation", table = "Table")
   public List<Map<String, Object>> queryNavigation(QueryMeta qi, Map<String, Object> arguments)
       throws Exception {
     List<AbstractDatabase> objects = this.getDatabases();
