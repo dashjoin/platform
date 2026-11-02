@@ -370,6 +370,8 @@ The app section contains links to the following pages:
 
 * Dashjoin Studio: this link opens Dashjoin Studio in a new window. This mode allows writing your own widgets using third party JavaScript libraries
 * App API: This page allows you to use Dashjoin to implement an existing OpenAPI spec, publish schemas and paths to your OpenAPI spec, and generate an OpenAPI spec for your Dashjoin app
+* Lint: This page runs a large number of tests on the current Dashjoin app and provides information about potential errors such as invalid JSONata expressions, malformed widget definitions, etc.
+* Function Library: This page lists all defined functions along with the test cases. You can also run the test cases from there. See the JSONata library section on the [concept](concepts.md) page for more information.
 * Notebook: this is an area that works much like a jupyter notebook. You can conveniently experiment with JSONata there
 * Git: this page provides a lightweight way to manage version control of your app. For more information please refer to the section development / production
 

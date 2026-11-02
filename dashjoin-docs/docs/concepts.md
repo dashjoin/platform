@@ -145,6 +145,50 @@ The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
 
 The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
 
+### JSONata Function Library
+
+When you write larger blocks of JSONata code, you'll probably find yourself in a situation where you want to structure your code
+by defining reusable functions. The JSONata function library allows you to do just that. 
+
+#### Defining a Function
+
+For the sake of simplicity, we will look
+at a function to add two numbers:
+
+```json
+{
+    "ID": "add",
+    "description": "add test",
+    "expression": "function($a, $b){$a+$b}",
+    "tests": [
+        {
+            "description": "basic",
+            "parameters": [
+                1,
+                2
+            ],
+            "expected": 3
+        }
+    ]
+}
+```
+
+The function definition is provided in the expression field. Tests are optional, an allow you to define the parameters,
+the function is tested with along with the expected outcome. Note that you can also pass another function as a parameter by
+providing "function (...) { ... }" as a parameter. If the parameter contains a function string, the platform parses it and passes
+the function instead of the string.
+
+#### Using a Function
+
+To use a function elsewhere in the code, you need to read the library and pass it to the eval function as follows:
+
+```
+(
+  $add := $use('add') ~> $eval;
+  $add(1, 2)
+)
+```
+
 ### JavaScript
 
 Expressions in widgets, that are evaluated in the browser can alternatively be written in JavaScript. Consider the following rules for this scenario:

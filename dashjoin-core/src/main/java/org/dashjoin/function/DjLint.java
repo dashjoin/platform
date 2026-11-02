@@ -109,7 +109,6 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
         null, null, null, false, null))
       try {
-        System.out.println("$eval($use('unit-test'))('" + test.get("ID") + "')");
         expressionService.resolve(sc, "$eval($use('unit-test'))($)", test);
       } catch (Exception e) {
         fail(e.getMessage());
