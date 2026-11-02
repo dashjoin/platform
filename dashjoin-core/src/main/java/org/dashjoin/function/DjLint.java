@@ -77,7 +77,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       widgets.putAll(arg);
 
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
-        "dj-database", "dj-function", "dj-config"}) {
+        "dj-database", "dj-function", "dj-config", "dj-library"}) {
       var all =
           expressionService.getData().all(sc, "config", folder, null, null, null, false, null);
 
@@ -105,6 +105,18 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       }
     }
 
+    // run unit tests
+    for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
+        null, null, null, false, null))
+      try {
+        System.out.println("$eval($use('unit-test'))('" + test.get("ID") + "')");
+        expressionService.resolve(sc, "$eval($use('unit-test'))($)", test);
+      } catch (Exception e) {
+        fail(e.getMessage());
+      }
+
+    if (messages.isEmpty())
+      return "no warnings";
     return String.join("\n", messages);
   }
 
@@ -353,7 +365,17 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 for (String f : CLIENT_FUNCTIONS)
                   jsonata.registerFunction(f, x);
               for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
-                jsonata.registerFunction(inst.getID(), x);
+                if (inst.getID() != null)
+                  if (inst.getID().equals("use"))
+                    jsonata.registerFunction(inst.getID(), new JFunction(new JFunctionCallable() {
+                      @Override
+                      public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                          throws Throwable {
+                        return "function(){1}";
+                      }
+                    }, null));
+                  else
+                    jsonata.registerFunction(inst.getID(), x);
               try {
                 jsonata.evaluate(null);
               } catch (JException e) {
