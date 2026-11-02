@@ -37,7 +37,7 @@ public class ModelTest {
   @Test
   public void parseJson() throws Exception {
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
-        "dj-database", "dj-function", "dj-config"})
+        "dj-database", "dj-function", "dj-config", "dj-library"})
       for (String s : new Reflections("model." + folder, new ResourcesScanner())
           .getResources(Pattern.compile(".*\\.json"))) {
         // System.out.println(getClass() + " " + s);
@@ -191,6 +191,13 @@ public class ModelTest {
                 return null;
               }
             }, null);
+            jsonata.registerFunction("use", new JFunction(new JFunctionCallable() {
+              @Override
+              public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                  throws Throwable {
+                return "function(){1}";
+              }
+            }, null));
             jsonata.registerFunction("refresh", x);
             jsonata.registerFunction("prompt", x);
             jsonata.registerFunction("gitPull", x);

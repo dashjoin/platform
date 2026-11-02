@@ -52,3 +52,4 @@ org.dashjoin.function.GitClone
 org.dashjoin.function.SaveTable
 org.dashjoin.function.ParseUrl
 org.dashjoin.function.Validate
+org.dashjoin.function.Use

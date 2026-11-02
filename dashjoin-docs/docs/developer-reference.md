@@ -1275,6 +1275,7 @@ try | $try(function(){...}, function($ex){...}) | Try-catch with the second func
 update| $update(database, table, pk1, object)
 upsert| $upsert(database, table, object) | first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update
 urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
+use | $use(id) | Reads the library with the given id, and returns the expression. Usually, used to import functions from the library: $f := $use('f') ~> $eval
 uuid | $uuid() | Generates a random UUID
 validate | $validate(schema, json) | Validates the JSON value against JSON schema. Raises an error if validation fails. Supports type, required, properties, and items keywords
 wait| $wait(object, millisecs) | Wait millisecs provided before returning object
