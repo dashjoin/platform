@@ -48,8 +48,13 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
       return;
 
     if (path.startsWith("/_ah/") || path.startsWith("/rest/info/")
-        || path.equals("/rest/manage/openapi") || path.startsWith("/login")
-        || path.startsWith("auth-callback"))
+        || path.equals("/rest/manage/openapi") || path.startsWith("/login"))
+      return;
+
+    // These endpoints authenticate credentials/state themselves and must be reachable before login.
+    String authPath = path.startsWith("/") ? path : "/" + path;
+    if (java.util.Set.of("/auth-callback", "/rest/auth/login", "/rest/auth/firebase", "/rest/auth/session",
+        "/rest/auth/logout", "/rest/auth/oidc/start", "/rest/auth/oidc/finish", "/rest/auth/oidc/callback").contains(authPath))
       return;
 
     SecurityContext sc = requestContext.getSecurityContext();

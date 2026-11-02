@@ -5,12 +5,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.CharBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.KDF;
+import javax.crypto.spec.HKDFParameterSpec;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
@@ -124,6 +127,29 @@ public class CredentialManager {
    */
   private void destroySecret(char[] secret) {
     Arrays.fill(secret, ' ');
+  }
+
+  /** Derives a purpose-specific 256-bit key without exposing the credential root secret. */
+  public byte[] deriveKey(String purpose) {
+    if (purpose == null || purpose.isBlank())
+      throw new IllegalArgumentException("A key derivation purpose is required");
+    char[] secret = getSecret();
+    var encoded = StandardCharsets.UTF_8.encode(CharBuffer.wrap(secret));
+    byte[] material = new byte[encoded.remaining()];
+    encoded.get(material);
+    try {
+      if (material.length == 0)
+        throw new IllegalStateException("The credential root secret is empty");
+      var parameters = HKDFParameterSpec.ofExtract().addIKM(material)
+          .thenExpand(purpose.getBytes(StandardCharsets.UTF_8), 32);
+      return KDF.getInstance("HKDF-SHA256").deriveData(parameters);
+    } catch (java.security.GeneralSecurityException e) {
+      throw new IllegalStateException("Cannot derive application key", e);
+    } finally {
+      destroySecret(secret);
+      Arrays.fill(material, (byte) 0);
+      Arrays.fill(encoded.array(), (byte) 0);
+    }
   }
 
   final static String PREFIX_HASH = "DJ0#\b";
