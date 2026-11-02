@@ -191,6 +191,13 @@ public class ModelTest {
                 return null;
               }
             }, null);
+            jsonata.registerFunction("use", new JFunction(new JFunctionCallable() {
+              @Override
+              public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                  throws Throwable {
+                return "function(){1}";
+              }
+            }, null));
             jsonata.registerFunction("refresh", x);
             jsonata.registerFunction("prompt", x);
             jsonata.registerFunction("gitPull", x);

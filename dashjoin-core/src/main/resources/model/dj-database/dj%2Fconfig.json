@@ -976,6 +976,78 @@
         }
       }
     },
+    "dj-library": {
+      "ID": "dj/config/dj-library",
+      "name": "dj-library",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+	  "order":[
+		["ID", "description"],
+		"expression"
+	  ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-library/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-library",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "description": {
+          "ID": "dj/config/dj-library/description",
+          "name": "description",
+          "parent": "dj/config/dj-library",
+          "type": "string"
+        },
+        "expression": {
+          "ID": "dj/config/dj-library/expression",
+          "name": "expression",
+          "parent": "dj/config/dj-library",
+		  "widgetType": "expression",
+          "type": "string"
+        }
+      },
+	  "instanceLayout": {
+	      "widget": "page",
+	      "children": [
+	          {
+	              "title": "Edit Record",
+	              "widget": "edit"
+	          },
+	          {
+	              "display": "value.tests",
+	              "widget": "display"
+	          },
+	          {
+	              "text": "Run Test Suite",
+	              "print": "($test := $use('unit-test') ~> $eval;\n$test(value))",
+	              "widget": "button"
+	          }
+	      ]
+	  },
+	  "tableLayout": {
+	      "widget": "page",
+	      "children": [
+	          {
+	              "title": "Table: ${value.name}",
+	              "widget": "table"
+	          },
+	          {
+	              "title": "New Record",
+	              "widget": "create"
+	          },
+	          {
+	              "text": "Run All Test Suites",
+	              "widget": "button",
+	              "print": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
+	          }
+	      ]
+	  }
+    },
     "dj-query-performance": {
       "ID": "dj/config/dj-query-performance",
       "name": "dj-query-performance",

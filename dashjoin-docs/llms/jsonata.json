@@ -713,5 +713,12 @@
 			"code": "$validate({'required': ['x'], 'properties':{'x': {'type':boolean}}}, {})",
 			"output": "x is reuqired"
 		}
+	],
+	"use":[
+		{
+			"description": "When used in conjunction with $eval, allows importing a function from the library",
+			"code": "$f := $use('f') ~> $eval",
+			"output": "The expression of the library entry"
+		}
 	]
 }
