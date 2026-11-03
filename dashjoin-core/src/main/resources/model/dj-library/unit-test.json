@@ -1,5 +1,5 @@
 {
 	"ID": "unit-test",
 	"description": "unit test function",
-	"expression": "function($t) {(\n  $p := function($s){ ($type($s) = 'string' and $contains($s, /^function\\s*\\(/)) ? $eval($s) : $s };\n  $t.tests.(\n    $f := $eval($t.expression, context);\n    $a := $f($p(parameters[0]), $p(parameters[1]), $p(parameters[2]), $p(parameters[3]), $p(parameters[4]), $p(parameters[5])); \n    $a != expected ? $error($t.ID & '.' & description & ': was ' & $a & ' expected ' & expected)\n  )\n)}"
+	"expression": "function($t) {(\n  $p := function($s){ ($type($s) = 'string' and $contains($s, /^function\\s*\\(/)) ? $eval($s) : ($s = 'undefined' ? undefined : $s) };\n  $t.tests.(\n    $f := $eval($t.expression, context);\n    $a := $f($p(parameters[0]), $p(parameters[1]), $p(parameters[2]), $p(parameters[3]), $p(parameters[4]), $p(parameters[5])); \n    $a != expected ? $error($t.ID & '.' & description & ': was ' & $a & ' expected ' & expected)\n  )\n)}"
 }
