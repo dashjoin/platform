@@ -832,6 +832,7 @@ Configuration
 
 * expression: The expression to save and run when invoked
 * parameters: optional JSON Schema describing the objects expected by the function
+* runas: optional role the expression runs as (see [Running Invoke Functions as a Role](concepts.md#running-invoke-functions-as-a-role))
 
 Invocation parameter
 

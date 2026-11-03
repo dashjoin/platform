@@ -372,6 +372,49 @@ $call("geturl", "http://example.org/test.json")
 
 In this case dollar evaluates to the string "http://example.org/test.json".
 
+### Running Invoke Functions as a Role
+
+By default, the expression of an Invoke function runs with the roles of the user calling the function.
+Consequently, the user needs the role required to call the function as well as the roles required by
+any database, table, query or function the expression accesses.
+
+The optional "runas" field changes this. Consider the following function "log":
+
+```json
+{
+  "ID": "log",
+  "djClassName": "org.dashjoin.function.Invoke",
+  "expression": "$create('db', 'log', $)",
+  "roles": ["authenticated"],
+  "runas": "admin",
+  "type": "write"
+}
+```
+
+Any authenticated user can call this function and append a record to the log table,
+even if they have no read or write access to the table itself. Note the following:
+
+* "roles" is still checked against the caller's own roles
+* while the expression runs, the caller's roles are replaced by the runas role, i.e. the user does not keep their other roles (a user with the admin role calling a function with runas "log-writer" loses admin within the expression)
+* any function called from the expression via $call also runs with the runas role
+* only admins can edit the function catalog and set runas
+
+A function with runas grants its role to everybody who is allowed to call it.
+It is therefore crucial that the expression only performs the specific operation it was designed for.
+Never let the caller control what the elevated expression does:
+
+* do not use database, table, query or function names passed as arguments. An expression like `$create($.db, $.table, $.record)` allows the caller to write to any table the runas role can write to
+* never pass arguments to $eval or similar functions. An expression like `$eval($.expression)` allows the caller to run arbitrary code with the runas role
+* use arguments only as data, e.g. the record to insert into a fixed table, and validate them if necessary
+
+Compare the following expressions:
+
+```text
+safe:   $create('db', 'log', {'message': $.message})
+unsafe: $create('db', $.table, $)
+unsafe: $eval($.expression)
+```
+
 ### JSONata in Triggers
 
 Triggers allow evaluating expression before or after a write operation on a table.
