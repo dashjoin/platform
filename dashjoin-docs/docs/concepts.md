@@ -163,6 +163,7 @@ at a function to add two numbers:
     "tests": [
         {
             "description": "basic",
+            "context": "$ context for the function - unused in this example",
             "parameters": [
                 1,
                 2
