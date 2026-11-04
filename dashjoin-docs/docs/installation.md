@@ -223,7 +223,10 @@ A Dashjoin instance can be configured using the following environment variables:
 * DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from (branches can be specified by appending #branchname)
 * DJ_SID: optional system ID (contents of the file .secretid)
-* DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (required for the upload widget)
+* DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (defaults to false; required for the upload widget). WebDAV is also enabled when DASHJOIN_DEVMODE=true.
+* DASHJOIN_WEBDAV_ROLES: comma-separated roles with full WebDAV access (defaults to "admin")
+* DASHJOIN_WEBDAV_READONLY_ROLES: comma-separated roles granted access only to GET, HEAD, OPTIONS, and PROPFIND (defaults to none). Any matching role in DASHJOIN_WEBDAV_ROLES takes precedence.
+* DASHJOIN_WEBDAV_ROOTS: comma-separated top-level folders accessible through WebDAV, relative to DASHJOIN_HOME (defaults to "upload"). Set to "." to expose the entire home directory. Applies to all WebDAV roles, including admins.
 * DASHJOIN_ONSTART: If a on-start expression is defined (see system configuration), this expression gets passed the string value {"onStart": VALUE}
 * DASHJOIN_WEBROOT: path to the folder containing the web application (prepend DASHJOIN_HOME if set)
 
@@ -236,6 +239,43 @@ The following example shows how to change the HTTP port using the windows execut
 > set QUARKUS_HTTP_PORT=3333
 > Dashjoin.exe
 ```
+
+### WebDAV access
+
+By default, WebDAV access is limited to `/rest/fs/home/upload` and its descendants.
+To expose additional folders and grant access to different roles, for example, configure:
+
+```properties
+DASHJOIN_WEBDAV_ENABLED=true
+DASHJOIN_WEBDAV_ROLES=admin,editor
+DASHJOIN_WEBDAV_READONLY_ROLES=viewer
+DASHJOIN_WEBDAV_ROOTS=upload,documents
+```
+
+In this example, admins and editors can read and write within `upload` and `documents`;
+viewers can only read files and browse these folders. A user with both viewer and editor
+roles has full access within the configured folders. Users matching neither role list
+receive HTTP 403. Setting a custom full-access role list replaces the default `admin`
+entry; admins have no implicit bypass.
+
+Whitespace around entries and duplicate/empty entries are ignored. Role names are
+case-sensitive. An explicitly empty role list grants no access through that list, and
+an explicitly empty `DASHJOIN_WEBDAV_ROOTS` exposes no folders. Root entries must be
+top-level folder names or `.`; absolute paths, `..`, path separators, colons, and null
+characters are rejected at startup.
+
+To restore access to all home contents, use:
+
+```properties
+DASHJOIN_WEBDAV_ROOTS=.
+```
+
+The `/rest/fs/home` collection itself remains read-only: it supports `OPTIONS`, `HEAD`,
+and `PROPFIND` and lists only accessible children. Folder restrictions apply to both
+source and destination of `COPY` and `MOVE`, as well as recursive operations. Requests
+outside the configured folders receive HTTP 403. Symbolic links below home are not
+accessible, even with `.`; recursive mutations containing them are rejected before
+making changes.
 
 ## How to enable HTTPS
 
