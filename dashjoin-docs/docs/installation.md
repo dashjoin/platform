@@ -224,6 +224,8 @@ A Dashjoin instance can be configured using the following environment variables:
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from (branches can be specified by appending #branchname)
 * DJ_SID: optional system ID (contents of the file .secretid)
 * DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (required for the upload widget)
+* DASHJOIN_WEBDAV_ROLES: comma-separated roles allowed to access WebDAV (defaults to "admin")
+* DASHJOIN_WEBDAV_READONLY_ROLES: comma-separated roles restricted to read-only WebDAV methods (defaults to none). Roles listed in DASHJOIN_WEBDAV_ROLES retain full access.
 * DASHJOIN_ONSTART: If a on-start expression is defined (see system configuration), this expression gets passed the string value {"onStart": VALUE}
 * DASHJOIN_WEBROOT: path to the folder containing the web application (prepend DASHJOIN_HOME if set)
 
