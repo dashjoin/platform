@@ -1,8 +1,9 @@
 package org.dashjoin.function;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Property;
@@ -91,10 +92,11 @@ public class ERDiagram extends AbstractFunction<String, String> {
   }
 
   String comp(Table table) {
-    Set<String> res = new HashSet<>();
-    for (Property prop : table.properties.values())
-      if (prop.pkpos != null)
-        res.add(prop.name);
+    // composite key columns must be listed in key order (pkpos), which is the order $read /
+    // $delete expect
+    List<String> res = table.properties.values().stream().filter(prop -> prop.pkpos != null)
+        .sorted(Comparator.comparing(prop -> prop.pkpos)).map(prop -> prop.name)
+        .collect(Collectors.toList());
     if (res.size() < 2)
       return null;
     return "indexes {(" + String.join(", ", res) + ") [pk]}";
