@@ -13,14 +13,14 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * Dashjoin Home folder encapsulation.
  */
 @ApplicationScoped
-@Log
 public class Home {
+  private static final Logger log = Logger.getLogger(Home.class.getName());
 
   String home;
   String fileHome;

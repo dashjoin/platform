@@ -63,13 +63,13 @@ import com.inova8.intelligentgraph.results.PathResults;
 import com.inova8.intelligentgraph.vocabulary.PATHQL;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * RDF4J implementation
  */
-@Log
 public class RDF4J extends AbstractDatabase {
+  private static final Logger log = Logger.getLogger(RDF4J.class.getName());
 
   public List<String> datasets;
 
