@@ -20,15 +20,15 @@ import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * Part of the config database. This class treats JSON files on the filesystem or the classpath like
  * a (config) database. The database is located in the folder model. The tables are subfolders in
  * models. The instances are files with name ID.json with the file contents being the object's data.
  */
-@Log
 public abstract class JSONDatabase implements Database {
+  private static final Logger log = Logger.getLogger(JSONDatabase.class.getName());
 
   /**
    * helper when converting JSON to map(string, object)

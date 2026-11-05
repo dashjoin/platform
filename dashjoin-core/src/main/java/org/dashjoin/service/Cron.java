@@ -15,12 +15,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.SecurityContext;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
-@Log
 @Startup
 @ApplicationScoped
 public class Cron {
+  private static final Logger log = Logger.getLogger(Cron.class.getName());
 
   @Inject
   Scheduler scheduler;

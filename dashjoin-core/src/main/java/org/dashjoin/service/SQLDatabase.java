@@ -72,7 +72,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.SecurityContext;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
@@ -93,9 +93,9 @@ import net.sf.jsqlparser.statement.update.Update;
 /**
  * SQL Reference implementation
  */
-@Log
 @JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 public class SQLDatabase extends AbstractDatabase {
+  private static final Logger log = Logger.getLogger(SQLDatabase.class.getName());
 
   private static final ObjectMapper om = new ObjectMapper();
 
