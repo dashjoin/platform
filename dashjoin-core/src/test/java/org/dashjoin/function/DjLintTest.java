@@ -2,6 +2,7 @@ package org.dashjoin.function;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,5 +48,19 @@ public class DjLintTest {
     Assertions.assertEquals(2, lint.messages.size(), all);
     Assertions.assertTrue(all.contains("unknown query in widget table: nope"), all);
     Assertions.assertTrue(all.contains("write query must not be used in widget table"), all);
+  }
+
+  @Test
+  public void roles() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/dj-database/dj%2Fnorthwind.json";
+    lint.roles = new HashSet<>(Arrays.asList("admin", "authenticated"));
+    // icons.roles is a string, not a role list, and must be ignored
+    lint.checkRoles(new ObjectMapper().readTree("{\"roles\": [\"admin\"], \"icons\": "
+        + "{\"roles\": \"person_search\"}, \"tables\": {\"T\": {\"readRoles\": [\"admni\"], "
+        + "\"writeRoles\": [\"authenticated\"]}}}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("unknown role in readRoles: admni"),
+        lint.messages.get(0));
   }
 }

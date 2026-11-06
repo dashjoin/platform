@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -74,6 +76,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   Map<String, Object> widgets;
   Map<String, String> queryTypes = new HashMap<String, String>();
 
+  /**
+   * role IDs defined in dj-role. null means unknown (e.g. in unit tests), in which case role checks
+   * are skipped
+   */
+  Set<String> roles;
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -82,6 +90,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     widgets = new HashMap<String, Object>(_widgets);
     if (arg != null)
       widgets.putAll(arg);
+
+    roles = new HashSet<String>();
+    for (var role : expressionService.getData().all(sc, "config", "dj-role", null, null, null,
+        false, null))
+      roles.add("" + role.get("ID"));
 
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
         "dj-database", "dj-function", "dj-config", "dj-library"}) {
@@ -109,6 +122,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           checkDatabaseLayout(tree);
           check(item);
         }
+        checkRoles(tree);
         checkExpressions(tree, folder.equals("dj-function"));
       }
     }
@@ -415,6 +429,23 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           }
         }
     }
+  }
+
+  /**
+   * roles, readRoles and writeRoles must reference a role defined in dj-role
+   */
+  void checkRoles(JsonNode tree) {
+    if (roles == null)
+      return;
+    for (Entry<String, JsonNode> e : tree.properties())
+      if (Arrays.asList("roles", "readRoles", "writeRoles").contains(e.getKey())
+          && e.getValue().isArray())
+        for (JsonNode role : e.getValue())
+          if (role.isTextual())
+            assertTrue(roles.contains(role.asText()), "unknown role in " + e.getKey(),
+                role.asText());
+    for (JsonNode i : tree)
+      checkRoles(i);
   }
 
   String insertError(String expr, JException e) {
