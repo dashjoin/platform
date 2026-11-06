@@ -37,6 +37,7 @@ org.dashjoin.function.Index
 org.dashjoin.function.IsRecursiveTrigger
 org.dashjoin.function.MoveField
 org.dashjoin.function.UUID
+org.dashjoin.function.Hmac
 org.dashjoin.function.Exec
 org.dashjoin.function.CreateTable
 org.dashjoin.function.CreateStubs
