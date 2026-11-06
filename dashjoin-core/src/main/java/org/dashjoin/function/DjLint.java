@@ -272,6 +272,10 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (widget.equals("${pk1}"))
       return;
 
+    // the frontend (DJBaseComponent.getData) evaluates expression first and ignores query
+    if (tree.get("query") != null && tree.get("expression") != null)
+      fail("query is ignored because expression is set in widget " + widget);
+
     if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
       String q = tree.get("query").asText();
       if (!queryTypes.containsKey(q))

@@ -51,6 +51,25 @@ public class DjLintTest {
   }
 
   @Test
+  public void queryAndExpression() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    lint.queryTypes.put("list", "read");
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query", "expression")));
+    ObjectMapper om = new ObjectMapper();
+
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"expression\": \"1\"}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkLayout(
+        om.readTree("{\"widget\": \"table\", \"query\": \"list\", \"expression\": \"1\"}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("query is ignored because expression"),
+        lint.messages.get(0));
+  }
+
+  @Test
   public void layoutDatabase() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/page/test.json";
