@@ -195,7 +195,7 @@ export const Smiles = ({ widget }: { widget: Widget }) => {
 export const config = {
     id: 'smiles',
     title: 'Smiles',
-    description: 'Renders a SMILES string as a 3D molecule',
+    description: 'Renders a SMILES string as a 2D molecule',
     version: 1,
     icon: <Icon>science</Icon>,
     controls: {
@@ -355,8 +355,7 @@ If you are using containers, you can mount the model folder under /deployments/m
 
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.
 Therefore, it is quite common to use different sets of resources for development and production.
-As described in the section on automatic Git checkout above, the production credentials are usually
-checked into the code repository. During development, you can use [environment](installation.md/#environment)
+During development, you can use [environment](installation.md/#environment)
 variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
 
 * dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
@@ -430,7 +429,7 @@ with the value of the DASHJOIN_ONSTART environment variable string: {"onStart": 
 Let's assume, every instance gets the value of its theme color. We can use the start expression to set the color:
 
 ```
-$update('config', 'dj-config', 'theme', {'map': {'pallette.primary.main': onStart}})
+$update('config', 'dj-config', 'theme', {'map': {'palette.primary.main': onStart}})
 ```
 
 If your app instances need to have different login configs, favicons, or other web assets such as logos, you

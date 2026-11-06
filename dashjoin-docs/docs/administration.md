@@ -159,7 +159,7 @@ Examples:
 Automatically forwards to the first configured OpenID provider after 2 seconds.
 
 ```
-  "autoLogin": { "timeout": 5000, "target": {"key: 1} }
+  "autoLogin": { "timeout": 5000, "target": {"key": 1} }
 ```
 Automatically forwards to the second OpenID provider after 5 seconds.
 
@@ -206,9 +206,9 @@ docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/
 
 ### Minimalistic logincfg.json customization example
 
-The following example disables all OpenID providers, disables password reset, and disables user registration.
+The following example only enables email / local user login. Since providers, openIdConfigs, passwordResetEnabled, and registrationEnabled are omitted, social and OpenID login, password reset, and user registration are disabled.
 
-Note: all settings not specified will use their defaults (see above).
+Note: the defaults shown above are the contents of the logincfg.json file that ships with the platform. If you provide your own file, any boolean setting or provider list you omit is treated as disabled.
 
 ```json
 {

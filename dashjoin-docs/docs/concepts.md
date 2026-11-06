@@ -443,6 +443,6 @@ The result is ignored, unless the trigger function returns the following result:
 ```
 
 This mechanism allows setting default column values or removing keys for columns that should
-not be changed. You can also use the djVersion function to change the trigger behaviour based on the user role.
+not be changed. You can also use the djRoles function to change the trigger behaviour based on the user role.
 
 In order to abort the update, create, or delete operation, you can use the "error" function.

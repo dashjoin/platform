@@ -28,7 +28,8 @@ or as a chart using the following syntax:
     "img": "https://dashjoin.com/img/fav.png",
     "width": "32"
   }
-}```
+}
+```
 
 ```json
 {
@@ -569,7 +570,7 @@ Note that the pair "roast" and "hello" do not sound alike and, therefore, is not
 The Levenshtein Distance calculates the minimal number of edits that is required to transform one
 string into the other. The smaller this number, the more similar the strings are.
 This is a good metric to match strings despite typos.
-Compared to apple, apples is included with a limit of 1, appl is too different and is not included.
+Compared to apple, both apples and appl are one edit away and are therefore included with a limit of 1. A variant like "apl" (two edits) would not be included.
 
 ```javascript
 $synonym({"LevenshteinDistance": 1}, ["apple"], ["apples", "appl"])
@@ -594,7 +595,7 @@ $synonym({"LevenshteinDistance": 1}, ["apple"], ["apples", "appl"])
 
 ## Document to Text
 
-In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dasjoin NLP container. You can run it as follows:
+In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dashjoin NLP container. You can run it as follows (use a different port if you are using Dashjoin Studio):
 
 ```shell
 docker run -p 8081:8081 dashjoin/nlp
@@ -619,16 +620,16 @@ curl -X 'POST' \
   'http://localhost:8081/function/run/doc2text' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '"data:application/pdf;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg=="'
+  -d '"data:text/html;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg=="'
 ```
 
-Note that the data URL has the prefix: data:application/pdf;base64,
+Note that the data URL has the prefix data:text/html;base64, - use the MIME type matching your document (e.g. data:application/pdf;base64, for PDFs).
 The following data is a base 64 encoded HTML page.
 
 In order to send a document from your upload folder, you can use the following JSONata code:
 
 ```
-$curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/pdf;base64," & $openText("file:upload/test.html", "BASE_64"))
+$curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/pdf;base64," & $openText("file:upload/test.pdf", "BASE_64"))
 ```
 
 The document is loaded via the openText function using base64 encoding. The data URL prefix is appended and fed into the curl command.
