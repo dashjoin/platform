@@ -196,7 +196,7 @@ Expressions in widgets, that are evaluated in the browser can alternatively be w
 
 * Use // JavaScript or //JavaScript in the first line of your expression to switch to the JavaScript runtime
 * Your expression implicitly is run within an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Therefore, if you would like the function to return a value to the widget, you must use a return statement at the end.
-* All Dashjoin functions that are available in the JSONata runtime, are also available in JavaScript. Please refer to the developer reference for details. Omit the dollar sign to call them. The only exception is the delete function which is available as _delete. 
+* All Dashjoin functions that are available in the JSONata runtime, are also available in JavaScript. Please refer to the [JSONata Expression Reference](jsonata-reference.md) for details. Omit the dollar sign to call them. The only exception is the delete function which is available as _delete. 
 * Any backend function (e.g. read to get a value from the database), must be called with the await keyword.
 * The context data (as described in detail in the next section) is available via the variable "context".
 
@@ -306,7 +306,7 @@ the expression context to be:
 
 #### Form Context
 
-Several widgets allow adding form elements (see section "Form Widgets" in the next chapter).
+Several widgets allow adding form elements (see [Form Widgets](widget-reference.md#form-widgets)).
 If a number form element with name "y" has the value 2 and the form is submitted, the context is:
 
 ```json

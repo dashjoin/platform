@@ -4,7 +4,7 @@ The Artificial Intelligence and Machine Learning features of the Dashjoin Platfo
 delivered as a set of Docker containers that package models and external runtime components as
 well as JSONata functions that make these features usable within any part of an application.
 
-The previous developer reference section already lists some of the AI & ML capabilities, however, this
+The widget, function, and JSONata reference chapters already list some of the AI & ML capabilities, however, this
 section explains the features in more detail and provides a comprehensive overview.
 
 ## JSONata Notebooks
@@ -209,7 +209,7 @@ $openJson("http://.../language_detection?text=example")
 The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
 text embedding technology into your low code application. The functionality is available via an easy to use
 administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
-via JSONata. Please refer to the documentation of the aichat widget and the AIApp / MCPServer functions in the developer reference for information
+via JSONata. Please refer to the documentation of the [aichat widget](widget-reference.md#aichat) and the [AIApp](developer-reference.md#aiapp) / [MCPServer](developer-reference.md#mcpserver) functions for information
 about how the chat widget can be configured. The API section below also shows examples of how to
 call the REST services directly.
 
@@ -633,3 +633,8 @@ $curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/p
 ```
 
 The document is loaded via the openText function using base64 encoding. The data URL prefix is appended and fed into the curl command.
+
+Note that the curl call is executed by the platform backend. The URL localhost:8081 only works if the platform runs directly on the host.
+If the platform runs in a container, localhost refers to the platform container itself. In this case, use the service name
+of the NLP container (e.g. http://nlp:8081 if both containers are part of the same Docker Compose setup) or
+http://host.docker.internal:8081 if the NLP container is started separately on the host.

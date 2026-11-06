@@ -351,7 +351,7 @@ The function page works a lot like the database page. It shows a table of the fu
 Apart from creating and editing functions, you can also run the functions from the function page.
 Note that functions will be called without any parameters.
 If you would like to run functions with parameters, use the JSONata Notebook.
-Please refer to the developer reference chapter for a detailed listing of all supported functions.
+Please refer to the [Functions](developer-reference.md) chapter for a detailed listing of all supported functions.
 
 ## General Information Page
 

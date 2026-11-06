@@ -126,7 +126,7 @@ is computed using a JSONata filter which only includes the values in the other a
 
 * **Can I trigger a git pull of the App in production without a restart?** You can run $gitPull() as a function or on the Dashjoin Notebook.
 
-* **Can I call the OpenAI APIs from Dashjoin?** Yes. The recommended way is to configure the model in the AI Assistant and use the AIApp function or the $chat function (see the developer reference and the AI & ML chapter). If you need direct access to the raw API, you can register the following function (replace your API key accordingly) and call it. Alternatively, use the RestJson apiKey option (username: Authorization, password: Bearer YOUR-API-KEY) so that the key is stored in the encrypted password field rather than in the headers:
+* **Can I call the OpenAI APIs from Dashjoin?** Yes. The recommended way is to configure the model in the AI Assistant and use the AIApp function or the $chat function (see [Functions](developer-reference.md#aiapp), the [JSONata Expression Reference](jsonata-reference.md) and the [AI & ML chapter](ai-ml-integration.md)). If you need direct access to the raw API, you can register the following function (replace your API key accordingly) and call it. Alternatively, use the RestJson apiKey option (username: Authorization, password: Bearer YOUR-API-KEY) so that the key is stored in the encrypted password field rather than in the headers:
 
 ```javascript
 {

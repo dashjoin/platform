@@ -150,7 +150,7 @@ arguments: {"user": $.user}
 
 Press the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
 
-We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
+We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the [Expressions](concepts.md#expressions) section and the [JSONata Expression Reference](jsonata-reference.md) for a full documentation of these expressions.
 
 Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and add a button widget with the following parameters:
 
