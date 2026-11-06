@@ -230,8 +230,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
       String q = tree.get("query").asText();
-      assertTrue(!"write".equals(queryTypes.get(q)),
-          "write query must not be used in widget " + widget, q);
+      if (!queryTypes.containsKey(q))
+        fail("unknown query in widget " + widget + ": " + q);
+      else
+        assertTrue(!"write".equals(queryTypes.get(q)),
+            "write query must not be used in widget " + widget, q);
     }
 
     for (Entry<String, JsonNode> e : tree.properties()) {

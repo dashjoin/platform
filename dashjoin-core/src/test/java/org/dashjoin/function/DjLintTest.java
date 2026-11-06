@@ -1,5 +1,8 @@
 package org.dashjoin.function;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,5 +27,25 @@ public class DjLintTest {
     lint.checkExpressions(new ObjectMapper()
         .readTree("{\"type\": \"ETL\", \"expression\": \"1\", \"foreach\": \"[1..3]\"}"), true);
     Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
+  public void layoutQuery() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    lint.queryTypes.put("list", "read");
+    lint.queryTypes.put("insert", "write");
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query")));
+    ObjectMapper om = new ObjectMapper();
+
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"nope\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"insert\"}"));
+    String all = "" + lint.messages;
+    Assertions.assertEquals(2, lint.messages.size(), all);
+    Assertions.assertTrue(all.contains("unknown query in widget table: nope"), all);
+    Assertions.assertTrue(all.contains("write query must not be used in widget table"), all);
   }
 }
