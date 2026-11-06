@@ -511,6 +511,15 @@ Sample output:
   "diff" : "diff --git a/dashjoin-demo.db b/dashjoin-demo.db\nindex 6fdb4ce..d29b8f1 100644\n--- a/dashjoin-demo.db\n+++ b/dashjoin-demo.db\nBinary files differ\n"
 } ]
 ```
+### hmac
+signs a message with the secret of a Credentials function, e.g. for signed URLs or for checking webhook signatures. Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none)
+```
+$hmac('cdnSigningKey', '/download/book.pdf1700000000')
+```
+Sample output: 
+```json
+"Wl0zx3E1Yv0GvQ7rM4lyYH8lGBn6Ivr6rSOtcJ0QTlo="
+```
 ### incoming
 get all records from all databases that point to northwind EMPLOYEE 2
 ```

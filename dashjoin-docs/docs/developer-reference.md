@@ -1240,6 +1240,7 @@ gitCommit| $gitCommit(message, [paths]) | Run git commit and push
 gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change
 gitStatus| $gitStatus() | Run git status
+hmac | $hmac(keyId, message, algorithm?, encoding?) | Signs message with the secret of the Credentials function keyId. algorithm: HmacSHA256 (default), HmacSHA384, HmacSHA512. encoding: base64 (default), base64url, hex. The secret is never returned. Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign a fixed kind of message
 incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 index | $index() | Generates a unique row index ID
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
