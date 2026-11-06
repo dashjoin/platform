@@ -43,6 +43,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       "select", "multi select", "key value", "password", "textarea", "date", "time", "datetime",
       "file", "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode");
 
+  public static List<String> OPTION_INPUTS =
+      Arrays.asList("select", "multi select", "auto complete");
+
+  public static List<String> FILE_INPUTS = Arrays.asList("file", "binary file",
+      "file with metadata", "binary file with metadata");
+
   private static Map<String, Object> deprecated;
   private static Map<String, Object> studio;
   private static Map<String, Object> _widgets;
@@ -66,6 +72,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   String current;
   String currentID;
   Map<String, Object> widgets;
+  Map<String, String> queryTypes = new HashMap<String, String>();
 
   @Override
   public String run(Map<String, Object> arg) throws Exception {
@@ -89,7 +96,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
         if (folder.equals("dj-query-catalog")) {
           checkDanglingPointers(tree);
-          om.convertValue(tree, QueryMeta.class);
+          QueryMeta qm = om.convertValue(tree, QueryMeta.class);
+          queryTypes.put(qm.ID, qm.type);
         }
         if (folder.equals("dj-function"))
           checkDanglingPointers(tree);
@@ -220,6 +228,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (widget.equals("${pk1}"))
       return;
 
+    if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
+      String q = tree.get("query").asText();
+      assertTrue(!"write".equals(queryTypes.get(q)),
+          "write query must not be used in widget " + widget, q);
+    }
+
     for (Entry<String, JsonNode> e : tree.properties()) {
       String field = e.getKey();
       if (field.endsWith("-pointer")) {
@@ -275,7 +289,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     String type = schema.get("type") == null ? "string" : schema.get("type").asText();
     String widget = schema.get("widget") == null ? "string" : schema.get("widget").asText();
-    assertTrue(INPUTS.contains(widget), "unnknown widget type", widget);
+    assertTrue(INPUTS.contains(widget), "unknown widget type", widget);
     for (Entry<String, JsonNode> e : schema.properties()) {
       String key = e.getKey();
       if (key.equals("examples") && e.getValue().getNodeType().equals(JsonNodeType.ARRAY))
@@ -293,19 +307,26 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if ((key.equals("readOnly") || key.equals("createOnly"))
           && e.getValue().getNodeType().equals(JsonNodeType.BOOLEAN))
         continue;
-      if (key.equals("options"))
+      if (key.equals("options")) {
+        assertTrue(OPTION_INPUTS.contains(widget), "options only allowed for select inputs",
+            widget);
         continue;
+      }
+      if (Arrays.asList("multiple", "capture", "accept", "limit").contains(key)) {
+        assertTrue(FILE_INPUTS.contains(widget), key + " only allowed for file inputs", widget);
+        continue;
+      }
       if (key.equals("type"))
-        continue;
-      if (key.equals("multiple"))
-        continue;
-      if (key.equals("capture"))
-        continue;
-      if (key.equals("accept"))
         continue;
       if (key.equals("widget"))
         continue;
       if (key.equals("properties") && type.equals("object"))
+        continue;
+      if (key.equals("items") && type.equals("array"))
+        continue;
+      if (key.equals("reorder") && type.equals("array"))
+        continue;
+      if (key.equals("if") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
         continue;
       fail("unknown property", e);
     }
