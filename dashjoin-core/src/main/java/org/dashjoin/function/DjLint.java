@@ -107,12 +107,15 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     // run unit tests
     for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
-        null, null, null, false, null))
+        null, null, null, false, null)) {
+      current = "model/dj-library/" + test.get("ID") + ".json";
+      currentID = "" + test.get("ID");
       try {
         expressionService.resolve(sc, "$eval($use('unit-test'))($)", test);
       } catch (Exception e) {
         fail(e.getMessage());
       }
+    }
 
     if (messages.isEmpty())
       return "no warnings";
