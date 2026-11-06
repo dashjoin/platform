@@ -82,6 +82,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
    */
   Set<String> roles;
 
+  /**
+   * database names (IDs without the dj/ prefix) defined in dj-database plus config. null means
+   * unknown (e.g. in unit tests), in which case database checks are skipped
+   */
+  Set<String> databases;
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -95,6 +101,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     for (var role : expressionService.getData().all(sc, "config", "dj-role", null, null, null,
         false, null))
       roles.add("" + role.get("ID"));
+
+    databases = new HashSet<String>(Arrays.asList("config"));
+    for (var db : expressionService.getData().all(sc, "config", "dj-database", null, null, null,
+        false, null))
+      databases.add(stripDj("" + db.get("ID")));
 
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
         "dj-database", "dj-function", "dj-config", "dj-library"}) {
@@ -111,6 +122,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           checkDanglingPointers(tree);
           QueryMeta qm = om.convertValue(tree, QueryMeta.class);
           queryTypes.put(qm.ID, qm.type);
+          checkDatabase(qm.database);
         }
         if (folder.equals("dj-function"))
           checkDanglingPointers(tree);
@@ -250,6 +262,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         assertTrue(!"write".equals(queryTypes.get(q)),
             "write query must not be used in widget " + widget, q);
     }
+
+    if (tree.get("database") != null && tree.get("database").isTextual())
+      checkDatabase(tree.get("database").asText());
 
     for (Entry<String, JsonNode> e : tree.properties()) {
       String field = e.getKey();
@@ -446,6 +461,22 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 role.asText());
     for (JsonNode i : tree)
       checkRoles(i);
+  }
+
+  static String stripDj(String database) {
+    return database.startsWith("dj/") ? database.substring("dj/".length()) : database;
+  }
+
+  /**
+   * databases are referenced by name ("northwind") or ID ("dj/northwind")
+   */
+  void checkDatabase(String database) {
+    if (database == null || databases == null)
+      return;
+    if (database.contains("$") || database.contains("{"))
+      // computed value
+      return;
+    assertTrue(databases.contains(stripDj(database)), "unknown database", database);
   }
 
   String insertError(String expr, JException e) {

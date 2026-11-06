@@ -51,6 +51,27 @@ public class DjLintTest {
   }
 
   @Test
+  public void layoutDatabase() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    lint.databases = new HashSet<>(Arrays.asList("config", "northwind"));
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query"), "analytics",
+        Arrays.asList("database")));
+    ObjectMapper om = new ObjectMapper();
+
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"northwind\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"dj/northwind\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"analytics\", \"database\": \"config\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"${db}\"}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkLayout(om.readTree("{\"widget\": \"analytics\", \"database\": \"nope\"}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("unknown database: nope"),
+        lint.messages.get(0));
+  }
+
+  @Test
   public void roles() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/dj-database/dj%2Fnorthwind.json";
