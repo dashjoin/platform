@@ -51,6 +51,29 @@ public class DjLintTest {
   }
 
   @Test
+  public void queryArguments() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    lint.queryTypes.put("list", "read");
+    lint.queryTypes.put("all", "read");
+    lint.queriesWithArguments.add("list");
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query", "arguments")));
+    ObjectMapper om = new ObjectMapper();
+
+    lint.checkLayout(om.readTree(
+        "{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"{'limit': 5}\"}"));
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"all\"}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
+    lint.checkLayout(
+        om.readTree("{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"\"}"));
+    Assertions.assertEquals(2, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("no arguments set for query: list"),
+        lint.messages.get(0));
+  }
+
+  @Test
   public void selectWithoutOptions() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/page/test.json";

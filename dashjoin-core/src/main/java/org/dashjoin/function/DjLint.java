@@ -82,6 +82,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   Map<String, String> queryTypes = new HashMap<String, String>();
 
   /**
+   * IDs of catalog queries that declare arguments
+   */
+  Set<String> queriesWithArguments = new HashSet<String>();
+
+  /**
    * role IDs defined in dj-role. null means unknown (e.g. in unit tests), in which case role checks
    * are skipped
    */
@@ -140,6 +145,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           checkDanglingPointers(tree);
           QueryMeta qm = om.convertValue(tree, QueryMeta.class);
           queryTypes.put(qm.ID, qm.type);
+          if (qm.arguments != null && !qm.arguments.isEmpty())
+            queriesWithArguments.add(qm.ID);
           checkDatabase(qm.database);
         }
         if (folder.equals("dj-function"))
@@ -283,6 +290,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       else
         assertTrue(!"write".equals(queryTypes.get(q)),
             "write query must not be used in widget " + widget, q);
+      if (queriesWithArguments.contains(q))
+        assertTrue(tree.get("arguments") != null && !tree.get("arguments").asText().isBlank(),
+            "no arguments set for query", q);
     }
 
     if (tree.get("database") != null && tree.get("database").isTextual())
