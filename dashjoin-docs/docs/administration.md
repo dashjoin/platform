@@ -80,7 +80,7 @@ This config fields are defined as follows:
 
 * Domain: the domain the application is running on
 * Name: Application name in the IDM
-* Logo: Absolute or relative URL to the IDM logo to be displayed on teh login screen
+* Logo: Absolute or relative URL to the IDM logo to be displayed on the login screen
 * Issuer: URL / UUID of the IDM issuing authorizations
 * Client ID: ID of the registered application in the IDM
 * Redirect URI: URL of the Dashjoin application
@@ -126,7 +126,7 @@ relative to the current working directory of the platform.
 
 Note that the current working directory depends on the OS and the way the platform is installed / started.
 
-The next sections list the locations on different operating systems.
+The locations on different operating systems are listed in the sections "Installed Dashjoin application", "Dashjoin container", and "Dashjoin PaaS Cloud" further below.
 
 ### Multifactor authentication (MFA)
 
@@ -159,7 +159,7 @@ Examples:
 Automatically forwards to the first configured OpenID provider after 2 seconds.
 
 ```
-  "autoLogin": { "timeout": 5000, "target": {"key: 1} }
+  "autoLogin": { "timeout": 5000, "target": {"key": 1} }
 ```
 Automatically forwards to the second OpenID provider after 5 seconds.
 
@@ -206,9 +206,9 @@ docker run --rm -p 8080:8080 -v /my/path/to/logincfg.json:/deployments/META-INF/
 
 ### Minimalistic logincfg.json customization example
 
-The following example disables all OpenID providers, disables password reset, and disables user registration.
+The following example only enables email / local user login. Since providers, openIdConfigs, passwordResetEnabled, and registrationEnabled are omitted, social and OpenID login, password reset, and user registration are disabled.
 
-Note: all settings not specified will use their defaults (see above).
+Note: the defaults shown above are the contents of the logincfg.json file that ships with the platform. If you provide your own file, any boolean setting or provider list you omit is treated as disabled.
 
 ```json
 {
@@ -219,6 +219,7 @@ Note: all settings not specified will use their defaults (see above).
 With this config the login dialog will look similar to this:
 
 ![Login with minimalistic config](assets/logincfg_mini.png)
+
 ## Query / Expression Performance
 
 When hooking up large databases, you might have to perform some performance tuning in order for the platform to scale.
@@ -291,7 +292,7 @@ up in the search results.
 
 ### Global Timeout Settings
 
-Finally, the system configuration page allows setting some global contraints that prevent
+Finally, the system configuration page allows setting some global constraints that prevent
 "rogue" queries to deteriorate the overall system and database performance.
 Please see the descriptions on the system configuration page (/config/dj-config) for more details.
 
@@ -314,7 +315,7 @@ If you'd like to change the homepage for role authenticated only, navigate to /c
 and in the properties field, enter "homepage" and your desired page, e.g. /page/AuthenticatedHome.
 
 The customizations can also be applied to an individual OpenID user only via the tenant users table.
-If you'd like to change the homepage for user joe@example.org, naviage to
+If you'd like to change the homepage for user joe@example.org, navigate to
 /config/tenantusers/joe%40example.org and again use the properties field.
 
 ### Adding static assets to the app
@@ -323,7 +324,7 @@ Static assets like images, logos, movies, and other files required by your appli
 
 The assets are accessible in the running application as ```http(s)://<app url>/assets```
 
-By definition, access to static assets does not require login, so they are always readable / publically accessible.
+By definition, access to static assets does not require login, so they are always readable / publicly accessible.
 Do not place any confidential data in the assets folder.
 
 When working with version control tools (i.e. git), assets can be maintained along with all other app resources under revision control.

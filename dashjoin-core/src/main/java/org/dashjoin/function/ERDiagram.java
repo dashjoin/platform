@@ -40,12 +40,12 @@ public class ERDiagram extends AbstractFunction<String, String> {
           if (prop.ref != null)
             res.append(" [ref: > " + q(Escape.parseColumnID(prop.ref)[2]) + '.'
                 + Escape.parseColumnID(prop.ref)[3] + "]");
-          if (prop.title != null || prop.description != null)
-            res.append(" [note: '" + s(prop.title) + ' ' + s(prop.comment) + "']");
+          if (prop.title != null || prop.comment != null)
+            res.append(" [note: " + note(prop.title, prop.comment) + "]");
           res.append("\n");
         }
         if (table.title != null || table.comment != null)
-          res.append("  Note: '" + s(table.title) + ' ' + s(table.comment) + "'");
+          res.append("  Note: " + note(table.title, table.comment) + "\n");
         if (comp != null)
           res.append("  " + comp + "\n");
         res.append("}\n\n");
@@ -69,11 +69,12 @@ public class ERDiagram extends AbstractFunction<String, String> {
     return "read";
   }
 
-  String s(String s) {
-    if (s == null)
-      return "";
-    else
-      return s;
+  /**
+   * DBML string with title and comment, separated by a space if both are set
+   */
+  String note(String title, String comment) {
+    String s = title == null ? comment : comment == null ? title : title + ' ' + comment;
+    return "'" + s.replace("\\", "\\\\").replace("'", "\\'") + "'";
   }
 
   String q(String s) {

@@ -1,10 +1,10 @@
 # AI & ML Integration
 
-The Artificial Intelligence and Machine Learning features of the Dashjoin Platform is
+The Artificial Intelligence and Machine Learning features of the Dashjoin Platform are
 delivered as a set of Docker containers that package models and external runtime components as
 well as JSONata functions that make these features usable within any part of an application.
 
-The previous developer reference section already lists some of the AI & ML capabilities, however, this
+The widget, function, and JSONata reference chapters already list some of the AI & ML capabilities, however, this
 section explains the features in more detail and provides a comprehensive overview.
 
 ## JSONata Notebooks
@@ -28,7 +28,8 @@ or as a chart using the following syntax:
     "img": "https://dashjoin.com/img/fav.png",
     "width": "32"
   }
-}```
+}
+```
 
 ```json
 {
@@ -58,7 +59,7 @@ in other code blocks as $variable.
 It is possible to upload one or more files into the notebook. This creates new code block,
 where the variable $upload is set to a map of file name to file content. This variable
 can be used in other code blocks. Assume you upload a file.txt, then the contents of the file
-is avaiable as $upload.file_txt. Note that dot is replaced with underscore to avoid having to
+is available as $upload.file_txt. Note that dot is replaced with underscore to avoid having to
 escape the field name.
 
 The code block and its result is saved to the browser session, which is lost if the browser
@@ -128,7 +129,7 @@ $parseJson(
 
 ## Face Recognition
 
-The optical character recognition (OCR) functionality is also available in the dashjoin/ai-image Docker container. It exposes a
+The face recognition functionality is also available in the dashjoin/ai-image Docker container. It exposes a
 REST API where you provide an image URL such as this picture:
 
 <img width="400px" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg">
@@ -208,14 +209,14 @@ $openJson("http://.../language_detection?text=example")
 The Dashjoin AI Assistant makes it easy to integrate state of the art semantic large language model and
 text embedding technology into your low code application. The functionality is available via an easy to use
 administration UI as well as an end-user chat widget. Furthermore, you can access the features conveniently
-via JSONata. Please refer to the documentation of the aichat widget and the AIApp / MCPServer functions in the developer reference for information
+via JSONata. Please refer to the documentation of the [aichat widget](widget-reference.md#aichat) and the [AIApp](developer-reference.md#aiapp) / [MCPServer](developer-reference.md#mcpserver) functions for information
 about how the chat widget can be configured. The API section below also shows examples of how to
 call the REST services directly.
 
 Dashjoin AI Assistant is available via the docker image dashjoin/aia and offers a range of powerful features around
 large language models (LLMs):
 
-* access APIs such as OpenAPI or Mistral in a uniform and secure way
+* access APIs such as OpenAI or Mistral in a uniform and secure way
 * run LLMs locally and expose them via the same API
 * Builtin and convenient retrieval augmented generation (RAG)
 * Powerful Jupyter development environment for deploying custom AI code
@@ -229,7 +230,7 @@ The following environment variables can be used to configure the container:
 * MCP_BUILTIN_URL: URL of the MCP proxy (default: http://mcp-proxy:9090)
 * MCP_BUILTIN_AUTH: Password of the MCP proxy (prefix with "Bearer ")
 * DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
-* JUPYTER_TOKEN: password of the Juyper development environment
+* JUPYTER_TOKEN: password of the Jupyter development environment
 * DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
 * DASHJOIN_APPURL_BRANCH: optional GIT branch to use
 * DJAI_POSTGRES_USER: username of the pgvector database
@@ -241,7 +242,7 @@ In addition, you can set these 3rd party API keys:
 * FIREWORKS_API_KEY: see https://fireworks.ai/
 * OPENAI_API_KEY: see https://platform.openai.com/api-keys
 * MISTRAL_API_KEY: see https://admin.mistral.ai/organization/api-keys
-* SERPER_API_KEY: see https://serpapi.com/
+* SERPER_API_KEY: see https://serper.dev/
 
 These are the settings for the [Docker MCP Gateway](https://docs.docker.com/ai/mcp-catalog-and-toolkit/mcp-gateway/):
 
@@ -365,7 +366,7 @@ curl -u admin:djdjdj -X 'GET' \
 ### Using Jupyter Notebooks
 
 The most convenient way to experiment with Python and AI are Jupyter Notebooks that allow you to interactively
-run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming you started the container with the command shown above, simply point your browser to http://localhost:8002 and log in.
+run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming the container is started in dev mode (DASHJOIN_DEVMODE=1) with port 8002 exposed, simply point your browser to http://localhost:8002 and log in using the JUPYTER_TOKEN.
 
 ### Installing Python Libraries
 
@@ -388,7 +389,7 @@ executeNotebook("dashjoin/aikb/install.ipynb")
 
 ### Calling Jupyter Notebooks over REST
 
-The tools example aboce showed how code can be developed and tested in Jupyter and how it is then moved to Python.
+The examples above showed how code can be developed and tested in Jupyter and how it is then moved to Python.
 Using the executeNotebook function, you can even expose the Notebook directly as a REST service:
 
 ```
@@ -461,7 +462,7 @@ There are various approaches that can be applied. In this section, we describe t
 reconcileEntity JSONata function. It uses the [Wikidata](https://www.wikidata.org/)
 search API in order to reconcile a text with a standardized Wikidata ID.
 Wikidata is the database equivalent of Wikipedia, i.e. it is a crowd-sourced
-database of entites that can also be found in wikipedia.
+database of entities that can also be found in wikipedia.
 Consequently this function should not be used if the texts are very specific
 or if the texts are unsuitable to be sent to a 3rd party service.
 
@@ -569,7 +570,7 @@ Note that the pair "roast" and "hello" do not sound alike and, therefore, is not
 The Levenshtein Distance calculates the minimal number of edits that is required to transform one
 string into the other. The smaller this number, the more similar the strings are.
 This is a good metric to match strings despite typos.
-Compared to apple, apples is included with a limit of 1, appl is too different and is not included.
+Compared to apple, both apples and appl are one edit away and are therefore included with a limit of 1. A variant like "apl" (two edits) would not be included.
 
 ```javascript
 $synonym({"LevenshteinDistance": 1}, ["apple"], ["apples", "appl"])
@@ -594,7 +595,7 @@ $synonym({"LevenshteinDistance": 1}, ["apple"], ["apples", "appl"])
 
 ## Document to Text
 
-In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dasjoin NLP container. You can run it as follows:
+In order to include PDF and Word documents into your AI / ML and Low Code processes, it is crucial to be able to convert these assets into plain text. This functionality is available in the Dashjoin NLP container. You can run it as follows (use a different port if you are using Dashjoin Studio):
 
 ```shell
 docker run -p 8081:8081 dashjoin/nlp
@@ -619,16 +620,21 @@ curl -X 'POST' \
   'http://localhost:8081/function/run/doc2text' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '"data:application/pdf;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg=="'
+  -d '"data:text/html;base64,PGh0bWw+PHA+bXkgdGl0bGU8L3A+PC9odG1sPg=="'
 ```
 
-Note that the data URL has the prefix: data:application/pdf;base64,
+Note that the data URL has the prefix data:text/html;base64, - use the MIME type matching your document (e.g. data:application/pdf;base64, for PDFs).
 The following data is a base 64 encoded HTML page.
 
 In order to send a document from your upload folder, you can use the following JSONata code:
 
 ```
-$curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/pdf;base64," & $openText("file:upload/test.html", "BASE_64"))
+$curl("POST", "http://localhost:8081/function/run/doc2text", "data:application/pdf;base64," & $openText("file:upload/test.pdf", "BASE_64"))
 ```
 
 The document is loaded via the openText function using base64 encoding. The data URL prefix is appended and fed into the curl command.
+
+Note that the curl call is executed by the platform backend. The URL localhost:8081 only works if the platform runs directly on the host.
+If the platform runs in a container, localhost refers to the platform container itself. In this case, use the service name
+of the NLP container (e.g. http://nlp:8081 if both containers are part of the same Docker Compose setup) or
+http://host.docker.internal:8081 if the NLP container is started separately on the host.

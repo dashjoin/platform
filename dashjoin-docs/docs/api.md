@@ -4,7 +4,7 @@ This section is comprised of two parts. First, we look at the API that ships wit
 
 ## Platform API
 
-The Dashjoin architecture features an Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
+The Dashjoin architecture features a Single Page Application (SPA) that is driven by RESTful APIs. The APIs support the OpenAPI standard.
 The OpenAPI description is available at <https://demo.my.dashjoin.com/openapi>. Dashjoin also ships the Swagger GUI at <https://demo.my.dashjoin.com/swagger-ui>.
 Please note that the API is subject to change.
 
@@ -23,7 +23,7 @@ curl -H "Authorization: Bearer ..." https://demo.my.dashjoin.com/rest/manage/ver
 ```
 
 The easiest way to obtain a bearer token is to login using a browser and copying the token via the browser development tools.
-Depending on your OpenID provider, a bearer token can also be obtained via a seperate login call.
+Depending on your OpenID provider, a bearer token can also be obtained via a separate login call.
 
 In addition to the API, it is possible to create custom function and database microservices and use them via the RestJson function and
 RemoteDatabase clients. For more information, please refer to the [dashjoin-sdk](https://github.com/dashjoin/platform/tree/master/dashjoin-sdk) module documentation.
@@ -43,7 +43,9 @@ The endpoint is available under /rest/odata.
 ### PDF Export
 
 Any platform page can be exported to PDF using the puppeteer framework. For your convenience, we deployed a cloud function to do this for any
-installation available on the web. Please note that your credentials and the PDF content are sent via this third party if you use this function:
+installation available on the web.
+
+**Warning:** if you use this function, your credentials and the PDF content are sent to this third party service. Only use it for test or demo systems and never with production credentials:
 
 ```bash
 curl -X POST https://europe-west1-djfire-1946d.cloudfunctions.net/exportPdf --output cloudfunction.pdf -H "Content-Type:application/json" -d '{
@@ -343,7 +345,7 @@ makes sure that updates on the database are reflected, despite the schema alread
 ### SwaggerHub Integration
 
 SwaggerHub is a popular tool for authoring and managing your APIs. Consequently, instead of using a file URL, we allow
-using a SwaggerHub URL. In order to have the platform authenticate against the SwaggerHub API, you must generated an API
+using a SwaggerHub URL. In order to have the platform authenticate against the SwaggerHub API, you must generate an API
 key and provide it in the openapi system configuration:
 
 ```json

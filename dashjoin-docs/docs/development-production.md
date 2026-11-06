@@ -39,7 +39,7 @@ visible immediately in the query catalog as well.
 
 ### App Folder Structure
 
-The contains the following folders:
+The app contains the following folders:
 
 * assets: any media that should be available via http(s)://<app url>/assets. To customize the favicon, for instance, add your favicon to assets/public_html/favicon.ico.
 * model
@@ -195,7 +195,7 @@ export const Smiles = ({ widget }: { widget: Widget }) => {
 export const config = {
     id: 'smiles',
     title: 'Smiles',
-    description: 'Renders a SMILES string as a 3D molecule',
+    description: 'Renders a SMILES string as a 2D molecule',
     version: 1,
     icon: <Icon>science</Icon>,
     controls: {
@@ -318,16 +318,17 @@ This is controlled by the "externalize-config-strings" setting.
 If you'd like to also externalize widget markdown for instance, simply add "page: markdown" to "externalize-config-strings".
 This specifies the table and the (possibly nested) key containing the string to be externalized.
 
+## Deploying an App to Production
 
 On the production system, there are three ways of deploying an application:
 
-## Upload to the Configuration Database
+### Upload to the Configuration Database
 
 You can upload an entire model folder to the config DB. On the database page, select "Configuration Database".
 Open the "Database Management" tab and select "Upload". Select the model folder there and either append or replace
 the contents of the config database.
 
-## Automatic Git Checkout
+### Automatic Git Checkout
 
 You can specify the DASHJOIN_APPURL environment variable and have it point to your app repository.
 Upon startup, the system will perform a git clone if the model folder is empty or a git pull if the model has content already.
@@ -336,7 +337,7 @@ Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo
 Dashjoin with the demo application installed.
 If the git operation fails (e.g. due to incorrect credentials or illegal filenames), the platform will log the error and resume the startup process.
 
-### Private GitHub Repositories
+#### Private GitHub Repositories
 
 If you would like to launch an App that is stored in a private GitHub repository, you can use
 a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). You can assign the right to clone the repository to the token and add it to the DASHJOIN_APPURL as follows:
@@ -345,9 +346,9 @@ a [personal access token](https://docs.github.com/en/authentication/keeping-your
 https://user:token@github.com/org/project
 ```
 
-## Manual App Installation
+### Manual App Installation
 
-Last but not least, you can also copy the app into the Dashoin working directory using other means
+Last but not least, you can also copy the app into the Dashjoin working directory using other means
 before starting the platform. 
 If you are using containers, you can mount the model folder under /deployments/model.
 
@@ -355,11 +356,10 @@ If you are using containers, you can mount the model folder under /deployments/m
 
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.
 Therefore, it is quite common to use different sets of resources for development and production.
-As described in the section on automatic Git checkout above, the production credentials are usually
-checked into the code repository. During development, you can use [environment](installation.md/#environment)
+During development, you can use [environment](installation.md/#environment)
 variables to specify alternative values for url, username, hostname, port, database, and password to be used for functions and databases as follows:
 
-* dashjoin.database.NAME OF THE DATABSE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
+* dashjoin.database.NAME OF THE DATABASE.url: URL to use to connect to the database (overrides the url field in the DB's json file)
 * dashjoin.function.NAME OF THE FUNCTION.url: URL to use to connect to the REST service (overrides the url field in the function's json file)
 
 To change the username / password, simply replace url with username / password in the examples above.
@@ -430,7 +430,7 @@ with the value of the DASHJOIN_ONSTART environment variable string: {"onStart": 
 Let's assume, every instance gets the value of its theme color. We can use the start expression to set the color:
 
 ```
-$update('config', 'dj-config', 'theme', {'map': {'pallette.primary.main': onStart}})
+$update('config', 'dj-config', 'theme', {'map': {'palette.primary.main': onStart}})
 ```
 
 If your app instances need to have different login configs, favicons, or other web assets such as logos, you
@@ -460,7 +460,7 @@ assets
       logo.png
 ```
 
-The second instance can be lauched with this environment variable:
+The second instance can be launched with this environment variable:
 
 ```
 DASHJOIN_WEBROOT=assets/public_html2
