@@ -471,6 +471,15 @@ Sample output:
 ```json
 "x: [1, 2]\ny: test"
 ```
+### gitCheckout
+Checks out and switches the dashjoin app branch
+```
+$gitCheckout('mybranch')
+```
+Sample output: 
+```json
+null
+```
 ### gitCommit
 git commit a set of files
 ```
@@ -512,7 +521,7 @@ Sample output:
 } ]
 ```
 ### hmac
-signs a message with the secret of a Credentials function, e.g. for signed URLs or for checking webhook signatures. Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none)
+signs a message with the secret of the Credentials function 'cdnSigningKey' (default HmacSHA256, base64). Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret is never returned and can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign, e.g. short-lived signed URLs or webhook signature checks
 ```
 $hmac('cdnSigningKey', '/download/book.pdf1700000000')
 ```
@@ -1007,6 +1016,15 @@ $urlExists('https://dashjoin.com')
 Sample output: 
 ```json
 true
+```
+### use
+When used in conjunction with $eval, allows importing a function from the library
+```
+$f := $use('f') ~> $eval
+```
+Sample output: 
+```json
+"The expression of the library entry"
 ```
 ### uuid
 Generates a random UUID

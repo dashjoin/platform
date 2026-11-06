@@ -1680,10 +1680,20 @@ DESCRIPTION: return the git status of the dashjoin app
 LANGUAGE: jsonata
 CODE: $gitStatus()
 
+TITLE: hmac
+DESCRIPTION: signs a message with the secret of the Credentials function 'cdnSigningKey' (default HmacSHA256, base64). Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret is never returned and can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign, e.g. short-lived signed URLs or webhook signature checks
+LANGUAGE: jsonata
+CODE: $hmac('cdnSigningKey', '/download/book.pdf1700000000')
+
 TITLE: gitPull
 DESCRIPTION: Pull the dashjoin app
 LANGUAGE: jsonata
 CODE: $gitPull()
+
+TITLE: gitCheckout
+DESCRIPTION: Checks out and switches the dashjoin app branch
+LANGUAGE: jsonata
+CODE: $gitCheckout('mybranch')
 
 TITLE: gitRestore
 DESCRIPTION: git restore 'dashjoin-demo.db'
@@ -1774,4 +1784,9 @@ TITLE: validate
 DESCRIPTION: validates a JSON input against a JSON schema (type, required, properties supported)
 LANGUAGE: jsonata
 CODE: $validate({'required': ['x'], 'properties':{'x': {'type':boolean}}}, {})
+
+TITLE: use
+DESCRIPTION: When used in conjunction with $eval, allows importing a function from the library
+LANGUAGE: jsonata
+CODE: $f := $use('f') ~> $eval
 
