@@ -344,6 +344,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     String type = schema.get("type") == null ? "string" : schema.get("type").asText();
     String widget = schema.get("widget") == null ? "string" : schema.get("widget").asText();
     assertTrue(INPUTS.contains(widget), "unknown widget type", widget);
+
+    // the frontend (useChoices) reads options, choices, enum or choicesUrl
+    if (OPTION_INPUTS.contains(widget))
+      assertTrue(Stream.of("options", "choices", "enum", "choicesUrl")
+          .anyMatch(k -> schema.get(k) != null), "no options set for input", widget);
     for (Entry<String, JsonNode> e : schema.properties()) {
       String key = e.getKey();
       if (key.equals("examples") && e.getValue().getNodeType().equals(JsonNodeType.ARRAY))

@@ -51,6 +51,22 @@ public class DjLintTest {
   }
 
   @Test
+  public void selectWithoutOptions() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    ObjectMapper om = new ObjectMapper();
+
+    lint.checkSchema(om.readTree("{\"widget\": \"select\", \"options\": \"['a', 'b']\"}"));
+    lint.checkSchema(om.readTree("{\"widget\": \"string\"}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkSchema(om.readTree("{\"widget\": \"multi select\"}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("no options set for input: multi select"),
+        lint.messages.get(0));
+  }
+
+  @Test
   public void queryAndExpression() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/page/test.json";
