@@ -134,8 +134,8 @@ Studio. This allows you to upload multiple files at once. Note that the return v
 a single value to an array if you do so.
 
 In addition to the attribute multiple, you can specify capture: user or capture: environment.
-This setting allows taking and uploading a foto using the inward or outward camera.
-Setting accept: video/* takes a video instead of a photo. The field accept can also be set to a comma-seperated list
+This setting allows taking and uploading a photo using the inward or outward camera.
+Setting accept: video/* takes a video instead of a photo. The field accept can also be set to a comma-separated list
 of file allowed extensions. Finally, the field limit can be used to restrict the maximum file size in MB.
 
 There may be cases, where parts of a form should be shown or hidden depending on other inputs.
@@ -351,8 +351,8 @@ Nodes are represented by the following JSON structure:
   database: database name
   table: table name
   position?: {
-    x: coordindate
-    y: coordindate
+    x: coordinate
+    y: coordinate
   },
   data?: {
     label: display label
@@ -469,11 +469,11 @@ Displays custom HTML
 
 * html: HTML to display
 * context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
-* script: JavaScript function definitions the can be called from HTML onClick or other event handlers
+* script: JavaScript function definitions that can be called from HTML onClick or other event handlers
 
 As in the Markdown widget, hyperlinks to other pages in the app have to include the "slash hash" part of the URL.
 
-Please note that if you are displaying multiple HTML widgets on a page, these widgets share (and subsequently overwrite) the contents of context. If you only display the context in the widget, this is no problem. If you use context from an event handled (e.g. onClick), you have the use the following workaround that uses a session varable. This allows you to choose different variables for each widget:
+Please note that if you are displaying multiple HTML widgets on a page, these widgets share (and subsequently overwrite) the contents of context. If you only display the context in the widget, this is no problem. If you use context from an event handler (e.g. onClick), you have to use the following workaround that uses a session variable. This allows you to choose different variables for each widget:
 
 ```
 {
@@ -573,7 +573,7 @@ any JSONata or JavaScript expressions.
 * markdown: markdown to display
 * context: an expression that allows setting additional context variables that can be referenced via `${context.VARIABLE}`
 * card: determines if the editor is shown on a card (paper background)
-* expression: an optional expression to compute the structure of additional menus that call expresions defined using "properties". Please see the example below.
+* expression: an optional expression to compute the structure of additional menus that call expressions defined using "properties". Please see the example below.
 * properties: a set of key value pairs composing the widget's expression library. The keys are the expression names, the values are the actual expression to be called
 
 Consider the following example. The markdown and context work just like the markdown widget above. This widget
@@ -631,7 +631,7 @@ The menu structure is defined by an expression the yields the following JSON:
 ```
 
 The first menu items displays clickable button in the menu bar that runs expression "sleep".
-The second item displays the menu "Label" that has two submenus, calling "alert" and "log" respectively.
+The second item displays the menu "Label" that has two submenus, calling "alert" and "replace" respectively.
 
 #### notebook
 
@@ -927,7 +927,7 @@ Result
 | 2  |            | Mike |
 | 3  | ignore     | Nate |
 
-Row 1 is updated. Row 2 remains unchanged. Row 3 is added and thus gets marked as having source e.
+Row 1 is updated. Row 2 remains unchanged. Row 3 is added and thus gets marked as having source "ignore".
 
 Extracted Data from ETL "ignore"
 
@@ -1188,7 +1188,7 @@ Function | Syntax |  Returns
 alert | $alert(message) | Shows a modal alert message
 clearCache | $clearCache() | clears the HTTP cache - can be used in conjunction with expressions that trigger side effects on the backend
 confirm | $confirm(message) | Opens a confirm dialog. Returns true if confirmation was given, false otherwise
-dialog | $dialog({title, message, inputs, buttons, options, schema, value}) | Shows a model dialog with title and message. The inputs and buttons arrays denote which input fields and buttons are shown. The result of the call is defined as follows. If the dialog is closed, the result is undefined. If a button is pressed, the result is the button id or - if the button is an object with label and type: submit - an object with the inputs. If options is set to an object with alert: info / warning / error, the dialog message is shows with the respective label. If you want to display a more complex form, you can specify form elements via schema (see section "Form Widgets"). A schema allows you to optionally pre-fill the form via the value field.
+dialog | $dialog({title, message, inputs, buttons, options, schema, value}) | Shows a modal dialog with title and message. The inputs and buttons arrays denote which input fields and buttons are shown. The result of the call is defined as follows. If the dialog is closed, the result is undefined. If a button is pressed, the result is the button id or - if the button is an object with label and type: submit - an object with the inputs. If options is set to an object with alert: info / warning / error, the dialog message is shows with the respective label. If you want to display a more complex form, you can specify form elements via schema (see section "Form Widgets"). A schema allows you to optionally pre-fill the form via the value field.
 getVariable | $getVariable(key) | Gets the value of the variable key. Note that this is similar to accessing variable.key in the context. The difference is that getVariable will get the last value set whereas variable.key gets the value while the page loaded.
 log | $log(value) | logs value to the developer console
 navigate | $navigate(url) | points the browser to the URL
@@ -1196,7 +1196,7 @@ navigate | $navigate( {id, options} ) | scrolls the page to the [DOM element wit
 notify | $notify(message) | Shows the message at the bottom of the screen
 progress | $progress({message?, linear?, value?, variant?}) | Shows progress message during long running operations. If the variant is set to determinate, the progress shows the value between 0 and 100. If linear is true, the progress is shown using a linear bar. If progress is called without parameter, the progress display disappears.
 prompt | $prompt(message) | Prompts the user for an input. Returns the input or undefined if the prompt is cancelled
-refresh | $refresh() | refreshes the screen just (just like hitting the refresh icon in the toolbar)
+refresh | $refresh() | refreshes the screen (just like hitting the refresh icon in the toolbar)
 reload | $reload() | reloads the browser page
 setActiveStep | $setActiveStep(i) | Sets the current step of any stepper widget on the page
 setVariable | $setVariable(key, value) | Sets variable key to value. The key value pair then becomes accessible via the context by other expressions
@@ -1256,7 +1256,7 @@ parseFrontmatter | $parseFrontmatter(markdown) | Parses markdown containing YAML
 parseHtml | $parseHtml(html, query, xpath/css?) | Parses HTML and selects nodes via CSS or XPath (see https://jsoup.org/cookbook/extracting-data/xpath-syntax)
 parseJson | $parseJson(json) | Parses JSON (see openJson)
 parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query, etc.
-parseXml | $parseXml(xml, arrays) | Parses XML at converts it to JSON (see openXml)
+parseXml | $parseXml(xml, arrays) | Parses XML and converts it to JSON (see openXml)
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
 query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs

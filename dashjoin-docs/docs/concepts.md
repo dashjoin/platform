@@ -65,7 +65,7 @@ Record pages show
 * a form to edit the record
 * a delete button
 * a link back to the table page
-* links to any related record (this can either a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)
+* links to any related record (this can either be a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)
 
 The default layout allows the user to easily navigate the data regardless of which specific database it is located in.
 
@@ -96,9 +96,9 @@ an edit element for all columns.
 ### Running Queries
 
 Besides simple read and browse operations, the underlying databases usually have the ability to run powerful
-queries. Dashjoin allows the developer to design such queries and save them in the query catalog consumption.
+queries. Dashjoin allows the developer to design such queries and save them in the query catalog.
 These queries usually drive table and chart displays on customized layout pages and dashboards.
-Note that queries can also be used to run delete or update operations nd that they can also be parameterized.
+Note that queries can also be used to run delete or update operations and that they can also be parameterized.
 
 ### Executing Functions
 
@@ -132,7 +132,7 @@ Expressions are small programs that can be used to:
 * save an expression with an Invoke function
 * attach triggers to database tables
 
-This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.
+This section describes the expression language's syntax and semantics as well as the built-in Dashjoin keywords.
 
 ### JSONata
 
@@ -174,7 +174,7 @@ at a function to add two numbers:
 }
 ```
 
-The function definition is provided in the expression field. Tests are optional, an allow you to define the parameters,
+The function definition is provided in the expression field. Tests are optional and allow you to define the parameters,
 the function is tested with along with the expected outcome. Note that you can also pass another function as a parameter by
 providing "function (...) { ... }" as a parameter. If the parameter contains a function string, the platform parses it and passes
 the function instead of the string.
@@ -320,7 +320,7 @@ If a number form element with name "y" has the value 2 and the form is submitted
 
 #### Action Table Context
 
-The action table allows selecting rows from a table. If a table action us run, these rows
+The action table allows selecting rows from a table. If a table action is run, these rows
 are added to the context as follows:
 
 ```json

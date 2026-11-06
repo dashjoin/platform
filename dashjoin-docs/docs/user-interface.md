@@ -10,7 +10,7 @@ It features the following building blocks:
 
 ### Default Visualization of Tables
 
-Unless specified otherwise using the layout editor, all table pages show two elements. First, we have a sortable and pageable table showing the database table contents. Any primary or foreign key displays a link to the corresponding record page. Secord, the page shows a form for creating a new table record. The form is configured using the table metadata the system collected from the database.
+Unless specified otherwise using the layout editor, all table pages show two elements. First, we have a sortable and pageable table showing the database table contents. Any primary or foreign key displays a link to the corresponding record page. Second, the page shows a form for creating a new table record. The form is configured using the table metadata the system collected from the database.
 In case you are a system administrator, you will see two more widgets which are explained in the section on data definition operations below.
 
 ### Default Visualization of Records
@@ -27,7 +27,7 @@ Dashjoin offers a powerful search capability of the underlying databases. When y
 * the matching column value
 
 In order to boost performance, Dashjoin pushes down the search queries to the underlying databases if possible.
-Therefore, depending on the database, the search might match keywords slight differently:
+Therefore, depending on the database, the search might match keywords slightly differently:
 
 * SQL databases perform a case insensitive contains operation (i.e. "My Test String" would match the search term "test")
 * Firestore performs a case sensitive starts with operation (i.e. "My Test String" would match the search term "My" but not "test")
@@ -73,7 +73,7 @@ The database management section also allows to upload data from multiple files t
 
 File|Extension|Table Name|Column Name|Suggested Data Type|Suggested Primary Key
 ---|---|---|---|---|---
-Comma separated UFT-8 format as defined by [RFC 4180](http://tools.ietf.org/html/rfc4180)|.csv|File name before extension|First row|Guess by inspecting the data|First unique column
+Comma separated UTF-8 format as defined by [RFC 4180](http://tools.ietf.org/html/rfc4180)|.csv|File name before extension|First row|Guess by inspecting the data|First unique column
 Microsoft Excel|.xlsx|Sheet name|First row|Guess by inspecting the data|First unique column
 SQLite database|.sqlite|From database|From database|From database|First unique column
 JSON table|.json|File name before extension|First row|Guess by inspecting the data|First unique column
@@ -141,7 +141,7 @@ Note that the user interface loads these template values in a lazy fashion whene
 
 ### Table Triggers
 
-Dashjoin offers create, update, and delete operations for each table. A trigger can be installed on each table that reacts before or after these operations, resulting is six trigger configurations.
+Dashjoin offers create, update, and delete operations for each table. A trigger can be installed on each table that reacts before or after these operations, resulting in six trigger configurations.
 A trigger is an expression that is evaluated in the respective case. This following context is passed to the expression:
 
 * command: one of create, update, or delete
@@ -164,7 +164,7 @@ The query catalog allows you to save queries that are used by other parts of the
 
 ### Query Catalog Page
 
-The query catalog page show a list of all defined queries as well as a form for entering a new query. The form has the following fields:
+The query catalog page shows a list of all defined queries as well as a form for entering a new query. The form has the following fields:
 
 * ID: this is a unique identifier to reference the query (e.g. from a chart widget)
 * type: queries can have type read and write indicating whether the running the query will make changes to the underlying database
@@ -213,7 +213,7 @@ Consider the following example that searches for persons with a certain name old
 select * from PERSON where NAME=${p_name} and AGE>${p_age}
 ```
 
-This query has the string parameter p_name and the integer parameter p_age. In order to edit the query and display a result preview, we need to pluck in sample data. So we can define the samples:
+This query has the string parameter p_name and the integer parameter p_age. In order to edit the query and display a result preview, we need to plug in sample data. So we can define the samples:
 
 ```text
 p_name: Mike
@@ -266,7 +266,7 @@ Note that the graphical query editor does not yet support composing graph querie
 
 ## Pages Dashboard
 
-While Dashjoin has a rich default page layout that is suitable for many use cases, every aspects of the display can be configured using the functionality described in this section.
+While Dashjoin has a rich default page layout that is suitable for many use cases, every aspect of the display can be configured using the functionality described in this section.
 
 The pages dashboard provides you with an overview of the available pages in the system. The first table shows the dashboards available in the system. This is a mix of system pages, which are explained in more detail in the next section, and pages created by the user via the "create a new page" form.
 
@@ -300,7 +300,7 @@ In the lower right screen corner you have the following controls:
 * Undo / redo: undo an unwanted change
 * Zoom: if you are editing a large page, you can zoom out to get a better overview or to drag elements from one end to the other
 * Edit: when clicking on a widget, opens the widget editor on the bottom
-* Move: displays arrows in each widget that move the mights in that direction. Alternatively, you can drag and frop widgets using the drag handle in the widget's upper right corner
+* Move: displays arrows in each widget that move the widgets in that direction. Alternatively, you can drag and drop widgets using the drag handle in the widget's upper right corner
 * Resize: allows resizing widgets on a 12 column grid
 
 The plus icon is shown at the bottom of the page as well as for each container that was added to the page.

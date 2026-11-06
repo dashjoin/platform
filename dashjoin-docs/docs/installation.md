@@ -220,7 +220,7 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_ADMIN_USER: admin user name (defaults to "admin")
 * DJ_ADMIN_PASS: admin password (default is blank)
 * DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
-* DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
+* DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platform executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from (branches can be specified by appending #branchname)
 * DJ_SID: optional master key used to encrypt credentials (overrides the contents of the file model/.secrets.id)
 * DJ_SID_FILE: optional path of the file containing the master key (defaults to model/.secrets.id)
@@ -340,37 +340,25 @@ now it needs to be made available to the running application in this location:
 
 ```<java.home>/lib/security/cacerts```
 
-Note that the Java home is logged upon startup of the platform as ```java.home```:
+Note that the Java home is logged upon startup of the platform as ```java.home```, for example:
 ```
-Dashjoin Platform 3.1.38-e525ab3-6e8f7b6 (built 2022-12-20T17:31:57+0000)
-Linux 5.15.49-linuxkit aarch64 / OpenJDK 64-Bit Server VM 17.0.5+8-jvmci-22.3-b08 - GraalVM CE 22.3.0
-availableProcessors 4 / maxMemory (MB) 8192 / freeMemory (MB) 64 / totalMemory (MB) 80
-> cwd       = /deployments
-> java.home = /opt/graalvm-ce-java17-22.3.0
-
- _________         ______   ____    ____     
-  ___/ __ \____ ______/ /_    (_)___  (_)___ 
-   _/ / / / __ `/ ___/ __ \  / / __ \/ / __ \
-   / /_/ / /_/ (__  ) / / / / / /_/ / / / / /
-  /_____/\__,_/____/_/ /_/_/ /\____/_/_/ /_/ 
-                        /___/                
- 
-              Powered by Quarkus 2.14.3.Final
+> java.home = /opt/java/openjdk
 ```
 
 If you have access to the file system of the installed Dashjoin platform, you can replace the file with the new version (copy my-cacerts over cacerts).
 
 In the containerized application, we can mount the file in the cacerts location.
+The official container image is based on Eclipse Temurin, where java.home is ```/opt/java/openjdk```.
 When using the docker CLI, use a mount option like
 
-``` -v /path/to/my-cacerts:/opt/<java.home>/lib/security/cacerts ```
+``` -v /path/to/my-cacerts:/opt/java/openjdk/lib/security/cacerts ```
 
 A complete Docker command using a customized ```logincfg.json``` and ```my-cacerts``` in the current directory:
 
 ```
 docker run -p 8080:8080 \
-  -v $(pwd)/logincfg.json:/deployments/assets/logincfg.json \
-  -v $(pwd)/my-cacerts:/opt/graalvm-ce-java17-22.3.0/lib/security/cacerts \
+  -v $(pwd)/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json \
+  -v $(pwd)/my-cacerts:/opt/java/openjdk/lib/security/cacerts \
   dashjoin/platform:latest
 ```
 
@@ -436,7 +424,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * SDK
   * Monaco editor integrated for editing SQL, HTML, and CSS
   * Introduced CSV parsing options
-  * New openText function allows web scaping
+  * New openText function allows web scraping
 
 ### 3.0 (Oct 2022)
 
@@ -527,7 +515,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * AI Chat Widget to interface with the AI Assistant
   * Graph widget to explore the data graph - can be configured via JSONata and OpenCypher graph queries
 * Platform
-  * New cloud offering includes ProgreSQL and flexible workloads
+  * New cloud offering includes PostgreSQL and flexible workloads
   * Multi-tenant playground online
 * SDK
   * Optimized performance for JSONata openExcel
@@ -604,7 +592,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * SDK
   * Upload files widget plus platform WebDAV support
   * Faster build process for custom widgets
-  * New functions to generate CSV, YAML, and CSV
+  * New functions to generate CSV, YAML, and XML
   * Row based access control supports queries and list of owners for a record
 
 ### 6.1 (July 2025)

@@ -1,6 +1,6 @@
 # AI & ML Integration
 
-The Artificial Intelligence and Machine Learning features of the Dashjoin Platform is
+The Artificial Intelligence and Machine Learning features of the Dashjoin Platform are
 delivered as a set of Docker containers that package models and external runtime components as
 well as JSONata functions that make these features usable within any part of an application.
 
@@ -59,7 +59,7 @@ in other code blocks as $variable.
 It is possible to upload one or more files into the notebook. This creates new code block,
 where the variable $upload is set to a map of file name to file content. This variable
 can be used in other code blocks. Assume you upload a file.txt, then the contents of the file
-is avaiable as $upload.file_txt. Note that dot is replaced with underscore to avoid having to
+is available as $upload.file_txt. Note that dot is replaced with underscore to avoid having to
 escape the field name.
 
 The code block and its result is saved to the browser session, which is lost if the browser
@@ -129,7 +129,7 @@ $parseJson(
 
 ## Face Recognition
 
-The optical character recognition (OCR) functionality is also available in the dashjoin/ai-image Docker container. It exposes a
+The face recognition functionality is also available in the dashjoin/ai-image Docker container. It exposes a
 REST API where you provide an image URL such as this picture:
 
 <img width="400px" src="https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_02/1521975/kristen-welker-today-191221-main-01.jpg">
@@ -216,7 +216,7 @@ call the REST services directly.
 Dashjoin AI Assistant is available via the docker image dashjoin/aia and offers a range of powerful features around
 large language models (LLMs):
 
-* access APIs such as OpenAPI or Mistral in a uniform and secure way
+* access APIs such as OpenAI or Mistral in a uniform and secure way
 * run LLMs locally and expose them via the same API
 * Builtin and convenient retrieval augmented generation (RAG)
 * Powerful Jupyter development environment for deploying custom AI code
@@ -230,7 +230,7 @@ The following environment variables can be used to configure the container:
 * MCP_BUILTIN_URL: URL of the MCP proxy (default: http://mcp-proxy:9090)
 * MCP_BUILTIN_AUTH: Password of the MCP proxy (prefix with "Bearer ")
 * DASHJOIN_DEVMODE: if set to 1, Jupyter and automatic reload of code changes is active
-* JUPYTER_TOKEN: password of the Juyper development environment
+* JUPYTER_TOKEN: password of the Jupyter development environment
 * DASHJOIN_APPURL: GIT URL of the Dashjoin app to be activated in the container
 * DASHJOIN_APPURL_BRANCH: optional GIT branch to use
 * DJAI_POSTGRES_USER: username of the pgvector database
@@ -242,7 +242,7 @@ In addition, you can set these 3rd party API keys:
 * FIREWORKS_API_KEY: see https://fireworks.ai/
 * OPENAI_API_KEY: see https://platform.openai.com/api-keys
 * MISTRAL_API_KEY: see https://admin.mistral.ai/organization/api-keys
-* SERPER_API_KEY: see https://serpapi.com/
+* SERPER_API_KEY: see https://serper.dev/
 
 These are the settings for the [Docker MCP Gateway](https://docs.docker.com/ai/mcp-catalog-and-toolkit/mcp-gateway/):
 
@@ -366,7 +366,7 @@ curl -u admin:djdjdj -X 'GET' \
 ### Using Jupyter Notebooks
 
 The most convenient way to experiment with Python and AI are Jupyter Notebooks that allow you to interactively
-run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming you started the container with the command shown above, simply point your browser to http://localhost:8002 and log in.
+run code snippets. Dashjoin AI Assistant ships with a built-in Jupyter server. Assuming the container is started in dev mode (DASHJOIN_DEVMODE=1) with port 8002 exposed, simply point your browser to http://localhost:8002 and log in using the JUPYTER_TOKEN.
 
 ### Installing Python Libraries
 
@@ -389,7 +389,7 @@ executeNotebook("dashjoin/aikb/install.ipynb")
 
 ### Calling Jupyter Notebooks over REST
 
-The tools example aboce showed how code can be developed and tested in Jupyter and how it is then moved to Python.
+The examples above showed how code can be developed and tested in Jupyter and how it is then moved to Python.
 Using the executeNotebook function, you can even expose the Notebook directly as a REST service:
 
 ```
@@ -462,7 +462,7 @@ There are various approaches that can be applied. In this section, we describe t
 reconcileEntity JSONata function. It uses the [Wikidata](https://www.wikidata.org/)
 search API in order to reconcile a text with a standardized Wikidata ID.
 Wikidata is the database equivalent of Wikipedia, i.e. it is a crowd-sourced
-database of entites that can also be found in wikipedia.
+database of entities that can also be found in wikipedia.
 Consequently this function should not be used if the texts are very specific
 or if the texts are unsuitable to be sent to a 3rd party service.
 

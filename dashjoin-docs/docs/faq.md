@@ -18,7 +18,7 @@
 }
 ```
 
-For readability, here is the pretty-printed versino of the schemaExpression:
+For readability, here is the pretty-printed version of the schemaExpression:
 
 ```
 {
@@ -65,7 +65,7 @@ select @res;
 
 * **Why am I getting the error: "User does not have the role required to read table page in database config" after logging in?** When the UI renders a page, it needs to get the page layout from the backend. Like with any other call, the user's credentials are checked. This error indicates, that the user is known to the system, but gets assigned insufficient roles to access this information in the config DB. To fix this, you can either assign the user the correct role in the IDM or you can provide read access to the config DB to the user's role (this is done on the System Configuration page).
 
-* **Does the platform cache results?** Yes, all HTTP GET requests are cached by the browser UI. The cache is purged if 1) five minutes have passed since the last time the data was retrieved, 2) the data is changed in via the UI (e.g. by saving / updating a value), or 3) F5 / reload is pressed.
+* **Does the platform cache results?** Yes, all HTTP GET requests are cached by the browser UI. The cache is purged if 1) five minutes have passed since the last time the data was retrieved, 2) the data is changed via the UI (e.g. by saving / updating a value), or 3) F5 / reload is pressed.
 
 * **How can I download data from the platform?** The download happens via a JavaScript function that calls saveAs(new Blob([data]), filename). This snippet can be added as a client side expression with the // JavaScript marker:
 
@@ -75,9 +75,9 @@ var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
 saveAs(blob, "hello world.txt");
 ```
 
-Alternatively, the script can also be added to the HTML widget. And example can be found [here](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/html.json).  
+Alternatively, the script can also be added to the HTML widget. An example can be found [here](https://github.com/dashjoin/dashjoin-demo/blob/main/model/page/html.json).  
 
-* **How can I download binary data such as PDFs or images?** This works like the regular download. You usually have a JSONata expression that loads the data in the backend. You can use $openText(url, "BASE_64") or $generateExcel(...) to get a base64 encoded representation. This example download a small XLS. You can test
+* **How can I download binary data such as PDFs or images?** This works like the regular download. You usually have a JSONata expression that loads the data in the backend. You can use $openText(url, "BASE_64") or $generateExcel(...) to get a base64 encoded representation. This example downloads a small XLS. You can test
 this from the Notebook.
 
 ```javascript
@@ -98,7 +98,7 @@ saveAs(blob, 'download.xlsx')
 
 * **Why does the browser not show changes performed via an expression called from a button?** You need to include the clearCache function if your expression makes changes to the database. Otherwise, old values might be shown for five minutes.
 
-* **The display widget shows an object as a [material list](https://material.angular.io/components/list/examples). Can I transpose the object such that it is displayed as a two column table with colums key and value?** This can be done using the following JSONata transformation. For each object key, we create an object where key is the current key and value is the key lookup. This array of objects is then shown as a table.
+* **The display widget shows an object as a [material list](https://material.angular.io/components/list/examples). Can I transpose the object such that it is displayed as a two column table with columns key and value?** This can be done using the following JSONata transformation. For each object key, we create an object where key is the current key and value is the key lookup. This array of objects is then shown as a table.
 
 ```javascript
 value.(
@@ -126,7 +126,7 @@ is computed using a JSONata filter which only includes the values in the other a
 
 * **Can I trigger a git pull of the App in production without a restart?** You can run $gitPull() as a function or on the Dashjoin Notebook.
 
-* **Can I call the OpenAI APIs from Dashjoin?** Yes, register the following function (replace your API key accordingly) can call it:
+* **Can I call the OpenAI APIs from Dashjoin?** Yes. The recommended way is to configure the model in the AI Assistant and use the AIApp function or the $chat function (see the developer reference and the AI & ML chapter). If you need direct access to the raw API, you can register the following function (replace your API key accordingly) and call it. Alternatively, use the RestJson apiKey option (username: Authorization, password: Bearer YOUR-API-KEY) so that the key is stored in the encrypted password field rather than in the headers:
 
 ```javascript
 {
@@ -144,7 +144,7 @@ is computed using a JSONata filter which only includes the values in the other a
 
 ```javascript
 $call("openai", {
-  "model": "gpt-3.5-turbo",
+  "model": "gpt-4o-mini",
   "messages": [{"role": "user", "content": "Say this is a test!"}],
   "temperature": 0.7
 })
