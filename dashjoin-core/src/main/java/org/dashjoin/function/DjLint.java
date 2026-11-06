@@ -1,11 +1,15 @@
 package org.dashjoin.function;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.List;
@@ -20,6 +24,7 @@ import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
+import com.dashjoin.jsonata.Parser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -88,6 +93,14 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
    */
   Set<String> databases;
 
+  /**
+   * IDs of the query catalog, dj-function and dj-library, used to check $query, $call and $use.
+   * null means unknown (e.g. in unit tests), in which case the respective check is skipped
+   */
+  Set<String> queries;
+  Set<String> functions;
+  Set<String> libraries;
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -106,6 +119,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     for (var db : expressionService.getData().all(sc, "config", "dj-database", null, null, null,
         false, null))
       databases.add(stripDj("" + db.get("ID")));
+
+    // expressions in the Dashjoin folder are checked before the query catalog is read below
+    queries = ids("dj-query-catalog");
+    functions = ids("dj-function");
+    libraries = ids("dj-library");
 
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
         "dj-database", "dj-function", "dj-config", "dj-library"}) {
@@ -438,6 +456,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
               } catch (Exception e) {
                 fail("Error running expression\n" + expr + ": " + e.getMessage());
               }
+              checkReferences(new Parser().parse(expr),
+                  Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>()));
             } catch (JException je) {
               fail("Error parsing expression\n" + insertError(expr, je));
             }
@@ -461,6 +481,114 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 role.asText());
     for (JsonNode i : tree)
       checkRoles(i);
+  }
+
+  Set<String> ids(String folder) throws Exception {
+    Set<String> res = new HashSet<String>();
+    for (var i : expressionService.getData().all(sc, "config", folder, null, null, null, false,
+        null))
+      res.add("" + i.get("ID"));
+    return res;
+  }
+
+  /**
+   * functions whose first argument is a database name
+   */
+  static final List<String> DATABASE_FUNCTIONS = Arrays.asList("all", "read", "create", "update",
+      "delete", "upsert", "setIfAbsent", "traverse", "incoming", "query", "queryGraph",
+      "adHocQuery", "adHocQueryGraph");
+
+  /**
+   * the JSONata library does not expose its AST, so the package private fields of Parser.Symbol
+   * are read via reflection. If this fails (e.g. fields are renamed in a new version), the
+   * reference checks find nothing - DjLintTest.danglingReferences guards against this
+   */
+  static final Map<String, Field> SYMBOL_FIELDS = new HashMap<String, Field>();
+  static {
+    for (Field f : Parser.Symbol.class.getDeclaredFields())
+      if (!Modifier.isStatic(f.getModifiers()) && !f.isSynthetic())
+        try {
+          f.setAccessible(true);
+          SYMBOL_FIELDS.put(f.getName(), f);
+        } catch (RuntimeException e) {
+          // field not accessible - skip it
+        }
+  }
+
+  static Object field(Object symbol, String name) {
+    Field f = SYMBOL_FIELDS.get(name);
+    if (f == null || !(symbol instanceof Parser.Symbol))
+      return null;
+    try {
+      return f.get(symbol);
+    } catch (IllegalAccessException e) {
+      return null;
+    }
+  }
+
+  /**
+   * returns the string literal at position i of a function call, or null if the argument is
+   * missing or computed
+   */
+  static String literal(List<?> args, int i) {
+    if (args == null || args.size() <= i)
+      return null;
+    Object arg = args.get(i);
+    if ("string".equals(field(arg, "type")) && field(arg, "value") instanceof String s)
+      return s;
+    return null;
+  }
+
+  /**
+   * walk the JSONata AST and check function calls with literal arguments that reference queries,
+   * databases, functions or libraries. Unlike the evaluation in checkExpressions, this also visits
+   * branches and lambdas that are not executed
+   */
+  void checkReferences(Object node, Set<Object> visited) {
+    if (node == null)
+      return;
+    if (node instanceof Collection<?> c) {
+      for (Object i : c)
+        checkReferences(i, visited);
+      return;
+    }
+    if (node instanceof Object[] a) {
+      for (Object i : a)
+        checkReferences(i, visited);
+      return;
+    }
+    if (!(node instanceof Parser.Symbol) || !visited.add(node))
+      return;
+
+    Object type = field(node, "type");
+    if ("function".equals(type) || "partial".equals(type)) {
+      Object proc = field(node, "procedure");
+      if ("variable".equals(field(proc, "type")) && field(proc, "value") instanceof String name)
+        checkCall(name, (List<?>) field(node, "arguments"));
+    }
+
+    for (Field f : SYMBOL_FIELDS.values())
+      try {
+        checkReferences(f.get(node), visited);
+      } catch (IllegalAccessException e) {
+        // ignore
+      }
+  }
+
+  void checkCall(String name, List<?> args) {
+    if (DATABASE_FUNCTIONS.contains(name))
+      checkDatabase(literal(args, 0));
+    if (name.equals("query") || name.equals("queryGraph"))
+      checkId(queries, literal(args, 1), "unknown query in $" + name);
+    if (name.equals("call"))
+      checkId(functions, literal(args, 0), "unknown function in $call");
+    if (name.equals("use"))
+      checkId(libraries, literal(args, 0), "unknown library in $use");
+  }
+
+  void checkId(Set<String> known, String id, String message) {
+    if (known != null && id != null)
+      assertTrue(known.contains(id), message, id);
   }
 
   static String stripDj(String database) {

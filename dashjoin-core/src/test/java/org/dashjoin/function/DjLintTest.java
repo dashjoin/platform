@@ -71,6 +71,41 @@ public class DjLintTest {
         lint.messages.get(0));
   }
 
+  DjLint referenceLint() {
+    DjLint lint = new DjLint();
+    lint.current = "model/page/test.json";
+    lint.queries = new HashSet<>(Arrays.asList("list"));
+    lint.databases = new HashSet<>(Arrays.asList("config", "northwind"));
+    lint.functions = new HashSet<>(Arrays.asList("sendMail"));
+    lint.libraries = new HashSet<>(Arrays.asList("unit-test"));
+    return lint;
+  }
+
+  @Test
+  public void validReferences() throws Exception {
+    DjLint lint = referenceLint();
+    lint.checkExpressions(new ObjectMapper().readTree("{\"expression\": "
+        + "\"x ? $call('sendMail') : [$query('northwind', 'list'), $all('dj/northwind', 'T'), "
+        + "$eval($use('unit-test')), $call(fn), function(){$read('config', 'page', 'p')}]\"}"),
+        false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
+  public void danglingReferences() throws Exception {
+    DjLint lint = referenceLint();
+    // unknown references in branches and lambdas that are never evaluated
+    lint.checkExpressions(new ObjectMapper().readTree("{\"expression\": "
+        + "\"x ? $call('nope') : [$query('northwind', 'nope'), $all('nope', 'T'), "
+        + "function(){$use('nope')}]\"}"), false);
+    String all = "" + lint.messages;
+    Assertions.assertEquals(4, lint.messages.size(), all);
+    Assertions.assertTrue(all.contains("unknown function in $call: nope"), all);
+    Assertions.assertTrue(all.contains("unknown query in $query: nope"), all);
+    Assertions.assertTrue(all.contains("unknown database: nope"), all);
+    Assertions.assertTrue(all.contains("unknown library in $use: nope"), all);
+  }
+
   @Test
   public void roles() throws Exception {
     DjLint lint = new DjLint();
