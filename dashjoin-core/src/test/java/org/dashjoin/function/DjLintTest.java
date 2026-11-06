@@ -165,6 +165,28 @@ public class DjLintTest {
   }
 
   @Test
+  public void unused() throws Exception {
+    DjLint lint = referenceLint();
+    lint.queries = new HashSet<>(Arrays.asList("list", "orphanQuery"));
+    lint.queryTypes.put("list", "read");
+    lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
+    lint.libraries = new HashSet<>(Arrays.asList("unit-test", "lib", "orphanLibrary"));
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query")));
+
+    lint.checkLayout(new ObjectMapper().readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
+    lint.checkExpressions(new ObjectMapper().readTree(
+        "{\"expression\": \"x ? $call('sendMail') : $eval($use('lib'))\"}"), false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.checkUnused();
+    String all = "" + lint.messages;
+    Assertions.assertEquals(3, lint.messages.size(), all);
+    Assertions.assertTrue(all.contains("dj-query-catalog/orphanQuery.json: hint: query"), all);
+    Assertions.assertTrue(all.contains("dj-function/orphanFunction.json: hint: function"), all);
+    Assertions.assertTrue(all.contains("dj-library/orphanLibrary.json: hint: library"), all);
+  }
+
+  @Test
   public void roles() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/dj-database/dj%2Fnorthwind.json";

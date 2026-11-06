@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -106,6 +107,13 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   Set<String> functions;
   Set<String> libraries;
 
+  /**
+   * IDs referenced from layouts and expressions, used to report unused items
+   */
+  Set<String> usedQueries = new HashSet<String>();
+  Set<String> usedFunctions = new HashSet<String>();
+  Set<String> usedLibraries = new HashSet<String>(Arrays.asList("unit-test"));
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -149,8 +157,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
             queriesWithArguments.add(qm.ID);
           checkDatabase(qm.database);
         }
-        if (folder.equals("dj-function"))
+        if (folder.equals("dj-function")) {
           checkDanglingPointers(tree);
+          // scheduled functions are run by Cron without being referenced
+          if (item.get("cron") != null || item.get("every") != null)
+            usedFunctions.add(currentID);
+        }
         if (folder.equals("widget"))
           checkLayout(tree.get("layout"));
         if (folder.equals("page"))
@@ -163,6 +175,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         checkExpressions(tree, folder.equals("dj-function"));
       }
     }
+
+    checkUnused();
 
     // run unit tests
     for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
@@ -285,6 +299,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
       String q = tree.get("query").asText();
+      usedQueries.add(q);
       if (!queryTypes.containsKey(q))
         fail("unknown query in widget " + widget + ": " + q);
       else
@@ -598,14 +613,36 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (DATABASE_FUNCTIONS.contains(name))
       checkDatabase(literal(args, 0));
     if (name.equals("query") || name.equals("queryGraph"))
-      checkId(queries, literal(args, 1), "unknown query in $" + name);
+      checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
     if (name.equals("call"))
-      checkId(functions, literal(args, 0), "unknown function in $call");
+      checkId(functions, usedFunctions, literal(args, 0), "unknown function in $call");
     if (name.equals("use"))
-      checkId(libraries, literal(args, 0), "unknown library in $use");
+      checkId(libraries, usedLibraries, literal(args, 0), "unknown library in $use");
   }
 
-  void checkId(Set<String> known, String id, String message) {
+  /**
+   * report queries, functions and libraries that are not referenced by a layout or by a literal
+   * argument in an expression. These are hints only: the item may be called via the REST API or
+   * from an expression with a computed argument like $call(fn)
+   */
+  void checkUnused() {
+    hintUnused("dj-query-catalog", "query", queries, usedQueries);
+    hintUnused("dj-function", "function", functions, usedFunctions);
+    hintUnused("dj-library", "library", libraries, usedLibraries);
+  }
+
+  void hintUnused(String folder, String kind, Set<String> all, Set<String> used) {
+    if (all == null)
+      return;
+    for (String id : new TreeSet<String>(all))
+      if (!used.contains(id))
+        messages.add("model/" + folder + "/" + id + ".json: hint: " + kind
+            + " is not referenced in the App (it might still be used via the API)");
+  }
+
+  void checkId(Set<String> known, Set<String> used, String id, String message) {
+    if (id != null)
+      used.add(id);
     if (known != null && id != null)
       assertTrue(known.contains(id), message, id);
   }
