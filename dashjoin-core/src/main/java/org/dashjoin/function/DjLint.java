@@ -379,7 +379,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       if (field.equals("schema")
           && Arrays.asList("button", "edit", "create", "variable").contains(widget)) {
-        checkSchema(e.getValue());
+        // edit and create use the table schema which carries the column metadata
+        checkSchema(e.getValue(), Arrays.asList("edit", "create").contains(widget));
         continue;
       }
       if (field.equals("foreach") && Arrays.asList("container", "tabs").contains(widget))
@@ -396,7 +397,18 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
   }
 
+  /**
+   * column metadata (see org.dashjoin.model.Property) that is present in table schemas used by the
+   * edit and create widgets
+   */
+  static final List<String> TABLE_SCHEMA_METADATA =
+      Arrays.asList("ID", "parent", "name", "pkpos", "ref", "dbType", "comment", "displayWith");
+
   void checkSchema(JsonNode schema) {
+    checkSchema(schema, false);
+  }
+
+  void checkSchema(JsonNode schema, boolean tableSchema) {
 
     assertTrue(schema.getNodeType().equals(JsonNodeType.OBJECT), "schema must be an object",
         schema);
@@ -447,15 +459,17 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       if (key.equals("if") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
         continue;
+      if (tableSchema && TABLE_SCHEMA_METADATA.contains(key))
+        continue;
       fail("unknown property", e);
     }
 
     // check subschema
     if (schema.get("properties") != null)
       for (Entry<String, JsonNode> p : schema.get("properties").properties())
-        checkSchema(p.getValue());
+        checkSchema(p.getValue(), tableSchema);
     if (schema.get("items") != null)
-      checkSchema(schema.get("items"));
+      checkSchema(schema.get("items"), tableSchema);
   }
 
   @SuppressWarnings("unchecked")

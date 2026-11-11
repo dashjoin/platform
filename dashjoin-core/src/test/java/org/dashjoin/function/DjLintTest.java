@@ -226,4 +226,28 @@ public class DjLintTest {
     Assertions.assertTrue(lint.messages.get(0).contains("unknown role in readRoles: admni"),
         lint.messages.get(0));
   }
+
+  @Test
+  public void editSchema() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/dj-database/dj%2Fresult.json";
+    // editRedirect is a studio property (lint/studio.json)
+    lint.widgets = new HashMap<>(
+        Map.of("edit", Arrays.asList("title", "text", "noDelete"), "button", Arrays.asList()));
+    ObjectMapper om = new ObjectMapper();
+
+    // edit / create schemas are table schemas and carry the column metadata
+    lint.checkLayout(om.readTree("{\"widget\": \"page\", \"children\": [{\"title\": \"Edit Record\","
+        + "\"widget\": \"edit\", \"editRedirect\": \"record\", \"schema\": {\"type\": \"object\","
+        + "\"properties\": {\"ID\": {\"ID\": \"dj/result/Ergebnis/ID\", \"parent\": "
+        + "\"dj/result/Ergebnis\", \"name\": \"ID\", \"readOnly\": true, \"dbType\": \"serial\","
+        + "\"type\": \"number\", \"pkpos\": 0, \"createOnly\": true}}}}]}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    // button schemas are written by hand and must not contain column metadata
+    lint.checkLayout(om.readTree("{\"widget\": \"button\", \"schema\": {\"type\": \"object\","
+        + "\"properties\": {\"x\": {\"type\": \"string\", \"dbType\": \"serial\"}}}}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("unknown property"), lint.messages.get(0));
+  }
 }
