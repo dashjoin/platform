@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
@@ -32,6 +33,7 @@ import jakarta.inject.Inject;
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
 @Default
 public class JSONFileDatabase extends JSONDatabase {
+  private static final Logger log = Logger.getLogger(JSONFileDatabase.class.getName());
 
   @Inject
   Services services;
@@ -102,10 +104,14 @@ public class JSONFileDatabase extends JSONDatabase {
         for (File f : files) {
           if (!f.getName().endsWith(".json"))
             continue;
-          Map<String, Object> object = objectMapper.readValue(f, tr);
-          String id = "" + object.get("ID");
-          readExternalizedStrings(id, secondaryFiles(files, id), object);
-          res.put(id, object);
+          try {
+            Map<String, Object> object = objectMapper.readValue(f, tr);
+            String id = "" + object.get("ID");
+            readExternalizedStrings(id, secondaryFiles(files, id), object);
+            res.put(id, object);
+          } catch (Throwable t) {
+            log.severe("Fatal error: JSONDatabase object cannot be read: "+f);
+          }
         }
       }
     } else {
