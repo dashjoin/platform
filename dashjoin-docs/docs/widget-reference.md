@@ -198,6 +198,7 @@ Creates new database records:
 
 allows editing a database record. Note that the form layout can be customized in the layout editor. Please also refer to the FAQ for information on how to further customize the input form.
 
+* text: text shown for the save button (default is "Save")
 * deleteConfirmation: optional confirmation message before deleting the record (this option is only available in Dashjoin Studio - edits on database tables can be undone within five seconds)
 * editRedirect: redirect after save (Dashjoin Studio only) - table: back to table view (default), record: stay on record page, page/Dashboard, db/table, db/table/id: navigate to fixed page
 * deleteRedirect: redirect after delete (Dashjoin Studio only) - table: back to table view (default), record: stay on record page, page/Dashboard, db/table, db/table/id: navigate to fixed page
