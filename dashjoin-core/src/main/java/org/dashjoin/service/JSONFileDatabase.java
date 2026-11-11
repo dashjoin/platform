@@ -26,6 +26,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
@@ -52,6 +53,7 @@ import jakarta.inject.Inject;
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
 @Default
 public class JSONFileDatabase extends JSONDatabase {
+  private static final Logger log = Logger.getLogger(JSONFileDatabase.class.getName());
 
   @Inject
   Services services;
@@ -216,6 +218,8 @@ public class JSONFileDatabase extends JSONDatabase {
             String id = "" + object.get("ID");
             readExternalizedStrings(f.getParentFile(), id, object);
             res.put(id, object);
+          } catch (Throwable t) {
+            log.severe("Fatal error: JSONDatabase object cannot be read: " + f);
           } finally {
             l.unlock();
           }
