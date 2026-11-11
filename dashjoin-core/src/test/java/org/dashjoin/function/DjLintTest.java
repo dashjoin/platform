@@ -150,6 +150,15 @@ public class DjLintTest {
   }
 
   @Test
+  public void missingCopilot() throws Exception {
+    DjLint lint = referenceLint();
+    // dj-copilot is optional and called from built-in pages
+    lint.checkExpressions(
+        new ObjectMapper().readTree("{\"expression\": \"$call('dj-copilot', {})\"}"), false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
   public void danglingReferences() throws Exception {
     DjLint lint = referenceLint();
     // unknown references in branches and lambdas that are never evaluated
@@ -169,7 +178,9 @@ public class DjLintTest {
     DjLint lint = referenceLint();
     lint.queries = new HashSet<>(Arrays.asList("list", "orphanQuery"));
     lint.queryTypes.put("list", "read");
-    lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
+    lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction", "etl"));
+    // etl is not a $call type and must not be reported
+    lint.calledFunctions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
     lint.libraries = new HashSet<>(Arrays.asList("unit-test", "lib", "orphanLibrary"));
     lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query")));
 

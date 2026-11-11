@@ -114,6 +114,23 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   Set<String> usedFunctions = new HashSet<String>();
   Set<String> usedLibraries = new HashSet<String>(Arrays.asList("unit-test"));
 
+  /**
+   * optional functions called from built-in pages the user cannot edit (e.g. DataCatalog). They are
+   * not reported when missing
+   */
+  static final List<String> OPTIONAL_FUNCTIONS = Arrays.asList("dj-copilot");
+
+  /**
+   * function types that are normally called via $call from the App
+   */
+  static final List<String> CALLED_FUNCTIONS = Arrays.asList("org.dashjoin.function.Invoke",
+      "org.dashjoin.function.RestJson", "org.dashjoin.function.Email");
+
+  /**
+   * IDs of dj-functions of a CALLED_FUNCTIONS type that are not scheduled
+   */
+  Set<String> calledFunctions = new HashSet<String>();
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -159,9 +176,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         }
         if (folder.equals("dj-function")) {
           checkDanglingPointers(tree);
-          // scheduled functions are run by Cron without being referenced
-          if (item.get("cron") != null || item.get("every") != null)
-            usedFunctions.add(currentID);
+          // only hint at functions that are normally called via $call from the App. Others like
+          // ETL, Receive or MCPServer are run manually, via schedule, webhook or API
+          if (CALLED_FUNCTIONS.contains(item.get("djClassName")) && item.get("cron") == null
+              && item.get("every") == null)
+            calledFunctions.add(currentID);
         }
         if (folder.equals("widget"))
           checkLayout(tree.get("layout"));
@@ -614,8 +633,13 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       checkDatabase(literal(args, 0));
     if (name.equals("query") || name.equals("queryGraph"))
       checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
-    if (name.equals("call"))
-      checkId(functions, usedFunctions, literal(args, 0), "unknown function in $call");
+    if (name.equals("call")) {
+      String f = literal(args, 0);
+      if (OPTIONAL_FUNCTIONS.contains(f))
+        usedFunctions.add(f);
+      else
+        checkId(functions, usedFunctions, f, "unknown function in $call");
+    }
     if (name.equals("use"))
       checkId(libraries, usedLibraries, literal(args, 0), "unknown library in $use");
   }
@@ -627,7 +651,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
    */
   void checkUnused() {
     hintUnused("dj-query-catalog", "query", queries, usedQueries);
-    hintUnused("dj-function", "function", functions, usedFunctions);
+    hintUnused("dj-function", "function", calledFunctions, usedFunctions);
     hintUnused("dj-library", "library", libraries, usedLibraries);
   }
 
