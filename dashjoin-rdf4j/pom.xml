@@ -72,4 +72,24 @@
 			<version>0.9.4</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- runs this driver as its own Quarkus app (quarkus:dev, Docker image) -->
+			<plugin>
+				<groupId>io.quarkus</groupId>
+				<artifactId>quarkus-maven-plugin</artifactId>
+				<version>${quarkus.platform.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+							<goal>generate-code</goal>
+							<goal>generate-code-tests</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

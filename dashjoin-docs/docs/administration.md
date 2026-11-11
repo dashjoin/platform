@@ -341,3 +341,33 @@ The platform logs user login events in the system log. You can grep the log for 
 ```text
 2024-03-20 14:15:32,163 INFO  [com.das.ser.ten.TenantService] (executor-thread-12) Login profile uid=admin email=null roles=[admin] username=admin
 ```
+
+## Restricting Parallel Login Sessions
+
+By default, a user can be logged into an app from any number of browsers and devices at the same time.
+To prevent users from sharing their login, you can limit the number of parallel login sessions per user.
+To do so, open the entry single-session on the system configuration page (/config/dj-config) and set its map:
+
+```json
+{
+  "ID": "single-session",
+  "map": {
+    "maxSessions": 1,
+    "exemptRoles": ["webhook"]
+  }
+}
+```
+
+* maxSessions: the maximum number of devices / browsers a user can be logged in on at the same time (default 1)
+* exemptRoles: users in any of these roles are not restricted (e.g. technical users that call the API from several systems)
+
+The newest login wins: if a user logs in on another device and thereby exceeds maxSessions,
+the oldest session is ended. On the next request, the user is logged out on that device and the login
+page shows the message "You were logged out because you logged in on another device".
+You can change this text via the key sessionReplaced in the i18n section of
+[logincfg.json](#minimalistic-logincfgjson-customization-example).
+
+The sessions are tracked in the table user within the config database (field sessions).
+Only a hash of each session ID is stored, along with the creation time and the browser's user agent.
+Users that logged in before the feature was enabled are not affected until they log in again.
+The local admin user is never restricted. To turn the feature off, remove the map from the single-session entry.

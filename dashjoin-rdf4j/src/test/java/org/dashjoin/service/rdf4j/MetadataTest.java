@@ -67,6 +67,10 @@ public class MetadataTest {
         meta.get("http://ex.org/EMP").properties.get("http://ex.org/EMAIL").type);
     Assertions.assertEquals("string",
         meta.get("http://ex.org/EMP").properties.get("http://ex.org/EMAIL").items.type);
+
+    // the subject URI is the key and must not be changed after creation
+    Assertions.assertEquals(0, meta.get("http://ex.org/EMP").properties.get("ID").pkpos);
+    Assertions.assertEquals(true, meta.get("http://ex.org/EMP").properties.get("ID").createOnly);
   }
 
   @Test
