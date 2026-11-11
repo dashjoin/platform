@@ -2,15 +2,28 @@ package org.dashjoin.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
@@ -26,7 +39,13 @@ import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 
 /**
- * file implementation of the config DB
+ * file implementation of the config DB.
+ *
+ * Thread safety: files are written to a temp file and then renamed over the target, so readers and
+ * a crash mid-write never see a partial file. Each record (its .json plus externalized string
+ * files) has a read/write lock; writes and read-modify-write sequences (see locked()) hold the
+ * write lock. The locks are JVM-wide but do not protect against other processes writing the same
+ * model folder.
  */
 @ApplicationScoped
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
@@ -41,6 +60,90 @@ public class JSONFileDatabase extends JSONDatabase {
 
   protected File getFile(String path) {
     return home.getFile(path);
+  }
+
+  /**
+   * prefix of temp files written before the atomic rename. URLEncoder (Escape.filename) always
+   * encodes ~, so no record ID or externalized file can start with this
+   */
+  static final String TMP_PREFIX = "~tmp-";
+
+  /**
+   * one lock per record file, shared by all instances (there can be more than one per JVM). Keys
+   * are lower case since macOS and Windows file systems are case insensitive
+   */
+  private static final ConcurrentHashMap<String, ReentrantReadWriteLock> locks =
+      new ConcurrentHashMap<>();
+
+  static ReentrantReadWriteLock lock(File jsonFile) {
+    return locks.computeIfAbsent(jsonFile.getAbsolutePath().toLowerCase(Locale.ROOT),
+        k -> new ReentrantReadWriteLock());
+  }
+
+  @Override
+  public <T> T locked(Table s, Object id, Callable<T> body) throws Exception {
+    ReentrantReadWriteLock rw = lock(file(s, Collections.singletonMap("ID", id)));
+    if (!rw.isWriteLockedByCurrentThread() && services != null)
+      // create() calls getConfig(), which is synchronized and reads config files while setting up
+      // a tenant. Make sure that is done before we hold the lock, otherwise the two can deadlock
+      services.getConfig();
+    Lock l = rw.writeLock();
+    l.lock();
+    try {
+      return body.call();
+    } finally {
+      l.unlock();
+    }
+  }
+
+  interface StreamWriter {
+    void write(OutputStream out) throws IOException;
+  }
+
+  /**
+   * write to a temp file in the same folder, then rename it over the target. Readers see either the
+   * old or the new content, never a mix or a truncated file
+   */
+  static void atomicWrite(File target, StreamWriter writer) throws IOException {
+    Path dir = target.toPath().toAbsolutePath().getParent();
+    // unlike mkdirs(), does not fail when another thread creates the folder at the same time
+    Files.createDirectories(dir);
+    // not Files.createTempFile, which would create the file with mode 600 on POSIX systems
+    Path tmp = dir.resolve(TMP_PREFIX + UUID.randomUUID() + ".part");
+    try {
+      try (OutputStream out =
+          Files.newOutputStream(tmp, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)) {
+        writer.write(out);
+      }
+      move(tmp, target.toPath());
+    } finally {
+      Files.deleteIfExists(tmp);
+    }
+  }
+
+  static void move(Path tmp, Path target) throws IOException {
+    for (int attempt = 0;; attempt++) {
+      try {
+        try {
+          Files.move(tmp, target, StandardCopyOption.ATOMIC_MOVE,
+              StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException e) {
+          Files.move(tmp, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+        return;
+      } catch (AccessDeniedException e) {
+        // on Windows, the rename fails while another process (editor, virus scanner) has the
+        // target open. Retry for a short while
+        if (attempt >= 20)
+          throw e;
+        try {
+          Thread.sleep(25);
+        } catch (InterruptedException ie) {
+          Thread.currentThread().interrupt();
+          throw e;
+        }
+      }
+    }
   }
 
   /**
@@ -73,7 +176,7 @@ public class JSONFileDatabase extends JSONDatabase {
     List<File> res = new ArrayList<>();
     if (files != null) {
       for (File f : files) {
-        if (f.getName().endsWith(".json"))
+        if (f.getName().endsWith(".json") || f.getName().startsWith(TMP_PREFIX))
           continue;
         if (f.getName().startsWith(Escape.filename("" + id)))
           res.add(f);
@@ -102,10 +205,19 @@ public class JSONFileDatabase extends JSONDatabase {
         for (File f : files) {
           if (!f.getName().endsWith(".json"))
             continue;
-          Map<String, Object> object = objectMapper.readValue(f, tr);
-          String id = "" + object.get("ID");
-          readExternalizedStrings(id, secondaryFiles(files, id), object);
-          res.put(id, object);
+          Lock l = lock(f).readLock();
+          l.lock();
+          try {
+            if (!f.exists())
+              // deleted after we listed the folder
+              continue;
+            Map<String, Object> object = objectMapper.readValue(f, tr);
+            String id = "" + object.get("ID");
+            readExternalizedStrings(id, secondaryFiles(files, id), object);
+            res.put(id, object);
+          } finally {
+            l.unlock();
+          }
         }
       }
     } else {
@@ -118,14 +230,20 @@ public class JSONFileDatabase extends JSONDatabase {
     return res;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void create(Table s, Map<String, Object> object) throws Exception {
+    locked(s, object.get("ID"), () -> {
+      createLocked(s, object);
+      return null;
+    });
+  }
+
+  @SuppressWarnings("unchecked")
+  void createLocked(Table s, Map<String, Object> object) throws Exception {
 
     File file = file(s, object);
-    if (!file.getParentFile().exists())
-      if (!file.getParentFile().mkdirs())
-        throw new IOException("Error creating model folder");
+    // unlike mkdirs(), does not fail when another thread creates the folder at the same time
+    Files.createDirectories(file.getParentFile().toPath());
 
     // field names to externalize
     List<String> externalizeFields = new ArrayList<>();
@@ -146,27 +264,35 @@ public class JSONFileDatabase extends JSONDatabase {
 
     writeExternalizedStrings(s, object.get("ID"), file, object, externalizeFields);
 
-    objectMapper.writeValue(file, object);
+    atomicWrite(file, out -> objectMapper.writeValue(out, object));
   }
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
     File file = file(s, search);
-    if (file.exists()) {
-      Map<String, Object> res = objectMapper.readValue(file, tr);
-      if (res.get("ID") == null)
-        throw new IllegalArgumentException("Object must contain ID field: " + file);
-      readExternalizedStrings("" + res.get("ID"), secondaryFiles(s, search.get("ID")), res);
-      return res;
+    Lock l = lock(file).readLock();
+    l.lock();
+    try {
+      if (file.exists()) {
+        Map<String, Object> res = objectMapper.readValue(file, tr);
+        if (res.get("ID") == null)
+          throw new IllegalArgumentException("Object must contain ID field: " + file);
+        readExternalizedStrings("" + res.get("ID"), secondaryFiles(s, search.get("ID")), res);
+        return res;
+      }
+      return null;
+    } finally {
+      l.unlock();
     }
-    return null;
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    for (File d : secondaryFiles(s, search.get("ID")))
-      d.delete();
-    return file(s, search).delete();
+    return locked(s, search.get("ID"), () -> {
+      for (File d : secondaryFiles(s, search.get("ID")))
+        d.delete();
+      return file(s, search).delete();
+    });
   }
 
   /**
@@ -270,7 +396,9 @@ public class JSONFileDatabase extends JSONDatabase {
           + "' must be a string. Please change the config.");
 
     map.put(field + "-pointer", pointer);
-    FileUtils.writeStringToFile(newFile, (String) map.remove(field), Charset.defaultCharset());
+    String value = (String) map.remove(field);
+    atomicWrite(newFile,
+        out -> out.write(value == null ? new byte[0] : value.getBytes(Charset.defaultCharset())));
   }
 
   /**

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import org.apache.commons.lang3.NotImplementedException;
 import org.dashjoin.model.Property;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.Instantiatable;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -58,83 +60,95 @@ public abstract class JSONDatabase implements Database {
           .enable(SerializationFeature.INDENT_OUTPUT)
           .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
-          .setDefaultPrettyPrinter(new PrettyPrinter() {
+          .setDefaultPrettyPrinter(new JSONPrettyPrinter());
 
-            int indent = 0;
+  /**
+   * Pretty printer with 4 space indentation and LF line breaks. It keeps the current indent level
+   * in a field, so it implements Instantiatable: Jackson then creates a fresh copy for every write
+   * instead of sharing one instance (and one indent counter) between all threads.
+   */
+  static class JSONPrettyPrinter implements PrettyPrinter, Instantiatable<JSONPrettyPrinter> {
 
-            void indent(JsonGenerator gen) throws IOException {
-              for (int i = 0; i < indent; i++)
-                gen.writeRaw("    ");
-            }
+    int indent = 0;
 
-            void newline(JsonGenerator gen) throws IOException {
-              gen.writeRaw(DefaultIndenter.SYS_LF);
-            }
+    @Override
+    public JSONPrettyPrinter createInstance() {
+      return new JSONPrettyPrinter();
+    }
 
-            @Override
-            public void writeStartObject(JsonGenerator gen) throws IOException {
-              gen.writeRaw('{');
-              newline(gen);
-              indent++;
-            }
+    void indent(JsonGenerator gen) throws IOException {
+      for (int i = 0; i < indent; i++)
+        gen.writeRaw("    ");
+    }
 
-            @Override
-            public void writeStartArray(JsonGenerator gen) throws IOException {
-              gen.writeRaw('[');
-              newline(gen);
-              indent++;
-            }
+    void newline(JsonGenerator gen) throws IOException {
+      gen.writeRaw(DefaultIndenter.SYS_LF);
+    }
 
-            @Override
-            public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
+    @Override
+    public void writeStartObject(JsonGenerator gen) throws IOException {
+      gen.writeRaw('{');
+      newline(gen);
+      indent++;
+    }
 
-            }
+    @Override
+    public void writeStartArray(JsonGenerator gen) throws IOException {
+      gen.writeRaw('[');
+      newline(gen);
+      indent++;
+    }
 
-            @Override
-            public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
-              gen.writeRaw(": ");
-            }
+    @Override
+    public void writeRootValueSeparator(JsonGenerator gen) throws IOException {
 
-            @Override
-            public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
-              gen.writeRaw(',');
-              newline(gen);
-              indent(gen);
-            }
+    }
 
-            @Override
-            public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
-              indent--;
-              newline(gen);
-              indent(gen);
-              gen.writeRaw('}');
-            }
+    @Override
+    public void writeObjectFieldValueSeparator(JsonGenerator gen) throws IOException {
+      gen.writeRaw(": ");
+    }
 
-            @Override
-            public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
-              indent--;
-              newline(gen);
-              indent(gen);
-              gen.writeRaw(']');
-            }
+    @Override
+    public void writeObjectEntrySeparator(JsonGenerator gen) throws IOException {
+      gen.writeRaw(',');
+      newline(gen);
+      indent(gen);
+    }
 
-            @Override
-            public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
-              gen.writeRaw(',');
-              newline(gen);
-              indent(gen);
-            }
+    @Override
+    public void writeEndObject(JsonGenerator gen, int nrOfEntries) throws IOException {
+      indent--;
+      newline(gen);
+      indent(gen);
+      gen.writeRaw('}');
+    }
 
-            @Override
-            public void beforeObjectEntries(JsonGenerator gen) throws IOException {
-              indent(gen);
-            }
+    @Override
+    public void writeEndArray(JsonGenerator gen, int nrOfValues) throws IOException {
+      indent--;
+      newline(gen);
+      indent(gen);
+      gen.writeRaw(']');
+    }
 
-            @Override
-            public void beforeArrayValues(JsonGenerator gen) throws IOException {
-              indent(gen);
-            }
-          });
+    @Override
+    public void writeArrayValueSeparator(JsonGenerator gen) throws IOException {
+      gen.writeRaw(',');
+      newline(gen);
+      indent(gen);
+    }
+
+    @Override
+    public void beforeObjectEntries(JsonGenerator gen) throws IOException {
+      indent(gen);
+    }
+
+    @Override
+    public void beforeArrayValues(JsonGenerator gen) throws IOException {
+      indent(gen);
+    }
+  }
 
   /**
    * like query, but for the "get all instances of table" queries, returns a map where the object ID
@@ -159,21 +173,33 @@ public abstract class JSONDatabase implements Database {
   public boolean update(Table s, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
 
-    Map<String, Object> r = read(s, search);
-    if (r == null)
-      return false;
+    // read, merge and write back as one step, so concurrent updates are not lost
+    return locked(s, search.get("ID"), () -> {
+      Map<String, Object> r = read(s, search);
+      if (r == null)
+        return false;
 
-    for (Entry<String, Object> e : object.entrySet()) {
-      if (e.getValue() == null)
-        r.remove(e.getKey());
-      else {
-        // when nested objects are overwritten and the old value contains a pointer,
-        // make sure to re-use the pointer
-        copyPointers(r.get(e.getKey()), e.getValue());
-        r.put(e.getKey(), e.getValue());
+      for (Entry<String, Object> e : object.entrySet()) {
+        if (e.getValue() == null)
+          r.remove(e.getKey());
+        else {
+          // when nested objects are overwritten and the old value contains a pointer,
+          // make sure to re-use the pointer
+          copyPointers(r.get(e.getKey()), e.getValue());
+          r.put(e.getKey(), e.getValue());
+        }
       }
-    }
-    return update(s, r);
+      return update(s, r);
+    });
+  }
+
+  /**
+   * Runs body while holding the write lock of record (table, id), so a read-modify-write sequence
+   * on that record cannot interleave with other writes to it. The lock is reentrant. The default
+   * does not lock; JSONFileDatabase overrides this.
+   */
+  public <T> T locked(Table s, Object id, Callable<T> body) throws Exception {
+    return body.call();
   }
 
   /**
