@@ -150,6 +150,22 @@ public class DjLintTest {
   }
 
   @Test
+  public void builtInQueries() throws Exception {
+    DjLint lint = referenceLint();
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query")));
+    lint.checkLayout(new ObjectMapper()
+        .readTree("{\"widget\": \"table\", \"database\": \"config\", \"query\": \"dj-navigation\"}"));
+    lint.checkExpressions(new ObjectMapper().readTree(
+        "{\"expression\": \"[$query('config', 'dj-functions'), $query('config', 'dj-query-performance')]\"}"),
+        false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    // built-in queries are not hinted as unused
+    lint.checkUnused();
+    for (String q : DjLint.BUILT_IN_QUERIES)
+      Assertions.assertFalse(("" + lint.messages).contains("/" + q + ".json"), "" + lint.messages);
+  }
+
+  @Test
   public void missingCopilot() throws Exception {
     DjLint lint = referenceLint();
     // dj-copilot is optional and called from built-in pages

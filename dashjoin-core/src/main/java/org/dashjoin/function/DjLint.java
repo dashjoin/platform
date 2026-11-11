@@ -2,6 +2,7 @@ package org.dashjoin.function;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 import org.dashjoin.model.QueryMeta;
+import org.dashjoin.service.ConfigQuery;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
@@ -119,6 +121,20 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
    * not reported when missing
    */
   static final List<String> OPTIONAL_FUNCTIONS = Arrays.asList("dj-copilot");
+
+  /**
+   * built-in queries that do not need a query catalog entry: PojoDatabase methods marked with
+   * ConfigQuery and dj-query-performance (see PojoDatabase.getQueryMeta and query)
+   */
+  static final Set<String> BUILT_IN_QUERIES = new HashSet<String>();
+  static {
+    BUILT_IN_QUERIES.add("dj-query-performance");
+    for (Method m : PojoDatabase.class.getMethods()) {
+      ConfigQuery cq = m.getAnnotation(ConfigQuery.class);
+      if (cq != null)
+        BUILT_IN_QUERIES.add(cq.query());
+    }
+  }
 
   /**
    * function types that are normally called via $call from the App
@@ -319,7 +335,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
       String q = tree.get("query").asText();
       usedQueries.add(q);
-      if (!queryTypes.containsKey(q))
+      if (!queryTypes.containsKey(q) && !BUILT_IN_QUERIES.contains(q))
         fail("unknown query in widget " + widget + ": " + q);
       else
         assertTrue(!"write".equals(queryTypes.get(q)),
@@ -632,7 +648,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (DATABASE_FUNCTIONS.contains(name))
       checkDatabase(literal(args, 0));
     if (name.equals("query") || name.equals("queryGraph"))
-      checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
+      if (!BUILT_IN_QUERIES.contains(literal(args, 1)))
+        checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
     if (name.equals("call")) {
       String f = literal(args, 0);
       if (OPTIONAL_FUNCTIONS.contains(f))
