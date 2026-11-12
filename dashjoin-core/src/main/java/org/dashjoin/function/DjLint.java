@@ -23,6 +23,7 @@ import org.dashjoin.service.ConfigQuery;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
+import org.dashjoin.util.Escape;
 import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
@@ -257,7 +258,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (parentId != null && map.get("parent") != null)
       assertEquals(parentId, map.get("parent"), "parent property must match parent ID");
     if (map.get("parent") != null)
-      assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"),
+      // the name is encoded in the ID (e.g. "/" becomes "%2F")
+      assertEquals(map.get("ID"),
+          map.get("parent") + "/" + Escape.encodeTableOrColumnName((String) map.get("name")),
           "ID must be parent + name");
     assertTrue(((String) map.get("ID")).startsWith("dj/"), "ID must start with dj/", map.get("ID"));
     if (map.get("ref") != null && ((String) map.get("ref")).startsWith((String) root.get("ID")))

@@ -228,6 +228,26 @@ public class DjLintTest {
   }
 
   @Test
+  public void encodedColumnId() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/dj-database/dj%2Fdb.json";
+    Map<String, Object> root = Map.of("ID", "dj/db");
+
+    // "/" and "%" in a column name are encoded in the ID
+    lint.check(root, "dj/db/T", Map.of("ID", "dj/db/T/a%2Fb%25c", "parent", "dj/db/T", "name",
+        "a/b%c", "type", "string"));
+    lint.check(root, "dj/db/T",
+        Map.of("ID", "dj/db/T/plain", "parent", "dj/db/T", "name", "plain", "type", "string"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.check(root, "dj/db/T",
+        Map.of("ID", "dj/db/T/a/b", "parent", "dj/db/T", "name", "a/b", "type", "string"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("ID must be parent + name"),
+        lint.messages.get(0));
+  }
+
+  @Test
   public void editSchema() throws Exception {
     DjLint lint = new DjLint();
     lint.current = "model/dj-database/dj%2Fresult.json";
