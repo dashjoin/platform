@@ -14,17 +14,18 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.dashjoin.model.QueryMeta;
@@ -213,7 +214,7 @@ public class JSONFileDatabase extends JSONDatabase {
               continue;
             Map<String, Object> object = objectMapper.readValue(f, tr);
             String id = "" + object.get("ID");
-            readExternalizedStrings(id, secondaryFiles(files, id), object);
+            readExternalizedStrings(f.getParentFile(), id, object);
             res.put(id, object);
           } finally {
             l.unlock();
@@ -277,7 +278,7 @@ public class JSONFileDatabase extends JSONDatabase {
         Map<String, Object> res = objectMapper.readValue(file, tr);
         if (res.get("ID") == null)
           throw new IllegalArgumentException("Object must contain ID field: " + file);
-        readExternalizedStrings("" + res.get("ID"), secondaryFiles(s, search.get("ID")), res);
+        readExternalizedStrings(file.getParentFile(), "" + res.get("ID"), res);
         return res;
       }
       return null;
@@ -296,32 +297,33 @@ public class JSONFileDatabase extends JSONDatabase {
   }
 
   /**
-   * traverse the JSON tree and search for keys called X-pointer, add key X with the file contents
+   * traverse the JSON tree and search for keys called X-pointer, add key X with the contents of
+   * file ID.pointer in folder dir. The pointers name the files, so the folder is not listed (which
+   * is slow for tables with thousands of records).
+   *
+   * A file may be referenced more than once if we use copy / paste or the duplicate plugin UI
+   * feature. The second time, the pointer field is removed to make sure the content gets its own ID.
    */
-  void readExternalizedStrings(String id, List<File> secondaryFiles, Object res)
-      throws IOException {
-    _readExternalizedStrings(id,
-        secondaryFiles.stream().map(f -> new FileUsed(f)).collect(Collectors.toList()), res);
+  void readExternalizedStrings(File dir, String id, Object res) throws IOException {
+    _readExternalizedStrings(dir, Escape.filename(id), new HashSet<>(), res);
   }
 
   @SuppressWarnings("unchecked")
-  void _readExternalizedStrings(String id, List<FileUsed> secondaryFiles, Object res)
+  void _readExternalizedStrings(File dir, String escapedId, Set<String> used, Object res)
       throws IOException {
     if (res instanceof Map) {
       List<String> removeKeys = new ArrayList<>();
       for (Entry<String, Object> e : new ArrayList<>(((Map<String, Object>) res).entrySet())) {
-        _readExternalizedStrings(id, secondaryFiles, e.getValue());
+        _readExternalizedStrings(dir, escapedId, used, e.getValue());
         if (e.getKey().endsWith("-pointer")) {
           String field = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
-          for (FileUsed f : secondaryFiles)
-            if (f.file.getName().equals(Escape.filename(id) + "." + e.getValue())) {
-              ((Map<String, Object>) res).put(field,
-                  FileUtils.readFileToString(f.file, Charset.defaultCharset()));
-              if (f.used)
-                removeKeys.add(e.getKey());
-              else
-                f.used = true;
-            }
+          File f = secondaryFile(dir, escapedId, e.getValue());
+          if (f != null && f.isFile()) {
+            ((Map<String, Object>) res).put(field,
+                FileUtils.readFileToString(f, Charset.defaultCharset()));
+            if (!used.add(f.getName()))
+              removeKeys.add(e.getKey());
+          }
         }
         for (String key : removeKeys)
           ((Map<String, Object>) res).remove(key);
@@ -329,22 +331,20 @@ public class JSONFileDatabase extends JSONDatabase {
     }
     if (res instanceof List) {
       for (Object i : (List<Object>) res)
-        _readExternalizedStrings(id, secondaryFiles, i);
+        _readExternalizedStrings(dir, escapedId, used, i);
     }
   }
 
   /**
-   * make sure a file is only referenced once. Might be referenced multiple times if we use copy /
-   * paste or the duplicate plugin UI feature. The second time, the pointer field is removed to make
-   * sure the content gets its own ID.
+   * file ID.pointer in dir, or null if the pointer would leave dir (e.g. "../../etc/passwd").
+   * Escape.filename encodes path separators in the ID, so only the pointer needs checking
    */
-  static class FileUsed {
-    FileUsed(File file) {
-      this.file = file;
-    }
-
-    boolean used;
-    File file;
+  static File secondaryFile(File dir, String escapedId, Object pointer) {
+    String name = escapedId + "." + pointer;
+    if (name.contains("/") || name.contains("\\") || name.contains(File.separator)
+        || name.indexOf('\0') >= 0)
+      return null;
+    return new File(dir, name);
   }
 
   /**
