@@ -81,4 +81,40 @@ public class JSONFileDatabasePointerTest {
         "{\"ID\": \"p\", \"query-pointer\": \"/../../../secret.txt\"}");
     Assertions.assertFalse(read("p").containsKey("query"));
   }
+
+  @Test
+  public void deleteRemovesOwnPointerFiles() throws Exception {
+    Files.writeString(dir.resolve("d.json"), "{\"ID\": \"d\", \"query-pointer\": \"query.sql\","
+        + " \"children\": [{\"html-pointer\": \"html.html\"}]}");
+    Files.writeString(dir.resolve("d.query.sql"), "select 1");
+    Files.writeString(dir.resolve("d.html.html"), "<b>hi</b>");
+    Assertions.assertTrue(db.delete(table, Map.of("ID", "d")));
+    try (var files = Files.list(dir)) {
+      Assertions.assertEquals(0, files.count());
+    }
+  }
+
+  @Test
+  public void deleteKeepsFilesOfRecordsWithSamePrefix() throws Exception {
+    // deleting "fn" must not touch the files of "fn-all" or "fn.x"
+    for (String id : new String[] {"fn", "fn-all", "fn.x"}) {
+      Files.writeString(dir.resolve(id + ".json"),
+          "{\"ID\": \"" + id + "\", \"expression-pointer\": \"expression.jsonata\"}");
+      Files.writeString(dir.resolve(id + ".expression.jsonata"), id);
+    }
+    Assertions.assertTrue(db.delete(table, Map.of("ID", "fn")));
+    Assertions.assertFalse(Files.exists(dir.resolve("fn.json")));
+    Assertions.assertFalse(Files.exists(dir.resolve("fn.expression.jsonata")));
+    Assertions.assertEquals("fn-all", read("fn-all").get("expression"));
+    Assertions.assertEquals("fn.x", read("fn.x").get("expression"));
+  }
+
+  @Test
+  public void deleteCannotLeaveFolder() throws Exception {
+    Files.writeString(tmp.resolve("secret.txt"), "secret");
+    Files.writeString(dir.resolve("p.json"),
+        "{\"ID\": \"p\", \"query-pointer\": \"/../../../secret.txt\"}");
+    Assertions.assertTrue(db.delete(table, Map.of("ID", "p")));
+    Assertions.assertTrue(Files.exists(tmp.resolve("secret.txt")));
+  }
 }

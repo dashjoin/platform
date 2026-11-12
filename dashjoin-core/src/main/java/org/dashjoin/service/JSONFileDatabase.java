@@ -290,9 +290,23 @@ public class JSONFileDatabase extends JSONDatabase {
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
     return locked(s, search.get("ID"), () -> {
-      for (File d : secondaryFiles(s, search.get("ID")))
-        d.delete();
-      return file(s, search).delete();
+      File file = file(s, search);
+      if (file.exists()) {
+        // only delete the files named by the record's pointers. A prefix match on the ID would
+        // also hit other records (deleting "a" would delete the files of "a-b")
+        Map<String, Object> res = null;
+        try {
+          res = objectMapper.readValue(file, tr);
+        } catch (IOException e) {
+          // unreadable record: delete the JSON file only
+        }
+        Set<File> pointerFiles = new HashSet<>();
+        forEachPointerFile(file.getParentFile(), Escape.filename("" + search.get("ID")), res,
+            (map, key, f) -> pointerFiles.add(f));
+        for (File d : pointerFiles)
+          d.delete();
+      }
+      return file.delete();
     });
   }
 
@@ -305,34 +319,44 @@ public class JSONFileDatabase extends JSONDatabase {
    * feature. The second time, the pointer field is removed to make sure the content gets its own ID.
    */
   void readExternalizedStrings(File dir, String id, Object res) throws IOException {
-    _readExternalizedStrings(dir, Escape.filename(id), new HashSet<>(), res);
+    Set<String> used = new HashSet<>();
+    forEachPointerFile(dir, Escape.filename(id), res, (map, key, f) -> {
+      String field = key.substring(0, key.length() - "-pointer".length());
+      map.put(field, FileUtils.readFileToString(f, Charset.defaultCharset()));
+      if (!used.add(f.getName()))
+        map.remove(key);
+    });
   }
 
+  interface PointerVisitor {
+    /**
+     * called for a key X-pointer in map whose file f exists. May change map
+     */
+    void visit(Map<String, Object> map, String key, File f) throws IOException;
+  }
+
+  /**
+   * traverse the JSON tree depth first and call visitor for every X-pointer key whose file ID.pointer
+   * exists in dir. Used by read (load the contents) and delete (remove the files)
+   */
   @SuppressWarnings("unchecked")
-  void _readExternalizedStrings(File dir, String escapedId, Set<String> used, Object res)
+  static void forEachPointerFile(File dir, String escapedId, Object res, PointerVisitor visitor)
       throws IOException {
     if (res instanceof Map) {
-      List<String> removeKeys = new ArrayList<>();
-      for (Entry<String, Object> e : new ArrayList<>(((Map<String, Object>) res).entrySet())) {
-        _readExternalizedStrings(dir, escapedId, used, e.getValue());
+      Map<String, Object> map = (Map<String, Object>) res;
+      // iterate over a copy, the visitor may change the map
+      for (Entry<String, Object> e : new ArrayList<>(map.entrySet())) {
+        forEachPointerFile(dir, escapedId, e.getValue(), visitor);
         if (e.getKey().endsWith("-pointer")) {
-          String field = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
           File f = secondaryFile(dir, escapedId, e.getValue());
-          if (f != null && f.isFile()) {
-            ((Map<String, Object>) res).put(field,
-                FileUtils.readFileToString(f, Charset.defaultCharset()));
-            if (!used.add(f.getName()))
-              removeKeys.add(e.getKey());
-          }
+          if (f != null && f.isFile())
+            visitor.visit(map, e.getKey(), f);
         }
-        for (String key : removeKeys)
-          ((Map<String, Object>) res).remove(key);
       }
     }
-    if (res instanceof List) {
+    if (res instanceof List)
       for (Object i : (List<Object>) res)
-        _readExternalizedStrings(dir, escapedId, used, i);
-    }
+        forEachPointerFile(dir, escapedId, i, visitor);
   }
 
   /**
