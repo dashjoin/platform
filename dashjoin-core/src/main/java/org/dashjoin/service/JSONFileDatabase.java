@@ -263,6 +263,8 @@ public class JSONFileDatabase extends JSONDatabase {
           }
         }
 
+    // reject bad pointers before any file is written
+    checkPointers(file.getParentFile(), Escape.filename("" + object.get("ID")), object);
     writeExternalizedStrings(s, object.get("ID"), file, object, externalizeFields);
 
     atomicWrite(file, out -> objectMapper.writeValue(out, object));
@@ -408,12 +410,41 @@ public class JSONFileDatabase extends JSONDatabase {
   }
 
   /**
+   * file for the pointer next to the record's JSON file. Throws if the pointer is not a string or
+   * would leave the table folder (e.g. "../../x")
+   */
+  static File pointerFile(Object id, File file, Object pointer) {
+    File res = pointer instanceof String
+        ? secondaryFile(file.getParentFile(), Escape.filename("" + id), pointer)
+        : null;
+    if (res == null)
+      throw new IllegalArgumentException("Invalid pointer: " + pointer);
+    return res;
+  }
+
+  /**
+   * check all X-pointer values in the JSON tree, see pointerFile
+   */
+  @SuppressWarnings("unchecked")
+  static void checkPointers(File dir, String escapedId, Object res) {
+    if (res instanceof Map)
+      for (Entry<String, Object> e : ((Map<String, Object>) res).entrySet()) {
+        checkPointers(dir, escapedId, e.getValue());
+        if (e.getKey().endsWith("-pointer") && (!(e.getValue() instanceof String)
+            || secondaryFile(dir, escapedId, e.getValue()) == null))
+          throw new IllegalArgumentException("Invalid pointer: " + e.getValue());
+      }
+    if (res instanceof List)
+      for (Object i : (List<Object>) res)
+        checkPointers(dir, escapedId, i);
+  }
+
+  /**
    * remove field from map and write its value to the pointer file
    */
   void writeString(Object id, String field, File file, Map<String, Object> map, String pointer)
       throws IOException {
-    String newName = Escape.filename("" + id) + "." + pointer;
-    File newFile = new File(file.getParentFile(), newName);
+    File newFile = pointerFile(id, file, pointer);
 
     if (!(map.get(field) instanceof String) && (map.get(field) != null))
       throw new RuntimeException("Error externalizing data. The value of '" + field
@@ -429,8 +460,7 @@ public class JSONFileDatabase extends JSONDatabase {
    * remove field from map and write its value to the pointer file
    */
   void deleteString(Object id, String field, File file, Map<String, Object> map, String pointer) {
-    String newName = Escape.filename("" + id) + "." + pointer;
-    File newFile = new File(file.getParentFile(), newName);
+    File newFile = pointerFile(id, file, pointer);
     newFile.delete();
     map.remove(field + "-pointer");
   }

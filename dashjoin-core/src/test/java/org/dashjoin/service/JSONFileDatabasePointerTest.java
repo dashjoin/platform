@@ -117,4 +117,45 @@ public class JSONFileDatabasePointerTest {
     Assertions.assertTrue(db.delete(table, Map.of("ID", "p")));
     Assertions.assertTrue(Files.exists(tmp.resolve("secret.txt")));
   }
+
+  @Test
+  public void writeRejectsPointerLeavingFolder() throws Exception {
+    Map<String, Object> rec = new java.util.HashMap<>();
+    rec.put("ID", "w");
+    rec.put("query", "pwned");
+    rec.put("query-pointer", "/../../../evil.txt");
+    Assertions.assertThrows(IllegalArgumentException.class, () -> db.create(table, rec));
+    Assertions.assertFalse(Files.exists(tmp.resolve("evil.txt")));
+    Assertions.assertFalse(Files.exists(dir.resolve("w.json")));
+  }
+
+  @Test
+  public void writeWithNullValueCannotDeleteOutsideFolder() throws Exception {
+    Files.writeString(tmp.resolve("secret.txt"), "secret");
+    Map<String, Object> rec = new java.util.HashMap<>();
+    rec.put("ID", "w");
+    rec.put("query-pointer", "/../../../secret.txt");
+    Assertions.assertThrows(IllegalArgumentException.class, () -> db.create(table, rec));
+    Assertions.assertTrue(Files.exists(tmp.resolve("secret.txt")));
+  }
+
+  @Test
+  public void writeRejectsNonStringPointer() throws Exception {
+    Map<String, Object> rec = new java.util.HashMap<>();
+    rec.put("ID", "w");
+    rec.put("query", "select 1");
+    rec.put("query-pointer", 42);
+    Assertions.assertThrows(IllegalArgumentException.class, () -> db.create(table, rec));
+  }
+
+  @Test
+  public void writeValidPointer() throws Exception {
+    Map<String, Object> rec = new java.util.HashMap<>();
+    rec.put("ID", "w");
+    rec.put("query", "select 1");
+    rec.put("query-pointer", "query.sql");
+    db.create(table, rec);
+    Assertions.assertEquals("select 1", Files.readString(dir.resolve("w.query.sql")));
+    Assertions.assertEquals("select 1", read("w").get("query"));
+  }
 }
