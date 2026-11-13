@@ -2,15 +2,30 @@ package org.dashjoin.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
@@ -27,7 +42,13 @@ import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 
 /**
- * file implementation of the config DB
+ * file implementation of the config DB.
+ *
+ * Thread safety: files are written to a temp file and then renamed over the target, so readers and
+ * a crash mid-write never see a partial file. Each record (its .json plus externalized string
+ * files) has a read/write lock; writes and read-modify-write sequences (see locked()) hold the
+ * write lock. The locks are JVM-wide but do not protect against other processes writing the same
+ * model folder.
  */
 @ApplicationScoped
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
@@ -43,6 +64,90 @@ public class JSONFileDatabase extends JSONDatabase {
 
   protected File getFile(String path) {
     return home.getFile(path);
+  }
+
+  /**
+   * prefix of temp files written before the atomic rename. URLEncoder (Escape.filename) always
+   * encodes ~, so no record ID or externalized file can start with this
+   */
+  static final String TMP_PREFIX = "~tmp-";
+
+  /**
+   * one lock per record file, shared by all instances (there can be more than one per JVM). Keys
+   * are lower case since macOS and Windows file systems are case insensitive
+   */
+  private static final ConcurrentHashMap<String, ReentrantReadWriteLock> locks =
+      new ConcurrentHashMap<>();
+
+  static ReentrantReadWriteLock lock(File jsonFile) {
+    return locks.computeIfAbsent(jsonFile.getAbsolutePath().toLowerCase(Locale.ROOT),
+        k -> new ReentrantReadWriteLock());
+  }
+
+  @Override
+  public <T> T locked(Table s, Object id, Callable<T> body) throws Exception {
+    ReentrantReadWriteLock rw = lock(file(s, Collections.singletonMap("ID", id)));
+    if (!rw.isWriteLockedByCurrentThread() && services != null)
+      // create() calls getConfig(), which is synchronized and reads config files while setting up
+      // a tenant. Make sure that is done before we hold the lock, otherwise the two can deadlock
+      services.getConfig();
+    Lock l = rw.writeLock();
+    l.lock();
+    try {
+      return body.call();
+    } finally {
+      l.unlock();
+    }
+  }
+
+  interface StreamWriter {
+    void write(OutputStream out) throws IOException;
+  }
+
+  /**
+   * write to a temp file in the same folder, then rename it over the target. Readers see either the
+   * old or the new content, never a mix or a truncated file
+   */
+  static void atomicWrite(File target, StreamWriter writer) throws IOException {
+    Path dir = target.toPath().toAbsolutePath().getParent();
+    // unlike mkdirs(), does not fail when another thread creates the folder at the same time
+    Files.createDirectories(dir);
+    // not Files.createTempFile, which would create the file with mode 600 on POSIX systems
+    Path tmp = dir.resolve(TMP_PREFIX + UUID.randomUUID() + ".part");
+    try {
+      try (OutputStream out =
+          Files.newOutputStream(tmp, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)) {
+        writer.write(out);
+      }
+      move(tmp, target.toPath());
+    } finally {
+      Files.deleteIfExists(tmp);
+    }
+  }
+
+  static void move(Path tmp, Path target) throws IOException {
+    for (int attempt = 0;; attempt++) {
+      try {
+        try {
+          Files.move(tmp, target, StandardCopyOption.ATOMIC_MOVE,
+              StandardCopyOption.REPLACE_EXISTING);
+        } catch (AtomicMoveNotSupportedException e) {
+          Files.move(tmp, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+        return;
+      } catch (AccessDeniedException e) {
+        // on Windows, the rename fails while another process (editor, virus scanner) has the
+        // target open. Retry for a short while
+        if (attempt >= 20)
+          throw e;
+        try {
+          Thread.sleep(25);
+        } catch (InterruptedException ie) {
+          Thread.currentThread().interrupt();
+          throw e;
+        }
+      }
+    }
   }
 
   /**
@@ -75,7 +180,7 @@ public class JSONFileDatabase extends JSONDatabase {
     List<File> res = new ArrayList<>();
     if (files != null) {
       for (File f : files) {
-        if (f.getName().endsWith(".json"))
+        if (f.getName().endsWith(".json") || f.getName().startsWith(TMP_PREFIX))
           continue;
         if (f.getName().startsWith(Escape.filename("" + id)))
           res.add(f);
@@ -104,13 +209,20 @@ public class JSONFileDatabase extends JSONDatabase {
         for (File f : files) {
           if (!f.getName().endsWith(".json"))
             continue;
+          Lock l = lock(f).readLock();
+          l.lock();
           try {
+            if (!f.exists())
+              // deleted after we listed the folder
+              continue;
             Map<String, Object> object = objectMapper.readValue(f, tr);
             String id = "" + object.get("ID");
-            readExternalizedStrings(id, secondaryFiles(files, id), object);
+            readExternalizedStrings(f.getParentFile(), id, object);
             res.put(id, object);
           } catch (Throwable t) {
-            log.severe("Fatal error: JSONDatabase object cannot be read: "+f);
+            log.severe("Fatal error: JSONDatabase object cannot be read: " + f);
+          } finally {
+            l.unlock();
           }
         }
       }
@@ -124,14 +236,20 @@ public class JSONFileDatabase extends JSONDatabase {
     return res;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void create(Table s, Map<String, Object> object) throws Exception {
+    locked(s, object.get("ID"), () -> {
+      createLocked(s, object);
+      return null;
+    });
+  }
+
+  @SuppressWarnings("unchecked")
+  void createLocked(Table s, Map<String, Object> object) throws Exception {
 
     File file = file(s, object);
-    if (!file.getParentFile().exists())
-      if (!file.getParentFile().mkdirs())
-        throw new IOException("Error creating model folder");
+    // unlike mkdirs(), does not fail when another thread creates the folder at the same time
+    Files.createDirectories(file.getParentFile().toPath());
 
     // field names to externalize
     List<String> externalizeFields = new ArrayList<>();
@@ -150,81 +268,114 @@ public class JSONFileDatabase extends JSONDatabase {
           }
         }
 
+    // reject bad pointers before any file is written
+    checkPointers(file.getParentFile(), Escape.filename("" + object.get("ID")), object);
     writeExternalizedStrings(s, object.get("ID"), file, object, externalizeFields);
 
-    objectMapper.writeValue(file, object);
+    atomicWrite(file, out -> objectMapper.writeValue(out, object));
   }
 
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
     File file = file(s, search);
-    if (file.exists()) {
-      Map<String, Object> res = objectMapper.readValue(file, tr);
-      if (res.get("ID") == null)
-        throw new IllegalArgumentException("Object must contain ID field: " + file);
-      readExternalizedStrings("" + res.get("ID"), secondaryFiles(s, search.get("ID")), res);
-      return res;
+    Lock l = lock(file).readLock();
+    l.lock();
+    try {
+      if (file.exists()) {
+        Map<String, Object> res = objectMapper.readValue(file, tr);
+        if (res.get("ID") == null)
+          throw new IllegalArgumentException("Object must contain ID field: " + file);
+        readExternalizedStrings(file.getParentFile(), "" + res.get("ID"), res);
+        return res;
+      }
+      return null;
+    } finally {
+      l.unlock();
     }
-    return null;
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    for (File d : secondaryFiles(s, search.get("ID")))
-      d.delete();
-    return file(s, search).delete();
+    return locked(s, search.get("ID"), () -> {
+      File file = file(s, search);
+      if (file.exists()) {
+        // only delete the files named by the record's pointers. A prefix match on the ID would
+        // also hit other records (deleting "a" would delete the files of "a-b")
+        Map<String, Object> res = null;
+        try {
+          res = objectMapper.readValue(file, tr);
+        } catch (IOException e) {
+          // unreadable record: delete the JSON file only
+        }
+        Set<File> pointerFiles = new HashSet<>();
+        forEachPointerFile(file.getParentFile(), Escape.filename("" + search.get("ID")), res,
+            (map, key, f) -> pointerFiles.add(f));
+        for (File d : pointerFiles)
+          d.delete();
+      }
+      return file.delete();
+    });
   }
 
   /**
-   * traverse the JSON tree and search for keys called X-pointer, add key X with the file contents
+   * traverse the JSON tree and search for keys called X-pointer, add key X with the contents of
+   * file ID.pointer in folder dir. The pointers name the files, so the folder is not listed (which
+   * is slow for tables with thousands of records).
+   *
+   * A file may be referenced more than once if we use copy / paste or the duplicate plugin UI
+   * feature. The second time, the pointer field is removed to make sure the content gets its own ID.
    */
-  void readExternalizedStrings(String id, List<File> secondaryFiles, Object res)
-      throws IOException {
-    _readExternalizedStrings(id,
-        secondaryFiles.stream().map(f -> new FileUsed(f)).collect(Collectors.toList()), res);
+  void readExternalizedStrings(File dir, String id, Object res) throws IOException {
+    Set<String> used = new HashSet<>();
+    forEachPointerFile(dir, Escape.filename(id), res, (map, key, f) -> {
+      String field = key.substring(0, key.length() - "-pointer".length());
+      map.put(field, FileUtils.readFileToString(f, Charset.defaultCharset()));
+      if (!used.add(f.getName()))
+        map.remove(key);
+    });
   }
 
+  interface PointerVisitor {
+    /**
+     * called for a key X-pointer in map whose file f exists. May change map
+     */
+    void visit(Map<String, Object> map, String key, File f) throws IOException;
+  }
+
+  /**
+   * traverse the JSON tree depth first and call visitor for every X-pointer key whose file ID.pointer
+   * exists in dir. Used by read (load the contents) and delete (remove the files)
+   */
   @SuppressWarnings("unchecked")
-  void _readExternalizedStrings(String id, List<FileUsed> secondaryFiles, Object res)
+  static void forEachPointerFile(File dir, String escapedId, Object res, PointerVisitor visitor)
       throws IOException {
     if (res instanceof Map) {
-      List<String> removeKeys = new ArrayList<>();
-      for (Entry<String, Object> e : new ArrayList<>(((Map<String, Object>) res).entrySet())) {
-        _readExternalizedStrings(id, secondaryFiles, e.getValue());
+      Map<String, Object> map = (Map<String, Object>) res;
+      // iterate over a copy, the visitor may change the map
+      for (Entry<String, Object> e : new ArrayList<>(map.entrySet())) {
+        forEachPointerFile(dir, escapedId, e.getValue(), visitor);
         if (e.getKey().endsWith("-pointer")) {
-          String field = e.getKey().substring(0, e.getKey().length() - "-pointer".length());
-          for (FileUsed f : secondaryFiles)
-            if (f.file.getName().equals(Escape.filename(id) + "." + e.getValue())) {
-              ((Map<String, Object>) res).put(field,
-                  FileUtils.readFileToString(f.file, Charset.defaultCharset()));
-              if (f.used)
-                removeKeys.add(e.getKey());
-              else
-                f.used = true;
-            }
+          File f = secondaryFile(dir, escapedId, e.getValue());
+          if (f != null && f.isFile())
+            visitor.visit(map, e.getKey(), f);
         }
-        for (String key : removeKeys)
-          ((Map<String, Object>) res).remove(key);
       }
     }
-    if (res instanceof List) {
+    if (res instanceof List)
       for (Object i : (List<Object>) res)
-        _readExternalizedStrings(id, secondaryFiles, i);
-    }
+        forEachPointerFile(dir, escapedId, i, visitor);
   }
 
   /**
-   * make sure a file is only referenced once. Might be referenced multiple times if we use copy /
-   * paste or the duplicate plugin UI feature. The second time, the pointer field is removed to make
-   * sure the content gets its own ID.
+   * file ID.pointer in dir, or null if the pointer would leave dir (e.g. "../../etc/passwd").
+   * Escape.filename encodes path separators in the ID, so only the pointer needs checking
    */
-  static class FileUsed {
-    FileUsed(File file) {
-      this.file = file;
-    }
-
-    boolean used;
-    File file;
+  static File secondaryFile(File dir, String escapedId, Object pointer) {
+    String name = escapedId + "." + pointer;
+    if (name.contains("/") || name.contains("\\") || name.contains(File.separator)
+        || name.indexOf('\0') >= 0)
+      return null;
+    return new File(dir, name);
   }
 
   /**
@@ -264,27 +415,57 @@ public class JSONFileDatabase extends JSONDatabase {
   }
 
   /**
+   * file for the pointer next to the record's JSON file. Throws if the pointer is not a string or
+   * would leave the table folder (e.g. "../../x")
+   */
+  static File pointerFile(Object id, File file, Object pointer) {
+    File res = pointer instanceof String
+        ? secondaryFile(file.getParentFile(), Escape.filename("" + id), pointer)
+        : null;
+    if (res == null)
+      throw new IllegalArgumentException("Invalid pointer: " + pointer);
+    return res;
+  }
+
+  /**
+   * check all X-pointer values in the JSON tree, see pointerFile
+   */
+  @SuppressWarnings("unchecked")
+  static void checkPointers(File dir, String escapedId, Object res) {
+    if (res instanceof Map)
+      for (Entry<String, Object> e : ((Map<String, Object>) res).entrySet()) {
+        checkPointers(dir, escapedId, e.getValue());
+        if (e.getKey().endsWith("-pointer") && (!(e.getValue() instanceof String)
+            || secondaryFile(dir, escapedId, e.getValue()) == null))
+          throw new IllegalArgumentException("Invalid pointer: " + e.getValue());
+      }
+    if (res instanceof List)
+      for (Object i : (List<Object>) res)
+        checkPointers(dir, escapedId, i);
+  }
+
+  /**
    * remove field from map and write its value to the pointer file
    */
   void writeString(Object id, String field, File file, Map<String, Object> map, String pointer)
       throws IOException {
-    String newName = Escape.filename("" + id) + "." + pointer;
-    File newFile = new File(file.getParentFile(), newName);
+    File newFile = pointerFile(id, file, pointer);
 
     if (!(map.get(field) instanceof String) && (map.get(field) != null))
       throw new RuntimeException("Error externalizing data. The value of '" + field
           + "' must be a string. Please change the config.");
 
     map.put(field + "-pointer", pointer);
-    FileUtils.writeStringToFile(newFile, (String) map.remove(field), Charset.defaultCharset());
+    String value = (String) map.remove(field);
+    atomicWrite(newFile,
+        out -> out.write(value == null ? new byte[0] : value.getBytes(Charset.defaultCharset())));
   }
 
   /**
    * remove field from map and write its value to the pointer file
    */
   void deleteString(Object id, String field, File file, Map<String, Object> map, String pointer) {
-    String newName = Escape.filename("" + id) + "." + pointer;
-    File newFile = new File(file.getParentFile(), newName);
+    File newFile = pointerFile(id, file, pointer);
     newFile.delete();
     map.remove(field + "-pointer");
   }
