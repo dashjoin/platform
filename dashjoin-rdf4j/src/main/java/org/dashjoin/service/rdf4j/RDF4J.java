@@ -714,6 +714,7 @@ public class RDF4J extends AbstractDatabase {
               Map<String, Object> properties = new LinkedHashMap<>();
               Map<String, Object> id = new HashMap<>();
               id.put("pkpos", 0);
+              id.put("createOnly", true);
               id.put("name", "ID");
               id.put("type", "string");
               id.put("format", "uri");

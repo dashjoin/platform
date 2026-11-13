@@ -328,6 +328,36 @@ Sample output:
   "name" : "Dashjoin Low Code Development and Integration Platform"
 }
 ```
+### curl
+open the HTTP GET service at the given URL using the Credentials function 'dashjoin' (username / password, apiKey omitted or false). Instead of a literal header value, the Authorization header is set to the ID of the Credentials function. The platform replaces it with a basic authentication header computed from the stored username and password, so the password never appears in the expression
+```
+$curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'dashjoin'})
+```
+Sample output: 
+```json
+{
+  "vendor" : "Dashjoin",
+  "name" : "Dashjoin Low Code Development and Integration Platform"
+}
+```
+### curl
+call an API that expects an API key using the Credentials function 'openai' with apiKey=true, username='Authorization' and password='Bearer sk-...'. With apiKey=true, the header named by username is set to the password value. Use e.g. username='X-API-Key' for services that expect the key in a different header. The Authorization header is always used to reference the Credentials function by ID. It is removed before the request is sent if username is a different header
+```
+$curl('GET', 'https://api.openai.com/v1/models', null, {'Authorization': 'openai'})
+```
+Sample output: 
+```json
+null
+```
+### curl
+POST a login form where the secret must be part of the request body rather than a header. The header dj-insert-credentials lists the fields of data (single name or array) whose value is the ID of a Credentials function. These values are replaced with the stored password (apiKey=true) or a basic authentication value (apiKey false)
+```
+$curl('POST', 'https://example.com/api/login', {'user': 'admin', 'password': 'exampleLogin'}, {'dj-insert-credentials': ['password']})
+```
+Sample output: 
+```json
+null
+```
 ### delete
 delete REQUEST 7 in the database 'sqlite'
 ```

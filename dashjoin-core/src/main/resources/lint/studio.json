@@ -1,19 +1,67 @@
 {
+    "aichat": [
+        "voice",
+        "language",
+        "display",
+        "baseUrl",
+        "linkIsId"
+    ],
     "actionTable": [
-        "hideColumns"
+        "hideColumns",
+        "columns",
+        "hideTableActions",
+        "hideTablePagination"
+    ],
+    "analytics": [
+        "query",
+        "expression",
+        "arguments",
+        "perPage",
+        "hideTableActions",
+        "hideTablePagination"
+    ],
+    "button": [
+        "icon",
+        "deleteConfirmation",
+        "onScan",
+        "schemaExpression"
+    ],
+    "display": [
+        "hideTableActions",
+        "hideTablePagination"
+    ],
+    "edit": [
+        "editRedirect",
+        "mutationMode",
+        "deleteConfirmation",
+        "deleteRedirect"
+    ],
+    "graph": [
+        "labelFilter"
+    ],
+    "markdown": [
+        "baseUrl",
+        "linkIsId"
+    ],
+    "notebook": [
+        "columns"
     ],
     "table": [
         "hideColumns",
-		"primaryText",
-		"secondaryText",
-		"tertiaryText",
-		"leftIcon"
+        "primaryText",
+        "secondaryText",
+        "tertiaryText",
+        "leftIcon",
+        "columns",
+        "deleteConfirmation",
+        "hideTableActions",
+        "hideTablePagination"
     ],
-	"aichat": [
-	    "voice",
-	    "language",
-	    "display",
-	    "baseUrl",
-	    "linkIsId"
+    "container": [
+        "foreach",
+        "layout"
+    ],
+    "tabs": [
+        "foreach"
     ]
 }

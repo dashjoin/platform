@@ -1,11 +1,15 @@
 package org.dashjoin.function;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DjLintTest {
@@ -150,6 +154,31 @@ public class DjLintTest {
   }
 
   @Test
+  public void builtInQueries() throws Exception {
+    DjLint lint = referenceLint();
+    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query")));
+    lint.checkLayout(new ObjectMapper()
+        .readTree("{\"widget\": \"table\", \"database\": \"config\", \"query\": \"dj-navigation\"}"));
+    lint.checkExpressions(new ObjectMapper().readTree(
+        "{\"expression\": \"[$query('config', 'dj-functions'), $query('config', 'dj-query-performance')]\"}"),
+        false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    // built-in queries are not hinted as unused
+    lint.checkUnused();
+    for (String q : DjLint.BUILT_IN_QUERIES)
+      Assertions.assertFalse(("" + lint.messages).contains("/" + q + ".json"), "" + lint.messages);
+  }
+
+  @Test
+  public void missingCopilot() throws Exception {
+    DjLint lint = referenceLint();
+    // dj-copilot is optional and called from built-in pages
+    lint.checkExpressions(
+        new ObjectMapper().readTree("{\"expression\": \"$call('dj-copilot', {})\"}"), false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
   public void danglingReferences() throws Exception {
     DjLint lint = referenceLint();
     // unknown references in branches and lambdas that are never evaluated
@@ -169,7 +198,9 @@ public class DjLintTest {
     DjLint lint = referenceLint();
     lint.queries = new HashSet<>(Arrays.asList("list", "orphanQuery"));
     lint.queryTypes.put("list", "read");
-    lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
+    lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction", "etl"));
+    // etl is not a $call type and must not be reported
+    lint.calledFunctions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
     lint.libraries = new HashSet<>(Arrays.asList("unit-test", "lib", "orphanLibrary"));
     lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query")));
 
@@ -198,5 +229,87 @@ public class DjLintTest {
     Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
     Assertions.assertTrue(lint.messages.get(0).contains("unknown role in readRoles: admni"),
         lint.messages.get(0));
+  }
+
+  @Test
+  public void encodedColumnId() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/dj-database/dj%2Fdb.json";
+    Map<String, Object> root = Map.of("ID", "dj/db");
+
+    // "/" and "%" in a column name are encoded in the ID
+    lint.check(root, "dj/db/T", Map.of("ID", "dj/db/T/a%2Fb%25c", "parent", "dj/db/T", "name",
+        "a/b%c", "type", "string"));
+    lint.check(root, "dj/db/T",
+        Map.of("ID", "dj/db/T/plain", "parent", "dj/db/T", "name", "plain", "type", "string"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    lint.check(root, "dj/db/T",
+        Map.of("ID", "dj/db/T/a/b", "parent", "dj/db/T", "name", "a/b", "type", "string"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("ID must be parent + name"),
+        lint.messages.get(0));
+  }
+
+  @Test
+  public void editSchema() throws Exception {
+    DjLint lint = new DjLint();
+    lint.current = "model/dj-database/dj%2Fresult.json";
+    // editRedirect is a studio property (lint/studio.json)
+    lint.widgets = new HashMap<>(
+        Map.of("edit", Arrays.asList("title", "text", "noDelete"), "button", Arrays.asList()));
+    ObjectMapper om = new ObjectMapper();
+
+    // edit / create schemas are table schemas and carry the column metadata
+    lint.checkLayout(om.readTree("{\"widget\": \"page\", \"children\": [{\"title\": \"Edit Record\","
+        + "\"widget\": \"edit\", \"editRedirect\": \"record\", \"schema\": {\"type\": \"object\","
+        + "\"properties\": {\"ID\": {\"ID\": \"dj/result/Ergebnis/ID\", \"parent\": "
+        + "\"dj/result/Ergebnis\", \"name\": \"ID\", \"readOnly\": true, \"dbType\": \"serial\","
+        + "\"type\": \"number\", \"pkpos\": 0, \"createOnly\": true}}}}]}"));
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+
+    // button schemas are written by hand and must not contain column metadata
+    lint.checkLayout(om.readTree("{\"widget\": \"button\", \"schema\": {\"type\": \"object\","
+        + "\"properties\": {\"x\": {\"type\": \"string\", \"dbType\": \"serial\"}}}}"));
+    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
+    Assertions.assertTrue(lint.messages.get(0).contains("unknown property"), lint.messages.get(0));
+  }
+
+  @Test
+  public void testTry() throws Exception {
+    DjLint lint = new DjLint();
+    lint.checkExpressions(new ObjectMapper().readTree(
+        "{\"expression\": \"$try(function(){$echo('test')})\"}"), false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
+  public void orphanedFiles(@TempDir Path model) throws Exception {
+    Path q = Files.createDirectories(model.resolve("dj-query-catalog"));
+    Path p = Files.createDirectories(model.resolve("page"));
+    Files.writeString(q.resolve("list.json"), "{\"ID\": \"list\", \"query-pointer\": \"0.sql\"}");
+    Files.writeString(q.resolve("list.0.sql"), "select 1");
+    // pointer was removed / renamed
+    Files.writeString(q.resolve("list.1.sql"), "select 2");
+    // JSON was deleted
+    Files.writeString(q.resolve("gone.0.sql"), "select 3");
+    // nested pointer and encoded ID
+    Files.writeString(p.resolve("a%2Fb.json"), "{\"ID\": \"a/b\", \"layout\": {\"widget\": "
+        + "\"text\", \"markdown-pointer\": \"0.md\"}}");
+    Files.writeString(p.resolve("a%2Fb.0.md"), "# hi");
+    Files.writeString(p.resolve(".DS_Store"), "");
+
+    DjLint lint = new DjLint();
+    lint.checkOrphanedFiles(model.toFile());
+    String all = "" + lint.messages;
+    Assertions.assertEquals(2, lint.messages.size(), all);
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/gone.0.sql: externalized field"),
+        all);
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/list.1.sql: externalized field"),
+        all);
+
+    // missing model folder
+    lint.checkOrphanedFiles(new File(model.toFile(), "nope"));
+    Assertions.assertEquals(2, lint.messages.size(), "" + lint.messages);
   }
 }

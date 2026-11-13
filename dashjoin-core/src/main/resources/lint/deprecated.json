@@ -1,12 +1,56 @@
 {
-    "button": [
-		{
-			"navigate": "use $navigate(url) instead"
-		}
+    "aichat": [
+        {
+            "onUpload": "uploaded files are passed via onChat"
+        },
+        {
+            "url": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "extraArgs": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "knowledge_base": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "type": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "name": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "tagline": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "logo": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "system_prompt": "only supported by the legacy chat (url), use expression and onChat instead"
+        },
+        {
+            "onDelete": "only supported by the legacy chat (onUpload)"
+        },
+        {
+            "toolsSelectable": "only supported by the legacy chat (onUpload)"
+        }
     ],
-	"aichat":[
-		{
-		    "onUpload": "uploaded files are passed via onChat"
-		}
-	]
+    "button": [
+        {
+            "navigate": "use $navigate(url) instead"
+        },
+        {
+            "properties": "use schema instead"
+        },
+        {
+            "createSchema": "use schema instead"
+        }
+    ],
+    "variable": [
+        {
+            "properties": "use schema instead"
+        },
+        {
+            "createSchema": "use schema instead"
+        }
+    ]
 }

@@ -449,7 +449,9 @@ public class SQLEditor implements QueryEditorInternal {
       value.query = res.query;
       value.type = "read";
 
-      res.data = db.query(value, null, res.limit == null ? 10 : res.limit);
+      // same semantics as the parsed case (prettyPrint): no limit means no implicit limit
+      // (a limit stated in the query is applied by the DB)
+      res.data = db.query(value, null, res.limit);
       res.compatibilityError = "Query could not be parsed";
       res.metadata = new ArrayList<>();
       res.fieldNames = new ArrayList<>();

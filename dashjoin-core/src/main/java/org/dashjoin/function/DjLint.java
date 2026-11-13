@@ -1,7 +1,9 @@
 package org.dashjoin.function;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,9 +20,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 import org.dashjoin.model.QueryMeta;
+import org.dashjoin.service.ConfigQuery;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
+import org.dashjoin.util.Escape;
+import org.dashjoin.util.Home;
 import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
@@ -114,6 +119,37 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   Set<String> usedFunctions = new HashSet<String>();
   Set<String> usedLibraries = new HashSet<String>(Arrays.asList("unit-test"));
 
+  /**
+   * optional functions called from built-in pages the user cannot edit (e.g. DataCatalog). They are
+   * not reported when missing
+   */
+  static final List<String> OPTIONAL_FUNCTIONS = Arrays.asList("dj-copilot");
+
+  /**
+   * built-in queries that do not need a query catalog entry: PojoDatabase methods marked with
+   * ConfigQuery and dj-query-performance (see PojoDatabase.getQueryMeta and query)
+   */
+  static final Set<String> BUILT_IN_QUERIES = new HashSet<String>();
+  static {
+    BUILT_IN_QUERIES.add("dj-query-performance");
+    for (Method m : PojoDatabase.class.getMethods()) {
+      ConfigQuery cq = m.getAnnotation(ConfigQuery.class);
+      if (cq != null)
+        BUILT_IN_QUERIES.add(cq.query());
+    }
+  }
+
+  /**
+   * function types that are normally called via $call from the App
+   */
+  static final List<String> CALLED_FUNCTIONS = Arrays.asList("org.dashjoin.function.Invoke",
+      "org.dashjoin.function.RestJson", "org.dashjoin.function.Email");
+
+  /**
+   * IDs of dj-functions of a CALLED_FUNCTIONS type that are not scheduled
+   */
+  Set<String> calledFunctions = new HashSet<String>();
+
   @Override
   public String run(Map<String, Object> arg) throws Exception {
     if (!sc.isUserInRole("admin"))
@@ -159,9 +195,11 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         }
         if (folder.equals("dj-function")) {
           checkDanglingPointers(tree);
-          // scheduled functions are run by Cron without being referenced
-          if (item.get("cron") != null || item.get("every") != null)
-            usedFunctions.add(currentID);
+          // only hint at functions that are normally called via $call from the App. Others like
+          // ETL, Receive or MCPServer are run manually, via schedule, webhook or API
+          if (CALLED_FUNCTIONS.contains(item.get("djClassName")) && item.get("cron") == null
+              && item.get("every") == null)
+            calledFunctions.add(currentID);
         }
         if (folder.equals("widget"))
           checkLayout(tree.get("layout"));
@@ -177,6 +215,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
 
     checkUnused();
+
+    checkOrphanedFiles(Home.get().getFile("model"));
 
     // run unit tests
     for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
@@ -222,7 +262,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (parentId != null && map.get("parent") != null)
       assertEquals(parentId, map.get("parent"), "parent property must match parent ID");
     if (map.get("parent") != null)
-      assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"),
+      // the name is encoded in the ID (e.g. "/" becomes "%2F")
+      assertEquals(map.get("ID"),
+          map.get("parent") + "/" + Escape.encodeTableOrColumnName((String) map.get("name")),
           "ID must be parent + name");
     assertTrue(((String) map.get("ID")).startsWith("dj/"), "ID must start with dj/", map.get("ID"));
     if (map.get("ref") != null && ((String) map.get("ref")).startsWith((String) root.get("ID")))
@@ -267,6 +309,52 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
   }
 
+  /**
+   * report files in model/<folder>/ that hold an externalized field (ID.ext) but are not referenced
+   * by any X-pointer field. This happens if the pointer is removed from the JSON or the JSON is
+   * renamed or deleted outside of the platform. The platform does not read these files
+   */
+  void checkOrphanedFiles(File model) {
+    File[] folders = model.listFiles(File::isDirectory);
+    if (folders == null)
+      return;
+    Arrays.sort(folders);
+    for (File folder : folders) {
+      File[] files = folder.listFiles(File::isFile);
+      if (files == null)
+        continue;
+      Arrays.sort(files);
+
+      // names of the files referenced via X-pointer
+      Set<String> referenced = new HashSet<String>();
+      for (File f : files)
+        if (f.getName().endsWith(".json"))
+          try {
+            JsonNode tree = om.readTree(f);
+            String id = tree.get("ID") != null ? tree.get("ID").asText() : null;
+            String prefix = id != null ? Escape.filename(id)
+                : f.getName().substring(0, f.getName().length() - ".json".length());
+            collectPointers(prefix, tree, referenced);
+          } catch (IOException e) {
+            // invalid JSON is reported elsewhere
+          }
+
+      for (File f : files)
+        if (!f.getName().endsWith(".json") && !f.getName().startsWith(".")
+            && !referenced.contains(f.getName()))
+          messages.add("model/" + folder.getName() + "/" + f.getName()
+              + ": externalized field is not referenced by a -pointer field in any JSON file");
+    }
+  }
+
+  void collectPointers(String prefix, JsonNode tree, Set<String> referenced) {
+    for (Entry<String, JsonNode> e : tree.properties())
+      if (e.getKey().endsWith("-pointer") && e.getValue().isTextual())
+        referenced.add(prefix + "." + e.getValue().asText());
+    for (JsonNode i : tree)
+      collectPointers(prefix, i, referenced);
+  }
+
   @SuppressWarnings("unchecked")
   void checkLayout(JsonNode tree) {
     if (tree.get("children") != null)
@@ -300,7 +388,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
       String q = tree.get("query").asText();
       usedQueries.add(q);
-      if (!queryTypes.containsKey(q))
+      if (!queryTypes.containsKey(q) && !BUILT_IN_QUERIES.contains(q))
         fail("unknown query in widget " + widget + ": " + q);
       else
         assertTrue(!"write".equals(queryTypes.get(q)),
@@ -344,7 +432,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       if (field.equals("schema")
           && Arrays.asList("button", "edit", "create", "variable").contains(widget)) {
-        checkSchema(e.getValue());
+        // edit and create use the table schema which carries the column metadata
+        checkSchema(e.getValue(), Arrays.asList("edit", "create").contains(widget));
         continue;
       }
       if (field.equals("foreach") && Arrays.asList("container", "tabs").contains(widget))
@@ -361,7 +450,18 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
   }
 
+  /**
+   * column metadata (see org.dashjoin.model.Property) that is present in table schemas used by the
+   * edit and create widgets
+   */
+  static final List<String> TABLE_SCHEMA_METADATA =
+      Arrays.asList("ID", "parent", "name", "pkpos", "ref", "dbType", "comment", "displayWith");
+
   void checkSchema(JsonNode schema) {
+    checkSchema(schema, false);
+  }
+
+  void checkSchema(JsonNode schema, boolean tableSchema) {
 
     assertTrue(schema.getNodeType().equals(JsonNodeType.OBJECT), "schema must be an object",
         schema);
@@ -412,15 +512,17 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       if (key.equals("if") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
         continue;
+      if (tableSchema && TABLE_SCHEMA_METADATA.contains(key))
+        continue;
       fail("unknown property", e);
     }
 
     // check subschema
     if (schema.get("properties") != null)
       for (Entry<String, JsonNode> p : schema.get("properties").properties())
-        checkSchema(p.getValue());
+        checkSchema(p.getValue(), tableSchema);
     if (schema.get("items") != null)
-      checkSchema(schema.get("items"));
+      checkSchema(schema.get("items"), tableSchema);
   }
 
   @SuppressWarnings("unchecked")
@@ -468,6 +570,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 }
               }, null);
               jsonata.registerFunction("error", x);
+              // $try is registered directly in ExpressionService
+              jsonata.registerFunction("try", x);
               if (!backendOnly)
                 for (String f : CLIENT_FUNCTIONS)
                   jsonata.registerFunction(f, x);
@@ -613,9 +717,15 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (DATABASE_FUNCTIONS.contains(name))
       checkDatabase(literal(args, 0));
     if (name.equals("query") || name.equals("queryGraph"))
-      checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
-    if (name.equals("call"))
-      checkId(functions, usedFunctions, literal(args, 0), "unknown function in $call");
+      if (!BUILT_IN_QUERIES.contains(literal(args, 1)))
+        checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
+    if (name.equals("call")) {
+      String f = literal(args, 0);
+      if (OPTIONAL_FUNCTIONS.contains(f))
+        usedFunctions.add(f);
+      else
+        checkId(functions, usedFunctions, f, "unknown function in $call");
+    }
     if (name.equals("use"))
       checkId(libraries, usedLibraries, literal(args, 0), "unknown library in $use");
   }
@@ -627,7 +737,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
    */
   void checkUnused() {
     hintUnused("dj-query-catalog", "query", queries, usedQueries);
-    hintUnused("dj-function", "function", functions, usedFunctions);
+    hintUnused("dj-function", "function", calledFunctions, usedFunctions);
     hintUnused("dj-library", "library", libraries, usedLibraries);
   }
 

@@ -133,6 +133,30 @@ public class SQLRESTDBTest {
   }
 
   @Test
+  public void testUnparsableQueryNoImplicitLimit() throws Exception {
+    // https://github.com/dashjoin/platform/issues/530
+    Integer[] passed = {-1};
+    SQLDatabase db = new SQLDatabase() {
+      @Override
+      protected List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments,
+          Integer limit) throws SQLException {
+        passed[0] = limit;
+        return new java.util.ArrayList<>();
+      }
+    };
+    db.url = "dummy";
+    QueryDatabase query = new QueryDatabase();
+    query.query = "select a from t where 'x' ~>=~ a";
+    Assertions.assertEquals("Query could not be parsed",
+        new SQLEditor(null, db).noop(query).compatibilityError);
+    Assertions.assertNull(passed[0]);
+
+    query.limit = 1000;
+    new SQLEditor(null, db).noop(query);
+    Assertions.assertEquals(1000, passed[0]);
+  }
+
+  @Test
   public void testTableMetadata() throws Exception {
     QueryDatabase query = new QueryDatabase();
     query.query = "select * from t where id like 'x%'";
