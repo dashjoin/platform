@@ -148,6 +148,36 @@ Configuration:
 * password: credential password
 * apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header
 
+Examples:
+
+Basic authentication: create a Credentials function with ID "dashjoin", username "admin" and password "djdjdj".
+The call below sends the header "Authorization: Basic YWRtaW46ZGpkamRq":
+
+```
+$curl("GET", "http://localhost:8080/rest/manage/version", null, {"Authorization": "dashjoin"})
+```
+
+Bearer token / API key: create a Credentials function with ID "openai", username "Authorization",
+password "Bearer sk-..." and apiKey set to true. The header named by username is set to the password:
+
+```
+$curl("GET", "https://api.openai.com/v1/models", null, {"Authorization": "openai"})
+```
+
+If the service expects the key in a different header (e.g. "X-API-Key: ..."), set username to "X-API-Key".
+The Authorization header is still used to reference the credential, but it is removed before the request is sent,
+so the call above sends only "X-API-Key: ...".
+
+Secrets in the request body: some services expect the secret in the payload (e.g. a login form).
+Use the header "dj-insert-credentials" to list the fields of the data object (a single field name or an array)
+whose value is the ID of a Credentials function. The value is replaced with the password (apiKey = true) or the basic authentication value (apiKey omitted or false):
+
+```
+$curl("POST", "https://example.com/api/login", {"user": "admin", "password": "exampleLogin"}, {"dj-insert-credentials": ["password"]})
+```
+
+Users must have one of the roles of the Credentials function in order to use it (admin only if it has no roles).
+
 ### MCPServer
 
 Allows configuring an external MCP server. Tools offered by this server can be attached to AIApp.
