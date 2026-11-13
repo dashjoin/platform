@@ -520,6 +520,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 }
               }, null);
               jsonata.registerFunction("error", x);
+              // $try is registered directly in ExpressionService
+              jsonata.registerFunction("try", x);
               if (!backendOnly)
                 for (String f : CLIENT_FUNCTIONS)
                   jsonata.registerFunction(f, x);

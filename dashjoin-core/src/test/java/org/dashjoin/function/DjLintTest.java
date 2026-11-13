@@ -270,4 +270,12 @@ public class DjLintTest {
     Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
     Assertions.assertTrue(lint.messages.get(0).contains("unknown property"), lint.messages.get(0));
   }
+
+  @Test
+  public void testTry() throws Exception {
+    DjLint lint = new DjLint();
+    lint.checkExpressions(new ObjectMapper().readTree(
+        "{\"expression\": \"$try(function(){$echo('test')})\"}"), false);
+    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
 }
