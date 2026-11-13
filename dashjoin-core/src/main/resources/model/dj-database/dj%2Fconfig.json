@@ -517,6 +517,26 @@
           "additionalProperties": {
               "type": "object"
           }
+        },
+        "sessions": {
+          "ID": "dj/config/user/sessions",
+          "name": "sessions",
+          "parent": "dj/config/user",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "hash": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string"
+              },
+              "userAgent": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
