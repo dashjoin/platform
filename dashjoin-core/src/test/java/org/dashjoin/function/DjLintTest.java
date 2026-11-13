@@ -1,11 +1,15 @@
 package org.dashjoin.function;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DjLintTest {
@@ -277,5 +281,35 @@ public class DjLintTest {
     lint.checkExpressions(new ObjectMapper().readTree(
         "{\"expression\": \"$try(function(){$echo('test')})\"}"), false);
     Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+  }
+
+  @Test
+  public void orphanedFiles(@TempDir Path model) throws Exception {
+    Path q = Files.createDirectories(model.resolve("dj-query-catalog"));
+    Path p = Files.createDirectories(model.resolve("page"));
+    Files.writeString(q.resolve("list.json"), "{\"ID\": \"list\", \"query-pointer\": \"0.sql\"}");
+    Files.writeString(q.resolve("list.0.sql"), "select 1");
+    // pointer was removed / renamed
+    Files.writeString(q.resolve("list.1.sql"), "select 2");
+    // JSON was deleted
+    Files.writeString(q.resolve("gone.0.sql"), "select 3");
+    // nested pointer and encoded ID
+    Files.writeString(p.resolve("a%2Fb.json"), "{\"ID\": \"a/b\", \"layout\": {\"widget\": "
+        + "\"text\", \"markdown-pointer\": \"0.md\"}}");
+    Files.writeString(p.resolve("a%2Fb.0.md"), "# hi");
+    Files.writeString(p.resolve(".DS_Store"), "");
+
+    DjLint lint = new DjLint();
+    lint.checkOrphanedFiles(model.toFile());
+    String all = "" + lint.messages;
+    Assertions.assertEquals(2, lint.messages.size(), all);
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/gone.0.sql: externalized field"),
+        all);
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/list.1.sql: externalized field"),
+        all);
+
+    // missing model folder
+    lint.checkOrphanedFiles(new File(model.toFile(), "nope"));
+    Assertions.assertEquals(2, lint.messages.size(), "" + lint.messages);
   }
 }

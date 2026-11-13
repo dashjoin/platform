@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,6 +25,7 @@ import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
 import org.dashjoin.util.Escape;
+import org.dashjoin.util.Home;
 import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
@@ -214,6 +216,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     checkUnused();
 
+    checkOrphanedFiles(Home.get().getFile("model"));
+
     // run unit tests
     for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
         null, null, null, false, null)) {
@@ -303,6 +307,52 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       }
     }
+  }
+
+  /**
+   * report files in model/<folder>/ that hold an externalized field (ID.ext) but are not referenced
+   * by any X-pointer field. This happens if the pointer is removed from the JSON or the JSON is
+   * renamed or deleted outside of the platform. The platform does not read these files
+   */
+  void checkOrphanedFiles(File model) {
+    File[] folders = model.listFiles(File::isDirectory);
+    if (folders == null)
+      return;
+    Arrays.sort(folders);
+    for (File folder : folders) {
+      File[] files = folder.listFiles(File::isFile);
+      if (files == null)
+        continue;
+      Arrays.sort(files);
+
+      // names of the files referenced via X-pointer
+      Set<String> referenced = new HashSet<String>();
+      for (File f : files)
+        if (f.getName().endsWith(".json"))
+          try {
+            JsonNode tree = om.readTree(f);
+            String id = tree.get("ID") != null ? tree.get("ID").asText() : null;
+            String prefix = id != null ? Escape.filename(id)
+                : f.getName().substring(0, f.getName().length() - ".json".length());
+            collectPointers(prefix, tree, referenced);
+          } catch (IOException e) {
+            // invalid JSON is reported elsewhere
+          }
+
+      for (File f : files)
+        if (!f.getName().endsWith(".json") && !f.getName().startsWith(".")
+            && !referenced.contains(f.getName()))
+          messages.add("model/" + folder.getName() + "/" + f.getName()
+              + ": externalized field is not referenced by a -pointer field in any JSON file");
+    }
+  }
+
+  void collectPointers(String prefix, JsonNode tree, Set<String> referenced) {
+    for (Entry<String, JsonNode> e : tree.properties())
+      if (e.getKey().endsWith("-pointer") && e.getValue().isTextual())
+        referenced.add(prefix + "." + e.getValue().asText());
+    for (JsonNode i : tree)
+      collectPointers(prefix, i, referenced);
   }
 
   @SuppressWarnings("unchecked")
