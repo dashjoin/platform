@@ -474,7 +474,7 @@
           "authenticated"
       ],
       "tenantColumn": "ID",
-      "before-update": "'admin' in $djRoles() ? false :\n{\n  'setObject': object ~> | $ | {'lastlogin': $now()}, ['firstlogin', 'name'] |\n}",
+      "before-update": "'admin' in $djRoles() ? false :\n{\n  'setObject': object ~> | $ | {'lastlogin': $now()}, ['firstlogin', 'name', 'sessions'] |\n}",
       "before-delete": "'admin' in $djRoles() ? false : $error('User record cannot be deleted')",
       "properties": {
         "ID": {
