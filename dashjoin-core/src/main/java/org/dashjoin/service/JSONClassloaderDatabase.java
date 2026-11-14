@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.dashjoin.model.QueryMeta;
@@ -28,6 +29,20 @@ public class JSONClassloaderDatabase extends JSONDatabase {
       cache.put(part, new Reflections("model." + part, new ResourcesScanner())
           .getResources(Pattern.compile(".*\\.json")));
     return cache.get(part);
+  }
+
+  /**
+   * the tables that have records on the classpath
+   */
+  public Set<String> tables() {
+    Set<String> res = new TreeSet<>();
+    for (String s : new Reflections("model", new ResourcesScanner())
+        .getResources(Pattern.compile(".*\\.json"))) {
+      String[] parts = s.split("/");
+      if (parts.length == 3 && parts[0].equals("model"))
+        res.add(parts[1]);
+    }
+    return res;
   }
 
   @Override

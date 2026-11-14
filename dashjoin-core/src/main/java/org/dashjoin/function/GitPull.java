@@ -1,5 +1,6 @@
 package org.dashjoin.function;
 
+import org.dashjoin.service.SqlConfigStore;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
@@ -9,6 +10,11 @@ public class GitPull extends AbstractFunction<Void, Void> {
   public Void run(Void arg) throws Exception {
     if (!sc.isUserInRole("admin"))
       throw new Exception("must be admin to perform Git operations");
+    if (SqlConfigStore.enabled()) {
+      // the config is served from SQL: pull and update the app layer
+      AppSync.sync(services, false);
+      return null;
+    }
     try (Git git = new Git(new FileRepository(services.getTenantHome() + "/.git"))) {
       git.pull().call();
       return null;

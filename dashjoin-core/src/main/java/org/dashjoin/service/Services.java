@@ -125,7 +125,21 @@ public class Services {
     config._dbs = new CopyOnWriteArrayList<JSONDatabase>();
     JSONDatabase cl = readonlyDB;
     config._dbs.add(cl);
+    // SQL config store: the app layer sits between the platform defaults and the local layer
+    SqlConfigStore sql =
+        persistantDB instanceof SqlConfigView ? ((SqlConfigView) persistantDB).store : null;
+    if (sql != null) {
+      config._user = sql.local();
+      config._dbs.add(sql.app());
+    }
     config._dbs.add(new PolymorphismDatabase());
+    if (sql != null)
+      try {
+        // imports / syncs the app on the first call and keeps the merged records up to date
+        sql.attach(config._dbs);
+      } catch (Exception e) {
+        throw new RuntimeException("Cannot initialize the SQL config database", e);
+      }
     return config;
   }
 
