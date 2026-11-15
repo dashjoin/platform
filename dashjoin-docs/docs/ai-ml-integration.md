@@ -266,26 +266,58 @@ You can also test chatting with the LLM.
 ### Loading Documents via ETL
 
 Since the RAG document store is modeled like a normal Dashjoin database, you can use the standard ETL to load documents.
-Creating a document requires only the field "document" which is an object containing the file name and the value
-which is a base64 encoded string. Consider the following expression:
+You do not need a custom function or the REST API of the AI service.
+
+The knowledge base is the database with `"djClassName": "com.dashjoin.ai.KnowledgeBase"` (usually named `kb`).
+It has two fixed tables:
+
+* Document: one record per file. Read records contain id, path, tags, size, owner and a short text preview
+* Tag: the tags used by the documents
+
+Creating a document requires only the field "document", a list with one object containing the file name (`name`)
+and the content (`value`) as a base64 encoded string. The name becomes the path of the document.
+Optionally, you can provide tags. Consider the following expression:
 
 ```
 {
-  'Document': $ls('file:upload/kb').{
+  'Document': $ls('file:upload/kb')[folder = false].{
     'tags': ['etl'],
     'document': [{ 'value': $openText(url, 'BASE_64'), 'name': url }]
   }
 }
 ```
 
-It scans all files in the upload/kb folder, reads their contents using the openText function with as BASE_64.
-Optionally, you can provide tags.
+It scans all files in the upload/kb folder and reads their contents using the openText function with BASE_64.
+The AI service extracts the text (PDF, Office documents, Markdown, text, ...), splits it into chunks and creates the embeddings.
+
+Text that is not stored in a file, for instance records of another database, can be added as a generated document
+using `$base64encode`. The following expression adds a FAQ table as a Markdown document next to the files:
+
+```
+{
+  'Document': [
+    $ls('file:upload/kb')[folder = false].{
+      'tags': ['manual'],
+      'document': [{ 'value': $openText(url, 'BASE_64'), 'name': url }]
+    },
+    {
+      'tags': ['faq'],
+      'document': [{
+        'name': 'faq.md',
+        'value': $base64encode($join($all('sqlite', 'FAQ').('## ' & question & '\n' & answer), '\n\n'))
+      }]
+    }
+  ]
+}
+```
+
 The ETL configuration is as follows:
 
 ```
 {
     "djClassName": "com.dashjoin.function.ETL",
     "ID": "etl",
+    "type": "write",
     "expressions": {
         "expression": see above...
     },
@@ -296,9 +328,14 @@ The ETL configuration is as follows:
 ```
 
 Create schema must be set to false, since the knowledge base tables Document and Tag are static.
-Handle existing data (oldData) is set the ignore. This is the recommended setting, since the system
-will detect whether a document was changed and only perform the embedding then.
-Setting it to "delete all" will delete all documents and re-ingest them again.
+Handle existing data (oldData) is set to Ignore. This is the recommended setting: documents are matched by their name,
+and the system detects whether a document was changed and only performs the embedding then.
+Running the ETL again is therefore cheap, and generated documents are updated when their source data changes.
+Setting it to "Delete All" will delete all documents and re-ingest them again.
+
+Run the ETL with `$call('etl')` and check the result with `$all('kb', 'Document')`.
+To use the documents in an [AIApp](developer-reference.md#aiapp) function (`com.dashjoin.ai.AIApp`), select them via
+`documents` or `tags`.
 
 ### API
 

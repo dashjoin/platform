@@ -105,7 +105,7 @@
         },
 		{
 		    "title": "KnowledgeBase",
-		    "description": "Expose the RAG document knowledge base to the platform",
+		    "description": "Expose the RAG document knowledge base to the platform. It has the tables Document and Tag. Load documents with a standard ETL function into this database (see 'ETL into the RAG knowledge base'), list them with $all('kb', 'Document'). AIApp functions use the URL of the first KnowledgeBase as the AI service URL",
 		    "code": {
 		        "ID": "dj/kb",
 		        "name": "kb",
