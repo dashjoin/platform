@@ -530,6 +530,11 @@
 			"description": "generate database schema information for database 'sqlite'",
 			"code": "$erDiagram('sqlite')",
 			"output": "Table REQUESTS{\n  ID INTEGER [primary key]\n  name VARCHAR\n  submitted VARCHAR\n  customer VARCHAR [ref: > CUSTOMERS.CUSTOMER_ID]\n  user VARCHAR\n}"
+		},
+		{
+			"description": "generate a Mermaid ER diagram for database 'sqlite', e.g. for a Markdown preview in VS Code",
+			"code": "$erDiagram('sqlite', 'mermaid')",
+			"output": "erDiagram\n  REQUESTS {\n    INTEGER ID PK\n    VARCHAR name\n    VARCHAR submitted\n    VARCHAR customer FK\n    VARCHAR user\n  }\n"
 		}
 	],
 	"stats": [

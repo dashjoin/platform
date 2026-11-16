@@ -431,6 +431,15 @@ Sample output:
 ```json
 "Table REQUESTS{\n  ID INTEGER [primary key]\n  name VARCHAR\n  submitted VARCHAR\n  customer VARCHAR [ref: > CUSTOMERS.CUSTOMER_ID]\n  user VARCHAR\n}"
 ```
+### erDiagram
+generate a Mermaid ER diagram for database 'sqlite', e.g. for a Markdown preview in VS Code
+```
+$erDiagram('sqlite', 'mermaid')
+```
+Sample output: 
+```json
+"erDiagram\n  REQUESTS {\n    INTEGER ID PK\n    VARCHAR name\n    VARCHAR submitted\n    VARCHAR customer FK\n    VARCHAR user\n  }\n"
+```
 ### etl
 Run an ETL that loads data into the sqlite database with createSchema set to true
 ```

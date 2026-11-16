@@ -55,7 +55,7 @@ djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
 djVersion | $djVersion() | Returns the platform version information
 echo | $echo(any) | Prints the parameter to the log
-erDiagram| $erDiagram(database?) | Generate an ER diagram for https://dbdiagram.io/d
+erDiagram| $erDiagram(database?, format?) | Generate an ER diagram of the database (all databases if omitted). format is dbml (default, for https://dbdiagram.io/d) or mermaid (https://mermaid.js.org/syntax/entityRelationshipDiagram.html)
 etl | $etl(foreach, expression, database) | Run an ETL process programmatically. The function requires an expression string. If you want to pass data directly, simply convert the data to a string by using the expression $string(data)
 etlSync | $etlSync(source, target, url column) | Compute the files changed since the last run
 exec | $exec(executable, arguments, [json, xml, csv, yaml]) | runs the script or executable located in the app's bin folder and optionally parses the output to JSON, XML, or CSV

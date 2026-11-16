@@ -1713,6 +1713,11 @@ DESCRIPTION: generate database schema information for database 'sqlite'
 LANGUAGE: jsonata
 CODE: $erDiagram('sqlite')
 
+TITLE: erDiagram
+DESCRIPTION: generate a Mermaid ER diagram for database 'sqlite', e.g. for a Markdown preview in VS Code
+LANGUAGE: jsonata
+CODE: $erDiagram('sqlite', 'mermaid')
+
 TITLE: stats
 DESCRIPTION: return database statistics
 LANGUAGE: jsonata
