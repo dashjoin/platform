@@ -64,10 +64,15 @@ public class Home {
             throw new Exception(
                 "Directory " + fileHome + " must be empty or contain a .git folder");
 
-          try (Git git = new Git(new FileRepository(fileHome + "/.git"))) {
-            log.info("git pull ...");
-            git.pull().setCredentialsProvider(getCredentials()).call();
-          }
+          boolean pull = ConfigProvider.getConfig()
+              .getOptionalValue("dashjoin.git.pull", Boolean.class).orElse(true);
+          if (pull)
+            try (Git git = new Git(new FileRepository(fileHome + "/.git"))) {
+              log.info("git pull ...");
+              git.pull().setCredentialsProvider(getCredentials()).call();
+            }
+          else
+            log.info("git pull disabled (DASHJOIN_GIT_PULL=false)");
         } else {
           log.info("git clone ...");
           CloneCommand cloneCommand = Git.cloneRepository();

@@ -332,6 +332,7 @@ the contents of the config database.
 
 You can specify the DASHJOIN_APPURL environment variable and have it point to your app repository.
 Upon startup, the system will perform a git clone if the model folder is empty or a git pull if the model has content already.
+Set DASHJOIN_GIT_PULL=false to disable the pull on startup (the initial clone is still performed).
 Note that you can specify credentials via the URL (http://user:password@domain.com/).
 Please refer to the [demo application](https://github.com/dashjoin/dashjoin-demo) for an example of how to run
 Dashjoin with the demo application installed.
