@@ -346,6 +346,16 @@ a [personal access token](https://docs.github.com/en/authentication/keeping-your
 https://user:token@github.com/org/project
 ```
 
+Alternatively, you can keep the credentials out of the URL and specify them via the
+DASHJOIN_GIT_USER and DASHJOIN_GIT_TOKEN environment variables. If set, these take precedence over credentials in DASHJOIN_APPURL.
+Using these variables also avoids the token being stored in the .git/config file of the model folder.
+
+```
+DASHJOIN_APPURL=https://github.com/org/project
+DASHJOIN_GIT_USER=user
+DASHJOIN_GIT_TOKEN=token
+```
+
 ### Manual App Installation
 
 Last but not least, you can also copy the app into the Dashjoin working directory using other means

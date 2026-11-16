@@ -222,6 +222,7 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
 * DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platform executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from (branches can be specified by appending #branchname)
+* DASHJOIN_GIT_USER / DASHJOIN_GIT_TOKEN: optional git credentials used to clone / pull / push the DASHJOIN_APPURL repository (take precedence over credentials embedded in DASHJOIN_APPURL)
 * DJ_SID: optional master key used to encrypt credentials (overrides the contents of the file model/.secrets.id)
 * DJ_SID_FILE: optional path of the file containing the master key (defaults to model/.secrets.id)
 * DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (defaults to false; required for the upload widget). WebDAV is also enabled when DASHJOIN_DEVMODE=true.
