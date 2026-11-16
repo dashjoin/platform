@@ -312,6 +312,7 @@
                 "prop": "dj/config/Table/parent",
                 "columns": [
                   "ID",
+				  "title",
                   "comment",
                   "dj-label"
                 ]
