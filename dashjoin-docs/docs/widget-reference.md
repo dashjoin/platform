@@ -704,6 +704,8 @@ Displays a tree based on a recursive query
 
 Allows uploading files to the upload directory. Note that WebDAV must be turned on using the DASHJOIN_WEBDAV_ENABLED environment
 variable (see Installation - Environment).
+Uploading requires one of the roles listed in DASHJOIN_WEBDAV_ROLES (defaults to "admin"), and the target folder must be within
+DASHJOIN_WEBDAV_ROOTS (defaults to "upload"). For instance, set DASHJOIN_WEBDAV_ROLES=admin,authenticated to allow uploads by API / non-admin users.
 
 * allowFolderSelectionRecursive: Recursively get subdirectories
 * preserveFolders: Preserve recursive folder structure at the destination
