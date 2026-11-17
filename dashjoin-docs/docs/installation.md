@@ -660,3 +660,18 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * New setIfAbsent function
   * Support reusing query parameter
   * Enhanced CORS support
+
+### 7.2 (Nov 2026)
+
+* Vibe Coding Support
+  * A set of agent skills that teaches Dashjoin to AI
+  * Ability to compile, lint, and test Apps
+  * Better support for debugging expressions
+* UI
+  Ability to control max logins per user
+* Platform
+  * New concept of a function library to manage and unit test reusable JSONata logic
+  * More fine-grained access control for WebDAV
+  * Ability to run functions in elevated mode
+  * Better support for App GIT branches
+  * Introduced try / catch for JSONata
