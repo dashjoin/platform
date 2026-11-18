@@ -1,0 +1,1935 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../widget-reference/">
+      
+      
+        <link rel="next" href="../jsonata-reference/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Functions - Dashjoin Platform Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're not viewing the latest version.
+  <a href="../.."> 
+    <strong>Click here to go to latest.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL(".."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-header__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dashjoin Platform Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Dashjoin Platform Documentation" class="md-nav__button md-logo" aria-label="Dashjoin Platform Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Dashjoin Platform Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started: 15 Minute Tour
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../widget-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Widget Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aiapp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AIApp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RestJson
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCPServer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gathering Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Mapping Step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Save Step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping Function Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jsonata-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSONata Expression Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I18N
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-ml-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI &amp; ML Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../administration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Administration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development / Production
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security and Access Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support-matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supported Databases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Databases, Queries, Functions, and Configurations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-inputs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Form Input Types
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-jsonata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: JSONata function library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix-widgets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Widgets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aiapp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AIApp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RestJson
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invoke
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mcpserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCPServer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gathering-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gathering Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-mapping-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Mapping Step
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-save-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Save Step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-function-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping Function Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapping Function Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etl-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ETL Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="functions">Functions</h1>
+<p>Apart from changing data in databases, Dashjoin can call functions on the backend. Functions come in two flavors: First, there are functions that simply extend
+the functionality you can use in expressions. An example would be a simple toUpperCase function that transforms a string to upper case.
+These functions are described in the <a href="../jsonata-reference/">JSONata Expression Reference</a>. Second, there are configurable functions. These work very much like their counterpart,
+however, they require additional configuration parameters. An example would be a function to send an email. The actual function call requires you to specify subject, sender, receiver, and the body. But you would not want to have to repeat the email server address and credentials every time. So you can
+register an instance of email service with specific parameters and call it email-service-1. This page describes the latter configurable functions.</p>
+<p><a href="https://www.youtube.com/watch?v=XuymQh6aMIk">Click here</a> for a demo video.</p>
+<h2 id="function-reference">Function Reference</h2>
+<p>The system supports the following functions. Each section lists the function configuration parameters that are constant any time this function is called as well as the parameters that are specific for each invocation.</p>
+<h3 id="aiapp">AIApp</h3>
+<p>Allows configuring an AI application that can be called from the AIChat widget or any other JSONata expression:</p>
+<p>Configuration</p>
+<ul>
+<li>systemPrompt: the AI system prompt to instruct AI behaviour</li>
+<li>ai: URL of the KnowledgeBase database. Only required if there are multiple KnowledgeBases.</li>
+<li>model: name of the AI model to use - those can be configured in settings.yml (see AI &amp; ML integration for details)</li>
+<li>tools: names of the tools the AI is allowed to use. Tools can be Invoke functions with comment and parameter annotations, builtin MCP tools configured in the MCP proxy, or tools of an external MCPServer</li>
+<li>tags: all documents with these tags are used as the RAG source</li>
+<li>documents: individual documents to be used as the RAG source. Documents are loaded into the KnowledgeBase with a standard ETL (see <a href="../ai-ml-integration/#loading-documents-via-etl">Loading Documents via ETL</a>)</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>array: array of messages containing role and content. Note that if the last content contains #full, the entire RAG corpus will be added to the request. This is called Cache-Augmented Generation (CAG) and is suitable for smaller document sets that fit in the LLM context.
+If the content contains #query, the text behind the query marker is used as a RAG query. Consider the following example: can you explain the difference between RAG and CAG #query RAG CAG. In this case the documents would be search using the term "RAG CAG" rather than the entire question. This can be used to optimize RAG retrieval accuracy.</li>
+</ul>
+<p>If you would like to invoke the LLM using JSON mode, you can pass the target JSON Schema as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$parseJson(
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  $call('aia', {
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    'response_format': { 
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>      'properties': {
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        'res': {
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>          'type': 'array'
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        }
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>      }
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    },
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    'messages': [
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>      {
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        'role':'user', 
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        'content': 'list of European capitals with a population of at least 3 million'
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>      }
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    ]
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  }).choices.message.content
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>)
+</code></pre></div>
+<p>This returns the following JSON structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  "res": [
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    "Berlin",
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    "Madrid",
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    "Rome",
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  ...
+</code></pre></div>
+<p>Note that the top level schema must contain "properties" and the returned value is always an object. 
+The AIApp function makes sure the schema is compatible with the LLM requirements. 
+For instance, if "type" is omitted, it is assumed to be "string".</p>
+<h3 id="restjson">RestJson</h3>
+<p>Calls an external REST service. If you need more control over the how the call is performed, please use the JSONata function curl.</p>
+<p>Configuration</p>
+<ul>
+<li>url: the URL of the REST service to call (the URL may contain template variables <code>${var}</code> which are replaced with the respective argument field)</li>
+<li>username: optional HTTP basic authentication user name</li>
+<li>password: optional HTTP basic authentication password</li>
+<li>method: GET or POST</li>
+<li>headers: HTTP headers</li>
+<li>contentType: content-type header application/json or url-form-encoded</li>
+<li>apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header</li>
+<li>timeoutSeconds: Optional HTTP timeout in seconds (default is 10s)</li>
+<li>insertCredentials: array of field names. If set, any key:value found in the object passed is replaced with key:value of the credential with name "value" (Dashjoin Studio only)</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: If object is specified, POSTs the object serialized as JSON. If object is null, GETs the result</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>JSON result returned by the service</li>
+</ul>
+<h3 id="email">Email</h3>
+<p>Sends an email.</p>
+<p>Configuration</p>
+<ul>
+<li>username: username to log into the email service</li>
+<li>password: password to log into the email service</li>
+<li>properties: <a href="https://www.tutorialspoint.com/javamail_api/javamail_api_smtp_servers.htm">SMTP server configuration</a></li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>from: email sender in RFC822 syntax</li>
+<li>to: email recipient in RFC822 syntax</li>
+<li>subject: email subject line</li>
+<li>text: email text</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>none</li>
+</ul>
+<h3 id="invoke">Invoke</h3>
+<p>Allows saving an expression on the server. When run, we evaluate / apply the expression with the data context passed as an argument.</p>
+<p>Configuration</p>
+<ul>
+<li>expression: The expression to save and run when invoked</li>
+<li>parameters: optional JSON Schema describing the objects expected by the function</li>
+<li>runas: optional role the expression runs as (see <a href="../concepts/#running-invoke-functions-as-a-role">Running Invoke Functions as a Role</a>)</li>
+</ul>
+<p>Invocation parameter</p>
+<ul>
+<li>object: the expression evaluation context (see <a href="../concepts/#jsonata-in-invoke-functions">JSONata in Invoke Functions</a>)</li>
+</ul>
+<p>Return value</p>
+<ul>
+<li>expression result</li>
+</ul>
+<h3 id="credentials">Credentials</h3>
+<p>Allows saving credentials that can be referenced by the JSONata curl function. This is done by
+specifying the authorization header and setting it to the name of the credential:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$curl("GET", "http://localhost:8080/rest/manage/version", {}, {"Authorization": "credential name"})
+</code></pre></div>
+<p>This works for both basic authentication and passing an API key via some generic HTTP header.</p>
+<p>Configuration:</p>
+<ul>
+<li>username: credential username</li>
+<li>password: credential password</li>
+<li>apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header</li>
+</ul>
+<p>Examples:</p>
+<p>Basic authentication: create a Credentials function with ID "dashjoin", username "admin" and password "djdjdj".
+The call below sends the header "Authorization: Basic YWRtaW46ZGpkamRq":</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$curl("GET", "http://localhost:8080/rest/manage/version", null, {"Authorization": "dashjoin"})
+</code></pre></div>
+<p>Bearer token / API key: create a Credentials function with ID "openai", username "Authorization",
+password "Bearer sk-..." and apiKey set to true. The header named by username is set to the password:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$curl("GET", "https://api.openai.com/v1/models", null, {"Authorization": "openai"})
+</code></pre></div>
+<p>If the service expects the key in a different header (e.g. "X-API-Key: ..."), set username to "X-API-Key".
+The Authorization header is still used to reference the credential, but it is removed before the request is sent,
+so the call above sends only "X-API-Key: ...".</p>
+<p>Secrets in the request body: some services expect the secret in the payload (e.g. a login form).
+Use the header "dj-insert-credentials" to list the fields of the data object (a single field name or an array)
+whose value is the ID of a Credentials function. The value is replaced with the password (apiKey = true) or the basic authentication value (apiKey omitted or false):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$curl("POST", "https://example.com/api/login", {"user": "admin", "password": "exampleLogin"}, {"dj-insert-credentials": ["password"]})
+</code></pre></div>
+<p>Users must have one of the roles of the Credentials function in order to use it (admin only if it has no roles).</p>
+<h3 id="mcpserver">MCPServer</h3>
+<p>Allows configuring an external MCP server. Tools offered by this server can be attached to AIApp.</p>
+<p>Configuration</p>
+<ul>
+<li>url: MCP server URL</li>
+<li>username: credential username</li>
+<li>password: credential password</li>
+<li>apiKey: if true, use username / password as another header - this feature can be used to pass API keys etc. while not having to show the key in plain text in the header input form. If this value is omitted or false, username and password are converted to a basic authentication header</li>
+</ul>
+<h2 id="mapping-functions">Mapping Functions</h2>
+<p>Mapping functions are specialized functions that have no invocation parameters and outputs.
+They are used to write data into a database and can be run in a scheduled fashion.
+All mapping functions perform the following three steps.</p>
+<p><a href="https://www.youtube.com/watch?v=ZsjyucALidY">Click here</a> for a demo video.</p>
+<h3 id="gathering-data">Gathering Data</h3>
+<p>It is up to the mapping function how this task is achieved. The only requirement is that the function
+gathers a set of tables. </p>
+<h3 id="the-mapping-step">The Mapping Step</h3>
+<p>This step is common to all mapping functions and is supported by a specialized mapping editor. The mapping step
+transforms the gathered set of tables into another set of tables. The mapping step supports the following operations:</p>
+<ul>
+<li>remove table: a table from the initial step can be removed / ignored</li>
+<li>remove column: drops a column from a table</li>
+<li>rename table: a table from the initial step can be renamed</li>
+<li>rename column: renames a column in a table</li>
+<li>add table: a table can be added by providing the name of an initial table</li>
+<li>add column: a column can be added to a table</li>
+<li>modify column: sets the column to a new expression (the default simply copies the original value 1:1 using <code>$.columnname</code>; please see the <a href="../jsonata-reference/">JSONata Expression Reference</a> for more details on expressions)</li>
+<li>extract table: if an input table contains a column with array values, extracts the union of these arrays into a new table</li>
+</ul>
+<h3 id="the-save-step">The Save Step</h3>
+<p>The save step writes the output of the mapping step into the database. The following modes are supported:</p>
+<p><strong>Ignore</strong></p>
+<p>Simply add the data (update in case the record already is in the DB, insert if not). We follow the "normal" update semantics meaning that key=null actually deletes the value in the DB, whereas missing keys remain untouched.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "ignore"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ignore</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Row 1 is updated. Row 2 remains unchanged. Row 3 is added and thus gets marked as having source "ignore".</p>
+<p>Extracted Data from ETL "ignore"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ignore</td>
+<td>Nate</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ignore</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Row 4 gets added. Row 3 remains even though it is no longer in the extraction result.</p>
+<p><strong>Refresh</strong></p>
+<p>All records from the target tables that have the _dj_source column matching the ID of this function are updated. If a key is no longer present in the new data, the record is deleted.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "refresh"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>3</td>
+<td>refresh</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>The first run of "refresh" has the same effect as "ignore".</p>
+<p>Extracted Data from ETL "refresh"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>John</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>4</td>
+<td>refresh</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>The third row, which was added by "refresh" previously, is deleted and row 4 is added.</p>
+<p><strong>Delete All</strong></p>
+<p>All records from the target tables are deleted, if createSchema is true, the tables are also dropped in case columns are no longer needed or previously had another datatype.</p>
+<p>Database</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+<th>age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td></td>
+<td>Joe</td>
+<td>33</td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>Mike</td>
+<td>44</td>
+</tr>
+</tbody>
+</table>
+<p>Extracted Data from ETL "delete-all"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>delete-all</td>
+<td>John</td>
+</tr>
+<tr>
+<td>3</td>
+<td>delete-all</td>
+<td>Nate</td>
+</tr>
+</tbody>
+</table>
+<p>The table content is deleted. If create schema is specified, the age column is also deleted.
+Rows 1 and 3 get added with the respective source.</p>
+<p>Extracted Data from ETL "delete-all"</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>Result</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>_dj_source</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>delete-all</td>
+<td>John</td>
+</tr>
+<tr>
+<td>4</td>
+<td>delete-all</td>
+<td>Jane</td>
+</tr>
+</tbody>
+</table>
+<p>The table content is deleted and rows 1 and 4 are added.</p>
+<p><strong>Sync</strong></p>
+<p>The sync mode works like Ignore. In conjunction with the foreach expression, it can be used to keep
+the database in sync with a file system or a web download location, by deleting certain entries.
+This is explained in the next section.</p>
+<h2 id="mapping-function-reference">Mapping Function Reference</h2>
+<h3 id="etl">ETL</h3>
+<p>The ETL function uses an expression as input into the mapping process.
+The expression result can be a map of table names to an array of rows (JSON objects).
+If the expression result has a simpler structure (for instance only a single table),
+the ETL function wraps this in a default table called "table".</p>
+<p>If you want to load a large amount of data, you can use the "foreach" expression to specify
+how to split the loading process into smaller parts. Assume you have a directory with
+thousands of files to load. The foreach expression can list the files using <code>$ls("url")</code>.
+The expression then specifies how each file is handled. Its <code>$</code> context is set to
+each individual URL and the expression and subsequent ETL are called for each URL individually.</p>
+<p>Note that you can also stream large JSON, XML, or CSV files via the streamJson, streamXml, and streamCsv
+functions. In this case, these functions split a large file into smaller chunks which are then
+passed to the mapping expression.</p>
+<p>The setting "ETL worker threads" can be used to achieve parallel writes to the database.
+This setting is only applicable if a foreach expression is specified.
+In this case, the setting "ignore ETL errors and continue process" specifies that any error
+that occurs when streaming a large file (e.g. a formatting error towards the end of the file)
+or when workers map and write the contents to the database (e.g. due a malformatted date string)
+are ignored and do not stop the other workers.</p>
+<h3 id="etl-sync">ETL Sync</h3>
+<p>The foreach construct also allows you to conveniently keep the database in sync with a set of files
+on the file system or the web. Consider the following foreach expression:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ls("file:upload")
+</code></pre></div>
+<p>It returns a list of objects describing files in the upload folder. Let's assume those are JSON
+files, that are mapped to the database using this expression:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>{
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  "url": url,
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  "modified": modified,
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  "content": $openJson(url)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>}
+</code></pre></div>
+<p>Now we can compute the urls and modified timestamps that are in the database:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$all(db, table).{'url': url, 'modified': modified} // please use a native distinct query for large datasets
+</code></pre></div>
+<p>The platform offers the etlSync function that computes the set of URLs that must be loaded
+for the next run and the records that might have been deleted using the URLs and modified
+pairs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$etlSync($ls("file:upload"), $all(db, table).{'url': url, 'modified': modified}, "url")
+</code></pre></div>
+<p>This example compares the files in the upload folder to the records in the database table, matching them using the 'url' field.
+If the modified / etag / version field of the filesystem is greater than the respective field in the database, the file
+will be included in the result. Consider the example below that shows a sync ETL function:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>{
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    "ID": "sync",
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    "djClassName": "com.dashjoin.function.ETL",
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    "expressions": {
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        "foreach": "$etlSync($ls('file:upload'), $all('db', 'table'), 'url')",
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        "expression": "{'url': url, 'modified': modified, 'content': $openText(url)}"
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    },
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    "oldData": "Sync",
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>}
+</code></pre></div>
+<p>We use the etlSync function in the foreach expression to compute the list of files that needs to be loaded.
+The expression maps the file to the database record as usual.
+The etlSync function can also determine which files are in the database but no longer on the filesystem.
+The mode "Sync" indicates, that deleted and modified files will be removed from the DB first.</p>
+<h3 id="receive">Receive</h3>
+<p>The receive function allows handling cases, where the platform is being sent data that is to be processed and saved into a database.
+This use case is common in IoT scenarios where a stream of sensor data is passed via the REST API.
+The Receive function can be configured like the ETL function and allows mapping the data into the desired structure.
+The create schema parameter works like in the ETL case and optionally adapts the underlying schema to accommodate new fields and tables.
+Receive defines a parameter called sample where a stream data sample can be added.
+This sample data is used to edit the mapping.
+Note that Receive always appends the new data like the Ignore mode in the ETL case. The difference is that there
+is no expression that fetches data. Instead, the data is passed via the API call.</p>
+<h2 id="scheduling">Scheduling</h2>
+<p>Functions can be scheduled to run periodically. Using Dashjoin Studio, you can either set an interval or a cron schedule.
+Use cron if your jobs should run based on a calendar, every weeknight at 2am, for instance. Use intervals for
+simple schedules like: run every hour.</p>
+<p>When a function is run by the scheduler, it uses the role "scheduler". Therefore, make sure that the function roles include this role.
+Consider the following example that runs an invoke function every hour (note that the function is run without input parameter):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>{
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    "ID": "interval",
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    "djClassName": "org.dashjoin.function.Invoke",
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    "expression": "...",
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    "every": "1h",
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    "roles": [
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        "scheduler"
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    ]
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>}
+</code></pre></div>
+<p>Please refer to this <a href="https://quarkus.io/guides/scheduler-reference#intervals">documentation</a> for information about the interval string format.
+The next example uses the <a href="https://quarkus.io/guides/scheduler-reference#cron">cron</a> syntax to run the function every day at 10:15:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>{
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    "ID": "cron",
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    "djClassName": "org.dashjoin.function.Invoke",
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    "expression": "...",
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    "cron": "0 15 10 * * ?",
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    "roles": [
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        "scheduler"
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    ]
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>}
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
