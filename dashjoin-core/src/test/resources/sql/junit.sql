@@ -23,6 +23,6 @@ insert into "NODE" values (2,1);
 insert into "NODE" values (3,1);
 insert into "NODE" values (4,3);
 
-create table "ARR"("ID" int primary key, "KIDS" varchar(255));
-insert into "ARR" values (1,'2');
+create table "ARR"("ID" int primary key, "KIDS" int);
+insert into "ARR" values (1,2);
 insert into "ARR" values (2,null);
