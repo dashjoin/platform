@@ -1,6 +1,6 @@
 {
 	"ID": "base-theme",
-	"description": "Base Theme (one of the theme names listed here https://marmelab.com/react-admin/AppTheme.html#writing-a-custom-theme)",
+	"description": "Base Theme (B&W, Nano, Radiant, or House; see https://marmelab.com/react-admin/AppTheme.html#built-in-themes)",
 	"category": "ui",
 	"type": "string"
 }

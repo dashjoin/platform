@@ -2,7 +2,7 @@
 
 This section will guide you through the various features of the Dashjoin low code development platform. We assume you are in the admin role and have the [demo application](https://github.com/dashjoin/dashjoin-demo) installed. This application bootstraps a sample northwind database which allows us to demonstrate advanced queries.
 
-We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You a being tasked with developing an application that allows customers to interface with you via a web portal.
+We will guide you through a scenario where northwind is an internal fictional enterprise resource planning (ERP) system. You are tasked with developing an application that allows customers to interface with you via a web portal.
 
 ## Database Management
 
@@ -46,9 +46,9 @@ This brings up a table with a preview (the first 10 rows) of the table. Since th
 
 You have the choice of appending to or replacing the existing data. Choose "replace" in order to avoid further primary key clashes. Since we are permanently deleting existing data, we need to confirm this operation by entering "delete tables". Note that tables is plural since we can also upload multiple tables at once by selecting a Excel spreadsheet or multiple csv files.
 
-Since our application should not change the northwind ERP database, we created the new table in a new database. Nevertheless, there is a logical connection between the two databases, since the customer field in the requests table references the CUSTOMERS table in the northwind database. Dashjoin allows you to express this relationship even tough it links columns and records in different databases.
+Since our application should not change the northwind ERP database, we created the new table in a new database. Nevertheless, there is a logical connection between the two databases, since the customer field in the requests table references the CUSTOMERS table in the northwind database. Dashjoin allows you to express this relationship even though it links columns and records in different databases.
 
-Navigate to the REQUESTS table and open the column metadata control. In the table, select the customers column and click edit. In the popup, type "CUSTOMER_ID" in the foreign key reference field. The system suggests all known columns that contain this substring. Select "dj/northwind/CUSTOMERS/CUSTOMER_ID" and press ok.
+Navigate to the REQUESTS table and open the column metadata control. In the table, select the customer column and click edit. In the popup, type "CUSTOMER_ID" in the foreign key reference field. The system suggests all known columns that contain this substring. Select "dj/northwind/CUSTOMERS/CUSTOMER_ID" and press ok.
 Since we made a change to the database metadata and the application caches this data, we need to clear the browser application cache by reloading the page.
 
 After the reload, you will notice that the customer column in the table now shows a hyperlink to the related record in the customer table. Likewise, if you navigate onto a request or onto a customer, the related records are displayed even though they reside in a different database. In addition, if you start typing in the request creation's customer field, you will notice that the matching northwind customer IDs are showing up.
@@ -56,18 +56,18 @@ After the reload, you will notice that the customer column in the table now show
 Navigate to the customer ALFKI (northwind/CUSTOMERS/ALFKI). The list of requests made by this customer shows up as a list of hyperlinks (1, 2, and 3). As a default, Dashjoin uses the primary key value as a link label, however we can customize this. Go to the REQUESTS table page, open the table metadata control and enter `${name}` in the dj-label field. This string is a template syntax where constant strings can be mixed with template variables referencing columns. So a person template could be `${LAST_NAME}, ${FIRST_NAME}`.
 
 Save this change and reload the browser.
-The visit the first request. You will notice that the browser window title now displays the new label. Going back to the requests table you will see that any request that was visited, now shows a nice name. Likewise, if you go back to customer ALFKI, the list also shows the readable link labels (assuming they all have been visited).
+Then visit the first request. You will notice that the browser window title now displays the new label. Going back to the requests table you will see that any request that was visited, now shows a nice name. Likewise, if you go back to customer ALFKI, the list also shows the readable link labels (assuming they all have been visited).
 
 Go back to the requests table and enter the letter 'a' in the customer field of the create form. You will see the autocomplete options with the customer IDs starting with 'a'.
 The customer IDs are five letter strings. This is better than a plain number, but let's also choose a display name for customers.
 Again, we can do this by navigating to the customer table (/northwind/CUSTOMERS), opening the table metadata control and entering the dj-label `${COMPANY_NAME}`.
-Reload the browser and go back to the requests table. If you type 'a' into the customers create field, you will see the list of customer display names that start with 'a'.
+Reload the browser and go back to the requests table. If you type 'a' into the customer create field, you will see the list of customer display names that start with 'a'.
 Note that the tooltip shows the underlying five letter primary key. This feature is very useful if tables use unreadable keys.
 
 ## Restricting Access
 
 Dashjoin makes it very easy to secure data based on user roles. To view the roles known to the system, go to the info page linked in the toolbar.
-The top left widget display the following information:
+The top left widget displays the following information:
 
 * The name of the current user (should be user name 'admin')
 * The roles the current user is in (should be the user role 'admin')
@@ -79,25 +79,25 @@ The role IDs you choose depend on the identity management system that is configu
 In the Dashjoin PaaS, this is OpenID. If you are using the open source default installation,
 local users and their role associations are defined in the files djusers.properties and djroles.properties:
 
-You already have an admin user. To add a user "authenticated" with password djdjdj that is in the role with the same nave,
-edit the files as shown below:
+You already have an admin user. The admin password in this example is djdjdj. To add a user "user" with password djdjdj that is in the role "authenticated",
+edit the files as shown below (see [local users](installation.md#local-users) for how to compute the password hash):
 
 ```bash
 # djusers.properties
 admin=1395a3149fee498061e6c06581a3decf
-authenticated=4a699242c282b1180a24df1ff411001f
+user=ca76651109a16b68007d5bd5bde845da
 ```
 
 ```bash
 # djroles.properties
 admin=admin
-authenticated=authenticated
+user=authenticated
 ```
 
-In the next step, use a different browser or an incognito window and login user user with password djdjdj.
+In the next step, use a different browser or an incognito window and log in as "user" with password djdjdj.
 Except for the toolbar, the system looks pretty much the same. Navigate to the info page. You will need
 to type /page/Info into the browser, since the toolbar icon is not displayed.
-Verify that the page shows user in role authenticated.
+Verify that the page shows the user "user" in the role "authenticated".
 Click on "system roles" and "admin" and press delete. You will get the error message:
 "User does not have the role required to delete table dj-role in database config". The authenticated role
 has read access to the config database, but cannot create, delete or update any records.
@@ -138,7 +138,7 @@ WHERE
 Press OK to leave the query editor. Before creating the query, we need to add the ID (requests), type (read), and roles (admin, authenticated). The query needs one more argument, namely the current user. This can be specified by pressing the + symbol and adding the parameter user with type string and example "user". The example is used when editing a parameterized query in the editor. Finally, in the query text field, replace 'user' with `${user}`. This indicates that the query has a dynamic parameter that is inserted into the query before it is run. Now save the query by pressing "create". At a later point, you can always go back and make changes to the query (e.g. add a join or another projection).
 
 Now we navigate to the page start and enter the layout editor by pressing the pen symbol. We can now make changes to the page. The page contains one widget which currently is a text widget displaying a static text. You can delete this widget and instead add a table widget showing our query result. 
-After adding the table widget from the left drawer, enter the following widget proerties in the editor:
+After adding the table widget from the left drawer, enter the following widget properties in the editor:
 
 ```text
 widget: table
@@ -150,9 +150,9 @@ arguments: {"user": $.user}
 
 Press the floppy disk symbol to save the new layout. You should now see a table with one row. Go to the user browser and reload the page. You should see three requests there.
 
-We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the developer guide for a full documentation of these expressions.
+We created a table widget that runs the requests query on the sqlite database. Now the requests query needs an argument called user. Dashjoin uses a JSON object to pass such parameters. Specifically, `$.user` reads the current username from the context. We will leave it at that, please refer to the [Expressions](concepts.md#expressions) section and the [JSONata Expression Reference](jsonata-reference.md) for a full documentation of these expressions.
 
-Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and add button widget with the following parameters:
+Now we are missing the functionality to submit new data. We can achieve this with the button widget. Enter the edit mode again and add a button widget with the following parameters:
 
 ```text
 widget: button
@@ -160,14 +160,14 @@ text: Submit
 title: New Requests
 ```
 
-In the button widget, add an inout widget:
+In the button widget, add an input widget:
 
 ```text
-widget: inout
+widget: input
 name: name
 ```
 
-Change the input to a textarea. If you'd like the tetarea to be wider, you can
+Change the input to a textarea. If you'd like the textarea to be wider, you can
 add width 400px in the CSS properties.
 
 Finally, let's edit the button widget again to define what happens when the button is pressed. Enter the following expression in the field "run this when clicked and display the result":

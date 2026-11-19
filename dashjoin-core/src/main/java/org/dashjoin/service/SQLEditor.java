@@ -27,7 +27,7 @@ import org.dashjoin.service.QueryEditor.RemoveColumnRequest;
 import org.dashjoin.service.QueryEditor.RenameRequest;
 import org.dashjoin.service.QueryEditor.SetWhereRequest;
 import org.dashjoin.service.QueryEditor.SortRequest;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.BinaryExpression;
@@ -66,8 +66,8 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 /**
  * SQL implementation of the query editor backend
  */
-@Log
 public class SQLEditor implements QueryEditorInternal {
+  private static final Logger log = Logger.getLogger(SQLEditor.class.getName());
 
   protected SQLDatabase db;
   protected Services services;
@@ -449,7 +449,9 @@ public class SQLEditor implements QueryEditorInternal {
       value.query = res.query;
       value.type = "read";
 
-      res.data = db.query(value, null, res.limit == null ? 10 : res.limit);
+      // same semantics as the parsed case (prettyPrint): no limit means no implicit limit
+      // (a limit stated in the query is applied by the DB)
+      res.data = db.query(value, null, res.limit);
       res.compatibilityError = "Query could not be parsed";
       res.metadata = new ArrayList<>();
       res.fieldNames = new ArrayList<>();

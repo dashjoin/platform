@@ -48,7 +48,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * The core REST data and metadata interface that sits on top of all database implementations. It
@@ -66,8 +66,8 @@ import lombok.extern.java.Log;
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({MediaType.APPLICATION_JSON})
 @ApplicationScoped
-@Log
 public class Data {
+  private static final Logger log = Logger.getLogger(Data.class.getName());
 
   private static final ObjectMapper om = new ObjectMapper().registerModules(new JavaTimeModule());
 

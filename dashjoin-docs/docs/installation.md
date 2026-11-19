@@ -220,10 +220,16 @@ A Dashjoin instance can be configured using the following environment variables:
 * DJ_ADMIN_USER: admin user name (defaults to "admin")
 * DJ_ADMIN_PASS: admin password (default is blank)
 * DJ_ADMIN_ROLES: initial admin roles (defaults to the "admin" role)
-* DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platfrom executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
+* DASHJOIN_HOME: defines the dashjoin working directory (defaults to /deployments/model when using docker or the directory where the platform was launched). If you are using a platform executable or installer version, the working directory is set to userhome/.dashjoin and cannot be modified
 * DASHJOIN_APPURL: optional git url where an app is cloned / pulled from (branches can be specified by appending #branchname)
-* DJ_SID: optional system ID (contents of the file .secretid)
-* DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (required for the upload widget)
+* DASHJOIN_GIT_USER / DASHJOIN_GIT_TOKEN: optional git credentials used to clone / pull / push the DASHJOIN_APPURL repository (take precedence over credentials embedded in DASHJOIN_APPURL)
+* DASHJOIN_GIT_PULL: set to false to disable the git pull of the DASHJOIN_APPURL repository on startup (defaults to true; the initial clone into an empty folder is always performed)
+* DJ_SID: optional master key used to encrypt credentials (overrides the contents of the file model/.secrets.id)
+* DJ_SID_FILE: optional path of the file containing the master key (defaults to model/.secrets.id)
+* DASHJOIN_WEBDAV_ENABLED: turn WebDAV on / off (defaults to false; required for the upload widget). WebDAV is also enabled when DASHJOIN_DEVMODE=true.
+* DASHJOIN_WEBDAV_ROLES: comma-separated roles with full WebDAV access (defaults to "admin")
+* DASHJOIN_WEBDAV_READONLY_ROLES: comma-separated roles granted access only to GET, HEAD, OPTIONS, and PROPFIND (defaults to none). Any matching role in DASHJOIN_WEBDAV_ROLES takes precedence.
+* DASHJOIN_WEBDAV_ROOTS: comma-separated top-level folders accessible through WebDAV, relative to DASHJOIN_HOME (defaults to "upload"). Set to "." to expose the entire home directory. Applies to all WebDAV roles, including admins.
 * DASHJOIN_ONSTART: If a on-start expression is defined (see system configuration), this expression gets passed the string value {"onStart": VALUE}
 * DASHJOIN_WEBROOT: path to the folder containing the web application (prepend DASHJOIN_HOME if set)
 
@@ -236,6 +242,43 @@ The following example shows how to change the HTTP port using the windows execut
 > set QUARKUS_HTTP_PORT=3333
 > Dashjoin.exe
 ```
+
+### WebDAV access
+
+By default, WebDAV access is limited to `/rest/fs/home/upload` and its descendants.
+To expose additional folders and grant access to different roles, for example, configure:
+
+```properties
+DASHJOIN_WEBDAV_ENABLED=true
+DASHJOIN_WEBDAV_ROLES=admin,editor
+DASHJOIN_WEBDAV_READONLY_ROLES=viewer
+DASHJOIN_WEBDAV_ROOTS=upload,documents
+```
+
+In this example, admins and editors can read and write within `upload` and `documents`;
+viewers can only read files and browse these folders. A user with both viewer and editor
+roles has full access within the configured folders. Users matching neither role list
+receive HTTP 403. Setting a custom full-access role list replaces the default `admin`
+entry; admins have no implicit bypass.
+
+Whitespace around entries and duplicate/empty entries are ignored. Role names are
+case-sensitive. An explicitly empty role list grants no access through that list, and
+an explicitly empty `DASHJOIN_WEBDAV_ROOTS` exposes no folders. Root entries must be
+top-level folder names or `.`; absolute paths, `..`, path separators, colons, and null
+characters are rejected at startup.
+
+To restore access to all home contents, use:
+
+```properties
+DASHJOIN_WEBDAV_ROOTS=.
+```
+
+The `/rest/fs/home` collection itself remains read-only: it supports `OPTIONS`, `HEAD`,
+and `PROPFIND` and lists only accessible children. Folder restrictions apply to both
+source and destination of `COPY` and `MOVE`, as well as recursive operations. Requests
+outside the configured folders receive HTTP 403. Symbolic links below home are not
+accessible, even with `.`; recursive mutations containing them are rejected before
+making changes.
 
 ## How to enable HTTPS
 
@@ -299,37 +342,25 @@ now it needs to be made available to the running application in this location:
 
 ```<java.home>/lib/security/cacerts```
 
-Note that the Java home is logged upon startup of the platform as ```java.home```:
+Note that the Java home is logged upon startup of the platform as ```java.home```, for example:
 ```
-Dashjoin Platform 3.1.38-e525ab3-6e8f7b6 (built 2022-12-20T17:31:57+0000)
-Linux 5.15.49-linuxkit aarch64 / OpenJDK 64-Bit Server VM 17.0.5+8-jvmci-22.3-b08 - GraalVM CE 22.3.0
-availableProcessors 4 / maxMemory (MB) 8192 / freeMemory (MB) 64 / totalMemory (MB) 80
-> cwd       = /deployments
-> java.home = /opt/graalvm-ce-java17-22.3.0
-
- _________         ______   ____    ____     
-  ___/ __ \____ ______/ /_    (_)___  (_)___ 
-   _/ / / / __ `/ ___/ __ \  / / __ \/ / __ \
-   / /_/ / /_/ (__  ) / / / / / /_/ / / / / /
-  /_____/\__,_/____/_/ /_/_/ /\____/_/_/ /_/ 
-                        /___/                
- 
-              Powered by Quarkus 2.14.3.Final
+> java.home = /opt/java/openjdk
 ```
 
 If you have access to the file system of the installed Dashjoin platform, you can replace the file with the new version (copy my-cacerts over cacerts).
 
 In the containerized application, we can mount the file in the cacerts location.
+The official container image is based on Eclipse Temurin, where java.home is ```/opt/java/openjdk```.
 When using the docker CLI, use a mount option like
 
-``` -v /path/to/my-cacerts:/opt/<java.home>/lib/security/cacerts ```
+``` -v /path/to/my-cacerts:/opt/java/openjdk/lib/security/cacerts ```
 
 A complete Docker command using a customized ```logincfg.json``` and ```my-cacerts``` in the current directory:
 
 ```
 docker run -p 8080:8080 \
-  -v $(pwd)/logincfg.json:/deployments/assets/logincfg.json \
-  -v $(pwd)/my-cacerts:/opt/graalvm-ce-java17-22.3.0/lib/security/cacerts \
+  -v $(pwd)/logincfg.json:/deployments/META-INF/resources/assets/logincfg.json \
+  -v $(pwd)/my-cacerts:/opt/java/openjdk/lib/security/cacerts \
   dashjoin/platform:latest
 ```
 
@@ -395,7 +426,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * SDK
   * Monaco editor integrated for editing SQL, HTML, and CSS
   * Introduced CSV parsing options
-  * New openText function allows web scaping
+  * New openText function allows web scraping
 
 ### 3.0 (Oct 2022)
 
@@ -486,7 +517,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * AI Chat Widget to interface with the AI Assistant
   * Graph widget to explore the data graph - can be configured via JSONata and OpenCypher graph queries
 * Platform
-  * New cloud offering includes ProgreSQL and flexible workloads
+  * New cloud offering includes PostgreSQL and flexible workloads
   * Multi-tenant playground online
 * SDK
   * Optimized performance for JSONata openExcel
@@ -563,7 +594,7 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
 * SDK
   * Upload files widget plus platform WebDAV support
   * Faster build process for custom widgets
-  * New functions to generate CSV, YAML, and CSV
+  * New functions to generate CSV, YAML, and XML
   * Row based access control supports queries and list of owners for a record
 
 ### 6.1 (July 2025)
@@ -629,3 +660,18 @@ QUARKUS_LOG_CATEGORY__COM_DASHJOIN_LAUNCH__LEVEL=DEBUG
   * New setIfAbsent function
   * Support reusing query parameter
   * Enhanced CORS support
+
+### 7.2 (Nov 2026)
+
+* Vibe Coding Support
+  * A set of agent skills that teaches Dashjoin to AI
+  * Ability to compile, lint, and test Apps
+  * Better support for debugging expressions
+* UI
+  Ability to control max logins per user
+* Platform
+  * New concept of a function library to manage and unit test reusable JSONata logic
+  * More fine-grained access control for WebDAV
+  * Ability to run functions in elevated mode
+  * Better support for App GIT branches
+  * Introduced try / catch for JSONata

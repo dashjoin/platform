@@ -11,6 +11,15 @@ extra:
     provider: mike
 
 #
+# Search: also split code tokens at punctuation (quotes, brackets, $, dots, etc.)
+# so that terms inside code blocks can be found
+# see: https://squidfunk.github.io/mkdocs-material/plugins/search/#config.separator
+#
+plugins:
+  - search:
+      separator: '[\s\u200b\-,:;!=\[\]{}()"''`$/*+<>|]+|\.(?!\d)|&[lg]t;|&amp;'
+
+#
 # Enable code highlighting
 #
 markdown_extensions:
@@ -25,7 +34,9 @@ nav:
   - 'getting-started.md'
   - 'concepts.md'
   - 'user-interface.md'
-  - 'developer-reference.md'
+  - 'widget-reference.md'
+  - Functions: 'developer-reference.md'
+  - 'jsonata-reference.md'
   - 'i18n.md'
   - 'ai-ml-integration.md'
   - 'installation.md'

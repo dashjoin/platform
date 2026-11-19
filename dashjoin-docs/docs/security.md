@@ -7,8 +7,8 @@ We strongly advise to:
 * Consider using read-only database credentials when registering a database with data that is managed by another application
 * When adding a new database, make sure the access control settings are setup correctly
 * Restrict access to the system in case you store confidential data in any of the registered databases
-* All credentials that are entered into the system are encrypted using strong SHA-256 encryption. The master key resides in the file model/.secrets.id on the web server. Keep this file secured
-* Add a OpenID provider in order to authenticate organization users
+* All credentials that are entered into the system are stored encrypted (password-based encryption via Jasypt). The master key resides in the file model/.secrets.id on the web server (or is provided via the DJ_SID environment variable). Keep this key secured
+* Add an OpenID provider in order to authenticate organization users
 
 In order to register new databases, the user must be in the "admin" role.
 
@@ -18,11 +18,11 @@ Several other sections already touched on access control and how certain functio
 
 ### Info Page
 
-The info page shows various system data. At the top of the page you find the username of the current user as well as the roles he or she is in. From there you also find a link to the roles dashboard and, on the PaaS offering, a link to the tenant users.
+The info page shows various system data. At the top of the page you find the username of the current user as well as the roles they are in. From there you also find a link to the roles dashboard and, on the PaaS offering, a link to the tenant users.
 
 ### Roles Dashboard
 
-The roles dashboard allows the administrator to define system roles. The role names should correspond on the roles defined in the identity management system (IDM) you are using.
+The roles dashboard allows the administrator to define system roles. The role names should correspond to the roles defined in the identity management system (IDM) you are using.
 Let's assume that the IDM defines a user to be in the role "consulting".
 If this role "consulting" is defined in Dashjoin and the user logs in, 
 the user also has this role when using Dashjoin.
@@ -44,7 +44,7 @@ explicitly create and assign the role in the IDM.
 
 This mechanism can also be used to request access to a Dashjoin application.
 Let's assume a user is registered in the IDM, but has no access to Dashjoin.
-If he logs in, he'll get a "permission denied" error, however, the user will show up
+If they log in, they'll get a "permission denied" error, however, the user will show up
 on this dashboard, with the "active" flag set to false.
 The administrator can then activate the user and assign the proper roles.
 
@@ -80,7 +80,7 @@ Row-Level Security allows restricting access to certain table rows depending on 
 | 2  | item 2 | mike@localhost    |
 
 Using the table metadata editor, we can define "owner" to be the "tenantColumn", i.e. the column that defines the row-level security.
-If user mike logs in, he will only see item 2 on the item table.
+If user mike logs in, they will only see item 2 on the item table.
 
 If the owner column contains an array of strings, the platform checks whether the current user appears in the array. This way,
 a row can be exposed to different users.

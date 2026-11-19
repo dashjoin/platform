@@ -1,13 +1,13 @@
 package org.dashjoin.function;
 
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import org.dashjoin.util.Home;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.microprofile.config.ConfigProvider;
 
 public class GitCommit extends AbstractVarArgFunction<Void> {
@@ -20,10 +20,10 @@ public class GitCommit extends AbstractVarArgFunction<Void> {
     String spec = ConfigProvider.getConfig().getConfigValue("dashjoin.appurl").getValue();
     if (spec == null)
       throw new Exception("Cannot commit: No repository configured.");
-    URL url = new URL(spec);
-    String user = url.getUserInfo();
-    if (user == null)
-      throw new IllegalArgumentException("No Git credentials configured in the App URL");
+    CredentialsProvider credentials = Home.getCredentials();
+    if (credentials == null)
+      throw new IllegalArgumentException(
+          "No Git credentials configured (DASHJOIN_GIT_USER / DASHJOIN_GIT_TOKEN or in the App URL)");
     String message = (String) args.get(0);
     List paths = (List) args.get(1);
     if (message == null || paths == null || paths.isEmpty())
@@ -37,10 +37,7 @@ public class GitCommit extends AbstractVarArgFunction<Void> {
         else
           git.add().addFilepattern("" + s).call();
       git.commit().setMessage(message).call();
-      git.push()
-          .setCredentialsProvider(
-              new UsernamePasswordCredentialsProvider(user.split(":")[0], user.split(":")[1]))
-          .call();
+      git.push().setCredentialsProvider(credentials).call();
       return null;
     }
   }

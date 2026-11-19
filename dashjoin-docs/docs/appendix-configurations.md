@@ -143,7 +143,7 @@ EMPLOYEES table defines the record label to be the LAST_NAME. All links and page
 }
 ```
 ### KnowledgeBase
-Expose the RAG document knowledge base to the platform
+Expose the RAG document knowledge base to the platform. It has the tables Document and Tag. Load documents with a standard ETL function into this database (see 'ETL into the RAG knowledge base'), list them with $all('kb', 'Document'). AIApp functions use the URL of the first KnowledgeBase as the AI service URL
 ```json
 {
   "ID" : "dj/kb",
@@ -208,6 +208,21 @@ Extract load transform function. Loads the result of 'expression' into the datab
   },
   "expressions" : {
     "expression" : "$openJson(\"https://www.circl.lu/doc/misp/feed-osint/0b988513-9535-42f0-9ebc-5d6aec2e1c79.json\").Event.Attribute"
+  }
+}
+```
+### ETL into the RAG knowledge base
+Loads documents for RAG (retrieval augmented generation) into the AI knowledge base. The knowledge base (djClassName com.dashjoin.ai.KnowledgeBase, here the database kb) is a normal Dashjoin database, so the standard ETL is used, not a custom function. The expression returns {'Document': [...]}. Each record has 'document' (a list with one object: 'name' = file name or URL, which becomes the document's path, and 'value' = base64 content) and optional 'tags'. Read files with $openText(url, 'BASE_64'). Text generated from other tables can be added with $base64encode(text). Keep createSchema false because the tables Document and Tag are fixed. Use oldData 'Ignore': documents are matched by name and only re-embedded if their content changed; 'Delete All' re-ingests everything. Run with $call('rag') and check with $all('kb', 'Document').
+```json
+{
+  "djClassName" : "com.dashjoin.function.ETL",
+  "ID" : "rag",
+  "type" : "write",
+  "database" : "kb",
+  "createSchema" : false,
+  "oldData" : "Ignore",
+  "expressions" : {
+    "expression" : "{'Document': [$ls('file:upload/kb')[folder = false].{'tags': ['manual'], 'document': [{'name': url, 'value': $openText(url, 'BASE_64')}]}, {'tags': ['faq'], 'document': [{'name': 'faq.md', 'value': $base64encode($join($all('sqlite', 'FAQ').('## ' & question & '\\n' & answer), '\\n\\n'))}]}]}"
   }
 }
 ```
@@ -438,6 +453,17 @@ Query timeout in milliseconds for queries issued when browsing data. To disable 
 {
   "ID" : "all-timeout-ms",
   "integer" : 1000
+}
+```
+### single-session
+Limits how many devices a user can be logged in on at the same time. The newest login wins: when a user exceeds maxSessions (default 1), the oldest session is logged out. Users in one of the exemptRoles (e.g. technical users or webhooks) are not restricted. The feature is off as long as no map is set
+```json
+{
+  "ID" : "single-session",
+  "map" : {
+    "maxSessions" : 1,
+    "exemptRoles" : [ "webhook" ]
+  }
 }
 ```
 ### tenantusers

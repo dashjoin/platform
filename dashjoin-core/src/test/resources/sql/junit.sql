@@ -17,12 +17,12 @@ insert into "EMP" values(1, 'mike', 1000);
 insert into "EMP" values(2, 'joe', 1000);
 create table "NOKEY"("ID" int, "NAME" varchar(255));
 
-create table "NODE"("ID" int primary key, "REF" int references "NODE"("ID"));
+create table "NODE"("ID" int not null primary key, "REF" int references "NODE"("ID"));
 insert into "NODE" values (1,null);
 insert into "NODE" values (2,1);
 insert into "NODE" values (3,1);
 insert into "NODE" values (4,3);
 
-create table "ARR"("ID" int primary key, "KIDS" varchar(255));
-insert into "ARR" values (1,'2');
+create table "ARR"("ID" int not null primary key, "KIDS" int);
+insert into "ARR" values (1,2);
 insert into "ARR" values (2,null);

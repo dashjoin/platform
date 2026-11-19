@@ -3,15 +3,15 @@ package org.dashjoin.service;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * ServiceLoader that is resilient against major errors (ClassNotFound, ErrorInInitializer etc.)
  *
  * @author uli
  */
-@Log
 public class SafeServiceLoader {
+  private static final Logger log = Logger.getLogger(SafeServiceLoader.class.getName());
 
   /*
    * Loads the services of the given class. Ignores services that are not loadable.

@@ -28,6 +28,12 @@ to edit and view locally. This only shows the current version.
 
 Also check the tool's output to see any errors (wrong links, missing assets etc.)
 
+## Generated Appendices and llms.txt
+
+The appendix pages (docs/appendix-*.md) and the top level llms.txt file are generated. Do not edit them directly.
+Instead, edit the examples in the llms/*.json files and run the main method of
+dashjoin-core/src/test/java/org/dashjoin/util/LLMs.java with dashjoin-core as the working directory.
+
 ## Publishing the Latest Version
 
 Version management is done through Mike <https://github.com/jimporter/mike>

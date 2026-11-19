@@ -3,7 +3,9 @@ package org.dashjoin.service.rdf4j;
 import java.util.List;
 import java.util.Map;
 import jakarta.ws.rs.core.SecurityContext;
+import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.Table;
+import org.dashjoin.service.Data.Choice;
 import org.dashjoin.service.DBTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -123,6 +125,21 @@ public class RDF4JTest extends DBTest {
   //
   // assertEquals( expectedJSON, resJSON);
   // }
+
+  @Test
+  public void testKeysLabel() throws Exception {
+    // #70: keys() must match and display the dj-label instead of the IRI
+    AbstractDatabase rdf = services.getConfig().getDatabase("dj/junit");
+    Table t = rdf.table("http://ex.org/EMP");
+    t.djLabel = "${http://ex.org/NAME}";
+    List<Choice> complete = rdf.keys(t, "mi", 10, null);
+    Assertions.assertEquals(1, complete.size());
+    Assertions.assertEquals("http://ex.org/1", "" + complete.get(0).value);
+    Assertions.assertEquals("mike", complete.get(0).name);
+
+    // the IRI no longer matches
+    Assertions.assertEquals(0, rdf.keys(t, "ex.org", 10, null).size());
+  }
 
   @Override
   @Test

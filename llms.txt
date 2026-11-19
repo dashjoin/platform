@@ -913,7 +913,7 @@ CODE: {
 }
 
 TITLE: KnowledgeBase
-DESCRIPTION: Expose the RAG document knowledge base to the platform
+DESCRIPTION: Expose the RAG document knowledge base to the platform. It has the tables Document and Tag. Load documents with a standard ETL function into this database (see 'ETL into the RAG knowledge base'), list them with $all('kb', 'Document'). AIApp functions use the URL of the first KnowledgeBase as the AI service URL
 LANGUAGE: json
 CODE: {
   "ID" : "dj/kb",
@@ -981,6 +981,22 @@ CODE: {
   },
   "expressions" : {
     "expression" : "$openJson(\"https://www.circl.lu/doc/misp/feed-osint/0b988513-9535-42f0-9ebc-5d6aec2e1c79.json\").Event.Attribute"
+  }
+}
+
+TITLE: ETL into the RAG knowledge base
+DESCRIPTION: Loads documents for RAG (retrieval augmented generation) into the AI knowledge base. The knowledge base (djClassName com.dashjoin.ai.KnowledgeBase, here the database kb) is a normal Dashjoin database, so the standard ETL is used, not a custom function. The expression returns {'Document': [...]}. Each record has 'document' (a list with one object: 'name' = file name or URL, which becomes the document's path, and 'value' = base64 content) and optional 'tags'. Read files with $openText(url, 'BASE_64'). Text generated from other tables can be added with $base64encode(text). Keep createSchema false because the tables Document and Tag are fixed. Use oldData 'Ignore': documents are matched by name and only re-embedded if their content changed; 'Delete All' re-ingests everything. Run with $call('rag') and check with $all('kb', 'Document').
+FILE: model/dj-function/rag.json
+LANGUAGE: json
+CODE: {
+  "djClassName" : "com.dashjoin.function.ETL",
+  "ID" : "rag",
+  "type" : "write",
+  "database" : "kb",
+  "createSchema" : false,
+  "oldData" : "Ignore",
+  "expressions" : {
+    "expression" : "{'Document': [$ls('file:upload/kb')[folder = false].{'tags': ['manual'], 'document': [{'name': url, 'value': $openText(url, 'BASE_64')}]}, {'tags': ['faq'], 'document': [{'name': 'faq.md', 'value': $base64encode($join($all('sqlite', 'FAQ').('## ' & question & '\\n' & answer), '\\n\\n'))}]}]}"
   }
 }
 
@@ -1234,6 +1250,18 @@ LANGUAGE: json
 CODE: {
   "ID" : "all-timeout-ms",
   "integer" : 1000
+}
+
+TITLE: single-session
+DESCRIPTION: Limits how many devices a user can be logged in on at the same time. The newest login wins: when a user exceeds maxSessions (default 1), the oldest session is logged out. Users in one of the exemptRoles (e.g. technical users or webhooks) are not restricted. The feature is off as long as no map is set
+FILE: model/dj-config/single-session.json
+LANGUAGE: json
+CODE: {
+  "ID" : "single-session",
+  "map" : {
+    "maxSessions" : 1,
+    "exemptRoles" : [ "webhook" ]
+  }
 }
 
 TITLE: tenantusers
@@ -1571,6 +1599,21 @@ DESCRIPTION: open the HTTP GET service at the given URL and pass the authorizati
 LANGUAGE: jsonata
 CODE: $curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'Basic YWRtaW46ZGpkamRq'})
 
+TITLE: curl
+DESCRIPTION: open the HTTP GET service at the given URL using the Credentials function 'dashjoin' (username / password, apiKey omitted or false). Instead of a literal header value, the Authorization header is set to the ID of the Credentials function. The platform replaces it with a basic authentication header computed from the stored username and password, so the password never appears in the expression
+LANGUAGE: jsonata
+CODE: $curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'dashjoin'})
+
+TITLE: curl
+DESCRIPTION: call an API that expects an API key using the Credentials function 'openai' with apiKey=true, username='Authorization' and password='Bearer sk-...'. With apiKey=true, the header named by username is set to the password value. Use e.g. username='X-API-Key' for services that expect the key in a different header. The Authorization header is always used to reference the Credentials function by ID. It is removed before the request is sent if username is a different header
+LANGUAGE: jsonata
+CODE: $curl('GET', 'https://api.openai.com/v1/models', null, {'Authorization': 'openai'})
+
+TITLE: curl
+DESCRIPTION: POST a login form where the secret must be part of the request body rather than a header. The header dj-insert-credentials lists the fields of data (single name or array) whose value is the ID of a Credentials function. These values are replaced with the stored password (apiKey=true) or a basic authentication value (apiKey false)
+LANGUAGE: jsonata
+CODE: $curl('POST', 'https://example.com/api/login', {'user': 'admin', 'password': 'exampleLogin'}, {'dj-insert-credentials': ['password']})
+
 TITLE: chat
 DESCRIPTION: Call the LLM comlpetion API of OpenAI with the query 'hi', the system prompt 'be funny', and the 'openai' credential
 LANGUAGE: jsonata
@@ -1670,6 +1713,11 @@ DESCRIPTION: generate database schema information for database 'sqlite'
 LANGUAGE: jsonata
 CODE: $erDiagram('sqlite')
 
+TITLE: erDiagram
+DESCRIPTION: generate a Mermaid ER diagram for database 'sqlite', e.g. for a Markdown preview in VS Code
+LANGUAGE: jsonata
+CODE: $erDiagram('sqlite', 'mermaid')
+
 TITLE: stats
 DESCRIPTION: return database statistics
 LANGUAGE: jsonata
@@ -1680,10 +1728,20 @@ DESCRIPTION: return the git status of the dashjoin app
 LANGUAGE: jsonata
 CODE: $gitStatus()
 
+TITLE: hmac
+DESCRIPTION: signs a message with the secret of the Credentials function 'cdnSigningKey' (default HmacSHA256, base64). Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret is never returned and can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign, e.g. short-lived signed URLs or webhook signature checks
+LANGUAGE: jsonata
+CODE: $hmac('cdnSigningKey', '/download/book.pdf1700000000')
+
 TITLE: gitPull
 DESCRIPTION: Pull the dashjoin app
 LANGUAGE: jsonata
 CODE: $gitPull()
+
+TITLE: gitCheckout
+DESCRIPTION: Checks out and switches the dashjoin app branch
+LANGUAGE: jsonata
+CODE: $gitCheckout('mybranch')
 
 TITLE: gitRestore
 DESCRIPTION: git restore 'dashjoin-demo.db'
@@ -1774,4 +1832,9 @@ TITLE: validate
 DESCRIPTION: validates a JSON input against a JSON schema (type, required, properties supported)
 LANGUAGE: jsonata
 CODE: $validate({'required': ['x'], 'properties':{'x': {'type':boolean}}}, {})
+
+TITLE: use
+DESCRIPTION: When used in conjunction with $eval, allows importing a function from the library
+LANGUAGE: jsonata
+CODE: $f := $use('f') ~> $eval
 

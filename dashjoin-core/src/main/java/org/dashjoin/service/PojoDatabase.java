@@ -1313,7 +1313,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
    */
   public static final String[] EXPRESSION_FIELDS = {"arguments", "if", "context", "display",
       "expression", "onClick", "before-create", "after-create", "before-update", "after-update",
-      "before-delete", "after-delete", "print", "navigate", "onRender", "options"};
+      "before-delete", "after-delete", "print", "navigate", "onRender", "options", "foreach"};
 
   /**
    * returns true if this tree contains expression / display / ... ="...$fn(.."arg"..)"

@@ -4,10 +4,10 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
-@Log
 public class GitClone extends AbstractFunction<String, Void> {
+  private static final Logger log = Logger.getLogger(GitClone.class.getName());
 
   @Override
   public Void run(String url) throws Exception {

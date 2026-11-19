@@ -1,6 +1,7 @@
 package org.dashjoin.service;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
 import org.dashjoin.util.MapUtil;
@@ -64,6 +65,11 @@ public class PasswordDatabase extends JSONDatabase {
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
     return db.delete(s, search);
+  }
+
+  @Override
+  public <T> T locked(Table s, Object id, Callable<T> body) throws Exception {
+    return db.locked(s, id, body);
   }
 
   @Override

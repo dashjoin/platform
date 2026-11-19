@@ -65,7 +65,7 @@ Record pages show
 * a form to edit the record
 * a delete button
 * a link back to the table page
-* links to any related record (this can either a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)
+* links to any related record (this can either be a foreign key field of the record or records in other tables containing foreign key references to this record's primary key)
 
 The default layout allows the user to easily navigate the data regardless of which specific database it is located in.
 
@@ -96,9 +96,9 @@ an edit element for all columns.
 ### Running Queries
 
 Besides simple read and browse operations, the underlying databases usually have the ability to run powerful
-queries. Dashjoin allows the developer to design such queries and save them in the query catalog consumption.
+queries. Dashjoin allows the developer to design such queries and save them in the query catalog.
 These queries usually drive table and chart displays on customized layout pages and dashboards.
-Note that queries can also be used to run delete or update operations nd that they can also be parameterized.
+Note that queries can also be used to run delete or update operations and that they can also be parameterized.
 
 ### Executing Functions
 
@@ -132,7 +132,7 @@ Expressions are small programs that can be used to:
 * save an expression with an Invoke function
 * attach triggers to database tables
 
-This section describes the expression language's syntax and semantics are well as the built-in Dashjoin keywords.
+This section describes the expression language's syntax and semantics as well as the built-in Dashjoin keywords.
 
 ### JSONata
 
@@ -145,13 +145,58 @@ The [JSONata exerciser](https://try.jsonata.org/) shows three sections:
 
 The [JSONata documentation](https://docs.jsonata.org/overview.html) explains the language, the operators, as well as which built-ins are available.
 
+### JSONata Function Library
+
+When you write larger blocks of JSONata code, you'll probably find yourself in a situation where you want to structure your code
+by defining reusable functions. The JSONata function library allows you to do just that. 
+
+#### Defining a Function
+
+For the sake of simplicity, we will look
+at a function to add two numbers:
+
+```json
+{
+    "ID": "add",
+    "description": "add test",
+    "expression": "function($a, $b){$a+$b}",
+    "tests": [
+        {
+            "description": "basic",
+            "context": "$ context for the function - unused in this example",
+            "parameters": [
+                1,
+                2
+            ],
+            "expected": 3
+        }
+    ]
+}
+```
+
+The function definition is provided in the expression field. Tests are optional and allow you to define the parameters,
+the function is tested with along with the expected outcome. Note that you can also pass another function as a parameter by
+providing "function (...) { ... }" as a parameter. If the parameter contains a function string, the platform parses it and passes
+the function instead of the string.
+
+#### Using a Function
+
+To use a function elsewhere in the code, you need to read the library and pass it to the eval function as follows:
+
+```
+(
+  $add := $use('add') ~> $eval;
+  $add(1, 2)
+)
+```
+
 ### JavaScript
 
 Expressions in widgets, that are evaluated in the browser can alternatively be written in JavaScript. Consider the following rules for this scenario:
 
 * Use // JavaScript or //JavaScript in the first line of your expression to switch to the JavaScript runtime
 * Your expression implicitly is run within an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Therefore, if you would like the function to return a value to the widget, you must use a return statement at the end.
-* All Dashjoin functions that are available in the JSONata runtime, are also available in JavaScript. Please refer to the developer reference for details. Omit the dollar sign to call them. The only exception is the delete function which is available as _delete. 
+* All Dashjoin functions that are available in the JSONata runtime, are also available in JavaScript. Please refer to the [JSONata Expression Reference](jsonata-reference.md) for details. Omit the dollar sign to call them. The only exception is the delete function which is available as _delete. 
 * Any backend function (e.g. read to get a value from the database), must be called with the await keyword.
 * The context data (as described in detail in the next section) is available via the variable "context".
 
@@ -261,7 +306,7 @@ the expression context to be:
 
 #### Form Context
 
-Several widgets allow adding form elements (see section "Form Widgets" in the next chapter).
+Several widgets allow adding form elements (see [Form Widgets](widget-reference.md#form-widgets)).
 If a number form element with name "y" has the value 2 and the form is submitted, the context is:
 
 ```json
@@ -275,7 +320,7 @@ If a number form element with name "y" has the value 2 and the form is submitted
 
 #### Action Table Context
 
-The action table allows selecting rows from a table. If a table action us run, these rows
+The action table allows selecting rows from a table. If a table action is run, these rows
 are added to the context as follows:
 
 ```json
@@ -327,6 +372,49 @@ $call("geturl", "http://example.org/test.json")
 
 In this case dollar evaluates to the string "http://example.org/test.json".
 
+### Running Invoke Functions as a Role
+
+By default, the expression of an Invoke function runs with the roles of the user calling the function.
+Consequently, the user needs the role required to call the function as well as the roles required by
+any database, table, query or function the expression accesses.
+
+The optional "runas" field changes this. Consider the following function "log":
+
+```json
+{
+  "ID": "log",
+  "djClassName": "org.dashjoin.function.Invoke",
+  "expression": "$create('db', 'log', $)",
+  "roles": ["authenticated"],
+  "runas": "admin",
+  "type": "write"
+}
+```
+
+Any authenticated user can call this function and append a record to the log table,
+even if they have no read or write access to the table itself. Note the following:
+
+* "roles" is still checked against the caller's own roles
+* while the expression runs, the caller's roles are replaced by the runas role, i.e. the user does not keep their other roles (a user with the admin role calling a function with runas "log-writer" loses admin within the expression)
+* any function called from the expression via $call also runs with the runas role
+* only admins can edit the function catalog and set runas
+
+A function with runas grants its role to everybody who is allowed to call it.
+It is therefore crucial that the expression only performs the specific operation it was designed for.
+Never let the caller control what the elevated expression does:
+
+* do not use database, table, query or function names passed as arguments. An expression like `$create($.db, $.table, $.record)` allows the caller to write to any table the runas role can write to
+* never pass arguments to $eval or similar functions. An expression like `$eval($.expression)` allows the caller to run arbitrary code with the runas role
+* use arguments only as data, e.g. the record to insert into a fixed table, and validate them if necessary
+
+Compare the following expressions:
+
+```text
+safe:   $create('db', 'log', {'message': $.message})
+unsafe: $create('db', $.table, $)
+unsafe: $eval($.expression)
+```
+
 ### JSONata in Triggers
 
 Triggers allow evaluating expression before or after a write operation on a table.
@@ -355,6 +443,6 @@ The result is ignored, unless the trigger function returns the following result:
 ```
 
 This mechanism allows setting default column values or removing keys for columns that should
-not be changed. You can also use the djVersion function to change the trigger behaviour based on the user role.
+not be changed. You can also use the djRoles function to change the trigger behaviour based on the user role.
 
 In order to abort the update, create, or delete operation, you can use the "error" function.

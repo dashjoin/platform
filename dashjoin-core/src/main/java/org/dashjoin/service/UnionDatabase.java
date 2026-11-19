@@ -156,11 +156,15 @@ public class UnionDatabase extends AbstractDatabase {
   public void create(Table m, Map<String, Object> object) throws Exception {
     if (object.get("ID") == null)
       throw new Exception("Object must contain an ID");
-    if (read(m, object) != null)
-      throw new Exception("Object already exists. Please choose a different ID.");
+    // check and create as one step, so two concurrent creates of the same ID cannot both succeed
+    user().locked(m, object.get("ID"), () -> {
+      if (read(m, object) != null)
+        throw new Exception("Object already exists. Please choose a different ID.");
 
-    // delegate to user db
-    user().create(m, object);
+      // delegate to user db
+      user().create(m, object);
+      return null;
+    });
   }
 
   @Override
@@ -191,6 +195,12 @@ public class UnionDatabase extends AbstractDatabase {
 
   @Override
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
+      throws Exception {
+    // the steps below read and write the user DB several times; hold the record lock throughout
+    return user().locked(schema, search.get("ID"), () -> updateLocked(schema, search, object));
+  }
+
+  boolean updateLocked(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
     Map<String, Object> readOnly = readDBs(schema, search);
     Map<String, Object> user = user().read(schema, search);
@@ -244,15 +254,17 @@ public class UnionDatabase extends AbstractDatabase {
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
-    Map<String, Object> old = read(s, search);
-    if (old == null)
-      return false;
+    return user().locked(s, search.get("ID"), () -> {
+      Map<String, Object> old = read(s, search);
+      if (old == null)
+        return false;
 
-    // the old value might be in the read only part
-    // delete it from the user DB but ignore the result
-    user().delete(s, search);
+      // the old value might be in the read only part
+      // delete it from the user DB but ignore the result
+      user().delete(s, search);
 
-    return true;
+      return true;
+    });
   }
 
   @Override

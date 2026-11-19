@@ -1,0 +1,6 @@
+{
+	"ID": "single-session",
+	"description": "Limits how many devices a user can be logged in on at the same time. The newest login wins and the oldest session is logged out. Keys: maxSessions (default 1) and exemptRoles (list of roles that are not restricted). The feature is off as long as no map is set",
+	"category": "app",
+	"type": "map"
+}

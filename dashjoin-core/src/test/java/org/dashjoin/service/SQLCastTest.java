@@ -53,6 +53,17 @@ public class SQLCastTest extends JsonCastTest {
         db.cast(p("date", "timestamp"), "2021-01-19T10:33:26Z") instanceof LocalDateTime);
     Assertions.assertTrue(
         db.cast(p("date", "timestamptz"), "2021-01-19T10:33:26Z") instanceof OffsetDateTime);
+
+    // epoch millis
+    Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T10:33:26Z"),
+        db.cast(p("date", "timestamptz"), 1611052406000L));
+    Assertions.assertTrue(db.cast(p("date", "timestamp"), 1611052406000L) instanceof LocalDateTime);
+    Assertions.assertTrue(db.cast(p("date", "date"), 1611052406000L) instanceof LocalDate);
+    Assertions.assertEquals(1611052406000L, db.cast(p("number", "int8"), 1611052406000L));
+    Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T10:33:26Z"),
+        db.cast(p("date", "timestamptz"), 1611052406000.0));
+    // fractional millis are not a valid epoch value - passed through unchanged
+    Assertions.assertEquals(1.5, db.cast(p("date", "timestamptz"), 1.5));
   }
 
   @Test

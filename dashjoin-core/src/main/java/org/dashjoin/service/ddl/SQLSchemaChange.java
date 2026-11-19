@@ -96,8 +96,6 @@ public class SQLSchemaChange implements SchemaChange {
 
   @Override
   public void dropColumn(String table, String column) throws SQLException {
-    if (db.url.startsWith("jdbc:sqlite"))
-      throw new SQLException("SQLite does not support drop column");
     try (Connection con = db.getConnection()) {
       try (Statement stmt = con.createStatement()) {
         stmt.execute("alter table " + db.q(table) + " DROP COLUMN " + db.q(column));

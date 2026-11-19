@@ -11,7 +11,7 @@ import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.RuntimeDefinitions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * user profile manager on top of the JSON config DB
@@ -19,8 +19,8 @@ import lombok.extern.java.Log;
 @ApplicationScoped
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
 @Default
-@Log
 public class DefaultUserProfileManager implements UserProfileManager {
+  private static final Logger log = Logger.getLogger(DefaultUserProfileManager.class.getName());
 
   @Inject
   JSONDatabase jsonDb;

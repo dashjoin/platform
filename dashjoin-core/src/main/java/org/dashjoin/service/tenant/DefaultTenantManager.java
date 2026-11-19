@@ -4,8 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import org.dashjoin.util.DJRuntime;
 import org.dashjoin.util.RuntimeDefinitions;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * default tenant (is called DJ)
@@ -14,7 +12,15 @@ import lombok.Setter;
 @DJRuntime(RuntimeDefinitions.ONPREMISE)
 @Default
 public class DefaultTenantManager implements TenantManager {
-  @Getter
-  @Setter
   private String tenantId = "dj";
+
+  @Override
+  public String getTenantId() {
+    return tenantId;
+  }
+
+  @Override
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
+  }
 }

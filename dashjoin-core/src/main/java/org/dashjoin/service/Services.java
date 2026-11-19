@@ -21,15 +21,15 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * central service registry. Provides in process getters as well as JAX-RS singletons for services
  * and exception handlers
  */
 @ApplicationScoped
-@Log
 public class Services {
+  private static final Logger log = Logger.getLogger(Services.class.getName());
 
   public static final String REST_PREFIX = "rest/";
 

@@ -328,6 +328,36 @@ Sample output:
   "name" : "Dashjoin Low Code Development and Integration Platform"
 }
 ```
+### curl
+open the HTTP GET service at the given URL using the Credentials function 'dashjoin' (username / password, apiKey omitted or false). Instead of a literal header value, the Authorization header is set to the ID of the Credentials function. The platform replaces it with a basic authentication header computed from the stored username and password, so the password never appears in the expression
+```
+$curl('GET', 'http://localhost:8080/rest/manage/version', null, {'Authorization': 'dashjoin'})
+```
+Sample output: 
+```json
+{
+  "vendor" : "Dashjoin",
+  "name" : "Dashjoin Low Code Development and Integration Platform"
+}
+```
+### curl
+call an API that expects an API key using the Credentials function 'openai' with apiKey=true, username='Authorization' and password='Bearer sk-...'. With apiKey=true, the header named by username is set to the password value. Use e.g. username='X-API-Key' for services that expect the key in a different header. The Authorization header is always used to reference the Credentials function by ID. It is removed before the request is sent if username is a different header
+```
+$curl('GET', 'https://api.openai.com/v1/models', null, {'Authorization': 'openai'})
+```
+Sample output: 
+```json
+null
+```
+### curl
+POST a login form where the secret must be part of the request body rather than a header. The header dj-insert-credentials lists the fields of data (single name or array) whose value is the ID of a Credentials function. These values are replaced with the stored password (apiKey=true) or a basic authentication value (apiKey false)
+```
+$curl('POST', 'https://example.com/api/login', {'user': 'admin', 'password': 'exampleLogin'}, {'dj-insert-credentials': ['password']})
+```
+Sample output: 
+```json
+null
+```
 ### delete
 delete REQUEST 7 in the database 'sqlite'
 ```
@@ -401,6 +431,15 @@ Sample output:
 ```json
 "Table REQUESTS{\n  ID INTEGER [primary key]\n  name VARCHAR\n  submitted VARCHAR\n  customer VARCHAR [ref: > CUSTOMERS.CUSTOMER_ID]\n  user VARCHAR\n}"
 ```
+### erDiagram
+generate a Mermaid ER diagram for database 'sqlite', e.g. for a Markdown preview in VS Code
+```
+$erDiagram('sqlite', 'mermaid')
+```
+Sample output: 
+```json
+"erDiagram\n  REQUESTS {\n    INTEGER ID PK\n    VARCHAR name\n    VARCHAR submitted\n    VARCHAR customer FK\n    VARCHAR user\n  }\n"
+```
 ### etl
 Run an ETL that loads data into the sqlite database with createSchema set to true
 ```
@@ -471,6 +510,15 @@ Sample output:
 ```json
 "x: [1, 2]\ny: test"
 ```
+### gitCheckout
+Checks out and switches the dashjoin app branch
+```
+$gitCheckout('mybranch')
+```
+Sample output: 
+```json
+null
+```
 ### gitCommit
 git commit a set of files
 ```
@@ -510,6 +558,15 @@ Sample output:
   "type" : "modified",
   "diff" : "diff --git a/dashjoin-demo.db b/dashjoin-demo.db\nindex 6fdb4ce..d29b8f1 100644\n--- a/dashjoin-demo.db\n+++ b/dashjoin-demo.db\nBinary files differ\n"
 } ]
+```
+### hmac
+signs a message with the secret of the Credentials function 'cdnSigningKey' (default HmacSHA256, base64). Optional arguments: algorithm (HmacSHA256, HmacSHA384, HmacSHA512) and encoding (base64, base64url, hex). The secret is never returned and can be set with the config value dashjoin.function.[ID].password (e.g. an environment variable). Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign, e.g. short-lived signed URLs or webhook signature checks
+```
+$hmac('cdnSigningKey', '/download/book.pdf1700000000')
+```
+Sample output: 
+```json
+"Wl0zx3E1Yv0GvQ7rM4lyYH8lGBn6Ivr6rSOtcJ0QTlo="
 ```
 ### incoming
 get all records from all databases that point to northwind EMPLOYEE 2
@@ -998,6 +1055,15 @@ $urlExists('https://dashjoin.com')
 Sample output: 
 ```json
 true
+```
+### use
+When used in conjunction with $eval, allows importing a function from the library
+```
+$f := $use('f') ~> $eval
+```
+Sample output: 
+```json
+"The expression of the library entry"
 ```
 ### uuid
 Generates a random UUID

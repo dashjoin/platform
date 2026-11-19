@@ -5,10 +5,10 @@
         "children": [
             {
                 "widget": "html",
-                "title": "App OpenAPI Specification",
-                "context": "$erDiagram()",
-                "html": "Copy the entity relationship description printed below and paste it into this <a href=\"https://dbdiagram.io/d\" target=\"_blank\">online visualization tool</a>. You can restrict the output by editing the expression of this widget in the layout editor.\n\n<br><br><button onclick=\"go()\">Copy to Clipboard</button>\n\n<pre id=\"pre\">${context}</pre>",
-                "script": "function go(){\n  navigator.clipboard.writeText(context)\n}"
+                "title": "Database Entity Relationship Diagram",
+                "context": "{'dbml': $erDiagram(), 'mermaid': $erDiagram(null, 'mermaid')}",
+                "html": "Format <select id=\"format\" onchange=\"show()\"><option value=\"dbml\">DBML</option><option value=\"mermaid\">Mermaid</option></select> <button onclick=\"copy()\">Copy to Clipboard</button>\n\n<p id=\"hint\"></p>\n\n<pre id=\"pre\"></pre>",
+                "script": "var hints = {\n  dbml: 'Paste into this <a href=\"https://dbdiagram.io/d\" target=\"_blank\">online visualization tool</a>.',\n  mermaid: 'Paste into a ```mermaid block of a Markdown file, e.g. in VS Code.'\n};\nfunction fmt(){\n  return document.getElementById('format').value\n}\nfunction show(){\n  document.getElementById('pre').textContent = context[fmt()]\n  document.getElementById('hint').innerHTML = hints[fmt()] + ' You can restrict the output to a database by editing the expression of this widget in the layout editor, e.g. $erDiagram(\\'northwind\\', \\'mermaid\\').'\n}\nfunction copy(){\n  navigator.clipboard.writeText(context[fmt()])\n}\nshow()"
             }
         ]
     }

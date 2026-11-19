@@ -40,7 +40,7 @@ import com.fasterxml.jackson.core.io.JsonEOFException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,8 +49,8 @@ import okhttp3.Response;
 /**
  * given a URL, parses the contents from JSON, XML, CSV to a json object
  */
-@Log
 public class Doc2data extends AbstractFunction<String, Object> {
+  private static final Logger log = Logger.getLogger(Doc2data.class.getName());
 
   private static final ObjectMapper om = new ObjectMapper();
 

@@ -1,23 +1,36 @@
 package org.dashjoin.function;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 import org.dashjoin.model.QueryMeta;
+import org.dashjoin.service.ConfigQuery;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.SafeServiceLoader;
+import org.dashjoin.util.Escape;
+import org.dashjoin.util.Home;
 import com.dashjoin.jsonata.JException;
 import com.dashjoin.jsonata.Jsonata;
 import com.dashjoin.jsonata.Jsonata.JFunction;
 import com.dashjoin.jsonata.Jsonata.JFunctionCallable;
+import com.dashjoin.jsonata.Parser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +56,12 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       "select", "multi select", "key value", "password", "textarea", "date", "time", "datetime",
       "file", "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode");
 
+  public static List<String> OPTION_INPUTS =
+      Arrays.asList("select", "multi select", "auto complete");
+
+  public static List<String> FILE_INPUTS = Arrays.asList("file", "binary file",
+      "file with metadata", "binary file with metadata");
+
   private static Map<String, Object> deprecated;
   private static Map<String, Object> studio;
   private static Map<String, Object> _widgets;
@@ -66,6 +85,70 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
   String current;
   String currentID;
   Map<String, Object> widgets;
+  Map<String, String> queryTypes = new HashMap<String, String>();
+
+  /**
+   * IDs of catalog queries that declare arguments
+   */
+  Set<String> queriesWithArguments = new HashSet<String>();
+
+  /**
+   * role IDs defined in dj-role. null means unknown (e.g. in unit tests), in which case role checks
+   * are skipped
+   */
+  Set<String> roles;
+
+  /**
+   * database names (IDs without the dj/ prefix) defined in dj-database plus config. null means
+   * unknown (e.g. in unit tests), in which case database checks are skipped
+   */
+  Set<String> databases;
+
+  /**
+   * IDs of the query catalog, dj-function and dj-library, used to check $query, $call and $use.
+   * null means unknown (e.g. in unit tests), in which case the respective check is skipped
+   */
+  Set<String> queries;
+  Set<String> functions;
+  Set<String> libraries;
+
+  /**
+   * IDs referenced from layouts and expressions, used to report unused items
+   */
+  Set<String> usedQueries = new HashSet<String>();
+  Set<String> usedFunctions = new HashSet<String>();
+  Set<String> usedLibraries = new HashSet<String>(Arrays.asList("unit-test"));
+
+  /**
+   * optional functions called from built-in pages the user cannot edit (e.g. DataCatalog). They are
+   * not reported when missing
+   */
+  static final List<String> OPTIONAL_FUNCTIONS = Arrays.asList("dj-copilot");
+
+  /**
+   * built-in queries that do not need a query catalog entry: PojoDatabase methods marked with
+   * ConfigQuery and dj-query-performance (see PojoDatabase.getQueryMeta and query)
+   */
+  static final Set<String> BUILT_IN_QUERIES = new HashSet<String>();
+  static {
+    BUILT_IN_QUERIES.add("dj-query-performance");
+    for (Method m : PojoDatabase.class.getMethods()) {
+      ConfigQuery cq = m.getAnnotation(ConfigQuery.class);
+      if (cq != null)
+        BUILT_IN_QUERIES.add(cq.query());
+    }
+  }
+
+  /**
+   * function types that are normally called via $call from the App
+   */
+  static final List<String> CALLED_FUNCTIONS = Arrays.asList("org.dashjoin.function.Invoke",
+      "org.dashjoin.function.RestJson", "org.dashjoin.function.Email");
+
+  /**
+   * IDs of dj-functions of a CALLED_FUNCTIONS type that are not scheduled
+   */
+  Set<String> calledFunctions = new HashSet<String>();
 
   @Override
   public String run(Map<String, Object> arg) throws Exception {
@@ -76,8 +159,23 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (arg != null)
       widgets.putAll(arg);
 
+    roles = new HashSet<String>();
+    for (var role : expressionService.getData().all(sc, "config", "dj-role", null, null, null,
+        false, null))
+      roles.add("" + role.get("ID"));
+
+    databases = new HashSet<String>(Arrays.asList("config"));
+    for (var db : expressionService.getData().all(sc, "config", "dj-database", null, null, null,
+        false, null))
+      databases.add(stripDj("" + db.get("ID")));
+
+    // expressions in the Dashjoin folder are checked before the query catalog is read below
+    queries = ids("dj-query-catalog");
+    functions = ids("dj-function");
+    libraries = ids("dj-library");
+
     for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
-        "dj-database", "dj-function", "dj-config"}) {
+        "dj-database", "dj-function", "dj-config", "dj-library"}) {
       var all =
           expressionService.getData().all(sc, "config", folder, null, null, null, false, null);
 
@@ -89,10 +187,20 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
         if (folder.equals("dj-query-catalog")) {
           checkDanglingPointers(tree);
-          om.convertValue(tree, QueryMeta.class);
+          QueryMeta qm = om.convertValue(tree, QueryMeta.class);
+          queryTypes.put(qm.ID, qm.type);
+          if (qm.arguments != null && !qm.arguments.isEmpty())
+            queriesWithArguments.add(qm.ID);
+          checkDatabase(qm.database);
         }
-        if (folder.equals("dj-function"))
+        if (folder.equals("dj-function")) {
           checkDanglingPointers(tree);
+          // only hint at functions that are normally called via $call from the App. Others like
+          // ETL, Receive or MCPServer are run manually, via schedule, webhook or API
+          if (CALLED_FUNCTIONS.contains(item.get("djClassName")) && item.get("cron") == null
+              && item.get("every") == null)
+            calledFunctions.add(currentID);
+        }
         if (folder.equals("widget"))
           checkLayout(tree.get("layout"));
         if (folder.equals("page"))
@@ -101,10 +209,29 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
           checkDatabaseLayout(tree);
           check(item);
         }
+        checkRoles(tree);
         checkExpressions(tree, folder.equals("dj-function"));
       }
     }
 
+    checkUnused();
+
+    checkOrphanedFiles(Home.get().getFile("model"));
+
+    // run unit tests
+    for (Map<String, Object> test : expressionService.getData().all(sc, "config", "dj-library",
+        null, null, null, false, null)) {
+      current = "model/dj-library/" + test.get("ID") + ".json";
+      currentID = "" + test.get("ID");
+      try {
+        expressionService.resolve(sc, "$eval($use('unit-test'))($)", test);
+      } catch (Exception e) {
+        fail(e.getMessage());
+      }
+    }
+
+    if (messages.isEmpty())
+      return "no warnings";
     return String.join("\n", messages);
   }
 
@@ -135,7 +262,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     if (parentId != null && map.get("parent") != null)
       assertEquals(parentId, map.get("parent"), "parent property must match parent ID");
     if (map.get("parent") != null)
-      assertEquals(map.get("ID"), map.get("parent") + "/" + map.get("name"),
+      // the name is encoded in the ID (e.g. "/" becomes "%2F")
+      assertEquals(map.get("ID"),
+          map.get("parent") + "/" + Escape.encodeTableOrColumnName((String) map.get("name")),
           "ID must be parent + name");
     assertTrue(((String) map.get("ID")).startsWith("dj/"), "ID must start with dj/", map.get("ID"));
     if (map.get("ref") != null && ((String) map.get("ref")).startsWith((String) root.get("ID")))
@@ -180,6 +309,52 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
   }
 
+  /**
+   * report files in model/<folder>/ that hold an externalized field (ID.ext) but are not referenced
+   * by any X-pointer field. This happens if the pointer is removed from the JSON or the JSON is
+   * renamed or deleted outside of the platform. The platform does not read these files
+   */
+  void checkOrphanedFiles(File model) {
+    File[] folders = model.listFiles(File::isDirectory);
+    if (folders == null)
+      return;
+    Arrays.sort(folders);
+    for (File folder : folders) {
+      File[] files = folder.listFiles(File::isFile);
+      if (files == null)
+        continue;
+      Arrays.sort(files);
+
+      // names of the files referenced via X-pointer
+      Set<String> referenced = new HashSet<String>();
+      for (File f : files)
+        if (f.getName().endsWith(".json"))
+          try {
+            JsonNode tree = om.readTree(f);
+            String id = tree.get("ID") != null ? tree.get("ID").asText() : null;
+            String prefix = id != null ? Escape.filename(id)
+                : f.getName().substring(0, f.getName().length() - ".json".length());
+            collectPointers(prefix, tree, referenced);
+          } catch (IOException e) {
+            // invalid JSON is reported elsewhere
+          }
+
+      for (File f : files)
+        if (!f.getName().endsWith(".json") && !f.getName().startsWith(".")
+            && !referenced.contains(f.getName()))
+          messages.add("model/" + folder.getName() + "/" + f.getName()
+              + ": externalized field is not referenced by a -pointer field in any JSON file");
+    }
+  }
+
+  void collectPointers(String prefix, JsonNode tree, Set<String> referenced) {
+    for (Entry<String, JsonNode> e : tree.properties())
+      if (e.getKey().endsWith("-pointer") && e.getValue().isTextual())
+        referenced.add(prefix + "." + e.getValue().asText());
+    for (JsonNode i : tree)
+      collectPointers(prefix, i, referenced);
+  }
+
   @SuppressWarnings("unchecked")
   void checkLayout(JsonNode tree) {
     if (tree.get("children") != null)
@@ -205,6 +380,26 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
     if (widget.equals("${pk1}"))
       return;
+
+    // the frontend (DJBaseComponent.getData) evaluates expression first and ignores query
+    if (tree.get("query") != null && tree.get("expression") != null)
+      fail("query is ignored because expression is set in widget " + widget);
+
+    if (Arrays.asList("table", "chart", "tree").contains(widget) && tree.get("query") != null) {
+      String q = tree.get("query").asText();
+      usedQueries.add(q);
+      if (!queryTypes.containsKey(q) && !BUILT_IN_QUERIES.contains(q))
+        fail("unknown query in widget " + widget + ": " + q);
+      else
+        assertTrue(!"write".equals(queryTypes.get(q)),
+            "write query must not be used in widget " + widget, q);
+      if (queriesWithArguments.contains(q))
+        assertTrue(tree.get("arguments") != null && !tree.get("arguments").asText().isBlank(),
+            "no arguments set for query", q);
+    }
+
+    if (tree.get("database") != null && tree.get("database").isTextual())
+      checkDatabase(tree.get("database").asText());
 
     for (Entry<String, JsonNode> e : tree.properties()) {
       String field = e.getKey();
@@ -237,7 +432,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
         continue;
       if (field.equals("schema")
           && Arrays.asList("button", "edit", "create", "variable").contains(widget)) {
-        checkSchema(e.getValue());
+        // edit and create use the table schema which carries the column metadata
+        checkSchema(e.getValue(), Arrays.asList("edit", "create").contains(widget));
         continue;
       }
       if (field.equals("foreach") && Arrays.asList("container", "tabs").contains(widget))
@@ -254,14 +450,30 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
   }
 
+  /**
+   * column metadata (see org.dashjoin.model.Property) that is present in table schemas used by the
+   * edit and create widgets
+   */
+  static final List<String> TABLE_SCHEMA_METADATA =
+      Arrays.asList("ID", "parent", "name", "pkpos", "ref", "dbType", "comment", "displayWith");
+
   void checkSchema(JsonNode schema) {
+    checkSchema(schema, false);
+  }
+
+  void checkSchema(JsonNode schema, boolean tableSchema) {
 
     assertTrue(schema.getNodeType().equals(JsonNodeType.OBJECT), "schema must be an object",
         schema);
 
     String type = schema.get("type") == null ? "string" : schema.get("type").asText();
     String widget = schema.get("widget") == null ? "string" : schema.get("widget").asText();
-    assertTrue(INPUTS.contains(widget), "unnknown widget type", widget);
+    assertTrue(INPUTS.contains(widget), "unknown widget type", widget);
+
+    // the frontend (useChoices) reads options, choices, enum or choicesUrl
+    if (OPTION_INPUTS.contains(widget))
+      assertTrue(Stream.of("options", "choices", "enum", "choicesUrl")
+          .anyMatch(k -> schema.get(k) != null), "no options set for input", widget);
     for (Entry<String, JsonNode> e : schema.properties()) {
       String key = e.getKey();
       if (key.equals("examples") && e.getValue().getNodeType().equals(JsonNodeType.ARRAY))
@@ -279,19 +491,28 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
       if ((key.equals("readOnly") || key.equals("createOnly"))
           && e.getValue().getNodeType().equals(JsonNodeType.BOOLEAN))
         continue;
-      if (key.equals("options"))
+      if (key.equals("options")) {
+        assertTrue(OPTION_INPUTS.contains(widget), "options only allowed for select inputs",
+            widget);
         continue;
+      }
+      if (Arrays.asList("multiple", "capture", "accept", "limit").contains(key)) {
+        assertTrue(FILE_INPUTS.contains(widget), key + " only allowed for file inputs", widget);
+        continue;
+      }
       if (key.equals("type"))
-        continue;
-      if (key.equals("multiple"))
-        continue;
-      if (key.equals("capture"))
-        continue;
-      if (key.equals("accept"))
         continue;
       if (key.equals("widget"))
         continue;
       if (key.equals("properties") && type.equals("object"))
+        continue;
+      if (key.equals("items") && type.equals("array"))
+        continue;
+      if (key.equals("reorder") && type.equals("array"))
+        continue;
+      if (key.equals("if") && e.getValue().getNodeType().equals(JsonNodeType.STRING))
+        continue;
+      if (tableSchema && TABLE_SCHEMA_METADATA.contains(key))
         continue;
       fail("unknown property", e);
     }
@@ -299,9 +520,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     // check subschema
     if (schema.get("properties") != null)
       for (Entry<String, JsonNode> p : schema.get("properties").properties())
-        checkSchema(p.getValue());
+        checkSchema(p.getValue(), tableSchema);
     if (schema.get("items") != null)
-      checkSchema(schema.get("items"));
+      checkSchema(schema.get("items"), tableSchema);
   }
 
   @SuppressWarnings("unchecked")
@@ -349,11 +570,23 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
                 }
               }, null);
               jsonata.registerFunction("error", x);
+              // $try is registered directly in ExpressionService
+              jsonata.registerFunction("try", x);
               if (!backendOnly)
                 for (String f : CLIENT_FUNCTIONS)
                   jsonata.registerFunction(f, x);
               for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
-                jsonata.registerFunction(inst.getID(), x);
+                if (inst.getID() != null)
+                  if (inst.getID().equals("use"))
+                    jsonata.registerFunction(inst.getID(), new JFunction(new JFunctionCallable() {
+                      @Override
+                      public Object call(Object input, @SuppressWarnings("rawtypes") List args)
+                          throws Throwable {
+                        return "function(){1}";
+                      }
+                    }, null));
+                  else
+                    jsonata.registerFunction(inst.getID(), x);
               try {
                 jsonata.evaluate(null);
               } catch (JException e) {
@@ -361,12 +594,183 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
               } catch (Exception e) {
                 fail("Error running expression\n" + expr + ": " + e.getMessage());
               }
+              checkReferences(new Parser().parse(expr),
+                  Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>()));
             } catch (JException je) {
               fail("Error parsing expression\n" + insertError(expr, je));
             }
           }
         }
     }
+  }
+
+  /**
+   * roles, readRoles and writeRoles must reference a role defined in dj-role
+   */
+  void checkRoles(JsonNode tree) {
+    if (roles == null)
+      return;
+    for (Entry<String, JsonNode> e : tree.properties())
+      if (Arrays.asList("roles", "readRoles", "writeRoles").contains(e.getKey())
+          && e.getValue().isArray())
+        for (JsonNode role : e.getValue())
+          if (role.isTextual())
+            assertTrue(roles.contains(role.asText()), "unknown role in " + e.getKey(),
+                role.asText());
+    for (JsonNode i : tree)
+      checkRoles(i);
+  }
+
+  Set<String> ids(String folder) throws Exception {
+    Set<String> res = new HashSet<String>();
+    for (var i : expressionService.getData().all(sc, "config", folder, null, null, null, false,
+        null))
+      res.add("" + i.get("ID"));
+    return res;
+  }
+
+  /**
+   * functions whose first argument is a database name
+   */
+  static final List<String> DATABASE_FUNCTIONS = Arrays.asList("all", "read", "create", "update",
+      "delete", "upsert", "setIfAbsent", "traverse", "incoming", "query", "queryGraph",
+      "adHocQuery", "adHocQueryGraph");
+
+  /**
+   * the JSONata library does not expose its AST, so the package private fields of Parser.Symbol
+   * are read via reflection. If this fails (e.g. fields are renamed in a new version), the
+   * reference checks find nothing - DjLintTest.danglingReferences guards against this
+   */
+  static final Map<String, Field> SYMBOL_FIELDS = new HashMap<String, Field>();
+  static {
+    for (Field f : Parser.Symbol.class.getDeclaredFields())
+      if (!Modifier.isStatic(f.getModifiers()) && !f.isSynthetic())
+        try {
+          f.setAccessible(true);
+          SYMBOL_FIELDS.put(f.getName(), f);
+        } catch (RuntimeException e) {
+          // field not accessible - skip it
+        }
+  }
+
+  static Object field(Object symbol, String name) {
+    Field f = SYMBOL_FIELDS.get(name);
+    if (f == null || !(symbol instanceof Parser.Symbol))
+      return null;
+    try {
+      return f.get(symbol);
+    } catch (IllegalAccessException e) {
+      return null;
+    }
+  }
+
+  /**
+   * returns the string literal at position i of a function call, or null if the argument is
+   * missing or computed
+   */
+  static String literal(List<?> args, int i) {
+    if (args == null || args.size() <= i)
+      return null;
+    Object arg = args.get(i);
+    if ("string".equals(field(arg, "type")) && field(arg, "value") instanceof String s)
+      return s;
+    return null;
+  }
+
+  /**
+   * walk the JSONata AST and check function calls with literal arguments that reference queries,
+   * databases, functions or libraries. Unlike the evaluation in checkExpressions, this also visits
+   * branches and lambdas that are not executed
+   */
+  void checkReferences(Object node, Set<Object> visited) {
+    if (node == null)
+      return;
+    if (node instanceof Collection<?> c) {
+      for (Object i : c)
+        checkReferences(i, visited);
+      return;
+    }
+    if (node instanceof Object[] a) {
+      for (Object i : a)
+        checkReferences(i, visited);
+      return;
+    }
+    if (!(node instanceof Parser.Symbol) || !visited.add(node))
+      return;
+
+    Object type = field(node, "type");
+    if ("function".equals(type) || "partial".equals(type)) {
+      Object proc = field(node, "procedure");
+      if ("variable".equals(field(proc, "type")) && field(proc, "value") instanceof String name)
+        checkCall(name, (List<?>) field(node, "arguments"));
+    }
+
+    for (Field f : SYMBOL_FIELDS.values())
+      try {
+        checkReferences(f.get(node), visited);
+      } catch (IllegalAccessException e) {
+        // ignore
+      }
+  }
+
+  void checkCall(String name, List<?> args) {
+    if (DATABASE_FUNCTIONS.contains(name))
+      checkDatabase(literal(args, 0));
+    if (name.equals("query") || name.equals("queryGraph"))
+      if (!BUILT_IN_QUERIES.contains(literal(args, 1)))
+        checkId(queries, usedQueries, literal(args, 1), "unknown query in $" + name);
+    if (name.equals("call")) {
+      String f = literal(args, 0);
+      if (OPTIONAL_FUNCTIONS.contains(f))
+        usedFunctions.add(f);
+      else
+        checkId(functions, usedFunctions, f, "unknown function in $call");
+    }
+    if (name.equals("use"))
+      checkId(libraries, usedLibraries, literal(args, 0), "unknown library in $use");
+  }
+
+  /**
+   * report queries, functions and libraries that are not referenced by a layout or by a literal
+   * argument in an expression. These are hints only: the item may be called via the REST API or
+   * from an expression with a computed argument like $call(fn)
+   */
+  void checkUnused() {
+    hintUnused("dj-query-catalog", "query", queries, usedQueries);
+    hintUnused("dj-function", "function", calledFunctions, usedFunctions);
+    hintUnused("dj-library", "library", libraries, usedLibraries);
+  }
+
+  void hintUnused(String folder, String kind, Set<String> all, Set<String> used) {
+    if (all == null)
+      return;
+    for (String id : new TreeSet<String>(all))
+      if (!used.contains(id))
+        messages.add("model/" + folder + "/" + id + ".json: hint: " + kind
+            + " is not referenced in the App (it might still be used via the API)");
+  }
+
+  void checkId(Set<String> known, Set<String> used, String id, String message) {
+    if (id != null)
+      used.add(id);
+    if (known != null && id != null)
+      assertTrue(known.contains(id), message, id);
+  }
+
+  static String stripDj(String database) {
+    return database.startsWith("dj/") ? database.substring("dj/".length()) : database;
+  }
+
+  /**
+   * databases are referenced by name ("northwind") or ID ("dj/northwind")
+   */
+  void checkDatabase(String database) {
+    if (database == null || databases == null)
+      return;
+    if (database.contains("$") || database.contains("{"))
+      // computed value
+      return;
+    assertTrue(databases.contains(stripDj(database)), "unknown database", database);
   }
 
   String insertError(String expr, JException e) {

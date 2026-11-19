@@ -23,15 +23,15 @@ import org.dashjoin.service.ExMapper;
 import org.dashjoin.service.PojoDatabase;
 import org.dashjoin.service.ddl.SchemaChange;
 import org.dashjoin.util.PerfTimer;
-import lombok.extern.java.Log;
+import java.util.logging.Logger;
 
 /**
  * base class for datasource / provider functions
  */
-@Log
 @JsonSchema(required = {"database", "oldData"},
     order = {"database", "oldData", "createSchema", "mappings"})
 public abstract class AbstractSource extends AbstractMapping<Void> {
+  private static final Logger log = Logger.getLogger(AbstractSource.class.getName());
 
   /**
    * indicates how to deal with data from the previous run:

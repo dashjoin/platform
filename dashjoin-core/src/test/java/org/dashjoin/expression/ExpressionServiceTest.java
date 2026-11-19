@@ -175,7 +175,7 @@ public class ExpressionServiceTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("[{EMP.ID=1, EMP.NAME=mike}, {EMP.ID=2, EMP.NAME=joe}]",
-        "" + s.resolve(sc, "$adHocQuery(\"junit\", \"select ID,NAME from EMP\")", null, false));
+        "" + s.resolve(sc, "$adHocQuery(\"junit\", \"select \\\"ID\\\",\\\"NAME\\\" from \\\"EMP\\\"\")", null, false));
   }
 
   @Test

@@ -79,6 +79,12 @@
 					},
 					{
 						"widget": "text",
+						"href": "/config/dj-library",
+						"icon": "functions",
+						"text": "Function Library"
+					},
+					{
+						"widget": "text",
 						"text": "Notebook",
 						"href": "/page/Notebook",
 						"icon": "edit_note"

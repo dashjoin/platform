@@ -4,7 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +50,16 @@ public class ManageTest {
     when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals(
         "[{ID=1000, NAME=dev-project, BUDGET=null}, {ID=1001, NAME=other, BUDGET=null}]",
-        manage.export(sc, "junit").get("PRJ").toString());
+        sortById(manage.export(sc, "junit").get("PRJ")).toString());
+  }
+
+  /**
+   * export has no ORDER BY, so row order is DB specific (Postgres returns updated rows last)
+   */
+  static List<Map<String, Object>> sortById(List<Map<String, Object>> rows) {
+    List<Map<String, Object>> res = new ArrayList<>(rows);
+    res.sort(Comparator.comparing(row -> ((Number) row.get("ID")).longValue()));
+    return res;
   }
 
   @Test

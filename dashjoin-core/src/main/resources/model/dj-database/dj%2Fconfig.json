@@ -312,6 +312,7 @@
                 "prop": "dj/config/Table/parent",
                 "columns": [
                   "ID",
+				  "title",
                   "comment",
                   "dj-label"
                 ]
@@ -474,7 +475,7 @@
           "authenticated"
       ],
       "tenantColumn": "ID",
-      "before-update": "'admin' in $djRoles() ? false :\n{\n  'setObject': object ~> | $ | {'lastlogin': $now()}, ['firstlogin', 'name'] |\n}",
+      "before-update": "'admin' in $djRoles() ? false :\n{\n  'setObject': object ~> | $ | {'lastlogin': $now()}, ['firstlogin', 'name', 'sessions'] |\n}",
       "before-delete": "'admin' in $djRoles() ? false : $error('User record cannot be deleted')",
       "properties": {
         "ID": {
@@ -516,6 +517,26 @@
           "type": "object",
           "additionalProperties": {
               "type": "object"
+          }
+        },
+        "sessions": {
+          "ID": "dj/config/user/sessions",
+          "name": "sessions",
+          "parent": "dj/config/user",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "hash": {
+                "type": "string"
+              },
+              "created": {
+                "type": "string"
+              },
+              "userAgent": {
+                "type": "string"
+              }
+            }
           }
         }
       }
@@ -975,6 +996,78 @@
           }
         }
       }
+    },
+    "dj-library": {
+      "ID": "dj/config/dj-library",
+      "name": "dj-library",
+      "parent": "dj/config",
+      "type": "object",
+      "required": [
+        "ID"
+      ],
+	  "order":[
+		["ID", "description"],
+		"expression"
+	  ],
+      "properties": {
+        "ID": {
+          "ID": "dj/config/dj-library/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-library",
+          "pkpos": 0,
+          "type": "string",
+          "createOnly": true
+        },
+        "description": {
+          "ID": "dj/config/dj-library/description",
+          "name": "description",
+          "parent": "dj/config/dj-library",
+          "type": "string"
+        },
+        "expression": {
+          "ID": "dj/config/dj-library/expression",
+          "name": "expression",
+          "parent": "dj/config/dj-library",
+		  "widgetType": "expression",
+          "type": "string"
+        }
+      },
+	  "instanceLayout": {
+	      "widget": "page",
+	      "children": [
+	          {
+	              "title": "Edit Record",
+	              "widget": "edit"
+	          },
+	          {
+	              "display": "value.tests",
+	              "widget": "display"
+	          },
+	          {
+	              "text": "Run Test Suite",
+	              "print": "($test := $use('unit-test') ~> $eval;\n$test(value))",
+	              "widget": "button"
+	          }
+	      ]
+	  },
+	  "tableLayout": {
+	      "widget": "page",
+	      "children": [
+	          {
+	              "title": "Table: ${value.name}",
+	              "widget": "table"
+	          },
+	          {
+	              "title": "New Record",
+	              "widget": "create"
+	          },
+	          {
+	              "text": "Run All Test Suites",
+	              "widget": "button",
+	              "print": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
+	          }
+	      ]
+	  }
     },
     "dj-query-performance": {
       "ID": "dj/config/dj-query-performance",

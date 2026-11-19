@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -72,7 +73,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.SecurityContext;
-import lombok.extern.java.Log;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.MySQLGroupConcat;
@@ -93,9 +93,9 @@ import net.sf.jsqlparser.statement.update.Update;
 /**
  * SQL Reference implementation
  */
-@Log
 @JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 public class SQLDatabase extends AbstractDatabase {
+  private static final Logger log = Logger.getLogger(SQLDatabase.class.getName());
 
   private static final ObjectMapper om = new ObjectMapper();
 
@@ -1021,14 +1021,15 @@ public class SQLDatabase extends AbstractDatabase {
           if (value != null && value.getClass().isArray())
             if (Array.getLength(value) == 1)
               firstValue = Array.get(value, 0);
-          if (url.startsWith("jdbc:postgresql:") && s.properties.get(k).dbType.equals("jsonb")) {
+          Property prop = s.properties == null ? null : s.properties.get(k);
+          if (url.startsWith("jdbc:postgresql:") && prop != null && "jsonb".equals(prop.dbType)) {
             select = select + "\"" + k + "\"::jsonb ??" + " ? and ";
             if (firstValue != null)
               args.add(firstValue);
             else
               args.add(value);
-          } else if (url.startsWith("jdbc:postgresql:")
-              && s.properties.get(k).type.equals("array")) {
+          } else if (url.startsWith("jdbc:postgresql:") && prop != null
+              && "array".equals(prop.type)) {
             select = select + "? = any(" + q(k) + ") and ";
             if (firstValue != null)
               args.add(firstValue);
@@ -1566,6 +1567,18 @@ public class SQLDatabase extends AbstractDatabase {
         }
       }
     }
+
+    // epoch millis (e.g. $toMillis($now())) written to a date / timestamp column
+    // https://github.com/dashjoin/platform/issues/527
+    // whole number doubles (e.g. 1.762E12 from ETL input) are accepted as well
+    if (object instanceof Number && p != null && url != null
+        && url.startsWith("jdbc:postgresql:"))
+      if ("date".equalsIgnoreCase(p.dbType) || "timestamp".equalsIgnoreCase(p.dbType)
+          || "timestamptz".equalsIgnoreCase(p.dbType)) {
+        double d = ((Number) object).doubleValue();
+        if (d == Math.rint(d) && !Double.isInfinite(d))
+          return date(p, new Date(((Number) object).longValue()));
+      }
 
     object = super.cast(p, object);
 
