@@ -96,6 +96,45 @@
             }
         },
         {
+            "title": "Email",
+            "description": "Sends email via Office 365 using OAuth2 (XOAUTH2) with the OAuth2Credentials function 'o365'",
+            "file": "model/dj-function/email-o365.json",
+            "code": {
+                "djClassName": "org.dashjoin.function.Email",
+                "ID": "email-o365",
+                "type": "write",
+                "server": "office365",
+                "username": "invoices@example.com",
+                "oauth": "o365"
+            }
+        },
+        {
+            "title": "EmailInbox",
+            "description": "Reads the Office 365 mailbox invoices@example.com via IMAP. Call with $call('inbox', {'unread': true}) to list unread messages",
+            "file": "model/dj-function/inbox.json",
+            "code": {
+                "djClassName": "org.dashjoin.function.EmailInbox",
+                "ID": "inbox",
+                "type": "read",
+                "server": "office365",
+                "username": "invoices@example.com",
+                "oauth": "o365"
+            }
+        },
+        {
+            "title": "OAuth2Credentials",
+            "description": "OAuth2 client credentials of a Microsoft Entra ID app registration used to access Office 365 mailboxes",
+            "file": "model/dj-function/o365.json",
+            "code": {
+                "djClassName": "org.dashjoin.function.OAuth2Credentials",
+                "ID": "o365",
+                "provider": "microsoft",
+                "tenant": "example.onmicrosoft.com",
+                "username": "00000000-0000-0000-0000-000000000000",
+                "password": "DJ1#\btW06MCaBJjnRvgvGgTaTpQ=="
+            }
+        },
+        {
             "title": "MCPServer",
             "description": "Configures an MCP server",
             "file": "model/dj-function/mcp.json",

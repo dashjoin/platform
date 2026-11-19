@@ -53,6 +53,9 @@ public class Hmac extends AbstractVarArgFunction<Object> {
   static Credentials asCredentials(Object function, String keyId) {
     if (!(function instanceof Credentials))
       throw new IllegalArgumentException("$hmac: " + keyId + " is not a Credentials function");
+    if (function instanceof OAuth2Credentials)
+      throw new IllegalArgumentException(
+          "$hmac: " + keyId + " holds OAuth2 credentials which cannot be used for signing");
     return (Credentials) function;
   }
 
