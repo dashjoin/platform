@@ -106,6 +106,8 @@ public class PojoDatabaseTest {
 
     qi.query = "dj-page-urls";
     List<Map<String, Object>> res = config.query(qi, null);
+    // the url column is shown as links
+    Assertions.assertEquals("uri", config.queryMeta(qi, null).get("url").format);
     qi.query = "dj-config-values";
     res = config.query(qi, null);
     qi.query = "dj-roles-without-admin";
