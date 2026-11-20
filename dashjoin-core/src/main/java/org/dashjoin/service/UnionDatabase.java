@@ -61,6 +61,34 @@ public class UnionDatabase extends AbstractDatabase {
     return new PasswordDatabase(((PojoDatabase) services.getConfig())._user);
   }
 
+  /**
+   * the writable layer if it is the SQL config store, which supports deletion markers for records
+   * of lower layers. null in file mode
+   */
+  JSONSqlDatabase sqlUser() {
+    JSONDatabase u = _user != null ? _user : ((PojoDatabase) services.getConfig())._user;
+    return u instanceof JSONSqlDatabase ? (JSONSqlDatabase) u : null;
+  }
+
+  /**
+   * the merged records of the SQL config store if records of table can be read from them: the
+   * store is attached and no layer that is not stored in SQL (e.g. the metadata a connected
+   * database provides) has records of the table. null otherwise: the layers are merged in memory
+   */
+  JSONSqlDatabase effective(String table) {
+    JSONSqlDatabase sql = sqlUser();
+    if (sql == null || sql.store.base == null)
+      return null;
+    for (JSONDatabase d : dbs())
+      if (d instanceof ProviderDatabase) {
+        if (((ProviderDatabase) d).data.containsKey(table))
+          return null;
+      } else if (!(d instanceof JSONSqlDatabase)
+          && sql.store.base.stream().noneMatch(b -> b.getClass().equals(d.getClass())))
+        return null;
+    return sql.store.effective();
+  }
+
   List<JSONDatabase> dbs() {
     if (_user != null)
       return _dbs;
@@ -79,6 +107,10 @@ public class UnionDatabase extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> query(QueryMeta info, Map<String, Object> arguments)
       throws Exception {
+    JSONSqlDatabase eff = effective(info.query.split("/", 2)[0]);
+    if (eff != null)
+      return new ArrayList<>(eff.queryMap(info, arguments).values());
+
     Map<String, Map<String, Object>> res = new LinkedHashMap<>();
     for (JSONDatabase d : all()) {
       for (Entry<String, Map<String, Object>> e : d.queryMap(info, arguments).entrySet()) {
@@ -97,6 +129,11 @@ public class UnionDatabase extends AbstractDatabase {
           res.put(e.getKey(), merge(old, e.getValue()));
       }
     }
+
+    // records of lower layers deleted in the SQL config store
+    JSONSqlDatabase sql = sqlUser();
+    if (sql != null)
+      res.keySet().removeAll(sql.deletedIds(info.query.split("/", 2)[0]));
 
     // if files are deleted on the FS, there might be stale providers which cause
     // zombie objects without ID, remove these
@@ -170,6 +207,13 @@ public class UnionDatabase extends AbstractDatabase {
   @Override
   public Map<String, Object> read(Table s, Map<String, Object> search) throws Exception {
 
+    JSONSqlDatabase eff = effective(s.name);
+    if (eff != null)
+      return eff.read(s, search);
+    JSONSqlDatabase sql = sqlUser();
+    if (sql != null && search.get("ID") != null && sql.isDeleted(s, search.get("ID")))
+      return null;
+
     // merge all DBs (user DB is last)
     Map<String, Object> res = null;
     for (JSONDatabase d : all())
@@ -197,7 +241,13 @@ public class UnionDatabase extends AbstractDatabase {
   public boolean update(Table schema, Map<String, Object> search, Map<String, Object> object)
       throws Exception {
     // the steps below read and write the user DB several times; hold the record lock throughout
-    return user().locked(schema, search.get("ID"), () -> updateLocked(schema, search, object));
+    return user().locked(schema, search.get("ID"), () -> {
+      // a record deleted in the SQL config store cannot be updated
+      JSONSqlDatabase sql = sqlUser();
+      if (sql != null && sql.isDeleted(schema, search.get("ID")))
+        return false;
+      return updateLocked(schema, search, object);
+    });
   }
 
   boolean updateLocked(Table schema, Map<String, Object> search, Map<String, Object> object)
@@ -382,6 +432,10 @@ public class UnionDatabase extends AbstractDatabase {
   @Override
   public List<Map<String, Object>> all(Table s, Integer offset, Integer limit, String sort,
       boolean descending, Map<String, Object> arguments) throws Exception {
+    JSONSqlDatabase eff = effective(s.name);
+    if (eff != null && eff.store.postgres)
+      return eff.allEffective(s, offset, limit, sort, descending, arguments);
+
     QueryMeta info = new QueryMeta();
     info.query = s.name;
     List<Map<String, Object>> res = new ArrayList<>();
