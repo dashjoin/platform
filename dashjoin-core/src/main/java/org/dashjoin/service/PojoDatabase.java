@@ -1069,15 +1069,9 @@ public class PojoDatabase extends UnionDatabase implements Config {
     prop.pkpos = 0;
     prop.type = "string";
 
-    if ("dj-page-urls".equals(info.query)) {
-      // the url column holds app paths: shown as links (format uri)
-      Property url = new Property();
-      url.parent = prop.parent;
-      url.name = "url";
-      url.type = "string";
-      url.format = "uri";
-      return ImmutableMap.of("url", url);
-    } else
+    if ("dj-page-urls".equals(info.query))
+      return ImmutableMap.of();
+    else
       return ImmutableMap.of("ID", prop);
   }
 
