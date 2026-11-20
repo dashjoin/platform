@@ -1044,6 +1044,7 @@ public class PojoDatabase extends UnionDatabase implements Config {
       tm.put("ID", r.get("ID"));
       if (r.containsKey("type"))
         tm.put("value", r.get(r.get("type")));
+      tm.put("category", r.get("category"));
       tm.put("description", r.get("description"));
       projected.add(tm);
     }
