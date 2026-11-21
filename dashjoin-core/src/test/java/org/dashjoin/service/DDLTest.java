@@ -47,6 +47,8 @@ public class DDLTest {
   public void testSlashMetadata() throws Exception {
     TestDatabase.init();
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
 
     AbstractDatabase db;
 
@@ -80,12 +82,16 @@ public class DDLTest {
         "" + db.tables.get("T/T").properties.get("f/k").ref);
 
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @Test
   public void testSlash() throws Exception {
     TestDatabase.init();
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
 
     AbstractDatabase db;
 
@@ -122,6 +128,8 @@ public class DDLTest {
     Assertions.assertEquals(0, db.tables.size());
 
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @Test
@@ -129,6 +137,8 @@ public class DDLTest {
 
     TestDatabase.init();
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
 
     AbstractDatabase db;
 
@@ -229,6 +239,8 @@ public class DDLTest {
     Assertions.assertEquals(0, db.tables.size());
 
     new File("model/dj-database/dj%2Fddl.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @Inject

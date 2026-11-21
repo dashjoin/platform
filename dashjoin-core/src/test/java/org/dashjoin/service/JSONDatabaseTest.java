@@ -71,6 +71,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
 
     // cleanup
     new File("model/EMP/1.deleted").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @Test
@@ -186,6 +188,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     Assertions.assertEquals(null, u._user.read(schema, of("ID", 1)).get("NAME"));
     u.delete(schema, of("ID", 1));
     new File("model/EMP/1.deleted").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
 
     u.update(schema, Maps.newHashMap(of("ID", 2)), Maps.newHashMap(of("NAME", "joe2")));
     Assertions.assertEquals("{ID=2, NAME=joe2}", "" + u._user.read(schema, of("ID", 2)));
@@ -277,6 +281,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
   @Test
   public void crudTest() throws Exception {
     new File("model/crud/x.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
     JSONDatabase db = JSONDatabaseFactory.getPersistantInstance();
 
     // create can contain a mix of keys and values
@@ -308,6 +314,8 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     new File("model/dj-query-catalog/" + Escape.filename(id) + ".query.sql").delete();
     new File("model/dj-query-catalog/" + Escape.filename(id) + ".query-1.sql").delete();
     new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
     JSONDatabase db = JSONDatabaseFactory.getPersistantInstance();
     FieldUtils.writeField(db, "services", services, true);
 
@@ -345,6 +353,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
         .renameTo(new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql"));
     FileUtils.writeStringToFile(new File("model/dj-query-catalog/" + Escape.filename(id) + ".json"),
         "{\"ID\": \"" + id + "\", \"query-pointer\": \"0.sparql\"}", Charset.defaultCharset());
+    JSONFileCache.clear();
     Assertions.assertEquals("{ID=" + id + ", query-pointer=0.sparql, query=select * from tbl2}",
         "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
 
@@ -372,6 +381,7 @@ public class JSONDatabaseTest extends AbstractDatabaseTest {
     FileUtils.writeStringToFile(
         new File("model/dj-query-catalog/" + Escape.filename(id) + ".0.sparql"), "???",
         Charset.defaultCharset());
+    JSONFileCache.clear();
     Assertions.assertEquals("{ID=" + id + ", type-pointer=0.sparql, type=???}",
         "" + db.read(ofName("dj-query-catalog"), of("ID", id)));
 

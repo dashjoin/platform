@@ -77,6 +77,8 @@ public class RenameDeltaTest {
   public void setup() throws Exception {
     TestDatabase.init();
     new File(APP_FILE).delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
 
     // table T with columns NAME and AGE
     create("Table", m("parent", "dj/ddl", "name", "T"));
@@ -94,6 +96,8 @@ public class RenameDeltaTest {
   @AfterEach
   public void teardown() {
     new File(APP_FILE).delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
     TestDatabase.init();
   }
 

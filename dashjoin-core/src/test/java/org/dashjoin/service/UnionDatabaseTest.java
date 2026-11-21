@@ -80,6 +80,8 @@ public class UnionDatabaseTest {
 
     // clean up
     new File("model/dj-query-catalog/list.json").delete();
+    // the file was changed behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @Test

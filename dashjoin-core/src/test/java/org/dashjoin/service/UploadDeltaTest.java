@@ -109,6 +109,8 @@ public class UploadDeltaTest {
     String[] left = dir.list();
     if (left != null && left.length == 0)
       dir.delete();
+    // the files were deleted behind the config DB's back
+    JSONFileCache.clear();
   }
 
   @BeforeEach
