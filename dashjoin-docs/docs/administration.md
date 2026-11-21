@@ -371,3 +371,50 @@ The sessions are tracked in the table user within the config database (field ses
 Only a hash of each session ID is stored, along with the creation time and the browser's user agent.
 Users that logged in before the feature was enabled are not affected until they log in again.
 The local admin user is never restricted. To turn the feature off, remove the map from the single-session entry.
+
+## Serving the Config Database from SQL
+
+When several instances of the platform run the same app, the config database can be served from a SQL database
+(currently PostgreSQL) instead of the model folder. Set these properties (or the environment variables
+DASHJOIN_CONFIGDB_URL, DASHJOIN_CONFIGDB_USERNAME, DASHJOIN_CONFIGDB_PASSWORD):
+
+```text
+dashjoin.configdb.url=jdbc:postgresql://host:5432/db?currentSchema=djconfig
+dashjoin.configdb.username=postgres
+dashjoin.configdb.password=...
+```
+
+All instances must use the same encryption key for stored passwords: set the environment variable DJ_SID
+(for an existing installation, use the content of model/.secrets.id).
+
+The config then consists of three layers (the higher one wins, field by field):
+
+* local: everything written at runtime (UI, API, logins), records that only exist on this installation
+  (e.g. git-ignored credentials) and deleted records
+* app: the model folder of one git commit of the app
+* the platform defaults
+
+The merged result of the layers is stored as well, so reads and queries (filter, sort, paging) run in
+SQL without merging the layers in memory. Every write recomputes the merged record in the same
+transaction, and a sync recomputes the records it changes. When the platform defaults change (e.g.
+after an upgrade or when plugins are added), all merged records are rebuilt on startup. Therefore, all
+instances should run the same platform version. Tables that connected databases add metadata to at
+runtime (dj-database) are still merged in memory.
+
+Users (user) and tenant users (tenantusers) are stored like all other records. Records checked into git,
+such as @EVERYONE, come from the app layer; logins and invitations write to the local layer.
+
+On the first start, the model folder of the app checkout (see DASHJOIN_APP_URL) is imported:
+the HEAD commit becomes the app layer, records changed in the working tree become the local layer
+(only the changed fields), and records deleted in the working tree are marked as deleted.
+Without a git checkout, all records go to the local layer.
+
+To update the app, run $appSync() (or $gitPull(), which does the same in this mode). It pulls the app,
+replaces the app layer with the new version and keeps the local layer. When DASHJOIN_APP_URL is set,
+this also happens on every start. The result lists the records added, changed and removed, and the local
+changes of fields the new version changed; $appSync(true) only computes this report.
+Tables listed in dashjoin.configdb.sync.exclude are never taken from the app.
+
+The app checkout is still used for all other files (uploads, assets, scripts).
+Changes made in the UI are no longer written to the model folder; develop apps on an instance without
+dashjoin.configdb.url and commit them to git as before.

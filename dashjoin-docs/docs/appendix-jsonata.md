@@ -537,6 +537,24 @@ Sample output:
 ```json
 null
 ```
+### appSync
+Pull the dashjoin app and update the app records of the SQL config database
+```
+$appSync()
+```
+Sample output: 
+```json
+{
+  "commit" : "3f2a9c1e5b7d4f6a8c0e2b4d6f8a0c2e4b6d8f0a",
+  "previousCommit" : "9d1c3e5a7b9f1d3c5e7a9b1d3f5c7e9a1b3d5f7c",
+  "dryRun" : false,
+  "added" : [ "page/b" ],
+  "changed" : [ "page/a", "tenantusers/@EVERYONE" ],
+  "removed" : [ "dj-function/f" ],
+  "localOverridesOfChangedFields" : [ "tenantusers/@EVERYONE: roles" ],
+  "changedDatabases" : [ ]
+}
+```
 ### gitRestore
 git restore 'dashjoin-demo.db'
 ```

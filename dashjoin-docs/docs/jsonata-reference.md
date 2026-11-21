@@ -43,6 +43,7 @@ Function | Syntax |  Returns
 adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
 all| $all(database, table) | array of all table records
 all| $all(database, table, offset, limit, sort, descending, filter) | array of all table records whose columns match the filter key's values
+appSync| $appSync(dryRun?) | If the config database is stored in SQL: git pull the app and replace the app records with the new version. Changes made at runtime are kept. Returns a report of the changes; with dryRun=true, only the report is computed
 call| $call(function, argument) |   Dashjoin function result
 chat | $chat(url, query, messages, tools?, options?, headers?) | Encapsulates API calls to LLMs running at url. Query is the next user message. messages is an array of role / content containing the previous chat interactions. Tools is an array of strings referencing Invoke functions in the function catalog that should be used as tools during the LLM call. Options contains additional LLM parameters like "model": "gpt-4o-mini", etc. Finally, headers works like with the curl function. 
 classifyEntities | $classifyEntities([entities], entity-language?, limit?, subclass-depth?) | Reconciles entities and finds common classifications that all entities are an instance of. The parameters are similar to the reconcileEntity function. The subclass depth (default 1) describes the number of superclasses that are included in the results (see [AI & ML Integration](ai-ml-integration.md))
