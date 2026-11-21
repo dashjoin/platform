@@ -94,24 +94,98 @@ Return value
 
 ### Email
 
-Sends an email.
+Sends an email via SMTP.
 
 Configuration
 
-* username: username to log into the email service
-* password: password to log into the email service
-* properties: [SMTP server configuration](https://www.tutorialspoint.com/javamail_api/javamail_api_smtp_servers.htm)
+* server: gmail and office365 fill in the SMTP / IMAP host, port and TLS settings. Choose custom (or leave empty) and use properties for other servers
+* username: username to log into the email service (usually the mailbox address). Also used as sender if the invocation does not specify from
+* password: password to log into the email service. Not required if oauth is set
+* oauth: optional ID of an [OAuth2Credentials](#oauth2credentials) function. If set, the function logs in via XOAUTH2 using an access token. This is required for Office 365 and recommended for Google Workspace, since both are phasing out password logins
+* properties: [Jakarta Mail properties](https://jakarta.ee/specifications/mail/2.1/apidocs/jakarta.mail/jakarta/mail/package-summary) such as mail.smtp.host and mail.smtp.port. These override the server preset. Connections time out after 30s (connect) and 60s (read) by default; use mail.[protocol].connectiontimeout and mail.[protocol].timeout (in ms) to change this
+
+If neither server nor properties are set, the function does not send anything and returns a description of the email (useful for testing).
 
 Invocation parameter
 
-* from: email sender in RFC822 syntax
-* to: email recipient in RFC822 syntax
+* from: email sender in RFC822 syntax (defaults to username)
+* to: comma separated list of recipients in RFC822 syntax
+* cc: comma separated list of CC recipients
+* bcc: comma separated list of BCC recipients
+* replyTo: comma separated list of reply-to addresses
 * subject: email subject line
-* text: email text
+* text: plain text body
+* html: HTML body. If both text and html are specified, they are sent as alternatives
+* inReplyTo: messageId of the email being answered (see [EmailInbox](#emailinbox)). Sets the In-Reply-To and References headers so that mail clients show the reply in the same thread
+* references: space separated message IDs of the thread (defaults to inReplyTo)
+* headers: object with additional headers
+* attachments: array of objects with filename, optional contentType and one of path (a file in the upload folder, e.g. upload/report.pdf), content (base64) or text
 
 Return value
 
-* none
+* object with status "Sent" and the messageId of the email
+
+Example:
+
+```
+$call('email', {
+  'to': 'customer@example.com',
+  'subject': 'Re: ' & subject,
+  'html': '<p>Thank you, we received your order.</p>',
+  'inReplyTo': messageId,
+  'attachments': [{'path': 'upload/confirmation.pdf'}]
+})
+```
+
+### EmailInbox
+
+Reads and manages a mailbox via IMAP. The configuration is the same as for [Email](#email) (server, username, password, oauth, properties).
+
+Invocation parameter
+
+* action: list (default), get, attachment, folders, markRead, markUnread, flag, unflag, move
+* folder: the folder to work on (default INBOX)
+* list filters: unread (true / false), since (ISO date or date time), from (sender contains), subject (subject contains)
+* sinceUid: list only messages with a UID greater than this one (oldest first). Use this to process new messages incrementally
+* limit: maximum number of messages to list (default 50). Without sinceUid, the newest messages are returned
+* body: include the text and html bodies in the list (default true)
+* markRead: mark the listed messages as read
+* uid / uids: the message(s) for get, attachment and the actions
+* target: target folder of move (e.g. "Processed", "Archive" or "Deleted Items")
+* index: attachment index (default 0)
+* saveAs: attachment: save the attachment to this path in the upload folder (e.g. upload/inbox/invoice.pdf) instead of returning its content
+
+Return value
+
+* list, get: messages with uid, uidValidity, folder, messageId, inReplyTo, references, from, fromName, to, cc, replyTo, subject, date, received, seen, flagged, answered, text, html and attachments (index, filename, contentType, size). Reading messages does not mark them as read
+* attachment: filename, contentType, size and either content (base64) or path
+* folders: list of folder names
+* markRead, markUnread, flag, unflag: number of updated messages, move: number of moved messages
+
+UIDs are stable within a folder unless the folder's uidValidity changes. Only the selected messages are downloaded, so listing a few messages is fast even on large mailboxes. Searches (unread, since, from, subject) run on the mail server.
+
+#### Processing incoming email
+
+Email driven processes can be implemented with a [scheduled](#scheduling) Invoke function that reads new messages,
+stores them in a table and moves them to a "Processed" folder. If processing fails, the message stays in the inbox and is retried on the next run.
+Attachments can be saved to the upload folder and processed with [Doc2data / Excel2data](appendix-jsonata.md) or an [AIApp](#aiapp):
+
+```
+{
+  "ID": "process-inbox",
+  "djClassName": "org.dashjoin.function.Invoke",
+  "every": "5m",
+  "roles": ["scheduler"],
+  "expression": "$call('inbox', {'limit': 20}).(
+    $create('sqlite', 'TICKETS', {'MESSAGE_ID': messageId, 'SENDER': from, 'SUBJECT': subject, 'BODY': text});
+    $call('inbox', {'action': 'move', 'uid': uid, 'target': 'Processed'})
+  )"
+}
+```
+
+Alternatively, keep the highest UID processed in a table and pass it as sinceUid.
+
+Note that email content is untrusted input. Be careful when passing it to AI tools that can modify data, and do not display email HTML without sanitizing it.
 
 ### Invoke
 
@@ -177,6 +251,35 @@ $curl("POST", "https://example.com/api/login", {"user": "admin", "password": "ex
 ```
 
 Users must have one of the roles of the Credentials function in order to use it (admin only if it has no roles).
+
+### OAuth2Credentials
+
+OAuth2 credentials for server to server access (no user interaction). The function obtains access tokens from the provider's token endpoint
+and caches them until shortly before they expire. They are used by the [Email](#email) and [EmailInbox](#emailinbox) functions (oauth setting)
+and can be referenced like [Credentials](#credentials) in $curl and RestJson (insertCredentials), where they produce the header "Authorization: Bearer ...".
+
+Configuration:
+
+* provider: microsoft, google or custom
+* tenant: microsoft: directory (tenant) ID or domain
+* username: microsoft / custom: the application (client) ID. google: the service account email (optional if password contains the JSON key file)
+* password: microsoft / custom: the client secret. google: the service account JSON key file or its PEM private key
+* scope: defaults to https://outlook.office365.com/.default (microsoft, IMAP / SMTP) and https://mail.google.com/ (google). Use https://graph.microsoft.com/.default to call Microsoft Graph via $curl
+* subject: google: the user to impersonate if the caller does not name a mailbox. The Email functions impersonate their username
+* tokenUrl: optional, overrides the provider's token endpoint (required for custom)
+
+Office 365 setup: register an application in Microsoft Entra ID, create a client secret, add the application permissions
+IMAP.AccessAsApp and SMTP.SendAsApp (Office 365 Exchange Online) and grant admin consent. Then register the application's service principal in Exchange Online
+and give it access to the mailbox (New-ServicePrincipal and Add-MailboxPermission). This limits the application to the mailboxes it needs.
+
+Google Workspace setup: create a service account, download its JSON key, and allow the service account's client ID the scope https://mail.google.com/
+under domain-wide delegation in the Google Workspace admin console. Enable IMAP for the mailbox.
+
+Example: call Microsoft Graph with a credential "graph" whose scope is https://graph.microsoft.com/.default:
+
+```
+$curl('GET', 'https://graph.microsoft.com/v1.0/users/invoices@example.com/messages?$top=5', null, {'Authorization': 'graph'})
+```
 
 ### MCPServer
 
