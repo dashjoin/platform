@@ -50,6 +50,7 @@ collectMetadata | $collectMetadata(id) | Reconnects database with id and updates
 create| $create(database, table, object) | ID of the new record
 curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions (e.g. $curl("GET", url, null, {"Authorization": "openai"})). Use header {"dj-insert-credentials": [field, ...]} to replace the values of these fields in data (which contain credential names) with the credential secret. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout other than the default of 10s. Use header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1. Use header {"dj-produces": "text/plain"} to return plain text rather than JSON. Use header {"Content-Type": "multipart/form-data"} to upload files encoded in data URLs in the data object (see Input widget)
 delete| $delete(database, table, pk1)
+djClearConfigCache | $djClearConfigCache() | Clears the config database cache (see DASHJOIN_CONFIGDB_CACHE). Only needed after model files were changed outside of Dashjoin
 djLint | $djLint() | Scans the app for errors and warnings
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name

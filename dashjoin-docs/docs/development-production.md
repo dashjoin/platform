@@ -363,6 +363,17 @@ Last but not least, you can also copy the app into the Dashjoin working director
 before starting the platform. 
 If you are using containers, you can mount the model folder under /deployments/model.
 
+### Config Database Cache
+
+In production, the app's configuration rarely changes. Set DASHJOIN_CONFIGDB_CACHE=true to have the platform
+read the model folder into memory at startup and serve the configuration (pages, functions, databases, users,
+tenant users, etc.) from there. Changes made via Dashjoin are written to the files and to the cache at the same time.
+$gitPull(), $gitCheckout(), $gitRestore() and $gitClone() clear the cache.
+
+Only turn this on if this platform instance is the only one writing to the model folder (e.g. a single container
+with its own volume) and model files are not changed by other means (editing files on the volume, WebDAV access to
+the model folder). If this happens anyway, call $djClearConfigCache() or restart the platform.
+
 ## Specifying Development Resources
 
 Resources like databases and REST endpoints are critical resources when working with Dashjoin.

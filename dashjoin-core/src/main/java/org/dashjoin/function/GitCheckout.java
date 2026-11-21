@@ -1,5 +1,7 @@
 package org.dashjoin.function;
 
+import java.io.File;
+import org.dashjoin.service.JSONFileCache;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -28,6 +30,10 @@ public class GitCheckout extends AbstractFunction<String, String> {
         git.checkout().setCreateBranch(true).setName(branchName)
             .setStartPoint("origin/" + branchName)
             .setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK).call();
+    } finally {
+      // switching branches changes model files behind the config DB's back
+      if (branchName != null)
+        JSONFileCache.clear(new File(services.getTenantHome(), "model"));
     }
     return null;
   }

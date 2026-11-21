@@ -367,6 +367,15 @@ Sample output:
 ```json
 null
 ```
+### djClearConfigCache
+Clears the config database cache after model files were changed outside of Dashjoin
+```
+$djClearConfigCache()
+```
+Sample output: 
+```json
+null
+```
 ### djLint
 Scans the current app for errors and warnings
 ```

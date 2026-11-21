@@ -100,6 +100,10 @@ public class Services {
       // Important: metadataCollection() might call getConfig() recursively!
       tenantCache.put(key, c);
 
+      // read the model folder into the record cache (if it is on)
+      if (persistantDB instanceof JSONFileDatabase)
+        ((JSONFileDatabase) persistantDB).fillCache();
+
       // make sure all DBs are initialized
       log.info("Starting metadata collection for tenant=" + id);
       c.metadataCollection();

@@ -665,6 +665,12 @@
 			"output": "delayed by 1 second"
 		}
 	],
+	"djClearConfigCache": [
+		{
+			"description": "Clears the config database cache after model files were changed outside of Dashjoin",
+			"code": "$djClearConfigCache()"
+		}
+	],
 	"djLint": [
 		{
 			"description": "Scans the current app for errors and warnings",

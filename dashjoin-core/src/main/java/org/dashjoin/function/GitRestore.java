@@ -1,6 +1,7 @@
 package org.dashjoin.function;
 
 import java.io.File;
+import org.dashjoin.service.JSONFileCache;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -20,6 +21,9 @@ public class GitRestore extends AbstractFunction<String, Void> {
       else
         git.checkout().addPath(arg).call();
       return null;
+    } finally {
+      // arg may be a record or one of its externalized string files
+      JSONFileCache.clear(new File(services.getTenantHome(), "model"));
     }
   }
 

@@ -84,6 +84,24 @@ public class JSONFileDatabase extends JSONDatabase {
         k -> new ReentrantReadWriteLock());
   }
 
+  /**
+   * read all table folders into the cache (called at startup)
+   */
+  public void fillCache() {
+    if (!JSONFileCache.enabled())
+      return;
+    File[] dirs = getFile("model").listFiles(File::isDirectory);
+    if (dirs != null)
+      for (File dir : dirs)
+        try {
+          QueryMeta info = new QueryMeta();
+          info.query = dir.getName();
+          queryMap(info, null);
+        } catch (Exception e) {
+          log.warning("Cannot fill cache from " + dir + ": " + e);
+        }
+  }
+
   @Override
   public <T> T locked(Table s, Object id, Callable<T> body) throws Exception {
     ReentrantReadWriteLock rw = lock(file(s, Collections.singletonMap("ID", id)));
@@ -201,7 +219,18 @@ public class JSONFileDatabase extends JSONDatabase {
 
     if (parts.length == 1) {
       String path = "model/" + parts[0];
-      File[] files = getFile(path).listFiles();
+      File dir = getFile(path);
+      JSONFileCache.TableCache tc = JSONFileCache.table(dir);
+      if (tc != null && tc.complete) {
+        // same order as the file listing below
+        List<Entry<String, Map<String, Object>>> entries = new ArrayList<>(tc.records.entrySet());
+        entries.sort((a, b) -> String.CASE_INSENSITIVE_ORDER.compare(a.getKey(), b.getKey()));
+        for (Entry<String, Map<String, Object>> e : entries)
+          res.put("" + e.getValue().get("ID"), JSONFileCache.copy(e.getValue()));
+        return res;
+      }
+      boolean failed = false;
+      File[] files = dir.listFiles();
       if (files != null) {
         // Use the same order independent of file system or OS
         Arrays.sort(files, NameFileComparator.NAME_INSENSITIVE_COMPARATOR);
@@ -218,14 +247,22 @@ public class JSONFileDatabase extends JSONDatabase {
             Map<String, Object> object = objectMapper.readValue(f, tr);
             String id = "" + object.get("ID");
             readExternalizedStrings(f.getParentFile(), id, object);
+            if (tc != null)
+              tc.records.put(f.getName(), JSONFileCache.copy(object));
             res.put(id, object);
           } catch (Throwable t) {
+            failed = true;
             log.severe("Fatal error: JSONDatabase object cannot be read: " + f);
           } finally {
             l.unlock();
           }
         }
       }
+      // files created during the listing were put by their writer (write-through), files deleted
+      // were skipped or removed by their writer, so the folder is now complete. If a file cannot be
+      // read, keep reading the folder from disk so that read() reports the error
+      if (tc != null && !failed)
+        tc.complete = true;
     } else {
       Table s = new Table();
       s.name = parts[0];
@@ -239,7 +276,28 @@ public class JSONFileDatabase extends JSONDatabase {
   @Override
   public void create(Table s, Map<String, Object> object) throws Exception {
     locked(s, object.get("ID"), () -> {
-      createLocked(s, object);
+      File file = file(s, object);
+      try {
+        createLocked(s, object);
+      } catch (Throwable t) {
+        // some files may have been written: let the next read go to disk
+        JSONFileCache.evict(file);
+        throw t;
+      }
+      // write-through: cache the record as a read returns it (externalized strings resolved)
+      JSONFileCache.TableCache tc = JSONFileCache.table(file.getParentFile());
+      if (tc != null) {
+        try {
+          Map<String, Object> written = readFile(file);
+          if (written != null)
+            tc.records.put(file.getName(), written);
+          else
+            tc.records.remove(file.getName());
+        } catch (Throwable t) {
+          JSONFileCache.evict(file);
+          throw t;
+        }
+      }
       return null;
     });
   }
@@ -281,23 +339,56 @@ public class JSONFileDatabase extends JSONDatabase {
     Lock l = lock(file).readLock();
     l.lock();
     try {
-      if (file.exists()) {
-        Map<String, Object> res = objectMapper.readValue(file, tr);
-        if (res.get("ID") == null)
-          throw new IllegalArgumentException("Object must contain ID field: " + file);
-        readExternalizedStrings(file.getParentFile(), "" + res.get("ID"), res);
-        return res;
+      JSONFileCache.TableCache tc = JSONFileCache.table(file.getParentFile());
+      if (tc != null) {
+        Map<String, Object> hit = tc.records.get(file.getName());
+        if (hit != null)
+          return JSONFileCache.copy(hit);
+        if (tc.complete)
+          return null;
       }
-      return null;
+      Map<String, Object> res = readFile(file);
+      if (tc != null && res != null)
+        tc.records.put(file.getName(), JSONFileCache.copy(res));
+      return res;
     } finally {
       l.unlock();
     }
+  }
+
+  /**
+   * read the record from disk, null if the file does not exist. Caller holds the record lock
+   */
+  Map<String, Object> readFile(File file) throws IOException {
+    if (!file.exists())
+      return null;
+    Map<String, Object> res = objectMapper.readValue(file, tr);
+    if (res.get("ID") == null)
+      throw new IllegalArgumentException("Object must contain ID field: " + file);
+    readExternalizedStrings(file.getParentFile(), "" + res.get("ID"), res);
+    return res;
   }
 
   @Override
   public boolean delete(Table s, Map<String, Object> search) throws Exception {
     return locked(s, search.get("ID"), () -> {
       File file = file(s, search);
+      boolean deleted = false;
+      try {
+        deleted = deleteLocked(search, file);
+        return deleted;
+      } finally {
+        if (deleted || !file.exists())
+          JSONFileCache.remove(file);
+        else
+          // failed, state on disk unclear
+          JSONFileCache.evict(file);
+      }
+    });
+  }
+
+  boolean deleteLocked(Map<String, Object> search, File file) throws Exception {
+    {
       if (file.exists()) {
         // only delete the files named by the record's pointers. A prefix match on the ID would
         // also hit other records (deleting "a" would delete the files of "a-b")
@@ -314,7 +405,7 @@ public class JSONFileDatabase extends JSONDatabase {
           d.delete();
       }
       return file.delete();
-    });
+    }
   }
 
   /**

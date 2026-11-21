@@ -2,6 +2,7 @@ package org.dashjoin.function;
 
 import java.io.File;
 import org.apache.commons.io.FileUtils;
+import org.dashjoin.service.JSONFileCache;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import java.util.logging.Logger;
@@ -25,7 +26,11 @@ public class GitClone extends AbstractFunction<String, Void> {
     CloneCommand cloneCommand = Git.cloneRepository();
     cloneCommand.setDirectory(new File(services.getTenantHome()));
     cloneCommand.setURI(url);
-    cloneCommand.call();
+    try {
+      cloneCommand.call();
+    } finally {
+      JSONFileCache.clear(new File(services.getTenantHome(), "model"));
+    }
 
     log.info("collecting metadata");
     services.getConfig().metadataCollection();
