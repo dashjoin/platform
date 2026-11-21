@@ -332,16 +332,22 @@ public class ExpressionService {
     }
   }
 
+  /**
+   * the record key from the 3rd argument on: an array with all key parts ($read(db, table, pk)) or
+   * the parts as separate arguments ($read(db, table, pk1, pk2))
+   */
   @SuppressWarnings("rawtypes")
   static List<String> pks(List arg) {
+    List keys = arg.size() > 2 && arg.get(2) instanceof List ? (List) arg.get(2)
+        : arg.subList(Math.min(2, arg.size()), arg.size());
     List<String> res = new ArrayList<>();
-    for (int i = 2; i < arg.size(); i++)
-      res.add(arg.get(i) == null ? null : arg.get(i).toString());
+    for (Object key : keys)
+      res.add(key == null ? null : key.toString());
     return res;
   }
 
   /**
-   * data.read(database, table, pk1)
+   * data.read(database, table, pk)
    */
   public static class Read extends AbstractVarArgFunction<Object> {
 
@@ -354,12 +360,12 @@ public class ExpressionService {
 
     @Override
     public String getHelp() {
-      return "Arguments required: $read(database, table, pk1)";
+      return "Arguments required: $read(database, table, pk)";
     }
 
     @Override
     public String getSignature() {
-      return "<ss(bns)(bns)?(bns)?(bns)?:o?>";
+      return "<ss(bnsa)(bns)?(bns)?(bns)?:o?>";
     }
   }
 
@@ -391,7 +397,7 @@ public class ExpressionService {
   }
 
   /**
-   * data.setIfAbsent(database, table, pk1, object)
+   * data.setIfAbsent(database, table, pk, object)
    */
   public static class SetIfAbsent extends Update {
 
@@ -421,7 +427,7 @@ public class ExpressionService {
 
     @Override
     public String getHelp() {
-      return "Arguments required: $setIfAbsent(database, table, pk1, object)";
+      return "Arguments required: $setIfAbsent(database, table, pk, object)";
     }
   }
 
@@ -478,7 +484,7 @@ public class ExpressionService {
   }
 
   /**
-   * data.update(database, table, pk1, object)
+   * data.update(database, table, pk, object)
    */
   public static class Update extends AbstractVarArgFunction<Object> {
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -501,7 +507,7 @@ public class ExpressionService {
 
     @Override
     public String getHelp() {
-      return "Arguments required: $update(database, table, pk1, object)";
+      return "Arguments required: $update(database, table, pk, object)";
     }
 
     @Override
@@ -511,12 +517,12 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ss(bns)(bnso)(bnso)?(bnso)?o?:l>";
+      return "<ss(bnsa)(bnso)(bnso)?(bnso)?o?:l>";
     }
   }
 
   /**
-   * data.traverse(database, table, pk1, fk)
+   * data.traverse(database, table, pk, fk)
    */
   public static class Traverse extends AbstractVarArgFunction<Object> {
 
@@ -524,22 +530,22 @@ public class ExpressionService {
     @Override
     public Object run(List arg) throws Exception {
       return this.expressionService.getData().traverse(sc, (String) arg.get(0), (String) arg.get(1),
-          "" + arg.get(2), (String) arg.get(3));
+          pks(arg.subList(0, 3)), (String) arg.get(3));
     }
 
     @Override
     public String getHelp() {
-      return "Arguments required: $traverse(database, table, pk1, fk)";
+      return "Arguments required: $traverse(database, table, pk, fk)";
     }
 
     @Override
     public String getSignature() {
-      return "<ss(bns)s:o?>";
+      return "<ss(bnsa)s:o?>";
     }
   }
 
   /**
-   * data.delete(database, table, pk1)
+   * data.delete(database, table, pk)
    */
   public static class Delete extends AbstractVarArgFunction<Object> {
 
@@ -553,7 +559,7 @@ public class ExpressionService {
 
     @Override
     public String getHelp() {
-      return "Arguments required: $delete(database, table, pk1)";
+      return "Arguments required: $delete(database, table, pk)";
     }
 
     @Override
@@ -563,7 +569,7 @@ public class ExpressionService {
 
     @Override
     public String getSignature() {
-      return "<ss(bns)(bns)?(bns)?(bns)?:o?>";
+      return "<ss(bnsa)(bns)?(bns)?(bns)?:o?>";
     }
   }
 
@@ -692,7 +698,7 @@ public class ExpressionService {
   }
 
   /**
-   * data.incoming(database, table, pk1) - limit and offset are null
+   * data.incoming(database, table, pk) - limit and offset are null
    */
   public static class Incoming extends AbstractVarArgFunction<List<Origin>> {
 
@@ -700,17 +706,17 @@ public class ExpressionService {
     @Override
     public List<Origin> run(List arg) throws Exception {
       return this.expressionService.getData().incoming(sc, (String) arg.get(0), (String) arg.get(1),
-          "" + arg.get(2), null, null);
+          pks(arg), null, null);
     }
 
     @Override
     public String getHelp() {
-      return "Arguments required: $incoming(database, table, pk1)";
+      return "Arguments required: $incoming(database, table, pk)";
     }
 
     @Override
     public String getSignature() {
-      return "<ss(bns):a>";
+      return "<ss(bnsa):a>";
     }
   }
 }

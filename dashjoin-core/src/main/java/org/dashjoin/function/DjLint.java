@@ -369,7 +369,9 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
     }
 
     String widget = tree.get("widget").asText();
-    if (!Arrays.asList("activity-status", "layout-edit-switch", "toolbar", "page", "${pk1}")
+    // a template (e.g. "${pk[0]}" in the config/widget preview) names the widget at runtime
+    boolean template = widget.contains("${");
+    if (!template && !Arrays.asList("activity-status", "layout-edit-switch", "toolbar", "page")
         .contains(widget)) {
       assertTrue(widgets.keySet().contains(widget), "unknown widget ", widget);
       props = (List<String>) widgets.get(widget);
@@ -378,7 +380,7 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
             .toList();
     }
 
-    if (widget.equals("${pk1}"))
+    if (template)
       return;
 
     // the frontend (DJBaseComponent.getData) evaluates expression first and ignores query

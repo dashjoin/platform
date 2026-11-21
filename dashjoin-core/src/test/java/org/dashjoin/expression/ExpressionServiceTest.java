@@ -111,6 +111,9 @@ public class ExpressionServiceTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     org.junit.jupiter.api.Assertions.assertEquals("{ID=1, NAME=mike, WORKSON=1000}",
         "" + s.resolve(sc, "$read(\"junit\", \"EMP\", 1)", null, false));
+    // the key as an array (as in {database, table, pk} references)
+    org.junit.jupiter.api.Assertions.assertEquals("{ID=1, NAME=mike, WORKSON=1000}",
+        "" + s.resolve(sc, "$read(\"junit\", \"EMP\", [1])", null, false));
   }
 
   @SuppressWarnings("unchecked")
@@ -135,7 +138,13 @@ public class ExpressionServiceTest {
         ((Map<String, Object>) s.resolve(sc, "$read(\"junit\", \"EMP\", 8)", null, false))
             .get("NAME"));
 
-    s.resolve(sc, "$delete(\"junit\", \"EMP\", 8)", null, false);
+    s.resolve(sc, "$update(\"junit\", \"EMP\", [8], {\"NAME\": \"array\"})", null, false);
+
+    Assertions.assertEquals("array",
+        ((Map<String, Object>) s.resolve(sc, "$read(\"junit\", \"EMP\", [8])", null, false))
+            .get("NAME"));
+
+    s.resolve(sc, "$delete(\"junit\", \"EMP\", [8])", null, false);
 
     try {
       s.resolve(sc, "$read(\"junit\", \"EMP\", 8)", null, false);
@@ -201,7 +210,7 @@ public class ExpressionServiceTest {
     Assertions.assertEquals("Unexpected end of expression", ex.getMessage());
     Exception e =
         Assertions.assertThrows(Exception.class, () -> s.resolve(sc, "$read()", null, false));
-    Assertions.assertEquals("Arguments required: $read(database, table, pk1)", e.getMessage());
+    Assertions.assertEquals("Arguments required: $read(database, table, pk)", e.getMessage());
   }
 
   @Test
