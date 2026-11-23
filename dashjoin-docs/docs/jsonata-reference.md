@@ -38,6 +38,8 @@ translate | $translate(text) | Lookup the text in the translation file and retur
 
 ## Backend Expressions
 
+The record functions ($read, $update, $setIfAbsent, $delete, $traverse, $incoming) take the record key `pk` as an array with all key columns in order, e.g. `$read("northwind", "ORDER_DETAILS", [10248, 11])`, the same as `pk` in record references (`{database, table, pk}`). A single key may also be passed as a plain value (`$read("northwind", "CUSTOMERS", "ALFKI")`), and the classic form with the key columns as separate arguments (`pk1, pk2, ...`) still works.
+
 Function | Syntax |  Returns
 ---|---|---
 adHocQuery| $adHocQuery(database, query, limit?) | Runs as ad hoc select / read query
@@ -49,7 +51,7 @@ classifyEntities | $classifyEntities([entities], entity-language?, limit?, subcl
 collectMetadata | $collectMetadata(id) | Reconnects database with id and updates and schema changes
 create| $create(database, table, object) | ID of the new record
 curl | $curl(method, url, data?, headers?) | Full fledged HTTP client. Use header {"Authorization": credential} to reference a credential set defined in functions (e.g. $curl("GET", url, null, {"Authorization": "openai"})). Use header {"dj-insert-credentials": [field, ...]} to replace the values of these fields in data (which contain credential names) with the credential secret. Use header {"dj-timeout-seconds": ...} to define a HTTP timeout other than the default of 10s. Use header {"dj-encoding": ...} to encode in UTF_8 (default), BASE_64, ISO_8859_1. Use header {"dj-produces": "text/plain"} to return plain text rather than JSON. Use header {"Content-Type": "multipart/form-data"} to upload files encoded in data URLs in the data object (see Input widget)
-delete| $delete(database, table, pk1)
+delete| $delete(database, table, pk)
 djLint | $djLint() | Scans the app for errors and warnings
 djRoles | $djRoles() | Returns the roles of the current user
 djUser | $djUser() | Returns the current user's name
@@ -69,7 +71,7 @@ gitPull| $gitPull() | Run git pull
 gitRestore| $gitRestore(path) | Revert a change
 gitStatus| $gitStatus() | Run git status
 hmac | $hmac(keyId, message, algorithm?, encoding?) | Signs message with the secret of the Credentials function keyId. algorithm: HmacSHA256 (default), HmacSHA384, HmacSHA512. encoding: base64 (default), base64url, hex. The secret is never returned. Only users with one of the roles of the Credentials function may use it (admin only if it has none). Wrap $hmac in an Invoke function with runas to let other users sign a fixed kind of message
-incoming| $incoming(database, table, pk1)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
+incoming| $incoming(database, table, pk)| [{id: ID of the record where the link originates, pk: ID of the pk column, fk: ID of the fk column}, ...]
 index | $index() | Generates a unique row index ID
 isRecursiveTrigger | $isRecursiveTrigger() | true if the current expression is called from a trigger expression (trigger calls trigger)
 ls | $ls(url, preview-limit) | Lists all URLs found at url (the URL can also contain filter wildcards like *.txt). preview limit determines how many results are returned in preview mode (defaults to 10)
@@ -89,20 +91,20 @@ parseXml | $parseXml(xml, arrays) | Parses XML and converts it to JSON (see open
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
 query| $query(database, queryId, arguments) |Query result table
 queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
-read|  $read(database, table, pk1) | The record
+read|  $read(database, table, pk) | The record
 reconcileEntity | $reconcileEntity(entity, entity-language?, limit?) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see [AI & ML Integration](ai-ml-integration.md))
 saveTable| $saveTable(Ignore \| Refresh \| Delete All, database, table, data, pk?) | Allows performing an ad hoc ETL operation (note that createSchema is true)
 search| $search(term, limit?, database?, table?) | Searches the databases(s)
-setIfAbsent| $setIfAbsent(database, table, pk1, object) | like update, but only sets fields that are not yet set
+setIfAbsent| $setIfAbsent(database, table, pk, object) | like update, but only sets fields that are not yet set
 stats| $stats(database, table, limit?) | Generate statistics for a database table (type, min, max, count, distinct values, etc.)
 streamCsv | $streamCsv(url, options) | Parses CSV at the url and splits it at the record boundaries. By default, CSV is parsed as RFC4180. Options can be provided, where the key is a "with" method like withDelimiter and the value is the argument. Please see the [documentation](https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html) for more details.
 streamDb | $streamDb(database, table) | Streams records from the database table specified
 streamJson | $streamJson(url, jsonPointer) | Parses JSON at the url and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 streamXml | $streamXml(url, jsonPointer) | Parses XML at the url, converts it to JSON, and splits it at the [json pointer](https://datatracker.ietf.org/doc/html/rfc6901) location
 synonym | $synonym({algorithm: threshold}, [terms], [variants], ignoreCase?, ignoreEquality?) | Allows generating synonym table to match keys despite small typos etc. (see [AI & ML Integration](ai-ml-integration.md))
-traverse|  $traverse(database, table, pk1, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
+traverse|  $traverse(database, table, pk, fk) | Record(s) related to the current record via the property fk. If fk is a simple column name, fk is an outgoing foreign key and the single related record is returned. If fk is a full property ID like dj/database/table/column, then a list of records from that table that have a fk pointing to the current record are returned
 try | $try(function(){...}, function($ex){...}) | Try-catch with the second function being called when there's an error thrown by the first function. If the second function is omitted, the try function returns undefined upon an error
-update| $update(database, table, pk1, object)
+update| $update(database, table, pk, object)
 upsert| $upsert(database, table, object) | first tries to create the record, if the record already exists, applies an update by retrieving the keys from the object and calling update
 urlExists| $urlExists(url) | Returns true if the url is reachable, false otherwise
 use | $use(id) | Reads the library with the given id, and returns the expression. Usually, used to import functions from the library: $f := $use('f') ~> $eval
