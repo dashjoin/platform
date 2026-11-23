@@ -99,7 +99,7 @@ For anyone who is planning a development project, faces a tight schedule, needs 
 ## Learn
 
 * [Online Documentation](https://dashjoin.github.io/platform)
-* [Live demo](https://music.run.dashjoin.com/)
+* [Live demo](https://github.com/dashjoin/djapp-music)
 * [Blog](https://medium.com/@dashjoin)
 * [Training course](https://download.dashjoin.com/training/platform.pdf)
 * [Video tutorials](https://www.youtube.com/@dashjoin)
