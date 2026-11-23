@@ -40,6 +40,19 @@ public class MetadataTest {
   static SQLDatabase db;
 
   @Test
+  public void testConvertMultiWordTypes() {
+    Assertions.assertEquals("number", Metadata.convert("DOUBLE PRECISION"));
+    Assertions.assertEquals("number", Metadata.convert("double precision"));
+    Assertions.assertEquals("number", Metadata.convert("DECFLOAT"));
+    Assertions.assertEquals("string", Metadata.convert("CHARACTER"));
+    Assertions.assertEquals("string", Metadata.convert("CHARACTER LARGE OBJECT"));
+    Assertions.assertEquals("string", Metadata.convert("BINARY LARGE OBJECT"));
+    Assertions.assertEquals("string", Metadata.convert("TIME WITH TIME ZONE"));
+    Assertions.assertEquals("datetime", Metadata.convert("TIMESTAMP WITH TIME ZONE"));
+    Assertions.assertEquals("datetime", Metadata.convert("timestamp without time zone"));
+  }
+
+  @Test
   public void testComposite() throws Exception {
     String url = "jdbc:h2:mem:comp";
     try (Connection con = DriverManager.getConnection(url)) {

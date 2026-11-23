@@ -394,6 +394,7 @@ public class Metadata {
 
     switch (typeName) {
       case "CHAR":
+      case "CHARACTER": // H2
         return "string";
       case "CHARACTER VARYING": // H2
       case "STRING": // H2
@@ -404,6 +405,7 @@ public class Metadata {
       case "CLOB":
         return "string";
       case "BINARY VARYING": // H2
+      case "BINARY LARGE OBJECT": // H2
       case "LONGBLOB": // MySQL
       case "BLOB":
         return "string";
@@ -432,6 +434,8 @@ public class Metadata {
       case "FLOAT":
         return "number";
       case "DOUBLE":
+      case "DOUBLE PRECISION": // H2 2.x, Postgres
+      case "DECFLOAT": // H2 2.x
         return "number";
       case "BINARY":
         return "string";
@@ -442,6 +446,8 @@ public class Metadata {
       case "DATE":
         return "date";
       case "TIME":
+      case "TIME WITH TIME ZONE": // H2 2.x, Postgres
+      case "TIME WITHOUT TIME ZONE": // Postgres
         // postgres time like 12:34:56
         return "string";
       case "DATETIME": // Sybase
@@ -449,6 +455,8 @@ public class Metadata {
       case "TIMESTAMP":
         return "datetime";
       case "TIMESTAMPTZ":
+      case "TIMESTAMP WITH TIME ZONE": // H2 2.x, Postgres
+      case "TIMESTAMP WITHOUT TIME ZONE": // Postgres
         return "datetime";
       case "INT2": // Postgres
       case "INT4": // Postgres
