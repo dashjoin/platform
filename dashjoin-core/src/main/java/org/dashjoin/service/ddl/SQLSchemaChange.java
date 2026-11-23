@@ -13,8 +13,6 @@ public class SQLSchemaChange implements SchemaChange {
   SQLDatabase db;
 
   public SQLSchemaChange(SQLDatabase db) {
-    if (db.url.startsWith("jdbc:h2:mem:"))
-      throw new RuntimeException("Schema changes are not supported on this database: " + db.url);
     this.db = db;
   }
 

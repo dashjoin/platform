@@ -32,18 +32,13 @@ public class AlterColumnTrigger extends AbstractDatabaseTrigger {
       }
       case "update": {
         // ref implies displayWith
-        String ref = (String) arg.object.get("ref");
-        if (ref != null)
-          arg.object.put("displayWith", "fk");
-        else
-          arg.object.put("displayWith", null);
+        // (only if part of the update, a partial update must not clear the stored value)
+        if (arg.object.containsKey("ref"))
+          arg.object.put("displayWith", arg.object.get("ref") != null ? "fk" : null);
 
         // pkpos implies createOnly
-        Object pkpos = arg.object.get("pkpos");
-        if (pkpos != null)
-          arg.object.put("createOnly", true);
-        else
-          arg.object.put("createOnly", null);
+        if (arg.object.containsKey("pkpos"))
+          arg.object.put("createOnly", arg.object.get("pkpos") != null ? true : null);
 
         String[] parts = ((String) arg.search.get("ID")).split("/");
         x.database = parts[0] + "/" + parts[1];

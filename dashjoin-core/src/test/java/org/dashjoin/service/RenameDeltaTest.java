@@ -130,8 +130,9 @@ public class RenameDeltaTest {
   public void renameColumn() throws Exception {
     update("Property", "dj/ddl/T/AGE", m("name", "YEARS"));
 
-    // kept: ref
+    // kept: ref and displayWith (#553)
     Assertions.assertEquals("dj/ddl/T/NAME", column("dj/ddl/T/YEARS").get("ref"));
+    Assertions.assertEquals("fk", column("dj/ddl/T/YEARS").get("displayWith"));
 
     // status quo: title and comment are lost
     Assertions.assertNull(column("dj/ddl/T/YEARS").get("title"));
@@ -145,8 +146,8 @@ public class RenameDeltaTest {
     @SuppressWarnings("unchecked")
     Map<String, Object> props =
         (Map<String, Object>) ((Map<String, Object>) stored().get("T")).get("properties");
-    Assertions.assertEquals(m("NAME", m("title", "Name"), "YEARS", m("ref", "dj/ddl/T/NAME")),
-        props);
+    Assertions.assertEquals(m("NAME", m("title", "Name"), "YEARS",
+        m("ref", "dj/ddl/T/NAME", "displayWith", "fk")), props);
   }
 
   @Test
