@@ -13,7 +13,9 @@ org.dashjoin.expression.ExpressionService$Traverse
 org.dashjoin.expression.ExpressionService$Incoming
 org.dashjoin.expression.ExpressionService$Call
 org.dashjoin.function.Email
+org.dashjoin.function.EmailInbox
 org.dashjoin.function.Credentials
+org.dashjoin.function.OAuth2Credentials
 org.dashjoin.function.RestJson
 org.dashjoin.function.ConsoleLog
 org.dashjoin.function.CollectMetadata
