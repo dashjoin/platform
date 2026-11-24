@@ -1,6 +1,6 @@
 {
 	"ID": "path",
-	"query": "MATCH path=(x:`dj/junit/EMP`)-[:WORKSON]->(p) RETURN path",
+	"query": "MATCH p = (x:`dj/junit/EMP`)-[:WORKSON]->(y) RETURN p",
 	"type": "read",
 	"roles": ["user"]
 }

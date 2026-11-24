@@ -560,7 +560,7 @@
 	"graph": [
 		{
 			"title": "graph widget",
-			"description": "display a directed labelled graph showing the result of an OpenCypher query",
+			"description": "display a directed labelled graph showing the result of a GQL graph query",
 			"code": {
 				"nodes": "$adHocQueryGraph('northwind', 'match p=(x:EMPLOYEES)-[:REPORTS_TO]->(y) return p').p",
 				"widget": "graph"

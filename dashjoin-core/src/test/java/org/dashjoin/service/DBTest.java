@@ -120,11 +120,14 @@ public class DBTest {
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     List<Map<String, Object>> res = db.queryGraph(sc, "junit", "path", null);
     Assertions.assertEquals(2, res.size());
-    Map<String, Object> first = getMap(res.get(0), "path");
+    Map<String, Object> first = getMap(res.get(0), "p");
     Assertions.assertTrue(getMap(first, "start").containsKey("_dj_resource"));
     List<Map<String, Object>> steps = getList(first, "steps");
     Assertions.assertEquals(1, steps.size());
-    Assertions.assertEquals("{_dj_edge=WORKSON, _dj_outbound=true}", "" + steps.get(0).get("edge"));
+    Map<String, Object> edge = getMap(steps.get(0), "edge");
+    // the foreign key column (its ID in the GQL engine), or the driver's own edge name
+    Assertions.assertTrue(("" + edge.get("_dj_edge")).endsWith("WORKSON"));
+    Assertions.assertEquals(true, edge.get("_dj_outbound"));
     Assertions.assertTrue(getMap(steps.get(0), "end").containsKey("_dj_resource"));
   }
 

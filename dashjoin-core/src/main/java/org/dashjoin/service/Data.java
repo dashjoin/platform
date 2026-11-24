@@ -25,7 +25,8 @@ import org.dashjoin.model.Table;
 import org.dashjoin.service.Database.QueryAndParams;
 import org.dashjoin.util.Escape;
 import org.dashjoin.util.MapUtil;
-import org.dashjoin.util.OpenCypherQuery;
+import org.dashjoin.util.gql.GqlEngine;
+import org.dashjoin.util.gql.GqlQuery;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -235,8 +236,8 @@ public class Data {
    * 
    * consider the following query:
    * 
-   * MATCH path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish)
-   * RETURN start._dj_resource, boss.LAST_NAME, path
+   * MATCH p = (start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish)
+   * RETURN start._dj_resource, boss.LAST_NAME, p
    * 
    * On the northwind DB, this query yields the following output:
    * 
@@ -244,9 +245,8 @@ public class Data {
    * 
    * "boss.LAST_NAME": "Buchanan",
    * 
-   * "path": { "start": record, "steps": [ { "edge": { "_dj_edge": "REPORTS_TO", "_dj_outbound":
-   * true }, "end": record }, { "edge": { "_dj_edge": "REPORTS_TO", "_dj_outbound": true }, "end":
-   * record } ] }
+   * "p": { "start": record, "steps": [ { "edge": { "_dj_edge": "dj/northwind/EMPLOYEES/REPORTS_TO",
+   * "_dj_outbound": true }, "end": record }, ... ] }
    */
   @POST
   @Path("/queryGraph/{database}/{queryId}")
@@ -272,22 +272,17 @@ public class Data {
 
     ACLContainerRequestFilter.check(sc, info);
 
-    // database * means: run query across all DBs using the opencypher engine
-    if (database.equals("*")) {
-      OpenCypherQuery q = new OpenCypherQuery(info.query, arguments);
-      return q.run(services, this, sc);
-    } else {
-      // delegate to DB
-      Database db = services.getConfig().getDatabase(dj(database));
-      List<Map<String, Object>> res = db.queryGraph(info, arguments);
-      if (res == null) {
-        // null means that the delegate DB does not support graph queries - default to internal
-        // engine (like with database='*')
-        OpenCypherQuery q = new OpenCypherQuery(info.query, arguments);
-        return q.run(services, this, sc);
-      }
-      return res;
-    }
+    // database * means: run query across all DBs using the GQL engine
+    if (database.equals("*"))
+      return new GqlEngine(services, this, sc).run(GqlQuery.parse(info.query, arguments));
+    // delegate to DB
+    Database db = services.getConfig().getDatabase(dj(database));
+    List<Map<String, Object>> res = db.queryGraph(info, arguments);
+    if (res == null)
+      // null means that the delegate DB does not support graph queries - default to internal
+      // engine (like with database='*')
+      return new GqlEngine(services, this, sc).run(GqlQuery.parse(info.query, arguments));
+    return res;
   }
 
   /**

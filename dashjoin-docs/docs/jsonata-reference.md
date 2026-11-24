@@ -90,7 +90,7 @@ parseUrl | $parseUrl(url) | Parses a URL into protocol, host, port, path, query,
 parseXml | $parseXml(xml, arrays) | Parses XML and converts it to JSON (see openXml)
 parseYaml | $parseYaml(yaml) | Parses YAML and converts it to JSON (see openYaml)
 query| $query(database, queryId, arguments) |Query result table
-queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs an OpenCypher query over all DBs
+queryGraph| $queryGraph(database, queryId, arguments) |Graph query result, specifying the database as * runs a GQL query over all DBs
 read|  $read(database, table, pk) | The record
 reconcileEntity | $reconcileEntity(entity, entity-language?, limit?) | Uses the wikidata query service to reconcile a string to a wikidata id. The entity is a simple string. The entity language is the language the entity is expressed in (defaults to en). The limit (default 1) determines the number of results returned (see [AI & ML Integration](ai-ml-integration.md))
 saveTable| $saveTable(Ignore \| Refresh \| Delete All, database, table, data, pk?) | Allows performing an ad hoc ETL operation (note that createSchema is true)

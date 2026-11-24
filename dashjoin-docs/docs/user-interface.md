@@ -231,8 +231,8 @@ Once the editor is closed, the samples are replaced with the template variables 
 ### Graph Queries
 
 Apart from managing traditional queries, the Dashjoin query catalog can also be used to store graph queries.
-There are different flavors of graph query languages. We orient ourselves at the [OpenCypher](https://opencypher.org/) language
-and the upcoming [GQL Standard](https://www.gqlstandards.org/). Like queries on document and relational database,
+Dashjoin graph queries use a subset of [GQL](https://www.iso.org/standard/76120.html), the ISO standard
+graph query language (whose pattern syntax is also part of SQL as SQL/PGQ). Like queries on document and relational databases,
 graph queries return a table where the columns represent the projection variables and each row contains variable values
 that match the query pattern / path.
 
@@ -243,24 +243,58 @@ orders processed by the employee, the employee's boss's boss, and so on. Therefo
 sure that apart from the raw data, the result also contains type information that can be used by the UI in order to
 interpret the values.
 
-Graph queries can be run on a specific or on all databases. Dashjoin contains a partial OpenCypher implementation. Consider the following OpenCypher 
-example (to learn OpenCypher, please refer to [this interactive guide](https://neo4j.com/developer/cypher/querying/)):
+Graph queries can be run on a specific or on all databases. The records of all tables form the graph:
+
+* a node label is a table: its name (`EMPLOYEES`) or its ID (`` `dj/northwind/EMPLOYEES` ``)
+* an edge label is a foreign key column: its name (`REPORTS_TO`) or its ID (`` `dj/northwind/EMPLOYEES/REPORTS_TO` ``).
+  An edge points from the record holding the key to the record it references: `->` follows it, `<-` goes backwards, `-` does either
 
 ```
-MATCH 
-  path=(start:`dj/northwind/EMPLOYEES`)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish) 
-RETURN 
-  start._dj_resource, boss.LAST_NAME, finish._dj_resource, path"
+MATCH
+  p = (start:EMPLOYEES)-[r1:REPORTS_TO]->(boss)-[r2:REPORTS_TO]->(finish)
+RETURN
+  start._dj_resource, boss.LAST_NAME, finish._dj_resource, p
 ```
 
 This query traverses the recursive "reports to" relationship. The variables start, boss, and finish
 represent the graph nodes. As mentioned before, the engine adds the record metadata. i.e. which database and table / collection
-the record comes from. The path variable matches the entire traversal and contains all nodes and edges (relationships) that were
+the record comes from. The path variable p matches the entire traversal and contains all nodes and edges (relationships) that were
 traversed.
+
+The supported part of GQL:
+
+* one path pattern: `MATCH [p =] [selector] [mode] (node) edge (node) ...`
+* nodes: `(variable:LABEL|LABEL2 {COLUMN: value} WHERE condition)`, all parts optional
+* edges: `-[variable:REL|REL2]->`, `<-[...]-`, `-[...]-` and the short forms `->`, `<-`, `-` (also `-->`, `<--`, `--`)
+* the number of hops after an edge: `{2}`, `{1,5}`, `{1,}`, `{,3}`, `*` (0 or more), `+` (1 or more). Intermediate records can come from any table
+* selectors: `ALL` (default), `ANY`, `ANY k`, `ANY SHORTEST`, `ALL SHORTEST`, `SHORTEST k` (per start and end record)
+* path modes: `WALK` (default), `TRAIL` (no edge twice), `ACYCLIC` (no record twice), `SIMPLE` (no record twice, except that the path may end where it started).
+  An unbounded number of hops needs a selector or a path mode other than `WALK`
+* `WHERE` with `=`, `<>`, `<`, `<=`, `>`, `>=`, `IN [...]`, `IS [NOT] NULL`, `AND`, `OR`, `NOT`
+* `RETURN [DISTINCT] variable, variable.COLUMN AS name, PATH_LENGTH(p) ... [LIMIT n]`
+* parameters: `$name` (and `${name}` like in other queries)
+* reserved words (`MATCH`, `PATH`, `ANY`, ...) can be variables or labels only in backticks
+
+Edges are returned as `{_dj_edge: foreign key column ID (dj/db/table/column), _dj_outbound: true if the edge was followed as declared}`.
+A quantified edge variable holds the list of its edges.
+
+#### Finding connections
+
+To find out how two records are connected, search for the shortest paths between them and list the relationships that count:
+
+```
+MATCH p = ALL SHORTEST (a:CUSTOMERS {CUSTOMER_ID: $customer})-[:CUSTOMER_ID|EMPLOYEE_ID|REPORTS_TO]-{1,6}(b:EMPLOYEES {EMPLOYEE_ID: $employee})
+RETURN p
+```
+
+When both ends are given by their columns like here, the search runs from both sides until they meet, which keeps it fast even across
+several hops. Listing the relationships is important: lookup tables (a country, a status) or generic links (rdf:type) connect almost
+every record without telling anything. A search stops with an error if a record has more than 1000 links via one relationship
+(leave that relationship out), or if a query reaches more than 100,000 records or runs longer than a minute.
 
 [AQL](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html) and [SPARQL Property Paths](https://www.w3.org/TR/sparql11-property-paths/)
 are alternative graph query languages that can be pushed down to the native database query engine if the query is run on the respective ArangoDB / RDF4J
-database. The Dashjoin drivers make sure that the query result has the same structure as a corresponding OpenCypher query.
+database. The Dashjoin drivers make sure that the query result has the same structure as a corresponding GQL query.
 
 Note that the graphical query editor does not yet support composing graph queries.
 

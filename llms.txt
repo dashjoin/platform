@@ -494,7 +494,7 @@ CODE: {
 }
 
 TITLE: graph widget
-DESCRIPTION: display a directed labelled graph showing the result of an OpenCypher query
+DESCRIPTION: display a directed labelled graph showing the result of a GQL graph query
 LANGUAGE: json
 CODE: {
   "nodes" : "$adHocQueryGraph('northwind', 'match p=(x:EMPLOYEES)-[:REPORTS_TO]->(y) return p').p",

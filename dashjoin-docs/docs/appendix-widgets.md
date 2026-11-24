@@ -499,7 +499,7 @@ Allows editing related records of a database record. In this example, the order 
 }
 ```
 ## graph widget
-display a directed labelled graph showing the result of an OpenCypher query
+display a directed labelled graph showing the result of a GQL graph query
 ```json
 {
   "nodes" : "$adHocQueryGraph('northwind', 'match p=(x:EMPLOYEES)-[:REPORTS_TO]->(y) return p').p",

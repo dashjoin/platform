@@ -427,7 +427,7 @@ Allows editing related records of a database record:
 
 Displays data as a directed graph
 
-* nodes: expression to generate nodes, this can either be the result of an OpenCypher query or a list of nodes
+* nodes: expression to generate nodes, this can either be the result of a GQL graph query or a list of nodes
 * _3d: if true, displays the graph in 3D, 2D otherwise
 
 To add a single starting node, you can simply use the following expression for "nodes":
@@ -450,16 +450,22 @@ $all("northwind", "EMPLOYEES").EMPLOYEE_ID.{
 }
 ```
 
-Alternatively, you can use an OpenCypher query:
+Alternatively, you can use a GQL graph query:
 
 ```text
 $adHocQueryGraph("*", "MATCH (e:EMPLOYEES) return e").e
 ```
 
-The previous examples only added nodes to the canvas. You can use OpenCypher to pre-select a path:
+The previous examples only added nodes to the canvas. You can use GQL to pre-select a path:
 
 ```text
-$adHocQueryGraph("*", "MATCH path=(e:EMPLOYEES) -[REPORTS_TO]-> (x) return path").path
+$adHocQueryGraph("*", "MATCH p = (e:EMPLOYEES)-[:REPORTS_TO]->(x) RETURN p").p
+```
+
+To show how two records are connected, search for the shortest paths between them:
+
+```text
+$adHocQueryGraph("*", "MATCH p = ALL SHORTEST (a:CUSTOMERS {CUSTOMER_ID: 'ALFKI'})-[:CUSTOMER_ID|EMPLOYEE_ID]-{1,4}(b:EMPLOYEES {EMPLOYEE_ID: 1}) RETURN p").p
 ```
 
 ### [html](https://demo.my.dashjoin.com/#/page/html)
