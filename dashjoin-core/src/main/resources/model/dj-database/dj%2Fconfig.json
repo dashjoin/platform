@@ -921,6 +921,7 @@
         "children": [
             {
               "widget": "container",
+              "redrawInterval": 10,
               "title": "Available Functions",
               "children": [{
                   "widget": "table",
@@ -959,7 +960,7 @@
               },
               {
                 "widget": "display",
-                "display": "($v := $read(database, table, pk1); {\"start\": $fromMillis($toMillis(value.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
+                "display": "($v := $read(database, table, pk1); {\"start\": $fromMillis($toMillis($v.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",
