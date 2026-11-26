@@ -293,9 +293,15 @@
             "widget": "display",
             "title": "Database Information",
             "display": "{\"status\": value.status, \"tables\": $count($keys( value.tables ))}",
-            "icons": {
-              "status": "error_outline",
-              "tables": "table_view"
+            "schema": {
+              "properties": {
+                "status": {
+                  "icon": "error_outline"
+                },
+                "tables": {
+                  "icon": "table_view"
+                }
+              }
             }
           },
           {
@@ -1067,7 +1073,7 @@
               {
                 "widget": "button",
                 "text": "Run Query",
-                "print": "$query($substringAfter(value.database, '/'), pk[0])"
+                "onClick": "$query($substringAfter(value.database, '/'), pk[0])"
               }
             ]
           }
@@ -1080,7 +1086,7 @@
           "parent": "dj/config/dj-query-catalog",
           "pkpos": 0,
           "type": "string",
-          "size": 4,
+          "class": "col-span-4",
           "createOnly": true
         },
         "type": {
@@ -1088,7 +1094,7 @@
           "name": "type",
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
-          "size": 4,
+          "class": "col-span-4",
           "options": "[\"read\", \"write\"]",
           "widget": "select"
         },
@@ -1098,7 +1104,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "ref": "dj/config/dj-database/ID",
-          "size": 4,
+          "class": "col-span-4",
           "displayWith": "fk"
         },
         "query": {
@@ -1108,7 +1114,7 @@
           "type": "string",
           "widget": "textarea",
           "widgetType": "queryEdit",
-          "size": 12,
+          "class": "col-span-12",
           "style": {
             "width": "calc(100vw - 100px - 240px)",
             "font-family": "monospace"
@@ -1118,7 +1124,7 @@
           "ID": "dj/config/dj-query-catalog/comment",
           "name": "comment",
           "parent": "dj/config/dj-query-catalog",
-          "size": 8,
+          "class": "col-span-8",
           "type": "string"
         },
         "roles": {
@@ -1127,7 +1133,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "array",
           "layout": "select",
-          "size": 4,
+          "class": "col-span-4",
           "items": {
             "type": "string"
           },
@@ -1138,7 +1144,7 @@
           "name": "arguments",
           "parent": "dj/config/dj-query-catalog",
           "type": "object",
-          "size": 12,
+          "class": "col-span-12",
           "additionalProperties": {
             "type": "object",
             "properties": {
@@ -1740,15 +1746,23 @@
             "children": [
               {
                 "widget": "button",
-                "print": "$call(pk[0])"
+                "onClick": "$call(pk[0])"
               },
               {
                 "widget": "display",
                 "display": "($v := $read(database, table, pk); {\"start\": $fromMillis($toMillis($v.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
-                "icons": {
-                  "status": "error_outline",
-                  "end": "flag",
-                  "start": "start"
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "icon": "error_outline"
+                    },
+                    "end": {
+                      "icon": "flag"
+                    },
+                    "start": {
+                      "icon": "start"
+                    }
+                  }
                 }
               }
             ],
@@ -1853,7 +1867,7 @@
           },
           {
             "text": "Run Test Suite",
-            "print": "($test := $use('unit-test') ~> $eval;\n$test(value))",
+            "onClick": "($test := $use('unit-test') ~> $eval;\n$test(value))",
             "widget": "button"
           }
         ]
@@ -1872,7 +1886,7 @@
           {
             "text": "Run All Test Suites",
             "widget": "button",
-            "print": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
+            "onClick": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
           }
         ]
       }

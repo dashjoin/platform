@@ -3,25 +3,29 @@
     "layout": {
         "widget": "page",
         "children": [
-			{
-				"widget": "display",
-				"display": "{'Current Branch': $gitCheckout()}",
-				"icons": {
-					"Current Branch": "call_split"
-				}
-			},
-			{
-			    "text": "Pull",
-			    "print": "($gitPull();$refresh())",
-			    "widget": "button",
-				"size": 2
-			},
-			{
-			    "text": "Checkout Branch ...",
-			    "print": "($x := $prompt('Enter the name of the branch to checkout'); $x ? ($gitCheckout($x);$refresh()))",
-			    "widget": "button",
-				"size": 10
-			},
+            {
+                "widget": "display",
+                "display": "{'Current Branch': $gitCheckout()}",
+                "schema": {
+                    "properties": {
+                        "Current Branch": {
+                            "icon": "call_split"
+                        }
+                    }
+                }
+            },
+            {
+                "text": "Pull",
+                "onClick": "($gitPull();$refresh())",
+                "widget": "button",
+                "class": "md:col-span-2"
+            },
+            {
+                "text": "Checkout Branch ...",
+                "onClick": "($x := $prompt('Enter the name of the branch to checkout'); $x ? ($gitCheckout($x);$refresh()))",
+                "widget": "button",
+                "class": "md:col-span-10"
+            },
             {
                 "expression": "$gitStatus().{\"type\":type, \"path\":path, \"diff\": diff}",
                 "title": "Changes",
@@ -29,22 +33,22 @@
                     "Revert": "(selected.$gitRestore(path); $refresh(); $notify(\"Ok\"))",
                     "Commit": "($message := $prompt(\"Enter commit message\"); $gitCommit($message, [selected.path]))"
                 },
-                "widget": "actionTable"
+                "widget": "table"
             },
             {
-				"widget": "container",
-				"if": "$djVersion().title = \"dashjoin-playground\"",
-				"children": [
-		            {
-		                "title": "Install Apps from GitHub",
-		                "expression": "$openJson(\"https://api.github.com/orgs/dashjoin/repos\").name.(\n  \"https://raw.githubusercontent.com/dashjoin/\" & $ & \"/main/dashjoin.json\";\n)[$urlExists($)].$openJson($).{\n  \"name\": name,\n  \"description\": description,\n  \"url\": url\n}",
-		                "properties": {
-		                    "install": "($confirm(\"WARNING: Installing an app will delete your current playground contents. Are you sure?\") ? ($notify(\"Installing...\"); $gitClone(selected.url); $notify(\"Installation successful - please refresh your browser\")) : null)"
-		                },
-		                "widget": "actionTable"
-		            }
-				]
-			}
+                "widget": "container",
+                "if": "$djVersion().title = \"dashjoin-playground\"",
+                "children": [
+                    {
+                        "title": "Install Apps from GitHub",
+                        "expression": "$openJson(\"https://api.github.com/orgs/dashjoin/repos\").name.(\n  \"https://raw.githubusercontent.com/dashjoin/\" & $ & \"/main/dashjoin.json\";\n)[$urlExists($)].$openJson($).{\n  \"name\": name,\n  \"description\": description,\n  \"url\": url\n}",
+                        "properties": {
+                            "install": "($confirm(\"WARNING: Installing an app will delete your current playground contents. Are you sure?\") ? ($notify(\"Installing...\"); $gitClone(selected.url); $notify(\"Installation successful - please refresh your browser\")) : null)"
+                        },
+                        "widget": "table"
+                    }
+                ]
+            }
         ]
     }
 }

@@ -36,7 +36,7 @@
                                 "children": [
                                     {
                                         "text": "Attach SwaggerHub API",
-                                        "print": "($update(\"config\", \"dj-config\", \"openapi\", {\"map\": {\"url\": \"https://api.swaggerhub.com/\" & form.type & \"/\" & form.owner & \"/\" & form.name & (form.version ? \"/\" & form.version : \"\")}}); $refresh())",
+                                        "onClick": "($update(\"config\", \"dj-config\", \"openapi\", {\"map\": {\"url\": \"https://api.swaggerhub.com/\" & form.type & \"/\" & form.owner & \"/\" & form.name & (form.version ? \"/\" & form.version : \"\")}}); $refresh())",
                                         "widget": "button",
                                         "schema": {
                                             "type": "object",
@@ -44,24 +44,26 @@
                                                 "type": {
                                                     "widget": "select",
                                                     "options": "[\"apis\", \"domains\"]",
-                                                    "required": true,
-                                                    "size": 3
+                                                    "class": "col-span-3"
                                                 },
                                                 "owner": {
-                                                    "required": true,
-                                                    "size": 3
+                                                    "class": "col-span-3"
                                                 },
                                                 "name": {
-                                                    "required": true,
-                                                    "size": 3
+                                                    "class": "col-span-3"
                                                 },
                                                 "version": {
                                                     "examples": [
                                                         "1.0.0"
                                                     ],
-                                                    "size": 3
+                                                    "class": "col-span-3"
                                                 }
-                                            }
+                                            },
+                                            "required": [
+                                                "type",
+                                                "owner",
+                                                "name"
+                                            ]
                                         }
                                     }
                                 ]
@@ -71,14 +73,13 @@
                     {
                         "title": "Create schema / table defined in OpenAPI in a local database",
                         "text": "Create Table",
-                        "print": "$createTable(form.database, form.table)",
+                        "onClick": "$createTable(form.database, form.table)",
                         "widget": "button",
                         "schema": {
                             "type": "object",
                             "properties": {
                                 "database": {
                                     "type": "string",
-                                    "required": true,
                                     "description": "Database to create the tables in",
                                     "options": "$filter($all(\"config\", \"dj-database\").name, function($i) {$i != 'config'})",
                                     "widget": "select",
@@ -91,27 +92,26 @@
                                     "examples": [
                                         "table:\n  properties:\n    id:\n      type: string"
                                     ],
-                                    "style": {
-                                        "width": "400px",
-                                        "height": "100px",
-                                        "font-family": "monospace"
-                                    },
-                                    "required": true
+                                    "class": "col-span-12 font-mono"
                                 }
-                            }
+                            },
+                            "required": [
+                                "database",
+                                "table"
+                            ]
                         }
                     },
                     {
                         "title": "Create function stubs from OpenAPI operations",
                         "text": "Create Stubs",
-                        "print": "$createStubs() ",
+                        "onClick": "$createStubs() ",
                         "card": true,
                         "widget": "button"
                     },
                     {
                         "title": "Publish queries, functions, and schemas defined in the x-dashjoin section of your OpenAPI spec",
                         "text": "Publish API",
-                        "print": "$saveApi()",
+                        "onClick": "$saveApi()",
                         "card": true,
                         "widget": "button"
                     }

@@ -431,39 +431,6 @@ public class DjLintTest {
     Assertions.assertEquals("/layout/markdown-pointer", lint.findings.get(0).path());
   }
 
-  /**
-   * the platform's built-in pages, widgets and table / record layouts (dj/config.json) match
-   * widgets.json
-   */
-  @Test
-  public void builtInModel() throws Exception {
-    List<String> shape = List.of("missing-widget", "unknown-widget", "unknown-property",
-        "deprecated-widget", "deprecated-property", "deprecated-form-property", "url-not-string", "form-not-object", "unknown-input",
-        "options-not-select", "file-setting", "unknown-form-property");
-    File model = new File("src/main/resources/model");
-    Assertions.assertTrue(model.isDirectory(), model.getAbsolutePath());
-    Linter lint = new Linter();
-    File[] folders = model.listFiles(File::isDirectory);
-    for (boolean walk : new boolean[] {false, true})
-      for (File folder : folders)
-        for (File f : folder.listFiles((dir, name) -> name.endsWith(".json")))
-          if (walk)
-            lint.record(folder.getName(), map(Files.readString(f.toPath())));
-          else
-            lint.define(folder.getName(), map(Files.readString(f.toPath())));
-    // the knowledge base's default table / record layouts (PojoDatabase.template)
-    for (File folder : new File("src/main/resources/template").listFiles(File::isDirectory))
-      for (File f : folder.listFiles((dir, name) -> name.endsWith(".json"))) {
-        String file = "template/" + folder.getName() + "/" + f.getName();
-        lint.layout(file, "", json(Files.readString(f.toPath())));
-        lint.expressions(file, "", json(Files.readString(f.toPath())), false);
-      }
-    // templates: no findings at all (e.g. an empty expression)
-    List<Finding> found = lint.findings.stream().filter(f -> shape.contains(f.rule())
-        || f.file().startsWith("template/") && f.severity() != Severity.HINT).toList();
-    Assertions.assertEquals(List.of(), found, "" + found);
-  }
-
   @Test
   public void json() throws Exception {
     Linter lint = new Linter();

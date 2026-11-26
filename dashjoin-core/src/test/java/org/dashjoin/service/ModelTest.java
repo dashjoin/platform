@@ -1,12 +1,16 @@
 package org.dashjoin.service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-import org.apache.commons.collections4.IteratorUtils;
+import org.dashjoin.function.lint.Finding;
+import org.dashjoin.function.lint.Linter;
+import org.dashjoin.function.lint.Rules;
+import org.dashjoin.function.lint.Severity;
 import org.dashjoin.model.QueryMeta;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +23,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * checks the structure of all JSON files in apps (query catalog, widgets, database definitions,
@@ -44,14 +47,43 @@ public class ModelTest {
         JsonNode tree = om.readTree(getClass().getResourceAsStream("/" + s));
         if (folder.equals("dj-query-catalog"))
           om.readValue(getClass().getResourceAsStream("/" + s), QueryMeta.class);
-        if (folder.equals("widget"))
-          checkLayout(tree.get("layout"));
-        if (folder.equals("page"))
-          checkLayout(tree.get("layout"));
-        if (folder.equals("dj-database"))
-          checkDatabaseLayout(tree);
+        // layouts and forms: see lint()
         checkExpressions(tree);
       }
+  }
+
+  /**
+   * lints layouts and forms against widgets.json (the rules in Rules.SHAPE): pages, widgets, table
+   * / record layouts of databases and the knowledge base's default layouts (PojoDatabase.template)
+   */
+  @Test
+  public void lint() throws Exception {
+    Map<String, List<Map<String, Object>>> records = new LinkedHashMap<>();
+    for (String folder : new String[] {"Dashjoin", "dj-query-catalog", "widget", "page",
+        "dj-database", "dj-function", "dj-config", "dj-library"})
+      for (String s : new Reflections("model." + folder, new ResourcesScanner())
+          .getResources(Pattern.compile(".*\\.json")))
+        records.computeIfAbsent(folder, k -> new ArrayList<>())
+            .add(om.readValue(getClass().getResourceAsStream("/" + s), JSONDatabase.tr));
+
+    Linter lint = new Linter();
+    for (Entry<String, List<Map<String, Object>>> e : records.entrySet())
+      for (Map<String, Object> record : e.getValue())
+        lint.define(e.getKey(), record);
+    for (Entry<String, List<Map<String, Object>>> e : records.entrySet())
+      for (Map<String, Object> record : e.getValue())
+        lint.record(e.getKey(), record);
+    for (String s : new Reflections("template", new ResourcesScanner())
+        .getResources(Pattern.compile(".*\\.json"))) {
+      JsonNode template = om.readTree(getClass().getResourceAsStream("/" + s));
+      lint.layout(s, "", template);
+      lint.expressions(s, "", template, false);
+    }
+
+    // templates: no errors at all (e.g. an empty expression)
+    List<Finding> found = lint.findings.stream().filter(f -> Rules.SHAPE.contains(f.rule())
+        || f.file().startsWith("template/") && f.severity() == Severity.ERROR).toList();
+    Assertions.assertEquals(List.of(), found, "" + found);
   }
 
   /**
@@ -126,47 +158,6 @@ public class ModelTest {
           return true;
       }
     return false;
-  }
-
-  void checkDatabaseLayout(JsonNode tree) {
-    for (String layout : new String[] {"instanceLayout", "tableLayout"})
-      if (tree.get(layout) != null)
-        checkLayout(tree.get(layout));
-    for (JsonNode i : tree)
-      checkDatabaseLayout(i);
-  }
-
-  void checkLayout(JsonNode tree) {
-    if (tree.get("children") != null)
-      for (JsonNode i : tree.get("children"))
-        checkLayout(i);
-
-    if (tree.get("widget") != null) {
-      // System.out.println(tree.get("widget"));
-      Assertions.assertTrue(Arrays
-          .asList("aichat", "button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
-              "expansion", "edit", "all", "create", "container", "grid", "display", "${pk[0]}",
-              "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
-              "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
-              "tree", "variable", "sidenav-switch", "html", "notebook", "actionTable", "logo",
-              "locale-switch", "dark-mode-switch", "logout-button", "breadcrumbs", "heading")
-          .contains(tree.get("widget").asText()));
-    }
-
-    for (Entry<String, JsonNode> e : IteratorUtils.toList(tree.fields())) {
-      // System.out.println(e);
-      Assertions.assertTrue(Arrays.asList("ID", "widget", "text", "title", "pageLayout", "readOnly",
-          "tooltip", "icon", "icons", "href", "children", "database", "table", "schema", "chart",
-          "query", "arguments", "fxHide", "display", "prop", "createSchema", "columns", "roles",
-          "if", "context", "properties", "deleteConfirmation", "print", "navigate", "markdown",
-          "layout", "style", "class", /* schema info in config.json */ "name", "parent",
-          /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
-          "expression", "html", "script", "hideframe", "clearCache", "card", "size", "cached",
-          "onChat", "uploadEnabled", "onRender", "hideColumns", "foreach", "frame")
-          .contains(e.getKey()));
-      if (e.getKey().equals("url"))
-        Assertions.assertTrue(e.getValue() instanceof TextNode);
-    }
   }
 
   void checkExpressions(JsonNode tree) throws Exception {

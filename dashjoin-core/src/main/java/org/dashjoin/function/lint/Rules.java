@@ -494,6 +494,15 @@ public class Rules {
       collectPointers(prefix, i, referenced);
   }
 
+  /**
+   * the rules that check the shape of layouts and forms against widgets.json (as opposed to
+   * references, expressions and metadata)
+   */
+  public static final List<String> SHAPE = List.of("missing-widget", "unknown-widget",
+      "deprecated-widget", "unknown-property", "deprecated-property", "url-not-string",
+      "form-not-object", "unknown-input", "options-not-select", "file-setting",
+      "unknown-form-property", "deprecated-form-property");
+
   /** all rules, in the order they run on a node */
   public static final List<LintRule> ALL = List.of(DANGLING_POINTER, UNIT_TEST, NAME_MISMATCH,
       MISSING_TYPE, PARENT_MISMATCH, ID_NOT_PARENT_NAME, ID_PREFIX, REF_NOT_PK, MISSING_WIDGET,

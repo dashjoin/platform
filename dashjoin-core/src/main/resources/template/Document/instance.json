@@ -7,29 +7,44 @@
         },
         {
             "text": "Add new tag",
-            "expression": "",
-            "print": "($update('kb', 'Document', value.id, {'tags': $append(value.tags, form.tag)});$reload())",
             "widget": "button",
+            "onClick": "($update('kb', 'Document', value.id, {'tags': $append(value.tags, form.tag)}); $reload())",
             "schema": {
                 "type": "object",
+                "required": [
+                    "tag"
+                ],
                 "properties": {
                     "tag": {
-                        "required": true
+                        "type": "string",
+                        "title": "Tag"
                     }
                 }
             }
         },
         {
-            "display": "value",
             "title": "Document Info",
-			"icons": {
-			    "text": "text_snippet",
-			    "owner": "person",
-			    "path": "terminal",
-			    "size": "data_usage",
-			    "tags": "tag"
-			},
-            "widget": "display"
+            "widget": "display",
+            "display": "value",
+            "schema": {
+                "properties": {
+                    "text": {
+                        "icon": "text_snippet"
+                    },
+                    "owner": {
+                        "icon": "person"
+                    },
+                    "path": {
+                        "icon": "terminal"
+                    },
+                    "size": {
+                        "icon": "data_usage"
+                    },
+                    "tags": {
+                        "icon": "tag"
+                    }
+                }
+            }
         }
     ]
 }
