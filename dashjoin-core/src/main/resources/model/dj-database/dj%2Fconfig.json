@@ -921,7 +921,6 @@
         "children": [
             {
               "widget": "container",
-              "redrawInterval": 10,
               "title": "Available Functions",
               "children": [{
                   "widget": "table",
