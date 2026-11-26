@@ -1794,6 +1794,11 @@ DESCRIPTION: Scans the current app for errors and warnings
 LANGUAGE: jsonata
 CODE: $djLint()
 
+TITLE: djLint
+DESCRIPTION: Returns the findings as a list (each with the rule that reported it, its severity and the location in the file); rules can be switched off by ID
+LANGUAGE: jsonata
+CODE: $djLint({'format': 'json', 'ignore': ['unused']})
+
 TITLE: collectMetadata
 DESCRIPTION: Reconnects the database and picks up any schema changes
 LANGUAGE: jsonata

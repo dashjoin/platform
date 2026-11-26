@@ -4,138 +4,146 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import org.dashjoin.function.lint.Finding;
+import org.dashjoin.function.lint.Linter;
+import org.dashjoin.function.lint.Rules;
+import org.dashjoin.function.lint.Severity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DjLintTest {
 
+  static final ObjectMapper om = new ObjectMapper();
+
+  static final String PAGE = "model/page/test.json";
+
+  static JsonNode json(String s) throws Exception {
+    return om.readTree(s);
+  }
+
+  @SuppressWarnings("unchecked")
+  static Map<String, Object> map(String s) throws Exception {
+    return om.readValue(s, Map.class);
+  }
+
+  static void layout(Linter lint, String s) throws Exception {
+    lint.layout(PAGE, "/layout", json(s));
+  }
+
+  static void expressions(Linter lint, String s, boolean backendOnly) throws Exception {
+    lint.expressions(PAGE, "", json(s), backendOnly);
+  }
+
+  static String all(Linter lint) {
+    return "" + lint.findings;
+  }
+
   @Test
   public void emptyForeach() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/dj-function/etl.json";
-    lint.checkExpressions(new ObjectMapper()
-        .readTree("{\"type\": \"ETL\", \"expression\": \"1\", \"foreach\": \"\"}"), true);
-    Assertions.assertEquals(1, lint.messages.size());
-    Assertions.assertTrue(lint.messages.get(0).contains("Empty expression foreach"),
-        lint.messages.get(0));
+    Linter lint = new Linter();
+    expressions(lint, "{\"type\": \"ETL\", \"expression\": \"1\", \"foreach\": \"\"}", true);
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertEquals("empty-expression", lint.findings.get(0).rule());
+    Assertions.assertTrue(all(lint).contains("Empty expression foreach"), all(lint));
   }
 
   @Test
   public void validForeach() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/dj-function/etl.json";
-    lint.checkExpressions(new ObjectMapper()
-        .readTree("{\"type\": \"ETL\", \"expression\": \"1\", \"foreach\": \"[1..3]\"}"), true);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    Linter lint = new Linter();
+    expressions(lint, "{\"type\": \"ETL\", \"expression\": \"1\", \"foreach\": \"[1..3]\"}", true);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
   }
 
   @Test
   public void layoutQuery() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
+    Linter lint = new Linter();
+    lint.queries = new HashSet<>(Arrays.asList("list", "insert"));
     lint.queryTypes.put("list", "read");
     lint.queryTypes.put("insert", "write");
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query")));
-    ObjectMapper om = new ObjectMapper();
 
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"nope\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"insert\"}"));
-    String all = "" + lint.messages;
-    Assertions.assertEquals(2, lint.messages.size(), all);
-    Assertions.assertTrue(all.contains("unknown query in widget table: nope"), all);
-    Assertions.assertTrue(all.contains("write query must not be used in widget table"), all);
+    layout(lint, "{\"widget\": \"table\", \"query\": \"nope\"}");
+    layout(lint, "{\"widget\": \"table\", \"query\": \"insert\"}");
+    Assertions.assertEquals(2, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("unknown query in widget table: nope"), all(lint));
+    Assertions.assertTrue(all(lint).contains("write query must not be used in widget table"),
+        all(lint));
   }
 
   @Test
   public void queryArguments() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
+    Linter lint = new Linter();
     lint.queryTypes.put("list", "read");
     lint.queryTypes.put("all", "read");
     lint.queriesWithArguments.add("list");
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query", "arguments")));
-    ObjectMapper om = new ObjectMapper();
 
-    lint.checkLayout(om.readTree(
-        "{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"{'limit': 5}\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"all\"}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"{'limit': 5}\"}");
+    layout(lint, "{\"widget\": \"table\", \"query\": \"all\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
-    lint.checkLayout(
-        om.readTree("{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"\"}"));
-    Assertions.assertEquals(2, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("no arguments set for query: list"),
-        lint.messages.get(0));
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\"}");
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\", \"arguments\": \"\"}");
+    // the empty arguments expression is reported too
+    String all = all(lint);
+    Assertions.assertEquals(2,
+        lint.findings.stream().filter(f -> f.rule().equals("missing-query-arguments")).count(),
+        all);
+    Assertions.assertTrue(all.contains("no arguments set for query: list"), all);
   }
 
   @Test
   public void selectWithoutOptions() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
-    ObjectMapper om = new ObjectMapper();
+    Linter lint = new Linter();
+    lint.form(PAGE, "", json("{\"widget\": \"select\", \"options\": \"['a', 'b']\"}"), false);
+    lint.form(PAGE, "", json("{\"widget\": \"string\"}"), false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkSchema(om.readTree("{\"widget\": \"select\", \"options\": \"['a', 'b']\"}"));
-    lint.checkSchema(om.readTree("{\"widget\": \"string\"}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
-
-    lint.checkSchema(om.readTree("{\"widget\": \"multi select\"}"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("no options set for input: multi select"),
-        lint.messages.get(0));
+    lint.form(PAGE, "", json("{\"widget\": \"multi select\"}"), false);
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("no options set for input: multi select"), all(lint));
   }
 
   @Test
   public void queryAndExpression() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
+    Linter lint = new Linter();
     lint.queryTypes.put("list", "read");
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query", "expression")));
-    ObjectMapper om = new ObjectMapper();
 
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"expression\": \"1\"}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\"}");
+    layout(lint, "{\"widget\": \"table\", \"expression\": \"1\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkLayout(
-        om.readTree("{\"widget\": \"table\", \"query\": \"list\", \"expression\": \"1\"}"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("query is ignored because expression"),
-        lint.messages.get(0));
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\", \"expression\": \"1\"}");
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("query is ignored because expression"), all(lint));
   }
 
   @Test
   public void layoutDatabase() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
+    Linter lint = new Linter();
     lint.databases = new HashSet<>(Arrays.asList("config", "northwind"));
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query"), "analytics",
-        Arrays.asList("database")));
-    ObjectMapper om = new ObjectMapper();
 
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"northwind\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"dj/northwind\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"analytics\", \"database\": \"config\"}"));
-    lint.checkLayout(om.readTree("{\"widget\": \"table\", \"database\": \"${db}\"}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    layout(lint, "{\"widget\": \"table\", \"database\": \"northwind\"}");
+    layout(lint, "{\"widget\": \"table\", \"database\": \"dj/northwind\"}");
+    layout(lint, "{\"widget\": \"analytics\", \"database\": \"config\"}");
+    layout(lint, "{\"widget\": \"table\", \"database\": \"${db}\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkLayout(om.readTree("{\"widget\": \"analytics\", \"database\": \"nope\"}"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("unknown database: nope"),
-        lint.messages.get(0));
+    layout(lint, "{\"widget\": \"analytics\", \"database\": \"nope\"}");
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("unknown database in widget analytics: nope"),
+        all(lint));
   }
 
-  DjLint referenceLint() {
-    DjLint lint = new DjLint();
-    lint.current = "model/page/test.json";
+  Linter referenceLint() {
+    Linter lint = new Linter();
     lint.queries = new HashSet<>(Arrays.asList("list"));
     lint.databases = new HashSet<>(Arrays.asList("config", "northwind"));
     lint.functions = new HashSet<>(Arrays.asList("sendMail"));
@@ -145,142 +153,134 @@ public class DjLintTest {
 
   @Test
   public void validReferences() throws Exception {
-    DjLint lint = referenceLint();
-    lint.checkExpressions(new ObjectMapper().readTree("{\"expression\": "
+    Linter lint = referenceLint();
+    expressions(lint, "{\"expression\": "
         + "\"x ? $call('sendMail') : [$query('northwind', 'list'), $all('dj/northwind', 'T'), "
-        + "$eval($use('unit-test')), $call(fn), function(){$read('config', 'page', 'p')}]\"}"),
+        + "$eval($use('unit-test')), $call(fn), function(){$read('config', 'page', 'p')}]\"}",
         false);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
   }
 
   @Test
   public void builtInQueries() throws Exception {
-    DjLint lint = referenceLint();
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("database", "query")));
-    lint.checkLayout(new ObjectMapper()
-        .readTree("{\"widget\": \"table\", \"database\": \"config\", \"query\": \"dj-navigation\"}"));
-    lint.checkExpressions(new ObjectMapper().readTree(
-        "{\"expression\": \"[$query('config', 'dj-functions'), $query('config', 'dj-query-performance')]\"}"),
+    Linter lint = referenceLint();
+    layout(lint, "{\"widget\": \"table\", \"database\": \"config\", \"query\": \"dj-navigation\"}");
+    expressions(lint,
+        "{\"expression\": \"[$query('config', 'dj-functions'), $query('config', 'dj-query-performance')]\"}",
         false);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
     // built-in queries are not hinted as unused
-    lint.checkUnused();
-    for (String q : DjLint.BUILT_IN_QUERIES)
-      Assertions.assertFalse(("" + lint.messages).contains("/" + q + ".json"), "" + lint.messages);
+    lint.finish();
+    for (String q : Rules.BUILT_IN_QUERIES)
+      Assertions.assertFalse(all(lint).contains("/" + q + ".json"), all(lint));
   }
 
   @Test
   public void missingCopilot() throws Exception {
-    DjLint lint = referenceLint();
+    Linter lint = referenceLint();
     // dj-copilot is optional and called from built-in pages
-    lint.checkExpressions(
-        new ObjectMapper().readTree("{\"expression\": \"$call('dj-copilot', {})\"}"), false);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    expressions(lint, "{\"expression\": \"$call('dj-copilot', {})\"}", false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
   }
 
   @Test
   public void danglingReferences() throws Exception {
-    DjLint lint = referenceLint();
+    Linter lint = referenceLint();
     // unknown references in branches and lambdas that are never evaluated
-    lint.checkExpressions(new ObjectMapper().readTree("{\"expression\": "
+    expressions(lint, "{\"expression\": "
         + "\"x ? $call('nope') : [$query('northwind', 'nope'), $all('nope', 'T'), "
-        + "function(){$use('nope')}]\"}"), false);
-    String all = "" + lint.messages;
-    Assertions.assertEquals(4, lint.messages.size(), all);
+        + "function(){$use('nope')}]\"}", false);
+    String all = all(lint);
+    Assertions.assertEquals(4, lint.findings.size(), all);
     Assertions.assertTrue(all.contains("unknown function in $call: nope"), all);
     Assertions.assertTrue(all.contains("unknown query in $query: nope"), all);
-    Assertions.assertTrue(all.contains("unknown database: nope"), all);
+    Assertions.assertTrue(all.contains("unknown database in $all: nope"), all);
     Assertions.assertTrue(all.contains("unknown library in $use: nope"), all);
   }
 
   @Test
   public void unused() throws Exception {
-    DjLint lint = referenceLint();
+    Linter lint = referenceLint();
     lint.queries = new HashSet<>(Arrays.asList("list", "orphanQuery"));
     lint.queryTypes.put("list", "read");
     lint.functions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction", "etl"));
     // etl is not a $call type and must not be reported
-    lint.calledFunctions = new HashSet<>(Arrays.asList("sendMail", "orphanFunction"));
+    lint.calledFunctions.addAll(Arrays.asList("sendMail", "orphanFunction"));
     lint.libraries = new HashSet<>(Arrays.asList("unit-test", "lib", "orphanLibrary"));
-    lint.widgets = new HashMap<>(Map.of("table", Arrays.asList("query")));
 
-    lint.checkLayout(new ObjectMapper().readTree("{\"widget\": \"table\", \"query\": \"list\"}"));
-    lint.checkExpressions(new ObjectMapper().readTree(
-        "{\"expression\": \"x ? $call('sendMail') : $eval($use('lib'))\"}"), false);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    layout(lint, "{\"widget\": \"table\", \"query\": \"list\"}");
+    expressions(lint, "{\"expression\": \"x ? $call('sendMail') : $eval($use('lib'))\"}", false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.checkUnused();
-    String all = "" + lint.messages;
-    Assertions.assertEquals(3, lint.messages.size(), all);
+    lint.finish();
+    String all = all(lint);
+    Assertions.assertEquals(3, lint.findings.size(), all);
     Assertions.assertTrue(all.contains("dj-query-catalog/orphanQuery.json: hint: query"), all);
     Assertions.assertTrue(all.contains("dj-function/orphanFunction.json: hint: function"), all);
     Assertions.assertTrue(all.contains("dj-library/orphanLibrary.json: hint: library"), all);
+    Assertions.assertTrue(lint.findings.stream().allMatch(f -> f.severity() == Severity.HINT));
   }
 
   @Test
   public void roles() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/dj-database/dj%2Fnorthwind.json";
+    Linter lint = new Linter();
     lint.roles = new HashSet<>(Arrays.asList("admin", "authenticated"));
     // icons.roles is a string, not a role list, and must be ignored
-    lint.checkRoles(new ObjectMapper().readTree("{\"roles\": [\"admin\"], \"icons\": "
-        + "{\"roles\": \"person_search\"}, \"tables\": {\"T\": {\"readRoles\": [\"admni\"], "
+    lint.record("dj-database", map("{\"ID\": \"dj/northwind\", \"roles\": [\"admin\"], \"icons\": "
+        + "{\"roles\": \"person_search\"}, \"tables\": {\"T\": {\"ID\": \"dj/northwind/T\", "
+        + "\"name\": \"T\", \"parent\": \"dj/northwind\", \"readRoles\": [\"admni\"], "
         + "\"writeRoles\": [\"authenticated\"]}}}"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("unknown role in readRoles: admni"),
-        lint.messages.get(0));
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("unknown role in readRoles: admni"), all(lint));
+    Assertions.assertEquals("/tables/T/readRoles", lint.findings.get(0).path());
   }
 
   @Test
   public void encodedColumnId() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/dj-database/dj%2Fdb.json";
-    Map<String, Object> root = Map.of("ID", "dj/db");
-
+    Linter lint = new Linter();
     // "/" and "%" in a column name are encoded in the ID
-    lint.check(root, "dj/db/T", Map.of("ID", "dj/db/T/a%2Fb%25c", "parent", "dj/db/T", "name",
-        "a/b%c", "type", "string"));
-    lint.check(root, "dj/db/T",
-        Map.of("ID", "dj/db/T/plain", "parent", "dj/db/T", "name", "plain", "type", "string"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    lint.record("dj-database",
+        map("{\"ID\": \"dj/db\", \"tables\": {\"T\": {\"ID\": \"dj/db/T\", \"name\": \"T\", "
+            + "\"parent\": \"dj/db\", \"properties\": {\"a/b%c\": {\"ID\": \"dj/db/T/a%2Fb%25c\", "
+            + "\"parent\": \"dj/db/T\", \"name\": \"a/b%c\", \"type\": \"string\"}, \"plain\": "
+            + "{\"ID\": \"dj/db/T/plain\", \"parent\": \"dj/db/T\", \"name\": \"plain\", "
+            + "\"type\": \"string\"}}}}}"));
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
-    lint.check(root, "dj/db/T",
-        Map.of("ID", "dj/db/T/a/b", "parent", "dj/db/T", "name", "a/b", "type", "string"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("ID must be parent + name"),
-        lint.messages.get(0));
+    lint.record("dj-database",
+        map("{\"ID\": \"dj/db\", \"tables\": {\"T\": {\"ID\": \"dj/db/T\", \"name\": \"T\", "
+            + "\"parent\": \"dj/db\", \"properties\": {\"a/b\": {\"ID\": \"dj/db/T/a/b\", "
+            + "\"parent\": \"dj/db/T\", \"name\": \"a/b\", \"type\": \"string\"}}}}}"));
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("ID must be parent + name"), all(lint));
+    Assertions.assertEquals("/tables/T/properties/a~1b", lint.findings.get(0).path());
   }
 
   @Test
   public void editSchema() throws Exception {
-    DjLint lint = new DjLint();
-    lint.current = "model/dj-database/dj%2Fresult.json";
-    // editRedirect is a studio property (lint/studio.json)
-    lint.widgets = new HashMap<>(
-        Map.of("edit", Arrays.asList("title", "text", "noDelete"), "button", Arrays.asList()));
-    ObjectMapper om = new ObjectMapper();
-
+    Linter lint = new Linter();
+    // editRedirect is a Studio setting ("studio": true in widgets.json): still allowed
     // edit / create schemas are table schemas and carry the column metadata
-    lint.checkLayout(om.readTree("{\"widget\": \"page\", \"children\": [{\"title\": \"Edit Record\","
+    layout(lint, "{\"widget\": \"page\", \"children\": [{\"title\": \"Edit Record\","
         + "\"widget\": \"edit\", \"editRedirect\": \"record\", \"schema\": {\"type\": \"object\","
         + "\"properties\": {\"ID\": {\"ID\": \"dj/result/Ergebnis/ID\", \"parent\": "
         + "\"dj/result/Ergebnis\", \"name\": \"ID\", \"readOnly\": true, \"dbType\": \"serial\","
-        + "\"type\": \"number\", \"pkpos\": 0, \"createOnly\": true}}}}]}"));
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+        + "\"type\": \"number\", \"pkpos\": 0, \"createOnly\": true}}}}]}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
 
     // button schemas are written by hand and must not contain column metadata
-    lint.checkLayout(om.readTree("{\"widget\": \"button\", \"schema\": {\"type\": \"object\","
-        + "\"properties\": {\"x\": {\"type\": \"string\", \"dbType\": \"serial\"}}}}"));
-    Assertions.assertEquals(1, lint.messages.size(), "" + lint.messages);
-    Assertions.assertTrue(lint.messages.get(0).contains("unknown property"), lint.messages.get(0));
+    layout(lint, "{\"widget\": \"button\", \"schema\": {\"type\": \"object\","
+        + "\"properties\": {\"x\": {\"type\": \"string\", \"dbType\": \"serial\"}}}}");
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("unknown form property: dbType"), all(lint));
+    Assertions.assertEquals("/layout/schema/properties/x", lint.findings.get(0).path());
   }
 
   @Test
   public void testTry() throws Exception {
-    DjLint lint = new DjLint();
-    lint.checkExpressions(new ObjectMapper().readTree(
-        "{\"expression\": \"$try(function(){$echo('test')})\"}"), false);
-    Assertions.assertEquals(0, lint.messages.size(), "" + lint.messages);
+    Linter lint = new Linter();
+    expressions(lint, "{\"expression\": \"$try(function(){$echo('test')})\"}", false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
   }
 
   @Test
@@ -299,17 +299,122 @@ public class DjLintTest {
     Files.writeString(p.resolve("a%2Fb.0.md"), "# hi");
     Files.writeString(p.resolve(".DS_Store"), "");
 
-    DjLint lint = new DjLint();
-    lint.checkOrphanedFiles(model.toFile());
-    String all = "" + lint.messages;
-    Assertions.assertEquals(2, lint.messages.size(), all);
-    Assertions.assertTrue(all.contains("model/dj-query-catalog/gone.0.sql: externalized field"),
+    Linter lint = new Linter();
+    lint.modelDir = model.toFile();
+    lint.finish();
+    String all = all(lint);
+    Assertions.assertEquals(2, lint.findings.size(), all);
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/gone.0.sql: warning: externalized"),
         all);
-    Assertions.assertTrue(all.contains("model/dj-query-catalog/list.1.sql: externalized field"),
+    Assertions.assertTrue(all.contains("model/dj-query-catalog/list.1.sql: warning: externalized"),
         all);
 
     // missing model folder
-    lint.checkOrphanedFiles(new File(model.toFile(), "nope"));
-    Assertions.assertEquals(2, lint.messages.size(), "" + lint.messages);
+    lint = new Linter();
+    lint.modelDir = new File(model.toFile(), "nope");
+    lint.finish();
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+  }
+
+  // rules from widgets.json
+
+  @Test
+  public void unknownWidgetAndProperty() throws Exception {
+    Linter lint = new Linter();
+    layout(lint, "{\"widget\": \"page\", \"children\": [{\"widget\": \"tabel\"}, "
+        + "{\"widget\": \"text\", \"titel\": \"x\"}]}");
+    Assertions.assertEquals(2, lint.findings.size(), all(lint));
+    Finding widget = lint.findings.get(0);
+    Assertions.assertEquals("unknown-widget", widget.rule());
+    Assertions.assertEquals("/layout/children/0", widget.path());
+    Finding prop = lint.findings.get(1);
+    Assertions.assertEquals("unknown-property", prop.rule());
+    Assertions.assertEquals(Severity.WARNING, prop.severity());
+    Assertions.assertEquals(
+        "model/page/test.json: warning: unknown property for widget text: titel (at /layout/children/1)",
+        prop.text());
+  }
+
+  @Test
+  public void newUiWidgets() throws Exception {
+    Linter lint = new Linter();
+    // widgets and properties of the new UI (unknown to the classic UI's property lists)
+    layout(lint, "{\"widget\": \"page\", \"frame\": {\"toolbar\": false}, \"children\": ["
+        + "{\"widget\": \"heading\", \"text\": \"Hi\"}, {\"widget\": \"container\", \"class\": "
+        + "\"md:col-span-6\", \"foreach\": \"[1, 2]\", \"children\": [{\"widget\": \"text\"}]}, "
+        + "{\"widget\": \"button\", \"icon\": \"add\", \"onClick\": \"1\"}]}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+  }
+
+  @Test
+  public void deprecatedProperty() throws Exception {
+    Linter lint = new Linter();
+    layout(lint, "{\"widget\": \"button\", \"navigate\": \"'/page/x'\", \"createSchema\": {}}");
+    layout(lint, "{\"widget\": \"aichat\", \"url\": \"x\"}");
+    // deprecated without a message (still read, e.g. size): not reported
+    layout(lint, "{\"widget\": \"text\", \"size\": 6}");
+    String all = all(lint);
+    Assertions.assertEquals(3, lint.findings.size(), all);
+    Assertions.assertTrue(all.contains("property navigate is deprecated for widget button: use $navigate"), all);
+    Assertions.assertTrue(all.contains("property createSchema is deprecated for widget button: use schema"), all);
+    Assertions.assertTrue(all.contains("property url is deprecated for widget aichat: only supported by the legacy chat"), all);
+  }
+
+  @Test
+  public void appWidgets() throws Exception {
+    Linter lint = new Linter();
+    lint.define("widget", Map.of("ID", "my-kpi"));
+    layout(lint, "{\"widget\": \"my-kpi\", \"metric\": \"sales\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+  }
+
+  @Test
+  public void ignoreRules() throws Exception {
+    Linter lint = new Linter().ignore(List.of("unknown-property"));
+    layout(lint, "{\"widget\": \"text\", \"titel\": \"x\"}");
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+  }
+
+  @Test
+  public void danglingPointer() throws Exception {
+    Linter lint = new Linter();
+    lint.record("page", map("{\"ID\": \"p\", \"layout\": {\"widget\": \"text\", "
+        + "\"markdown-pointer\": \"0.md\"}}"));
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("There must be a file called p.0.md"), all(lint));
+    Assertions.assertEquals("/layout/markdown-pointer", lint.findings.get(0).path());
+  }
+
+  /**
+   * the platform's built-in pages, widgets and table / record layouts (dj/config.json) match
+   * widgets.json
+   */
+  @Test
+  public void builtInModel() throws Exception {
+    List<String> shape = List.of("missing-widget", "unknown-widget", "unknown-property",
+        "deprecated-property", "url-not-string", "form-not-object", "unknown-input",
+        "options-not-select", "file-setting", "unknown-form-property");
+    File model = new File("src/main/resources/model");
+    Assertions.assertTrue(model.isDirectory(), model.getAbsolutePath());
+    Linter lint = new Linter();
+    File[] folders = model.listFiles(File::isDirectory);
+    for (boolean walk : new boolean[] {false, true})
+      for (File folder : folders)
+        for (File f : folder.listFiles((dir, name) -> name.endsWith(".json")))
+          if (walk)
+            lint.record(folder.getName(), map(Files.readString(f.toPath())));
+          else
+            lint.define(folder.getName(), map(Files.readString(f.toPath())));
+    List<Finding> found = lint.findings.stream().filter(f -> shape.contains(f.rule())).toList();
+    Assertions.assertEquals(List.of(), found, "" + found);
+  }
+
+  @Test
+  public void json() throws Exception {
+    Linter lint = new Linter();
+    Assertions.assertEquals("no warnings", lint.text());
+    layout(lint, "{\"widget\": \"tabel\"}");
+    Assertions.assertEquals(List.of(Map.of("file", PAGE, "path", "/layout", "rule",
+        "unknown-widget", "severity", "error", "message", "unknown widget: tabel")), lint.json());
   }
 }

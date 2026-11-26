@@ -1,5 +1,5 @@
 {
-    "$comment": "The widget declarations, owned by the platform and served at /assets/schema/widgets.json: source of the new UI's layout editor forms and of the JSON schemas for layout files (dashjoin-newui: yarn schema, scripts/gen-schema.mjs). One entry per widget id; 'newUI': false marks widgets only the classic UI renders. Property schemas reference the shared definitions in '$defs' with {\"$ref\": \"#/$defs/name\"} (JSON Schema 2020-12: keys next to $ref, e.g. a description, apply too); the generated schemas carry these $defs plus widget, form and tableSettings. \"deprecated\": true: still read, replaced; \"studio\": true: an advanced setting edited in Dashjoin Studio - the browser layout editor offers neither. \"contentMediaType\" says what a string holds (application/jsonata - see $defs expression -, text/markdown, text/html, text/javascript, text/tsx): the layout editor gives it a large editor, a JSONata expression one with a preview of its result.",
+    "$comment": "The widget declarations, owned by the platform and served at /assets/schema/widgets.json: source of the new UI's layout editor forms and of the JSON schemas for layout files (dashjoin-newui: yarn schema, scripts/gen-schema.mjs). One entry per widget id; 'newUI': false marks widgets only the classic UI renders. Property schemas reference the shared definitions in '$defs' with {\"$ref\": \"#/$defs/name\"} (JSON Schema 2020-12: keys next to $ref, e.g. a description, apply too); the generated schemas carry these $defs plus widget, form and tableSettings. \"deprecated\": true: still read, replaced; with \"deprecationMessage\" (VS Code's keyword) the platform's lint ($djLint) and VS Code also report it - e.g. a property no UI reads any more, with what to use instead; \"studio\": true: an advanced setting edited in Dashjoin Studio - the browser layout editor offers neither. \"contentMediaType\" says what a string holds (application/jsonata - see $defs expression -, text/markdown, text/html, text/javascript, text/tsx): the layout editor gives it a large editor, a JSONata expression one with a preview of its result.",
     "$defs": {
         "expression": {
             "type": "string",
@@ -400,6 +400,14 @@
                 "schema": {
                     "$ref": "#/$defs/displaySchema",
                     "description": "How the value is shown (the data stays as it is): for an object its keys (title, icon before the key, format, contentMediaType image/..., options - a literal [{label, value}] list shows labels for codes), for a list of rows items.properties"
+                },
+                "hideTableActions": {
+                    "type": "boolean",
+                    "description": "No filter, column chooser and export buttons (actions on selected rows still show)"
+                },
+                "hideTablePagination": {
+                    "type": "boolean",
+                    "description": "All rows on one page, without row count and page buttons"
                 }
             }
         },
@@ -427,6 +435,10 @@
                 },
                 "database": {
                     "$ref": "#/$defs/database"
+                },
+                "table": {
+                    "$ref": "#/$defs/table",
+                    "description": "Table of the database whose records are shown (paged and sorted by the platform); with database"
                 },
                 "query": {
                     "$ref": "#/$defs/query"
@@ -543,6 +555,10 @@
                     "deprecated": true,
                     "$ref": "#/$defs/expression",
                     "description": "Legacy name of onDelete (still read)"
+                },
+                "deleteConfirmation": {
+                    "type": "string",
+                    "description": "Confirmation text asked before the selected rows are deleted; may be a translation key"
                 }
             }
         },
@@ -572,6 +588,14 @@
                     "deprecated": true,
                     "$ref": "#/$defs/columns",
                     "description": "Classic: columns not shown; read as \"hidden\": true on them in the schema"
+                },
+                "hideTableActions": {
+                    "type": "boolean",
+                    "description": "No filter, column chooser and export buttons (actions on selected rows still show)"
+                },
+                "hideTablePagination": {
+                    "type": "boolean",
+                    "description": "All rows on one page, without row count and page buttons"
                 }
             }
         },
@@ -730,7 +754,8 @@
                 "navigate": {
                     "deprecated": true,
                     "$ref": "#/$defs/expression",
-                    "description": "Run on click and navigate to the URL it returns"
+                    "description": "Run on click and navigate to the URL it returns",
+                    "deprecationMessage": "use $navigate(url) in onClick instead"
                 },
                 "expression": {
                     "$ref": "#/$defs/expression",
@@ -754,6 +779,16 @@
                     "studio": true,
                     "$ref": "#/$defs/expression",
                     "description": "Adds a scan button to the form: the code read by the camera is \"scanned\"; an object result fills the form"
+                },
+                "properties": {
+                    "deprecated": true,
+                    "deprecationMessage": "use schema instead",
+                    "description": "Legacy form fields; replaced by schema"
+                },
+                "createSchema": {
+                    "deprecated": true,
+                    "deprecationMessage": "use schema instead",
+                    "description": "Legacy form; replaced by schema"
                 }
             }
         },
@@ -767,6 +802,16 @@
                 "schema": {
                     "$ref": "#/$defs/form",
                     "description": "Form fields; each one sets the session variable of the same name (variable.<field>)"
+                },
+                "properties": {
+                    "deprecated": true,
+                    "deprecationMessage": "use schema instead",
+                    "description": "Legacy form fields; replaced by schema"
+                },
+                "createSchema": {
+                    "deprecated": true,
+                    "deprecationMessage": "use schema instead",
+                    "description": "Legacy form; replaced by schema"
                 }
             }
         },
@@ -906,6 +951,61 @@
                     "studio": true,
                     "type": "boolean",
                     "description": "Relative links in answers are IDs: URL-encoded"
+                },
+                "onUpload": {
+                    "deprecated": true,
+                    "deprecationMessage": "uploaded files are passed via onChat",
+                    "description": "Legacy upload callback; uploaded files are passed to onChat"
+                },
+                "url": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: url"
+                },
+                "extraArgs": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: extraArgs"
+                },
+                "knowledge_base": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: knowledge_base"
+                },
+                "type": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: type"
+                },
+                "name": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: name"
+                },
+                "tagline": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: tagline"
+                },
+                "logo": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: logo"
+                },
+                "system_prompt": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (url), use expression and onChat instead",
+                    "description": "Legacy chat (url) setting: system_prompt"
+                },
+                "onDelete": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (onUpload)",
+                    "description": "Legacy chat (onUpload) setting: onDelete"
+                },
+                "toolsSelectable": {
+                    "deprecated": true,
+                    "deprecationMessage": "only supported by the legacy chat (onUpload)",
+                    "description": "Legacy chat (onUpload) setting: toolsSelectable"
                 }
             }
         },
@@ -1023,6 +1123,24 @@
                             }
                         }
                     }
+                },
+                "hideTableActions": {
+                    "type": "boolean",
+                    "description": "No filter, column chooser and export buttons (actions on selected rows still show)"
+                },
+                "hideTablePagination": {
+                    "type": "boolean",
+                    "description": "All rows on one page, without row count and page buttons"
+                },
+                "expression": {
+                    "studio": true,
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Classic UI only: expression whose result is analysed instead of the table"
+                },
+                "perPage": {
+                    "$ref": "#/$defs/perPage",
+                    "description": "Rows per page of the result table"
                 }
             }
         },
@@ -1250,6 +1368,71 @@
                     "description": "Keep the selected folder's structure (else all files go to the upload folder itself)"
                 }
             }
+        },
+        "datagrid": {
+            "newUI": false,
+            "description": "Excel-like table editor (the new UI's editable table replaces it)",
+            "properties": {
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The rows"
+                },
+                "onchange": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs when a row is changed"
+                },
+                "ondelete": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs when a row is deleted"
+                },
+                "oncreate": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs when a row is created"
+                },
+                "columns": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Computes the column info"
+                },
+                "idColumn": {
+                    "type": "string",
+                    "description": "Primary key column name"
+                }
+            }
+        },
+        "input": {
+            "newUI": false,
+            "description": "A form field as a layout widget (classic layout editor)",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the field (the key of its value in the form)"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Help text for the field"
+                },
+                "options": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression yielding the options of a select"
+                },
+                "readOnly": {
+                    "type": "boolean",
+                    "description": "The field cannot be changed"
+                },
+                "required": {
+                    "type": "boolean",
+                    "description": "The field must be filled in"
+                },
+                "format": {
+                    "type": "string",
+                    "description": "Text format, e.g. email or uri"
+                }
+            }
+        },
+        "layout-switch": {
+            "newUI": false,
+            "description": "Switches the classic UI's layout editor on and off (the new UI: layout-edit-switch)",
+            "properties": {}
         }
     },
     "form": {
@@ -1425,6 +1608,58 @@
                             "studio": true,
                             "type": "string",
                             "description": "Tailwind classes placing the field in the form's 12 column grid, e.g. col-span-12 (default: half a row)"
+                        },
+                        "properties": {
+                            "studio": true,
+                            "type": "object",
+                            "description": "type object: its fields, keyed by name (like the form's properties)"
+                        },
+                        "items": {
+                            "studio": true,
+                            "type": "object",
+                            "description": "type array: the field of each item"
+                        },
+                        "reorder": {
+                            "studio": true,
+                            "deprecated": true,
+                            "type": "boolean",
+                            "description": "Classic UI: items of an array can be reordered"
+                        },
+                        "required": {
+                            "studio": true,
+                            "deprecated": true,
+                            "type": "boolean",
+                            "description": "Classic UI: the field must be filled in (the form's required list does this)"
+                        },
+                        "createOnly": {
+                            "studio": true,
+                            "type": "boolean",
+                            "description": "Edit forms: set when the record is created, read-only afterwards"
+                        },
+                        "if": {
+                            "studio": true,
+                            "$ref": "#/$defs/expression",
+                            "description": "Shows the field only if this expression is true (form.<field> holds the values)"
+                        },
+                        "size": {
+                            "studio": true,
+                            "deprecated": true,
+                            "type": "integer",
+                            "description": "Classic UI: width of the field in a 12 column grid"
+                        },
+                        "style": {
+                            "studio": true,
+                            "deprecated": true,
+                            "type": "object",
+                            "description": "Classic UI: CSS style of the field"
+                        },
+                        "additionalProperties": {
+                            "studio": true,
+                            "type": [
+                                "object",
+                                "boolean"
+                            ],
+                            "description": "type object: a map (key / value rows) - the schema of its values, e.g. {\"type\": \"string\"}; true: any values"
                         }
                     }
                 }

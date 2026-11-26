@@ -376,6 +376,21 @@ Sample output:
 ```json
 "errors and warnings"
 ```
+### djLint
+Returns the findings as a list (each with the rule that reported it, its severity and the location in the file); rules can be switched off by ID
+```
+$djLint({'format': 'json', 'ignore': ['unused']})
+```
+Sample output: 
+```json
+[ {
+  "file" : "model/page/Info.json",
+  "path" : "/layout/children/1",
+  "rule" : "unknown-property",
+  "severity" : "warning",
+  "message" : "unknown property for widget text: titel"
+} ]
+```
 ### djRoles
 Returns the roles of the current user
 ```
