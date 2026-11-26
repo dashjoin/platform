@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.dashjoin.expression.ExpressionPreviewService;
 import org.dashjoin.expression.ExpressionService;
@@ -21,7 +22,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Sets;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * central service registry. Provides in process getters as well as JAX-RS singletons for services
@@ -125,7 +125,6 @@ public class Services {
     config._dbs = new CopyOnWriteArrayList<JSONDatabase>();
     JSONDatabase cl = readonlyDB;
     config._dbs.add(cl);
-    config._dbs.add(new PolymorphismDatabase());
     return config;
   }
 

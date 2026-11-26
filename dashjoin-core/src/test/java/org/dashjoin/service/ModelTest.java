@@ -145,7 +145,7 @@ public class ModelTest {
       // System.out.println(tree.get("widget"));
       Assertions.assertTrue(Arrays
           .asList("aichat", "button", "links", "dj-toolbar", "dj-table-metadata", "chart", "card",
-              "expansion", "edit", "all", "create", "container", "grid", "display", "${pk1}",
+              "expansion", "edit", "all", "create", "container", "grid", "display", "${pk[0]}",
               "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
               "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
               "tree", "variable", "sidenav-switch", "html", "notebook", "actionTable")
@@ -198,6 +198,7 @@ public class ModelTest {
                 return "function(){1}";
               }
             }, null));
+            jsonata.registerFunction("rest", x);
             jsonata.registerFunction("refresh", x);
             jsonata.registerFunction("prompt", x);
             jsonata.registerFunction("gitPull", x);

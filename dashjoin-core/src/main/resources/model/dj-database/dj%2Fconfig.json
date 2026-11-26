@@ -434,6 +434,7 @@
           "ID": "dj/config/dj-database/status",
           "name": "status",
           "parent": "dj/config/dj-database",
+          "type": "string",
           "studio": true
         }
       },
