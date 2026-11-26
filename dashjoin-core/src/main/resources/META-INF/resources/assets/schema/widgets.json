@@ -511,12 +511,20 @@
                     "type": "string",
                     "description": "List mode: a column holding an icon name (Material icons), shown left of the entry"
                 },
-                "properties": {
+                "actions": {
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
                     },
                     "description": "Actions on the selected rows: button label -> JSONata expression; the rows are `selected`, e.g. {\"Run\": \"selected.$call(ID)\"}"
+                },
+                "properties": {
+                    "deprecated": true,
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Legacy name of actions (still read)"
                 },
                 "schema": {
                     "$ref": "#/$defs/displaySchema",
@@ -1262,7 +1270,7 @@
                 "context": {
                     "$ref": "#/$defs/context"
                 },
-                "properties": {
+                "actions": {
                     "type": "object",
                     "additionalProperties": {
                         "anyOf": [
@@ -1277,12 +1285,17 @@
                             }
                         ]
                     },
-                    "description": "Actions, like a table's: label -> JSONata expression (a button), or label -> {label: expression} (a menu). The expression sees markdown (the edited text), selection and menuItem and returns {\"markdown\": ...} (replaces the text) or {\"selection\": ...} (replaces the selection), e.g. {\"Upper case\": \"{'selection': $uppercase(selection)}\"}"
+                    "description": "Like a table's actions: label -> JSONata expression (a button), or label -> {label: expression} (a menu). The expression sees markdown (the edited text), selection and menuItem and returns {\"markdown\": ...} (replaces the text) or {\"selection\": ...} (replaces the selection), e.g. {\"Upper case\": \"{'selection': $uppercase(selection)}\"}"
+                },
+                "properties": {
+                    "deprecated": true,
+                    "type": "object",
+                    "description": "Legacy name of actions (still read)"
                 },
                 "expression": {
                     "deprecated": true,
                     "$ref": "#/$defs/expression",
-                    "description": "Classic: computes the menus ({\"menu\": [{\"type\": \"select\", \"label\", \"value\", \"items\": [{\"label\", \"value\"}]}]}), \"properties\" then maps their values to expressions; use properties with labels"
+                    "description": "Classic: computes the menus ({\"menu\": [{\"type\": \"select\", \"label\", \"value\", \"items\": [{\"label\", \"value\"}]}]}), \"actions\" then maps their values to expressions; use actions with labels"
                 }
             }
         },
