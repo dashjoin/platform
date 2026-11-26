@@ -40,14 +40,9 @@
           "name": "type",
           "parent": "dj/config/Property",
           "type": "string",
-          "enum": [
-            "boolean",
-            "integer",
-            "number",
-            "string",
-            "date"
-          ],
-          "title": "Datatype"
+          "title": "Datatype",
+          "options": "[\"boolean\", \"integer\", \"number\", \"string\", \"date\"]",
+          "widget": "select"
         },
         "comment": {
           "ID": "dj/config/Property/comment",
@@ -71,6 +66,7 @@
           "style": {
             "width": "600px"
           },
+          "class": "col-span-12",
           "title": "Foreign Key Reference"
         },
         "pkpos": {
@@ -79,15 +75,8 @@
           "parent": "dj/config/Property",
           "type": "integer",
           "widget": "select",
-          "choices": [
-            null,
-            0
-          ],
-          "displayWithChoices": [
-            "---",
-            "Primary Key"
-          ],
-          "title": "Key"
+          "title": "Key",
+          "options": "[{\"label\": \"---\", \"value\": null}, {\"label\": \"Primary Key\", \"value\": 0}]"
         }
       }
     },
@@ -121,31 +110,6 @@
       },
       "required": [
         "name"
-      ],
-      "order": [
-        [
-          "ID",
-          "name",
-          "dj-label"
-        ],
-        [
-          "title",
-          "comment"
-        ],
-        [
-          "readRoles",
-          "writeRoles"
-        ],
-        [
-          "tenantColumn",
-          "roleMappings"
-        ],
-        "before-create",
-        "after-create",
-        "before-update",
-        "after-update",
-        "before-delete",
-        "after-delete"
       ],
       "properties": {
         "ID": {
@@ -185,24 +149,22 @@
           "name": "readRoles",
           "parent": "dj/config/Table",
           "type": "array",
-          "choicesUrl": "/rest/database/all/config/dj-role",
-          "jsonata": "ID",
           "layout": "select",
           "items": {
             "type": "string"
-          }
+          },
+          "options": "$all('config', 'dj-role').ID"
         },
         "writeRoles": {
           "ID": "dj/config/Table/writeRoles",
           "name": "writeRoles",
           "parent": "dj/config/Table",
           "type": "array",
-          "choicesUrl": "/rest/database/all/config/dj-role",
-          "jsonata": "ID",
           "layout": "select",
           "items": {
             "type": "string"
-          }
+          },
+          "options": "$all('config', 'dj-role').ID"
         },
         "tenantColumn": {
           "ID": "dj/config/Table/tenantColumn",
@@ -280,6 +242,10 @@
       "name": "dj-database",
       "parent": "dj/config",
       "type": "object",
+      "required": [
+        "djClassName",
+        "name"
+      ],
       "tableLayout": {
         "widget": "page",
         "children": [
@@ -287,7 +253,27 @@
             "widget": "table",
             "database": "config",
             "query": "dj-databases-no-config",
-            "title": "Available Databases"
+            "title": "Available Databases",
+            "properties": {
+              "Refresh": "(selected.$collectMetadata(ID); 'Ok')",
+              "Delete": "$confirm('Delete ' & $count(selected) & ' database(s)?') ? (selected.$delete('config', 'dj-database', ID); 'Deleted')"
+            },
+            "schema": {
+              "properties": {
+                "url": {
+                  "title": "URL"
+                },
+                "username": {
+                  "title": "Username"
+                },
+                "status": {
+                  "title": "Status"
+                },
+                "tables": {
+                  "title": "Tables"
+                }
+              }
+            }
           },
           {
             "widget": "create",
@@ -338,25 +324,82 @@
         ]
       },
       "properties": {
-        "ID": {
-          "ID": "dj/config/dj-database/ID",
-          "name": "ID",
+        "djClassName": {
+          "ID": "dj/config/dj-database/djClassName",
+          "name": "djClassName",
           "parent": "dj/config/dj-database",
-          "pkpos": 0,
-          "type": "string"
+          "type": "string",
+          "title": "Database Type",
+          "class": "sm:col-span-6 lg:col-span-3"
         },
         "name": {
           "ID": "dj/config/dj-database/name",
           "name": "name",
           "parent": "dj/config/dj-database",
-          "type": "string"
+          "type": "string",
+          "title": "name",
+          "createOnly": true,
+          "class": "sm:col-span-6 lg:col-span-3",
+          "pattern": "^(?!(search|page|full|login|setup|assets|rest|static|auth-callback|table|resource)$)",
+          "errorMessage": "Databases must not be called search, page, full, login, setup, assets, rest, static, auth-callback, table or resource - these are app URL paths"
+        },
+        "comment": {
+          "ID": "dj/config/dj-database/comment",
+          "name": "comment",
+          "parent": "dj/config/dj-database",
+          "type": "string",
+          "title": "comment",
+          "class": "sm:col-span-6 lg:col-span-3"
+        },
+        "title": {
+          "ID": "dj/config/dj-database/title",
+          "name": "title",
+          "parent": "dj/config/dj-database",
+          "type": "string",
+          "title": "title",
+          "class": "sm:col-span-6 lg:col-span-3"
+        },
+        "readRoles": {
+          "ID": "dj/config/dj-database/readRoles",
+          "name": "readRoles",
+          "parent": "dj/config/dj-database",
+          "type": "array",
+          "title": "readRoles",
+          "items": {
+            "type": "string"
+          },
+          "widget": "select",
+          "class": "sm:col-span-6",
+          "options": "$query('config', 'dj-roles-without-admin').ID"
+        },
+        "writeRoles": {
+          "ID": "dj/config/dj-database/writeRoles",
+          "name": "writeRoles",
+          "parent": "dj/config/dj-database",
+          "type": "array",
+          "title": "writeRoles",
+          "items": {
+            "type": "string"
+          },
+          "widget": "select",
+          "class": "sm:col-span-6",
+          "options": "$query('config', 'dj-roles-without-admin').ID"
+        },
+        "ID": {
+          "ID": "dj/config/dj-database/ID",
+          "name": "ID",
+          "parent": "dj/config/dj-database",
+          "pkpos": 0,
+          "type": "string",
+          "studio": true
         },
         "parent": {
           "ID": "dj/config/dj-database/parent",
           "name": "parent",
           "parent": "dj/config/dj-database",
           "ref": "dj/config/Dashjoin/ID",
-          "type": "string"
+          "type": "string",
+          "studio": true
         },
         "tables": {
           "ID": "dj/config/dj-database/tables",
@@ -384,9 +427,205 @@
                 }
               }
             }
+          },
+          "studio": true
+        },
+        "status": {
+          "ID": "dj/config/dj-database/status",
+          "name": "status",
+          "parent": "dj/config/dj-database",
+          "studio": true
+        }
+      },
+      "oneOf": [
+        {
+          "title": "SQL database",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.service.SQLDatabase"
+            },
+            "url": {
+              "type": "string",
+              "title": "url",
+              "examples": [
+                "jdbc:postgresql://localhost:5432/postgres",
+                "jdbc:h2:localhost:9092/path/your_database",
+                "jdbc:sqlite:path/your_database.db"
+              ]
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            },
+            "initScripts": {
+              "studio": true,
+              "type": "array",
+              "title": "initScripts",
+              "items": {
+                "type": "string"
+              }
+            },
+            "excludeTables": {
+              "studio": true,
+              "type": "array",
+              "title": "excludeTables",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "title": "Remote Dashjoin",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.service.RemoteDatabase"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "title": "Knowledge base (AI)",
+          "properties": {
+            "djClassName": {
+              "const": "com.dashjoin.ai.KnowledgeBase"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "title": "ArangoDB",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.service.arangodb.ArangoDB"
+            },
+            "hostname": {
+              "type": "string",
+              "title": "hostname",
+              "class": "sm:col-span-6"
+            },
+            "port": {
+              "type": "number",
+              "title": "port",
+              "class": "sm:col-span-6"
+            },
+            "database": {
+              "type": "string",
+              "title": "database",
+              "class": "sm:col-span-6"
+            },
+            "datasets": {
+              "studio": true,
+              "type": "array",
+              "title": "datasets",
+              "items": {
+                "type": "string"
+              },
+              "class": "sm:col-span-6"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            }
+          },
+          "required": [
+            "hostname",
+            "database"
+          ]
+        },
+        {
+          "title": "MongoDB",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.service.mongodb.MongoDB"
+            },
+            "hostname": {
+              "type": "string",
+              "title": "hostname",
+              "class": "sm:col-span-6"
+            },
+            "port": {
+              "type": "number",
+              "title": "port",
+              "class": "sm:col-span-6"
+            },
+            "database": {
+              "type": "string",
+              "title": "database",
+              "class": "sm:col-span-6"
+            },
+            "datasets": {
+              "studio": true,
+              "type": "array",
+              "title": "datasets",
+              "items": {
+                "type": "string"
+              },
+              "class": "sm:col-span-6"
+            }
+          },
+          "required": [
+            "hostname",
+            "database"
+          ]
+        },
+        {
+          "title": "Firestore",
+          "properties": {
+            "djClassName": {
+              "const": "com.dashjoin.service.google.firestore.Firestore"
+            },
+            "datasets": {
+              "studio": true,
+              "type": "array",
+              "title": "datasets",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         }
-      }
+      ]
     },
     "Dashjoin": {
       "ID": "dj/config/Dashjoin",
@@ -426,6 +665,24 @@
       "writeRoles": [
         "admin"
       ],
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Edit Record"
+          },
+          {
+            "widget": "table",
+            "title": "Settings",
+            "expression": "(/* null keeps every column in the table */ $v := function($x) { $exists($x) ? $x : null }; $global := $all('config', 'dj-config')[category = 'ui']; $roles := value.roles.$read('config', 'dj-role', $); $user := value.properties; $distinct([$global[$lookup($, type) != null].ID, $roles.$keys(properties), $keys($user)]).($k := $; $g := $global[ID = $k].$lookup($, type); $merge([{'setting': $k, 'effective': [$g, $roles.$lookup(properties, $k), $lookup($user, $k)][-1], 'user': $v($lookup($user, $k))}, $roles.{'role ' & ID: $v($lookup(properties, $k))}, {'global': $v($g)}])))"
+          },
+          {
+            "widget": "links",
+            "title": "Related Records"
+          }
+        ]
+      },
       "properties": {
         "ID": {
           "ID": "dj/config/tenantusers/ID",
@@ -459,11 +716,10 @@
           "parent": "dj/config/tenantusers",
           "layout": "select",
           "type": "array",
-          "choicesUrl": "/rest/database/all/config/dj-role",
-          "jsonata": "ID",
           "items": {
             "type": "string"
-          }
+          },
+          "options": "$all('config', 'dj-role').ID"
         },
         "properties": {
           "ID": "dj/config/tenantusers/properties",
@@ -576,7 +832,6 @@
           }
         ]
       },
-      "switch": "type",
       "properties": {
         "ID": {
           "ID": "dj/config/dj-config/ID",
@@ -584,65 +839,64 @@
           "parent": "dj/config/dj-config",
           "pkpos": 0,
           "type": "string",
-          "readOnly": true
+          "title": "ID",
+          "createOnly": true,
+          "class": "sm:col-span-6"
         },
-        "description": {
-          "ID": "dj/config/dj-config/description",
-          "name": "description",
+        "type": {
+          "ID": "dj/config/dj-config/type",
+          "name": "type",
           "parent": "dj/config/dj-config",
-          "type": "string"
+          "type": "string",
+          "title": "type",
+          "class": "sm:col-span-6"
         },
         "category": {
           "ID": "dj/config/dj-config/category",
           "name": "category",
           "parent": "dj/config/dj-config",
-          "type": "string"
+          "type": "string",
+          "title": "category",
+          "class": "sm:col-span-6"
+        },
+        "description": {
+          "ID": "dj/config/dj-config/description",
+          "name": "description",
+          "parent": "dj/config/dj-config",
+          "type": "string",
+          "title": "description",
+          "class": "sm:col-span-6"
         },
         "boolean": {
           "ID": "dj/config/dj-config/boolean",
           "name": "boolean",
           "parent": "dj/config/dj-config",
-          "type": "boolean",
-          "case": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "integer": {
           "ID": "dj/config/dj-config/integer",
           "name": "integer",
           "parent": "dj/config/dj-config",
-          "type": "integer",
-          "case": [
-            "integer"
-          ]
+          "type": "integer"
         },
         "string": {
           "ID": "dj/config/dj-config/string",
           "name": "string",
           "parent": "dj/config/dj-config",
-          "type": "string",
-          "case": [
-            "string"
-          ]
+          "type": "string"
         },
         "password": {
           "ID": "dj/config/dj-config/password",
           "name": "password",
           "parent": "dj/config/dj-config",
           "type": "string",
-          "widget": "password",
-          "case": [
-            "password"
-          ]
+          "widget": "password"
         },
         "map": {
           "ID": "dj/config/dj-config/map",
           "name": "map",
           "parent": "dj/config/dj-config",
           "type": "object",
-          "case": [
-            "map"
-          ],
           "additionalProperties": {
             "type": "string",
             "widget": "textarea",
@@ -658,12 +912,90 @@
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "case": [
-            "list"
-          ]
+          }
         }
-      }
+      },
+      "oneOf": [
+        {
+          "title": "boolean",
+          "properties": {
+            "type": {
+              "const": "boolean"
+            },
+            "boolean": {
+              "type": "boolean",
+              "title": "value"
+            }
+          }
+        },
+        {
+          "title": "integer",
+          "properties": {
+            "type": {
+              "const": "integer"
+            },
+            "integer": {
+              "type": "integer",
+              "title": "value"
+            }
+          }
+        },
+        {
+          "title": "string",
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "string": {
+              "type": "string",
+              "title": "value"
+            }
+          }
+        },
+        {
+          "title": "password",
+          "properties": {
+            "type": {
+              "const": "password"
+            },
+            "password": {
+              "type": "string",
+              "title": "value",
+              "writeOnly": true
+            }
+          }
+        },
+        {
+          "title": "map",
+          "properties": {
+            "type": {
+              "const": "map"
+            },
+            "map": {
+              "type": "object",
+              "title": "value",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "title": "list",
+          "properties": {
+            "type": {
+              "const": "list"
+            },
+            "list": {
+              "type": "array",
+              "title": "value",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
     },
     "dj-query-catalog": {
       "ID": "dj/config/dj-query-catalog",
@@ -682,7 +1014,18 @@
             "widget": "table",
             "database": "config",
             "query": "dj-queries",
-            "title": "Available Queries"
+            "title": "Available Queries",
+            "properties": {
+              "Run": "(selected.$query($substringAfter(database, 'dj/'), ID); 'Ok')",
+              "Delete": "$confirm('Delete ' & $count(selected) & ' query(s)?') ? (selected.$delete('config', 'dj-query-catalog', ID); 'Deleted')"
+            },
+            "schema": {
+              "properties": {
+                "usedBy": {
+                  "title": "Used By"
+                }
+              }
+            }
           },
           {
             "widget": "create",
@@ -704,7 +1047,7 @@
               {
                 "widget": "button",
                 "text": "Run Query",
-                "print": "$query($substringAfter(value.database, '/'), pk1)"
+                "print": "$query($substringAfter(value.database, '/'), pk[0])"
               }
             ]
           }
@@ -726,10 +1069,8 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "size": 4,
-          "enum": [
-            "read",
-            "write"
-          ]
+          "options": "[\"read\", \"write\"]",
+          "widget": "select"
         },
         "database": {
           "ID": "dj/config/dj-query-catalog/database",
@@ -765,13 +1106,12 @@
           "name": "roles",
           "parent": "dj/config/dj-query-catalog",
           "type": "array",
-          "choicesUrl": "/rest/database/query/config/dj-roles-without-admin",
-          "jsonata": "ID",
           "layout": "select",
           "size": 4,
           "items": {
             "type": "string"
-          }
+          },
+          "options": "$query('config', 'dj-roles-without-admin').ID"
         },
         "arguments": {
           "ID": "dj/config/dj-query-catalog/arguments",
@@ -784,13 +1124,8 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": [
-                  "boolean",
-                  "integer",
-                  "number",
-                  "string",
-                  "date"
-                ]
+                "options": "[\"boolean\", \"integer\", \"number\", \"string\", \"date\"]",
+                "widget": "select"
               },
               "sample": {
                 "type": "string"
@@ -817,7 +1152,7 @@
           },
           {
             "title": "Widget Preview",
-            "widget": "${pk1}"
+            "widget": "${pk[0]}"
           }
         ]
       },
@@ -873,7 +1208,14 @@
             "widget": "table",
             "database": "config",
             "query": "dj-page-urls",
-            "title": "Available Pages"
+            "title": "Available Pages",
+            "schema": {
+              "properties": {
+                "url": {
+                  "format": "uri"
+                }
+              }
+            }
           },
           {
             "widget": "create",
@@ -917,29 +1259,437 @@
       "parent": "dj/config",
       "type": "object",
       "required": [
+        "djClassName",
         "ID"
       ],
       "properties": {
+        "djClassName": {
+          "ID": "dj/config/dj-function/djClassName",
+          "name": "djClassName",
+          "parent": "dj/config/dj-function",
+          "type": "string",
+          "title": "Function Type",
+          "class": "sm:col-span-6 lg:col-span-4"
+        },
         "ID": {
           "ID": "dj/config/dj-function/ID",
           "name": "ID",
           "parent": "dj/config/dj-function",
           "pkpos": 0,
           "type": "string",
-          "createOnly": true
+          "createOnly": true,
+          "title": "ID",
+          "class": "sm:col-span-6 lg:col-span-4"
+        },
+        "comment": {
+          "ID": "dj/config/dj-function/comment",
+          "name": "comment",
+          "parent": "dj/config/dj-function",
+          "type": "string",
+          "title": "comment",
+          "class": "col-span-12 lg:col-span-4"
+        },
+        "roles": {
+          "ID": "dj/config/dj-function/roles",
+          "name": "roles",
+          "parent": "dj/config/dj-function",
+          "type": "array",
+          "title": "roles",
+          "items": {
+            "type": "string"
+          },
+          "widget": "select",
+          "class": "sm:col-span-6",
+          "options": "$query('config', 'dj-roles-without-admin').ID"
+        },
+        "type": {
+          "ID": "dj/config/dj-function/type",
+          "name": "type",
+          "parent": "dj/config/dj-function",
+          "type": "string",
+          "title": "type",
+          "class": "sm:col-span-6",
+          "options": "[\"read\", \"write\"]",
+          "widget": "select"
         }
       },
+      "oneOf": [
+        {
+          "title": "REST / JSON",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.function.RestJson"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            },
+            "method": {
+              "type": "string",
+              "title": "method",
+              "class": "sm:col-span-6 lg:col-span-3",
+              "options": "[\"GET\", \"POST\"]",
+              "widget": "select"
+            },
+            "contentType": {
+              "type": "string",
+              "title": "contentType",
+              "class": "sm:col-span-6 lg:col-span-3",
+              "options": "[\"application/x-www-form-urlencoded\", \"application/json\"]",
+              "widget": "select"
+            },
+            "timeoutSeconds": {
+              "type": "number",
+              "title": "Optional HTTP timeout (s)",
+              "class": "sm:col-span-6 lg:col-span-3"
+            },
+            "apiKey": {
+              "type": "boolean",
+              "title": "Use credentials as HTTP API key",
+              "class": "sm:col-span-6 lg:col-span-3"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            },
+            "headers": {
+              "type": "object",
+              "title": "headers",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "insertCredentials": {
+              "studio": true,
+              "type": "array",
+              "title": "insertCredentials",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "title": "Email",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.function.Email"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            },
+            "properties": {
+              "type": "object",
+              "title": "properties",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "title": "Credentials",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.function.Credentials"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            },
+            "apiKey": {
+              "type": "boolean",
+              "title": "Use credentials as HTTP API key"
+            }
+          }
+        },
+        {
+          "title": "MCP server",
+          "properties": {
+            "djClassName": {
+              "const": "com.dashjoin.ai.MCPServer"
+            },
+            "url": {
+              "type": "string",
+              "title": "url"
+            },
+            "username": {
+              "type": "string",
+              "title": "username",
+              "class": "sm:col-span-6"
+            },
+            "password": {
+              "type": "string",
+              "title": "password",
+              "writeOnly": true,
+              "class": "sm:col-span-6"
+            },
+            "apiKey": {
+              "type": "boolean",
+              "title": "Use credentials as HTTP API key"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        {
+          "title": "Invoke (JSONata)",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.function.Invoke"
+            },
+            "expression": {
+              "type": "string",
+              "title": "Expression",
+              "widget": "textarea",
+              "code": true,
+              "expand": true,
+              "preview": true,
+              "class": "col-span-12"
+            },
+            "runas": {
+              "type": "string",
+              "title": "runas",
+              "class": "sm:col-span-6",
+              "options": "$all('config', 'dj-role').ID"
+            },
+            "parameters": {
+              "type": "object",
+              "title": "parameters",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "options": "[\"boolean\", \"integer\", \"number\", \"string\", \"date\"]",
+                    "widget": "select"
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "expression"
+          ]
+        },
+        {
+          "title": "Receive (mapping)",
+          "properties": {
+            "djClassName": {
+              "const": "org.dashjoin.mapping.Receive"
+            },
+            "database": {
+              "type": "string",
+              "title": "Target database",
+              "class": "sm:col-span-6",
+              "options": "$all('config', 'dj-database').name[$ != 'config']"
+            },
+            "createSchema": {
+              "type": "boolean",
+              "title": "Create Schema",
+              "class": "sm:col-span-6"
+            },
+            "sample": {
+              "type": "string",
+              "title": "Sample data for testing the mapping",
+              "widget": "textarea"
+            },
+            "mappings": {
+              "widget": "custom",
+              "widgetType": "mapping",
+              "type": "object",
+              "title": "mappings",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "database"
+          ]
+        },
+        {
+          "title": "ETL",
+          "properties": {
+            "djClassName": {
+              "const": "com.dashjoin.function.ETL"
+            },
+            "database": {
+              "type": "string",
+              "title": "Target database",
+              "class": "sm:col-span-6",
+              "options": "$all('config', 'dj-database').name[$ != 'config']"
+            },
+            "oldData": {
+              "type": "string",
+              "title": "Handle existing data",
+              "description": "Ignore: simply add the data. Refresh: data that was created by this function and is no longer present in this run is deleted. Delete All: all records from the target tables are deleted. Sync: can sync modified URLs to the database.",
+              "class": "sm:col-span-6",
+              "options": "[\"Ignore\", \"Refresh\", \"Delete All\", \"Sync\"]",
+              "widget": "select"
+            },
+            "expressions": {
+              "type": "object",
+              "title": "Expressions computing the source data",
+              "properties": {
+                "foreach": {
+                  "type": "string",
+                  "title": "foreach",
+                  "description": "Optional: the expression runs once per value of this one (as $)",
+                  "widget": "textarea",
+                  "code": true,
+                  "expand": true,
+                  "preview": true,
+                  "class": "col-span-12"
+                },
+                "expression": {
+                  "type": "string",
+                  "title": "expression",
+                  "description": "Computes the source data: { \"table\": [ rows ] }",
+                  "widget": "textarea",
+                  "code": true,
+                  "expand": true,
+                  "preview": true,
+                  "class": "col-span-12"
+                }
+              }
+            },
+            "mappings": {
+              "widget": "custom",
+              "widgetType": "mapping",
+              "type": "object",
+              "title": "mappings",
+              "additionalProperties": {
+                "type": "object"
+              }
+            },
+            "createSchema": {
+              "type": "boolean",
+              "title": "Create Schema",
+              "class": "sm:col-span-6"
+            }
+          },
+          "required": [
+            "database",
+            "oldData"
+          ]
+        },
+        {
+          "title": "AI app",
+          "properties": {
+            "djClassName": {
+              "const": "com.dashjoin.ai.AIApp"
+            },
+            "ai": {
+              "studio": true,
+              "type": "string",
+              "title": "ai",
+              "class": "sm:col-span-6",
+              "options": "$rest('/rest/ai/ais')"
+            },
+            "model": {
+              "type": "string",
+              "title": "model",
+              "widget": "select",
+              "class": "sm:col-span-6",
+              "options": "$rest('/rest/ai/models').data.name"
+            },
+            "systemPrompt": {
+              "type": "string",
+              "title": "System prompt",
+              "widget": "textarea"
+            },
+            "tools": {
+              "type": "array",
+              "title": "tools",
+              "items": {
+                "type": "string"
+              },
+              "options": "$rest('/rest/ai/tools')"
+            },
+            "tags": {
+              "type": "array",
+              "title": "tags",
+              "items": {
+                "type": "string"
+              },
+              "class": "sm:col-span-6",
+              "options": "$rest('/rest/ai/tags')"
+            },
+            "documents": {
+              "type": "array",
+              "title": "documents",
+              "items": {
+                "type": "string"
+              },
+              "class": "sm:col-span-6",
+              "options": "$rest('/rest/ai/documents')"
+            }
+          }
+        }
+      ],
       "tableLayout": {
         "widget": "page",
         "children": [
           {
             "widget": "container",
+            "redrawInterval": 10,
             "title": "Available Functions",
             "children": [
               {
                 "widget": "table",
                 "database": "config",
-                "query": "dj-functions"
+                "query": "dj-functions",
+                "properties": {
+                  "Run": "selected.$call(ID)",
+                  "Delete": "$confirm('Delete ' & $count(selected) & ' function(s)?') ? (selected.$delete('config', 'dj-function', ID); 'Deleted')"
+                },
+                "schema": {
+                  "properties": {
+                    "class": {
+                      "title": "Class"
+                    },
+                    "usedBy": {
+                      "title": "Used By"
+                    },
+                    "runtime (s)": {
+                      "title": "Runtime (s)",
+                      "format": "number"
+                    }
+                  }
+                }
               }
             ]
           },
@@ -970,11 +1720,11 @@
             "children": [
               {
                 "widget": "button",
-                "print": "$call(pk1)"
+                "print": "$call(pk[0])"
               },
               {
                 "widget": "display",
-                "display": "($v := $read(database, table, pk1); {\"start\": $fromMillis($toMillis($v.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
+                "display": "($v := $read(database, table, pk); {\"start\": $fromMillis($toMillis($v.start), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"end\": $fromMillis($toMillis($v.end), '[Y0001]-[M01]-[D01] [h01]:[m01]'), \"Runtime (s)\": $round(($toMillis($v.end?$v.end:$now())-$toMillis($v.start))/1000), \"status\": $v.status})",
                 "icons": {
                   "status": "error_outline",
                   "end": "flag",
@@ -995,6 +1745,24 @@
       "required": [
         "ID"
       ],
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "widget": "edit",
+            "title": "Edit Record"
+          },
+          {
+            "widget": "table",
+            "title": "Settings",
+            "expression": "(/* null keeps every column in the table */ $v := function($x) { $exists($x) ? $x : null }; $global := $all('config', 'dj-config')[category = 'ui']; $role := value.properties; $distinct([$global[$lookup($, type) != null].ID, $keys($role)]).($k := $; $g := $global[ID = $k].$lookup($, type); {'setting': $k, 'effective': [$g, $lookup($role, $k)][-1], 'role': $v($lookup($role, $k)), 'global': $v($g)}))"
+          },
+          {
+            "widget": "links",
+            "title": "Related Records"
+          }
+        ]
+      },
       "properties": {
         "ID": {
           "ID": "dj/config/dj-role/ID",
@@ -1028,13 +1796,6 @@
       "type": "object",
       "required": [
         "ID"
-      ],
-      "order": [
-        [
-          "ID",
-          "description"
-        ],
-        "expression"
       ],
       "properties": {
         "ID": {
