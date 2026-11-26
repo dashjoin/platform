@@ -40,7 +40,7 @@ public class PojoDatabaseTest {
     // check the ID Property of the database table
     schema.name = "Property";
     Assertions.assertEquals(
-        "{ID=dj/config/dj-database/ID, name=ID, parent=dj/config/dj-database, pkpos=0, type=string}",
+        "{ID=dj/config/dj-database/ID, name=ID, parent=dj/config/dj-database, pkpos=0, type=string, studio=true}",
         "" + config.read(schema, of("ID", "dj/config/dj-database/ID")));
 
     // add a provider that specifies a widget for ID

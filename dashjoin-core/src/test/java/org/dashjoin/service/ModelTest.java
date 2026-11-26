@@ -148,7 +148,8 @@ public class ModelTest {
               "expansion", "edit", "all", "create", "container", "grid", "display", "${pk[0]}",
               "text", "activity-status", "upload", "icon", "spacer", "layout-edit-switch", "search",
               "search-result", "toolbar", "table", "queryeditor", "editRelated", "markdown", "page",
-              "tree", "variable", "sidenav-switch", "html", "notebook", "actionTable")
+              "tree", "variable", "sidenav-switch", "html", "notebook", "actionTable", "logo",
+              "locale-switch", "dark-mode-switch", "logout-button", "breadcrumbs", "heading")
           .contains(tree.get("widget").asText()));
     }
 
@@ -161,7 +162,8 @@ public class ModelTest {
           "layout", "style", "class", /* schema info in config.json */ "name", "parent",
           /* gridster stuff */ "x", "y", "rows", "cols", /* redraw container */ "redrawInterval",
           "expression", "html", "script", "hideframe", "clearCache", "card", "size", "cached",
-          "onChat", "uploadEnabled", "onRender", "hideColumns", "foreach").contains(e.getKey()));
+          "onChat", "uploadEnabled", "onRender", "hideColumns", "foreach", "frame")
+          .contains(e.getKey()));
       if (e.getKey().equals("url"))
         Assertions.assertTrue(e.getValue() instanceof TextNode);
     }

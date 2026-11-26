@@ -36,7 +36,7 @@ import jakarta.ws.rs.core.SecurityContext;
  * a changed platform record is stored whole (see replaceStoresWholePlatformRecordIfChanged).
  * append creates every record.
  *
- * Uses dj-config, whose records the platform ships (e.g. sidenav-width-px) and which has no app
+ * Uses dj-config, whose records the platform ships (e.g. search-timeout-ms) and which has no app
  * records in the test working directory.
  */
 @QuarkusTest
@@ -54,12 +54,12 @@ public class UploadDeltaTest {
   final Table config = Table.ofName("dj-config");
 
   /** app records this test may create */
-  static final String[] IDS = {"sidenav-width-px", "sidenav-open", "upload-test", "upload-old"};
+  static final String[] IDS = {"search-timeout-ms", "sidenav-open", "upload-test", "upload-old"};
 
-  static final String SIDENAV =
-      "{\"ID\": \"sidenav-width-px\", \"description\": \"Width of the side navigation bar "
-          + "(changes applied after next login)\", \"category\": \"ui\", \"type\": \"integer\", "
-          + "\"integer\": %d}";
+  static final String TIMEOUT =
+      "{\"ID\": \"search-timeout-ms\", \"description\": \"Query timeout in milliseconds for "
+          + "queries issued when searching data. To disable the timeout, set to 0.\", "
+          + "\"category\": \"query\", \"type\": \"integer\", \"integer\": %d}";
 
   SecurityContext sc() {
     SecurityContext sc = mock(SecurityContext.class);
@@ -126,7 +126,7 @@ public class UploadDeltaTest {
   @Test
   public void replaceStoresWholePlatformRecordIfChanged() throws Exception {
     manage.replace(sc(), "config",
-        upload("model/dj-config/sidenav-width-px.json", String.format(SIDENAV, 300),
+        upload("model/dj-config/search-timeout-ms.json", String.format(TIMEOUT, 6000),
             "model/dj-config/upload-test.json",
             "{\"ID\": \"upload-test\", \"type\": \"string\", \"string\": \"x\"}"));
 
@@ -134,11 +134,12 @@ public class UploadDeltaTest {
     // including the fields equal to the platform's. Manage passes the whole record as the search
     // key to db.update(table, object, object), and UnionDatabase.update creates the missing app
     // record from the search key. A later platform change of description or category is hidden
-    Assertions.assertEquals(m("ID", "sidenav-width-px", "description",
-        "Width of the side navigation bar (changes applied after next login)", "category", "ui",
-        "type", "integer", "integer", 300), stored("sidenav-width-px"));
-    Assertions.assertEquals(300, read("sidenav-width-px").get("integer"));
-    Assertions.assertEquals("ui", read("sidenav-width-px").get("category"));
+    Assertions.assertEquals(m("ID", "search-timeout-ms", "description",
+        "Query timeout in milliseconds for queries issued when searching data. "
+            + "To disable the timeout, set to 0.",
+        "category", "query", "type", "integer", "integer", 6000), stored("search-timeout-ms"));
+    Assertions.assertEquals(6000, read("search-timeout-ms").get("integer"));
+    Assertions.assertEquals("query", read("search-timeout-ms").get("category"));
 
     // app record: stored whole
     Assertions.assertEquals(m("ID", "upload-test", "type", "string", "string", "x"),
@@ -148,9 +149,9 @@ public class UploadDeltaTest {
   @Test
   public void replaceWithPlatformValueStoresNothing() throws Exception {
     manage.replace(sc(), "config",
-        upload("model/dj-config/sidenav-width-px.json", String.format(SIDENAV, 200)));
-    Assertions.assertNull(stored("sidenav-width-px"));
-    Assertions.assertEquals(200, read("sidenav-width-px").get("integer"));
+        upload("model/dj-config/search-timeout-ms.json", String.format(TIMEOUT, 5000)));
+    Assertions.assertNull(stored("search-timeout-ms"));
+    Assertions.assertEquals(5000, read("search-timeout-ms").get("integer"));
   }
 
   @Test
@@ -184,9 +185,9 @@ public class UploadDeltaTest {
   public void appendFailsForPlatformRecord() throws Exception {
     // status quo: append creates, so a record the platform ships cannot be appended
     Exception e = Assertions.assertThrows(Exception.class, () -> manage.append(sc(), "config",
-        upload("model/dj-config/sidenav-width-px.json", String.format(SIDENAV, 300))));
+        upload("model/dj-config/search-timeout-ms.json", String.format(TIMEOUT, 6000))));
     Assertions.assertTrue(e.getMessage().contains("already exists"), e.getMessage());
-    Assertions.assertNull(stored("sidenav-width-px"));
+    Assertions.assertNull(stored("search-timeout-ms"));
   }
 
   @Test
