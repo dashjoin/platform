@@ -277,6 +277,18 @@ public class DjLintTest {
   }
 
   @Test
+  public void deprecatedFormProperty() throws Exception {
+    Linter lint = new Linter();
+    // required: a list on the form (JSON schema) is fine, a flag on a field is deprecated
+    layout(lint, "{\"widget\": \"button\", \"schema\": {\"type\": \"object\", \"required\": [\"x\"],"
+        + "\"properties\": {\"x\": {\"type\": \"string\", \"required\": true}}}}");
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertEquals("deprecated-form-property", lint.findings.get(0).rule());
+    Assertions.assertEquals("/layout/schema/properties/x", lint.findings.get(0).path());
+    Assertions.assertTrue(all(lint).contains("form property required is deprecated: Classic UI"), all(lint));
+  }
+
+  @Test
   public void newUiClientFunctions() throws Exception {
     Linter lint = new Linter();
     expressions(lint, "{\"options\": \"$rest('/rest/ai/ais')\"}", false);
@@ -373,13 +385,25 @@ public class DjLintTest {
     Linter lint = new Linter();
     layout(lint, "{\"widget\": \"button\", \"navigate\": \"'/page/x'\", \"createSchema\": {}}");
     layout(lint, "{\"widget\": \"aichat\", \"url\": \"x\"}");
-    // deprecated without a message (still read, e.g. size): not reported
+    // deprecated without a message: reported with the description, common properties included
     layout(lint, "{\"widget\": \"text\", \"size\": 6}");
+    layout(lint, "{\"widget\": \"table\", \"onchange\": \"1\"}");
     String all = all(lint);
-    Assertions.assertEquals(3, lint.findings.size(), all);
+    Assertions.assertEquals(5, lint.findings.size(), all);
+    Assertions.assertTrue(all.contains("property size is deprecated for widget text: Legacy: width"), all);
+    Assertions.assertTrue(all.contains("property onchange is deprecated for widget table: Legacy name of onChange"), all);
     Assertions.assertTrue(all.contains("property navigate is deprecated for widget button: use $navigate"), all);
     Assertions.assertTrue(all.contains("property createSchema is deprecated for widget button: use schema"), all);
     Assertions.assertTrue(all.contains("property url is deprecated for widget aichat: only supported by the legacy chat"), all);
+  }
+
+  @Test
+  public void deprecatedWidget() throws Exception {
+    Linter lint = new Linter();
+    layout(lint, "{\"widget\": \"card\", \"text\": \"x\"}");
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertEquals("deprecated-widget", lint.findings.get(0).rule());
+    Assertions.assertTrue(all(lint).contains("widget card is deprecated: Legacy: read as a container"), all(lint));
   }
 
   @Test
@@ -414,7 +438,7 @@ public class DjLintTest {
   @Test
   public void builtInModel() throws Exception {
     List<String> shape = List.of("missing-widget", "unknown-widget", "unknown-property",
-        "deprecated-property", "url-not-string", "form-not-object", "unknown-input",
+        "deprecated-widget", "deprecated-property", "deprecated-form-property", "url-not-string", "form-not-object", "unknown-input",
         "options-not-select", "file-setting", "unknown-form-property");
     File model = new File("src/main/resources/model");
     Assertions.assertTrue(model.isDirectory(), model.getAbsolutePath());
@@ -427,7 +451,16 @@ public class DjLintTest {
             lint.record(folder.getName(), map(Files.readString(f.toPath())));
           else
             lint.define(folder.getName(), map(Files.readString(f.toPath())));
-    List<Finding> found = lint.findings.stream().filter(f -> shape.contains(f.rule())).toList();
+    // the knowledge base's default table / record layouts (PojoDatabase.template)
+    for (File folder : new File("src/main/resources/template").listFiles(File::isDirectory))
+      for (File f : folder.listFiles((dir, name) -> name.endsWith(".json"))) {
+        String file = "template/" + folder.getName() + "/" + f.getName();
+        lint.layout(file, "", json(Files.readString(f.toPath())));
+        lint.expressions(file, "", json(Files.readString(f.toPath())), false);
+      }
+    // templates: no findings at all (e.g. an empty expression)
+    List<Finding> found = lint.findings.stream().filter(f -> shape.contains(f.rule())
+        || f.file().startsWith("template/") && f.severity() != Severity.HINT).toList();
     Assertions.assertEquals(List.of(), found, "" + found);
   }
 

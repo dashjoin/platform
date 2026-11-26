@@ -26,14 +26,39 @@ public class WidgetCatalog {
 
   /**
    * a widget's properties (the common ones included; null: any property, e.g. a config/widget),
-   * the deprecation messages of properties to report, the properties that name a query or a
-   * database and the properties that hold a form
+   * the deprecation messages of its deprecated properties (the common ones included), the
+   * properties that name a query or a database, the properties that hold a form and the
+   * deprecation message of the widget itself (null if not deprecated)
    */
   record Widget(Set<String> properties, Map<String, String> deprecations,
-      Map<String, String> references, Set<String> forms) {
+      Map<String, String> references, Set<String> forms, String deprecated) {
   }
 
-  static final Widget ANY = new Widget(null, Map.of(), Map.of(), Set.of());
+  static final Widget ANY = new Widget(null, Map.of(), Map.of(), Set.of(), null);
+
+  /**
+   * the message to report for a declaration marked "deprecated": true or carrying a
+   * "deprecationMessage" (VS Code's keyword): that message, else the description (which says what
+   * to use instead), null if the declaration is not deprecated
+   */
+  static String deprecation(JsonNode declaration) {
+    JsonNode message = declaration.get("deprecationMessage");
+    if (message != null)
+      return message.asText();
+    if (!declaration.path("deprecated").asBoolean())
+      return null;
+    JsonNode description = declaration.get("description");
+    return description == null ? "no longer supported" : description.asText();
+  }
+
+  /** adds the deprecation messages of the deprecated properties to the map */
+  static void deprecations(JsonNode properties, Map<String, String> map) {
+    for (Entry<String, JsonNode> p : properties.properties()) {
+      String message = deprecation(p.getValue());
+      if (message != null)
+        map.put(p.getKey(), message);
+    }
+  }
 
   private static WidgetCatalog builtIn;
 
@@ -64,29 +89,33 @@ public class WidgetCatalog {
   /** the default input of each field type, also accepted as "widget" */
   static final List<String> TYPE_INPUTS = List.of("boolean", "string", "number");
 
-  WidgetCatalog(Map<String, Widget> widgets, Set<String> formKeys, List<String> inputs) {
+  /** the deprecation messages of the deprecated keys of a form field (widgets.json form) */
+  final Map<String, String> formDeprecations;
+
+  WidgetCatalog(Map<String, Widget> widgets, Set<String> formKeys,
+      Map<String, String> formDeprecations, List<String> inputs) {
     this.widgets = widgets;
     this.formKeys = formKeys;
+    this.formDeprecations = formDeprecations;
     this.inputs = inputs;
   }
 
   public WidgetCatalog(JsonNode source) {
     Set<String> common = new HashSet<>();
     source.get("common").fieldNames().forEachRemaining(common::add);
+    Map<String, String> commonDeprecations = new HashMap<>();
+    deprecations(source.get("common"), commonDeprecations);
 
     widgets = new HashMap<>();
     for (Entry<String, JsonNode> w : source.get("widgets").properties()) {
       Set<String> props = new HashSet<>(common);
-      Map<String, String> deprecations = new HashMap<>();
+      Map<String, String> deprecations = new HashMap<>(commonDeprecations);
       Map<String, String> references = new HashMap<>();
       Set<String> forms = new HashSet<>();
       JsonNode properties = w.getValue().get("properties");
       if (properties != null)
         for (Entry<String, JsonNode> p : properties.properties()) {
           props.add(p.getKey());
-          JsonNode message = p.getValue().get("deprecationMessage");
-          if (message != null)
-            deprecations.put(p.getKey(), message.asText());
           String ref = p.getValue().has("$ref") ? p.getValue().get("$ref").asText() : "";
           if (ref.equals("#/$defs/query"))
             references.put(p.getKey(), "query");
@@ -95,7 +124,10 @@ public class WidgetCatalog {
           if (ref.equals("#/$defs/form"))
             forms.add(p.getKey());
         }
-      widgets.put(w.getKey(), new Widget(props, deprecations, references, forms));
+      if (properties != null)
+        deprecations(properties, deprecations);
+      widgets.put(w.getKey(),
+          new Widget(props, deprecations, references, forms, deprecation(w.getValue())));
     }
 
     formKeys = new HashSet<>();
@@ -103,6 +135,8 @@ public class WidgetCatalog {
     form.get("properties").fieldNames().forEachRemaining(formKeys::add);
     JsonNode field = form.at("/properties/properties/additionalProperties/properties");
     field.fieldNames().forEachRemaining(formKeys::add);
+    formDeprecations = new HashMap<>();
+    deprecations(field, formDeprecations);
 
     List<String> inputs = new ArrayList<>(TYPE_INPUTS);
     for (JsonNode w : field.at("/widget/enum"))
@@ -117,7 +151,7 @@ public class WidgetCatalog {
     Map<String, Widget> all = new HashMap<>(widgets);
     for (String id : ids)
       all.putIfAbsent(id, ANY);
-    return new WidgetCatalog(all, formKeys, inputs);
+    return new WidgetCatalog(all, formKeys, formDeprecations, inputs);
   }
 
   public boolean known(String widget) {
@@ -134,10 +168,21 @@ public class WidgetCatalog {
     return w == null ? null : w.properties();
   }
 
-  /** the message to report for a property no longer supported, null if none */
+  /** the message to report for a deprecated property, null if it is not deprecated */
   public String deprecation(String widget, String property) {
     Widget w = widgets.get(widget);
     return w == null ? null : w.deprecations().get(property);
+  }
+
+  /** the message to report for a deprecated widget, null if it is not deprecated */
+  public String deprecation(String widget) {
+    Widget w = widgets.get(widget);
+    return w == null ? null : w.deprecated();
+  }
+
+  /** the message to report for a deprecated form field key, null if it is not deprecated */
+  public String formDeprecation(String key) {
+    return formDeprecations.get(key);
   }
 
   /** query or database if the property names one, else null */

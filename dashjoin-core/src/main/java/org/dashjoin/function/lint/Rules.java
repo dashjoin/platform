@@ -220,6 +220,13 @@ public class Rules {
             lint.report(n, "unknown property for widget " + n.widget + ": " + field);
       });
 
+  static final LintRule DEPRECATED_WIDGET =
+      LintRule.of("deprecated-widget", WARNING, LAYOUT, (n, lint) -> {
+        String message = n.widget == null ? null : lint.catalog.deprecation(n.widget);
+        if (message != null)
+          lint.report(n, "widget " + n.widget + " is deprecated: " + message);
+      });
+
   static final LintRule DEPRECATED_PROPERTY =
       LintRule.of("deprecated-property", WARNING, LAYOUT, (n, lint) -> {
         if (n.widget == null)
@@ -285,6 +292,18 @@ public class Rules {
         if (n.has(key))
           lint.report(n, key + " only allowed for file inputs: " + input(n));
   });
+
+  static final LintRule DEPRECATED_FORM_PROPERTY =
+      LintRule.of("deprecated-form-property", WARNING, FORM, (n, lint) -> {
+        if (!n.value.isObject())
+          return;
+        for (String key : (Iterable<String>) n.value::fieldNames) {
+          String message = lint.catalog.formDeprecation(key);
+          // required: a list on the form or an object field (JSON schema), a flag on a field
+          if (message != null && !(key.equals("required") && n.value.get(key).isArray()))
+            lint.report(n, "form property " + key + " is deprecated: " + message);
+        }
+      });
 
   static final LintRule UNKNOWN_FORM_PROPERTY =
       LintRule.of("unknown-form-property", WARNING, FORM, (n, lint) -> {
@@ -478,8 +497,8 @@ public class Rules {
   /** all rules, in the order they run on a node */
   public static final List<LintRule> ALL = List.of(DANGLING_POINTER, UNIT_TEST, NAME_MISMATCH,
       MISSING_TYPE, PARENT_MISMATCH, ID_NOT_PARENT_NAME, ID_PREFIX, REF_NOT_PK, MISSING_WIDGET,
-      UNKNOWN_WIDGET, UNKNOWN_PROPERTY, DEPRECATED_PROPERTY, QUERY_IGNORED, URL_NOT_STRING,
-      FORM_NOT_OBJECT, UNKNOWN_INPUT, MISSING_OPTIONS, OPTIONS_NOT_SELECT, FILE_SETTING,
-      UNKNOWN_FORM_PROPERTY, EMPTY_EXPRESSION, EXPRESSION_SYNTAX, EXPRESSION_RUN,
+      UNKNOWN_WIDGET, DEPRECATED_WIDGET, UNKNOWN_PROPERTY, DEPRECATED_PROPERTY, QUERY_IGNORED,
+      URL_NOT_STRING, FORM_NOT_OBJECT, UNKNOWN_INPUT, MISSING_OPTIONS, OPTIONS_NOT_SELECT,
+      FILE_SETTING, UNKNOWN_FORM_PROPERTY, DEPRECATED_FORM_PROPERTY, EMPTY_EXPRESSION, EXPRESSION_SYNTAX, EXPRESSION_RUN,
       UNKNOWN_REFERENCE, WRITE_QUERY_IN_WIDGET, MISSING_QUERY_ARGUMENTS, UNUSED, ORPHANED_FILE);
 }
