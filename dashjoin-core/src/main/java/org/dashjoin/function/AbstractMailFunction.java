@@ -3,7 +3,6 @@ package org.dashjoin.function;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import org.dashjoin.model.JsonSchema;
 import jakarta.mail.AuthenticationFailedException;
 import jakarta.mail.Session;
 
@@ -26,32 +25,27 @@ public abstract class AbstractMailFunction<ARG, RET> extends AbstractConfigurabl
   /**
    * gmail / office365 fill in host, port and TLS settings. custom: specify them via properties
    */
-  @JsonSchema(enums = {"gmail", "office365", "custom"})
   public String server;
 
   /**
    * username to log into the email service (usually the mailbox address)
    */
-  @JsonSchema(style = {"width", "400px"})
   public String username;
 
   /**
    * password to log into the email service. Not required when oauth is set
    */
-  @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
 
   /**
    * optional ID of an OAuth2Credentials function. If set, logs in via XOAUTH2 with an access token
    * instead of the password
    */
-  @JsonSchema(style = {"width", "400px"})
   public String oauth;
 
   /**
    * jakarta.mail properties passed to the session. These override the server preset
    */
-  @JsonSchema(style = {"width", "400px"}, layout = "vertical")
   public Map<String, Object> properties;
 
   /**

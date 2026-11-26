@@ -48,7 +48,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -93,7 +92,6 @@ import net.sf.jsqlparser.statement.update.Update;
 /**
  * SQL Reference implementation
  */
-@JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 public class SQLDatabase extends AbstractDatabase {
   private static final Logger log = Logger.getLogger(SQLDatabase.class.getName());
 
@@ -102,15 +100,6 @@ public class SQLDatabase extends AbstractDatabase {
   /**
    * JSON config field
    */
-  @JsonSchema(choices = {"jdbc:postgresql://localhost:5432/postgres",
-      "jdbc:h2:localhost:9092/path/your_database", "jdbc:sqlite:path/your_database.db"
-      /*
-       * "jdbc:jtds:sqlserver://your_host:1433/your_database;SCHEMA=your_schema",
-       * "jdbc:oracle:thin:@your_host:1521/ORCL", "jdbc:mariadb://your_host:3306/your_database",
-       * "jdbc:db2://your_host:50000/your_database", "jdbc:sap://your_host:39015/",
-       * "jdbc:ucanaccess://path/your_database.accdb", "jdbc:excel:url_to_your_csv_or_xls",
-       * "jdbc:hsqldb:hsql://your_host/your_database",
-       */}, style = {"width", "600px"})
   public String url;
 
   /**
@@ -121,7 +110,6 @@ public class SQLDatabase extends AbstractDatabase {
   /**
    * JSON config field
    */
-  @JsonSchema(widget = "password")
   public String password;
 
   /**

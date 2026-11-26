@@ -1,7 +1,6 @@
 package org.dashjoin.function;
 
 import java.util.List;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.CredentialManager;
 import org.dashjoin.service.PojoDatabase;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -9,35 +8,26 @@ import org.eclipse.microprofile.config.ConfigProvider;
 /**
  * Base class for all configurable functions. Provides the primary key and polimorphism class name
  */
-@JsonSchema(layout = "vertical", required = {"ID", "djClassName"},
-    order = {"djClassName", "ID", "comment", "roles", "type"})
 public abstract class AbstractConfigurableFunction<ARG, RET> extends AbstractFunction<ARG, RET> {
 
   /**
    * db name
    */
-  @JsonSchema(createOnly = true)
   public String ID;
 
   /**
    * implementation class
    */
-  @JsonSchema(title = "Function Type", widget = "select", choicesVerb = "GET",
-      choicesUrl = "/rest/manage/getConfigurableFunctions", jsonata = "name",
-      displayWith = "localName")
   public String djClassName;
 
   /**
    * roles that are allowed to run the function
    */
-  @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
-      jsonata = "ID")
   public List<String> roles;
 
   /**
    * does this function have side effects (write) or does it only query (read)
    */
-  @JsonSchema(enums = {"read", "write"})
   public String type;
 
   /**

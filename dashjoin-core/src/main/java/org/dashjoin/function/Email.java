@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.util.FileSystem;
 import jakarta.activation.DataHandler;
 import jakarta.mail.Message;
@@ -25,7 +24,6 @@ import jakarta.mail.util.ByteArrayDataSource;
  * email action: sends an email via SMTP. Supports Gmail and Office 365 presets as well as OAuth2
  * (XOAUTH2) login
  */
-@JsonSchema(order = {"server", "username", "password", "oauth", "properties"})
 public class Email extends AbstractMailFunction<Email.Argument, Object> {
 
   /**

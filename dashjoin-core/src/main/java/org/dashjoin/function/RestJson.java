@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.ACLContainerRequestFilter;
 import org.dashjoin.service.JSONDatabase;
 import org.dashjoin.util.MapUtil;
@@ -27,8 +26,6 @@ import okhttp3.RequestBody;
  * calls a JSON REST service
  */
 @SuppressWarnings("rawtypes")
-@JsonSchema(required = {"url"}, order = {"url", "username", "password", "method", "contentType",
-    "headers", "apiKey", "timeoutSeconds"})
 public class RestJson extends AbstractConfigurableFunction<Object, Object> {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -36,19 +33,16 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   /**
    * service URL
    */
-  @JsonSchema(style = {"width", "400px"})
   public String url;
 
   /**
    * optional HTTP basic authentication user name
    */
-  @JsonSchema(style = {"width", "400px"})
   public String username;
 
   /**
    * optional HTTP basic authentication password
    */
-  @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
 
   public Map<String, String> headers;
@@ -56,16 +50,12 @@ public class RestJson extends AbstractConfigurableFunction<Object, Object> {
   /**
    * one of application/x-www-form-urlencoded, application/json
    */
-  @JsonSchema(enums = {"application/x-www-form-urlencoded", "application/json"})
   public String contentType;
 
-  @JsonSchema(enums = {"GET", "POST"})
   public String method;
 
-  @JsonSchema(title = "Use credentials as HTTP API key")
   public Boolean apiKey;
 
-  @JsonSchema(title = "Optional HTTP timeout (s)")
   public Integer timeoutSeconds;
 
   public List<String> insertCredentials;

@@ -5,20 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.util.MapUtil;
 import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * Uses an expression to extract data which is then transformed and loaded
  */
-@JsonSchema(required = {"expression"}, order = {"expression"})
 public class ETL extends AbstractSource {
 
   // cannot use "title" since the widget uses the label to determine whether it is required
   // https://github.com/dashjoin/json-schema-form/issues/106
-  @JsonSchema(widget = "custom", widgetType = "expression",
-      description = "Expression computing the source data")
   public String expression;
 
   @Override

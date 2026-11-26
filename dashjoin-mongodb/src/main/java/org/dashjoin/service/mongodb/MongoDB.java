@@ -18,7 +18,6 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -48,20 +47,16 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 /**
  * MongoDB implementation
  */
-@JsonSchema(required = {"hostname", "database"}, order = {"hostname", "port", "database"})
 public class MongoDB extends AbstractDatabase {
 
   private final static Logger logger = Logger.getLogger(MongoDB.class.getName());
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
-  @JsonSchema(style = {"width", "400px"})
   public String hostname;
 
-  @JsonSchema(style = {"width", "400px"})
   public Integer port;
 
-  @JsonSchema(style = {"width", "400px"})
   public String database;
 
   public List<String> datasets;

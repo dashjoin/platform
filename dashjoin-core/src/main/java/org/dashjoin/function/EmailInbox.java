@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.util.FileSystem;
 import org.eclipse.angus.mail.imap.IMAPFolder;
 import jakarta.mail.Address;
@@ -45,7 +44,6 @@ import jakarta.mail.search.SubjectTerm;
  * uidValidity does not change. To process incoming mail, schedule an Invoke function that lists
  * messages with sinceUid set to the highest UID processed so far.
  */
-@JsonSchema(order = {"server", "username", "password", "oauth", "properties"})
 public class EmailInbox extends AbstractMailFunction<EmailInbox.Argument, Object> {
 
   static final int DEFAULT_LIMIT = 50;
@@ -58,8 +56,6 @@ public class EmailInbox extends AbstractMailFunction<EmailInbox.Argument, Object
     /**
      * list (default), get, attachment, folders, markRead, markUnread, flag, unflag, move
      */
-    @JsonSchema(enums = {"list", "get", "attachment", "folders", "markRead", "markUnread", "flag",
-        "unflag", "move"})
     public String action;
 
     /**

@@ -28,9 +28,6 @@ import jakarta.ws.rs.core.SecurityContext;
 /**
  * abstract base class for all database implementations
  */
-@JsonSchema(required = {"djClassName", "name"}, layout = "vertical",
-    order = {"djClassName", "name", "comment", "title", "readRoles", "writeRoles"},
-    computed = "{ \"ID\": \"\\\"dj/\\\" & name\" }")
 public abstract class AbstractDatabase implements Database {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -43,7 +40,6 @@ public abstract class AbstractDatabase implements Database {
   /**
    * db name
    */
-  @JsonSchema(createOnly = true)
   public String name;
 
   public String comment;
@@ -63,8 +59,6 @@ public abstract class AbstractDatabase implements Database {
   /**
    * implementation class
    */
-  @JsonSchema(title = "Database Type", widget = "select", choicesVerb = "GET",
-      choicesUrl = "/rest/manage/getDatabases", jsonata = "name", displayWith = "localName")
   public String djClassName;
 
   /**
@@ -75,15 +69,11 @@ public abstract class AbstractDatabase implements Database {
   /**
    * roles that are allowed to read the database
    */
-  @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
-      jsonata = "ID")
   public List<String> readRoles;
 
   /**
    * roles that are allowed to write the database
    */
-  @JsonSchema(layout = "select", choicesUrl = "/rest/database/query/config/dj-roles-without-admin",
-      jsonata = "ID")
   public List<String> writeRoles;
 
   /**

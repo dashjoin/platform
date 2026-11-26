@@ -11,7 +11,6 @@ import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.service.JSONDatabase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.FormBody;
@@ -32,7 +31,6 @@ import okhttp3.Request;
  * account JSON key file (username is then optional) or the PEM private key (username is then the
  * service account email). The token is issued for the mailbox being accessed or for subject.
  */
-@JsonSchema(order = {"provider", "tenant", "username", "password", "scope", "subject", "tokenUrl"})
 public class OAuth2Credentials extends Credentials {
 
   static final ObjectMapper objectMapper = new ObjectMapper();
@@ -58,32 +56,27 @@ public class OAuth2Credentials extends Credentials {
    * microsoft: Entra ID client credentials, google: service account (JWT bearer), custom: client
    * credentials grant against tokenUrl
    */
-  @JsonSchema(enums = {"microsoft", "google", "custom"})
   public String provider;
 
   /**
    * Microsoft directory (tenant) ID or domain
    */
-  @JsonSchema(style = {"width", "400px"})
   public String tenant;
 
   /**
    * OAuth2 scope. Defaults: microsoft https://outlook.office365.com/.default (IMAP / SMTP), google
    * https://mail.google.com/. Use https://graph.microsoft.com/.default for Microsoft Graph calls
    */
-  @JsonSchema(style = {"width", "400px"})
   public String scope;
 
   /**
    * google: default user to impersonate if the caller does not name a mailbox
    */
-  @JsonSchema(style = {"width", "400px"})
   public String subject;
 
   /**
    * optional token endpoint, overrides the provider default
    */
-  @JsonSchema(style = {"width", "400px"})
   public String tokenUrl;
 
   /**

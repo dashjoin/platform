@@ -2,28 +2,23 @@ package org.dashjoin.function;
 
 import java.security.Principal;
 import java.util.Map;
-import org.dashjoin.model.JsonSchema;
 import jakarta.ws.rs.core.SecurityContext;
 
 /**
  * allows saving an expression on the server. When run, we evaluate / apply the expression with the
  * data context passed as an argument
  */
-@JsonSchema(required = {"expression"}, order = {"expression", "parameters", "runas"})
 public class Invoke extends AbstractConfigurableFunction<Object, Object> {
 
-  @JsonSchema(widget = "custom", widgetType = "expression", title = "Expression")
   public String expression;
 
   /**
    * if set, the expression runs with this role instead of the caller's roles
    */
-  @JsonSchema(layout = "select", choicesUrl = "/rest/database/all/config/dj-role", jsonata = "ID")
   public String runas;
 
   public static class Prop {
     public String description;
-    @JsonSchema(enums = {"boolean", "integer", "number", "string", "date"})
     public String type;
     public Boolean required;
   }
@@ -31,7 +26,6 @@ public class Invoke extends AbstractConfigurableFunction<Object, Object> {
   /**
    * parameters that provide metadata on how to call the function (to be used by AI / OpenAPI)
    */
-  @JsonSchema(style = {"width", "800px"})
   public Map<String, Prop> parameters;
 
   @Override

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import org.dashjoin.function.RestJson;
 import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -31,7 +30,6 @@ import jakarta.ws.rs.WebApplicationException;
 /**
  * Client for remote databases
  */
-@JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 @SuppressWarnings("unchecked")
 public class RemoteDatabase extends AbstractDatabase {
 
@@ -40,19 +38,16 @@ public class RemoteDatabase extends AbstractDatabase {
   /**
    * service URL
    */
-  @JsonSchema(style = {"width", "400px"})
   public String url;
 
   /**
    * optional HTTP basic authentication user name
    */
-  @JsonSchema(style = {"width", "400px"})
   public String username;
 
   /**
    * optional HTTP basic authentication password
    */
-  @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
 
   @Override

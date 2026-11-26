@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -38,8 +37,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * ArangoDB implementation
  */
-@JsonSchema(required = {"hostname", "database"},
-    order = {"hostname", "port", "database", "username", "password"})
 public class ArangoDB extends AbstractDatabase {
 
   private final static Logger logger = Logger.getLogger(ArangoDB.class.getName());
@@ -54,16 +51,12 @@ public class ArangoDB extends AbstractDatabase {
   /**
    * JSON config field
    */
-  @JsonSchema(widget = "password")
   public String password;
 
-  @JsonSchema(style = {"width", "400px"})
   public String hostname;
 
-  @JsonSchema(style = {"width", "400px"})
   public Integer port;
 
-  @JsonSchema(style = {"width", "400px"})
   public String database;
 
   public List<String> datasets;

@@ -3,7 +3,6 @@ package org.dashjoin.function;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
-import org.dashjoin.model.JsonSchema;
 
 /**
  * allows storing credentials for OpenJson etc.
@@ -13,16 +12,13 @@ public class Credentials extends AbstractConfigurableFunction<Void, Void> {
   /**
    * optional HTTP basic authentication user name
    */
-  @JsonSchema(style = {"width", "400px"})
   public String username;
 
   /**
    * optional HTTP basic authentication password
    */
-  @JsonSchema(widget = "password", style = {"width", "400px"})
   public String password;
 
-  @JsonSchema(title = "Use credentials as HTTP API key")
   public Boolean apiKey;
 
   /**

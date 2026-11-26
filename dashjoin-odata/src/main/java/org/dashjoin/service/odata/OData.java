@@ -16,7 +16,6 @@ import org.apache.olingo.commons.api.edm.Edm;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
 import org.apache.olingo.commons.api.edm.EdmSchema;
 import org.dashjoin.model.AbstractDatabase;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.QueryMeta;
 import org.dashjoin.model.Table;
@@ -28,11 +27,8 @@ import org.dashjoin.service.Metadata.MdTable;
 /**
  * Experimental OData database driver implementation
  */
-@JsonSchema(required = {"url"}, order = {"url", "username", "password"})
 public class OData extends AbstractDatabase {
 
-  @JsonSchema(choices = {"https://services.odata.org/V3/Northwind/Northwind.svc/"},
-      style = {"width", "600px"})
   public String url;
 
   ODataClient client;

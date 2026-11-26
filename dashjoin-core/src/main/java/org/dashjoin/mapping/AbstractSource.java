@@ -16,7 +16,6 @@ import org.dashjoin.function.Index;
 import org.dashjoin.model.AbstractDatabase;
 import org.dashjoin.model.AbstractDatabase.DeleteBatch;
 import org.dashjoin.model.AbstractDatabase.MergeBatch;
-import org.dashjoin.model.JsonSchema;
 import org.dashjoin.model.Property;
 import org.dashjoin.model.Table;
 import org.dashjoin.service.ExMapper;
@@ -28,8 +27,6 @@ import java.util.logging.Logger;
 /**
  * base class for datasource / provider functions
  */
-@JsonSchema(required = {"database", "oldData"},
-    order = {"database", "oldData", "createSchema", "mappings"})
 public abstract class AbstractSource extends AbstractMapping<Void> {
   private static final Logger log = Logger.getLogger(AbstractSource.class.getName());
 
@@ -48,8 +45,6 @@ public abstract class AbstractSource extends AbstractMapping<Void> {
    * 
    * default is Ignore
    */
-  @JsonSchema(enums = {"Ignore", "Refresh", "Delete All", "Sync"}, title = "Handle existing data",
-      description = "Ignore: simply add the data. Refresh: data that was created by this function and is no longer present in this run is deleted. Delete All: all records from the target tables are deleted. Sync: can sync modified URLs to the database.")
   public String oldData;
 
   public Date start;
