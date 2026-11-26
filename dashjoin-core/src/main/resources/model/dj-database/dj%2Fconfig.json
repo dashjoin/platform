@@ -914,6 +914,12 @@
           "items": {
             "type": "string"
           }
+        },
+        "json": {
+          "ID": "dj/config/dj-config/json",
+          "name": "json",
+          "parent": "dj/config/dj-config",
+          "widget": "json"
         }
       },
       "oneOf": [
@@ -993,6 +999,19 @@
               "items": {
                 "type": "string"
               }
+            }
+          }
+        },
+        {
+          "title": "json",
+          "properties": {
+            "type": {
+              "const": "json"
+            },
+            "json": {
+              "title": "value",
+              "widget": "json",
+              "description": "Any JSON: a number, text, list or object (nested too)"
             }
           }
         }

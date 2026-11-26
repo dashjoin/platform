@@ -346,12 +346,14 @@ The platform logs user login events in the system log. You can grep the log for 
 
 By default, a user can be logged into an app from any number of browsers and devices at the same time.
 To prevent users from sharing their login, you can limit the number of parallel login sessions per user.
-To do so, open the entry single-session on the system configuration page (/config/dj-config) and set its map:
+To do so, open the entry single-session on the system configuration page (/config/dj-config) and set its value
+(a setting of type json: any JSON, here an object with a number and a list):
 
 ```json
 {
   "ID": "single-session",
-  "map": {
+  "type": "json",
+  "json": {
     "maxSessions": 1,
     "exemptRoles": ["webhook"]
   }

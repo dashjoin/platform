@@ -456,11 +456,12 @@ Query timeout in milliseconds for queries issued when browsing data. To disable 
 }
 ```
 ### single-session
-Limits how many devices a user can be logged in on at the same time. The newest login wins: when a user exceeds maxSessions (default 1), the oldest session is logged out. Users in one of the exemptRoles (e.g. technical users or webhooks) are not restricted. The feature is off as long as no map is set
+Limits how many devices a user can be logged in on at the same time. The newest login wins: when a user exceeds maxSessions (default 1), the oldest session is logged out. Users in one of the exemptRoles (e.g. technical users or webhooks) are not restricted. The feature is off as long as no value is set (type json)
 ```json
 {
   "ID" : "single-session",
-  "map" : {
+  "type" : "json",
+  "json" : {
     "maxSessions" : 1,
     "exemptRoles" : [ "webhook" ]
   }

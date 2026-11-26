@@ -54,7 +54,8 @@ public class DjLint extends AbstractFunction<Map<String, Object>, String> {
 
   public static List<String> INPUTS = Arrays.asList("boolean", "string", "number", "auto complete",
       "select", "multi select", "key value", "password", "textarea", "date", "time", "datetime",
-      "file", "binary file", "file with metadata", "binary file with metadata", "voice", "qrcode");
+      "json", "file", "binary file", "file with metadata", "binary file with metadata", "voice",
+      "qrcode");
 
   public static List<String> OPTION_INPUTS =
       Arrays.asList("select", "multi select", "auto complete");
