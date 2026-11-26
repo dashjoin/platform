@@ -1,0 +1,15 @@
+{
+    "ID": "dj-header",
+    "layout": {
+        "widget": "container",
+        "class": "mb-6 [&>div]:gap-1",
+        "children": [
+            {
+                "widget": "breadcrumbs"
+            },
+            {
+                "widget": "heading"
+            }
+        ]
+    }
+}

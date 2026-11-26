@@ -1,0 +1,13 @@
+{
+    "ID": "dj-frame",
+    "layout": {
+        "widget": "page",
+        "frame": {
+            "toolbar": "dj-toolbar",
+            "sidebar": "dj-sidenav",
+            "header": false,
+            "sidebarOpen": true,
+            "tabTitle": "${title} · Northwind"
+        }
+    }
+}

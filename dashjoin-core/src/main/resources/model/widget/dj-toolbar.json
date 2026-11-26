@@ -1,98 +1,103 @@
 {
-	"ID": "dj-toolbar",
-	"layout": {
-		"widget": "container",
-		"children": [
-			{
-				"widget": "activity-status"
-			},
-			{
-				"widget": "toolbar",
-				"children": [
-					{
-						"widget": "sidenav-switch"
-					},
-					{
-						"widget": "icon",
-						"tooltip": "Home",
-						"icon": "home",
-						"href": "/"
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-md",
-						"tooltip": "Configure databases",
-						"icon": "settings",
-						"href": "/table/config/dj-database",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-md",
-						"tooltip": "Query Catalog",
-						"icon": "query_builder",
-						"href": "/table/config/dj-query-catalog",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-md",
-						"tooltip": "Dashboard Pages",
-						"icon": "wysiwyg",
-						"href": "/table/config/page",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-md",
-						"tooltip": "Functions",
-						"icon": "build_circle",
-						"href": "/table/config/dj-function",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-md",
-						"tooltip": "General Information",
-						"icon": "info",
-						"href": "/page/Info",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "spacer"
-					},
-					{
-						"widget": "search"
-					},
-					{
-						"fxHide": "lt-sm",
-						"widget": "layout-edit-switch",
-						"roles": [
-							"admin"
-						]
-					},
-					{
-						"widget": "icon",
-						"fxHide": "lt-sm",
-						"tooltip": "Open help pages",
-						"icon": "help_outline",
-						"href": "https://dashjoin.github.io/platform/latest",
-						"roles": [
-							"admin"
-						]
-					}
-				]
-			}
-		]
-	}
+    "ID": "dj-toolbar",
+    "layout": {
+        "widget": "toolbar",
+        "children": [
+            {
+                "widget": "logo"
+            },
+            {
+                "widget": "sidenav-switch"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Home",
+                "icon": "home",
+                "href": "/"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Configure databases",
+                "icon": "settings",
+                "href": "/config/dj-database",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden md:block"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Query Catalog",
+                "icon": "query_builder",
+                "href": "/config/dj-query-catalog",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden md:block"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Dashboard Pages",
+                "icon": "wysiwyg",
+                "href": "/config/page",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden md:block"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Functions",
+                "icon": "build_circle",
+                "href": "/config/dj-function",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden md:block"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "General Information",
+                "icon": "info",
+                "href": "/page/Info",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden md:block"
+            },
+            {
+                "widget": "spacer"
+            },
+            {
+                "widget": "search"
+            },
+            {
+                "widget": "layout-edit-switch"
+            },
+            {
+                "widget": "icon",
+                "tooltip": "Open help pages",
+                "icon": "help_outline",
+                "href": "https://dashjoin.github.io/platform/latest",
+                "roles": [
+                    "admin"
+                ],
+                "class": "hidden sm:block"
+            },
+            {
+                "widget": "locale-switch"
+            },
+            {
+                "widget": "dark-mode-switch"
+            },
+            {
+                "widget": "text",
+                "text": "${user}",
+                "class": "hidden px-2 text-muted-foreground sm:block"
+            },
+            {
+                "widget": "logout-button"
+            }
+        ]
+    }
 }
