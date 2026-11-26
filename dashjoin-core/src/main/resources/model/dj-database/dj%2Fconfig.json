@@ -10,9 +10,9 @@
       "parent": "dj/config",
       "type": "object",
       "dj-label": "${title}",
-	  "readRoles": [
-	    "authenticated"
-	  ],
+      "readRoles": [
+        "authenticated"
+      ],
       "before-create": "$alterColumnTrigger()",
       "before-update": "$alterColumnTrigger()",
       "before-delete": "$alterColumnTrigger()",
@@ -97,9 +97,9 @@
       "parent": "dj/config",
       "type": "object",
       "dj-label": "${title}",
-	  "readRoles": [
-	    "authenticated"
-	  ],
+      "readRoles": [
+        "authenticated"
+      ],
       "before-create": "$alterTableTrigger()",
       "before-update": "$alterTableTrigger()",
       "before-delete": "$alterTableTrigger()",
@@ -123,17 +123,30 @@
         "name"
       ],
       "order": [
-		  ["ID", "name", "dj-label"],
-		  ["title", "comment"],
-		  ["readRoles", "writeRoles"],
-		  ["tenantColumn", "roleMappings"],
-		  "before-create",
-		  "after-create",
-		  "before-update",
-		  "after-update",
-		  "before-delete",
-		  "after-delete"
-	  ],
+        [
+          "ID",
+          "name",
+          "dj-label"
+        ],
+        [
+          "title",
+          "comment"
+        ],
+        [
+          "readRoles",
+          "writeRoles"
+        ],
+        [
+          "tenantColumn",
+          "roleMappings"
+        ],
+        "before-create",
+        "after-create",
+        "before-update",
+        "after-update",
+        "before-delete",
+        "after-delete"
+      ],
       "properties": {
         "ID": {
           "ID": "dj/config/Table/ID",
@@ -315,7 +328,7 @@
                 "prop": "dj/config/Table/parent",
                 "columns": [
                   "ID",
-				  "title",
+                  "title",
                   "comment",
                   "dj-label"
                 ]
@@ -408,10 +421,10 @@
         "ID"
       ],
       "readRoles": [
-          "admin"
+        "admin"
       ],
       "writeRoles": [
-          "admin"
+        "admin"
       ],
       "properties": {
         "ID": {
@@ -475,7 +488,7 @@
         "authenticated"
       ],
       "writeRoles": [
-          "authenticated"
+        "authenticated"
       ],
       "tenantColumn": "ID",
       "before-update": "'admin' in $djRoles() ? false :\n{\n  'setObject': object ~> | $ | {'lastlogin': $now()}, ['firstlogin', 'name', 'sessions'] |\n}",
@@ -519,7 +532,7 @@
           "parent": "dj/config/user",
           "type": "object",
           "additionalProperties": {
-              "type": "object"
+            "type": "object"
           }
         },
         "sessions": {
@@ -578,13 +591,13 @@
           "name": "description",
           "parent": "dj/config/dj-config",
           "type": "string"
-		},
+        },
         "category": {
           "ID": "dj/config/dj-config/category",
           "name": "category",
           "parent": "dj/config/dj-config",
           "type": "string"
-		},
+        },
         "boolean": {
           "ID": "dj/config/dj-config/boolean",
           "name": "boolean",
@@ -704,7 +717,7 @@
           "parent": "dj/config/dj-query-catalog",
           "pkpos": 0,
           "type": "string",
-	      "size": 4,
+          "size": 4,
           "createOnly": true
         },
         "type": {
@@ -712,7 +725,7 @@
           "name": "type",
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
-	      "size": 4,
+          "size": 4,
           "enum": [
             "read",
             "write"
@@ -724,7 +737,7 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "ref": "dj/config/dj-database/ID",
-	      "size": 4,
+          "size": 4,
           "displayWith": "fk"
         },
         "query": {
@@ -733,18 +746,18 @@
           "parent": "dj/config/dj-query-catalog",
           "type": "string",
           "widget": "textarea",
-	      "widgetType": "queryEdit",
-	      "size": 12,
+          "widgetType": "queryEdit",
+          "size": 12,
           "style": {
-		    "width": "calc(100vw - 100px - 240px)",
-		    "font-family": "monospace"
-		  }
+            "width": "calc(100vw - 100px - 240px)",
+            "font-family": "monospace"
+          }
         },
         "comment": {
           "ID": "dj/config/dj-query-catalog/comment",
           "name": "comment",
           "parent": "dj/config/dj-query-catalog",
-	      "size": 8,
+          "size": 8,
           "type": "string"
         },
         "roles": {
@@ -755,7 +768,7 @@
           "choicesUrl": "/rest/database/query/config/dj-roles-without-admin",
           "jsonata": "ID",
           "layout": "select",
-	      "size": 4,
+          "size": 4,
           "items": {
             "type": "string"
           }
@@ -765,7 +778,7 @@
           "name": "arguments",
           "parent": "dj/config/dj-query-catalog",
           "type": "object",
-	      "size": 12,
+          "size": 12,
           "additionalProperties": {
             "type": "object",
             "properties": {
@@ -792,9 +805,9 @@
       "name": "widget",
       "parent": "dj/config",
       "type": "object",
-	  "readRoles": [
-	    "authenticated"
-	  ],
+      "readRoles": [
+        "authenticated"
+      ],
       "instanceLayout": {
         "widget": "page",
         "children": [
@@ -833,9 +846,9 @@
       "name": "page",
       "parent": "dj/config",
       "type": "object",
-	  "readRoles": [
-	    "authenticated"
-	  ],
+      "readRoles": [
+        "authenticated"
+      ],
       "required": [
         "ID"
       ],
@@ -919,14 +932,16 @@
       "tableLayout": {
         "widget": "page",
         "children": [
-            {
-              "widget": "container",
-              "title": "Available Functions",
-              "children": [{
-                  "widget": "table",
-                  "database": "config",
-                  "query": "dj-functions"
-                  }]
+          {
+            "widget": "container",
+            "title": "Available Functions",
+            "children": [
+              {
+                "widget": "table",
+                "database": "config",
+                "query": "dj-functions"
+              }
+            ]
           },
           {
             "widget": "create",
@@ -941,15 +956,15 @@
             "widget": "edit",
             "title": "Edit Record"
           },
-		  {
-		    "if": "value.djClassName = 'com.dashjoin.ai.AIApp'",
-			"title": "Chat",
-		    "widget": "aichat",
-			"uploadEnabled": true,
-		    "onChat": "$sse(value.ID, $append(messages, newMessage))"
-		  },
           {
-			"if": "value.djClassName != 'com.dashjoin.ai.AIApp'",
+            "if": "value.djClassName = 'com.dashjoin.ai.AIApp'",
+            "title": "Chat",
+            "widget": "aichat",
+            "uploadEnabled": true,
+            "onChat": "$sse(value.ID, $append(messages, newMessage))"
+          },
+          {
+            "if": "value.djClassName != 'com.dashjoin.ai.AIApp'",
             "widget": "container",
             "title": "Run Function",
             "children": [
@@ -1014,10 +1029,13 @@
       "required": [
         "ID"
       ],
-	  "order":[
-		["ID", "description"],
-		"expression"
-	  ],
+      "order": [
+        [
+          "ID",
+          "description"
+        ],
+        "expression"
+      ],
       "properties": {
         "ID": {
           "ID": "dj/config/dj-library/ID",
@@ -1037,46 +1055,46 @@
           "ID": "dj/config/dj-library/expression",
           "name": "expression",
           "parent": "dj/config/dj-library",
-		  "widgetType": "expression",
+          "widgetType": "expression",
           "type": "string"
         }
       },
-	  "instanceLayout": {
-	      "widget": "page",
-	      "children": [
-	          {
-	              "title": "Edit Record",
-	              "widget": "edit"
-	          },
-	          {
-	              "display": "value.tests",
-	              "widget": "display"
-	          },
-	          {
-	              "text": "Run Test Suite",
-	              "print": "($test := $use('unit-test') ~> $eval;\n$test(value))",
-	              "widget": "button"
-	          }
-	      ]
-	  },
-	  "tableLayout": {
-	      "widget": "page",
-	      "children": [
-	          {
-	              "title": "Table: ${value.name}",
-	              "widget": "table"
-	          },
-	          {
-	              "title": "New Record",
-	              "widget": "create"
-	          },
-	          {
-	              "text": "Run All Test Suites",
-	              "widget": "button",
-	              "print": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
-	          }
-	      ]
-	  }
+      "instanceLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "title": "Edit Record",
+            "widget": "edit"
+          },
+          {
+            "display": "value.tests",
+            "widget": "display"
+          },
+          {
+            "text": "Run Test Suite",
+            "print": "($test := $use('unit-test') ~> $eval;\n$test(value))",
+            "widget": "button"
+          }
+        ]
+      },
+      "tableLayout": {
+        "widget": "page",
+        "children": [
+          {
+            "title": "Table: ${value.name}",
+            "widget": "table"
+          },
+          {
+            "title": "New Record",
+            "widget": "create"
+          },
+          {
+            "text": "Run All Test Suites",
+            "widget": "button",
+            "print": "($test := $use('unit-test') ~> $eval;\n$all('config', 'dj-library').$test($))"
+          }
+        ]
+      }
     },
     "dj-query-performance": {
       "ID": "dj/config/dj-query-performance",
@@ -1090,8 +1108,8 @@
           "parent": "dj/config/dj-query-performance",
           "type": "string",
           "ref": "dj/config/dj-query-catalog/ID"
-		}
-	  }
+        }
+      }
     }
   }
 }
