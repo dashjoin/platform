@@ -890,8 +890,7 @@
             "properties": {}
         },
         "layout-edit-switch": {
-            "description": "Classic in-browser layout editor switch; ignored by the new UI (editing moves to Studio / AI)",
-            "newUI": false,
+            "description": "Turns the in-browser layout editor on and off (shown to admins only)",
             "properties": {}
         },
         "aichat": {
