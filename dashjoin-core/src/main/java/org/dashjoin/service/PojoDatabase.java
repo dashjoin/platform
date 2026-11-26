@@ -583,7 +583,8 @@ public class PojoDatabase extends UnionDatabase implements Config {
         throw new Exception("Database name must not contain special characters");
       String djClassName = (String) object.get("djClassName");
       String url = (String) object.get("url");
-      if (!(services.persistantDB instanceof JSONFileDatabase))
+      if (!(services.persistantDB instanceof JSONFileDatabase
+          || services.persistantDB instanceof SqlConfigView))
         if ("org.dashjoin.service.SQLDatabase".equals(djClassName))
           if (url != null)
             if (url.startsWith("jdbc:sqlite:"))

@@ -47,6 +47,7 @@ org.dashjoin.function.SaveApi
 org.dashjoin.function.ERDiagram
 org.dashjoin.function.Stats
 org.dashjoin.function.GitPull
+org.dashjoin.function.AppSync
 org.dashjoin.function.GitCheckout
 org.dashjoin.function.GitRestore
 org.dashjoin.function.GitCommit
