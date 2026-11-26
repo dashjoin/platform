@@ -1,0 +1,12 @@
+{
+	"ID": "label-columns",
+	"description": "Record label of tables without dj-label: the first of these columns the table has (as in the classic UI); empty: the ID",
+	"category": "ui",
+	"type": "list",
+	"list": [
+		"name",
+		"title",
+		"label",
+		"reference"
+	]
+}

@@ -1,0 +1,7 @@
+{
+	"ID": "logo-text",
+	"description": "App name in the toolbar (next to the logo-url image, or alone)",
+	"category": "ui",
+	"type": "string",
+	"string": "Northwind"
+}
