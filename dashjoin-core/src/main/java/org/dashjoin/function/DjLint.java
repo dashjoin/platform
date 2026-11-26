@@ -26,6 +26,21 @@ public class DjLint extends AbstractFunction<Map<String, Object>, Object> {
           "reload", "log", "navigate", "clearCache", "log", "translate", "stopSpeech", "speak",
           "sleep", "dialog", "progress", "setActiveStep", "stepForward", "stepBack", "sse");
 
+  /**
+   * client functions only the new UI has (dashjoin-newui src/sdk/expression.ts clientActions)
+   */
+  public static List<String> NEWUI_CLIENT_FUNCTIONS = Arrays.asList("rest", "login", "loginWith",
+      "register", "resetPassword", "acceptLegal");
+
+  /**
+   * the client functions of both UIs
+   */
+  public static List<String> allClientFunctions() {
+    List<String> res = new ArrayList<>(CLIENT_FUNCTIONS);
+    res.addAll(NEWUI_CLIENT_FUNCTIONS);
+    return res;
+  }
+
   public static List<String> INPUTS = Rules.INPUTS;
 
   public static List<String> OPTION_INPUTS = Rules.OPTION_INPUTS;

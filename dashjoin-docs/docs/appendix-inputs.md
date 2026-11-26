@@ -102,6 +102,21 @@ Sample output:
   "value" : "file contents"
 }
 ```
+## json input
+Edits any JSON value (lists, objects, ...) as text; the text is parsed when the form is submitted
+```json
+{
+  "type" : "object",
+  "widget" : "json"
+}
+```
+Sample output: 
+```json
+{
+  "tags" : [ "a", "b" ],
+  "limit" : 5
+}
+```
 ## key value input
 key value inputs display a two column table to enter keys and values. Returns a JSON object
 ```json

@@ -767,6 +767,14 @@ CODE: {
   "widget" : "qrcode"
 }
 
+TITLE: json input
+DESCRIPTION: Edits any JSON value (lists, objects, ...) as text; the text is parsed when the form is submitted
+LANGUAGE: json
+CODE: {
+  "type" : "object",
+  "widget" : "json"
+}
+
 TITLE: Query with permissions
 DESCRIPTION: a query on database 'dj/northwind' called 'group', executable for the 'authenticated' role
 FILE: model/dj-query-catalog/group.json
@@ -1069,41 +1077,6 @@ CODE: {
   "backgroundImage" : "https://example.org/logo.jpg"
 }
 
-TITLE: theme
-DESCRIPTION: sets the UI theme. in this example, we set the primary and secondary color
-FILE: model/dj-config/theme.json
-LANGUAGE: json
-CODE: {
-  "ID" : "theme",
-  "map" : {
-    "palette.primary.main" : "#3d7dbc",
-    "palette.secondary.main" : "#3d7dbc"
-  }
-}
-
-TITLE: dark-theme
-DESCRIPTION: sets the UI dark theme. in this example, we set the primary and secondary color
-FILE: model/dj-config/dark-theme.json
-LANGUAGE: json
-CODE: {
-  "ID" : "theme",
-  "map" : {
-    "palette.primary.main" : "#3d7dbc",
-    "palette.secondary.main" : "#3d7dbc"
-  }
-}
-
-TITLE: sidenav-width-px
-DESCRIPTION: sets the sidenav width to 100px. 0 hides the sidenav
-FILE: model/dj-config/sidenav-width-px.json
-LANGUAGE: json
-CODE: {
-  "ID" : "authenticated",
-  "properties" : {
-    "sidenav-width-px" : "100"
-  }
-}
-
 TITLE: sidenav-open
 DESCRIPTION: sidenav is closed by default
 FILE: model/dj-config/sidenav-open.json
@@ -1156,6 +1129,15 @@ LANGUAGE: json
 CODE: {
   "ID" : "logo-url",
   "string" : "/assets/logo.svg"
+}
+
+TITLE: logo-text
+DESCRIPTION: specifies the app name to show in the toolbar (next to the logo-url image, or alone)
+FILE: model/dj-config/logo-text.json
+LANGUAGE: json
+CODE: {
+  "ID" : "logo-text",
+  "string" : "Northwind Traders"
 }
 
 TITLE: include-table-in-search
@@ -1214,24 +1196,6 @@ CODE: {
   "map" : {
     "northwind" : "search"
   }
-}
-
-TITLE: allow-dark-mode
-DESCRIPTION: disallow dark mode
-FILE: model/dj-config/allow-dark-mode.json
-LANGUAGE: json
-CODE: {
-  "ID" : "allow-dark-mode",
-  "boolean" : false
-}
-
-TITLE: base-theme
-DESCRIPTION: change the base theme
-FILE: model/dj-config/base-theme.json
-LANGUAGE: json
-CODE: {
-  "ID" : "base-theme",
-  "string" : "B&W"
 }
 
 TITLE: autocomplete-timeout-ms
@@ -1326,6 +1290,15 @@ CODE: {
   "map" : {
     "Home" : "Start"
   }
+}
+
+TITLE: label-columns
+DESCRIPTION: the record label of tables without dj-label: the first of these columns the table has; empty: the record's ID
+FILE: model/dj-config/label-columns.json
+LANGUAGE: json
+CODE: {
+  "ID" : "label-columns",
+  "list" : [ "name", "title", "label" ]
 }
 
 TITLE: confirm

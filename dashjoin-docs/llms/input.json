@@ -199,5 +199,22 @@
             },
             "output": "whatever was encoded in the QR code"
         }
+    ],
+    "json": [
+        {
+            "title": "json input",
+            "description": "Edits any JSON value (lists, objects, ...) as text; the text is parsed when the form is submitted",
+            "code": {
+                "type": "object",
+                "widget": "json"
+            },
+            "output": {
+                "tags": [
+                    "a",
+                    "b"
+                ],
+                "limit": 5
+            }
+        }
     ]
 }

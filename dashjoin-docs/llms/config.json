@@ -15,44 +15,6 @@
 			}
 		}
 	],
-	"theme": [
-		{
-			"description": "sets the UI theme. in this example, we set the primary and secondary color",
-			"file": "model/dj-config/theme.json",
-			"code": {
-				"ID": "theme",
-				"map": {
-					"palette.primary.main": "#3d7dbc",
-					"palette.secondary.main": "#3d7dbc"
-				}
-			}
-		}
-	],
-	"dark-theme": [
-		{
-			"description": "sets the UI dark theme. in this example, we set the primary and secondary color",
-			"file": "model/dj-config/dark-theme.json",
-			"code": {
-				"ID": "theme",
-				"map": {
-					"palette.primary.main": "#3d7dbc",
-					"palette.secondary.main": "#3d7dbc"
-				}
-			}
-		}
-	],
-	"sidenav-width-px": [
-		{
-			"description": "sets the sidenav width to 100px. 0 hides the sidenav",
-			"file": "model/dj-config/sidenav-width-px.json",
-			"code": {
-				"ID": "authenticated",
-				"properties": {
-					"sidenav-width-px": "100"
-				}
-			}
-		}
-	],
 	"sidenav-open": [
 		{
 			"description": "sidenav is closed by default",
@@ -112,6 +74,16 @@
 			"code": {
 				"ID": "logo-url",
 				"string": "/assets/logo.svg"
+			}
+		}
+	],
+	"logo-text": [
+		{
+			"description": "specifies the app name to show in the toolbar (next to the logo-url image, or alone)",
+			"file": "model/dj-config/logo-text.json",
+			"code": {
+				"ID": "logo-text",
+				"string": "Northwind Traders"
 			}
 		}
 	],
@@ -182,26 +154,6 @@
 				"map": {
 					"northwind": "search"
 				}
-			}
-		}
-	],
-	"allow-dark-mode": [
-		{
-			"description": "disallow dark mode",
-			"file": "model/dj-config/allow-dark-mode.json",
-			"code": {
-				"ID": "allow-dark-mode",
-				"boolean": false
-			}
-		}
-	],
-	"base-theme": [
-		{
-			"description": "change the base theme",
-			"file": "model/dj-config/base-theme.json",
-			"code": {
-				"ID": "base-theme",
-				"string": "B&W"
 			}
 		}
 	],
@@ -307,6 +259,20 @@
 				"map": {
 					"Home": "Start"
 				}
+			}
+		}
+	],
+	"label-columns": [
+		{
+			"description": "the record label of tables without dj-label: the first of these columns the table has; empty: the record's ID",
+			"file": "model/dj-config/label-columns.json",
+			"code": {
+				"ID": "label-columns",
+				"list": [
+					"name",
+					"title",
+					"label"
+				]
 			}
 		}
 	]

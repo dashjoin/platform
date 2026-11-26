@@ -291,38 +291,6 @@ Login configuration for ACME Corp. App with a specific login screen background i
   "backgroundImage" : "https://example.org/logo.jpg"
 }
 ```
-### theme
-sets the UI theme. in this example, we set the primary and secondary color
-```json
-{
-  "ID" : "theme",
-  "map" : {
-    "palette.primary.main" : "#3d7dbc",
-    "palette.secondary.main" : "#3d7dbc"
-  }
-}
-```
-### dark-theme
-sets the UI dark theme. in this example, we set the primary and secondary color
-```json
-{
-  "ID" : "theme",
-  "map" : {
-    "palette.primary.main" : "#3d7dbc",
-    "palette.secondary.main" : "#3d7dbc"
-  }
-}
-```
-### sidenav-width-px
-sets the sidenav width to 100px. 0 hides the sidenav
-```json
-{
-  "ID" : "authenticated",
-  "properties" : {
-    "sidenav-width-px" : "100"
-  }
-}
-```
 ### sidenav-open
 sidenav is closed by default
 ```json
@@ -369,6 +337,14 @@ specifies the logo to show in the toolbar
 {
   "ID" : "logo-url",
   "string" : "/assets/logo.svg"
+}
+```
+### logo-text
+specifies the app name to show in the toolbar (next to the logo-url image, or alone)
+```json
+{
+  "ID" : "logo-text",
+  "string" : "Northwind Traders"
 }
 ```
 ### include-table-in-search
@@ -421,22 +397,6 @@ Configures searches on the northwind DB to use the query 'search' from the query
   "map" : {
     "northwind" : "search"
   }
-}
-```
-### allow-dark-mode
-disallow dark mode
-```json
-{
-  "ID" : "allow-dark-mode",
-  "boolean" : false
-}
-```
-### base-theme
-change the base theme
-```json
-{
-  "ID" : "base-theme",
-  "string" : "B&W"
 }
 ```
 ### autocomplete-timeout-ms
@@ -522,5 +482,13 @@ Contains I18N mappings. Use any ISO 3166-1 alpha-2 code instead of 'de'
   "map" : {
     "Home" : "Start"
   }
+}
+```
+### label-columns
+the record label of tables without dj-label: the first of these columns the table has; empty: the record's ID
+```json
+{
+  "ID" : "label-columns",
+  "list" : [ "name", "title", "label" ]
 }
 ```

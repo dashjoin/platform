@@ -3,10 +3,12 @@ package org.dashjoin.function.lint;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -53,9 +55,19 @@ public class WidgetCatalog {
   /** the keys a form or form field may have (widgets.json form) */
   final Set<String> formKeys;
 
-  WidgetCatalog(Map<String, Widget> widgets, Set<String> formKeys) {
+  /**
+   * the inputs of a form field: the default input of each type and the "widget" values of
+   * widgets.json form
+   */
+  final List<String> inputs;
+
+  /** the default input of each field type, also accepted as "widget" */
+  static final List<String> TYPE_INPUTS = List.of("boolean", "string", "number");
+
+  WidgetCatalog(Map<String, Widget> widgets, Set<String> formKeys, List<String> inputs) {
     this.widgets = widgets;
     this.formKeys = formKeys;
+    this.inputs = inputs;
   }
 
   public WidgetCatalog(JsonNode source) {
@@ -89,8 +101,13 @@ public class WidgetCatalog {
     formKeys = new HashSet<>();
     JsonNode form = source.get("form");
     form.get("properties").fieldNames().forEachRemaining(formKeys::add);
-    form.at("/properties/properties/additionalProperties/properties").fieldNames()
-        .forEachRemaining(formKeys::add);
+    JsonNode field = form.at("/properties/properties/additionalProperties/properties");
+    field.fieldNames().forEachRemaining(formKeys::add);
+
+    List<String> inputs = new ArrayList<>(TYPE_INPUTS);
+    for (JsonNode w : field.at("/widget/enum"))
+      inputs.add(w.asText());
+    this.inputs = Collections.unmodifiableList(inputs);
   }
 
   /**
@@ -100,7 +117,7 @@ public class WidgetCatalog {
     Map<String, Widget> all = new HashMap<>(widgets);
     for (String id : ids)
       all.putIfAbsent(id, ANY);
-    return new WidgetCatalog(all, formKeys);
+    return new WidgetCatalog(all, formKeys, inputs);
   }
 
   public boolean known(String widget) {
@@ -133,6 +150,11 @@ public class WidgetCatalog {
   public boolean isForm(String widget, String property) {
     Widget w = widgets.get(widget);
     return w != null && w.forms().contains(property);
+  }
+
+  /** the inputs of a form field ("widget") */
+  public List<String> inputs() {
+    return inputs;
   }
 
   public boolean isFormKey(String key) {

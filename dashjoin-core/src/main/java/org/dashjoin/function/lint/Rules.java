@@ -42,11 +42,8 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class Rules {
 
-  /** the inputs of a form field ("widget") */
-  public static final List<String> INPUTS = Arrays.asList("boolean", "string", "number",
-      "auto complete", "select", "multi select", "key value", "password", "textarea", "date",
-      "time", "datetime", "json", "file", "binary file", "file with metadata",
-      "binary file with metadata", "voice", "qrcode");
+  /** the inputs of a form field ("widget"), from widgets.json (WidgetCatalog.inputs) */
+  public static final List<String> INPUTS = WidgetCatalog.get().inputs();
 
   public static final List<String> OPTION_INPUTS =
       Arrays.asList("select", "multi select", "auto complete");
@@ -264,7 +261,7 @@ public class Rules {
   }
 
   static final LintRule UNKNOWN_INPUT = LintRule.of("unknown-input", ERROR, FORM, (n, lint) -> {
-    if (n.value.isObject() && !INPUTS.contains(input(n)))
+    if (n.value.isObject() && !lint.catalog.inputs().contains(input(n)))
       lint.report(n, "unknown widget type: " + input(n));
   });
 
@@ -339,7 +336,7 @@ public class Rules {
         // $try is registered directly in ExpressionService
         jsonata.registerFunction("try", x);
         if (!n.backendOnly)
-          for (String f : DjLint.CLIENT_FUNCTIONS)
+          for (String f : DjLint.allClientFunctions())
             jsonata.registerFunction(f, x);
         for (Function<?, ?> inst : SafeServiceLoader.load(Function.class))
           if (inst.getID() != null)

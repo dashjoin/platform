@@ -277,6 +277,28 @@ public class DjLintTest {
   }
 
   @Test
+  public void newUiClientFunctions() throws Exception {
+    Linter lint = new Linter();
+    expressions(lint, "{\"options\": \"$rest('/rest/ai/ais')\"}", false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+    // client functions are not available in the backend
+    expressions(lint, "{\"expression\": \"$rest('/rest/ai/ais')\"}", true);
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+  }
+
+  @Test
+  public void inputs() throws Exception {
+    // from widgets.json: the default input of each type plus the form's "widget" values
+    Assertions.assertTrue(Rules.INPUTS.containsAll(List.of("string", "number", "boolean", "select",
+        "json", "voice", "qrcode", "binary file with metadata")), "" + Rules.INPUTS);
+    Linter lint = new Linter();
+    lint.form(PAGE, "", json("{\"widget\": \"json\"}"), false);
+    lint.form(PAGE, "", json("{\"widget\": \"jsn\"}"), false);
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("unknown widget type: jsn"), all(lint));
+  }
+
+  @Test
   public void testTry() throws Exception {
     Linter lint = new Linter();
     expressions(lint, "{\"expression\": \"$try(function(){$echo('test')})\"}", false);

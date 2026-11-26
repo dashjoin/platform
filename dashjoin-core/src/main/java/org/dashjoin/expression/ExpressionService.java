@@ -253,7 +253,7 @@ public class ExpressionService {
         // intercept the exception
         JException je = (JException) e;
         if ("T1006".equals(je.getError())) {
-          for (String s : DjLint.CLIENT_FUNCTIONS)
+          for (String s : DjLint.allClientFunctions())
             if (expression.contains("$" + s))
               throw new JsonataException("Function $" + s + " can only be used in the browser",
                   je.getLocation());
