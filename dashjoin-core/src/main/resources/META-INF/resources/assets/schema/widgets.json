@@ -1,0 +1,1508 @@
+{
+    "$comment": "The widget declarations, owned by the platform and served at /assets/schema/widgets.json: source of the new UI's layout editor forms and of the JSON schemas for layout files (dashjoin-newui: yarn schema, scripts/gen-schema.mjs). One entry per widget id; 'newUI': false marks widgets only the classic UI renders. Property schemas reference the shared definitions in '$defs' with {\"$ref\": \"#/$defs/name\"} (JSON Schema 2020-12: keys next to $ref, e.g. a description, apply too); the generated schemas carry these $defs plus widget, form and tableSettings. \"deprecated\": true: still read, replaced; \"studio\": true: an advanced setting edited in Dashjoin Studio - the browser layout editor offers neither. \"contentMediaType\" says what a string holds (application/jsonata - see $defs expression -, text/markdown, text/html, text/javascript, text/tsx): the layout editor gives it a large editor, a JSONata expression one with a preview of its result.",
+    "$defs": {
+        "expression": {
+            "type": "string",
+            "contentMediaType": "application/jsonata",
+            "description": "JSONata expression"
+        },
+        "title": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "description": "Heading shown above the widget; may contain ${...} templates; translated (the classic layout editor stores an empty title as null)"
+        },
+        "text": {
+            "type": "string",
+            "description": "Text; may contain ${...} templates; translated"
+        },
+        "database": {
+            "type": "string",
+            "description": "Database name, e.g. \"northwind\" (without the dj/ prefix)",
+            "widget": "select",
+            "options": "$query('config', 'dj-databases-no-config').$substringAfter(ID, 'dj/')"
+        },
+        "query": {
+            "type": "string",
+            "description": "Query ID from the query catalog (config/dj-query-catalog)",
+            "widget": "select",
+            "options": "$query('config', 'dj-queries')[type != 'write'].{'value': ID, 'label': ID & ' (' & $substringAfter(database, 'dj/') & ')'}"
+        },
+        "table": {
+            "type": "string",
+            "description": "Table name in the database",
+            "widget": "select",
+            "options": "$query('config', 'dj-tables')[$not($contains(ID, 'dj/config/'))].($t := $split(ID, '/')[2] ~> $replace('%2F', '/') ~> $replace('%25', '%'); {'value': $t, 'label': $t & ' (' & $split(ID, '/')[1] & ')'})"
+        },
+        "displayHint": {
+            "type": "object",
+            "description": "How the value of one key / column is shown",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Label or column header instead of the key"
+                },
+                "icon": {
+                    "type": "string",
+                    "description": "Material icon before the label (display widget), e.g. \"payments\""
+                },
+                "format": {
+                    "type": "string",
+                    "description": "uri, email, date, date-time, time, currency:EUR (currency:EUR:0 without cents), percent, number, number:2",
+                    "examples": [
+                        "uri",
+                        "email",
+                        "date",
+                        "date-time",
+                        "time",
+                        "currency:EUR",
+                        "currency:EUR:0",
+                        "currency:USD",
+                        "percent",
+                        "number",
+                        "number:2"
+                    ]
+                },
+                "contentMediaType": {
+                    "type": "string",
+                    "description": "image/...: the value (URL or data URL) is shown as a picture",
+                    "examples": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/svg+xml"
+                    ]
+                },
+                "hidden": {
+                    "type": "boolean",
+                    "description": "Not shown: a table leaves the column out (also from the column chooser and the list lines it picks; a line named in primaryText etc. still shows it), the display widget the key"
+                }
+            }
+        },
+        "displaySchema": {
+            "type": "object",
+            "description": "How values are shown (the data stays as it is): a JSON Schema whose properties describe the keys / columns; for a list of rows the row is items.properties. Codes by name: options on a key, a literal [{label, value}] list (JSON tab)",
+            "properties": {
+                "properties": {
+                    "type": "object",
+                    "description": "Per key / column",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/displayHint"
+                    }
+                }
+            }
+        },
+        "arguments": {
+            "type": "string",
+            "contentMediaType": "application/jsonata",
+            "description": "JSONata expression computing the query arguments, e.g. {\"year\": variable.year}"
+        },
+        "graph": {
+            "type": "boolean",
+            "description": "The query is a graph query"
+        },
+        "icon": {
+            "type": "string",
+            "description": "Material icon name, e.g. \"home\""
+        },
+        "href": {
+            "type": "string",
+            "description": "Link, e.g. \"/page/Info\" or \"https://...\""
+        },
+        "perPage": {
+            "type": "integer",
+            "enum": [
+                5,
+                10,
+                25,
+                50
+            ],
+            "description": "Rows per page"
+        },
+        "columns": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Columns to show"
+        },
+        "context": {
+            "type": "string",
+            "contentMediaType": "application/jsonata",
+            "description": "JSONata expression; its result is available as `context` in templates and scripts"
+        },
+        "children": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/widget"
+            },
+            "description": "Nested widgets"
+        }
+    },
+    "common": {
+        "widget": {
+            "type": "string",
+            "description": "Widget id: a built-in widget, a config/widget layout, or a runtime component"
+        },
+        "title": {
+            "$ref": "#/$defs/title"
+        },
+        "class": {
+            "studio": true,
+            "type": "string",
+            "description": "Tailwind classes on the widget's frame, e.g. \"md:col-span-6\" (half the 12 column grid from medium screens up; widgets are full width by default) or \"hidden md:block\""
+        },
+        "size": {
+            "deprecated": true,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Legacy: width in a 12 column grid. The new UI reads it as class \"md:col-span-<size>\"; prefer class"
+        },
+        "card": {
+            "studio": true,
+            "type": "boolean",
+            "description": "Draw the widget on a card (true) or not (false). Default per widget: table, actionTable, edit, create, links, variable, notebook and button with a form have one; config / runtime widgets set it in their record"
+        },
+        "style": {
+            "studio": true,
+            "type": "object",
+            "description": "Inline CSS for the widget's frame, camelCase - prefer class. Legacy kebab-case keys are converted; legacy dotted keys (\"plugins.legend.display\") become chartOptions"
+        },
+        "roles": {
+            "studio": true,
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Only shown to users with one of these roles"
+        },
+        "if": {
+            "studio": true,
+            "$ref": "#/$defs/expression",
+            "description": "JSONata condition; the widget is hidden while it is falsy"
+        },
+        "cached": {
+            "studio": true,
+            "type": "boolean",
+            "description": "Reuse the results of this widget's expressions and catalog queries for 5 minutes instead of fetching them every time (like the classic UI: queries and expressions are only cached when set)"
+        },
+        "fxHide": {
+            "deprecated": true,
+            "type": "string",
+            "enum": [
+                "lt-md",
+                "lt-sm"
+            ],
+            "description": "Legacy: hide below this screen width. The new UI reads it as class \"hidden md:block\" / \"hidden sm:block\"; prefer class"
+        },
+        "isDraft": {
+            "deprecated": true,
+            "type": "boolean",
+            "description": "Only visible in the classic UI's layout editor"
+        }
+    },
+    "widgets": {
+        "page": {
+            "description": "Layout root: its children on a 12 column grid; \"frame\" sets toolbar, sidebar, header and titles for this view",
+            "properties": {
+                "frame": {
+                    "type": "object",
+                    "description": "The app frame around this view (page, tableLayout, instanceLayout, search; in the dj-frame widget: the app's defaults). A widget ID uses that widget for the region, false hides it",
+                    "additionalProperties": false,
+                    "properties": {
+                        "toolbar": {
+                            "type": [
+                                "string",
+                                "boolean"
+                            ],
+                            "examples": [
+                                "dj-toolbar",
+                                false
+                            ],
+                            "description": "The bar at the top (default dj-toolbar); false hides it"
+                        },
+                        "sidebar": {
+                            "type": [
+                                "string",
+                                "boolean"
+                            ],
+                            "examples": [
+                                "dj-sidenav",
+                                false
+                            ],
+                            "description": "The navigation on the left (default dj-sidenav); false hides it"
+                        },
+                        "header": {
+                            "type": [
+                                "string",
+                                "boolean"
+                            ],
+                            "examples": [
+                                "dj-header",
+                                false
+                            ],
+                            "description": "Above the content, e.g. dj-header (breadcrumbs and title); default: none, as in the classic UI"
+                        },
+                        "sidebarOpen": {
+                            "type": "boolean",
+                            "description": "The sidebar is open when the app starts"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "The view's title, a ${...} template (default: page ID, table name, record label or search term)"
+                        },
+                        "tabTitle": {
+                            "type": "string",
+                            "description": "The browser tab's title, a ${...} template, e.g. \"${title} · Northwind\" (default ${title})"
+                        }
+                    }
+                },
+                "children": {
+                    "$ref": "#/$defs/children"
+                },
+                "onRender": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression run when the page renders, before its widgets (e.g. set variables, redirect)"
+                }
+            }
+        },
+        "container": {
+            "description": "Groups widgets; optionally repeats them per item of an expression",
+            "properties": {
+                "children": {
+                    "$ref": "#/$defs/children"
+                },
+                "foreach": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression; children are shown once per result item (available as value)"
+                },
+                "itemsClass": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Tailwind classes for the list of foreach items (default: a column with gap-4), e.g. \"flex-row flex-wrap\" for items side by side"
+                },
+                "layout": {
+                    "studio": true,
+                    "deprecated": true,
+                    "type": "string",
+                    "enum": [
+                        "vertical",
+                        "horizontal"
+                    ],
+                    "description": "Legacy: \"horizontal\" is read as itemsClass \"flex-row flex-wrap\"; prefer itemsClass"
+                },
+                "redrawInterval": {
+                    "type": "number",
+                    "description": "Read the data of the widgets inside again every n seconds (e.g. the progress of a running function); the rest of the page stays as it is"
+                }
+            }
+        },
+        "card": {
+            "deprecated": true,
+            "description": "Legacy: read as a container with \"card\": true (text becomes the title); prefer \"card\": true on any widget",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text"
+                },
+                "children": {
+                    "$ref": "#/$defs/children"
+                }
+            }
+        },
+        "expansion": {
+            "description": "Expandable panel with nested widgets",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Header of the panel; may contain ${...} templates"
+                },
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Expression computing the expansion state"
+                },
+                "children": {
+                    "$ref": "#/$defs/children"
+                }
+            }
+        },
+        "text": {
+            "description": "Text, optionally with icon and link",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text"
+                },
+                "icon": {
+                    "$ref": "#/$defs/icon"
+                },
+                "href": {
+                    "$ref": "#/$defs/href"
+                }
+            }
+        },
+        "markdown": {
+            "description": "Markdown text; ${...} templates are evaluated",
+            "properties": {
+                "markdown": {
+                    "type": "string",
+                    "contentMediaType": "text/markdown",
+                    "description": "Markdown; may contain ${...} templates"
+                },
+                "context": {
+                    "$ref": "#/$defs/context"
+                },
+                "baseUrl": {
+                    "description": "Prefix for relative links in the markdown, e.g. \"/#/page/\"",
+                    "studio": true,
+                    "type": "string"
+                },
+                "linkIsId": {
+                    "description": "Relative links are record IDs: URL-encoded before baseUrl is prepended",
+                    "studio": true,
+                    "type": "boolean"
+                }
+            }
+        },
+        "html": {
+            "description": "HTML with optional scripts",
+            "properties": {
+                "html": {
+                    "type": "string",
+                    "contentMediaType": "text/html",
+                    "description": "HTML; may contain ${...} templates"
+                },
+                "context": {
+                    "$ref": "#/$defs/context"
+                },
+                "script": {
+                    "type": "string",
+                    "contentMediaType": "text/javascript",
+                    "description": "JavaScript run after the HTML is inserted"
+                }
+            }
+        },
+        "display": {
+            "description": "Shows the result of an expression (object: key / value list, array: table)",
+            "properties": {
+                "display": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression whose result is shown: an object as a key / value list, an array as a table"
+                },
+                "icons": {
+                    "deprecated": true,
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Classic UI: Material icon per key. Still read (translated into schema.properties.<key>.icon); write the icon in the schema instead"
+                },
+                "schema": {
+                    "$ref": "#/$defs/displaySchema",
+                    "description": "How the value is shown (the data stays as it is): for an object its keys (title, icon before the key, format, contentMediaType image/..., options - a literal [{label, value}] list shows labels for codes), for a list of rows items.properties"
+                }
+            }
+        },
+        "icon": {
+            "description": "Icon button with an optional link",
+            "properties": {
+                "icon": {
+                    "$ref": "#/$defs/icon"
+                },
+                "href": {
+                    "$ref": "#/$defs/href"
+                },
+                "tooltip": {
+                    "description": "Text shown when hovering over the icon (also its accessible name)",
+                    "type": "string"
+                }
+            }
+        },
+        "table": {
+            "description": "Table of query, expression or table rows",
+            "properties": {
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression yielding the rows (an array of objects); instead of database + query or the current table"
+                },
+                "database": {
+                    "$ref": "#/$defs/database"
+                },
+                "query": {
+                    "$ref": "#/$defs/query"
+                },
+                "arguments": {
+                    "$ref": "#/$defs/arguments"
+                },
+                "graph": {
+                    "$ref": "#/$defs/graph"
+                },
+                "mode": {
+                    "type": "string",
+                    "enum": [
+                        "mobile",
+                        "desktop",
+                        "auto"
+                    ],
+                    "description": "mobile: a list instead of the table; auto: a list on small screens (below sm); desktop (default): the table"
+                },
+                "perPage": {
+                    "$ref": "#/$defs/perPage"
+                },
+                "columns": {
+                    "studio": true,
+                    "$ref": "#/$defs/columns",
+                    "description": "The columns shown, in this order (default: all); the others can not be chosen either. To leave single columns out, set \"hidden\": true on them in the schema"
+                },
+                "hideColumns": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/columns",
+                    "description": "Classic: columns not shown; read as \"hidden\": true on them in the schema"
+                },
+                "filters": {
+                    "studio": true,
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": [
+                            "string",
+                            "number",
+                            "boolean"
+                        ]
+                    },
+                    "description": "Filters the table starts with, per column, as typed in the filter row, e.g. {\"COUNTRY\": \"Germany\", \"FREIGHT\": \"> 100\"}; the user can change them"
+                },
+                "hideTableActions": {
+                    "type": "boolean",
+                    "description": "No filter, column chooser and export buttons (actions on selected rows still show)"
+                },
+                "hideTablePagination": {
+                    "type": "boolean",
+                    "description": "All rows on one page, without row count and page buttons"
+                },
+                "primaryText": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "List mode: the column of an entry's first line (default: the first key column)"
+                },
+                "secondaryText": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "List mode: the column of the second line (default: the next column)"
+                },
+                "tertiaryText": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "List mode: the column of the third line (default: the one after)"
+                },
+                "leftIcon": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "List mode: a column holding an icon name (Material icons), shown left of the entry"
+                },
+                "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Actions on the selected rows: button label -> JSONata expression; the rows are `selected`, e.g. {\"Run\": \"selected.$call(ID)\"}"
+                },
+                "schema": {
+                    "$ref": "#/$defs/displaySchema",
+                    "description": "How values are shown (the data stays as it is): a JSON Schema of a row - properties with format (uri, email, date, date-time, time, currency:EUR, currency:EUR:0 without cents, percent, number:2), contentMediaType image/..., options (codes: a literal [{label, value}] list shows the labels), title. Over the table's / query's metadata"
+                },
+                "editable": {
+                    "type": "boolean",
+                    "description": "Cells are edited in place (arrows / Tab move, Enter or typing edits, Escape cancels), each as its schema says: type, format, options with widget \"select\" (a literal list to pick from), ref (pick a referenced record), readOnly; key columns (pkpos) stay. A database table saves the changed column; expression and query tables need onchange"
+                },
+                "onChange": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Editable tables: runs for every changed cell with updatedRow (the row without its ID), originalRow and id, e.g. $update('northwind', 'PRODUCTS', id, updatedRow); a database table without it updates the column"
+                },
+                "onchange": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onChange (still read)"
+                },
+                "onCreate": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Expression tables: a Create button runs this (then the rows are read again)"
+                },
+                "oncreate": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onCreate (still read)"
+                },
+                "onDelete": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Expression tables: rows can be selected and deleted, this runs per row with id (the key column: pkpos in the schema, else ID or the first ..._ID), e.g. $delete('northwind', 'PRODUCTS', id)"
+                },
+                "ondelete": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onDelete (still read)"
+                }
+            }
+        },
+        "actionTable": {
+            "deprecated": true,
+            "description": "Classic: shown as a table widget with these properties (actions on the selected rows); use table",
+            "properties": {
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression yielding the rows (an array of objects)"
+                },
+                "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Button label -> JSONata expression; selected rows are available as `selected`"
+                },
+                "perPage": {
+                    "$ref": "#/$defs/perPage"
+                },
+                "columns": {
+                    "studio": true,
+                    "$ref": "#/$defs/columns"
+                },
+                "hideColumns": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/columns",
+                    "description": "Classic: columns not shown; read as \"hidden\": true on them in the schema"
+                }
+            }
+        },
+        "chart": {
+            "description": "Chart of query or expression results (label | value, or series | label | value)",
+            "properties": {
+                "database": {
+                    "$ref": "#/$defs/database"
+                },
+                "query": {
+                    "$ref": "#/$defs/query"
+                },
+                "arguments": {
+                    "$ref": "#/$defs/arguments"
+                },
+                "graph": {
+                    "$ref": "#/$defs/graph"
+                },
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "JSONata expression yielding the rows to chart: label | value, or series | label | value; instead of database + query"
+                },
+                "chart": {
+                    "description": "Chart type (default bar)",
+                    "type": "string",
+                    "enum": [
+                        "bar",
+                        "line",
+                        "pie",
+                        "doughnut",
+                        "radar",
+                        "polarArea"
+                    ]
+                },
+                "chartOptions": {
+                    "studio": true,
+                    "type": "object",
+                    "description": "Chart.js options merged over the defaults, e.g. {\"plugins\": {\"legend\": {\"display\": false}}}"
+                }
+            }
+        },
+        "tree": {
+            "description": "Tree: a recursive catalog query (with an argument), a flat one (dj-navigation), a recursive expression (uses node) or a static expression",
+            "properties": {
+                "database": {
+                    "$ref": "#/$defs/database",
+                    "description": "Database of the query (default config)"
+                },
+                "query": {
+                    "$ref": "#/$defs/query",
+                    "description": "Catalog query; with an argument it is recursive: opening a node runs it again with the node's value"
+                },
+                "arguments": {
+                    "$ref": "#/$defs/arguments",
+                    "description": "The recursive query's arguments for the roots (default: the current record's key)"
+                },
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The nodes {text, href, icon, roles, children} or values; an expression using node is called again for each opened node (node = null for the roots)"
+                }
+            }
+        },
+        "edit": {
+            "description": "Edit form for the current record",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the save button (default \"Save\")"
+                },
+                "noDelete": {
+                    "type": "boolean",
+                    "description": "No delete button"
+                },
+                "deleteConfirmation": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Question asked before deleting (default: Delete this record?)"
+                },
+                "deleteRedirect": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "After deleting: table (default) or a URL"
+                },
+                "mutationMode": {
+                    "studio": true,
+                    "deprecated": true,
+                    "type": "string",
+                    "description": "Classic UI only (undoable saves); the new UI saves right away"
+                },
+                "editRedirect": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "After saving: record (default: stay), table, or a URL"
+                },
+                "schema": {
+                    "studio": true,
+                    "$ref": "#/$defs/form",
+                    "description": "Form override instead of the table's schema (classic UI; not yet applied by the new UI)"
+                }
+            }
+        },
+        "create": {
+            "description": "Form to create a record in the current table",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the create button (default \"Create\")"
+                },
+                "schema": {
+                    "studio": true,
+                    "$ref": "#/$defs/form",
+                    "description": "Form override instead of the table's schema (classic UI; not yet applied by the new UI)"
+                }
+            }
+        },
+        "links": {
+            "description": "Outgoing and incoming links of the current record",
+            "properties": {}
+        },
+        "react-component": {
+            "description": "Runtime React widget - only as the layout of a config/widget record; the record's ID becomes the widget id",
+            "properties": {
+                "source": {
+                    "studio": true,
+                    "type": "string",
+                    "contentMediaType": "text/tsx",
+                    "description": "TSX source; usually loaded from <ID>.tsx via \"source-pointer\": \"tsx\""
+                }
+            }
+        },
+        "button": {
+            "description": "Runs an expression, optionally with a form; an icon without text is an icon button (named by tooltip)",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the button (default \"Run\"); may contain ${...} templates"
+                },
+                "icon": {
+                    "studio": true,
+                    "$ref": "#/$defs/icon"
+                },
+                "tooltip": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Icon button: its name (tooltip, screen readers)"
+                },
+                "onClick": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs on click (after the form is checked; its values are form.<field>) and shows the result, if any"
+                },
+                "print": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onClick (still read)"
+                },
+                "navigate": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Run on click and navigate to the URL it returns"
+                },
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Initial form values"
+                },
+                "schema": {
+                    "$ref": "#/$defs/form",
+                    "description": "Form shown before the expression runs; its values are available as form.<field>"
+                },
+                "schemaExpression": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "The form's JSON Schema, computed (instead of schema)"
+                },
+                "deleteConfirmation": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Question asked before running, e.g. Really delete all orders?"
+                },
+                "onScan": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Adds a scan button to the form: the code read by the camera is \"scanned\"; an object result fills the form"
+                }
+            }
+        },
+        "variable": {
+            "description": "Form that sets session variables (use them as variable.x)",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the apply button (default \"Apply\")"
+                },
+                "schema": {
+                    "$ref": "#/$defs/form",
+                    "description": "Form fields; each one sets the session variable of the same name (variable.<field>)"
+                }
+            }
+        },
+        "toolbar": {
+            "description": "Row of widgets (icons, search, spacer, ...)",
+            "properties": {
+                "children": {
+                    "$ref": "#/$defs/children"
+                }
+            }
+        },
+        "search": {
+            "description": "Search box: searches everywhere, the results page narrows down to a database / table; with database (and table) it searches only there",
+            "properties": {
+                "database": {
+                    "$ref": "#/$defs/database",
+                    "description": "Search only in this database"
+                },
+                "table": {
+                    "$ref": "#/$defs/table",
+                    "description": "Search only in this table of the database"
+                }
+            }
+        },
+        "spacer": {
+            "description": "Pushes the following toolbar items to the right",
+            "properties": {}
+        },
+        "sidenav-switch": {
+            "description": "Opens and closes the sidebar",
+            "properties": {}
+        },
+        "logo": {
+            "description": "The app's logo (setting logo-url) and / or name (setting logo-text), linking to the home page; without either: Dashjoin",
+            "properties": {}
+        },
+        "breadcrumbs": {
+            "description": "The view's breadcrumbs (crumbs in the context); used by dj-header",
+            "properties": {
+                "expression": {
+                    "studio": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Instead of the view's crumbs: [{text, href}]"
+                }
+            }
+        },
+        "heading": {
+            "description": "The view's title (title in the context, see frame.title); used by dj-header",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Instead of the view's title: a ${...} template"
+                }
+            }
+        },
+        "logout-button": {
+            "description": "Sign out; with text it shows a label",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label next to the icon (default: the icon only)"
+                }
+            }
+        },
+        "dark-mode-switch": {
+            "description": "Light / dark toggle; shown when the app supports dark mode (color-scheme: light dark in assets/theme.css)",
+            "properties": {}
+        },
+        "locale-switch": {
+            "description": "Language picker (if more than one locale is configured)",
+            "properties": {}
+        },
+        "activity-status": {
+            "description": "Classic toolbar activity indicator; ignored by the new UI",
+            "newUI": false,
+            "properties": {}
+        },
+        "layout-edit-switch": {
+            "description": "Classic in-browser layout editor switch; ignored by the new UI (editing moves to Studio / AI)",
+            "newUI": false,
+            "properties": {}
+        },
+        "aichat": {
+            "description": "Chat with AI: messages, answers as markdown (streamed with $sse), sources and tools of the answers, file uploads and voice",
+            "properties": {
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The chat's start: {messages, uploadEnabled, placeholder}"
+                },
+                "onChat": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Called with messages, newMessage, files and query when the user sends; returns the answer's text, a message, the new message list or the AI app's response, e.g. $sse('aia', $append(messages, newMessage)) (streamed) or $call('aia', $append(messages, newMessage)).choices.message.content"
+                },
+                "placeholder": {
+                    "type": "string",
+                    "description": "Shown in the empty input before the first question"
+                },
+                "uploadEnabled": {
+                    "type": "boolean",
+                    "description": "Files can be attached (images as they are, other files as their text)"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum file size in MB"
+                },
+                "extensions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "File extensions that can be attached, e.g. [\"pdf\", \"docx\"]"
+                },
+                "voice": {
+                    "studio": true,
+                    "type": "boolean",
+                    "description": "Speech input, and answers are read out"
+                },
+                "language": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Language for speech input / output (default: the UI's)"
+                },
+                "display": {
+                    "studio": true,
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Replacements in answers before they are shown: regular expression -> replacement"
+                },
+                "baseUrl": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Prefix for relative links in answers"
+                },
+                "linkIsId": {
+                    "studio": true,
+                    "type": "boolean",
+                    "description": "Relative links in answers are IDs: URL-encoded"
+                }
+            }
+        },
+        "analytics": {
+            "description": "Ad hoc query on a table with filter inputs: columns (with aggregation) and filters chosen in the layout, shown as a chart or a table",
+            "properties": {
+                "database": {
+                    "$ref": "#/$defs/database",
+                    "description": "Database (default: the current one)"
+                },
+                "table": {
+                    "$ref": "#/$defs/table",
+                    "description": "Table (default: the table page's)"
+                },
+                "query": {
+                    "studio": true,
+                    "$ref": "#/$defs/query",
+                    "description": "Catalog query whose result is analysed instead of the table"
+                },
+                "arguments": {
+                    "studio": true,
+                    "$ref": "#/$defs/arguments"
+                },
+                "onChange": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Called with the rows whenever they change (e.g. $setVariable for other widgets)"
+                },
+                "onchange": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onChange (still read)"
+                },
+                "chart": {
+                    "type": "string",
+                    "enum": [
+                        "table",
+                        "bar",
+                        "line",
+                        "pie",
+                        "doughnut",
+                        "radar",
+                        "polarArea",
+                        "none"
+                    ],
+                    "description": "How the result is shown (default table); none: only the filters"
+                },
+                "columns": {
+                    "type": "array",
+                    "description": "Projected columns with optional aggregation, e.g. {\"name\": \"COUNTRY\", \"aggregation\": \"GROUP_BY\"}, {\"name\": \"CUSTOMER_ID\", \"aggregation\": \"COUNT\"}",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Column name",
+                                "type": "string"
+                            },
+                            "aggregation": {
+                                "description": "Aggregation; GROUP_BY groups by the column, the others aggregate it per group. None: the plain values",
+                                "type": "string",
+                                "enum": [
+                                    "GROUP_BY",
+                                    "COUNT",
+                                    "COUNT_DISTINCT",
+                                    "MIN",
+                                    "MAX",
+                                    "GROUP_CONCAT",
+                                    "GROUP_CONCAT_DISTINCT",
+                                    "AVG",
+                                    "SUM",
+                                    "STDDEV"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "filter": {
+                    "type": "array",
+                    "description": "Filter inputs, e.g. {\"name\": \"COUNTRY\", \"operator\": \"IN\", \"input\": \"selectmultiple\"}",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Column the filter applies to",
+                                "type": "string"
+                            },
+                            "operator": {
+                                "description": "Comparison with the entered value (default =); BETWEEN takes two values, IN several, IS_NULL a switch",
+                                "type": "string",
+                                "enum": [
+                                    "=",
+                                    "<>",
+                                    "LIKE",
+                                    "IS_NULL",
+                                    "<=",
+                                    ">=",
+                                    "BETWEEN",
+                                    "IN"
+                                ]
+                            },
+                            "input": {
+                                "description": "Input for the value (default text); select / selectmultiple / slider offer the column's values",
+                                "type": "string",
+                                "enum": [
+                                    "text",
+                                    "slider",
+                                    "switch",
+                                    "date",
+                                    "select",
+                                    "selectmultiple"
+                                ]
+                            },
+                            "title": {
+                                "description": "Label of the input (default: the column name)",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "diagram": {
+            "description": "Nodes and edges on a diagram, edited through expressions (e.g. an org chart where connecting two people sets who reports to whom)",
+            "properties": {
+                "nodes": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Nodes: {id, database?, table?, position?: {x, y}, data?: {label}}; a node with database and table opens its record on double click. Without positions the diagram is laid out top to bottom"
+                },
+                "edges": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Edges: {source, target, id?, label?}"
+                },
+                "moveNode": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs when a node is dropped (node: {id, database, table, position}); default: saves the record's X / Y columns if its table has them"
+                },
+                "addNode": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Shift / Cmd click on the background asks for a name, then runs this (node: {label, position, shiftKey, metaKey}) and shows the node it returns"
+                },
+                "removeNode": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs for each deleted node (node); without it nodes cannot be deleted"
+                },
+                "addEdge": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs when two nodes are connected (edge: {source, target, sourceNode, targetNode}); without it nodes cannot be connected"
+                },
+                "removeEdge": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Runs for each deleted edge (edge); without it edges cannot be deleted"
+                }
+            }
+        },
+        "editRelated": {
+            "description": "The records of another table that point to the record shown (e.g. order lines on an order): a table to select, edit (one row, in a dialog) and delete, and a form that adds one",
+            "properties": {
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the create button"
+                },
+                "prop": {
+                    "type": "string",
+                    "description": "ID of the foreign key column in the other table, e.g. dj/northwind/ORDER_DETAILS/ORDER_ID"
+                },
+                "columns": {
+                    "$ref": "#/$defs/columns"
+                }
+            }
+        },
+        "graph": {
+            "description": "Records and their relationships as a graph: click a node to add its neighbours, right click to remove it, Ctrl / Cmd click for details and to find how two records are connected",
+            "properties": {
+                "nodes": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The first records: records ({database, table, pk}), rows with _dj_resource, or graph query paths, e.g. $query('northwind', 'graph-query')"
+                },
+                "_3d": {
+                    "type": "boolean",
+                    "description": "A 3D graph"
+                },
+                "labelFilter": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Labels containing this text are not shown"
+                },
+                "relationships": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Find connection: the relationships preselected (foreign key column IDs like dj/northwind/ORDERS/CUSTOMER_ID, or column names); default: all"
+                },
+                "maxHops": {
+                    "studio": true,
+                    "type": "integer",
+                    "description": "Find connection: the most hops between the two records (default 4)"
+                }
+            }
+        },
+        "map": {
+            "description": "Map (OpenStreetMap) of what the expression returns: an address, [lat, lon], a list of addresses, or {center, zoom, fit, points: [{address | location, color, radius, tooltip, popup, href}], lines: [{path, color, weight, ...}], areas: [{path} | {center, radius}], geojson, countries: {ISO: value}, heat: [[lat, lon, weight]], cluster, legend: [{color, text}], scale, locate, tiles}",
+            "properties": {
+                "display": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The points; a two-letter ISO country code is located from a built-in table, other addresses are looked up with OpenStreetMap's Nominatim"
+                },
+                "database": {
+                    "$ref": "#/$defs/database",
+                    "description": "Instead of display: the database of a catalog query whose rows are the points"
+                },
+                "query": {
+                    "$ref": "#/$defs/query",
+                    "description": "Catalog query: rows with lat / lon or address columns, plus color, radius, tooltip, popup, href"
+                },
+                "arguments": {
+                    "$ref": "#/$defs/arguments"
+                },
+                "onClick": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Run on a click with the clicked point / line / area as value (a click on the map: {lat, lon}), e.g. $setVariable('country', value.Country)"
+                },
+                "print": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Legacy name of onClick (still read)"
+                }
+            }
+        },
+        "mdxeditor": {
+            "description": "WYSIWYG markdown editor with actions in its toolbar (e.g. AI: shorten, make formal, translate)",
+            "properties": {
+                "markdown": {
+                    "type": "string",
+                    "contentMediaType": "text/markdown",
+                    "description": "The text to edit: markdown, may contain ${...} templates"
+                },
+                "context": {
+                    "$ref": "#/$defs/context"
+                },
+                "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            }
+                        ]
+                    },
+                    "description": "Actions, like a table's: label -> JSONata expression (a button), or label -> {label: expression} (a menu). The expression sees markdown (the edited text), selection and menuItem and returns {\"markdown\": ...} (replaces the text) or {\"selection\": ...} (replaces the selection), e.g. {\"Upper case\": \"{'selection': $uppercase(selection)}\"}"
+                },
+                "expression": {
+                    "deprecated": true,
+                    "$ref": "#/$defs/expression",
+                    "description": "Classic: computes the menus ({\"menu\": [{\"type\": \"select\", \"label\", \"value\", \"items\": [{\"label\", \"value\"}]}]}), \"properties\" then maps their values to expressions; use properties with labels"
+                }
+            }
+        },
+        "notebook": {
+            "description": "JSONata notebook for administrators (quick checks and repairs; only users with the admin role see it)",
+            "properties": {
+                "columns": {
+                    "studio": true,
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Initial cells (expressions)"
+                }
+            }
+        },
+        "spreadsheet": {
+            "newUI": false,
+            "description": "Calculation spreadsheet",
+            "properties": {
+                "url": {
+                    "description": "Expression yielding the URL of the Excel file",
+                    "type": "string"
+                },
+                "extraArgs": {
+                    "$ref": "#/$defs/expression",
+                    "description": "Expression yielding the data for the spreadsheet: {\"data\": ...}"
+                }
+            }
+        },
+        "stepper": {
+            "description": "Container that shows its children as the steps of a wizard (a child's title labels its step). The step shown (from 0) is the session variable named by variable; children move it with $setVariable, finished steps can be clicked to go back",
+            "properties": {
+                "variable": {
+                    "type": "string",
+                    "description": "Session variable holding the step shown (default step), e.g. $setVariable('step', variable.step + 1); leaving the page resets it"
+                },
+                "expression": {
+                    "$ref": "#/$defs/expression",
+                    "description": "The step to start with (classic)"
+                },
+                "children": {
+                    "$ref": "#/$defs/children"
+                }
+            }
+        },
+        "tabs": {
+            "description": "Container that shows its children as tabs (a child's title labels its tab, roles / if hide it); the active tab is remembered per page for the session",
+            "properties": {
+                "foreach": {
+                    "studio": true,
+                    "type": "string",
+                    "description": "Expression returning a list: a tab per item, showing the first child with the item as value"
+                },
+                "children": {
+                    "$ref": "#/$defs/children"
+                }
+            }
+        },
+        "upload": {
+            "description": "Imports files (.csv, .xlsx, .json, .sqlite) into a database: the platform detects tables, columns and types, the user checks them and creates new tables or appends to / replaces existing ones",
+            "properties": {
+                "database": {
+                    "$ref": "#/$defs/database",
+                    "description": "The database (default: the one whose page this is)"
+                },
+                "text": {
+                    "$ref": "#/$defs/text",
+                    "description": "Label of the button (default: Upload data)"
+                }
+            }
+        },
+        "uploadfile": {
+            "description": "Uploads files or a folder into the app's upload folder",
+            "properties": {
+                "allowFolderSelectionRecursive": {
+                    "type": "boolean",
+                    "description": "A selected folder: also the files of its subfolders"
+                },
+                "preserveFolders": {
+                    "type": "boolean",
+                    "description": "Keep the selected folder's structure (else all files go to the upload folder itself)"
+                }
+            }
+        }
+    },
+    "form": {
+        "$comment": "schema of button / variable forms",
+        "type": "object",
+        "properties": {
+            "type": {
+                "description": "JSON type of the form's value: object",
+                "type": "string"
+            },
+            "required": {
+                "description": "Fields that must be filled in before the form can be submitted",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "properties": {
+                "description": "The form's fields, keyed by name (the key of the value in the submitted object)",
+                "type": "object",
+                "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "description": "Type of the value (default string); array and object get list / nested editors",
+                            "type": "string",
+                            "enum": [
+                                "string",
+                                "number",
+                                "integer",
+                                "boolean",
+                                "array",
+                                "object"
+                            ]
+                        },
+                        "title": {
+                            "description": "Label of the field (default: its name); may be a translation key",
+                            "type": "string"
+                        },
+                        "description": {
+                            "description": "Help text for the field",
+                            "type": "string"
+                        },
+                        "widget": {
+                            "type": "string",
+                            "enum": [
+                                "select",
+                                "textarea",
+                                "password",
+                                "date",
+                                "auto complete",
+                                "multi select",
+                                "key value",
+                                "time",
+                                "datetime",
+                                "file",
+                                "binary file",
+                                "file with metadata",
+                                "binary file with metadata",
+                                "voice",
+                                "qrcode",
+                                "json"
+                            ],
+                            "description": "file: the text (JSON parsed); binary file: a data URL; with metadata: {name, lastModified, size, type, value}; voice: dictation; qrcode: camera scan; json: any JSON as text (lists, objects)"
+                        },
+                        "multiple": {
+                            "studio": true,
+                            "type": "boolean",
+                            "description": "File widgets: several files (an array)"
+                        },
+                        "accept": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "File widgets: accepted types, e.g. image/* or .csv"
+                        },
+                        "capture": {
+                            "studio": true,
+                            "type": "string",
+                            "enum": [
+                                "user",
+                                "environment"
+                            ],
+                            "description": "File widgets: open the camera on phones (user: front, environment: back)"
+                        },
+                        "limit": {
+                            "studio": true,
+                            "type": "number",
+                            "description": "File widgets: maximum size per file in MB"
+                        },
+                        "language": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "voice: recognition language, e.g. de-DE (default: the user's language)"
+                        },
+                        "multiline": {
+                            "studio": true,
+                            "type": "boolean",
+                            "description": "voice / qrcode: a text area"
+                        },
+                        "ref": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "Foreign key: dj/<database>/<table>/<key column>; the field shows the records' labels and offers them while typing (on items for an array of keys)"
+                        },
+                        "pattern": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "Regular expression the value must match"
+                        },
+                        "minLength": {
+                            "description": "Shortest allowed text",
+                            "studio": true,
+                            "type": "integer"
+                        },
+                        "maxLength": {
+                            "description": "Longest allowed text",
+                            "studio": true,
+                            "type": "integer"
+                        },
+                        "minimum": {
+                            "description": "Smallest allowed number",
+                            "studio": true,
+                            "type": "number"
+                        },
+                        "maximum": {
+                            "description": "Largest allowed number",
+                            "studio": true,
+                            "type": "number"
+                        },
+                        "errorMessage": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "Message (or translation key) shown instead of the generic one when the value is not valid"
+                        },
+                        "options": {
+                            "$ref": "#/$defs/expression",
+                            "description": "JSONata expression yielding the options [{label, value}] (plain values: label = value) - a literal list, e.g. [{\"label\": \"Active\", \"value\": \"A\"}], or computed, e.g. $all('config', 'dj-role').ID or $rest('/rest/ai/models').data.name; widget \"select\" makes it a closed list, otherwise (\"auto complete\") suggestions. Keys of a table's records: ref"
+                        },
+                        "examples": {
+                            "studio": true,
+                            "type": "array",
+                            "description": "Suggestions while typing (free text)"
+                        },
+                        "choices": {
+                            "deprecated": true,
+                            "type": "array",
+                            "description": "Legacy: read as examples (suggestions), or options with widget \"select\"; prefer options / examples"
+                        },
+                        "readOnly": {
+                            "description": "Shown, but cannot be changed",
+                            "type": "boolean"
+                        },
+                        "format": {
+                            "description": "JSON Schema format, e.g. email, uri, date, date-time; checked and used to pick the input",
+                            "type": "string"
+                        },
+                        "writeOnly": {
+                            "studio": true,
+                            "type": "boolean",
+                            "description": "Password field: masked, never shows a stored value"
+                        },
+                        "autocomplete": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "Browser autofill hint, e.g. username, current-password, email"
+                        },
+                        "autofocus": {
+                            "studio": true,
+                            "type": "boolean",
+                            "description": "The field has the focus when the form opens (e.g. a login's user name)"
+                        },
+                        "class": {
+                            "studio": true,
+                            "type": "string",
+                            "description": "Tailwind classes placing the field in the form's 12 column grid, e.g. col-span-12 (default: half a row)"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "database": {
+        "$comment": "config/dj-database records (model/dj-database/<URL-encoded ID>.json) for the VS Code schema: what the form does not have. The fields come from the dj-database columns and types in the app's dj/config.json (tables.dj-database, gen-schema.mjs); table / record layouts live in tables.<TABLE>",
+        "properties": {
+            "ID": {
+                "type": "string",
+                "description": "dj/<name>"
+            },
+            "parent": {
+                "description": "Set by the platform: dj/config/dj-database",
+                "type": "string"
+            },
+            "tables": {
+                "type": "object",
+                "description": "Per-table settings, keyed by table name",
+                "additionalProperties": {
+                    "$ref": "#/$defs/tableSettings"
+                }
+            }
+        }
+    },
+    "table": {
+        "$comment": "settings of one table inside a database record",
+        "properties": {
+            "instanceLayout": {
+                "$ref": "#/$defs/widget",
+                "description": "Layout of the record pages of this table (/#/<db>/<table>/<id>); root is usually {\"widget\": \"page\"}"
+            },
+            "tableLayout": {
+                "$ref": "#/$defs/widget",
+                "description": "Layout of the table page (/#/<db>/<table>)"
+            },
+            "dj-label": {
+                "type": "string",
+                "description": "Record title template over the record's fields, e.g. \"${FIRST_NAME} ${LAST_NAME}\""
+            },
+            "title": {
+                "description": "Display name of the table (default: its name)",
+                "type": "string"
+            },
+            "comment": {
+                "description": "Description of the table",
+                "type": "string"
+            },
+            "readRoles": {
+                "description": "Roles allowed to read the table (default: the database's readRoles)",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "writeRoles": {
+                "description": "Roles allowed to create, change and delete records (default: the database's writeRoles)",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "tenantColumn": {
+                "description": "Row level access: the column holding the tenant; users see only rows whose value matches their tenant",
+                "type": "string"
+            },
+            "roleMappings": {
+                "description": "Row level access: role -> column value, for rows whose value is ROLE",
+                "type": "object"
+            },
+            "properties": {
+                "type": "object",
+                "description": "Column metadata, keyed by column name",
+                "additionalProperties": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}
