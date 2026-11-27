@@ -16,7 +16,7 @@
                 "schema": {
                     "properties": {
                         "ID": {
-                            "hidden": true
+                            "exclude": true
                         }
                     }
                 }
@@ -33,7 +33,7 @@
                 "schema": {
                     "properties": {
                         "ID": {
-                            "hidden": true
+                            "exclude": true
                         }
                     }
                 }
@@ -53,7 +53,7 @@
                         "schema": {
                             "properties": {
                                 "ID": {
-                                    "hidden": true
+                                    "exclude": true
                                 }
                             }
                         }

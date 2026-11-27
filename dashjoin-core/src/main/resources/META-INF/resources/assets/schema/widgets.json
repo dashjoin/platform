@@ -75,7 +75,19 @@
                 },
                 "hidden": {
                     "type": "boolean",
-                    "description": "Not shown: a table leaves the column out (also from the column chooser and the list lines it picks; a line named in primaryText etc. still shows it), the display widget the key"
+                    "description": "Not shown at first: a table starts without the column (the column chooser offers it; exclude leaves it out entirely), the display widget leaves the key out"
+                },
+                "exclude": {
+                    "type": "boolean",
+                    "description": "Never shown: a table leaves the column out (the column chooser does not offer it either), the display widget the key; other columns - also ones added to the table later - still show"
+                },
+                "filter": {
+                    "type": [
+                        "string",
+                        "number",
+                        "boolean"
+                    ],
+                    "description": "Tables: the filter the column starts with, as typed in the filter row, e.g. Germany, > 100, ~ text (users can change it)"
                 }
             }
         },
@@ -462,9 +474,8 @@
                     "$ref": "#/$defs/perPage"
                 },
                 "columns": {
-                    "studio": true,
                     "$ref": "#/$defs/columns",
-                    "description": "The columns shown, in this order (default: all); the others can not be chosen either. To leave single columns out, set \"hidden\": true on them in the schema"
+                    "description": "The columns, in this order (default: all, in the table's order); others are never shown, not even in the column chooser. In the schema, \"exclude\": true leaves single columns out (others, also new ones, still show), \"hidden\": true starts the table without one (it can be chosen)"
                 },
                 "hideColumns": {
                     "deprecated": true,
@@ -472,7 +483,7 @@
                     "description": "Classic: columns not shown; read as \"hidden\": true on them in the schema"
                 },
                 "filters": {
-                    "studio": true,
+                    "deprecated": true,
                     "type": "object",
                     "additionalProperties": {
                         "type": [
@@ -481,7 +492,7 @@
                             "boolean"
                         ]
                     },
-                    "description": "Filters the table starts with, per column, as typed in the filter row, e.g. {\"COUNTRY\": \"Germany\", \"FREIGHT\": \"> 100\"}; the user can change them"
+                    "description": "Earlier: filters per column; read as \"filter\" on the columns in the schema"
                 },
                 "hideTableActions": {
                     "type": "boolean",
@@ -700,7 +711,11 @@
                 },
                 "schema": {
                     "$ref": "#/$defs/form",
-                    "description": "Form override instead of the table's schema (e.g. only some fields, other titles or widgets)"
+                    "description": "Hints per field over the table's (title, widget, options, ...; only what differs); \"exclude\" or \"hidden\": true leaves a field out; the order is columns"
+                },
+                "columns": {
+                    "$ref": "#/$defs/columns",
+                    "description": "The fields shown, in this order (default: all, in the table's order); others are never shown. Hints per field go into schema; \"exclude\" or \"hidden\": true there leaves single fields out"
                 }
             }
         },
@@ -713,7 +728,11 @@
                 },
                 "schema": {
                     "$ref": "#/$defs/form",
-                    "description": "Form override instead of the table's schema (e.g. only some fields, other titles or widgets)"
+                    "description": "Hints per field over the table's (title, widget, options, ...; only what differs); \"exclude\" or \"hidden\": true leaves a field out; the order is columns"
+                },
+                "columns": {
+                    "$ref": "#/$defs/columns",
+                    "description": "The fields shown, in this order (default: all, in the table's order); others are never shown. Hints per field go into schema; \"exclude\" or \"hidden\": true there leaves single fields out"
                 }
             }
         },
@@ -1194,7 +1213,12 @@
                     "description": "ID of the foreign key column in the other table, e.g. dj/northwind/ORDER_DETAILS/ORDER_ID"
                 },
                 "columns": {
-                    "$ref": "#/$defs/columns"
+                    "$ref": "#/$defs/columns",
+                    "description": "The columns / fields shown in the table and the forms, in this order (default: all); others are never shown. In schema, \"exclude\": true leaves single ones out, \"hidden\": true starts the table without one"
+                },
+                "schema": {
+                    "$ref": "#/$defs/form",
+                    "description": "Hints per column / field over the table's (title, widget, options, ...; only what differs); \"exclude\": true leaves one out everywhere, \"hidden\": true starts the table without the column (it can be chosen) and leaves the field out of the forms"
                 }
             }
         },
@@ -1594,6 +1618,14 @@
                         "readOnly": {
                             "description": "Shown, but cannot be changed",
                             "type": "boolean"
+                        },
+                        "hidden": {
+                            "type": "boolean",
+                            "description": "Not shown (edit, create and editRelated forms: the field keeps its value)"
+                        },
+                        "exclude": {
+                            "type": "boolean",
+                            "description": "Left out (edit, create and editRelated forms, and editRelated's table; the field keeps its value)"
                         },
                         "format": {
                             "description": "JSON Schema format, e.g. email, uri, date, date-time; checked and used to pick the input",
