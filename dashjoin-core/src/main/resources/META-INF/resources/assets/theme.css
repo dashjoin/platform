@@ -1,0 +1,98 @@
+/*
+ * The platform's default style for the new UI: Material, like the classic UI (MUI, primary
+ * #2196f3). Loaded at startup, also on the login page. An app replaces it with its own
+ * assets/theme.css (see STYLE.md in the UI repository).
+ *
+ * 1. Design tokens: the UI's CSS variables (full list: src/index.css), light and dark.
+ * 2. Components: only through the stable hooks (data-slot, data-variant, data-widget),
+ *    never Tailwind class names - they can change.
+ *
+ * Dark mode stays off (as in the classic UI) unless the tenant setting allow-dark-mode or
+ * logincfg.json allowDarkMode turns it on; the dark colors below are used then. An app's
+ * theme.css turns it on with :root { color-scheme: light dark; }
+ */
+
+/* ---------------------------------------------------------------- 1. tokens */
+
+:root {
+  --primary: #2196f3;
+  --primary-foreground: #ffffff;
+  --ring: #2196f3;
+  --background: #f5f5f5;
+  --card: #ffffff;
+  --popover: #ffffff;
+  --sidebar: #ffffff;
+  --foreground: rgba(0,0,0,0.87);
+  --muted-foreground: rgba(0,0,0,0.6);
+  --accent: rgba(33,150,243,0.08);
+  --accent-foreground: rgba(0,0,0,0.87);
+  --secondary: #e3f2fd;
+  --secondary-foreground: #0d47a1;
+  --border: rgba(0,0,0,0.12);
+  --input: rgba(0,0,0,0.23);
+  --destructive: #d32f2f;
+  --chart-1: #2196f3;
+  --chart-2: #9c27b0;
+  --chart-3: #ed6c02;
+  --chart-4: #2e7d32;
+  --chart-5: #0288d1;
+  --radius: 4px;
+  --dj-font: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+:root.dark {
+  --primary: #90caf9;
+  --primary-foreground: rgba(0,0,0,0.87);
+  --ring: #90caf9;
+  --background: #121212;
+  --card: #1e1e1e;
+  --popover: #1e1e1e;
+  --sidebar: #1e1e1e;
+  --foreground: #ffffff;
+  --muted-foreground: rgba(255,255,255,0.7);
+  --accent: rgba(144,202,249,0.16);
+  --accent-foreground: #ffffff;
+  --secondary: #2c3e50;
+  --secondary-foreground: #e3f2fd;
+  --border: rgba(255,255,255,0.12);
+  --input: rgba(255,255,255,0.23);
+  --destructive: #f44336;
+  --chart-1: #90caf9;
+  --chart-2: #ce93d8;
+  --chart-3: #ffb74d;
+  --chart-4: #81c784;
+  --chart-5: #4fc3f7;
+}
+
+/* ---------------------------------------------------------------- 2. components */
+
+:root { --shadow-1: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        --shadow-2: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+        --shadow-4: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12); }
+body { letter-spacing: .01071em; }
+[data-slot=button] { text-transform: uppercase; letter-spacing: .02857em; font-weight: 500; }
+[data-slot=button][data-variant=default] { box-shadow: var(--shadow-2); }
+[data-slot=button][data-variant=default]:hover { box-shadow: var(--shadow-4); }
+[data-slot=button][data-variant=ghost] { text-transform: none; }
+[data-slot=card] { border: 0; border-radius: var(--radius); box-shadow: var(--shadow-1); }
+[data-slot=input], [data-slot=select], [data-slot=textarea] { border-color: rgba(0,0,0,.23); box-shadow: none; }
+[data-slot=input]:focus, [data-slot=select]:focus, [data-slot=textarea]:focus { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+[data-slot=app-header] { background: var(--primary); color: var(--primary-foreground); border: 0; box-shadow: var(--shadow-4); backdrop-filter: none; }
+[data-slot=app-header] [data-slot=button], [data-slot=app-header] select { color: inherit; }
+[data-slot=app-header] [data-slot=button]:hover { background: rgba(255,255,255,.12); color: inherit; }
+[data-slot=app-header] select { border-color: transparent; background: rgba(255,255,255,.15); }
+[data-slot=app-header] select option { color: initial; }
+[data-slot=app-header] [data-slot=app-user] { color: inherit; opacity: .85; }
+[data-slot=app-header] [data-slot=input] { background: rgba(255,255,255,.15); border-color: transparent; color: inherit; }
+[data-slot=app-header] [data-slot=input]:focus { background: rgba(255,255,255,.25); border-color: transparent; box-shadow: none; }
+[data-slot=app-header] [data-slot=input]::placeholder { color: rgba(255,255,255,.7); }
+[data-slot=app-sidebar] { border-right: 0; box-shadow: var(--shadow-1); }
+.dark [data-slot=app-header] { background: var(--card); color: var(--foreground); }
+.dark [data-slot=input], .dark [data-slot=select], .dark [data-slot=textarea] { border-color: rgba(255,255,255,.23); }
+
+/* ---------------------------------------------------------------- brand background */
+
+/* the login page's root (assets/logincfg.json) - usable in any layout as "class": "brand-bg";
+   white text on the image, cards keep their own */
+.brand-bg { background: url(images/brand-bg.svg) center / cover; color: #fff; }
+.dark .brand-bg { background-image: linear-gradient(#0009, #0009), url(images/brand-bg.svg); }

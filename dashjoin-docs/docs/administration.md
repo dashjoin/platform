@@ -35,12 +35,17 @@ The default config is:
     "registrationEnabled": true,             // if emailLoginEnabled, users can register with an email address
     "guestLoginEnabled": false,              // allows login with user guest@dashjoin.com (this user must be assigned a suitable role in the tenant user page), if this is the only login option, users are automatically logged in as guests
     "providers": "google",                   // space-separated list of identity providers like twitter, github, facebook, and google - currently, only google is supported
-    "backgroundImage": "assets/loginbg.jpg", // URL of the background image to display
+    "backgroundImage": "assets/images/brand-bg.svg", // URL of the background image to display
     "openIdConfigs": [],                     // OpenID provider configurations such as O365, Keycloak, etc.
     "defaultLocale": "en",                   // default I18N locale to use, choose "browser" to select the browser's preferred locale,
-    "locales": ["en"]                        // languages supported by the platform
+    "locales": ["en", "de"],                 // languages supported by the platform
+    "layout": { ... }                        // the login page as a widget layout (new UI): sign-in, password reset, registration, Google
 }
 ```
+
+The look of the login page and the app (colors, fonts, the class ```brand-bg``` for the background image)
+is defined in ```/assets/theme.css```. The platform ships a default; an app replaces it with its own
+```assets/theme.css```.
 
 Further config fields are:
 

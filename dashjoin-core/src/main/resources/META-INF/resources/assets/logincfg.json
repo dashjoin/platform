@@ -1,0 +1,146 @@
+{
+    "signInTabText": "My Dashjoin",
+    "emailLoginEnabled": true,
+    "passwordResetEnabled": true,
+    "registrationEnabled": true,
+    "guestLoginEnabled": false,
+    "providers": "google",
+    "backgroundImage": "assets/images/brand-bg.svg",
+    "className": "dashjoin",
+    "openIdConfigs": [],
+    "defaultLocale": "en",
+    "locales": [
+        "en",
+        "de"
+    ],
+    "layout": {
+        "widget": "page",
+        "class": "brand-bg flex min-h-svh flex-col justify-center p-4 md:p-6",
+        "children": [
+            {
+                "widget": "container",
+                "class": "w-full",
+                "style": {
+                    "maxWidth": "28rem",
+                    "margin": "0 auto"
+                },
+                "children": [
+                    {
+                        "widget": "toolbar",
+                        "children": [
+                            {
+                                "widget": "spacer"
+                            },
+                            {
+                                "widget": "dark-mode-switch"
+                            },
+                            {
+                                "widget": "locale-switch"
+                            }
+                        ]
+                    },
+                    {
+                        "widget": "button",
+                        "title": "dj.signInToContinue",
+                        "text": "dj.signIn",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "title": "dj.user",
+                                    "autocomplete": "username",
+                                    "autofocus": true,
+                                    "class": "col-span-12"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "title": "dj.password",
+                                    "writeOnly": true,
+                                    "autocomplete": "current-password",
+                                    "class": "col-span-12"
+                                }
+                            }
+                        },
+                        "onClick": "$login(form.username, form.password)"
+                    },
+                    {
+                        "widget": "expansion",
+                        "text": "dj.forgotPassword",
+                        "children": [
+                            {
+                                "widget": "button",
+                                "text": "dj.sendResetMail",
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "email"
+                                    ],
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "title": "dj.email",
+                                            "autocomplete": "email",
+                                            "class": "col-span-12"
+                                        }
+                                    }
+                                },
+                                "onClick": "$resetPassword(form.email)"
+                            }
+                        ]
+                    },
+                    {
+                        "widget": "expansion",
+                        "text": "dj.register",
+                        "children": [
+                            {
+                                "widget": "button",
+                                "text": "dj.register",
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "email",
+                                        "password"
+                                    ],
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "title": "dj.email",
+                                            "autocomplete": "email",
+                                            "class": "col-span-12"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "title": "dj.password",
+                                            "writeOnly": true,
+                                            "autocomplete": "new-password",
+                                            "class": "col-span-12"
+                                        }
+                                    }
+                                },
+                                "onClick": "$register(form.email, form.password)"
+                            }
+                        ]
+                    },
+                    {
+                        "widget": "text",
+                        "text": "dj.orContinueWith",
+                        "class": "text-center"
+                    },
+                    {
+                        "widget": "button",
+                        "text": "Google",
+                        "class": "[&_button]:w-full",
+                        "onClick": "$loginWith('google')"
+                    }
+                ]
+            }
+        ]
+    }
+}
