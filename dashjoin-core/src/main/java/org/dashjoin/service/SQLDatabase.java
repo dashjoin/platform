@@ -70,7 +70,7 @@ import org.postgresql.jdbc.PgArray;
 import org.postgresql.util.PGobject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.SecurityContext;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
@@ -493,7 +493,7 @@ public class SQLDatabase extends AbstractDatabase {
         continue;
       try {
         ACLContainerRequestFilter.check(sc, this, e.getKey());
-      } catch (NotAuthorizedException ex) {
+      } catch (ForbiddenException ex) {
         continue;
       }
       String sql = "SELECT * FROM " + q(e.getKey().name) + " WHERE "

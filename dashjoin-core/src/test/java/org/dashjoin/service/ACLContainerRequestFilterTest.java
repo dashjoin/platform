@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.Arrays;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.UriInfo;
@@ -34,7 +35,7 @@ public class ACLContainerRequestFilterTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     AbstractConfigurableFunction<?, ?> function = new Email();
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, function);
     });
     function.roles = Arrays.asList("authenticated");
@@ -46,7 +47,7 @@ public class ACLContainerRequestFilterTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.contains("authenticated"))).thenReturn(true);
     QueryMeta query = new QueryMeta();
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, query);
     });
     query.roles = Arrays.asList("authenticated");
@@ -60,13 +61,13 @@ public class ACLContainerRequestFilterTest {
     SQLDatabase db = new SQLDatabase();
     Table table = Table.ofName("table");
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, db, table);
     });
 
     db.readRoles = Arrays.asList("authenticated");
     ACLContainerRequestFilter.check(sc, db, table);
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, db, table, Operation.DELETE);
     });
 
@@ -103,15 +104,15 @@ public class ACLContainerRequestFilterTest {
     db.tables.put("rowacl", rowacl);
 
     ACLContainerRequestFilter.check(sc, db, authenticated);
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, db, admin);
     });
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       ACLContainerRequestFilter.check(sc, db);
     });
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       // authenticated has no access to table
       ACLContainerRequestFilter.check(sc, db, rowacl);
     });
@@ -120,7 +121,7 @@ public class ACLContainerRequestFilterTest {
     rowacl.roleMappings = MapUtil.of("authenticated", "tenant");
     ACLContainerRequestFilter.check(sc, db, rowacl);
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       // authenticated has no access to entire table
       rowacl.writeRoles = Arrays.asList("authenticated");
       ACLContainerRequestFilter.check(sc, db, rowacl, Operation.UPDATE);

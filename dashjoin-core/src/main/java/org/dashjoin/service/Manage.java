@@ -79,8 +79,8 @@ import com.ibm.db2.jcc.DB2Driver;
 import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -1077,7 +1077,7 @@ public class Manage {
         count = count + values.size();
         if (count > limit)
           throw new Exception("Export limit (" + limit + " records) exceeded");
-      } catch (NotAuthorizedException skip) {
+      } catch (ForbiddenException skip) {
       }
     }
     return res;

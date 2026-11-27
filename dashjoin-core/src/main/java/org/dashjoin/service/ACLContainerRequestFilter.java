@@ -13,6 +13,7 @@ import org.dashjoin.util.MapUtil;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.inject.Inject;
 import jakarta.json.JsonString;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -73,7 +74,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
         if (sc.isUserInRole(role))
           return;
       }
-    throwNotAuthorizedException(
+    throwForbiddenException(
         "User does not have the role required to run function: " + function.getID());
   }
 
@@ -91,7 +92,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
         if (sc.isUserInRole(role))
           return;
       }
-    throwNotAuthorizedException("User does not have the role required to run query: " + info.ID);
+    throwForbiddenException("User does not have the role required to run query: " + info.ID);
   }
 
   static enum Operation {
@@ -105,7 +106,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     check(sc, db);
     for (Table m : db.tables.values())
       if (hasTenantFilter(sc, m))
-        throwNotAuthorizedException("User does not have the role required to query table "
+        throwForbiddenException("User does not have the role required to query table "
             + (m.name) + " in database " + db.name);
   }
 
@@ -148,13 +149,13 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
           if (sc.isUserInRole(role))
             return;
         }
-      throwNotAuthorizedException("User does not have the role required to "
+      throwForbiddenException("User does not have the role required to "
           + operation.toString().toLowerCase() + " table " + (m.name) + " in database " + db.name);
     } else {
 
       if (operation.equals(Operation.UPDATE) || operation.equals(Operation.DELETE))
         if (hasTenantFilter(sc, m))
-          throwNotAuthorizedException(
+          throwForbiddenException(
               "User does not have the role required to " + operation.toString().toLowerCase()
                   + " table " + (m.name) + " in database " + db.name);
 
@@ -164,14 +165,24 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
           if (sc.isUserInRole(role))
             return;
         }
-      throwNotAuthorizedException("User does not have the role required to "
+      throwForbiddenException("User does not have the role required to "
           + operation.toString().toLowerCase() + " table " + (m.name) + " in database " + db.name);
     }
   }
 
+  /**
+   * 401: no authenticated user (the UI signs out and asks for a login)
+   */
   public static void throwNotAuthorizedException(String msg) {
     throw new NotAuthorizedException(
         Response.status(Response.Status.UNAUTHORIZED).entity(msg).build());
+  }
+
+  /**
+   * 403: the user is signed in but lacks the role (or row access) required - the session stays
+   */
+  public static void throwForbiddenException(String msg) {
+    throw new ForbiddenException(Response.status(Response.Status.FORBIDDEN).entity(msg).build());
   }
 
   /**
@@ -192,7 +203,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     if (hasTenantFilter(sc, table))
       if (!eq(tenantValue(sc, table), row.get(table.tenantColumn)))
         ACLContainerRequestFilter
-            .throwNotAuthorizedException("User does not have access to this record");
+            .throwForbiddenException("User does not have access to this record");
   }
 
   /**
@@ -227,7 +238,7 @@ public class ACLContainerRequestFilter implements ContainerRequestFilter {
     }
 
     if (v == null)
-      ACLContainerRequestFilter.throwNotAuthorizedException(
+      ACLContainerRequestFilter.throwForbiddenException(
           "User role does not map to a tenant filter on table " + table.name);
     return v;
   }

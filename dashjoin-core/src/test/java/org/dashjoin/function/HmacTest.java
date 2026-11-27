@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.SecurityContext;
 
 public class HmacTest {
@@ -59,10 +59,10 @@ public class HmacTest {
   @Test
   public void testKeyRoles() throws Exception {
     // authenticated users may not use a key reserved for "signer"
-    Assertions.assertThrows(NotAuthorizedException.class,
+    Assertions.assertThrows(ForbiddenException.class,
         () -> hmac(roles("authenticated"), List.of("signer")).run(Arrays.asList("cdnKey", FOX)));
     // a key without roles is admin only
-    Assertions.assertThrows(NotAuthorizedException.class,
+    Assertions.assertThrows(ForbiddenException.class,
         () -> hmac(roles("signer"), null).run(Arrays.asList("cdnKey", FOX)));
     Assertions.assertNotNull(hmac(roles("admin"), null).run(Arrays.asList("cdnKey", FOX)));
   }

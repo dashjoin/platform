@@ -20,7 +20,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.SecurityContext;
 
@@ -208,7 +208,7 @@ public class DBTest {
     name("NAME", res.get(0).column);
     Assertions.assertEquals("dev-project", res.get(0).match);
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       // emp table is restricted
       db.search(sc, "junit", toID("EMP"), "mike", null);
     });
@@ -272,7 +272,7 @@ public class DBTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
     Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       db.all(sc, "junit", toID("EMP"), 0, 10, null, false, null);
     });
   }
@@ -294,16 +294,16 @@ public class DBTest {
     Mockito.when(sc.isUserInRole("admin")).thenReturn(false);
     Mockito.when(sc.isUserInRole("authenticated")).thenReturn(true);
 
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       db.read(sc, "junit", toID("PRJ"), toID("1001"));
     });
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       db.update(sc, "junit", toID("PRJ"), toID("1001"), MapUtil.of("NAME", "change"));
     });
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       db.delete(sc, "junit", toID("PRJ"), toID("1001"));
     });
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       db.create(sc, "junit", toID("PRJ"), MapUtil.of("ID", 77, "NAME", "change"));
     });
 

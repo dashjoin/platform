@@ -8,7 +8,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.SecurityContext;
 
 /**
@@ -35,8 +35,8 @@ public class InvokeTest {
   public void testNoRunas() throws Exception {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.eq("authenticated"))).thenReturn(true);
-    Assertions.assertThrows(NotAuthorizedException.class, () -> invoke(sc, null).run(null));
-    Assertions.assertThrows(NotAuthorizedException.class, () -> invoke(sc, " ").run(null));
+    Assertions.assertThrows(ForbiddenException.class, () -> invoke(sc, null).run(null));
+    Assertions.assertThrows(ForbiddenException.class, () -> invoke(sc, " ").run(null));
   }
 
   @Test
@@ -51,7 +51,7 @@ public class InvokeTest {
     SecurityContext sc = Mockito.mock(SecurityContext.class);
     Mockito.when(sc.isUserInRole(ArgumentMatchers.anyString())).thenReturn(true);
     Assertions.assertEquals("mike", invoke(sc, null).run(null));
-    Assertions.assertThrows(NotAuthorizedException.class,
+    Assertions.assertThrows(ForbiddenException.class,
         () -> invoke(sc, "authenticated").run(null));
   }
 }

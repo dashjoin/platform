@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.SecurityContext;
@@ -229,7 +229,7 @@ public class ManageTest {
 
   @Test
   public void testCreateAcl() throws Exception {
-    Assertions.assertThrows(NotAuthorizedException.class, () -> {
+    Assertions.assertThrows(ForbiddenException.class, () -> {
       SecurityContext sc = mock(SecurityContext.class);
       when(sc.isUserInRole(ArgumentMatchers.eq("admin"))).thenReturn(false);
       when(sc.isUserInRole(ArgumentMatchers.eq("authenticated"))).thenReturn(true);

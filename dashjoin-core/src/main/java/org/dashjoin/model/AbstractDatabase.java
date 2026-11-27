@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
 
@@ -110,7 +110,7 @@ public abstract class AbstractDatabase implements Database {
 
       try {
         ACLContainerRequestFilter.check(sc, this, t);
-      } catch (NotAuthorizedException ex) {
+      } catch (ForbiddenException ex) {
         continue;
       }
 
@@ -493,7 +493,7 @@ public abstract class AbstractDatabase implements Database {
                 if (System.currentTimeMillis() - start > timeout)
                   return res;
             }
-      } catch (NotAuthorizedException ignore) {
+      } catch (ForbiddenException ignore) {
       }
     }
     return res;
