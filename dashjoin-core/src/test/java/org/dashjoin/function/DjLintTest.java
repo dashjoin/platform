@@ -222,6 +222,25 @@ public class DjLintTest {
   }
 
   @Test
+  public void tableActions() throws Exception {
+    Linter lint = referenceLint();
+    lint.queries = new HashSet<>(Arrays.asList("reorder", "restock", "orphanQuery"));
+    lint.queryTypes.put("reorder", "write");
+    lint.queryTypes.put("restock", "write");
+
+    // a table's actions (and their legacy name properties) are expressions
+    expressions(lint, "{\"widget\": \"table\", \"actions\": "
+        + "{\"Order\": \"selected.$query('northwind', 'reorder', {'product': ID})\"}}", false);
+    expressions(lint, "{\"widget\": \"table\", \"properties\": "
+        + "{\"Restock\": \"selected.$query('northwind', 'restock')\"}}", false);
+    Assertions.assertEquals(0, lint.findings.size(), all(lint));
+
+    lint.finish();
+    Assertions.assertEquals(1, lint.findings.size(), all(lint));
+    Assertions.assertTrue(all(lint).contains("orphanQuery"), all(lint));
+  }
+
+  @Test
   public void roles() throws Exception {
     Linter lint = new Linter();
     lint.roles = new HashSet<>(Arrays.asList("admin", "authenticated"));

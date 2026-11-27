@@ -254,7 +254,7 @@
             "database": "config",
             "query": "dj-databases-no-config",
             "title": "Available Databases",
-            "properties": {
+            "actions": {
               "Refresh": "(selected.$collectMetadata(ID); 'Ok')",
               "Delete": "$confirm('Delete ' & $count(selected) & ' database(s)?') ? (selected.$delete('config', 'dj-database', ID); 'Deleted')"
             },
@@ -1041,7 +1041,7 @@
             "database": "config",
             "query": "dj-queries",
             "title": "Available Queries",
-            "properties": {
+            "actions": {
               "Run": "(selected.$query($substringAfter(database, 'dj/'), ID); 'Ok')",
               "Delete": "$confirm('Delete ' & $count(selected) & ' query(s)?') ? (selected.$delete('config', 'dj-query-catalog', ID); 'Deleted')"
             },
@@ -1698,7 +1698,7 @@
                 "widget": "table",
                 "database": "config",
                 "query": "dj-functions",
-                "properties": {
+                "actions": {
                   "Run": "selected.$call(ID)",
                   "Delete": "$confirm('Delete ' & $count(selected) & ' function(s)?') ? (selected.$delete('config', 'dj-function', ID); 'Deleted')"
                 },

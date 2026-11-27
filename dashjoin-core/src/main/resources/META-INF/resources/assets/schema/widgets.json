@@ -1404,8 +1404,8 @@
             }
         },
         "datagrid": {
-            "newUI": false,
-            "description": "Excel-like table editor (the new UI's editable table replaces it)",
+            "deprecated": true,
+            "description": "Classic: shown as an editable table widget (columns gives its columns, idColumn its key; onchange / oncreate / ondelete are onChange / onCreate / onDelete); use table",
             "properties": {
                 "expression": {
                     "$ref": "#/$defs/expression",

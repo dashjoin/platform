@@ -285,14 +285,18 @@ public class Linter {
         roles(file, path + "/" + escape(e.getKey()), e.getValue());
   }
 
-  /** the expressions in a tree (PojoDatabase.EXPRESSION_FIELDS, actionTable properties) */
+  /** widgets whose "actions" (legacy name "properties") map labels to expressions */
+  static final Set<String> ACTION_WIDGETS = Set.of("table", "actionTable", "mdxeditor");
+
+  /** the expressions in a tree (PojoDatabase.EXPRESSION_FIELDS, table / actionTable actions) */
   public void expressions(String file, String path, JsonNode tree, boolean backendOnly) {
-    if (tree.get("widget") != null && tree.get("widget").asText().equals("actionTable")
-        && tree.get("properties") != null)
-      for (Entry<String, JsonNode> e : tree.get("properties").properties())
-        if (!e.getKey().endsWith("-pointer"))
-          expression(file, path + "/properties/" + escape(e.getKey()), e.getKey(), e.getValue(),
-              backendOnly);
+    if (tree.get("widget") != null && ACTION_WIDGETS.contains(tree.get("widget").asText()))
+      for (String key : List.of("actions", "properties"))
+        if (tree.get(key) != null && tree.get(key).isObject())
+          for (Entry<String, JsonNode> e : tree.get(key).properties())
+            if (!e.getKey().endsWith("-pointer"))
+              expression(file, path + "/" + key + "/" + escape(e.getKey()), e.getKey(),
+                  e.getValue(), backendOnly);
 
     if (tree.isArray())
       for (int i = 0; i < tree.size(); i++)
