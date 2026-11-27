@@ -699,9 +699,8 @@
                     "description": "After saving: record (default: stay), table, or a URL"
                 },
                 "schema": {
-                    "studio": true,
                     "$ref": "#/$defs/form",
-                    "description": "Form override instead of the table's schema (classic UI; not yet applied by the new UI)"
+                    "description": "Form override instead of the table's schema (e.g. only some fields, other titles or widgets)"
                 }
             }
         },
@@ -713,9 +712,8 @@
                     "description": "Label of the create button (default \"Create\")"
                 },
                 "schema": {
-                    "studio": true,
                     "$ref": "#/$defs/form",
-                    "description": "Form override instead of the table's schema (classic UI; not yet applied by the new UI)"
+                    "description": "Form override instead of the table's schema (e.g. only some fields, other titles or widgets)"
                 }
             }
         },
